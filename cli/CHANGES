@@ -1,0 +1,11 @@
+Release 0.1 - 2011/1/4
+
+  Porting from Message Pack Java 0.3.
+
+  FEATURES
+  * MessagePackObject is implemented.
+  * Packer APIs (Packer class) are implemented.
+  * Buffered Unpacker APIs (Unpacker class) are implemented.
+  * Unbuffered Unpacker APIs (Unpacking class) are implemented.
+
+See project wiki for roadmap.

@@ -1,0 +1,118 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+string __typeName = "Packer";
+Func<Type, bool> __IsNotCLSCompliant =
+type =>
+	{
+		return 
+			type == typeof( sbyte )
+			|| type == typeof( ushort )
+			|| type == typeof( uint )
+			|| type == typeof( ulong );
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+
+namespace MsgPack
+{
+	// This file generated from <#= __typeName #>.Nullable.tt T4Template.
+	// Do not modify this file. Edit <#= __typeName #>.Nullable.tt instead.
+
+	partial class <#= __typeName #>
+	{
+<#
+foreach( var __type in
+	new []
+	{
+		typeof( sbyte ), typeof( byte ),
+		typeof( short ), typeof( ushort ),
+		typeof( int ), typeof( uint ),
+		typeof( long ), typeof( ulong ),
+		typeof( float ), typeof( double ),
+		typeof( bool )
+	}
+)
+{
+#>
+		/// <summary>
+		///		Pack nullable <see cref="<#= __type.Name #>"/> value.
+		/// </summary>
+		/// <param name="value">Value to serialize.</param>
+		/// <returns>This packer instance.</returns>
+<#
+if( __IsNotCLSCompliant( __type ) )
+{
+#>
+		[CLSCompliant( false )]
+<#
+}
+#>
+		public <#= __typeName #> Pack( <#= __type.Name #>? value )
+		{
+			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
+		}
+	
+		/// <summary>
+		///		Pack nullable <see cref="<#= __type.Name #>"/> value without message size compression.
+		/// </summary>
+		/// <param name="value">Value to serialize.</param>
+		/// <returns>This packer instance.</returns>
+<#
+if( __IsNotCLSCompliant( __type ) )
+{
+#>
+		[CLSCompliant( false )]
+<#
+}
+#>		public <#= __typeName #> PackStrict( <#= __type.Name #>? value )
+		{
+			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
+		}
+<#
+}
+#>
+	}
+}

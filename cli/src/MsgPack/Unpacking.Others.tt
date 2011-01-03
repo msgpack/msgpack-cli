@@ -1,0 +1,1366 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#
+// This file defines various conversion API portion of Unpackaging without integer conversion.
+var __typeName = "Unpacking";
+var __integerTypes = new []
+{
+	typeof( byte ),
+	typeof( sbyte ),
+	typeof( short ), 
+	typeof( ushort ),
+	typeof( int ), 
+	typeof( uint ), 
+	typeof( long ), 
+	typeof( ulong )
+};
+var __sourceTypes = new [] { "Stream", "byte[]" };
+
+Func<Type,bool> __isClsCompliant = 
+   type => ( type != typeof( sbyte ) && type != typeof( ushort ) && type != typeof( uint ) && type != typeof( ulong ) );
+
+Func<Type,bool> __isUnsigned = 
+   type => ( type == typeof( byte ) || type == typeof( ushort ) || type == typeof( uint ) || type == typeof( ulong ) );
+
+var __typeCodes = new Dictionary<Type, string>
+{
+	{ typeof( byte ), "0xcc" },
+	{ typeof( ushort ), "0xcd" },
+	{ typeof( uint ), "0xce" },
+	{ typeof( ulong ), "0xcf" },
+	{ typeof( sbyte ), "0xd0" },
+	{ typeof( short ), "0xd1" },
+	{ typeof( int ), "0xd2" },
+	{ typeof( long ), "0xd3" }
+};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.IO;
+
+namespace MsgPack
+{
+	// This file generated from <#= __typeName #>.tt T4Template.
+	// Do not modify this file. Edit <#= __typeName #>.tt instead.
+
+	static partial class <#= __typeName #>
+	{
+<#
+foreach( var __sourceType in __sourceTypes )
+{
+	// ----------------- Single -------------------
+#>
+		/// <summary>
+		///		Unpack <see cref="Single"/> directly from current position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <returns>Converted <see cref="Single"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Single"/>.</exception>
+		public static UnpackArrayResult<Single> UnpackSingle( byte[] source )
+		{
+			return UnpackSingle( source, 0 );
+		}
+
+		/// <summary>
+		///		Unpack <see cref="Single"/> directly from specified position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="offset">Offset of source binary.</param>
+<#
+	}
+#>
+		/// <returns>Converted <see cref="Single"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
+<#
+	}
+#>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Single"/>.</exception>
+<#
+	String __returnType;
+	if( __sourceType == "byte[]" )
+	{
+		__returnType = "UnpackArrayResult<Single>";
+#>
+		public static <#= __returnType #> UnpackSingle( <#= __sourceType #> source, int offset )
+<#
+	}
+	else
+	{
+		__returnType = "Single";
+#>
+		public static <#= __returnType #> UnpackSingle( <#= __sourceType #> source )
+<#
+	}
+#>
+		{
+			if( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+			if( offset < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+			}
+<#
+	}
+#>
+
+			Contract.EndContractBlock();
+
+<#
+	switch( __sourceType )
+	{
+		case "Stream" :
+		{
+#>
+			int typeCode = source.ReadByte();
+			if( typeCode == -1 )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+<#
+			break;
+		}
+		case "byte[]" :
+		{
+#>
+			if( source.Length <= offset )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+
+			int typeCode = source[ offset ];
+<#
+			break;
+		}
+	}
+#>
+			switch ( typeCode )
+			{
+				case 0xca:  // float
+				{
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+					return new UnpackArrayResult<Single>( ReadSingle( source, offset + 1 ), offset + sizeof( float ) + 1 );
+<#
+	}
+	else
+	{
+#>
+					return ReadSingle( source );
+<#
+	}
+#>
+				}
+				// case 0xcb:  // double
+				// {
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+				//	return ReadDouble( source, offset );
+<#
+	}
+	else
+	{
+#>
+				//	return ReadDouble( source );
+<#
+	}
+#>
+				// }
+				default:
+				{
+					throw new MessageTypeException( "Not Single." );
+				}
+			}
+		}
+
+<#
+}
+
+foreach( var __sourceType in __sourceTypes )
+{
+	// ----------------- Double -------------------
+#>
+		/// <summary>
+		///		Unpack <see cref="Double"/> directly from current position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <returns>Converted <see cref="Double"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Double"/>.</exception>
+		public static UnpackArrayResult<Double> UnpackDouble( byte[] source )
+		{
+			return UnpackDouble( source, 0 );
+		}
+
+		/// <summary>
+		///		Unpack <see cref="Double"/> directly from specified position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="offset">Offset of source binary.</param>
+<#
+	}
+#>
+		/// <returns>Converted <see cref="Double"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
+<#
+	}
+#>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Double"/>.</exception>
+<#
+	String __returnType;
+	if( __sourceType == "byte[]" )
+	{
+		__returnType = "UnpackArrayResult<Double>";
+#>
+		public static <#= __returnType #> UnpackDouble( <#= __sourceType #> source, int offset )
+<#
+	}
+	else
+	{
+		__returnType = "Double";
+#>
+		public static <#= __returnType #> UnpackDouble( <#= __sourceType #> source )
+<#
+	}
+#>
+		{
+			if( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+			if( offset < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" ) );
+			}
+<#
+	}
+#>
+
+			Contract.EndContractBlock();
+
+<#
+	switch( __sourceType )
+	{
+		case "Stream" :
+		{
+#>
+			int typeCode = source.ReadByte();
+			if( typeCode == -1 )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+<#
+			break;
+		}
+		case "byte[]" :
+		{
+#>
+			if( source.Length <= offset )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+
+			int typeCode = source[ offset ];
+<#
+			break;
+		}
+	}
+#>
+			switch ( typeCode )
+			{
+				case 0xca:  // float
+				{
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+					return new UnpackArrayResult<Double>( ReadSingle( source, offset + 1 ), offset + sizeof( float ) + 1 );
+<#
+	}
+	else
+	{
+#>
+					return ReadSingle( source );
+<#
+	}
+#>
+				}
+				case 0xcb:  // double
+				{
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+					return new UnpackArrayResult<Double>( ReadDouble( source, offset + 1 ), offset + sizeof( double ) + 1 );
+<#
+	}
+	else
+	{
+#>
+					return ReadDouble( source );
+<#
+	}
+#>
+				}
+				default:
+				{
+					throw new MessageTypeException( "Not Double." );
+				}
+			}
+		}
+
+<#
+}
+
+foreach( var __sourceType in __sourceTypes )
+{
+	// ----------------- Nil -------------------
+#>
+		/// <summary>
+		///		Unpack nil directly from current position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <returns>Converted null instance.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
+		public static UnpackArrayResult<Object> UnpackNull( byte[] source )
+		{
+			return UnpackNull( source, 0 );
+		}
+
+		/// <summary>
+		///		Unpack nil directly from specified position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="offset">Offset of source binary.</param>
+<#
+	}
+#>
+		/// <returns>Converted null instance.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
+<#
+	}
+#>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
+<#
+	String __returnType;
+	if( __sourceType == "byte[]" )
+	{
+		__returnType = "UnpackArrayResult<Object>";
+#>
+		public static <#= __returnType #> UnpackNull( <#= __sourceType #> source, int offset )
+		{
+			if( !TryUnpackNullCore( source, offset ) )
+			{
+<#
+	}
+	else
+	{
+		__returnType = "Object";
+#>
+		public static <#= __returnType #> UnpackNull( <#= __sourceType #> source )
+		{
+			if( !TryUnpackNullCore( source ) )
+			{
+<#
+	}
+#>
+				throw new MessageTypeException( "Not nil." );
+			}
+
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+			return new <#= __returnType #>( null, 1 + offset );
+<#
+	}
+	else
+	{
+#>
+			return null;
+<#
+	}
+#>
+		}
+
+		/// <summary>
+		///		Unpack nil directly from current position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <returns>If value is null then true.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
+		public static bool TryUnpackNull( byte[] source )
+		{
+			return TryUnpackNull( source, 0 );
+		}
+
+		/// <summary>
+		///		Unpack nil directly from specified position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="offset">Offset of source binary.</param>
+<#
+	}
+#>
+		/// <returns>If value is null then true.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
+		public static bool TryUnpackNull( <#= __sourceType #> source, int offset )
+<#
+	}
+	else
+	{
+#>
+		public static bool TryUnpackNull( <#= __sourceType #> source )
+<#
+	}
+#>
+
+		{
+			if( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+			if( offset < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+			}
+
+			Contract.EndContractBlock();
+
+			return TryUnpackNullCore( source, offset );
+		}
+
+		internal static bool TryUnpackNullCore( <#= __sourceType #> source, int offset )
+		{
+<#
+	}
+	else
+	{
+#>
+			return TryUnpackNullCore( source );
+		}
+
+		internal static bool TryUnpackNullCore( <#= __sourceType #> source )
+		{
+<#
+	}
+
+	switch( __sourceType )
+	{
+		case "Stream" :
+		{
+#>
+			int typeCode = source.ReadByte();
+			if( typeCode == -1 )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+<#
+			break;
+		}
+		case "byte[]" :
+		{
+#>
+			if( source.Length <= offset )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+
+			int typeCode = source[ offset ];
+<#
+			break;
+		}
+	}
+#>
+			if( typeCode == 0xc0 )
+			{
+				// success
+				return true;
+			}
+
+			return false;
+		}
+
+<#
+}
+
+foreach( var __sourceType in __sourceTypes )
+{
+	// ------------------- Boolean -----------------------
+#>
+		/// <summary>
+		///		Unpack <see cref="Boolean"/> directly from current position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <returns>Converted <see cref="Boolean"/> value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
+		public static UnpackArrayResult<Boolean> UnpackBoolean( byte[] source )
+		{
+			return UnpackBoolean( source, 0 );
+		}
+
+		/// <summary>
+		///		Unpack <see cref="Boolean"/> directly from specified position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="offset">Offset of source binary.</param>
+<#
+	}
+#>
+		/// <returns>Converted <see cref="Boolean"/> value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
+<#
+	}
+#>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
+		public static UnpackArrayResult<bool> UnpackBoolean( <#= __sourceType #> source, int offset )
+<#
+	}
+	else
+	{
+#>
+		public static bool UnpackBoolean( <#= __sourceType #> source )
+<#
+	}
+#>
+
+		{
+			if( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+			if( offset < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+			}
+<#
+	}
+#>
+
+			Contract.EndContractBlock();
+
+<#
+	switch( __sourceType )
+	{
+		case "Stream" :
+		{
+#>
+			int typeCode = source.ReadByte();
+			if( typeCode == -1 )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+<#
+			break;
+		}
+		case "byte[]" :
+		{
+#>
+			if( source.Length <= offset )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+
+			int typeCode = source[ offset ];
+<#
+			break;
+		}
+	}
+#>
+			if( typeCode == 0xc2 )
+			{
+				// success
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+				return new UnpackArrayResult<bool>( false, offset + 1 );
+<#
+	}
+	else
+	{
+#>
+				return false;
+<#
+	}
+#>
+			}
+
+			if( typeCode == 0xc3 )
+			{
+				// success
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+				return new UnpackArrayResult<bool>( true, offset + 1 );
+<#
+	}
+	else
+	{
+#>
+				return true;
+<#
+	}
+#>
+			}
+
+			throw new MessageTypeException( "Not Boolean." );
+		}
+<#
+}
+
+foreach( var __sourceType in __sourceTypes )
+{
+	// ------------------- Array Length -----------------------
+#>
+		/// <summary>
+		///		Unpack array length directly from current position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <returns>Converted array length value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
+		public static UnpackArrayResult<long> UnpackArrayLength( byte[] source )
+		{
+			return UnpackArrayLength( source, 0 );
+		}
+
+		/// <summary>
+		///		Unpack array length directly from specified position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="offset">Offset of source binary.</param>
+<#
+	}
+#>
+		/// <returns>Converted array length value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
+<#
+	}
+#>
+<#
+	String __returnType;
+	if( __sourceType == "byte[]" )
+	{
+		__returnType = "UnpackArrayResult<Int64>";
+#>
+		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
+		public static <#= __returnType #> UnpackArrayLength( <#= __sourceType #> source, int offset )
+<#
+	}
+	else
+	{
+		__returnType = "Int64";
+#>
+		public static <#= __returnType #> UnpackArrayLength( <#= __sourceType #> source )
+<#
+	}
+#>
+		{
+			if( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+			if( offset < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+			}
+<#
+	}
+#>
+
+			Contract.EndContractBlock();
+
+<#
+	switch( __sourceType )
+	{
+		case "Stream" :
+		{
+#>
+			int typeCode = source.ReadByte();
+			if( typeCode == -1 )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+<#
+			break;
+		}
+		case "byte[]" :
+		{
+#>
+			if( source.Length <= offset )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+
+			int typeCode = source[ offset ];
+<#
+			break;
+		}
+	}
+#>
+			if ( ( typeCode & 0xf0 ) == 0x90 )  // FixArray
+			{
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+				return new <#= __returnType #>( typeCode & 0x0f, 1 );
+<#
+	}
+	else
+	{
+#>
+				return ( typeCode & 0x0f );
+
+<#
+	}
+#>
+			}
+
+			switch ( typeCode )
+			{
+				case 0xdc : // array 16
+				{
+<#
+	switch( __sourceType )
+	{
+		case "byte[]" :
+		{
+#>
+					return new <#= __returnType #>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
+<#
+			break;
+		}
+		case "Stream" :
+		{
+#>
+					return UnpackUInt16Body( source );
+<#
+			break;
+		}
+	}
+#>
+				}
+				case 0xdd : // array 32
+				{
+<#
+	switch( __sourceType )
+	{
+		case "byte[]" :
+		{
+#>
+					return new <#= __returnType #>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
+<#
+			break;
+		}
+		case "Stream" :
+		{
+#>
+					return UnpackUInt32Body( source );
+<#
+			break;
+		}
+	}
+#>
+				}
+				default:
+				{
+					throw new MessageTypeException( "Not array." );
+				}
+			}
+		}
+<#
+}
+
+foreach( var __sourceType in __sourceTypes )
+{
+	// ------------------- Map Count -----------------------
+#>
+		/// <summary>
+		///		Unpack map count directly from current position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <returns>Converted map count value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
+		public static UnpackArrayResult<long> UnpackDictionaryCount( byte[] source )
+		{
+			return UnpackDictionaryCount( source, 0 );
+		}
+
+		/// <summary>
+		///		Unpack map count directly from specified position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="offset">Offset of source binary.</param>
+<#
+	}
+#>
+		/// <returns>Converted map count value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
+<#
+	}
+#>
+<#
+	String __returnType;
+	if( __sourceType == "byte[]" )
+	{
+		__returnType = "UnpackArrayResult<Int64>";
+#>
+		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
+		public static <#= __returnType #> UnpackDictionaryCount( <#= __sourceType #> source, int offset )
+<#
+	}
+	else
+	{
+		__returnType = "Int64";
+#>
+		public static <#= __returnType #> UnpackDictionaryCount( <#= __sourceType #> source )
+<#
+	}
+#>
+		{
+			if( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+			if( offset < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+			}
+<#
+	}
+#>
+
+			Contract.EndContractBlock();
+
+<#
+	switch( __sourceType )
+	{
+		case "Stream" :
+		{
+#>
+			int typeCode = source.ReadByte();
+			if( typeCode == -1 )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+<#
+			break;
+		}
+		case "byte[]" :
+		{
+#>
+			if( source.Length <= offset )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+
+			int typeCode = source[ offset ];
+<#
+			break;
+		}
+	}
+#>
+			if ( ( typeCode & 0xf0 ) == 0x80 )  // FixMap
+			{
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+				return new <#= __returnType #>( typeCode & 0x0f, offset + 1 );
+<#
+	}
+	else
+	{
+#>
+				return ( typeCode & 0x0f );
+
+<#
+	}
+#>
+			}
+
+			switch ( typeCode )
+			{
+				case 0xde : // map 16
+				{
+<#
+	switch( __sourceType )
+	{
+		case "byte[]" :
+		{
+#>
+					return new <#= __returnType #>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
+<#
+			break;
+		}
+		case "Stream" :
+		{
+#>
+					return UnpackUInt16Body( source );
+<#
+			break;
+		}
+	}
+#>
+				}
+				case 0xdf : // map 32
+				{
+<#
+	switch( __sourceType )
+	{
+		case "byte[]" :
+		{
+#>
+					return new <#= __returnType #>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
+<#
+			break;
+		}
+		case "Stream" :
+		{
+#>
+					return UnpackUInt32Body( source );
+<#
+			break;
+		}
+	}
+#>
+				}
+				default:
+				{
+					throw new MessageTypeException( "Not map." );
+				}
+			}
+		}
+
+<#
+}
+
+foreach( var __sourceType in __sourceTypes )
+{
+	// ------------------- Raw Length-----------------------
+#>
+		/// <summary>
+		///		Unpack raw length directly from current position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <returns>Converted raw length value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
+		public static UnpackArrayResult<Int64> UnpackRawLength( byte[] source )
+		{
+			return UnpackRawLength( source, 0 );
+		}
+
+		/// <summary>
+		///		Unpack raw length directly from specified position of specified <#= __sourceType #> source.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="offset">Offset of source binary.</param>
+<#
+	}
+#>
+		/// <returns>Converted raw length value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
+<#
+	}
+#>
+<#
+	String __returnType;
+	if( __sourceType == "byte[]" )
+	{
+		__returnType = "UnpackArrayResult<Int64>";
+#>
+		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
+		public static <#= __returnType #> UnpackRawLength( <#= __sourceType #> source, int offset )
+<#
+	}
+	else
+	{
+		__returnType = "Int64";
+#>
+		public static <#= __returnType #> UnpackRawLength( <#= __sourceType #> source )
+<#
+	}
+#>
+		{
+			if( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+			if( offset < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+			}
+<#
+	}
+#>
+
+			Contract.EndContractBlock();
+
+<#
+	switch( __sourceType )
+	{
+		case "Stream" :
+		{
+#>
+			int typeCode = source.ReadByte();
+			if( typeCode == -1 )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+<#
+			break;
+		}
+		case "byte[]" :
+		{
+#>
+			if( source.Length <= offset )
+			{
+				throw new UnpackException( "Type header not found." );
+			}
+
+			int typeCode = source[ offset ];
+<#
+			break;
+		}
+	}
+#>
+			if ( ( typeCode & 0xa0 ) == 0xa0 )  // FixRaw
+			{
+<#
+	if( __sourceType == "byte[]" )
+	{
+#>
+				return new <#= __returnType #>( typeCode & 0x1f, offset + 1 );
+<#
+	}
+	else
+	{
+#>
+				return ( typeCode & 0x1f );
+
+<#
+	}
+#>
+			}
+
+			switch ( typeCode )
+			{
+				case 0xda : // raw 16
+				{
+<#
+	switch( __sourceType )
+	{
+		case "byte[]" :
+		{
+#>
+					return new <#= __returnType #>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
+<#
+			break;
+		}
+		case "Stream" :
+		{
+#>
+					return UnpackUInt16Body( source );
+<#
+			break;
+		}
+	}
+#>
+				}
+				case 0xdb : // raw 32
+				{
+<#
+	switch( __sourceType )
+	{
+		case "byte[]" :
+		{
+#>
+					return new <#= __returnType #>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
+<#
+			break;
+		}
+		case "Stream" :
+		{
+#>
+					return UnpackUInt32Body( source );
+<#
+			break;
+		}
+	}
+#>
+				}
+				default:
+				{
+					throw new MessageTypeException( "Not raw length." );
+				}
+			}
+		}
+<#
+}
+
+foreach( var __sourceType in __sourceTypes )
+{
+	if( __sourceType == "byte[]" )
+	{
+#>
+		/// <summary>
+		///		Unpack body of raw binary from specified <#= __sourceType #>.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="offset">Offset of source binary.</param>
+		/// <param name="length">Length of raw binary.</param>
+		/// <returns>Converted raw length value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
+		public static IEnumerable<byte> UnpackRawBody( <#= __sourceType #> source, int offset, long length )
+		{
+			Validation.ValidateBuffer( source, offset, length, "source", "length", true );
+<#
+	}
+	else
+	{
+#>
+		/// <summary>
+		///		Unpack entire raw binary from specified <#= __sourceType #>.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <returns>Converted raw length value.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="MessageTypeException"><paramref name="source"/> is not raw.</exception>
+		public static IEnumerable<byte> UnpackRaw( <#= __sourceType #> source )
+		{
+			return UnpackRawBody( source, UnpackRawLength( source ) );
+		}
+
+		/// <summary>
+		///		Unpack entire raw binary from specified <#= __sourceType #>.
+		/// </summary>
+		/// <param name="source">Source <#= __sourceType #>.</param>
+		/// <param name="length">Length of raw binary.</param>
+		/// <returns>Converted raw binary.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is negative.</exception>
+		public static IEnumerable<byte> UnpackRawBody( <#= __sourceType #> source, long length )
+		{
+			if( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			if( length < 0L )
+			{
+				throw new ArgumentOutOfRangeException( "length", length, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "length" )  );
+			}
+<#
+	}
+#>
+
+			Contract.EndContractBlock();
+
+<#
+	switch( __sourceType )
+	{
+		case "byte[]":
+		{
+#>
+			for( long i = 0; i < length; i++ )
+			{
+				yield return source[ i + offset ];
+			}
+<#
+			break;
+		}
+		case "Stream":
+		{
+#>
+			for( long i = 0; i < length; i++ )
+			{
+				int read = source.ReadByte();
+				if( read < 0 )
+				{
+					throw new UnpackException( String.Format( CultureInfo.CurrentCulture, "End of stream. Expected length:{0}, but read length:{1}.", length, i ) );
+				}
+				yield return unchecked( ( byte )read );
+			}
+<#
+			break;
+		}
+	}
+#>
+		}
+<#
+}
+#>
+	}
+}

@@ -1,0 +1,368 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+var __typeName = "MessagePackObject";
+var __types = 
+	new Dictionary<Type, byte>
+	{
+		{ typeof( bool ), 1 },
+		{ typeof( byte ), 2 },
+		{ typeof( sbyte ), 3 },
+		{ typeof( short ), 4 },
+		{ typeof( ushort ), 5 },
+		{ typeof( int ), 6 },
+		{ typeof( uint ), 7 },
+		{ typeof( long ), 8 },
+		{ typeof( ulong ), 9 },
+		{ typeof( float ), 0x10 | 1 },
+		{ typeof( double ), 0x10 | 2 },
+	};
+Func<Type, bool> __IsNotCLSCompliant =
+	type =>
+	{
+		return 
+			type == typeof( sbyte )
+			|| type == typeof( ushort )
+			|| type == typeof( uint )
+			|| type == typeof( ulong );
+	};
+Func<Type, bool> __IsExplicitConversionRequired =
+	type =>
+	{
+		return 
+			type == typeof( sbyte )
+			|| type == typeof( short )
+			|| type == typeof( int )
+			|| type == typeof( long );
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using System.Text;
+
+namespace MsgPack
+{
+	// This file generated from <#= __typeName #>.tt T4Template.
+	// Do not modify this file. Edit <#= __typeName #>.tt instead.
+
+	/// <summary>
+	///		Represents deserialized object of MsgPack.
+	/// </summary>
+	[StructLayout( LayoutKind.Auto )]
+	public partial struct <#= __typeName #> : IEquatable<<#= __typeName #>>, IPackable
+	{
+		#region -- Constructors --
+<#
+foreach(var t in __types.Keys )
+{
+#>
+
+		/// <summary>
+		///		Initialize new instance wraps <see cref="<#= t.Name #>"/> instance.
+		/// </summary>
+<#
+if( __IsNotCLSCompliant( t ) )
+{
+#>
+		[CLSCompliant( false )]
+<#
+}
+#>
+		public <#= __typeName #>( <#= t.Name #> value )
+		{
+			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			this = new <#= __typeName #>();
+<#
+//			this._as t.Name = value;
+#>
+<# 
+	if( t == typeof ( bool ) )
+	{
+#>
+			this._value = value ? ( ulong )1 : 0;
+<#
+	}
+	else if( __IsExplicitConversionRequired( t ) )
+	{
+#>
+			this._value = unchecked( ( ulong )value );
+<#
+	}
+	else if ( t == typeof( float ) )
+	{
+#>
+			var bytes = BitConverter.GetBytes( value );
+			unchecked
+			{
+#pragma warning disable 0675
+				if( BitConverter.IsLittleEndian )
+				{
+					this._value |=  ( ulong )( bytes[ 3 ] << 24 );
+					this._value |=  ( ulong )( bytes[ 2 ] << 16 );
+					this._value |=  ( ulong )( bytes[ 1 ] << 8 );
+					this._value |=  bytes[ 0 ];
+				}
+				else
+				{
+					this._value |=  ( ulong )( bytes[ 0 ] << 24 );
+					this._value |=  ( ulong )( bytes[ 1 ] << 16 );
+					this._value |=  ( ulong )( bytes[ 2 ] << 8 );
+					this._value |=  bytes[ 3 ];
+				}
+#pragma warning restore 0675
+			}
+<#
+	}
+	else if ( t == typeof( double ) )
+	{
+#>
+			this._value = unchecked( ( ulong )BitConverter.DoubleToInt64Bits( value ) );
+<#
+	}
+	else
+	{
+#>
+			this._value = value;
+<#
+	}
+#>
+			this._handleOrTypeCode = _<#= t.Name.ToLowerInvariant() #>TypeCode;
+		}
+<#
+}
+#>
+
+		private MessagePackObject( SerializationInfo info, StreamingContext context )
+		{
+			if ( info == null )
+			{
+				throw new ArgumentNullException( "info" );
+			}
+
+			Contract.EndContractBlock();
+
+			this = new MessagePackObject();
+			switch ( ( TypeCode )info.GetValue( "TypeCode", typeof( TypeCode ) ) )
+			{
+				case TypeCode.Empty:
+				{
+					this._handleOrTypeCode = null;
+					return;
+				}
+				case TypeCode.Object:
+				{
+					this._handleOrTypeCode = info.GetValue( "Value", typeof( object ) );
+					return;
+				}
+<#
+foreach(var t in __types.Keys )
+{
+#>
+				case TypeCode.<#= t.Name #>:
+				{
+					this._handleOrTypeCode = _<#= t.Name.ToLowerInvariant() #>TypeCode;
+					this._value = info.GetUInt64( "Value" );
+					return;
+				}
+<#
+}
+#>
+				default:
+				{
+					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Unknown type code {0}",( TypeCode )info.GetValue( "TypeCode", typeof( TypeCode ) ) ) );
+				}
+			}
+		}
+
+		#endregion -- Constructors --
+
+
+		#region -- Primitive Type Conversion Methods --
+<#
+foreach(var t in __types.Keys )
+{
+#>
+
+		/// <summary>
+		///		Convert this instance to <see cref="<#= t.Name #>"/> instance.
+		/// </summary>
+		/// <returns><see cref="<#= t.Name #>"/> instance corresponds to this instance.</returns>
+<#
+if( __IsNotCLSCompliant( t ) )
+{
+#>
+		[CLSCompliant( false )]
+<#
+}
+#>
+		public <#= t.Name #> As<#= t.Name #>()
+		{
+			return ( <#= t.Name #> )this;
+		}
+<#
+}
+#>
+
+		#endregion -- Primitive Type Conversion Methods --
+
+		private static bool AddPrimitiveToSerializationInfo( SerializationInfo info, string name, MessagePackObject value )
+		{
+			if( value.IsNil )
+			{
+				info.AddValue( name, null );
+				return true;
+			}
+<#
+foreach(var t in __types.Keys )
+{
+#>	
+			else if( value._handleOrTypeCode == _<#= t.Name.ToLowerInvariant() #>TypeCode )
+			{
+				info.AddValue( name, value.As<#= t.Name #>() );
+				return true;
+			}
+<#
+}
+#>
+			return false;
+		}
+
+		#region -- Conversion Operator Overloads --
+
+<#
+foreach(var t in __types.Keys )
+{
+#>
+
+		/// <summary>
+		///		Convert <see cref="<#= t.Name #>"/> instance to <see cref="<#= __typeName #>"/> instance.
+		/// </summary>
+		/// <param name="value"><see cref="<#= t.Name #>"/> instance.</param>
+		/// <returns><see cref="<#=  __typeName #>"/> instance corresponds to <paramref name="value"/>.</returns>
+<#
+if( __IsNotCLSCompliant( t ) )
+{
+#>
+		[CLSCompliant( false )]
+<#
+}
+#>
+		public static implicit operator <#= __typeName #>( <#= t.Name #> value )
+		{
+			return new <#= __typeName #>( value );
+		}
+<#
+}
+#>
+
+<#
+foreach(var t in __types.Keys )
+{
+#>
+
+		/// <summary>
+		///		Convert this instance to <see cref="<#= t.Name #>"/> instance.
+		/// </summary>
+		/// <param name="value"><see cref="<#= __typeName #>"/> instance.</param>
+		/// <returns><see cref="<#= t.Name #>"/> instance corresponds to <paramref name="value"/>.</returns>
+<#
+if( __IsNotCLSCompliant( t ) )
+{
+#>
+		[CLSCompliant( false )]
+<#
+}
+#>
+		public static explicit operator <#= t.Name #>( <#= __typeName #> value )
+		{
+			VerifyUnderlyingType<<#= t.Name #>>( value, "value" );
+
+<# 
+	if ( t == typeof( ulong ) )
+	{
+#>
+			return value._value;
+<#
+	}
+	else if ( t == typeof( bool ) )
+	{
+#>
+			return value._value != 0;
+<#
+	}
+	else if ( t == typeof( float ) )
+	{
+#>
+			return BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+<#
+	}
+	else if ( t == typeof( double ) )
+	{
+#>
+			return BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+<#
+	}
+	else
+	{
+#>
+			// It's safe since already verified based on type code.
+			return unchecked( ( <#= t.Name #> )value._value );
+<#
+	}
+#>
+		}
+<#
+}
+#>
+
+		#endregion -- Conversion Operator Overloads --
+	}
+}

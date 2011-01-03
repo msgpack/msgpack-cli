@@ -1,0 +1,161 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#
+
+var __integerTypes = new []
+{
+	typeof( byte ),
+	typeof( sbyte ),
+	typeof( short ), 
+	typeof( ushort ),
+	typeof( int ), 
+	typeof( uint ), 
+	typeof( long ), 
+	typeof( ulong )
+};
+
+var __floatingTypes = new []
+{
+	typeof( float ),
+	typeof( double )
+};
+
+Func<Type, bool> __isUnsigned =
+	type => type == typeof( byte ) || type == typeof( ushort ) || type == typeof( uint ) || type == typeof( ulong );
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using NUnit.Framework;
+
+namespace MsgPack
+{
+	partial class PackUnpackTest
+	{
+<#
+foreach( var __type in __integerTypes )
+{
+#>
+
+		[Test]
+		public void Test<#= __type.Name #>()
+		{
+			Test<#= __type.Name #>( 0 );
+<#
+	if( !__isUnsigned( __type ) )
+	{
+#>
+			Test<#= __type.Name #>( -1 );
+<#
+	}
+#>
+			Test<#= __type.Name #>( ( <#= __type.Name #> )1 );
+			Test<#= __type.Name #>( <#= __type.Name #>.MinValue );
+			Test<#= __type.Name #>( <#= __type.Name #>.MaxValue );
+			var sw = Stopwatch.StartNew();
+			var rand = new TestRandom();
+			for ( int i = 0; i < 1000; i++ )
+			{
+				Test<#= __type.Name #>( rand.Next<#= __type.Name #>() );
+			}
+			sw.Stop();
+			Console.WriteLine( "<#= __type.Name #>: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+		}
+
+		private static void Test<#= __type.Name #>( <#= __type.Name #> value )
+		{
+			var output = new MemoryStream();
+			Packer.Create( output ).Pack( value );
+			var mpo = UnpackOne( output );
+			Assert.AreEqual( value, ( <#= __type.Name #> )mpo );
+			Assert.AreEqual( value, mpo.As<#= __type.Name #>() );
+		}
+<#
+}
+
+foreach( var __type in __floatingTypes )
+{
+#>
+
+		[Test]
+		public void Test<#= __type.Name #>()
+		{
+			Test<#= __type.Name #>( 0.0<#= __type == typeof( float ) ? "f" : "" #> );
+			Test<#= __type.Name #>( -0.0<#= __type == typeof( float ) ? "f" : "" #> );
+			Test<#= __type.Name #>( 1.0<#= __type == typeof( float ) ? "f" : "" #> );
+			Test<#= __type.Name #>( -1.0<#= __type == typeof( float ) ? "f" : "" #> );
+			Test<#= __type.Name #>( <#= __type.Name #>.MaxValue );
+			Test<#= __type.Name #>( <#= __type.Name #>.MinValue );
+			Test<#= __type.Name #>( <#= __type.Name #>.NaN );
+			Test<#= __type.Name #>( <#= __type.Name #>.NegativeInfinity );
+			Test<#= __type.Name #>( <#= __type.Name #>.PositiveInfinity );
+			var sw = Stopwatch.StartNew();
+			TestRandom rand = new TestRandom();
+			for ( int i = 0; i < 1000; i++ )
+			{
+				Test<#= __type.Name #>( rand.Next<#= __type.Name #>() );
+			}
+			sw.Stop();
+			Console.WriteLine( "<#= __type.Name #>: {0:0.###} msec/object", sw.ElapsedMilliseconds / 1000.0 );
+		}
+
+		private static void Test<#= __type.Name #>( <#= __type.Name #> value )
+		{
+			var output = new MemoryStream();
+			Packer.Create( output ).Pack( value );
+			var mpo = UnpackOne( output );
+			Assert.AreEqual( value, ( <#= __type.Name #> )mpo, 10e-10 );
+			Assert.AreEqual( value, mpo.As<#= __type.Name #>(), 10e-10 );
+		}
+<#
+}
+#>
+	}
+}

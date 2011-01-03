@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MsgPack</RootNamespace>
+    <AssemblyName>MsgPack</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PerformanceTest|AnyCPU' ">
+    <OutputPath>bin\Performance Test\</OutputPath>
+    <DefineConstants>TRACE;PERFORMANCE_TEST</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\msgpack-rpc\cs\src\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\msgpack-rpc\cs\src\CommonAssemblyInfo.Pack.cs">
+      <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
+    </Compile>
+    <Compile Include="BigEndianBinary.cs" />
+    <Compile Include="Binary.cs" />
+    <Compile Include="Collections\ChunkBuffer.cs" />
+    <Compile Include="InvalidMessagePackStreamException.cs" />
+    <Compile Include="IPackable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IUnpackable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Linq\StreamEnumerable.cs" />
+    <Compile Include="MessagePackObject.Utilities.cs" />
+    <Compile Include="MessageNotSupportedException.cs" />
+    <Compile Include="StreamingUnpacker.cs" />
+    <Compile Include="MessagePackObject.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObject.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageTypeException.cs" />
+    <Compile Include="ObjectPackingOptions.cs" />
+    <Compile Include="Packer.cs" />
+    <Compile Include="Packer.Nullable.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Packer.Nullable.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StreamPacker.cs" />
+    <Compile Include="Unpacking.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Unpacking.Integers.cs">
+      <DependentUpon>Unpacking.Integers.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Unpacking.Others.cs">
+      <DependentUpon>Unpacking.Others.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Unpacking.String.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Validation.cs" />
+    <Compile Include="UnpackArrayResult.cs" />
+    <Compile Include="Unpacker.cs" />
+    <Compile Include="Unpacker.Direct.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Unpacker.Direct.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackException.cs" />
+    <None Include="Unpacker.Direct.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Unpacker.Direct.cs</LastGenOutput>
+    </None>
+    <None Include="Unpacking.Integers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Unpacking.Integers.cs</LastGenOutput>
+    </None>
+    <None Include="Unpacking.Others.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Unpacking.Others.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MessagePackObject.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackObject.cs</LastGenOutput>
+    </None>
+    <None Include="Packer.Nullable.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Packer.Nullable.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
