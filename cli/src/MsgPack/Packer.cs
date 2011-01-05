@@ -18,10 +18,6 @@
 //
 #endregion -- License Terms --
 
-// If you build this source for partial trust environment (such as Silverlight),
-// define following symbol in compiler option or enabled following line.
-// #define NOT_UNSAFE
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -758,43 +754,23 @@ namespace MsgPack
 
 			this.WriteByte( 0xca );
 
-#if NOT_UNSAFE
+			var bits = new Float32Bits( value );
 
-			var littleEndeanBytes = BitConverter.GetBytes( value );
 			if ( BitConverter.IsLittleEndian )
 			{
-				this.WriteByte( littleEndeanBytes[ 3 ] );
-				this.WriteByte( littleEndeanBytes[ 2 ] );
-				this.WriteByte( littleEndeanBytes[ 1 ] );
-				this.WriteByte( littleEndeanBytes[ 0 ] );
+				this.WriteByte( bits.Byte3 );
+				this.WriteByte( bits.Byte2 );
+				this.WriteByte( bits.Byte1 );
+				this.WriteByte( bits.Byte0 );
 			}
 			else
 			{
-				this.WriteByte( littleEndeanBytes[ 0 ] );
-				this.WriteByte( littleEndeanBytes[ 1 ] );
-				this.WriteByte( littleEndeanBytes[ 2 ] );
-				this.WriteByte( littleEndeanBytes[ 3 ] );
+				this.WriteByte( bits.Byte0 );
+				this.WriteByte( bits.Byte1 );
+				this.WriteByte( bits.Byte2 );
+				this.WriteByte( bits.Byte3 );
 			}
-#else
-			unsafe
-			{
-				byte* pValue = ( byte* )&value;
-				if ( BitConverter.IsLittleEndian )
-				{
-					this.WriteByte( pValue[ 3 ] );
-					this.WriteByte( pValue[ 2 ] );
-					this.WriteByte( pValue[ 1 ] );
-					this.WriteByte( pValue[ 0 ] );
-				}
-				else
-				{
-					this.WriteByte( pValue[ 0 ] );
-					this.WriteByte( pValue[ 1 ] );
-					this.WriteByte( pValue[ 2 ] );
-					this.WriteByte( pValue[ 3 ] );
-				}
-			}
-#endif
+
 			return this;
 		}
 

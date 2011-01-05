@@ -18,10 +18,6 @@
 //
 #endregion -- License Terms --
 
-// If you build this source for partial trust environment (such as Silverlight),
-// define following symbol in compiler option or enabled following line.
-// #define NOT_UNSAFE
-
 using System;
 using System.Diagnostics.Contracts;
 
@@ -115,45 +111,12 @@ namespace MsgPack
 
 		public static float ToSingle( byte[] buffer, int offset )
 		{
-			Contract.Assume( buffer.Length >= offset + sizeof( float ) );
-
-			if ( !BitConverter.IsLittleEndian )
-			{
-				return BitConverter.ToSingle( buffer, offset );
-			}
-			else
-			{
-				unchecked
-				{
-#if NOT_UNSAFE
-					// It is slow but unmanaged pointer is not needed.
-					byte[] castBuffer = new byte[ 4 ];
-					castBuffer[ 3 ] = buffer[ offset ];
-					castBuffer[ 2 ] = buffer[ offset + 1 ];
-					castBuffer[ 1 ] = buffer[ offset + 2 ];
-					castBuffer[ 0 ] = buffer[ offset + 3 ];
-					return BitConverter.ToSingle( castBuffer, 0 );
-#else
-					unsafe
-					{
-						// It is a bit more fast but requires FullTrust.
-						float result = 0.0f;
-						byte* pResult = ( byte* )&result;
-						pResult[ 3 ] = buffer[ offset ];
-						pResult[ 2 ] = buffer[ offset + 1 ];
-						pResult[ 1 ] = buffer[ offset + 2 ];
-						pResult[ 0 ] = buffer[ offset + 3 ];
-						return result;
-					}
-#endif
-				}
-			}
+			return new Float32Bits( buffer, offset ).Value;
 		}
 
 		public static double ToDouble( byte[] buffer, int offset )
 		{
-			// Endian is handled by ToInt64.
-			return BitConverter.Int64BitsToDouble( ToInt64( buffer, offset ) );
+			return new Float64Bits( buffer, offset ).Value;
 		}
 	}
 }

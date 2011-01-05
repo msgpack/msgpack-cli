@@ -152,7 +152,27 @@ namespace MsgPack
 		[Test]
 		public void PerformanceTest()
 		{
-			const int iteration = 10000;
+			var dummy = new byte[ 8 ];
+			// Let's load and JIT
+			BigEndianBinary.ToInt16( dummy, 0 );
+			BigEndianBinary.ToInt32( dummy, 0 );
+			BigEndianBinary.ToInt64( dummy, 0 );
+			BigEndianBinary.ToUInt16( dummy, 0 );
+			BigEndianBinary.ToUInt32( dummy, 0 );
+			BigEndianBinary.ToUInt64( dummy, 0 );
+			BigEndianBinary.ToSingle( dummy, 0 );
+			BigEndianBinary.ToDouble( dummy, 0 );
+			BitConverter.ToInt16( dummy, 0 );
+			BitConverter.ToInt32( dummy, 0 );
+			BitConverter.ToInt64( dummy, 0 );
+			BitConverter.ToUInt16( dummy, 0 );
+			BitConverter.ToUInt32( dummy, 0 );
+			BitConverter.ToUInt64( dummy, 0 );
+			BitConverter.ToSingle( dummy, 0 );
+			BitConverter.ToDouble( dummy, 0 );
+
+			// Go
+			const int iteration = 1000000;
 			PerformanceTestCore( new byte[] { 0, 0x80, 0xff, 0 }, BigEndianBinary.ToInt16, BitConverter.ToInt16, iteration );
 			PerformanceTestCore( new byte[] { 0, 0x80, 0xff, 0 }, BigEndianBinary.ToUInt16, BitConverter.ToUInt16, iteration );
 			PerformanceTestCore( new byte[] { 0, 0x80, 0x00, 0xff, 0xff, 0 }, BigEndianBinary.ToInt32, BitConverter.ToInt32, iteration );

@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,13 +32,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PerformanceTest|AnyCPU' ">
     <OutputPath>bin\Performance Test\</OutputPath>
     <DefineConstants>TRACE;PERFORMANCE_TEST</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -58,15 +58,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\msgpack-rpc\cs\src\CommonAssemblyInfo.cs">
+    <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\msgpack-rpc\cs\src\CommonAssemblyInfo.Pack.cs">
+    <Compile Include="..\CommonAssemblyInfo.Pack.cs">
       <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
     </Compile>
     <Compile Include="BigEndianBinary.cs" />
     <Compile Include="Binary.cs" />
     <Compile Include="Collections\ChunkBuffer.cs" />
+    <Compile Include="Float32Bits.cs" />
+    <Compile Include="Float64Bits.cs" />
     <Compile Include="InvalidMessagePackStreamException.cs" />
     <Compile Include="IPackable.cs">
       <SubType>Code</SubType>
