@@ -21,12 +21,18 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace MsgPack
 {
+	// ArgumentValidatorAttribute cannot be used here because of its license terms.
+	// So validation in this class is not captured from code contract tools.
+
 	/// <summary>
 	///		Common validtion utility.
 	/// </summary>
+	// [ArgumentValidator]
 	internal static class Validation
 	{
 		public static void ValidateBuffer<T>( T[] byteArray, int offset, long length, string nameOfByteArray, string nameOfLength, bool validateBufferSize )
@@ -63,6 +69,151 @@ namespace MsgPack
 						length
 					)
 				);
+			}
+		}
+
+		//public static void ValidateIsNotNull<T>( T value, string parameterName )
+		//    where T : class
+		//{
+		//    if ( value == null )
+		//    {
+		//        throw new ArgumentNullException( parameterName );
+		//    }
+		//}
+
+		private static void ValidateIsNotNullNorEmpty( string value, string parameterName )
+		{
+			if ( value == null )
+			{
+				throw new ArgumentNullException( parameterName );
+			}
+
+			if ( value.Length == 0 )
+			{
+				throw new ArgumentException(
+					String.Format( CultureInfo.CurrentCulture, "'{0}' cannot be empty.", parameterName ),
+					parameterName
+				);
+			}
+		}
+
+		//public static void ValidateIsNotNullNorEmpty<T>( ICollection<T> value, string parameterName )
+		//{
+		//    if ( value == null )
+		//    {
+		//        throw new ArgumentNullException( parameterName );
+		//    }
+
+		//    if ( value.Count == 0 )
+		//    {
+		//        throw new ArgumentException(
+		//            String.Format( CultureInfo.CurrentCulture, "'{0}' cannot be empty.", parameterName ),
+		//            parameterName
+		//        );
+		//    }
+		//}
+
+		private static readonly Regex _unicodeTR15Annex7IdentifierPattern =
+			new Regex( @"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline );
+
+		public static void ValidateMethodName( string methodName, string parameterName )
+		{
+			ValidateIsNotNullNorEmpty( methodName, parameterName );
+
+			var matches = _unicodeTR15Annex7IdentifierPattern.Matches( methodName );
+			if ( matches.Count == 1 && matches[ 0 ].Success && matches[ 0 ].Index == 0 && matches[ 0 ].Length == methodName.Length )
+			{
+				return;
+			}
+
+			// Get invalid value.
+			int position = -1;
+			int validLength = 0;
+			for ( int i = 0; i < matches.Count; i++ )
+			{
+				if ( matches[ i ].Index == validLength )
+				{
+					validLength += matches[ i ].Length;
+				}
+				else
+				{
+					position = validLength;
+					break;
+				}
+			}
+
+			Contract.Assert( position >= 0 );
+
+			var category = CharUnicodeInfo.GetUnicodeCategory( methodName, position );
+			if ( IsPrintable( category ) )
+			{
+				throw new ArgumentException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Char at {0}('{1}'\\u{2}[{3}] is not used for method name.",
+						position,
+						methodName[ position ],
+						( ushort )methodName[ position ],
+						category
+					)
+				);
+			}
+			else
+			{
+				throw new ArgumentException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Char at {0}(\\u{1}[{2}] is not used for method name.",
+						position,
+						( ushort )methodName[ position ],
+						category
+					)
+				);
+			}
+		}
+
+		/// <summary>
+		///		Determine specified category is printiable.
+		/// </summary>
+		/// <param name="category">Unicode cateory.</param>
+		/// <returns>
+		///		If all charactors in specified category are printable then true.
+		///		Other wise false.
+		/// </returns>
+		/// <remarks>
+		///		This method is conservative, but application cannot print the charactor
+		///		because appropriate font is not installed the machine.
+		/// </remarks>
+		private static bool IsPrintable( UnicodeCategory category )
+		{
+			switch ( category )
+			{
+				case UnicodeCategory.ClosePunctuation:
+				case UnicodeCategory.ConnectorPunctuation:
+				case UnicodeCategory.CurrencySymbol:
+				case UnicodeCategory.DashPunctuation:
+				case UnicodeCategory.DecimalDigitNumber:
+				case UnicodeCategory.EnclosingMark:
+				case UnicodeCategory.FinalQuotePunctuation:
+				case UnicodeCategory.InitialQuotePunctuation:
+				case UnicodeCategory.LetterNumber:
+				case UnicodeCategory.LowercaseLetter:
+				case UnicodeCategory.MathSymbol:
+				case UnicodeCategory.NonSpacingMark:
+				case UnicodeCategory.OpenPunctuation:
+				case UnicodeCategory.OtherLetter:
+				case UnicodeCategory.OtherNumber:
+				case UnicodeCategory.OtherPunctuation:
+				case UnicodeCategory.OtherSymbol:
+				case UnicodeCategory.TitlecaseLetter:
+				case UnicodeCategory.UppercaseLetter:
+				{
+					return false;
+				}
+				default:
+				{
+					return true;
+				}
 			}
 		}
 	}

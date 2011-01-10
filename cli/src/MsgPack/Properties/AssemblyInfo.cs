@@ -29,8 +29,13 @@ using System.Runtime.CompilerServices;
 // TODO: use script. Major = Informational-Major, Minor = Informational-Minor, Build = Epoc days from 2010/1/1, Revision = Epoc minutes from 00:00:00
 [assembly: AssemblyFileVersion( "0.1.0.0" )]
 
+[assembly: InternalsVisibleTo( "MsgPack.RPC" )]
+[assembly: InternalsVisibleTo( "MsgPack.RPC.Client" )]
+[assembly: InternalsVisibleTo( "MsgPack.RPC.Server" )]
+
 #if DEBUG || PERFORMANCE_TEST
-[assembly:InternalsVisibleTo("MsgPack.UnitTest")]
+[assembly: InternalsVisibleTo( "MsgPack.UnitTest" )]
+[assembly: InternalsVisibleTo( "MsgPack.RPC.UnitTest" )]
 #endif
 
 

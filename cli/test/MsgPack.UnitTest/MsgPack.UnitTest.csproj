@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BigEndianBinaryTest.cs" />
+    <Compile Include="CollectionAssertEx.cs" />
+    <Compile Include="Collections\GCChunkBufferTest.cs" />
     <Compile Include="DirectConversionTest.cs" />
     <Compile Include="DirectConversionTest.Scalar.cs">
       <AutoGen>True</AutoGen>

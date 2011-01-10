@@ -31,6 +31,15 @@ namespace MsgPack.Collections
 	public abstract class ChunkBuffer : IList<ArraySegment<byte>>, IDisposable
 	{
 		/// <summary>
+		///		Create new default <see cref="ChunkBuffer"/>.
+		/// </summary>
+		/// <returns>New default <see cref="ChunkBuffer"/> instance.</returns>
+		public static ChunkBuffer CreateDefault()
+		{
+			return new GCChunkBuffer( new List<ArraySegment<byte>>( 8 ), 0 );
+		}
+
+		/// <summary>
 		///		Get count of segments.
 		/// </summary>
 		/// <value>Count of segments.</value>
@@ -93,6 +102,12 @@ namespace MsgPack.Collections
 		protected virtual void Dispose( bool disposing ) { }
 
 		/// <summary>
+		///		Feed new segment.
+		/// </summary>
+		/// <param name="newSegment">New segment.</param>
+		public abstract void Feed( ArraySegment<byte> newSegment );
+
+		/// <summary>
 		///		Get segment at specified index.
 		/// </summary>
 		/// <param name="index">Index of segument to be gotten.</param>
@@ -139,7 +154,7 @@ namespace MsgPack.Collections
 				throw new ArgumentOutOfRangeException( "arrayIndex" );
 			}
 
-			if ( array.Length <= arrayIndex + this.Count )
+			if ( array.Length < arrayIndex + this.Count )
 			{
 				throw new ArgumentException( "Array too small.", "array" );
 			}
@@ -155,45 +170,6 @@ namespace MsgPack.Collections
 		/// <param name="array">Array to be copies.</param>
 		/// <param name="arrayIndex">Index to start copying in <paramref name="array"/>.</param>
 		protected abstract void CopyToCore( ArraySegment<byte>[] array, int arrayIndex );
-
-		/// <summary>
-		///		Allocate internal chunks to satisfy specified additinoal length.
-		/// </summary>
-		/// <param name="requiredAdditionalLength">Required length to be satisfied.</param>
-		/// <returns>New or existing buffer which satisfiues sepcified length, and contains this buffer's contents.</returns>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="requiredAdditionalLength"/> is less than 0 or equal to 0.</exception>
-		/// <exception cref="InsufficientMemoryException">Required length is too large.</exception>
-		public ChunkBuffer Reallocate( long requiredAdditionalLength )
-		{
-			if ( requiredAdditionalLength <= 0 )
-			{
-				throw new ArgumentOutOfRangeException( "requiredAdditionalLength", "'requiredAdditionalLength' is must be positive." );
-			}
-
-			return this.ReallocateCore( requiredAdditionalLength );
-		}
-
-		/// <summary>
-		///		Allocate internal chunks to satisfy specified additinoal length.
-		/// </summary>
-		/// <param name="requiredAdditionalLength">Required length to be satisfied. This value is positive.</param>
-		/// <returns>New or existing buffer which satisfiues sepcified length, and contains this buffer's contents.</returns>
-		/// <exception cref="InsufficientMemoryException">Required length is too large.</exception>
-		/// <remarks>
-		///		Derived class can:
-		///		<list type="bullet">
-		///			<item>Reuse this instance with increasing internal buffer.</item>
-		///			<item>Create new instance which has enough buffer size.</item>
-		///			<item>Returned instance has more capacity than required.</item>
-		///		</list>
-		///		Derived class must:
-		///		<list type="bullet">
-		///			<item>Return buffer which has enough capacity. When it is not satisifiable, throw InsufficientBufferException.</item>
-		///			<item>Ensure that returned buffer has identical contents to this instance.</item>
-		///			<item>Preserve Count and Offset of each segments are identical to previous state. Caller must be able to continue its process from next to last segment.</item>
-		///		</list>
-		/// </remarks>
-		protected abstract ChunkBuffer ReallocateCore( long requiredAdditionalLength );
 
 		/// <summary>
 		///		Get sub chunks which has specified offset and totalLength of this buffer.
@@ -244,7 +220,7 @@ namespace MsgPack.Collections
 		///		New <see cref="ChunkBuffer"/> which starts with <paramref name="newOffset"/> and its length is <paramref name="newTotalLength"/>.
 		///	</returns>
 		protected abstract ChunkBuffer SubChunksCore( long newOffset, long newTotalLength );
-		
+
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
 			return this.GetEnumerator();

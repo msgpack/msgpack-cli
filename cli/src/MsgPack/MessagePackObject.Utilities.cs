@@ -30,7 +30,6 @@ using Microsoft.CSharp.RuntimeBinder;
 
 namespace MsgPack
 {
-	// FIXME: Write Unit test!
 	partial struct MessagePackObject : ISerializable
 	{
 		#region -- Type Code Constants --
@@ -409,7 +408,7 @@ namespace MsgPack
 
 					var first = asMap.First();
 					var sb = new StringBuilder( "{" ).Append( first.Key.ToString() ).Append( " : " ).Append( first.Value.ToString() );
-					return asMap.Skip( 1 ).Aggregate( sb, ( buffer, item ) => buffer.Append( ", " ).Append( item.Key.ToString() ).Append( " : " ).Append( item.Value.ToString() ) ).Append( "{" ).ToString();
+					return asMap.Skip( 1 ).Aggregate( sb, ( buffer, item ) => buffer.Append( ", " ).Append( item.Key.ToString() ).Append( " : " ).Append( item.Value.ToString() ) ).Append( "}" ).ToString();
 				}
 			}
 
@@ -418,7 +417,14 @@ namespace MsgPack
 				if ( asBinary != null )
 				{
 					// TODO: big array support...
-					return BitConverter.ToString( asBinary );
+					try
+					{
+						return MessagePackConvert.DecodeStringStrict( asBinary );
+					}
+					catch ( ArgumentException )
+					{
+						return BitConverter.ToString( asBinary );
+					}
 				}
 			}
 
