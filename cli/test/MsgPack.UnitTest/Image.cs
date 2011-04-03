@@ -33,7 +33,7 @@ namespace MsgPack
 		public int height = 0;
 		public int size = 0;
 
-		public void PackToMessage( Packer pk )
+		public void PackToMessage( Packer pk, PackingOptions options )
 		{
 			pk.PackArrayHeader( 5 );
 			pk.PackString( uri );

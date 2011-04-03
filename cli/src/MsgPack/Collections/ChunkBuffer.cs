@@ -108,6 +108,20 @@ namespace MsgPack.Collections
 		public abstract void Feed( ArraySegment<byte> newSegment );
 
 		/// <summary>
+		///		Feed entire specified buffer as new segment.
+		/// </summary>
+		/// <param name="array">
+		///		Array which whole content will be new segment.
+		/// </param>
+		/// <remarks>
+		///		This method is equivalant to call <see cref="Feed(ArraySegment&lt;Byte&gt;)"/> with <see cref="ArraySegment&lt;T&gt;.ArraySegment(T[])"/>.
+		/// </remarks>
+		public void Feed( byte[] array )
+		{
+			this.Feed( new ArraySegment<byte>( array ) );
+		}
+
+		/// <summary>
 		///		Get segment at specified index.
 		/// </summary>
 		/// <param name="index">Index of segument to be gotten.</param>
@@ -171,55 +185,64 @@ namespace MsgPack.Collections
 		/// <param name="arrayIndex">Index to start copying in <paramref name="array"/>.</param>
 		protected abstract void CopyToCore( ArraySegment<byte>[] array, int arrayIndex );
 
+#warning TODO: impl
 		/// <summary>
-		///		Get sub chunks which has specified offset and totalLength of this buffer.
+		///		Clip out specified range from this buffer and exclude it from this buffer.
 		/// </summary>
-		/// <param name="newOffset">New offset of this buffer which returning buffer will have.</param>
-		/// <param name="newTotalLength">New total length of returning buffer.</param>
+		/// <param name="offset">Offset to start clip out.</param>
+		/// <param name="length">Length of clipping range.</param>
 		/// <returns>
-		///		New <see cref="ChunkBuffer"/> which starts with <paramref name="newOffset"/> and its length is <paramref name="newTotalLength"/>.
-		///	</returns>
+		///		<see cref="ChunkBuffer"/> which contains clipped range only.
+		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="newOffset"/> is less than 0, or not less than <see cref="TotalLength"/> of this buffer.
-		///		Or <paramref name="newTotalLength"/> is less than 0, or not less than <see cref="TotalLength"/> of this buffer minus <paramref name="newOffset"/>.
+		///		<paramref name="offset"/> is less than 0, or not less than <see cref="TotalLength"/> of this buffer.
+		///		Or <paramref name="length"/> is less than 0, or not less than <see cref="TotalLength"/> of this buffer minus <paramref name="offset"/>.
 		/// </exception>
-		public ChunkBuffer SubChunks( long newOffset, long newTotalLength )
+		/// <remarks>
+		///		This method does not modify underlying byte array, so this modifies segment definitions only.
+		///		You should consider lifecycle of the array to achieve efficient memory management.
+		///		The simplest way is allocating good size buffers (e.g. 64K bytes) and feed it to the chunks,
+		///		then clipping required range from the chunks and make remains are collected by GC 
+		///		(Note that '64K bytes' is platform specific, so you should specify appropriate size 
+		///		 which is best to runtime environment. For desktop CLR, 64K is reasonable because 
+		///		 it will not be allocated in LOH and is large enough to store medium size BLOBs/CLOBs.)
+		/// </remarks>
+		public ChunkBuffer Clip( long offset, long length )
 		{
-			if ( newOffset < 0 )
+			if ( offset < 0 )
 			{
 				throw new ArgumentOutOfRangeException( "offset", "'offset' must not be negative." );
 			}
 
-			if ( newOffset >= this.TotalLength )
+			if ( offset >= this.TotalLength )
 			{
 				throw new ArgumentOutOfRangeException( "offset", "'offset' must be less than TotalLength." );
 			}
 
-			if ( newTotalLength < 0 )
+			if ( length < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "count", "'count' must not be negative." );
+				throw new ArgumentOutOfRangeException( "length", "'length' must not be negative." );
 			}
 
-			if ( newTotalLength > ( this.TotalLength - newOffset ) )
+			if ( length > ( this.TotalLength - offset ) )
 			{
-				throw new ArgumentOutOfRangeException( "count", "'count' must be less than or equal ( TotalLength - offset )." );
+				throw new ArgumentOutOfRangeException( "length", "'length' must be less than or equal ( TotalLength - offset )." );
 			}
 
 			Contract.EndContractBlock();
 
-			return this.SubChunksCore( newOffset, newTotalLength );
-
+		 return this.ClipCore( offset, length );
 		}
 
 		/// <summary>
-		///		Get sub chunks which has specified offset and totalLength of this buffer.
+		///		Clip out specified range from this buffer and exclude it from this buffer.
 		/// </summary>
-		/// <param name="newOffset">New offset of this buffer which returning buffer will have.</param>
-		/// <param name="newTotalLength">New total length of returning buffer.</param>
+		/// <param name="offset">Offset to start clip out.</param>
+		/// <param name="length">Length of clipping range.</param>
 		/// <returns>
-		///		New <see cref="ChunkBuffer"/> which starts with <paramref name="newOffset"/> and its length is <paramref name="newTotalLength"/>.
-		///	</returns>
-		protected abstract ChunkBuffer SubChunksCore( long newOffset, long newTotalLength );
+		///		<see cref="ChunkBuffer"/> which contains clipped range only.
+		/// </returns>
+		protected abstract ChunkBuffer ClipCore( long offset, long length );
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{

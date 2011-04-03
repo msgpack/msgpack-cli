@@ -18,7 +18,7 @@
 //
 #endregion -- License Terms --
 
-//#define SKIP_LARGE_TEST
+#define SKIP_LARGE_TEST
 
 using System;
 using System.Collections.Generic;
@@ -219,7 +219,7 @@ namespace MsgPack
 			var emptyList = new List<int>();
 			{
 				var output = new MemoryStream();
-				Packer.Create( output ).PackList( emptyList );
+				Packer.Create( output ).Pack( emptyList );
 				MessagePackObject obj = UnpackOne( output );
 				Assert.IsFalse( obj.AsList().Any() );
 			}
@@ -235,7 +235,7 @@ namespace MsgPack
 					l.Add( j );
 				}
 				var output = new MemoryStream();
-				Packer.Create( output ).PackList( l );
+				Packer.Create( output ).Pack( l );
 				MessagePackObject obj = UnpackOne( output );
 				var list = obj.AsList();
 				l.SequenceEqual( list.Select( item => item.AsInt32() ) );
@@ -250,7 +250,7 @@ namespace MsgPack
 					l.Add( j.ToString() );
 				}
 				var output = new MemoryStream();
-				Packer.Create( output ).PackList( l );
+				Packer.Create( output ).Pack( l );
 				MessagePackObject obj = UnpackOne( output );
 				var list = obj.AsList();
 				Assert.IsTrue( list.All( item => item.IsTypeOf<string>().GetValueOrDefault() ) );
@@ -284,7 +284,7 @@ namespace MsgPack
 				};
 
 			var output = new MemoryStream();
-			Packer.Create( output ).PackList( heteroList );
+			Packer.Create( output ).Pack( heteroList );
 			MessagePackObject obj = UnpackOne( output );
 			bool isSuccess = false;
 			try
@@ -373,7 +373,7 @@ namespace MsgPack
 			var emptyDictionary = new Dictionary<int, int>();
 			{
 				var output = new MemoryStream();
-				Packer.Create( output ).PackDictionary( emptyDictionary );
+				Packer.Create( output ).Pack( emptyDictionary );
 				MessagePackObject obj = UnpackOne( output );
 				Assert.IsFalse( obj.AsDictionary().Any() );
 			}
@@ -389,7 +389,7 @@ namespace MsgPack
 					d[ j ] = j;
 				}
 				var output = new MemoryStream();
-				Packer.Create( output ).PackDictionary( d );
+				Packer.Create( output ).Pack( d );
 				MessagePackObject obj = UnpackOne( output );
 				var dictionary = obj.AsDictionary();
 				CollectionAssert.AreEquivalent( d, dictionary.Select( item => new KeyValuePair<int, int>( item.Key.AsInt32(), item.Value.AsInt32() ) ) );
@@ -404,7 +404,7 @@ namespace MsgPack
 					d[ j.ToString() ] = j;
 				}
 				var output = new MemoryStream();
-				Packer.Create( output ).PackDictionary( d );
+				Packer.Create( output ).Pack( d );
 				MessagePackObject obj = UnpackOne( output );
 				var dictionary = obj.AsDictionary();
 				CollectionAssert.AreEquivalent( d, dictionary.Select( item => new KeyValuePair<string, int>( item.Key.AsString(), item.Value.AsInt32() ) ).ToDictionary( item => item.Key, item => item.Value ) );

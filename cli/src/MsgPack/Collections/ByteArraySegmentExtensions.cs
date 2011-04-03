@@ -34,14 +34,14 @@ namespace MsgPack.Collections
 		/// <param name="source"><see cref="ArraySegment&lt;T&gt;">ArraySegment</see>&lt;<see cref="Byte"/>&gt; to be copied to.</param>
 		/// <param name="sourceOffsetInSegment">
 		///		Start offset of <paramref name="source"/> to be copied. 
-		///		Note that this value is offset from <paramref name="source"/>.<see cref="ArraySegment.Offset">Offset</see>.
+		///		Note that this value is offset from <paramref name="source"/>.<see cref="ArraySegment&lt;T&gt;.Offset">Offset</see>.
 		///	</param>
 		/// <param name="array">Array which cointains bytes to be copied from.</param>
 		/// <param name="offset">Offset to start copy in <paramref name="array"/>.</param>
 		/// <param name="count">Length of bytes to be copied.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		///		<paramref name="sourceOffsetInSegment"/> is negative.
-		///		Or <paramref name="sourceOffsetInSegment"/> is greator than or equal to <see cref="ArraySegment.Count">Count</see> of <paramref name="source"/>.
+		///		Or <paramref name="sourceOffsetInSegment"/> is greator than or equal to <see cref="ArraySegment&lt;T&gt;.Count">Count</see> of <paramref name="source"/>.
 		/// </exception>
 		public static void CopyFrom( this ArraySegment<byte> source, int sourceOffsetInSegment, byte[] array, int offset, int count )
 		{

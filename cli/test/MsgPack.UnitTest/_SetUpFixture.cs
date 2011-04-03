@@ -25,16 +25,13 @@ using System.Text;
 using NUnit.Framework;
 using System.Diagnostics.Contracts;
 
-namespace MsgPack
+[CLSCompliant( false )]
+[SetUpFixture]
+public sealed class _SetUpFixture
 {
-	[CLSCompliant( false )]
-	[SetUpFixture]
-	public sealed class _SetUpFixture
+	[SetUp]
+	public void SetupCurrentNamespaceTests()
 	{
-		[SetUp]
-		public void SetupCurrentNamespaceTests()
-		{
-			Contract.ContractFailed += ( sender, e ) => e.SetUnwind();
-		}
+		Contract.ContractFailed += ( sender, e ) => e.SetUnwind();
 	}
 }

@@ -34,6 +34,11 @@ namespace MsgPack
 		private static readonly Encoding _utf8BobBomStrict = new UTF8Encoding( false, true );
 		private static readonly Encoding _utf8NonBom = new UTF8Encoding( false, false );
 
+		internal static Encoding Utf8NonBom
+		{
+			get { return MessagePackConvert._utf8NonBom; }
+		} 
+
 		/// <summary>
 		///		Encode specified string by default encoding.
 		/// </summary>

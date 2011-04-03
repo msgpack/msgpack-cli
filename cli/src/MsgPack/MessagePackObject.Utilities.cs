@@ -30,6 +30,10 @@ using Microsoft.CSharp.RuntimeBinder;
 
 namespace MsgPack
 {
+#warning TODO: Recursive list serialization
+#warning TODO: Recursive dictionary serialization
+#warning TODO: Improve UTF-8 String
+#warning TODO: Improve Dictionary<MPO,MPO> usability
 	partial struct MessagePackObject : ISerializable
 	{
 		#region -- Type Code Constants --
@@ -637,8 +641,9 @@ namespace MsgPack
 		///		Pack this instance itself using specified <see cref="Packer"/>.
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/>.</param>
+		/// <param name="options">Packing options. This value can be null.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="packer"/> is null.</exception>
-		public void PackToMessage( Packer packer )
+		public void PackToMessage( Packer packer, PackingOptions options )
 		{
 			if ( packer == null )
 			{
@@ -656,7 +661,7 @@ namespace MsgPack
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
 			if ( typeCode == null )
 			{
-				packer.Pack( this._handleOrTypeCode );
+				packer.PackObject( this._handleOrTypeCode, options );
 				return;
 			}
 
@@ -664,28 +669,132 @@ namespace MsgPack
 			{
 				case TypeCode.Single:
 				{
-					packer.Pack( ( float )this );
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( ( float )this );
+					}
+					else
+					{
+						packer.PackStrict( ( float )this );
+					}
+
 					return;
 				}
 				case TypeCode.Double:
 				{
-					packer.Pack( ( double )this );
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( ( double )this );
+					}
+					else
+					{
+						packer.PackStrict( ( double )this );
+					}
+
 					return;
 				}
 				case TypeCode.SByte:
+				{
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( ( sbyte )this );
+					}
+					else
+					{
+						packer.PackStrict( ( sbyte )this );
+					}
+
+					return;
+				}
 				case TypeCode.Int16:
+				{
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( ( short )this );
+					}
+					else
+					{
+						packer.PackStrict( ( short )this );
+					}
+
+					return;
+				}
 				case TypeCode.Int32:
+				{
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( ( int )this );
+					}
+					else
+					{
+						packer.PackStrict( ( int )this );
+					}
+
+					return;
+				}
 				case TypeCode.Int64:
 				{
-					packer.Pack( ( long )this );
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( ( long )this );
+					}
+					else
+					{
+						packer.PackStrict( ( long )this );
+					}
+
 					return;
 				}
 				case TypeCode.Byte:
+				{
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( ( byte )this );
+					}
+					else
+					{
+						packer.PackStrict( ( byte )this );
+					}
+
+					return;
+				}
 				case TypeCode.UInt16:
+				{
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( ( ushort )this );
+					}
+					else
+					{
+						packer.PackStrict( ( ushort )this );
+					}
+
+					return;
+				}
 				case TypeCode.UInt32:
+				{
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( ( uint )this );
+					}
+					else
+					{
+						packer.PackStrict( ( uint )this );
+					}
+
+					return;
+				}
 				case TypeCode.UInt64:
 				{
-					packer.Pack( this._value );
+					if ( options == null || !options.IsStrict )
+					{
+						packer.Pack( this._value );
+					}
+					else
+					{
+						packer.PackStrict( this._value );
+					}
+
 					return;
 				}
 				case TypeCode.Boolean:
@@ -696,7 +805,7 @@ namespace MsgPack
 				default:
 				{
 					Contract.Assume( false, "Unexpected type code :" + typeCode.TypeCode );
-					packer.Pack( this._value );
+					packer.Pack( this._value, options );
 					return;
 				}
 			}

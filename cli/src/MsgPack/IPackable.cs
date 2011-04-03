@@ -31,7 +31,8 @@ namespace MsgPack
 		///		Pack this instance itself using specified <see cref="Packer"/>.
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/>.</param>
+		/// <param name="options">Packing options. This value can be null.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="packer"/> is null.</exception>
-		void PackToMessage( Packer packer );
+		void PackToMessage( Packer packer, PackingOptions options );
 	}
 }

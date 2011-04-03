@@ -65,7 +65,7 @@ namespace MsgPack.Collections
 				Assert.AreEqual( expected[ 3 ], actual[ 4 ] );
 			}
 		}
-		
+
 		[Test]
 		public void TestGetEnumerator()
 		{
@@ -108,70 +108,135 @@ namespace MsgPack.Collections
 		}
 
 		[Test]
-		public void TestSubChanks()
+		[Timeout( 5000 )]
+		public void TestClip()
 		{
-			Random random = new Random();
-
-			using ( var result = ChunkBuffer.CreateDefault() )
+			// Odd case (3 segments), head/tail are edge of segments.
+			TestClipCore( new[] { 5, 6, 7 }, 0, 18 ); // whole
+			TestClipCore( new[] { 4, 5, 6, 7, 8 }, 4, 18 );
+			// Odd case (3 segments), head is tail of the segment, tail is head of the segment.
+			TestClipCore( new[] { 4, 5, 6, 7, 8 }, 8, 8 );
+			// Odd case (3 segments), head/tail are midpoint of segments.
+			TestClipCore( new[] { 4, 5, 6, 7, 8 }, 6, 10 );
+			// Even case (2 segments), head/tail are edge of segments.
+			TestClipCore( new[] { 5, 6 }, 0, 11 ); // whole
+			TestClipCore( new[] { 4, 5, 6, 7 }, 4, 11 );
+			// Even case (2 segments), head is tail of the segment, tail is head of the segment.
+			TestClipCore( new[] { 4, 5, 6, 7 }, 8, 2 );
+			// Even case (2 segments), head/tail are midpoint of segments.
+			TestClipCore( new[] { 4, 5, 6, 7 }, 6, 6 );
+			// 1 segment, head/tail are edge of segment.
+			TestClipCore( new[] { 7 }, 0, 7 );
+			// 1 segment, head/tail are midpoint of segment.
+			TestClipCore( new[] { 7 }, 1, 5 );
+			// Clip head to mid.
+			TestClipCore( new[] { 4, 5, 6, 7, 8 }, 0, 10 );
+			// Clip mid to tail.
+			TestClipCore( new[] { 4, 5, 6, 7, 8 }, 20, 10 );
+			// Random test.
+			var random = new Random();
+			for ( int i = 0; i < 100; i++ )
 			{
-				Assert.NotNull( result );
-				Assert.AreEqual( 8, result.Sum( item => item.Count ) );
-				result.Fill( Enumerable.Range( 1, 8 ).Select( item => ( byte )( item % 256 ) ) );
-
-				using ( var subChunk = result.SubChunks( 1, 2 ) )
+				var segmentLengthes = new List<int>();
+				var segmentCount = random.Next( 99 ) + 1;
+				for ( int j = 0; j < segmentCount; j++ )
 				{
-					Assert.AreNotSame( result, subChunk );
-					Assert.AreEqual( 2, subChunk.Sum( item => item.Count ) );
-					CollectionAssertEx.StartsWith( Enumerable.Range( 1, 8 ).Select( item => ( byte )( item % 256 ) ).Skip( 1 ).Take( 2 ), subChunk.ReadAll() );
+					segmentLengthes.Add( random.Next( 99 ) + 1 );
 				}
-
-				using ( var subChunk = result.SubChunks( 1, 4 ) )
+				int offset = random.Next( segmentLengthes.Sum() );
+				int length = random.Next( segmentLengthes.Sum() - offset );
+				try { }
+				catch
 				{
-					Assert.AreNotSame( result, subChunk );
-					Assert.AreEqual( 4, subChunk.Sum( item => item.Count ) );
-					CollectionAssertEx.StartsWith( Enumerable.Range( 1, 8 ).Select( item => ( byte )( item % 256 ) ).Skip( 1 ).Take( 4 ), subChunk.ReadAll() );
-				}
+					Console.WriteLine( "SegmentLenghtes:" );
+					for ( int k = 0; k < segmentLengthes.Count; k++ )
+					{
+						Console.WriteLine( "\t[{0}]:{1}", k, segmentLengthes[ k ] );
+					}
 
-				using ( var subChunk = result.SubChunks( 2, 4 ) )
-				{
-					Assert.AreNotSame( result, subChunk );
-					Assert.AreEqual( 4, subChunk.Sum( item => item.Count ) );
-					CollectionAssertEx.StartsWith( Enumerable.Range( 1, 8 ).Select( item => ( byte )( item % 256 ) ).Skip( 2 ).Take( 4 ), subChunk.ReadAll() );
-				}
+					Console.WriteLine( "offset:{0}", offset );
+					Console.WriteLine( "length:{0}", length );
 
-				using ( var subChunk = result.SubChunks( 3, 4 ) )
-				{
-					Assert.AreNotSame( result, subChunk );
-					Assert.AreEqual( 4, subChunk.Sum( item => item.Count ) );
-					CollectionAssertEx.StartsWith( Enumerable.Range( 1, 8 ).Select( item => ( byte )( item % 256 ) ).Skip( 3 ).Take( 4 ), subChunk.ReadAll() );
+					throw;
 				}
 			}
+		}
 
-			for ( int i = 0; i < 10000; i++ )
+		private static void TestClipCore( IList<int> segmentLengthes, int offset, int length )
+		{
+			// one array pattern
 			{
-				int length = random.Next( 1, 256 );
-				using ( var result = ChunkBuffer.CreateDefault() )
+				var segments = new List<ArraySegment<byte>>( segmentLengthes.Count );
+				var underlying = Enumerable.Range( 0, segmentLengthes.Sum() ).Select( item => ( byte )( item % Byte.MaxValue ) ).ToArray();
+				int count = 0;
+				foreach ( var segmentLength in segmentLengthes )
 				{
-					Assert.NotNull( result );
-					Assert.AreEqual( length, result.Sum( item => item.Count ) );
-					result.Fill( Enumerable.Range( 1, length ).Select( item => ( byte )( item % 256 ) ) );
-					int offset = random.Next( length - 1 );
-					int count = random.Next( length - offset );
-					try
+					segments.Add( new ArraySegment<byte>( underlying, count, segmentLength ) );
+					count += segmentLength;
+				}
+
+				// Do test
+				TestClipCore( segmentLengthes, offset, length, segments );
+			}
+
+			// multi array pattern
+			{
+				var segments = new List<ArraySegment<byte>>( segmentLengthes.Count );
+				var underlyings = new List<byte[]>( segmentLengthes.Sum() / 8 + 1 );
+				int count = 0;
+				foreach ( var segmentLength in segmentLengthes )
+				{
+					for ( int i = 0; i < ( segmentLength / 8 ); i++ )
 					{
-						using ( var subChunk = result.SubChunks( offset, count ) )
-						{
-							Assert.AreNotSame( result, subChunk );
-							Assert.AreEqual( count, subChunk.Sum( item => item.Count ) );
-							CollectionAssertEx.StartsWith( Enumerable.Range( 1, length ).Select( item => ( byte )( item % 256 ) ).Skip( offset ).Take( count ), subChunk.ReadAll() );
-						}
+						var underlying = Enumerable.Range( count, 8 ).Select( item => ( byte )( item % Byte.MaxValue ) ).ToArray();
+						segments.Add( new ArraySegment<byte>( underlying, 0, 8 ) );
+						count += 8;
+						underlyings.Add( underlying );
 					}
-					catch
+
+					if ( segmentLength % 8 > 0 )
 					{
-						Console.Error.WriteLine( "{0} -> ({1},{2})", length, offset, count );
-						throw;
+						var underlying = Enumerable.Range( count, segmentLength % 8 ).Select( item => ( byte )( item % Byte.MaxValue ) ).ToArray();
+						segments.Add( new ArraySegment<byte>( underlying, 0, segmentLength % 8 ) );
+						count += segmentLength % 8;
+						underlyings.Add( underlying );
 					}
 				}
+
+				// Do test.
+				TestClipCore( segmentLengthes, offset, length, segments );
+			}
+		}
+
+		private static void TestClipCore( IList<int> segmentLengthes, int offset, int length, List<ArraySegment<byte>> segments )
+		{
+			var target = new GCChunkBuffer( segments, segmentLengthes.Sum() );
+			var actualClipped = target.Clip( offset, length ).ToArray();
+			var expectedClipped = Enumerable.Range( offset, length ).ToArray();
+			CollectionAssert.AreEquivalent( expectedClipped, actualClipped.ReadAll(), ToString( actualClipped.ReadAll() ) );
+			var actualRemains = target.ReadAll().ToArray();
+			Assert.AreEqual( segmentLengthes.Sum() - length, actualRemains.Length, ToString( actualRemains ) );
+
+			for ( int i = 0; i < offset; i++ )
+			{
+				Assert.AreEqual( ( byte )( i % Byte.MaxValue ), actualRemains[ i ], "[{0}] ([{1}])", i, ToString( actualRemains ) );
+			}
+
+			for ( int i = offset; i < segmentLengthes.Sum() - length; i++ )
+			{
+				Assert.AreEqual( ( byte )( ( i + length ) % Byte.MaxValue ), actualRemains[ i ], "[{0}] ([{1}])", i, ToString( actualRemains ) );
+			}
+		}
+
+		private static string ToString<T>( IEnumerable<T> source )
+		{
+			try
+			{
+				return "[" + source.Select( item => item.ToString() ).Aggregate( ( left, right ) => left + ", " + right ) + "]";
+			}
+			catch ( InvalidOperationException )
+			{
+				return "[]";
 			}
 		}
 	}

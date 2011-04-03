@@ -143,6 +143,7 @@ namespace MsgPack
 					Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsRawBinary ) != 0, this._contextValueHeader.ToString() );
 					Contract.Assert( this._scalarBuffer.BackingStore != null, this._scalarBuffer.ToString() );
 
+					// TODO: Bulk read
 					this._scalarBuffer = this._scalarBuffer.Feed( b );
 					if ( !this._scalarBuffer.IsFilled )
 					{

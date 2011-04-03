@@ -23,12 +23,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 
 namespace MsgPack.Collections
 {
+	/// <summary>
+	///		Simple <see cref="ChunkBuffer"/> implementation which relys on runtime GC, so it does not handle any memory management.
+	/// </summary>
 	internal sealed class GCChunkBuffer : ChunkBuffer
 	{
-		private readonly IList<ArraySegment<byte>> _chunks;
+		private readonly List<ArraySegment<byte>> _chunks;
 
 		public sealed override int Count
 		{
@@ -42,7 +46,7 @@ namespace MsgPack.Collections
 			get { return this._totalLength; }
 		}
 
-		public GCChunkBuffer( IList<ArraySegment<byte>> chunks, long initialTotalLength )
+		internal GCChunkBuffer( List<ArraySegment<byte>> chunks, long initialTotalLength )
 		{
 			Contract.Assume( chunks != null );
 			Contract.Assume( initialTotalLength >= 0 );
@@ -87,64 +91,134 @@ namespace MsgPack.Collections
 			this._chunks.CopyTo( array, arrayIndex );
 		}
 
-		protected sealed override ChunkBuffer SubChunksCore( long newOffset, long newTotalLength )
+		protected sealed override ChunkBuffer ClipCore( long offset, long length )
 		{
+			// Short-cut pass
+			if ( offset == 0L && length == this.TotalLength )
+			{
+				// Whole slice is required, so just return clone of this.
+				var clone = new GCChunkBuffer( new List<ArraySegment<byte>>( this._chunks ), this._totalLength );
+				this._chunks.Clear();
+				return clone;
+			}
+
 			int startSegmentIndex = -1;
 			int startOffsetInHeadSegment = -1;
 			int endSegmentIndex = -1;
 			int endOffsetInTailSegment = -1;
 
-			this.FindNewSegment( newOffset, newTotalLength, ref startSegmentIndex, ref startOffsetInHeadSegment, ref endSegmentIndex, ref endOffsetInTailSegment );
-			Contract.Assert( startSegmentIndex >= 0 );
-			Contract.Assert( startOffsetInHeadSegment >= 0 );
-			Contract.Assert( endSegmentIndex >= 0 );
-			Contract.Assert( endOffsetInTailSegment >= 0 );
+			this.FindNewSegment( offset, length, ref startSegmentIndex, ref startOffsetInHeadSegment, ref endSegmentIndex, ref endOffsetInTailSegment );
+			Contract.Assert( startSegmentIndex >= 0, "startSegmentIndex >= 0 : " + startSegmentIndex );
+			Contract.Assert( startOffsetInHeadSegment >= 0, "startOffsetInHeadSegment >= 0 ; " + startOffsetInHeadSegment );
+			Contract.Assert( endSegmentIndex >= 0, "endSegmentIndex >= 0 : " + endSegmentIndex );
+			Contract.Assert( endOffsetInTailSegment >= 0, "endOffsetInTailSegment >= 0 : " + endOffsetInTailSegment );
 
 			var newChunks = new List<ArraySegment<byte>>( endSegmentIndex - startSegmentIndex + 1 );
+			long newLength = 0;
 
-			if ( newChunks.Count == 1 )
+			if ( ( endSegmentIndex - startSegmentIndex + 1 ) == 1 )
 			{
 				var newItem =
 					new ArraySegment<byte>( this._chunks[ startSegmentIndex ].Array, startOffsetInHeadSegment, endOffsetInTailSegment - startOffsetInHeadSegment );
 				newChunks.Add( newItem );
-				return new GCChunkBuffer( newChunks, newItem.Count );
+				newLength = newItem.Count;
+			}
+			else
+			{
+				int index = 0;
+				foreach ( var newItem in this._chunks.Skip( startSegmentIndex ).Take( endSegmentIndex - startSegmentIndex + 1 ) )
+				{
+					if ( index == 0 )
+					{
+						// head
+						newChunks.Add( new ArraySegment<byte>( newItem.Array, newItem.Offset + startOffsetInHeadSegment, newItem.Count - startOffsetInHeadSegment ) );
+						newLength += newItem.Count - startOffsetInHeadSegment;
+					}
+					else if ( index == endSegmentIndex - startSegmentIndex )
+					{
+						// tail
+						if ( endOffsetInTailSegment > 0 ) // Avoid adding empty segment
+						{
+							newChunks.Add( new ArraySegment<byte>( newItem.Array, newItem.Offset, endOffsetInTailSegment ) );
+						}
+
+						newLength += endOffsetInTailSegment;
+					}
+					else
+					{
+						newChunks.Add( newItem );
+						newLength += newItem.Count;
+					}
+
+					index++;
+				}
 			}
 
-			long newLength = 0;
-			int index = 0;
-			foreach ( var newItem in this._chunks.Skip( startSegmentIndex ).Take( endSegmentIndex - startSegmentIndex + 1 ) )
+			// Remove clipped range
+			int startRemovalIndex = startSegmentIndex;
+			int removalSegmentCount = 0;
+
+			if ( startSegmentIndex < endSegmentIndex )
 			{
-				if ( index == 0 )
+				removalSegmentCount = endSegmentIndex - startSegmentIndex + 1;
+				if ( startOffsetInHeadSegment > 0 )
 				{
-					// head
-					newChunks.Add( new ArraySegment<byte>( newItem.Array, startOffsetInHeadSegment, newItem.Count - startOffsetInHeadSegment ) );
-					newLength += newItem.Count - startOffsetInHeadSegment;
+					// first clipped segment cannot be remove.
+					startRemovalIndex += 1;
+					removalSegmentCount -= 1;
 				}
-				else if ( index == endSegmentIndex - startSegmentIndex )
+
+				if ( endSegmentIndex == this._chunks.Count
+					|| endOffsetInTailSegment < this._chunks[ endSegmentIndex ].Count )
 				{
-					// tail
-					newChunks.Add( new ArraySegment<byte>( newItem.Array, newItem.Offset, endOffsetInTailSegment ) );
-					newLength += endOffsetInTailSegment;
+					removalSegmentCount -= 1;
 				}
-				else
+			}
+
+			if ( removalSegmentCount > 0 )
+			{
+				this._chunks.RemoveRange( startRemovalIndex, removalSegmentCount );
+			}
+
+			// Arrange start segment and tail segment.
+			if ( startSegmentIndex == endSegmentIndex )
+			{
+				// The segment must be devided.
+				var originalSegment = this._chunks[ startSegmentIndex ];
+				this._chunks[ startSegmentIndex ] = new ArraySegment<byte>( originalSegment.Array, originalSegment.Offset, startOffsetInHeadSegment );
+				var remaining = new ArraySegment<byte>( originalSegment.Array, originalSegment.Offset + endOffsetInTailSegment, originalSegment.Count - endOffsetInTailSegment );
+				// It is OK to append tail of list instead of insert next.
+				this._chunks.Add( remaining );
+			}
+			else
+			{
+				if ( startOffsetInHeadSegment > 0 )
 				{
-					newChunks.Add( newItem );
-					newLength += newItem.Count;
+					// New head is not current head
+					this._chunks[ startSegmentIndex ] = new ArraySegment<byte>( this._chunks[ startSegmentIndex ].Array, this._chunks[ startSegmentIndex ].Offset, startOffsetInHeadSegment );
+				}
+
+				int currentEndSegmentIndex = endSegmentIndex - removalSegmentCount;
+				if ( endSegmentIndex < this._chunks.Count
+					&& endOffsetInTailSegment < this._chunks[ currentEndSegmentIndex ].Count )
+				{
+					// New tail is not current tail
+					this._chunks[ currentEndSegmentIndex ] = new ArraySegment<byte>( this._chunks[ currentEndSegmentIndex ].Array, this._chunks[ currentEndSegmentIndex ].Offset + endOffsetInTailSegment, this._chunks[ currentEndSegmentIndex ].Count - endOffsetInTailSegment );
 				}
 			}
 
 			return new GCChunkBuffer( newChunks, newLength );
 		}
-
+		
 		private void FindNewSegment( long offset, long count, ref int startSegmentIndex, ref int startOffsetInHeadSegment, ref int endSegmentIndex, ref int endOffsetInTailSegment )
 		{
-			long position = 0;
+			long positionOfWhole = 0;
 			for ( int segmentIndex = 0; segmentIndex < this._chunks.Count; segmentIndex++ )
 			{
 				var segment = this._chunks[ segmentIndex ];
 				for ( int offsetInSegment = 0; offsetInSegment < segment.Count; offsetInSegment++ )
 				{
-					if ( position == offset )
+					if ( positionOfWhole == offset )
 					{
 						Contract.Assert( startSegmentIndex == -1 );
 						Contract.Assert( startOffsetInHeadSegment == -1 );
@@ -152,7 +226,7 @@ namespace MsgPack.Collections
 						startOffsetInHeadSegment = offsetInSegment;
 					}
 
-					if ( position == offset + count )
+					if ( positionOfWhole == offset + count )
 					{
 						Contract.Assert( endSegmentIndex == -1 );
 						Contract.Assert( endOffsetInTailSegment == -1 );
@@ -161,9 +235,15 @@ namespace MsgPack.Collections
 						return;
 					}
 
-					position++;
+					positionOfWhole++;
 				}
 			}
+
+			Contract.Assert( startSegmentIndex > -1 );
+			Contract.Assert( startOffsetInHeadSegment > -1 );
+			// set dummy
+			endSegmentIndex = this._chunks.Count;
+			endOffsetInTailSegment = 0;
 		}
 	}
 }

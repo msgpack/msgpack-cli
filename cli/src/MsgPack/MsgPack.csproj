@@ -85,6 +85,14 @@
     <Compile Include="MessagePackConvert.cs" />
     <Compile Include="MessagePackObject.Utilities.cs" />
     <Compile Include="MessageNotSupportedException.cs" />
+    <Compile Include="MessagePackRaw.cs" />
+    <Compile Include="Packer.Utilities.cs" />
+    <Compile Include="Packer.ValuePacker.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Packer.ValuePacker.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PackingOptions.cs" />
     <Compile Include="StreamingUnpacker.cs" />
     <Compile Include="MessagePackObject.cs">
       <AutoGen>True</AutoGen>
@@ -128,6 +136,10 @@
       <DependentUpon>Unpacker.Direct.tt</DependentUpon>
     </Compile>
     <Compile Include="UnpackException.cs" />
+    <None Include="Packer.ValuePacker.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Packer.ValuePacker.cs</LastGenOutput>
+    </None>
     <None Include="Unpacker.Direct.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Unpacker.Direct.cs</LastGenOutput>

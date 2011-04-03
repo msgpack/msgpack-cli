@@ -27,6 +27,8 @@ using System.Text;
 
 using MsgPack.Linq;
 
+// TODO: Remove magic numbers related to MsgPack spec.
+
 namespace MsgPack
 {
 	/// <summary>

@@ -36,11 +36,11 @@ namespace MsgPack.Collections
 		/// <param name="source">Original <see cref="ArraySegment&lt;T&gt;"/>.</param>
 		/// <param name="length">
 		///		Length of new sub-segment. 
-		///		This value must be lessor than <see cref="ArraySegment.Count">Count</see> of <paramref name="source"/>.
+		///		This value must be lessor than <see cref="ArraySegment&lt;T&gt;.Count">Count</see> of <paramref name="source"/>.
 		///	</param>
 		/// <returns>Sub-segment.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="length"/> is negative or grator than <see cref="ArraySegment.Count">Count</see> of <paramref name="source"/>.
+		///		<paramref name="length"/> is negative or grator than <see cref="ArraySegment&lt;T&gt;.Count">Count</see> of <paramref name="source"/>.
 		/// </exception>
 		public static ArraySegment<T> SubSegment<T>( this ArraySegment<T> source, int length )
 		{
@@ -61,7 +61,7 @@ namespace MsgPack.Collections
 		/// <param name="source"><see cref="ArraySegment&lt;T&gt;"/> to be devided.</param>
 		/// <param name="leastSize">
 		///		New length of <paramref name="least"/>.
-		///		This value must be lessor than <see cref="ArraySegment.Count">Count</see> of <paramref name="source"/>.
+		///		This value must be lessor than <see cref="ArraySegment&lt;T&gt;.Count">Count</see> of <paramref name="source"/>.
 		/// </param>
 		/// <param name="least">
 		///		Least sub-segment will be stored to this argument.
@@ -70,7 +70,7 @@ namespace MsgPack.Collections
 		///		Most sub-segment will be stored to this argument.
 		/// </param>
 		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="leastSize"/> is negative or grator than <see cref="ArraySegment.Count">Count</see> of <paramref name="source"/>.
+		///		<paramref name="leastSize"/> is negative or grator than <see cref="ArraySegment&lt;T&gt;.Count">Count</see> of <paramref name="source"/>.
 		/// </exception>
 		public static void Devide<T>( this ArraySegment<T> source, int leastSize, out ArraySegment<T> least, out ArraySegment<T> most )
 		{
@@ -90,10 +90,10 @@ namespace MsgPack.Collections
 		/// </summary>
 		/// <typeparam name="T">Type of item.</typeparam>
 		/// <param name="source"><see cref="ArraySegment&lt;T&gt;"/>.</param>
-		/// <param name="indexInSegment">Index. This value is offset from <see cref="ArraySegment.Offset">Offset</see> of <paramref name="source"/>.</param>
+		/// <param name="indexInSegment">Index. This value is offset from <see cref="ArraySegment&lt;T&gt;.Offset">Offset</see> of <paramref name="source"/>.</param>
 		/// <returns>Item at <paramref name="indexInSegment"/> of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="indexInSegment"/> is negative or grator than <see cref="ArraySegment.Count">Count</see> of <paramref name="source"/>.
+		///		<paramref name="indexInSegment"/> is negative or grator than <see cref="ArraySegment&lt;T&gt;.Count">Count</see> of <paramref name="source"/>.
 		/// </exception>
 		public static T Get<T>( this ArraySegment<T> source, int indexInSegment )
 		{
@@ -112,10 +112,10 @@ namespace MsgPack.Collections
 		/// </summary>
 		/// <typeparam name="T">Type of item.</typeparam>
 		/// <param name="source"><see cref="ArraySegment&lt;T&gt;"/>.</param>
-		/// <param name="indexInSegment">Index. This value is offset from <see cref="ArraySegment.Offset">Offset</see> of <paramref name="source"/>.</param>
+		/// <param name="indexInSegment">Index. This value is offset from <see cref="ArraySegment&lt;T&gt;.Offset">Offset</see> of <paramref name="source"/>.</param>
 		/// <param name="value">Value to be set.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="indexInSegment"/> is negative or grator than <see cref="ArraySegment.Count">Count</see> of <paramref name="source"/>.
+		///		<paramref name="indexInSegment"/> is negative or grator than <see cref="ArraySegment&lt;T&gt;.Count">Count</see> of <paramref name="source"/>.
 		/// </exception>
 		public static void Set<T>( this ArraySegment<T> source, int indexInSegment, T value )
 		{

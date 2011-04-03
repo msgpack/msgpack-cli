@@ -167,12 +167,10 @@ namespace MsgPack
 		[Test]
 		public void TestArray()
 		{
-			// TODO: Hetero genious arrays
-
 			var emptyList = new List<int>();
 			{
 				var output = new MemoryStream();
-				Packer.Create( output ).PackList( emptyList );
+				Packer.Create( output ).Pack( emptyList );
 				Assert.AreEqual( 0, Unpacking.UnpackArrayLength( new MemoryStream( output.ToArray() ) ) );
 				Assert.AreEqual( 0, Unpacking.UnpackArrayLength( output.ToArray() ).Value );
 			}
@@ -188,7 +186,7 @@ namespace MsgPack
 					l.Add( j );
 				}
 				var output = new MemoryStream();
-				Packer.Create( output ).PackList( l );
+				Packer.Create( output ).Pack( l );
 
 				Stream streamInput = new MemoryStream( output.ToArray() );
 				Assert.AreEqual( len, Unpacking.UnpackArrayLength( streamInput ) );
@@ -219,7 +217,7 @@ namespace MsgPack
 					l.Add( j.ToString() );
 				}
 				var output = new MemoryStream();
-				Packer.Create( output ).PackList( l );
+				Packer.Create( output ).Pack( l );
 
 				Stream streamInput = new MemoryStream( output.ToArray() );
 				Assert.AreEqual( len, Unpacking.UnpackArrayLength( streamInput ) );
@@ -247,7 +245,7 @@ namespace MsgPack
 			var emptyMap = new Dictionary<int, int>();
 			{
 				var output = new MemoryStream();
-				Packer.Create( output ).PackDictionary( emptyMap );
+				Packer.Create( output ).Pack( emptyMap );
 				Assert.AreEqual( 0, Unpacking.UnpackDictionaryCount( new MemoryStream( output.ToArray() ) ) );
 				Assert.AreEqual( 0, Unpacking.UnpackDictionaryCount( output.ToArray() ).Value );
 			}
@@ -263,7 +261,7 @@ namespace MsgPack
 					m[ j ] = j;
 				}
 				var output = new MemoryStream();
-				Packer.Create( output ).PackDictionary( m );
+				Packer.Create( output ).Pack( m );
 
 				Stream streamInput = new MemoryStream( output.ToArray() );
 				Assert.AreEqual( len, Unpacking.UnpackDictionaryCount( streamInput ) );
@@ -299,7 +297,7 @@ namespace MsgPack
 					m[ j.ToString() ] = j;
 				}
 				var output = new MemoryStream();
-				Packer.Create( output ).PackDictionary( m );
+				Packer.Create( output ).Pack( m );
 
 				Stream streamInput = new MemoryStream( output.ToArray() );
 				Assert.AreEqual( len, Unpacking.UnpackDictionaryCount( streamInput ) );

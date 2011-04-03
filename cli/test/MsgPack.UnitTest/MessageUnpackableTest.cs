@@ -41,7 +41,7 @@ namespace MsgPack
 			src.size = 4096000;
 
 			var buffer = new MemoryStream();
-			src.PackToMessage( Packer.Create( buffer ) );
+			src.PackToMessage( Packer.Create( buffer ), null );
 
 			Image dst = new Image();
 			buffer.Seek( 0L, SeekOrigin.Begin );

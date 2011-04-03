@@ -126,27 +126,49 @@ namespace MsgPack
 		/// <param name="value">A byte to be written.</param>
 		protected abstract void WriteByte( byte value );
 
-		private void StreamWrite<TItem>( IEnumerable<TItem> value, Action<IEnumerable<TItem>> writeBody )
+		private void StreamWrite<TItem>( IEnumerable<TItem> value, Action<IEnumerable<TItem>, PackingOptions> writeBody, PackingOptions options )
 		{
-			Contract.Assert( this.CanSeek );
-
-			var headerPosition = this.Position;
-			// Reserve length
-			this.SeekTo( 4L );
-			// Write body
-			writeBody( value );
-			var bodyLength = this.Position - headerPosition;
-			// Back to reserved length
-			this.SeekTo( -bodyLength );
-			unchecked
+			if ( this.CanSeek )
 			{
-				this.WriteByte( ( byte )( ( bodyLength >> 24 ) & 0xff ) );
-				this.WriteByte( ( byte )( ( bodyLength >> 16 ) & 0xff ) );
-				this.WriteByte( ( byte )( ( bodyLength >> 8 ) & 0xff ) );
-				this.WriteByte( ( byte )( bodyLength & 0xff ) );
+				var headerPosition = this.Position;
+				// Reserve length
+				this.SeekTo( 4L );
+				// Write body
+				writeBody( value, options );
+				var bodyLength = this.Position - headerPosition;
+				// Back to reserved length
+				this.SeekTo( -bodyLength );
+				this.SeekTo( -4L );
+				unchecked
+				{
+					this.WriteByte( ( byte )( ( bodyLength >> 24 ) & 0xff ) );
+					this.WriteByte( ( byte )( ( bodyLength >> 16 ) & 0xff ) );
+					this.WriteByte( ( byte )( ( bodyLength >> 8 ) & 0xff ) );
+					this.WriteByte( ( byte )( bodyLength & 0xff ) );
+				}
+				// Forward to body tail
+				this.SeekTo( bodyLength );
 			}
-			// Forward to body tail
-			this.SeekTo( bodyLength );
+			else
+			{
+				// Copying is better than forcing stream is seekable...
+				ICollection<TItem> asCollection = value as ICollection<TItem>;
+				if ( asCollection == null )
+				{
+					asCollection = value.ToArray();
+				}
+
+				var bodyLength = asCollection.Count;
+				unchecked
+				{
+					this.WriteByte( ( byte )( ( bodyLength >> 24 ) & 0xff ) );
+					this.WriteByte( ( byte )( ( bodyLength >> 16 ) & 0xff ) );
+					this.WriteByte( ( byte )( ( bodyLength >> 8 ) & 0xff ) );
+					this.WriteByte( ( byte )( bodyLength & 0xff ) );
+				}
+
+				writeBody( asCollection, options );
+			}
 		}
 
 		#region -- Int8 --
@@ -1079,7 +1101,7 @@ namespace MsgPack
 			{
 				// Header
 				this.WriteByte( 0xdb );
-				this.StreamWrite( value, items => this.PackRawBodyCore( items ) );
+				this.StreamWrite( value, ( items, _ ) => this.PackRawBodyCore( items ), null );
 			}
 		}
 
@@ -1251,7 +1273,6 @@ namespace MsgPack
 		#endregion -- String --
 
 		#region -- Enumerable --
-
 		/// <summary>
 		///		Pack specified collection to current stream with appropriate serialization.
 		/// </summary>
@@ -1259,6 +1280,18 @@ namespace MsgPack
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackItems<TItem>( IEnumerable<TItem> value )
+		{
+			return this.PackItems( value, null );
+		}
+
+		/// <summary>
+		///		Pack specified collection to current stream with appropriate serialization.
+		/// </summary>
+		/// <param name="value">Source collection.</param>
+		/// <param name="options">Packing options. This value can be null.</param>
+		/// <returns>This instance.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		public Packer PackItems<TItem>( IEnumerable<TItem> value, PackingOptions options )
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
@@ -1268,7 +1301,7 @@ namespace MsgPack
 				return this.PackNull();
 			}
 
-			this.PackArrayCore( value.Select( item => ( Object )item ), GetCount<TItem>( value ), this.PackObjectsCore );
+			this.PackArrayCore( value.Select( item => ( Object )item ), GetCount<TItem>( value ), this.PackObjectsCore, options );
 			return this;
 		}
 
@@ -1278,6 +1311,7 @@ namespace MsgPack
 		/// <param name="value">Source collection.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		[Obsolete( "Use Pack<T>(T) instead." )]
 		public Packer PackItems( IEnumerable<MessagePackObject> value )
 		{
 			this.VerifyNotDisposed();
@@ -1288,7 +1322,7 @@ namespace MsgPack
 				return this.PackNull();
 			}
 
-			this.PackArrayCore( value, GetCount( value ), this.PackObjectsCore );
+			this.PackArrayCore( value, GetCount( value ), this.PackObjectsCore, null );
 
 			return this;
 		}
@@ -1324,84 +1358,33 @@ namespace MsgPack
 			return count;
 		}
 
-		private void PackArrayCore<TItem>( IEnumerable<TItem> value, int? count, Action<IEnumerable<TItem>> packObjects )
+		private void PackArrayCore<TItem>( IEnumerable<TItem> value, int? count, Action<IEnumerable<TItem>, PackingOptions> packObjects, PackingOptions options )
 		{
 			if ( count != null )
 			{
 				this.PackArrayHeader( count.Value );
-				packObjects( value );
+				packObjects( value, options );
 			}
 			else
 			{
 				// array32 indicator
 				this.WriteByte( 0xdd );
-				this.StreamWrite( value, packObjects );
+				this.StreamWrite( value, packObjects, options );
 			}
 		}
 
-		private void PackObjectsCore( IEnumerable<MessagePackObject> value )
-		{
-			foreach ( var item in value )
-			{
-				// Dispacthed to Pack(IPackable);
-				this.Pack( item );
-			}
-		}
-
-		private void PackObjectsCore<TItem>( IEnumerable<TItem> value )
+		private void PackObjectsCore<TItem>( IEnumerable<TItem> value, PackingOptions options )
 		{
 			foreach ( var item in value )
 			{
 				// Dispacthed to Pack(Object);
-				this.Pack( ( Object )item );
+				this.Pack( item, options );
 			}
 		}
 
 		#endregion -- Enumerable --
 
 		#region -- List --
-
-		/// <summary>
-		///		Pack specified collection to current stream with appropriate serialization.
-		/// </summary>
-		/// <param name="value">Source collection.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public Packer PackList<TItem>( IList<TItem> value )
-		{
-			this.VerifyNotDisposed();
-			if ( value == null )
-			{
-				return this.PackNull();
-			}
-
-			this.PackArrayCore( value, value.Count, this.PackObjectsCore );
-			return this;
-		}
-
-		/// <summary>
-		///		Pack specified collection to current stream.
-		/// </summary>
-		/// <param name="value">Source collection.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public Packer PackList( IList<MessagePackObject> value )
-		{
-			this.VerifyNotDisposed();
-
-			if ( value == null )
-			{
-				return this.PackNull();
-			}
-
-			this.PackArrayHeader( value );
-			foreach ( var item in value )
-			{
-				this.Pack( item );
-			}
-
-			return this;
-		}
 
 		/// <summary>
 		///		Bookkeep collection count to be packed on current stream.
@@ -1426,44 +1409,6 @@ namespace MsgPack
 		#region -- IDictionary --
 
 		/// <summary>
-		///		Pack specified dictionary to current stream with appropriate serialization.
-		/// </summary>
-		/// <param name="value">Source collection.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public Packer PackDictionary<TKey, TValue>( IDictionary<TKey, TValue> value )
-		{
-			this.VerifyNotDisposed();
-
-			if ( value == null )
-			{
-				return this.PackNull();
-			}
-
-			this.PackMapCore( value, value.Count, this.PackObjectsCore );
-			return this;
-		}
-
-		/// <summary>
-		///		Pack specified dictionary to current stream.
-		/// </summary>
-		/// <param name="value">Source collection.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public Packer PackDictionary( IDictionary<MessagePackObject, MessagePackObject> value )
-		{
-			this.VerifyNotDisposed();
-
-			if ( value == null )
-			{
-				return this.PackNull();
-			}
-
-			this.PackMapCore( value, value.Count, this.PackObjectsCore );
-			return this;
-		}
-
-		/// <summary>
 		///		Bookkeep dictionary count to be packed on current stream.
 		/// </summary>
 		/// <param name="map">Dictionary count to be written.</param>
@@ -1481,71 +1426,48 @@ namespace MsgPack
 			}
 		}
 
-		private void PackMapCore<TKey, TValue>( IEnumerable<KeyValuePair<TKey, TValue>> value, int? count, Action<IEnumerable<KeyValuePair<TKey, TValue>>> packObjects )
+		private void PackMapCore<TKey, TValue>( IEnumerable<KeyValuePair<TKey, TValue>> value, int? count, Action<IEnumerable<KeyValuePair<TKey, TValue>>, PackingOptions> packObjects, PackingOptions options )
 		{
 			if ( count != null )
 			{
 				this.PackMapHeader( count.Value );
-				packObjects( value );
+				packObjects( value, options );
 			}
 			else
 			{
 				// array32 indicator
 				this.WriteByte( 0xdd );
-				this.StreamWrite( value, packObjects );
-			}
-		}
-
-		private void PackObjectsCore( IEnumerable<KeyValuePair<MessagePackObject, MessagePackObject>> value )
-		{
-			foreach ( var item in value )
-			{
-				// Dispacthed to Pack(IPackable);
-				this.Pack( item.Key );
-				this.Pack( item.Value );
-			}
-		}
-
-		private void PackObjectsCore<TKey, TValue>( IEnumerable<KeyValuePair<TKey, TValue>> value )
-		{
-			foreach ( var item in value )
-			{
-				// Dispacthed to Pack(Object);
-				this.Pack( ( Object )item.Key );
-				this.Pack( ( Object )item.Value );
+				this.StreamWrite( value, packObjects, options );
 			}
 		}
 
 		#endregion -- IDictionary --
 
-		// To avoid boxing, use "TPackable : IPackable" generic parameter instead of "IPackable".
-
 		/// <summary>
-		///		Pack specified <see cref="IPackable"/> object with special manner of it.
+		///		Pack specified object with appropriate manner.
 		/// </summary>
-		/// <typeparam name="TPackable"><see cref="IPackable"/> type.</typeparam>
-		/// <param name="packable"><see cref="IPackable"/> instance.></param>
+		/// <typeparam name="T">Type of value.</typeparam>
+		/// <param name="value">Value to pack.</param>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <returns>This instance.</returns>
-		/// <remarks>
-		///		This method give you 2 benefits:
-		///		<list type="number">
-		///			<item>You don't have to need actual type of packing object.</item>
-		///			<item>Avoid auto boxing since this method is generic method.</item>
-		///		</list>
-		/// </remarks>
-		public Packer Pack<TPackable>( TPackable packable )
-			where TPackable : IPackable
+		public Packer Pack<T>( T value )
+		{
+			return this.Pack( value, null );
+		}
+
+		/// <summary>
+		///		Pack specified object with appropriate manner.
+		/// </summary>
+		/// <typeparam name="T">Type of value.</typeparam>
+		/// <param name="value">Value to pack.</param>
+		/// <param name="options">Packing options. This value can be null.</param>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <returns>This instance.</returns>
+		public Packer Pack<T>( T value, PackingOptions options )
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-
-			if ( packable == null )
-			{
-				return this.PackNull();
-			}
-
-			packable.PackToMessage( this );
+			ValuePacker<T>.Instance.Pack( this, value, options );
 			return this;
 		}
 
@@ -1555,241 +1477,9 @@ namespace MsgPack
 		/// <param name="boxedValue">Boxed value.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="MessageTypeException">There is no approptiate MessagePack type to represent specified object.</exception>
-		public Packer Pack( object boxedValue )
+		public Packer PackObject( object boxedValue )
 		{
-			return this.Pack( boxedValue, ObjectPackingOptions.Recursive );
-		}
-
-		/// <summary>
-		///		Pack specified <see cref="Object"/> as apporipriate value.
-		/// </summary>
-		/// <param name="boxedValue">Boxed value.</param>
-		/// <param name="options">Serialization options.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="MessageTypeException">There is no approptiate MessagePack type to represent specified object.</exception>
-		public Packer Pack( object boxedValue, ObjectPackingOptions options )
-		{
-			if ( boxedValue == null )
-			{
-				return this.PackNull();
-			}
-			else if ( boxedValue is sbyte )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( sbyte )boxedValue )
-					: this.Pack( ( sbyte )boxedValue );
-			}
-			else if ( boxedValue is sbyte? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( sbyte? )boxedValue )
-					: this.Pack( ( sbyte? )boxedValue );
-			}
-			else if ( boxedValue is byte )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( byte )boxedValue )
-					: this.Pack( ( byte )boxedValue );
-			}
-			else if ( boxedValue is byte? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( byte? )boxedValue )
-					: this.Pack( ( byte? )boxedValue );
-			}
-			else if ( boxedValue is short )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( short )boxedValue )
-					: this.Pack( ( short )boxedValue );
-			}
-			else if ( boxedValue is short? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( short? )boxedValue )
-					: this.Pack( ( short? )boxedValue );
-			}
-			else if ( boxedValue is ushort )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( ushort )boxedValue )
-					: this.Pack( ( ushort )boxedValue );
-			}
-			else if ( boxedValue is ushort? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( ushort? )boxedValue )
-					: this.Pack( ( ushort? )boxedValue );
-			}
-			else if ( boxedValue is int )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( int )boxedValue )
-					: this.Pack( ( int )boxedValue );
-			}
-			else if ( boxedValue is int? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( int? )boxedValue )
-					: this.Pack( ( int? )boxedValue );
-			}
-			else if ( boxedValue is uint )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( uint )boxedValue )
-					: this.Pack( ( uint )boxedValue );
-			}
-			else if ( boxedValue is uint? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( uint? )boxedValue )
-					: this.Pack( ( uint? )boxedValue );
-			}
-			else if ( boxedValue is long )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( long )boxedValue )
-					: this.Pack( ( long )boxedValue );
-			}
-			else if ( boxedValue is long? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( long? )boxedValue )
-					: this.Pack( ( long? )boxedValue );
-			}
-			else if ( boxedValue is ulong )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( ulong )boxedValue )
-					: this.Pack( ( ulong )boxedValue );
-			}
-			else if ( boxedValue is ulong? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( ulong? )boxedValue )
-					: this.Pack( ( ulong? )boxedValue );
-			}
-			else if ( boxedValue is float )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( float )boxedValue )
-					: this.Pack( ( float )boxedValue );
-			}
-			else if ( boxedValue is float? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( float? )boxedValue )
-					: this.Pack( ( float? )boxedValue );
-			}
-			else if ( boxedValue is double )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( double )boxedValue )
-					: this.Pack( ( double )boxedValue );
-			}
-			else if ( boxedValue is double? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( double? )boxedValue )
-					: this.Pack( ( double? )boxedValue );
-			}
-			else if ( boxedValue is bool )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( bool )boxedValue )
-					: this.Pack( ( bool )boxedValue );
-			}
-			else if ( boxedValue is bool? )
-			{
-				return
-					options.Has( ObjectPackingOptions.Strict )
-					? this.PackStrict( ( bool? )boxedValue )
-					: this.Pack( ( bool? )boxedValue );
-			}
-			else if ( boxedValue is byte[] )
-			{
-				return this.PackRaw( ( byte[] )boxedValue );
-			}
-			else if ( boxedValue is string )
-			{
-				return this.PackString( ( string )boxedValue );
-			}
-			else if ( boxedValue is IEnumerable<byte> )
-			{
-				return this.PackRaw( ( IEnumerable<byte> )boxedValue );
-			}
-			else if ( boxedValue is IEnumerable<char> )
-			{
-				return this.PackString( ( IEnumerable<char> )boxedValue );
-			}
-			else if ( boxedValue is IEnumerable<MessagePackObject> )
-			{
-				return this.PackItems( ( IEnumerable<MessagePackObject> )boxedValue );
-			}
-			else if ( boxedValue is IDictionary<MessagePackObject, MessagePackObject> )
-			{
-				return this.PackDictionary( ( IDictionary<MessagePackObject, MessagePackObject> )boxedValue );
-			}
-
-			var asPackable = boxedValue as IPackable;
-			if ( asPackable != null )
-			{
-				return this.Pack( asPackable );
-			}
-
-			if ( options.Has( ObjectPackingOptions.Recursive ) )
-			{
-				var types = boxedValue.GetType().GetInterfaces();
-				var dictionaryType =
-					types
-					.Where( type => type.IsGenericType )
-					.Select( type => new KeyValuePair<Type, Type>( type, type.GetGenericTypeDefinition() ) )
-					.FirstOrDefault( tuple => tuple.Value == typeof( IDictionary<,> ) )
-					.Key;
-				if ( dictionaryType != null )
-				{
-					dynamic asDynamic = boxedValue;
-					// To dispatch Pack<TKey,TValue>(IDictionary<TKey,TValue>) effeciently, use dynamic infrastructure.
-					return this.Pack( asDynamic );
-				}
-
-				var listType =
-					types
-					.Where( type => type.IsGenericType )
-					.Select( type => new KeyValuePair<Type, Type>( type, type.GetGenericTypeDefinition() ) )
-					.FirstOrDefault( tuple => tuple.Value == typeof( IEnumerable<> ) )
-					.Key;
-
-				if ( listType != null )
-				{
-					dynamic asDynamic = boxedValue;
-					// To dispatch Pack<T>(IEnumerable<T>) effeciently, use dynamic infrastructure.
-					return this.Pack( asDynamic );
-				}
-			}
-
-			throw new MessageTypeException( "unknown object " + boxedValue.GetType() );
+			return this.PackObject( boxedValue, null );
 		}
 
 		/// <summary>
