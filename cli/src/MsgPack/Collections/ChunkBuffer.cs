@@ -36,7 +36,41 @@ namespace MsgPack.Collections
 		/// <returns>New default <see cref="ChunkBuffer"/> instance.</returns>
 		public static ChunkBuffer CreateDefault()
 		{
-			return new GCChunkBuffer( new List<ArraySegment<byte>>( 8 ), 0 );
+			return CreateDefault( 1 );
+		}
+
+		/// <summary>
+		///		Create new default <see cref="ChunkBuffer"/>.
+		/// </summary>
+		/// <returns>New default <see cref="ChunkBuffer"/> instance.</returns>
+		public static ChunkBuffer CreateDefault( int initialSegmentCount )
+		{
+			return CreateDefault( initialSegmentCount, 32 * 1024 );
+		}
+
+		/// <summary>
+		///		Create new default <see cref="ChunkBuffer"/>.
+		/// </summary>
+		/// <returns>New default <see cref="ChunkBuffer"/> instance.</returns>
+		public static ChunkBuffer CreateDefault( int initialSegmentCount, int segmentSize )
+		{
+			if ( initialSegmentCount < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "initialSegmentCount" );
+			}
+
+			if ( segmentSize <= 0 )
+			{
+				throw new ArgumentOutOfRangeException( "segmentSize" );
+			}
+
+			var initialSegments = new List<ArraySegment<byte>>( initialSegmentCount );
+			for ( int i = 0; i < initialSegmentCount; i++ )
+			{
+				initialSegments.Add( new ArraySegment<byte>( new byte[ segmentSize ] ) );
+			}
+
+			return new GCChunkBuffer( new List<ArraySegment<byte>>( 0 ), 0 );
 		}
 
 		/// <summary>
@@ -231,7 +265,7 @@ namespace MsgPack.Collections
 
 			Contract.EndContractBlock();
 
-		 return this.ClipCore( offset, length );
+			return this.ClipCore( offset, length );
 		}
 
 		/// <summary>

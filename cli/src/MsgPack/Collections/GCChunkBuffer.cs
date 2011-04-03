@@ -209,7 +209,7 @@ namespace MsgPack.Collections
 
 			return new GCChunkBuffer( newChunks, newLength );
 		}
-		
+
 		private void FindNewSegment( long offset, long count, ref int startSegmentIndex, ref int startOffsetInHeadSegment, ref int endSegmentIndex, ref int endOffsetInTailSegment )
 		{
 			long positionOfWhole = 0;
