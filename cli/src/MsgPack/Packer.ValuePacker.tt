@@ -84,35 +84,60 @@ namespace MsgPack
 			{
 				return this.PackNull();
 			}
-	
+			
+			var asPackable = boxedValue as IPackable;
+			if( asPackable != null )
+			{
+				asPackable.PackToMessage( this, options );
+				return this;
+			}		
 <#
 foreach( var __scalarType in __scalarTypes )
 {
 #>
 			if( boxedValue is <#= __scalarType #> )
 			{
-				return 
+<#
+	if( __scalarType == typeof( bool ) )
+	{
+#>
+				return this.Pack( ( <#= __scalarType #> )boxedValue );
+<#				
+	}
+	else
+	{
+#>
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( <#= __scalarType #> )boxedValue )
-					: this.Pack( ( <#= __scalarType #> )boxedValue );
+					? this.Pack( ( <#= __scalarType #> )boxedValue )
+					: this.PackStrict( ( <#= __scalarType #> )boxedValue );
+<#
+	}
+#>
 			}
 			
 			if( boxedValue is <#= __scalarType #>? )
 			{
-				return 
+<#
+	if( __scalarType == typeof( bool ) )
+	{
+#>
+				return this.Pack( ( <#= __scalarType #> )boxedValue );
+<#				
+	}
+	else
+	{
+#>				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( <#= __scalarType #>? )boxedValue )
-					: this.Pack( ( <#= __scalarType #>? )boxedValue );
+					? this.Pack( ( <#= __scalarType #>? )boxedValue )
+					: this.PackStrict( ( <#= __scalarType #>? )boxedValue );
+<#
+	}
+#>
 			}
 <#
 }
 #>
-			var asPackable = boxedValue as IPackable;
-			if( asPackable != null )
-			{
-				asPackable.PackToMessage( this, options );
-				return this;
-			}	
 			
 			var asByteArray = boxedValue as byte[];
 			if( asByteArray != null )
@@ -164,7 +189,11 @@ foreach( var __scalarType in __scalarTypes )
 			
 			private static ValuePacker<T> CreateInstance()
 			{
-				if( typeof( IPackable ).IsAssignableFrom( typeof( T ) ) )
+				if( typeof( T ) == typeof( MessagePackObject ) )
+				{
+					return Activator.CreateInstance( typeof( MessagePackObjectValuePacker ) ) as ValuePacker<T>;
+				}
+				else if( typeof( IPackable ).IsAssignableFrom( typeof( T ) ) )
 				{
 					return Activator.CreateInstance( typeof( PackableValuePacker<> ).MakeGenericType( typeof( T ) ) ) as ValuePacker<T>;
 				}
@@ -298,6 +327,15 @@ foreach( var __scalarType in __scalarTypes )
 <#
 }
 #>
+		private sealed class MessagePackObjectValuePacker : ValuePacker<MessagePackObject>
+		{
+			public MessagePackObjectValuePacker() { }
+			
+			public sealed override void Pack( Packer packer, MessagePackObject value, PackingOptions options )
+			{
+				value.PackToMessage( packer, options );
+			}
+		}
 
 		private sealed class PackableValuePacker<TPackable> : ValuePacker<TPackable>
 			where TPackable : IPackable
@@ -442,7 +480,7 @@ foreach( var __scalarType in __scalarTypes )
 					return;
 				}
 				
-				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "Cannot pack '{0}'.", typeof( T ) ) );
+				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "Cannot pack '{0}'({1} type).", value, value.GetType() ) );
 			}
 		}
 	}

@@ -37,7 +37,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="SByte"/> value without message size compression.
 		/// </summary>
@@ -57,7 +57,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="Byte"/> value without message size compression.
 		/// </summary>
@@ -76,7 +76,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="Int16"/> value without message size compression.
 		/// </summary>
@@ -96,7 +96,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="UInt16"/> value without message size compression.
 		/// </summary>
@@ -116,7 +116,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="Int32"/> value without message size compression.
 		/// </summary>
@@ -136,7 +136,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="UInt32"/> value without message size compression.
 		/// </summary>
@@ -156,7 +156,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="Int64"/> value without message size compression.
 		/// </summary>
@@ -176,7 +176,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="UInt64"/> value without message size compression.
 		/// </summary>
@@ -196,7 +196,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="Single"/> value without message size compression.
 		/// </summary>
@@ -215,7 +215,7 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
+
 		/// <summary>
 		///		Pack nullable <see cref="Double"/> value without message size compression.
 		/// </summary>
@@ -234,15 +234,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-	
-		/// <summary>
-		///		Pack nullable <see cref="Boolean"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		public Packer PackStrict( Boolean? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
+
 	}
 }

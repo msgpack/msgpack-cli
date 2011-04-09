@@ -41,178 +41,172 @@ namespace MsgPack
 			{
 				return this.PackNull();
 			}
-	
+			
+			var asPackable = boxedValue as IPackable;
+			if( asPackable != null )
+			{
+				asPackable.PackToMessage( this, options );
+				return this;
+			}		
 			if( boxedValue is System.Boolean )
 			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Boolean )boxedValue )
-					: this.Pack( ( System.Boolean )boxedValue );
+				return this.Pack( ( System.Boolean )boxedValue );
 			}
 			
 			if( boxedValue is System.Boolean? )
 			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Boolean? )boxedValue )
-					: this.Pack( ( System.Boolean? )boxedValue );
+				return this.Pack( ( System.Boolean )boxedValue );
 			}
 			if( boxedValue is System.SByte )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.SByte )boxedValue )
-					: this.Pack( ( System.SByte )boxedValue );
+					? this.Pack( ( System.SByte )boxedValue )
+					: this.PackStrict( ( System.SByte )boxedValue );
 			}
 			
 			if( boxedValue is System.SByte? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.SByte? )boxedValue )
-					: this.Pack( ( System.SByte? )boxedValue );
+					? this.Pack( ( System.SByte? )boxedValue )
+					: this.PackStrict( ( System.SByte? )boxedValue );
 			}
 			if( boxedValue is System.Int16 )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Int16 )boxedValue )
-					: this.Pack( ( System.Int16 )boxedValue );
+					? this.Pack( ( System.Int16 )boxedValue )
+					: this.PackStrict( ( System.Int16 )boxedValue );
 			}
 			
 			if( boxedValue is System.Int16? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Int16? )boxedValue )
-					: this.Pack( ( System.Int16? )boxedValue );
+					? this.Pack( ( System.Int16? )boxedValue )
+					: this.PackStrict( ( System.Int16? )boxedValue );
 			}
 			if( boxedValue is System.Int32 )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Int32 )boxedValue )
-					: this.Pack( ( System.Int32 )boxedValue );
+					? this.Pack( ( System.Int32 )boxedValue )
+					: this.PackStrict( ( System.Int32 )boxedValue );
 			}
 			
 			if( boxedValue is System.Int32? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Int32? )boxedValue )
-					: this.Pack( ( System.Int32? )boxedValue );
+					? this.Pack( ( System.Int32? )boxedValue )
+					: this.PackStrict( ( System.Int32? )boxedValue );
 			}
 			if( boxedValue is System.Int64 )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Int64 )boxedValue )
-					: this.Pack( ( System.Int64 )boxedValue );
+					? this.Pack( ( System.Int64 )boxedValue )
+					: this.PackStrict( ( System.Int64 )boxedValue );
 			}
 			
 			if( boxedValue is System.Int64? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Int64? )boxedValue )
-					: this.Pack( ( System.Int64? )boxedValue );
+					? this.Pack( ( System.Int64? )boxedValue )
+					: this.PackStrict( ( System.Int64? )boxedValue );
 			}
 			if( boxedValue is System.Byte )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Byte )boxedValue )
-					: this.Pack( ( System.Byte )boxedValue );
+					? this.Pack( ( System.Byte )boxedValue )
+					: this.PackStrict( ( System.Byte )boxedValue );
 			}
 			
 			if( boxedValue is System.Byte? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Byte? )boxedValue )
-					: this.Pack( ( System.Byte? )boxedValue );
+					? this.Pack( ( System.Byte? )boxedValue )
+					: this.PackStrict( ( System.Byte? )boxedValue );
 			}
 			if( boxedValue is System.UInt16 )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.UInt16 )boxedValue )
-					: this.Pack( ( System.UInt16 )boxedValue );
+					? this.Pack( ( System.UInt16 )boxedValue )
+					: this.PackStrict( ( System.UInt16 )boxedValue );
 			}
 			
 			if( boxedValue is System.UInt16? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.UInt16? )boxedValue )
-					: this.Pack( ( System.UInt16? )boxedValue );
+					? this.Pack( ( System.UInt16? )boxedValue )
+					: this.PackStrict( ( System.UInt16? )boxedValue );
 			}
 			if( boxedValue is System.UInt32 )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.UInt32 )boxedValue )
-					: this.Pack( ( System.UInt32 )boxedValue );
+					? this.Pack( ( System.UInt32 )boxedValue )
+					: this.PackStrict( ( System.UInt32 )boxedValue );
 			}
 			
 			if( boxedValue is System.UInt32? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.UInt32? )boxedValue )
-					: this.Pack( ( System.UInt32? )boxedValue );
+					? this.Pack( ( System.UInt32? )boxedValue )
+					: this.PackStrict( ( System.UInt32? )boxedValue );
 			}
 			if( boxedValue is System.UInt64 )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.UInt64 )boxedValue )
-					: this.Pack( ( System.UInt64 )boxedValue );
+					? this.Pack( ( System.UInt64 )boxedValue )
+					: this.PackStrict( ( System.UInt64 )boxedValue );
 			}
 			
 			if( boxedValue is System.UInt64? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.UInt64? )boxedValue )
-					: this.Pack( ( System.UInt64? )boxedValue );
+					? this.Pack( ( System.UInt64? )boxedValue )
+					: this.PackStrict( ( System.UInt64? )boxedValue );
 			}
 			if( boxedValue is System.Single )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Single )boxedValue )
-					: this.Pack( ( System.Single )boxedValue );
+					? this.Pack( ( System.Single )boxedValue )
+					: this.PackStrict( ( System.Single )boxedValue );
 			}
 			
 			if( boxedValue is System.Single? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Single? )boxedValue )
-					: this.Pack( ( System.Single? )boxedValue );
+					? this.Pack( ( System.Single? )boxedValue )
+					: this.PackStrict( ( System.Single? )boxedValue );
 			}
 			if( boxedValue is System.Double )
 			{
-				return 
+				return
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Double )boxedValue )
-					: this.Pack( ( System.Double )boxedValue );
+					? this.Pack( ( System.Double )boxedValue )
+					: this.PackStrict( ( System.Double )boxedValue );
 			}
 			
 			if( boxedValue is System.Double? )
 			{
 				return 
 					( options == null || !options.IsStrict )
-					? this.PackStrict( ( System.Double? )boxedValue )
-					: this.Pack( ( System.Double? )boxedValue );
+					? this.Pack( ( System.Double? )boxedValue )
+					: this.PackStrict( ( System.Double? )boxedValue );
 			}
-			var asPackable = boxedValue as IPackable;
-			if( asPackable != null )
-			{
-				asPackable.PackToMessage( this, options );
-				return this;
-			}	
 			
 			var asByteArray = boxedValue as byte[];
 			if( asByteArray != null )
@@ -264,7 +258,11 @@ namespace MsgPack
 			
 			private static ValuePacker<T> CreateInstance()
 			{
-				if( typeof( IPackable ).IsAssignableFrom( typeof( T ) ) )
+				if( typeof( T ) == typeof( MessagePackObject ) )
+				{
+					return Activator.CreateInstance( typeof( MessagePackObjectValuePacker ) ) as ValuePacker<T>;
+				}
+				else if( typeof( IPackable ).IsAssignableFrom( typeof( T ) ) )
 				{
 					return Activator.CreateInstance( typeof( PackableValuePacker<> ).MakeGenericType( typeof( T ) ) ) as ValuePacker<T>;
 				}
@@ -664,6 +662,15 @@ namespace MsgPack
 				packer.Pack( value );
 			}
 		}
+		private sealed class MessagePackObjectValuePacker : ValuePacker<MessagePackObject>
+		{
+			public MessagePackObjectValuePacker() { }
+			
+			public sealed override void Pack( Packer packer, MessagePackObject value, PackingOptions options )
+			{
+				value.PackToMessage( packer, options );
+			}
+		}
 
 		private sealed class PackableValuePacker<TPackable> : ValuePacker<TPackable>
 			where TPackable : IPackable
@@ -808,7 +815,7 @@ namespace MsgPack
 					return;
 				}
 				
-				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "Cannot pack '{0}'.", typeof( T ) ) );
+				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "Cannot pack '{0}'({1} type).", value, value.GetType() ) );
 			}
 		}
 	}

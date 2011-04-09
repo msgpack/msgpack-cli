@@ -31,6 +31,11 @@ namespace MsgPack.Collections
 	public abstract class ChunkBuffer : IList<ArraySegment<byte>>, IDisposable
 	{
 		/// <summary>
+		///		Default size of segments.
+		/// </summary>
+		public static readonly int DefaultSegmentSize = 32 * 1024;
+		
+		/// <summary>
 		///		Create new default <see cref="ChunkBuffer"/>.
 		/// </summary>
 		/// <returns>New default <see cref="ChunkBuffer"/> instance.</returns>
@@ -45,7 +50,7 @@ namespace MsgPack.Collections
 		/// <returns>New default <see cref="ChunkBuffer"/> instance.</returns>
 		public static ChunkBuffer CreateDefault( int initialSegmentCount )
 		{
-			return CreateDefault( initialSegmentCount, 32 * 1024 );
+			return CreateDefault( initialSegmentCount, DefaultSegmentSize );
 		}
 
 		/// <summary>
@@ -181,6 +186,11 @@ namespace MsgPack.Collections
 		/// </summary>
 		/// <returns><see cref="IEnumerator&lt;T&gt;"/> to enumerate segments.</returns>
 		public abstract IEnumerator<ArraySegment<byte>> GetEnumerator();
+
+		/// <summary>
+		///		Reset internal state.
+		/// </summary>
+		public abstract void Reset();
 
 		/// <summary>
 		///		Copy buffer contents to specified array.

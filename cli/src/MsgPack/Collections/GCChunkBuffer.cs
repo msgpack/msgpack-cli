@@ -71,6 +71,12 @@ namespace MsgPack.Collections
 			this._totalLength += newSegment.Count;
 		}
 
+		public sealed override void Reset()
+		{
+			this._chunks.Clear();
+			this._totalLength = 0;
+		}
+
 		public sealed override bool Contains( ArraySegment<byte> item )
 		{
 			return this._chunks.Contains( item );

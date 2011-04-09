@@ -79,7 +79,7 @@ namespace MsgPack
 
 			foreach ( var b in source )
 			{
-				var result = this.TransitStage( b );
+				var result = this.TransitStage( b, source as ISegmentLengthRecognizeable ?? NullSegmentLengthRecognizeable.Instance );
 				if ( result != null )
 				{
 					if ( this._collectionState.IsEmpty )
@@ -99,11 +99,12 @@ namespace MsgPack
 		///		Process state machine transition with required operation.
 		/// </summary>
 		/// <param name="b">Byte which was supplied.</param>
+		/// <param name="source"><see cref="ISegmentLengthRecognizeable"/> to be notified.</param>
 		/// <returns>
 		///		If root or context collection is fully unpacked, then it.
 		///		Otherwise null.
 		/// </returns>
-		private MessagePackObject? TransitStage( byte b )
+		private MessagePackObject? TransitStage( byte b, ISegmentLengthRecognizeable source )
 		{
 			switch ( this._stage )
 			{
@@ -117,14 +118,20 @@ namespace MsgPack
 					}
 
 					// new collection
+
 					if ( this._scalarBuffer.AsUInt32() == 0 )
 					{
+						// empty collection
 						return this.AddToContextCollection( CreateEmptyCollection( this._contextValueHeader ) );
 					}
-
-					this._collectionState.NewContextCollection( this._contextValueHeader, this._scalarBuffer.AsUInt32() );
-					this.TransitToUnpackContextCollection();
-					return null;
+					else
+					{
+						this._collectionState.NewContextCollection( this._contextValueHeader, this._scalarBuffer.AsUInt32() );
+						// Collection length might be ( 5 byte ) * ( items count )
+						source.NotifySegmentLength( this._scalarBuffer.AsUInt32() * sizeof( int ) );
+						this.TransitToUnpackContextCollection();
+						return null;
+					}
 				}
 				case Stage.UnpackRawLength:
 				{
@@ -135,7 +142,7 @@ namespace MsgPack
 						return null;
 					}
 
-					this.TransitToUnpackRawBytes();
+					this.TransitToUnpackRawBytes(source);
 					return null;
 				}
 				case Stage.UnpackRawBytes:
@@ -170,7 +177,7 @@ namespace MsgPack
 				}
 				default:
 				{
-					return this.UnpackHeaderAndFixedValue( b );
+					return this.UnpackHeaderAndFixedValue( b, source );
 				}
 			}
 		}
@@ -205,7 +212,8 @@ namespace MsgPack
 		/// <summary>
 		///		Transit current stage to <see cref="Stage.UnpackRawBytes"/> with cleanuping states.
 		/// </summary>
-		private void TransitToUnpackRawBytes()
+		/// <param name="source"><see cref="ISegmentLengthRecognizeable"/> to be notified.</param>
+		private void TransitToUnpackRawBytes( ISegmentLengthRecognizeable source )
 		{
 			this._stage = Stage.UnpackRawBytes;
 			if ( this._contextValueHeader.ValueOrLength == 0 )
@@ -215,6 +223,7 @@ namespace MsgPack
 			}
 
 			// Allocate buffer to store raw binaries.
+			source.NotifySegmentLength( this._contextValueHeader.ValueOrLength );
 			this._scalarBuffer = new BytesBuffer( this._contextValueHeader.ValueOrLength );
 		}
 
@@ -252,11 +261,12 @@ namespace MsgPack
 		///		This method update instance state with retrieved header.
 		/// </summary>
 		/// <param name="b">Byte which must be header value.</param>
+		/// <param name="source"><see cref="ISegmentLengthRecognizeable"/> to be notified.</param>
 		/// <returns>
 		///		if value is determined only header then unpacked value,
 		///		otherwise null.
 		/// </returns>
-		private MessagePackObject? UnpackHeaderAndFixedValue( byte b )
+		private MessagePackObject? UnpackHeaderAndFixedValue( byte b, ISegmentLengthRecognizeable source )
 		{
 			Contract.Assert( this._stage == Stage.Root || this._stage == Stage.UnpackContextCollection, this._stage.ToString() );
 			Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
@@ -289,6 +299,7 @@ namespace MsgPack
 						return this.AddToContextCollection( CreateEmptyCollection( this._contextValueHeader ) );
 					}
 
+					source.NotifySegmentLength( this._contextValueHeader.ValueOrLength );
 					this._collectionState.NewContextCollection( this._contextValueHeader, this._contextValueHeader.ValueOrLength );
 					this.TransitToUnpackContextCollection();
 					// Try to get items.
@@ -302,7 +313,7 @@ namespace MsgPack
 					}
 
 					this._scalarBuffer = new BytesBuffer( 1 ).Feed( unchecked( ( byte )this._contextValueHeader.ValueOrLength ) );
-					this.TransitToUnpackRawBytes();
+					this.TransitToUnpackRawBytes( source );
 					// Try to get body.
 					return null;
 				}
@@ -1114,5 +1125,23 @@ namespace MsgPack
 				}
 			}
 		}
+
+		/// <summary>
+		///		Null object for <see cref="ISegmentLengthRecognizeable"/>.
+		/// </summary>
+		private sealed class NullSegmentLengthRecognizeable : ISegmentLengthRecognizeable
+		{
+			public static readonly NullSegmentLengthRecognizeable Instance = new NullSegmentLengthRecognizeable();
+
+			private NullSegmentLengthRecognizeable()
+			{			
+			}
+
+			public void NotifySegmentLength( long lengthFromCurrent )
+			{
+				// nop
+			}
+		}
+
 	}
 }

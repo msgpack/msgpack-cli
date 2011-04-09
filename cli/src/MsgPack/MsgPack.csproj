@@ -78,6 +78,7 @@
     <Compile Include="IPackable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ISegmentLengthRecognizeable.cs" />
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>

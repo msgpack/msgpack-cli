@@ -1378,7 +1378,7 @@ namespace MsgPack
 			foreach ( var item in value )
 			{
 				// Dispacthed to Pack(Object);
-				this.Pack( item, options );
+				this.PackObject( item, options );
 			}
 		}
 
