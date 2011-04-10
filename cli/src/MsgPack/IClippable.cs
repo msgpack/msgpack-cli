@@ -19,18 +19,25 @@
 #endregion -- License Terms --
 
 using System;
-
+using System.Collections.Generic;
 namespace MsgPack.Collections
 {
 	/// <summary>
-	///		Utility for array.
+	///		Define interface which can clip segment of items.
 	/// </summary>
-	/// <typeparam name="T">Type of array element.</typeparam>
-	internal static class Arrays<T>
+	public interface IClippable<T>
 	{
 		/// <summary>
-		///		Empty array of <typeparamref name="T"/>
+		///		Clip out specified range from this collection.
 		/// </summary>
-		public static readonly T[] Empty = new T[ 0 ];
+		/// <param name="offset">Start offset of items to be clipped.</param>
+		/// <param name="length">Length of clipped.</param>
+		/// <returns>Clipped items. These items no longer belong to this collection.</returns>
+		/// <remarks>
+		///		The contract of this method does not specify that whether returning collection is read only,
+		///		or it is fixed size (such as aray).
+		///		It depend on implementing type.
+		/// </remarks>
+		IList<T> Clip( long offset, long length );
 	}
 }

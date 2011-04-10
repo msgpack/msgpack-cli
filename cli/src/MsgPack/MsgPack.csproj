@@ -66,12 +66,7 @@
     </Compile>
     <Compile Include="BigEndianBinary.cs" />
     <Compile Include="Binary.cs" />
-    <Compile Include="Collections\ArraySegmentExtensions.cs" />
-    <Compile Include="Collections\ArraySegmentsExtensions.cs" />
-    <Compile Include="Collections\Arrays`1.cs" />
-    <Compile Include="Collections\ByteArraySegmentExtensions.cs" />
-    <Compile Include="Collections\ChunkBuffer.cs" />
-    <Compile Include="Collections\GCChunkBuffer.cs" />
+    <Compile Include="IClippable.cs" />
     <Compile Include="Float32Bits.cs" />
     <Compile Include="Float64Bits.cs" />
     <Compile Include="InvalidMessagePackStreamException.cs" />
@@ -86,7 +81,6 @@
     <Compile Include="MessagePackConvert.cs" />
     <Compile Include="MessagePackObject.Utilities.cs" />
     <Compile Include="MessageNotSupportedException.cs" />
-    <Compile Include="MessagePackRaw.cs" />
     <Compile Include="Packer.Utilities.cs" />
     <Compile Include="Packer.ValuePacker.cs">
       <AutoGen>True</AutoGen>
