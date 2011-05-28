@@ -9,6 +9,9 @@ cdef extern from "Python.h":
 
 from libc.stdlib cimport *
 from libc.string cimport *
+import gc
+_gc_disable = gc.disable
+_gc_enable = gc.enable
 
 cdef extern from "pack.h":
     struct msgpack_packer:
@@ -41,11 +44,13 @@ cdef class Packer(object):
         astream.write(packer.pack(b))
     """
     cdef msgpack_packer pk
-    cdef object default
+    cdef object _default
 
     def __cinit__(self):
         cdef int buf_size = 1024*1024
         self.pk.buf = <char*> malloc(buf_size);
+        if self.pk.buf == NULL:
+            raise MemoryError("Unable to allocate internal buffer.")
         self.pk.buf_size = buf_size
         self.pk.length = 0
 
@@ -53,13 +58,12 @@ cdef class Packer(object):
         if default is not None:
             if not PyCallable_Check(default):
                 raise TypeError("default must be a callable.")
-        self.default = default
+        self._default = default
 
     def __dealloc__(self):
         free(self.pk.buf);
 
-    cdef int _pack(self, object o, int nest_limit=DEFAULT_RECURSE_LIMIT,
-                   default=None) except -1:
+    cdef int _pack(self, object o, int nest_limit=DEFAULT_RECURSE_LIMIT) except -1:
         cdef long long llval
         cdef unsigned long long ullval
         cdef long longval
@@ -73,7 +77,6 @@ cdef class Packer(object):
 
         if o is None:
             ret = msgpack_pack_nil(&self.pk)
-            #elif PyBool_Check(o):
         elif isinstance(o, bool):
             if o:
                 ret = msgpack_pack_true(&self.pk)
@@ -108,26 +111,26 @@ cdef class Packer(object):
             ret = msgpack_pack_map(&self.pk, len(d))
             if ret == 0:
                 for k,v in d.items():
-                    ret = self._pack(k, nest_limit-1, default)
+                    ret = self._pack(k, nest_limit-1)
                     if ret != 0: break
-                    ret = self._pack(v, nest_limit-1, default)
+                    ret = self._pack(v, nest_limit-1)
                     if ret != 0: break
         elif PySequence_Check(o):
             ret = msgpack_pack_array(&self.pk, len(o))
             if ret == 0:
                 for v in o:
-                    ret = self._pack(v, nest_limit-1, default)
+                    ret = self._pack(v, nest_limit-1)
                     if ret != 0: break
-        elif default is not None:
-            o = self.default(o)
-            ret = self._pack(o, nest_limit)
+        elif self._default:
+            o = self._default(o)
+            ret = self._pack(o, nest_limit-1)
         else:
             raise TypeError("can't serialize %r" % (o,))
         return ret
 
     def pack(self, object obj):
         cdef int ret
-        ret = self._pack(obj, DEFAULT_RECURSE_LIMIT, self.default)
+        ret = self._pack(obj, DEFAULT_RECURSE_LIMIT)
         if ret:
             raise TypeError
         buf = PyBytes_FromStringAndSize(self.pk.buf, self.pk.length)
@@ -145,7 +148,7 @@ def packb(object o, default=None):
     packer = Packer(default=default)
     return packer.pack(o)
 
-packs = packb
+dumps = packs = packb
 
 cdef extern from "unpack.h":
     ctypedef struct msgpack_user:
@@ -166,7 +169,7 @@ cdef extern from "unpack.h":
     object template_data(template_context* ctx)
 
 
-def unpackb(object packed, object object_hook=None, object list_hook=None):
+def unpackb(object packed, object object_hook=None, object list_hook=None, bint use_list=0):
     """Unpack packed_bytes to object. Returns an unpacked object."""
     cdef template_context ctx
     cdef size_t off = 0
@@ -177,7 +180,7 @@ def unpackb(object packed, object object_hook=None, object list_hook=None):
     PyObject_AsReadBuffer(packed, <const_void_ptr*>&buf, &buf_len)
 
     template_init(&ctx)
-    ctx.user.use_list = 0
+    ctx.user.use_list = use_list
     ctx.user.object_hook = ctx.user.list_hook = NULL
     if object_hook is not None:
         if not PyCallable_Check(object_hook):
@@ -187,30 +190,20 @@ def unpackb(object packed, object object_hook=None, object list_hook=None):
         if not PyCallable_Check(list_hook):
             raise TypeError("list_hook must be a callable.")
         ctx.user.list_hook = <PyObject*>list_hook
+    _gc_disable()
     ret = template_execute(&ctx, buf, buf_len, &off)
+    _gc_enable()
     if ret == 1:
         return template_data(&ctx)
     else:
         return None
 
-unpacks = unpackb
+loads = unpacks = unpackb
 
-def unpack(object stream, object object_hook=None, object list_hook=None):
+def unpack(object stream, object object_hook=None, object list_hook=None, bint use_list=0):
     """unpack an object from stream."""
-    return unpackb(stream.read(),
+    return unpackb(stream.read(), use_list=use_list,
                    object_hook=object_hook, list_hook=list_hook)
-
-cdef class UnpackIterator(object):
-    cdef object unpacker
-
-    def __init__(self, unpacker):
-        self.unpacker = unpacker
-
-    def __next__(self):
-        return self.unpacker.unpack()
-
-    def __iter__(self):
-        return self
 
 cdef class Unpacker(object):
     """Unpacker(read_size=1024*1024)
@@ -230,7 +223,8 @@ cdef class Unpacker(object):
     cdef char* buf
     cdef size_t buf_size, buf_head, buf_tail
     cdef object file_like
-    cdef int read_size
+    cdef object file_like_read
+    cdef Py_ssize_t read_size
     cdef bint use_list
     cdef object object_hook
 
@@ -239,15 +233,22 @@ cdef class Unpacker(object):
 
     def __dealloc__(self):
         free(self.buf);
+        self.buf = NULL;
 
-    def __init__(self, file_like=None, int read_size=0, bint use_list=0,
+    def __init__(self, file_like=None, Py_ssize_t read_size=0, bint use_list=0,
                  object object_hook=None, object list_hook=None):
         if read_size == 0:
             read_size = 1024*1024
         self.use_list = use_list
         self.file_like = file_like
+        if file_like:
+            self.file_like_read = file_like.read
+            if not PyCallable_Check(self.file_like_read):
+                raise ValueError("`file_like.read` must be a callable.")
         self.read_size = read_size
         self.buf = <char*>malloc(read_size)
+        if self.buf == NULL:
+            raise MemoryError("Unable to allocate internal buffer.")
         self.buf_size = read_size
         self.buf_head = 0
         self.buf_tail = 0
@@ -260,12 +261,15 @@ cdef class Unpacker(object):
             self.ctx.user.object_hook = <PyObject*>object_hook
         if list_hook is not None:
             if not PyCallable_Check(list_hook):
-                raise TypeError("object_hook must be a callable.")
+                raise TypeError("list_hook must be a callable.")
             self.ctx.user.list_hook = <PyObject*>list_hook
 
     def feed(self, object next_bytes):
         cdef char* buf
         cdef Py_ssize_t buf_len
+        if self.file_like is not None:
+            raise AssertionError(
+                    "unpacker.feed() is not be able to use with`file_like`.")
         PyObject_AsReadBuffer(next_bytes, <const_void_ptr*>&buf, &buf_len)
         self.append_buffer(buf, buf_len)
 
@@ -288,10 +292,15 @@ cdef class Unpacker(object):
                 new_size = tail + _buf_len
                 if new_size < buf_size*2:
                     new_size = buf_size*2
-                buf = <char*>realloc(buf, new_size)
+                buf = <char*>realloc(buf, new_size) 
+                if buf == NULL:
+                    # self.buf still holds old buffer and will be freed during
+                    # obj destruction
+                    raise MemoryError("Unable to enlarge internal buffer.")
                 buf_size = new_size
 
         memcpy(buf + tail, <char*>(_buf), _buf_len)
+        self.buf = buf
         self.buf_head = head
         self.buf_size = buf_size
         self.buf_tail = tail + _buf_len
@@ -299,7 +308,7 @@ cdef class Unpacker(object):
     # prepare self.buf from file_like
     cdef fill_buffer(self):
         if self.file_like is not None:
-            next_bytes = self.file_like.read(self.read_size)
+            next_bytes = self.file_like_read(self.read_size)
             if next_bytes:
                 self.append_buffer(PyBytes_AsString(next_bytes),
                                    PyBytes_Size(next_bytes))
@@ -309,21 +318,27 @@ cdef class Unpacker(object):
     cpdef unpack(self):
         """unpack one object"""
         cdef int ret
-        self.fill_buffer()
-        ret = template_execute(&self.ctx, self.buf, self.buf_tail, &self.buf_head)
-        if ret == 1:
-            o = template_data(&self.ctx)
-            template_init(&self.ctx)
-            return o
-        elif ret == 0:
-            if self.file_like is not None:
-                return self.unpack()
-            raise StopIteration, "No more unpack data."
-        else:
-            raise ValueError, "Unpack failed."
+        while 1:
+            _gc_disable()
+            ret = template_execute(&self.ctx, self.buf, self.buf_tail, &self.buf_head)
+            _gc_enable()
+            if ret == 1:
+                o = template_data(&self.ctx)
+                template_init(&self.ctx)
+                return o
+            elif ret == 0:
+                if self.file_like is not None:
+                    self.fill_buffer()
+                    continue
+                raise StopIteration("No more unpack data.")
+            else:
+                raise ValueError("Unpack failed: error = %d" % (ret,))
 
     def __iter__(self):
-        return UnpackIterator(self)
+        return self
+
+    def __next__(self):
+        return self.unpack()
 
     # for debug.
     #def _buf(self):

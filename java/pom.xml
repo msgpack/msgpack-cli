@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.msgpack</groupId>
   <artifactId>msgpack</artifactId>
-  <version>0.5.1-devel</version>
+  <version>0.5.2-devel</version>
   <description>MessagePack for Java</description>
 
   <name>MessagePack for Java</name>
@@ -63,8 +63,8 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.5</source>
+          <target>1.5</target>
         </configuration>
       </plugin>
 
@@ -81,6 +81,20 @@
           <connectionUrl>scm:git://github.com/msgpack/msgpack.git</connectionUrl>
         </configuration>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
     </plugins>
   </build>
 
@@ -127,7 +141,7 @@
   </repositories>
 
   <distributionManagement>
-    <repository>
+   <repository>
       <uniqueVersion>false</uniqueVersion>
       <id>msgpack.org</id>
       <name>Repository at msgpack.org</name>
@@ -139,6 +153,18 @@
        <name>Repository at msgpack.org</name>
 	   <url>file://${project.build.directory}/website/maven2/</url>
     </snapshotRepository>
+     <!--<repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>deploy.release</id>
+      <name>Repository for release</name>
+	  <url>${deploy-release-url}</url>
+    </repository>
+    <snapshotRepository>
+       <uniqueVersion>true</uniqueVersion>
+       <id>deploy.snapshot</id>
+       <name>Repository for snapshot</name>
+	   <url>${deploy-snapshot-url}</url>
+    </snapshotRepository>-->
   </distributionManagement>
 
   <profiles>
