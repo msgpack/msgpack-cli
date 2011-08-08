@@ -17,12 +17,13 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+#define INLINED
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-
+using System.Diagnostics;
 namespace MsgPack
 {
 	/// <summary>
@@ -30,6 +31,31 @@ namespace MsgPack
 	/// </summary>
 	internal sealed class StreamingUnpacker
 	{
+#if PERF_TRACE
+		private enum TracePoint : byte
+		{
+			TransitStage,
+			AddToContextCollection,
+			ParseHeader,
+			TransitToUnpackRawBytes,
+			UnpackHeaderAndFixedValue,
+			Finish,
+			Begin
+		}
+#endif
+		private struct TraceEntry
+		{
+#if PERF_TRACE
+			public readonly long Timestamp;
+			public readonly TracePoint TracePoint;
+			public TraceEntry( TracePoint tp )
+			{
+				this.TracePoint = tp;
+				this.Timestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+			}
+#endif
+		}
+
 		/// <summary>
 		///		Stacked states for context collection.
 		/// </summary>
@@ -48,7 +74,12 @@ namespace MsgPack
 		/// <summary>
 		///		Buffer for unpackaging scalar or binary value.
 		/// </summary>
-		private BytesBuffer _scalarBuffer;
+		//private BytesBuffer _scalarBuffer;
+
+		private readonly byte[] _primitiveBuffer = new byte[ sizeof( ulong ) ];
+		private uint _primitiveSize;
+		private byte[] _rawBuffer;
+		private uint _bufferOffset;
 
 		/// <summary>
 		///		Initialize new instance.
@@ -75,24 +106,307 @@ namespace MsgPack
 		/// </remarks>
 		public MessagePackObject? Unpack( IEnumerable<byte> source )
 		{
+			// FIXME:BULK LOAD
 			Contract.Assert( source != null );
 
+			List<TraceEntry> trace =
+#if PERF_TRACE
+				new List<TraceEntry>( 12000 );
+#else
+ null;
+#endif
+#if PERF_TRACE
+			trace.Add( new TraceEntry( TracePoint.Begin ) );
+			var t = System.Diagnostics.Stopwatch.GetTimestamp();
+			try
+			{
+#endif
+			var segmentatedSource = source as ISegmentLengthRecognizeable ?? NullSegmentLengthRecognizeable.Instance;
 			foreach ( var b in source )
 			{
-				var result = this.TransitStage( b, source as ISegmentLengthRecognizeable ?? NullSegmentLengthRecognizeable.Instance );
-				if ( result != null )
+#if INLINED
+				MessagePackObject result = default( MessagePackObject );
+
+				#region Transit
+
+				switch ( this._stage )
 				{
-					if ( this._collectionState.IsEmpty )
+					case Stage.UnpackCollectionLength:
 					{
-						this._stage = Stage.Root;
-						Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
-						Contract.Assert( this._scalarBuffer.BackingStore == null, this._scalarBuffer.ToString() ); // null
-						return result;
+						//this._scalarBuffer = this._scalarBuffer.Feed( b );
+						this._primitiveBuffer[ this._bufferOffset ] = b;
+						this._bufferOffset++;
+						//if ( !this._scalarBuffer.IsFilled )
+						if ( this._bufferOffset < this._primitiveSize )
+						{
+							// no transition.
+							continue;
+						}
+
+						// new collection
+
+						//if ( this._scalarBuffer.AsUInt32() == 0 )
+						var asUInt32 = this.GetPrimitiveBufferAsUInt32();
+						if ( asUInt32 == 0 )
+						{
+							// empty collection
+							var temp = this.AddToContextCollection( CreateEmptyCollection( this._contextValueHeader ), trace );
+							if ( temp.HasValue )
+							{
+								result = temp.Value;
+								break;
+							}
+							else
+							{
+								continue;
+							}
+						}
+						else
+						{
+							//this._collectionState.NewContextCollection( this._contextValueHeader, this._scalarBuffer.AsUInt32() );
+							this._collectionState.NewContextCollection( this._contextValueHeader, asUInt32 );
+							// Collection length might be ( 5 byte ) * ( items count )
+							//segmentatedSource.NotifySegmentLength( this._scalarBuffer.AsUInt32() * sizeof( int ) );
+							segmentatedSource.NotifySegmentLength( asUInt32 * sizeof( int ) );
+							this.TransitToUnpackContextCollection();
+							continue;
+						}
+					}
+					case Stage.UnpackRawLength:
+					{
+						//this._scalarBuffer = this._scalarBuffer.Feed( b );
+						this._primitiveBuffer[ this._bufferOffset ] = b;
+						this._bufferOffset++;
+						//if ( !this._scalarBuffer.IsFilled )
+						if ( this._bufferOffset < this._primitiveSize )
+						{
+							// no transition.
+							continue;
+						}
+
+						this.TransitToUnpackRawBytes( segmentatedSource, this.GetPrimitiveBufferAsUInt32(), trace );
+						continue;
+					}
+					case Stage.UnpackRawBytes:
+					{
+						Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsRawBinary ) != 0, this._contextValueHeader.ToString() );
+						//Contract.Assert( this._scalarBuffer.BackingStore != null, this._scalarBuffer.ToString() );
+						Contract.Assert( this._rawBuffer != null );
+
+						// TODO: Bulk read
+						//this._scalarBuffer = this._scalarBuffer.Feed( b );
+						this._rawBuffer[ this._bufferOffset ] = b;
+						this._bufferOffset++;
+						//if ( !this._scalarBuffer.IsFilled )
+						if ( this._bufferOffset < this._rawBuffer.Length )
+						{
+							// no transition.
+							continue;
+						}
+
+						//var temp = this.AddToContextCollection( this._scalarBuffer.AsMessagePackObject( this._contextValueHeader.Type ), trace );
+						var temp = this.AddToContextCollection( new MessagePackObject( this._rawBuffer, true ), trace );
+						if ( temp.HasValue )
+						{
+							result = temp.Value;
+							break;
+						}
+						else
+						{
+							continue;
+						}
+					}
+					case Stage.UnpackScalar:
+					{
+						Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsVariable ) != 0, this._contextValueHeader.ToString() );
+						Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsCollection ) == 0, this._contextValueHeader.ToString() );
+						//Contract.Assert( this._scalarBuffer.BackingStore != null, this._scalarBuffer.ToString() );
+
+						//this._scalarBuffer = this._scalarBuffer.Feed( b );
+						this._primitiveBuffer[ this._bufferOffset ] = b;
+						this._bufferOffset++;
+						//if ( !this._scalarBuffer.IsFilled )
+						if ( this._bufferOffset < this._primitiveSize )
+						{
+							// no transition.
+							continue;
+						}
+
+						//var temp = this.AddToContextCollection( this._scalarBuffer.AsMessagePackObject( this._contextValueHeader.Type ), trace );
+						var temp = this.AddToContextCollection( BytesBuffer.AsMessagePackObject( this._primitiveBuffer, this._contextValueHeader.Type ), trace );
+						if ( temp.HasValue )
+						{
+							result = temp.Value;
+							break;
+						}
+						else
+						{
+							continue;
+						}
+					}
+					default:
+					{
+						#region UnpackHeaderAndFixedValue
+
+						var header = _headerArray[ b ];
+						this._contextValueHeader = header;
+						MessagePackObject newCollectionItem = default( MessagePackObject );
+						switch ( this._contextValueHeader.Type )
+						{
+							case MessageType.Array16:
+							case MessageType.Array32:
+							case MessageType.Map16:
+							case MessageType.Map32:
+							{
+								this.TransitToUnpackCollectionLength();
+								// Try to get length.
+								continue;
+							}
+							case MessageType.Raw16:
+							case MessageType.Raw32:
+							{
+								this.TransitToUnpackRawLength();
+								// Try to get length.
+								continue;
+							}
+							case MessageType.FixArray:
+							case MessageType.FixMap:
+							{
+								if ( this._contextValueHeader.ValueOrLength == 0 )
+								{
+									newCollectionItem = CreateEmptyCollection( this._contextValueHeader );
+									break;
+								}
+
+								segmentatedSource.NotifySegmentLength( this._contextValueHeader.ValueOrLength );
+								this._collectionState.NewContextCollection( this._contextValueHeader, this._contextValueHeader.ValueOrLength );
+								this.TransitToUnpackContextCollection();
+								// Try to get items.
+								continue;
+							}
+							case MessageType.FixRaw:
+							{
+								if ( this._contextValueHeader.ValueOrLength == 0 )
+								{
+									newCollectionItem = Binary.Empty;
+									break;
+								}
+
+								// this._scalarBuffer = new BytesBuffer( 1 ).Feed( unchecked( ( byte )this._contextValueHeader.ValueOrLength ) );
+								//this._primitiveBuffer = this._contextValueHeader.ValueOrLength;
+								//this.TransitToUnpackRawBytes( segmentatedSource, trace );
+								this.TransitToUnpackRawBytes( segmentatedSource, this._contextValueHeader.ValueOrLength, trace );
+								// Try to get body.
+								continue;
+							}
+							case MessageType.Nil:
+							{
+								newCollectionItem = MessagePackObject.Nil;
+								break;
+							}
+							case MessageType.True:
+							{
+								newCollectionItem = new MessagePackObject( true );
+								break;
+							}
+							case MessageType.False:
+							{
+								newCollectionItem = new MessagePackObject( false );
+								break;
+							}
+							case MessageType.NegativeFixNum:
+							{
+								newCollectionItem = new MessagePackObject( unchecked( ( sbyte )b ) );
+								break;
+							}
+							case MessageType.PositiveFixNum:
+							{
+								newCollectionItem = new MessagePackObject( b );
+								break;
+							}
+							default:
+							{
+								this.TransitToUnpackScalar();
+								// Try to get body.
+								continue;
+							}
+						}
+
+						var built = this.AddToContextCollection( newCollectionItem, trace );
+						if ( built == null )
+						{
+							continue;
+						}
+						else
+						{
+							result = built.Value;
+							break;
+						}
+
+						#endregion UnpackHeaderAndFixedValue
 					}
 				}
-			}
 
+				#endregion Transit
+#else
+				MessagePackObject? result = this.TransitStage( b, segmentatedSource, trace );
+#endif
+
+#if !INLINED
+				if ( result != null )
+				{
+#endif
+				if ( this._collectionState.IsEmpty )
+				{
+					this._stage = Stage.Root;
+					Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
+					// Contract.Assert( this._scalarBuffer.BackingStore == null, this._scalarBuffer.ToString() ); // null
+					Contract.Assert( this._rawBuffer == null );
+					return result;
+				}
+#if !INLINED
+				}
+#endif
+			}
+#if PERF_TRACE
+			}
+			finally
+			{
+				var e = System.Diagnostics.Stopwatch.GetTimestamp() - t;
+				trace.Add( new TraceEntry( TracePoint.Finish ) );
+				using ( var writer = new System.IO.StreamWriter( ".\\sutrace.txt" ) )
+				{
+					writer.WriteLine( "Unpack:: {0:#,0}steps.", e );
+					writer.WriteLine( "Trace({0:#,0})", trace.Count );
+					foreach ( var item in trace )
+					{
+						writer.WriteLine( "{0:#,0}\t{1}", item.Timestamp, item.TracePoint );
+					}
+					writer.Flush();
+				}
+			}
+#endif
 			return null;
+		}
+
+		private uint GetPrimitiveBufferAsUInt32()
+		{
+			switch ( this._primitiveSize )
+			{
+				case 1:
+				{
+					return BigEndianBinary.ToByte( this._primitiveBuffer, 0 );
+				}
+				case 2:
+				{
+					return BigEndianBinary.ToUInt16( this._primitiveBuffer, 0 );
+				}
+				default:
+				{
+					Contract.Assert( this._primitiveSize == 4, this._primitiveSize.ToString() );
+					return BigEndianBinary.ToUInt32( this._primitiveBuffer, 0 );
+				}
+			}
 		}
 
 		/// <summary>
@@ -104,14 +418,19 @@ namespace MsgPack
 		///		If root or context collection is fully unpacked, then it.
 		///		Otherwise null.
 		/// </returns>
-		private MessagePackObject? TransitStage( byte b, ISegmentLengthRecognizeable source )
+		private MessagePackObject? TransitStage( byte b, ISegmentLengthRecognizeable source, List<TraceEntry> trace )
 		{
+			//return null;
+			//trace.Add( new TraceEntry( TracePoint.TransitStage ) );
 			switch ( this._stage )
 			{
 				case Stage.UnpackCollectionLength:
 				{
-					this._scalarBuffer = this._scalarBuffer.Feed( b );
-					if ( !this._scalarBuffer.IsFilled )
+					//this._scalarBuffer = this._scalarBuffer.Feed( b );
+					this._primitiveBuffer[ this._bufferOffset ] = b;
+					this._bufferOffset++;
+					//if ( !this._scalarBuffer.IsFilled )
+					if ( this._bufferOffset < this._primitiveSize )
 					{
 						// no transition.
 						return null;
@@ -119,65 +438,80 @@ namespace MsgPack
 
 					// new collection
 
-					if ( this._scalarBuffer.AsUInt32() == 0 )
+					var asUInt32 = this.GetPrimitiveBufferAsUInt32();
+					//if ( this._scalarBuffer.AsUInt32() == 0 )
+					if ( asUInt32 == 0 )
 					{
 						// empty collection
-						return this.AddToContextCollection( CreateEmptyCollection( this._contextValueHeader ) );
+						return this.AddToContextCollection( CreateEmptyCollection( this._contextValueHeader ), trace );
 					}
 					else
 					{
-						this._collectionState.NewContextCollection( this._contextValueHeader, this._scalarBuffer.AsUInt32() );
+						//this._collectionState.NewContextCollection( this._contextValueHeader, this._scalarBuffer.AsUInt32() );
+						this._collectionState.NewContextCollection( this._contextValueHeader, asUInt32 );
 						// Collection length might be ( 5 byte ) * ( items count )
-						source.NotifySegmentLength( this._scalarBuffer.AsUInt32() * sizeof( int ) );
+						//source.NotifySegmentLength( this._scalarBuffer.AsUInt32() * sizeof( int ) );
+						source.NotifySegmentLength( asUInt32 * sizeof( int ) );
 						this.TransitToUnpackContextCollection();
 						return null;
 					}
 				}
 				case Stage.UnpackRawLength:
 				{
-					this._scalarBuffer = this._scalarBuffer.Feed( b );
-					if ( !this._scalarBuffer.IsFilled )
+					//this._scalarBuffer = this._scalarBuffer.Feed( b );
+					this._primitiveBuffer[ this._bufferOffset ] = b;
+					this._bufferOffset++;
+					//if ( !this._scalarBuffer.IsFilled )
+					if ( this._bufferOffset < this._primitiveSize )
 					{
 						// no transition.
 						return null;
 					}
 
-					this.TransitToUnpackRawBytes(source);
+					this.TransitToUnpackRawBytes( source, this.GetPrimitiveBufferAsUInt32(), trace );
 					return null;
 				}
 				case Stage.UnpackRawBytes:
 				{
 					Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsRawBinary ) != 0, this._contextValueHeader.ToString() );
-					Contract.Assert( this._scalarBuffer.BackingStore != null, this._scalarBuffer.ToString() );
+					//Contract.Assert( this._scalarBuffer.BackingStore != null, this._scalarBuffer.ToString() );
 
 					// TODO: Bulk read
-					this._scalarBuffer = this._scalarBuffer.Feed( b );
-					if ( !this._scalarBuffer.IsFilled )
+					//this._scalarBuffer = this._scalarBuffer.Feed( b );
+					this._rawBuffer[ this._bufferOffset ] = b;
+					this._bufferOffset++;
+					//if ( !this._scalarBuffer.IsFilled )
+					if ( this._bufferOffset < this._rawBuffer.Length  )
 					{
 						// no transition.
 						return null;
 					}
 
-					return this.AddToContextCollection( this._scalarBuffer.AsMessagePackObject( this._contextValueHeader.Type ) );
+					//return this.AddToContextCollection( this._scalarBuffer.AsMessagePackObject( this._contextValueHeader.Type ), trace );
+					return this.AddToContextCollection( new MessagePackObject( this._rawBuffer, true ), trace );
 				}
 				case Stage.UnpackScalar:
 				{
 					Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsVariable ) != 0, this._contextValueHeader.ToString() );
 					Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsCollection ) == 0, this._contextValueHeader.ToString() );
-					Contract.Assert( this._scalarBuffer.BackingStore != null, this._scalarBuffer.ToString() );
+					//Contract.Assert( this._scalarBuffer.BackingStore != null, this._scalarBuffer.ToString() );
 
-					this._scalarBuffer = this._scalarBuffer.Feed( b );
-					if ( !this._scalarBuffer.IsFilled )
+					//this._scalarBuffer = this._scalarBuffer.Feed( b );
+					this._primitiveBuffer[ this._bufferOffset ] = b;
+					this._bufferOffset++;
+					//if ( !this._scalarBuffer.IsFilled )
+					if ( this._bufferOffset < this._primitiveSize )
 					{
 						// no transition.
 						return null;
 					}
 
-					return this.AddToContextCollection( this._scalarBuffer.AsMessagePackObject( this._contextValueHeader.Type ) );
+					//return this.AddToContextCollection( this._scalarBuffer.AsMessagePackObject( this._contextValueHeader.Type ), trace );
+					return this.AddToContextCollection( BytesBuffer.AsMessagePackObject( this._primitiveBuffer, this._contextValueHeader.Type ), trace );
 				}
 				default:
 				{
-					return this.UnpackHeaderAndFixedValue( b, source );
+					return this.UnpackHeaderAndFixedValue( b, source, trace );
 				}
 			}
 		}
@@ -188,7 +522,9 @@ namespace MsgPack
 		private void TransitToUnpackScalar()
 		{
 			this._stage = Stage.UnpackScalar;
-			this._scalarBuffer = new BytesBuffer( GetLength( this._contextValueHeader.Type ) );
+			//this._scalarBuffer = new BytesBuffer( GetLength( this._contextValueHeader.Type ) );
+			this._bufferOffset = 0;
+			this._primitiveSize = GetLength( this._contextValueHeader.Type );
 		}
 
 		/// <summary>
@@ -197,7 +533,9 @@ namespace MsgPack
 		private void TransitToUnpackCollectionLength()
 		{
 			this._stage = Stage.UnpackCollectionLength;
-			this._scalarBuffer = new BytesBuffer( GetLength( this._contextValueHeader.Type ) );
+			//this._scalarBuffer = new BytesBuffer( GetLength( this._contextValueHeader.Type ) );
+			this._bufferOffset = 0;
+			this._primitiveSize = GetLength( this._contextValueHeader.Type );
 		}
 
 		/// <summary>
@@ -206,25 +544,36 @@ namespace MsgPack
 		private void TransitToUnpackRawLength()
 		{
 			this._stage = Stage.UnpackRawLength;
-			this._scalarBuffer = new BytesBuffer( GetLength( this._contextValueHeader.Type ) );
+			//this._scalarBuffer = new BytesBuffer( GetLength( this._contextValueHeader.Type ) );
+			this._bufferOffset = 0;
+			this._primitiveSize = GetLength( this._contextValueHeader.Type );
 		}
 
 		/// <summary>
 		///		Transit current stage to <see cref="Stage.UnpackRawBytes"/> with cleanuping states.
 		/// </summary>
 		/// <param name="source"><see cref="ISegmentLengthRecognizeable"/> to be notified.</param>
-		private void TransitToUnpackRawBytes( ISegmentLengthRecognizeable source )
+		private void TransitToUnpackRawBytes( ISegmentLengthRecognizeable source,
+			uint length,
+			List<TraceEntry> trace )
 		{
+#if PERF_TRACE
+			trace.Add( new TraceEntry( TracePoint.TransitToUnpackRawBytes ) );
+#endif
 			this._stage = Stage.UnpackRawBytes;
-			if ( this._contextValueHeader.ValueOrLength == 0 )
-			{
-				// Length is gotten, so set it.
-				this._contextValueHeader = this._contextValueHeader.SetLength( this._scalarBuffer.AsUInt32() );
-			}
+			//if ( this._contextValueHeader.ValueOrLength == 0 )
+			//{
+			//    // Length is gotten, so set it.
+			//    // this._contextValueHeader = this._contextValueHeader.SetLength( this._scalarBuffer.AsUInt32() );
+			//    this._contextValueHeader = this._contextValueHeader.SetLength( length );
+			//}
 
 			// Allocate buffer to store raw binaries.
-			source.NotifySegmentLength( this._contextValueHeader.ValueOrLength );
-			this._scalarBuffer = new BytesBuffer( this._contextValueHeader.ValueOrLength );
+			//source.NotifySegmentLength( this._contextValueHeader.ValueOrLength );
+			//this._scalarBuffer = new BytesBuffer( this._contextValueHeader.ValueOrLength );
+			source.NotifySegmentLength( length );
+			this._rawBuffer = new byte[ length ];
+			this._bufferOffset = 0;
 		}
 
 		/// <summary>
@@ -234,7 +583,10 @@ namespace MsgPack
 		{
 			this._stage = Stage.UnpackContextCollection;
 			this._contextValueHeader = MessagePackHeader.Null;
-			this._scalarBuffer = BytesBuffer.Null;
+			//this._scalarBuffer = BytesBuffer.Null;
+			Array.Clear( this._primitiveBuffer, 0, this._primitiveBuffer.Length );
+			this._bufferOffset = 0;
+			this._rawBuffer = null;
 		}
 
 		/// <summary>
@@ -266,13 +618,18 @@ namespace MsgPack
 		///		if value is determined only header then unpacked value,
 		///		otherwise null.
 		/// </returns>
-		private MessagePackObject? UnpackHeaderAndFixedValue( byte b, ISegmentLengthRecognizeable source )
+		private MessagePackObject? UnpackHeaderAndFixedValue( byte b, ISegmentLengthRecognizeable source, List<TraceEntry> trace )
 		{
+#if PERF_TRACE
+			trace.Add( new TraceEntry( TracePoint.UnpackHeaderAndFixedValue ) );
+#endif
 			Contract.Assert( this._stage == Stage.Root || this._stage == Stage.UnpackContextCollection, this._stage.ToString() );
 			Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
-			Contract.Assert( this._scalarBuffer.BackingStore == null, this._scalarBuffer.ToString() ); // null
+			//Contract.Assert( this._scalarBuffer.BackingStore == null, this._scalarBuffer.ToString() ); // null
+			Contract.Assert( this._rawBuffer == null );
 
-			this._contextValueHeader = ParseHeader( b );
+			this._contextValueHeader = _headerArray[ b ]; // ParseHeader( b, trace );
+			Contract.Assert( this._contextValueHeader.Type != MessageType.Unknown, b.ToString( "x2" ) );
 			switch ( this._contextValueHeader.Type )
 			{
 				case MessageType.Array16:
@@ -296,7 +653,7 @@ namespace MsgPack
 				{
 					if ( this._contextValueHeader.ValueOrLength == 0 )
 					{
-						return this.AddToContextCollection( CreateEmptyCollection( this._contextValueHeader ) );
+						return this.AddToContextCollection( CreateEmptyCollection( this._contextValueHeader ), trace );
 					}
 
 					source.NotifySegmentLength( this._contextValueHeader.ValueOrLength );
@@ -309,33 +666,34 @@ namespace MsgPack
 				{
 					if ( this._contextValueHeader.ValueOrLength == 0 )
 					{
-						return this.AddToContextCollection( Binary.Empty );
+						return this.AddToContextCollection( Binary.Empty, trace );
 					}
 
-					this._scalarBuffer = new BytesBuffer( 1 ).Feed( unchecked( ( byte )this._contextValueHeader.ValueOrLength ) );
-					this.TransitToUnpackRawBytes( source );
+					//this._scalarBuffer = new BytesBuffer( 1 ).Feed( unchecked( ( byte )this._contextValueHeader.ValueOrLength ) );
+					//this.TransitToUnpackRawBytes( source, trace );
+					this.TransitToUnpackRawBytes( source, this._contextValueHeader.ValueOrLength, trace );
 					// Try to get body.
 					return null;
 				}
 				case MessageType.Nil:
 				{
-					return this.AddToContextCollection( MessagePackObject.Nil );
+					return this.AddToContextCollection( MessagePackObject.Nil, trace );
 				}
 				case MessageType.True:
 				{
-					return this.AddToContextCollection( new MessagePackObject( true ) );
+					return this.AddToContextCollection( new MessagePackObject( true ), trace );
 				}
 				case MessageType.False:
 				{
-					return this.AddToContextCollection( new MessagePackObject( false ) );
+					return this.AddToContextCollection( new MessagePackObject( false ), trace );
 				}
 				case MessageType.NegativeFixNum:
 				{
-					return this.AddToContextCollection( new MessagePackObject( unchecked( ( sbyte )b ) ) );
+					return this.AddToContextCollection( new MessagePackObject( unchecked( ( sbyte )b ) ), trace );
 				}
 				case MessageType.PositiveFixNum:
 				{
-					return this.AddToContextCollection( new MessagePackObject( b ) );
+					return this.AddToContextCollection( new MessagePackObject( b ), trace );
 				}
 				default:
 				{
@@ -346,13 +704,70 @@ namespace MsgPack
 			}
 		}
 
+		private static readonly MessagePackHeader[] _headerArray = InitializeHeaderArray();
+		private static MessagePackHeader[] InitializeHeaderArray()
+		{
+			MessagePackHeader[] result = new MessagePackHeader[ 0x100 ];
+
+			for ( int i = 0; i < 0x80; i++ )
+			{
+				result[ i ] = new MessagePackHeader( MessageType.PositiveFixNum, i );
+			}
+			for ( int i = 0x80; i < 0x90; i++ )
+			{
+				result[ i ] = new MessagePackHeader( MessageType.FixMap, i & 0x0f );
+			}
+			for ( int i = 0x90; i < 0xa0; i++ )
+			{
+				result[ i ] = new MessagePackHeader( MessageType.FixArray, i & 0x0f );
+			}
+			for ( int i = 0xa0; i < 0xc0; i++ )
+			{
+				result[ i ] = new MessagePackHeader( MessageType.FixRaw, i & 0x1f );
+			}
+			result[ 0xc0 ] = MessageType.Nil;
+			// 0xc1 : Undefined
+			result[ 0xc2 ] = MessageType.False;
+			result[ 0xc3 ] = MessageType.True;
+			// 0xc4-0xc9 : Undefined
+			result[ 0xca ] = MessageType.Single;
+			result[ 0xcb ] = MessageType.Double;
+			result[ 0xcc ] = MessageType.UInt8;
+			result[ 0xcd ] = MessageType.UInt16;
+			result[ 0xce ] = MessageType.UInt32;
+			result[ 0xcf ] = MessageType.UInt64;
+			result[ 0xd0 ] = MessageType.Int8;
+			result[ 0xd1 ] = MessageType.Int16;
+			result[ 0xd2 ] = MessageType.Int32;
+			result[ 0xd3 ] = MessageType.Int64;
+			// 0xd4-0xd9 : Undefined
+			result[ 0xda ] = MessageType.Raw16;
+			result[ 0xdb ] = MessageType.Raw32;
+			result[ 0xdc ] = MessageType.Array16;
+			result[ 0xdd ] = MessageType.Array32;
+			result[ 0xde ] = MessageType.Map16;
+			result[ 0xdf ] = MessageType.Map32;
+			for ( int i = 0xe0; i < 0x100; i++ )
+			{
+				result[ i ] = new MessagePackHeader( MessageType.NegativeFixNum, i & 0x1f );
+			}
+
+			//Debug.WriteLine( "Headers:{0}{1}", Environment.NewLine, String.Join( Environment.NewLine, result ) );
+
+			return result;
+		}
+
 		/// <summary>
 		///		Parse packed Message Pack object header.
 		/// </summary>
 		/// <param name="b">Byte to be parsed.</param>
 		/// <returns><see cref="MessagePackHeader"/>.</returns>
-		private static MessagePackHeader ParseHeader( byte b )
+		private static MessagePackHeader ParseHeader( byte b, List<TraceEntry> trace )
 		{
+#if PERF_TRACE
+			trace.Add( new TraceEntry( TracePoint.ParseHeader ) );
+#endif
+			// 0xxxxxxx
 			if ( ( b & 0x80 ) == 0 )
 			{
 				return new MessagePackHeader( MessageType.PositiveFixNum, ( b & 0x7f ) );
@@ -484,8 +899,11 @@ namespace MsgPack
 		///		If context collection is fulfilled, then return it.
 		///		Otherwise null.
 		/// </returns>
-		private MessagePackObject? AddToContextCollection( MessagePackObject item )
+		private MessagePackObject? AddToContextCollection( MessagePackObject item, List<TraceEntry> trace )
 		{
+#if PERF_TRACE
+			trace.Add( new TraceEntry( TracePoint.AddToContextCollection ) );
+#endif
 			if ( !this._collectionState.IsEmpty )
 			{
 				this._collectionState.FeedItem( item );
@@ -493,7 +911,7 @@ namespace MsgPack
 				{
 					// context collection's items have been unpacked.
 					this.TransitToUnpackContextCollection();
-					return this.AddToContextCollection( this._collectionState.PopCollection() );
+					return this.AddToContextCollection( this._collectionState.PopCollection(), trace );
 				}
 
 				// try to get next item.
@@ -547,7 +965,7 @@ namespace MsgPack
 				}
 				default:
 				{
-					Contract.Assume( false, "FAIL" );
+					Contract.Assert( false, "FAIL" );
 					return 0;
 				}
 			}
@@ -696,7 +1114,7 @@ namespace MsgPack
 
 			private static uint ToUInt32( int valueOrLength )
 			{
-				Contract.Assume( valueOrLength >= 0 );
+				Contract.Assert( valueOrLength >= 0 );
 				return unchecked( ( uint )valueOrLength );
 			}
 
@@ -779,9 +1197,7 @@ namespace MsgPack
 			/// <param name="count">Items count of collection object. If collection is map, this value indicates count of entries.</param>
 			public void NewContextCollection( MessagePackHeader header, uint count )
 			{
-				Contract.Assume( ( header.Type & MessageType.IsRawBinary ) == 0, header.Type.ToString() );
-
-				Contract.EndContractBlock();
+				Contract.Assert( ( header.Type & MessageType.IsRawBinary ) == 0, header.Type.ToString() );
 
 				this._collectionContextStack.Push( new CollectionContextState( header, count ) );
 			}
@@ -793,29 +1209,33 @@ namespace MsgPack
 			/// <returns></returns>
 			public MessagePackObject PopCollection()
 			{
-				Contract.Assume( !this.IsEmpty );
-				Contract.Assume( this.ContextCollectionState.Unpacked == this.ContextCollectionState.Items.Length );
+				Contract.Assert( !this.IsEmpty );
 
 				var context = this._collectionContextStack.Pop();
 				if ( ( context.Header.Type & MessageType.IsArray ) != 0 )
 				{
+					Contract.Assert( context.Items != null );
+					Contract.Assert( context.Unpacked == context.Capacity );
 					return new MessagePackObject( context.Items );
 				}
 				else if ( ( context.Header.Type & MessageType.IsMap ) != 0 )
 				{
-					Contract.Assume( context.Items.Length % 2 == 0, context.Items.Length.ToString() );
-					Dictionary<MessagePackObject, MessagePackObject> dictionary = new Dictionary<MessagePackObject, MessagePackObject>( context.Items.Length / 2 );
-					for ( int i = 0; i < context.Items.Length; i += 2 )
-					{
-						if ( dictionary.ContainsKey( context.Items[ i ] ) )
-						{
-							throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Key '{0}' is duplicated.", context.Items[ i ] ) );
-						}
+					//Contract.Assert( context.Items.Length % 2 == 0, context.Items.Length.ToString() );
+					//Dictionary<MessagePackObject, MessagePackObject> dictionary = new Dictionary<MessagePackObject, MessagePackObject>( context.Items.Length / 2 );
+					//for ( int i = 0; i < context.Items.Length; i += 2 )
+					//{
+					//    if ( dictionary.ContainsKey( context.Items[ i ] ) )
+					//    {
+					//        throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Key '{0}' is duplicated.", context.Items[ i ] ) );
+					//    }
 
-						dictionary.Add( context.Items[ i ], context.Items[ i + 1 ] );
-					}
+					//    dictionary.Add( context.Items[ i ], context.Items[ i + 1 ] );
+					//}
 
-					return new MessagePackObject( dictionary );
+					//return new MessagePackObject( dictionary );
+					Contract.Assert( context.Dictionary != null );
+					Contract.Assert( context.Unpacked == context.Capacity * 2 );
+					return new MessagePackObject( context.Dictionary );
 				}
 				else
 				{
@@ -829,14 +1249,16 @@ namespace MsgPack
 			/// <param name="item">New item to feed.</param>
 			public void FeedItem( MessagePackObject item )
 			{
-				var context = this._collectionContextStack.Pop();
-				this._collectionContextStack.Push( context.AddUnpackedItem( item ) );
+				//var context = this._collectionContextStack.Pop();
+				//this._collectionContextStack.Push( context.AddUnpackedItem( item ) );
+				this._collectionContextStack.Peek().AddUnpackedItem( item );
 			}
 
 			/// <summary>
 			///		Represents context collection state.
 			/// </summary>
-			public struct CollectionContextState
+			//public struct CollectionContextState
+			public sealed class CollectionContextState
 			{
 				private readonly MessagePackHeader _header;
 
@@ -848,6 +1270,15 @@ namespace MsgPack
 				{
 					get { return this._header; }
 				}
+
+				private readonly Dictionary<MessagePackObject, MessagePackObject> _dictionary;
+
+				public Dictionary<MessagePackObject, MessagePackObject> Dictionary
+				{
+					get { return this._dictionary; }
+				}
+
+				private MessagePackObject? _key;
 
 				private readonly MessagePackObject[] _items;
 
@@ -863,7 +1294,14 @@ namespace MsgPack
 					get { return this._items; }
 				}
 
-				private readonly long _unpacked;
+				private readonly long _capacity;
+
+				public long Capacity
+				{
+					get { return this._capacity; }
+				}
+
+				private long _unpacked;
 
 				/// <summary>
 				///		Get count of unpackaged items.
@@ -882,7 +1320,7 @@ namespace MsgPack
 				/// <value>If <see cref="Items"/> are filled then true.</value>
 				public bool IsFilled
 				{
-					get { return this._items.LongLength == this._unpacked; }
+					get { return this._unpacked == this._capacity * ( this._items != null ? 1 : 2 ); }
 				}
 
 				/// <summary>
@@ -895,7 +1333,23 @@ namespace MsgPack
 					Contract.Assert( header.Type != MessageType.Unknown );
 
 					this._header = header;
-					this._items = new MessagePackObject[ count * ( ( header.Type & MessageType.IsMap ) == 0 ? 1 : 2 ) ];
+					if ( ( header.Type & MessageType.IsMap ) == 0 )
+					{
+						Contract.Assert( ( header.Type & MessageType.IsArray ) != 0 );
+						this._items = new MessagePackObject[ count ];
+					}
+					else
+					{
+						Contract.Assert( ( header.Type & MessageType.IsArray ) == 0 );
+						if ( Int32.MaxValue < count )
+						{
+							throw new NotImplementedException( "Maps over 2^31 items are not supported yet." );
+						}
+
+						this._dictionary = new Dictionary<MessagePackObject, MessagePackObject>( unchecked( ( int )( count & 0x7fffffff ) ) );
+					}
+
+					this._capacity = count;
 					this._unpacked = 0;
 				}
 
@@ -905,16 +1359,16 @@ namespace MsgPack
 				/// <param name="header">Header of collection.</param>
 				/// <param name="items">Existent items storage.</param>
 				/// <param name="unpacked">Recognized count of items in this collection.</param>
-				private CollectionContextState( MessagePackHeader header, MessagePackObject[] items, long unpacked )
-				{
-					Contract.Assert( header.Type != MessageType.Unknown );
-					Contract.Assert( items != null );
-					Contract.Assert( unpacked <= items.LongLength );
+				//private CollectionContextState( MessagePackHeader header, MessagePackObject[] items, long unpacked )
+				//{
+				//    Contract.Assert( header.Type != MessageType.Unknown );
+				//    Contract.Assert( items != null );
+				//    Contract.Assert( unpacked <= items.Length );
 
-					this._header = header;
-					this._items = items;
-					this._unpacked = unpacked;
-				}
+				//    this._header = header;
+				//    this._items = items;
+				//    this._unpacked = unpacked;
+				//}
 
 				/// <summary>
 				///		Returns string representation of this object.
@@ -924,13 +1378,21 @@ namespace MsgPack
 				/// </returns>
 				public override string ToString()
 				{
-					if ( this._items == null )
+					//if ( this._items == null )
+					//{
+					//    return "(null)";
+					//}
+					//else
+					//{
+					//    return String.Format( CultureInfo.CurrentCulture, "{0}({1}/{2})", this._header, this._unpacked, this._items.Length );
+					//}
+					if ( this._items != null )
 					{
-						return "(null)";
+						return String.Format( CultureInfo.CurrentCulture, "{0}({1}/{2})", this._header, this._unpacked, this._capacity );
 					}
 					else
 					{
-						return String.Format( CultureInfo.CurrentCulture, "{0}({1}/{2})", this._header, this._unpacked, this._items.Length );
+						return String.Format( CultureInfo.CurrentCulture, "{0}({1}/{2})", this._header, this._unpacked / 2.0, this._capacity );
 					}
 				}
 
@@ -941,10 +1403,43 @@ namespace MsgPack
 				/// <returns>New context state to replace this instance.</returns>
 				public CollectionContextState AddUnpackedItem( MessagePackObject item )
 				{
-					Contract.Assert( this._unpacked < this._items.Length, this._unpacked + "<" + this._items.Length );
+					Contract.Assert(
+						( ( this._items != null && this._unpacked < this._capacity )
+						|| ( this._dictionary != null && this._unpacked < this._capacity * 2 )
+						),
+						this._items != null
+						? this._unpacked + "<" + this._capacity
+						: this._unpacked + "<" + this._capacity * 2
+					);
 
-					this._items[ this._unpacked ] = item;
-					return new CollectionContextState( this._header, this._items, this._unpacked + 1 );
+					if ( this._items != null )
+					{
+						this._items[ this._unpacked ] = item;
+					}
+					else
+					{
+						if ( this._key == null )
+						{
+							this._key = item;
+						}
+						else
+						{
+							try
+							{
+								this._dictionary.Add( this._key.Value, item );
+							}
+							catch ( ArgumentException )
+							{
+								throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Key '{0}' is duplicated.", this._key ) );
+							}
+
+							this._key = null;
+						}
+					}
+
+					//return new CollectionContextState( this._header, this._items, this._unpacked + 1 );
+					this._unpacked++;
+					return this;
 				}
 			}
 		}
@@ -967,14 +1462,13 @@ namespace MsgPack
 			/// <value>
 			///		Backing store of this buffer.
 			///		DO NOT modify this value directly.
-			///	</value>
 			public byte[] BackingStore
 			{
 				get { return this._backingStore; }
 			}
 
 			private readonly int _position;
-			
+
 			/// <summary>
 			///		Get the value which indicates this buffer is filled.
 			/// </summary>
@@ -1034,8 +1528,8 @@ namespace MsgPack
 			/// <returns>New buffer to replace this object.</returns>
 			public BytesBuffer Feed( byte b )
 			{
-				Contract.Assume( this._backingStore != null, this.ToString() );
-				Contract.Assume( !this.IsFilled, "Already filled:" + this );
+				Contract.Assert( this._backingStore != null, this.ToString() );
+				Contract.Assert( !this.IsFilled, "Already filled:" + this );
 
 				this._backingStore[ this._position ] = b;
 				return new BytesBuffer( this._backingStore, this._position + 1 );
@@ -1047,7 +1541,7 @@ namespace MsgPack
 			/// <returns><see cref="UInt32"/> value of this buffer.</returns>
 			public uint AsUInt32()
 			{
-				Contract.Assume( this.IsFilled, "Not filled yet:" + this );
+				Contract.Assert( this.IsFilled, "Not filled yet:" + this );
 
 				switch ( this._backingStore.Length )
 				{
@@ -1061,7 +1555,7 @@ namespace MsgPack
 					}
 					default:
 					{
-						Contract.Assume( this._backingStore.Length == sizeof( uint ), this._backingStore.Length.ToString() );
+						Contract.Assert( this._backingStore.Length == sizeof( uint ), this._backingStore.Length.ToString() );
 						return BigEndianBinary.ToUInt32( this._backingStore, 0 );
 					}
 				}
@@ -1074,53 +1568,58 @@ namespace MsgPack
 			/// <returns><see cref="MessagePackObject"/> which wraps deserialized numeric primitive.</returns>
 			public MessagePackObject AsMessagePackObject( MessageType type )
 			{
-				Contract.Assume( this.IsFilled, "Not filled yet:" + this );
+				Contract.Assert( this.IsFilled, "Not filled yet:" + this );
 
+				return AsMessagePackObject( this._backingStore, type );
+			}
+
+			public static MessagePackObject AsMessagePackObject( byte[] buffer, MessageType type )
+			{
 				switch ( type )
 				{
 					case MessageType.Double:
 					{
-						return BigEndianBinary.ToDouble( this._backingStore, 0 );
+						return BigEndianBinary.ToDouble( buffer, 0 );
 					}
 					case MessageType.Int16:
 					{
-						return BigEndianBinary.ToInt16( this._backingStore, 0 );
+						return BigEndianBinary.ToInt16( buffer, 0 );
 					}
 					case MessageType.Int32:
 					{
-						return BigEndianBinary.ToInt32( this._backingStore, 0 );
+						return BigEndianBinary.ToInt32( buffer, 0 );
 					}
 					case MessageType.Int64:
 					{
-						return BigEndianBinary.ToInt64( this._backingStore, 0 );
+						return BigEndianBinary.ToInt64( buffer, 0 );
 					}
 					case MessageType.Int8:
 					{
-						return BigEndianBinary.ToSByte( this._backingStore, 0 );
+						return BigEndianBinary.ToSByte( buffer, 0 );
 					}
 					case MessageType.Single:
 					{
-						return BigEndianBinary.ToSingle( this._backingStore, 0 );
+						return BigEndianBinary.ToSingle( buffer, 0 );
 					}
 					case MessageType.UInt16:
 					{
-						return BigEndianBinary.ToUInt16( this._backingStore, 0 );
+						return BigEndianBinary.ToUInt16( buffer, 0 );
 					}
 					case MessageType.UInt32:
 					{
-						return BigEndianBinary.ToUInt32( this._backingStore, 0 );
+						return BigEndianBinary.ToUInt32( buffer, 0 );
 					}
 					case MessageType.UInt64:
 					{
-						return BigEndianBinary.ToUInt64( this._backingStore, 0 );
+						return BigEndianBinary.ToUInt64( buffer, 0 );
 					}
 					case MessageType.UInt8:
 					{
-						return BigEndianBinary.ToByte( this._backingStore, 0 );
+						return BigEndianBinary.ToByte( buffer, 0 );
 					}
 					default:
 					{
-						return this._backingStore;
+						return new MessagePackObject( buffer, true );
 					}
 				}
 			}
@@ -1134,7 +1633,7 @@ namespace MsgPack
 			public static readonly NullSegmentLengthRecognizeable Instance = new NullSegmentLengthRecognizeable();
 
 			private NullSegmentLengthRecognizeable()
-			{			
+			{
 			}
 
 			public void NotifySegmentLength( long lengthFromCurrent )
