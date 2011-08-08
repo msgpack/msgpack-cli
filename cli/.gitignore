@@ -2,6 +2,7 @@
 *.bak
 *.csproj.user
 bin/
+Bin/
 lib/
 local/
 obj/

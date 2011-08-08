@@ -48,6 +48,13 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,6 +88,7 @@
     <Compile Include="MessagePackConvert.cs" />
     <Compile Include="MessagePackObject.Utilities.cs" />
     <Compile Include="MessageNotSupportedException.cs" />
+    <Compile Include="MessagePackString.cs" />
     <Compile Include="Packer.Utilities.cs" />
     <Compile Include="Packer.ValuePacker.cs">
       <AutoGen>True</AutoGen>
@@ -88,7 +96,6 @@
       <DependentUpon>Packer.ValuePacker.tt</DependentUpon>
     </Compile>
     <Compile Include="PackingOptions.cs" />
-    <Compile Include="StreamingUnpacker.cs" />
     <Compile Include="MessagePackObject.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -131,10 +138,14 @@
       <DependentUpon>Unpacker.Direct.tt</DependentUpon>
     </Compile>
     <Compile Include="UnpackException.cs" />
+    <None Include="..\MsgPack.snk">
+      <Link>MsgPack.snk</Link>
+    </None>
     <None Include="Packer.ValuePacker.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Packer.ValuePacker.cs</LastGenOutput>
     </None>
+    <Compile Include="StreamingUnpacker.cs" />
     <None Include="Unpacker.Direct.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Unpacker.Direct.cs</LastGenOutput>
