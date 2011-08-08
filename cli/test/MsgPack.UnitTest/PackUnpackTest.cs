@@ -31,6 +31,7 @@ using NUnit.Framework;
 namespace MsgPack
 {
 	[TestFixture]
+	[Timeout( 1000 )]
 	public partial class PackUnpackTest
 	{
 		private static readonly Encoding _utf8NoBom =
@@ -67,7 +68,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestString()
+		public void TestStringShort()
 		{
 			TestStringStrict( "" );
 			TestStringStrict( "a" );
@@ -76,7 +77,7 @@ namespace MsgPack
 			TestStringStrict( "\u30e1\u30c3\u30bb\u30fc\u30b8\u30d1\u30c3\u30af" );
 
 			GC.Collect();
-			
+
 			var avg = 0.0;
 			Random random = new Random();
 			var sb = new StringBuilder( 1000 * 1000 * 200 );
@@ -95,13 +96,16 @@ namespace MsgPack
 			}
 			sw.Stop();
 			Console.WriteLine( "Small String ({1:#,###.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
-			sw.Reset();
+		}
 
-			GC.Collect();
-
-			sw.Start();
-
-			avg = 0.0;
+		[Test]
+		[Explicit]
+		public void TestStringMedium()
+		{
+			var sw = Stopwatch.StartNew();
+			Random random = new Random();
+			var sb = new StringBuilder( 1000 * 1000 * 200 );
+			var avg = 0.0;
 			// medium size string
 			for ( int i = 0; i < 100; i++ )
 			{
@@ -116,14 +120,16 @@ namespace MsgPack
 			}
 			sw.Stop();
 			Console.WriteLine( "Medium String ({1:#,###.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
-			sw.Reset();
-#if !SKIP_LARGE_TEST
+		}
 
-			GC.Collect();
-
-			sw.Start();
-
-			avg = 0.0;
+		[Test]
+		[Explicit]
+		public void TestStringLarge()
+		{
+			var sw = Stopwatch.StartNew();
+			var avg = 0.0;
+			Random random = new Random();
+			var sb = new StringBuilder( 1000 * 1000 * 200 );
 
 			// large size string
 			for ( int i = 0; i < 10; i++ )
@@ -162,7 +168,7 @@ namespace MsgPack
 			sw.Stop();
 			Console.WriteLine( "Large String (UTF-16LE) ({1:#,###.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 10.0, avg );
 			sw.Reset();
-#endif
+
 			GC.Collect();
 
 			sw.Start();
@@ -214,6 +220,7 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 5000 )]
 		public void TestArray()
 		{
 			var emptyList = new List<int>();
@@ -224,16 +231,36 @@ namespace MsgPack
 				Assert.IsFalse( obj.AsList().Any() );
 			}
 
+			{
+				var output = new MemoryStream();
+				Packer.Create( output ).Pack( new[] { 1 } );
+				MessagePackObject obj = UnpackOne( output );
+				var asList = obj.AsList();
+				Assert.AreEqual( 1, asList.Count );
+				Assert.AreEqual( 1, asList[ 0 ].AsInt32() );
+			}
+
+			{
+				var output = new MemoryStream();
+				Packer.Create( output ).Pack( new[] { 1, 2 } );
+				MessagePackObject obj = UnpackOne( output );
+				var asList = obj.AsList();
+				Assert.AreEqual( 2, asList.Count );
+				Assert.AreEqual( 1, asList[ 0 ].AsInt32() );
+				Assert.AreEqual( 2, asList[ 1 ].AsInt32() );
+			}
+
 			var random = new Random();
 
-			for ( int i = 0; i < 1000; i++ )
+			for ( int i = 0; i < 100; i++ )
 			{
 				var l = new List<int>();
-				int len = ( int )random.Next() % 1000 + 1;
+				int len = ( int )random.Next( 100 );
 				for ( int j = 0; j < len; j++ )
 				{
 					l.Add( j );
 				}
+
 				var output = new MemoryStream();
 				Packer.Create( output ).Pack( l );
 				MessagePackObject obj = UnpackOne( output );
@@ -241,10 +268,10 @@ namespace MsgPack
 				l.SequenceEqual( list.Select( item => item.AsInt32() ) );
 			}
 
-			for ( int i = 0; i < 1000; i++ )
+			for ( int i = 0; i < 100; i++ )
 			{
 				var l = new List<string>();
-				int len = ( int )random.Next() % 1000 + 1;
+				int len = ( int )random.Next( 100 );
 				for ( int j = 0; j < len; j++ )
 				{
 					l.Add( j.ToString() );
@@ -259,6 +286,46 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestNestedArray()
+		{
+			var output = new MemoryStream();
+			Packer.Create( output ).Pack( new[] { new int[ 0 ], new[] { 0 }, new[] { 0, 1 } } );
+			MessagePackObject obj = UnpackOne( output );
+			var outer = obj.AsList();
+			Assert.AreEqual( 3, outer.Count );
+			Assert.AreEqual( 0, outer[ 0 ].AsList().Count );
+			Assert.AreEqual( 1, outer[ 1 ].AsList().Count );
+			Assert.AreEqual( 0, outer[ 1 ].AsList()[ 0 ].AsInt32() ); // FIXME: remove AsInt32()
+			Assert.AreEqual( 2, outer[ 2 ].AsList().Count );
+			Assert.AreEqual( 0, outer[ 2 ].AsList()[ 0 ].AsInt32() ); // FIXME: remove AsInt32()
+			Assert.AreEqual( 1, outer[ 2 ].AsList()[ 1 ].AsInt32() );
+		}
+
+		[Test]
+		public void TestNestedMap()
+		{
+			var output = new MemoryStream();
+			Packer.Create( output ).Pack(
+				new Dictionary<string, Dictionary<int, bool>>()
+				{
+					{ "0", new Dictionary<int,bool>() },
+					{ "1", new Dictionary<int,bool>(){ { 0, false } } },
+					{ "2", new Dictionary<int,bool>(){ { 0, false }, { 1, true } } },
+				}
+			);
+			MessagePackObject obj = UnpackOne( output );
+			var outer = obj.AsDictionary();
+			Assert.AreEqual( 3, outer.Count );
+			Assert.AreEqual( 0, outer[ "0" ].AsDictionary().Count );
+			Assert.AreEqual( 1, outer[ "1" ].AsDictionary().Count );
+			Assert.AreEqual( false, outer[ "1" ].AsDictionary()[ 0 ].AsBoolean() ); // FIXME: remove AsBoolean()
+			Assert.AreEqual( 2, outer[ "2" ].AsDictionary().Count );
+			Assert.AreEqual( false, outer[ "2" ].AsDictionary()[ 0 ].AsBoolean() ); // FIXME: remove AsBoolean()
+			Assert.AreEqual( true, outer[ "2" ].AsDictionary()[ 1 ].AsBoolean() ); // FIXME: remove AsBoolean()
+		}
+
+		[Test]
+		[Timeout( 5000 )]
 		public void TestHeteroArray()
 		{
 			var heteroList = new List<MessagePackObject>()
@@ -275,9 +342,12 @@ namespace MsgPack
 					new MessagePackObject(
 						new Dictionary<MessagePackObject,MessagePackObject>()
 						{
-							{ new MessagePackObject( "1" ), new MessagePackObject( "foo" ) },
-							{ new MessagePackObject( 2 ), MessagePackObject.Nil },
-							{ new MessagePackObject( 3333333 ), new MessagePackObject( -1 ) }
+							//{ new MessagePackObject( "1" ), new MessagePackObject( "foo" ) },
+							//{ new MessagePackObject( 2 ), MessagePackObject.Nil },
+							//{ new MessagePackObject( 3333333 ), new MessagePackObject( -1 ) }
+							{ "1", "foo" },
+							{ 2, MessagePackObject.Nil },
+							{ 3333333, -1 }
 						}
 					),
 					new MessagePackObject( new MessagePackObject[]{ 1, 2, 3 } )
@@ -301,9 +371,12 @@ namespace MsgPack
 				Assert.AreEqual( heteroList[ 8 ], list[ 8 ] );
 				// MsgPack supports string type as utf-8 encoded bytes...
 				// TODO: usable wrapper dictionary.
+				// FIXME: 1渡したときに、常にコンパクト側に行くようにする。
 				Assert.AreEqual(
-					heteroList[ 9 ].AsDictionary()[ "1" ].AsString(),
-					list[ 9 ].AsDictionary()[ _utf8NoBom.GetBytes( "1" ) ].AsString()
+					//heteroList[ 9 ].AsDictionary()[ "1" ].AsString(),
+					//list[ 9 ].AsDictionary()[ _utf8NoBom.GetBytes( "1" ) ].AsString()
+					heteroList[ 9 ].AsDictionary()[ "1" ],
+					list[ 9 ].AsDictionary()[ "1" ]
 				);
 				Assert.IsTrue( list[ 9 ].AsDictionary()[ 2 ].IsNil );
 				Assert.AreEqual(
@@ -363,11 +436,12 @@ namespace MsgPack
 			}
 			else
 			{
-				buffer.Append( ' ', indent * 2 ).Append( obj ).AppendLine();
+				buffer.Append( ' ', indent * 2 ).Append( obj ).Append( " : " ).Append( obj.GetUnderlyingType() ).AppendLine();
 			}
 		}
 
 		[Test]
+		[Timeout( 5000 )]
 		public void TestDictionary()
 		{
 			var emptyDictionary = new Dictionary<int, int>();
@@ -380,10 +454,10 @@ namespace MsgPack
 
 			var random = new Random();
 
-			for ( int i = 0; i < 1000; i++ )
+			for ( int i = 0; i < 100; i++ )
 			{
 				var d = new Dictionary<int, int>();
-				int len = ( int )random.Next() % 1000 + 1;
+				int len = ( int )random.Next( 100 );
 				for ( int j = 0; j < len; j++ )
 				{
 					d[ j ] = j;
@@ -392,13 +466,17 @@ namespace MsgPack
 				Packer.Create( output ).Pack( d );
 				MessagePackObject obj = UnpackOne( output );
 				var dictionary = obj.AsDictionary();
-				CollectionAssert.AreEquivalent( d, dictionary.Select( item => new KeyValuePair<int, int>( item.Key.AsInt32(), item.Value.AsInt32() ) ) );
+				CollectionAssert.AreEquivalent(
+					d,
+					dictionary.Select( item => new KeyValuePair<int, int>( item.Key.AsInt32(), item.Value.AsInt32() ) ),
+					String.Join( ", ", dictionary.Select( item => "{ " + item.Key + " : " + item.Value + " }" ) )
+				);
 			}
 
-			for ( int i = 0; i < 1000; i++ )
+			for ( int i = 0; i < 100; i++ )
 			{
 				var d = new Dictionary<string, int>();
-				int len = ( int )random.Next() % 100 + 1;
+				int len = ( int )random.Next( 100 );
 				for ( int j = 0; j < len; j++ )
 				{
 					d[ j.ToString() ] = j;
