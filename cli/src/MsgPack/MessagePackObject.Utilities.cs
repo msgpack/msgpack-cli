@@ -825,7 +825,7 @@ namespace MsgPack
 				return null;
 			}
 
-			return this._handleOrTypeCode as byte[];
+			return ( this._handleOrTypeCode as MessagePackString ).GetBytes();
 		}
 
 		/// <summary>
