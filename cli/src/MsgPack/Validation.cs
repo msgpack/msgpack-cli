@@ -47,12 +47,12 @@ namespace MsgPack
 
 			if ( offset < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" ) );
+				throw new ArgumentOutOfRangeException( "offset", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" ) );
 			}
 
 			if ( length < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "nameOfLength", length, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", nameOfLength ) );
+				throw new ArgumentOutOfRangeException( "nameOfLength", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", nameOfLength ) );
 			}
 
 			if ( validateBufferSize && byteArray.Length < offset + length )
@@ -114,7 +114,13 @@ namespace MsgPack
 		//}
 
 		private static readonly Regex _unicodeTR15Annex7IdentifierPattern =
-			new Regex( @"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline );
+			new Regex( 
+				@"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*", 
+#if !SILVERLIGHT
+				RegexOptions.Compiled |
+#endif
+				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline
+			);
 
 		public static void ValidateMethodName( string methodName, string parameterName )
 		{

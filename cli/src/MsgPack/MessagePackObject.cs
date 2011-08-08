@@ -185,6 +185,7 @@ namespace MsgPack
 			this._handleOrTypeCode = _doubleTypeCode;
 		}
 
+#if !SILVERLIGHT
 		private MessagePackObject( SerializationInfo info, StreamingContext context )
 		{
 			if ( info == null )
@@ -280,6 +281,7 @@ namespace MsgPack
 			}
 		}
 
+#endif
 		#endregion -- Constructors --
 
 
@@ -390,6 +392,7 @@ namespace MsgPack
 
 		#endregion -- Primitive Type Conversion Methods --
 
+#if !SILVERLIGHT
 		private static bool AddPrimitiveToSerializationInfo( SerializationInfo info, string name, MessagePackObject value )
 		{
 			if( value.IsNil )
@@ -465,6 +468,8 @@ namespace MsgPack
 			}
 			return false;
 		}
+
+#endif
 
 		#region -- Conversion Operator Overloads --
 

@@ -100,7 +100,7 @@ namespace MsgPack
 
 			if( offset < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+				throw new ArgumentOutOfRangeException( "offset", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
 			}
 
 			Contract.EndContractBlock();
@@ -197,7 +197,7 @@ namespace MsgPack
 
 			if( offset < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" ) );
+				throw new ArgumentOutOfRangeException( "offset", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" ) );
 			}
 
 			Contract.EndContractBlock();
@@ -336,7 +336,7 @@ namespace MsgPack
 
 			if( offset < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+				throw new ArgumentOutOfRangeException( "offset", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
 			}
 
 			Contract.EndContractBlock();
@@ -428,7 +428,7 @@ namespace MsgPack
 
 			if( offset < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+				throw new ArgumentOutOfRangeException( "offset", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
 			}
 
 			Contract.EndContractBlock();
@@ -526,7 +526,7 @@ namespace MsgPack
 
 			if( offset < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+				throw new ArgumentOutOfRangeException( "offset", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
 			}
 
 			Contract.EndContractBlock();
@@ -632,7 +632,7 @@ namespace MsgPack
 
 			if( offset < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+				throw new ArgumentOutOfRangeException( "offset", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
 			}
 
 			Contract.EndContractBlock();
@@ -738,7 +738,7 @@ namespace MsgPack
 
 			if( offset < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "offset", offset, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
+				throw new ArgumentOutOfRangeException( "offset", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" )  );
 			}
 
 			Contract.EndContractBlock();
@@ -799,7 +799,7 @@ namespace MsgPack
 
 			if( length < 0L )
 			{
-				throw new ArgumentOutOfRangeException( "length", length, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "length" )  );
+				throw new ArgumentOutOfRangeException( "length", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "length" )  );
 			}
 
 			Contract.EndContractBlock();

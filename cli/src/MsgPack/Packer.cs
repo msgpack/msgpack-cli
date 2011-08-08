@@ -871,7 +871,7 @@ namespace MsgPack
 		{
 			if ( count < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "count", count, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "count" ) );
+				throw new ArgumentOutOfRangeException( "count", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "count" ) );
 			}
 			else if ( count < 16 )
 			{
@@ -920,7 +920,7 @@ namespace MsgPack
 		{
 			if ( count < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "count", count, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "count" ) );
+				throw new ArgumentOutOfRangeException( "count", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "count" ) );
 			}
 			else if ( count < 16 )
 			{
@@ -970,7 +970,7 @@ namespace MsgPack
 		{
 			if ( length < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "length", length, String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "length" ) );
+				throw new ArgumentOutOfRangeException( "length", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "length" ) );
 			}
 			else if ( length < 32 )
 			{

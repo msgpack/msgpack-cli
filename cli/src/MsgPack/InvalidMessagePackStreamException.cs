@@ -26,7 +26,9 @@ namespace MsgPack
 	/// <summary>
 	///		Exception occured when inbound stream is invalid as serialized Message Pack stream.
 	/// </summary>
+#if !SILVERLIGHT
 	[Serializable]
+#endif
 	public sealed class InvalidMessagePackStreamException : Exception
 	{
 		/// <summary>
@@ -54,7 +56,9 @@ namespace MsgPack
 		/// </param>
 		public InvalidMessagePackStreamException( string message, Exception inner ) : base( message, inner ) { }
 
+#if !SILVERLIGHT
 		private InvalidMessagePackStreamException( SerializationInfo info, StreamingContext context )
 			: base( info, context ) { }
+#endif
 	}
 }

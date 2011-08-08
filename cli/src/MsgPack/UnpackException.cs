@@ -26,7 +26,9 @@ namespace MsgPack
 	/// <summary>
 	///		Represents generic unpacking error.
 	/// </summary>
+#if !SILVERLIGHT
 	[Serializable]
+#endif
 	public sealed class UnpackException : Exception
 	{
 		/// <summary>
@@ -47,6 +49,8 @@ namespace MsgPack
 		/// <param name="inner">Underlying error.</param>
 		public UnpackException( string message, Exception inner ) : base( message, inner ) { }
 
+#if !SILVERLIGHT
 		private UnpackException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
+#endif
 	}
 }

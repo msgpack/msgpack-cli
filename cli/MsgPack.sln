@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{60EC42E9-D79B-4ADF-8F80-4DCD580061FD}"
+	ProjectSection(SolutionItems) = preProject
+		src\CommonAssemblyInfo.cs = src\CommonAssemblyInfo.cs
+		src\CommonAssemblyInfo.Pack.cs = src\CommonAssemblyInfo.Pack.cs
+		src\CommonAssemblyInfo.Rpc.cs = src\CommonAssemblyInfo.Rpc.cs
+		src\Struct.tt = src\Struct.tt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1BD5D488-707E-4030-8AE8-80D93D04963F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{87A17015-9338-431E-B338-57BDA03984C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack", "src\MsgPack\MsgPack.csproj", "{5BCEC32E-990E-4DE5-945F-BD27326A7418}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.UnitTest", "test\MsgPack.UnitTest\MsgPack.UnitTest.csproj", "{3889C9BE-0473-4B41-80E8-C4C923E837E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Silverlight", "src\MsgPack.Silverlight\MsgPack.Silverlight.csproj", "{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Performance Test|Any CPU = Performance Test|Any CPU
+		PerformanceTest|Any CPU = PerformanceTest|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Performance Test|Any CPU.ActiveCfg = PerformanceTest|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Performance Test|Any CPU.Build.0 = PerformanceTest|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.PerformanceTest|Any CPU.ActiveCfg = PerformanceTest|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.PerformanceTest|Any CPU.Build.0 = PerformanceTest|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Performance Test|Any CPU.ActiveCfg = PerformanceTest|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Performance Test|Any CPU.Build.0 = PerformanceTest|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.PerformanceTest|Any CPU.ActiveCfg = PerformanceTest|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.PerformanceTest|Any CPU.Build.0 = PerformanceTest|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Performance Test|Any CPU.ActiveCfg = Release|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Performance Test|Any CPU.Build.0 = Release|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.PerformanceTest|Any CPU.ActiveCfg = Release|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.PerformanceTest|Any CPU.Build.0 = Release|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7} = {87A17015-9338-431E-B338-57BDA03984C1}
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418} = {1BD5D488-707E-4030-8AE8-80D93D04963F}
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796} = {1BD5D488-707E-4030-8AE8-80D93D04963F}
+	EndGlobalSection
+EndGlobal

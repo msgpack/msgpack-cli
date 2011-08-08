@@ -26,7 +26,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using Microsoft.CSharp.RuntimeBinder;
+//using Microsoft.CSharp.RuntimeBinder;
 
 namespace MsgPack
 {
@@ -34,7 +34,10 @@ namespace MsgPack
 #warning TODO: Recursive dictionary serialization
 #warning TODO: Improve UTF-8 String
 #warning TODO: Improve Dictionary<MPO,MPO> usability
-	partial struct MessagePackObject : ISerializable
+	partial struct MessagePackObject
+#if !SILVERLIGHT
+ : ISerializable
+#endif
 	{
 		#region -- Type Code Constants --
 
@@ -83,7 +86,7 @@ namespace MsgPack
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
-			this._handleOrTypeCode = value;
+			this._handleOrTypeCode = new MessagePackString( value );
 		}
 
 		/// <summary>
@@ -110,13 +113,21 @@ namespace MsgPack
 		///		Initialize new instance wraps raw byte array.
 		/// </summary>
 		public MessagePackObject( byte[] value )
+			: this( value, false ) { }
+
+		/// <summary>
+		///		Initialize new instance wraps raw byte array.
+		/// </summary>
+		internal MessagePackObject( byte[] value, bool mayString )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
-			this._handleOrTypeCode = value;
+			this._handleOrTypeCode = new MessagePackString( value, mayString );
 		}
 
 		#endregion -- Constructors --
+
+#if !SILVERLIGHT
 
 		#region -- ISerializable support --
 
@@ -157,6 +168,8 @@ namespace MsgPack
 		}
 
 		#endregion -- ISerializable support --
+
+#endif
 
 		#region -- Structure Methods --
 
@@ -267,40 +280,14 @@ namespace MsgPack
 			}
 
 			{
-				var asString = this._handleOrTypeCode as string;
-				if ( asString != null )
+				var asMps = this._handleOrTypeCode as MessagePackString;
+				if ( asMps != null )
 				{
-					var otherAsString = other._handleOrTypeCode as string;
-					if ( otherAsString == null )
-					{
-						var asBytes = other._handleOrTypeCode as byte[];
-						if ( asBytes == null )
-						{
-							return false;
-						}
-
-						otherAsString = Encoding.UTF8.GetString( asBytes );
-					}
-
-					return asString.Equals( otherAsString, StringComparison.Ordinal );
+					return asMps.Equals( other._handleOrTypeCode as MessagePackString );
 				}
 			}
 
-			{
-				var asBinary = this._handleOrTypeCode as byte[];
-				if ( asBinary != null )
-				{
-					var otherAsBinary = other._handleOrTypeCode as byte[];
-					if ( otherAsBinary == null )
-					{
-						return false;
-					}
-
-					return asBinary.SequenceEqual( otherAsBinary );
-				}
-			}
-
-			Debug.Fail( String.Format( "Unkown handle type '{0}'(value: '{1}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode ) );
+			Debug.Assert( false, String.Format( "Unkown handle type '{0}'(value: '{1}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode ) );
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
 		}
 
@@ -338,28 +325,15 @@ namespace MsgPack
 				}
 			}
 
+			var asMps = this._handleOrTypeCode as MessagePackString;
+			if ( asMps != null )
 			{
-				var asBinary = this._handleOrTypeCode as byte[];
-				if ( asBinary != null )
-				{
-					// TODO: big array support...
-					return asBinary.Aggregate( 0, ( hash, item ) => hash ^ item.GetHashCode() );
-				}
+				return asMps.GetHashCode();
 			}
-
-			// may be string
-
+			else
 			{
-				var asString = this._handleOrTypeCode as string;
-				if ( asString != null )
-				{
-					return asString.GetHashCode();
-				}
-				else
-				{
-					Debug.Fail( String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
-					return 0;
-				}
+				Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
+				return 0;
 			}
 		}
 
@@ -417,23 +391,28 @@ namespace MsgPack
 			}
 
 			{
-				var asBinary = this._handleOrTypeCode as byte[];
+				var asBinary = this._handleOrTypeCode as MessagePackString;
 				if ( asBinary != null )
 				{
 					// TODO: big array support...
-					try
+					var asString = asBinary.TryGetString();
+					if ( asString != null )
 					{
-						return MessagePackConvert.DecodeStringStrict( asBinary );
+						return asString;
 					}
-					catch ( ArgumentException )
+
+					var asBlob = asBinary.UnsafeGetBuffer();
+					if ( asBlob != null )
 					{
-						return BitConverter.ToString( asBinary );
+						return BitConverter.ToString( asBlob );
 					}
+
+					return String.Empty;
 				}
 			}
 
 			// may be string
-			Debug.Assert( this._handleOrTypeCode is string, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
+			Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
 			return this._handleOrTypeCode.ToString();
 		}
 
@@ -476,9 +455,21 @@ namespace MsgPack
 			{
 				if ( type == typeof( string ) )
 				{
-					return this._handleOrTypeCode is byte[];
+					return this._handleOrTypeCode is MessagePackString;
 				}
 
+				if ( type == typeof( byte[] ) )
+				{
+					return this._handleOrTypeCode is MessagePackString;
+				}
+
+				// Can IEnumerable<byte>
+				if ( typeof( IEnumerable<MessagePackObject> ).IsAssignableFrom( type ) 
+					&& this._handleOrTypeCode is MessagePackString )
+				{
+					return true;
+				}
+				
 				return type.IsAssignableFrom( this._handleOrTypeCode.GetType() );
 			}
 
@@ -627,7 +618,15 @@ namespace MsgPack
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
 			if ( typeCode == null )
 			{
-				return this._handleOrTypeCode.GetType();
+				var asMps = this._handleOrTypeCode as MessagePackString;
+				if ( asMps != null )
+				{
+					return asMps.GetUnderlyingType();
+				}
+				else
+				{
+					return this._handleOrTypeCode.GetType();
+				}
 			}
 			else
 			{
@@ -856,7 +855,7 @@ namespace MsgPack
 				return asString;
 			}
 
-			VerifyUnderlyingType<byte[]>( this, null );
+			VerifyUnderlyingType<MessagePackString>( this, null );
 
 			Contract.EndContractBlock();
 
@@ -867,11 +866,17 @@ namespace MsgPack
 
 			try
 			{
-				return encoding.GetString( this._handleOrTypeCode as byte[] );
+				var asBytes = this._handleOrTypeCode as MessagePackString;
+				if ( asBytes.UnsafeGetBuffer() == null )
+				{
+					return null;
+				}
+
+				return encoding.GetString( asBytes.UnsafeGetBuffer() );
 			}
 			catch ( ArgumentException ex )
 			{
-				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Not '{0}' string.", encoding.EncodingName ), ex );
+				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Not '{0}' string.", encoding.WebName ), ex );
 			}
 		}
 
@@ -916,11 +921,11 @@ namespace MsgPack
 
 				if ( asBytes[ 0 ] == 0xff && asBytes[ 1 ] == 0xfe )
 				{
-					return Encoding.Unicode.GetString( asBytes );
+					return Encoding.Unicode.GetString( asBytes, 0, asBytes.Length );
 				}
 				else
 				{
-					return Encoding.BigEndianUnicode.GetString( asBytes );
+					return Encoding.BigEndianUnicode.GetString( asBytes, 0, asBytes.Length );
 				}
 			}
 			catch ( ArgumentException ex )
@@ -945,7 +950,13 @@ namespace MsgPack
 				return null;
 			}
 
-			return this._handleOrTypeCode as IList<MessagePackObject>;
+			var asList = this._handleOrTypeCode as IList<MessagePackObject>;
+			if ( asList != null )
+			{
+				return asList;
+			}
+
+			return ( this._handleOrTypeCode as MessagePackString ).GetBytes().Select( b => new MessagePackObject( b ) );
 		}
 
 		/// <summary>
@@ -1023,7 +1034,7 @@ namespace MsgPack
 		/// </exception>
 		public static MessagePackObject FromObject( object boxedValue )
 		{
-			return FromObject( boxedValue, ObjectPackingOptions.Recursive );
+			return FromObject( boxedValue, ObjectPackingOptions.None /* ObjectPackingOptions.Recursive */ );
 		}
 
 		/// <summary>
@@ -1163,6 +1174,7 @@ namespace MsgPack
 				return new MessagePackObject( boxedValue as IDictionary<MessagePackObject, MessagePackObject> );
 			}
 
+			/*
 			if ( options.Has( ObjectPackingOptions.Recursive ) )
 			{
 				var types = boxedValue.GetType().GetInterfaces();
@@ -1207,8 +1219,107 @@ namespace MsgPack
 					}
 				}
 			}
+			 */
 
 			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not supported.", boxedValue.GetType() ) );
+		}
+
+		/// <summary>
+		///		Get boxed underlying value for this object.
+		/// </summary>
+		/// <returns>Boxed underlying value for this object.</returns>
+		public object ToObject()
+		{
+			if ( this._handleOrTypeCode == null )
+			{
+				return null;
+			}
+
+			var asType = this._handleOrTypeCode as ValueTypeCode;
+			if ( asType == null )
+			{
+				var asBinary = this._handleOrTypeCode as MessagePackString;
+				if ( asBinary != null )
+				{
+					var asString = asBinary.TryGetString();
+					if ( asString != null )
+					{
+						return asString;
+					}
+
+					return asBinary.UnsafeGetBuffer();
+				}
+
+				var asDictionary = this._handleOrTypeCode as IDictionary<MessagePackObject, MessagePackObject>;
+				if ( asDictionary != null )
+				{
+					return asDictionary;
+				}
+
+				var asList = this._handleOrTypeCode as IList<MessagePackObject>;
+				if ( asList != null )
+				{
+					return asList;
+				}
+
+				Contract.Assert( false, "Unknwon type:" + this._handleOrTypeCode );
+				return null;
+			}
+			else
+			{
+				switch ( asType.TypeCode )
+				{
+					case TypeCode.Boolean:
+					{
+						return this.AsBoolean();
+					}
+					case TypeCode.Byte:
+					{
+						return this.AsByte();
+					}
+					case TypeCode.Int16:
+					{
+						return this.AsInt16();
+					}
+					case TypeCode.Int32:
+					{
+						return this.AsInt32();
+					}
+					case TypeCode.Int64:
+					{
+						return this.AsInt64();
+					}
+					case TypeCode.SByte:
+					{
+						return this.AsSByte();
+					}
+					case TypeCode.UInt16:
+					{
+						return this.AsUInt16();
+					}
+					case TypeCode.UInt32:
+					{
+						return this.AsUInt32();
+					}
+					case TypeCode.UInt64:
+					{
+						return this.AsUInt64();
+					}
+					case TypeCode.Single:
+					{
+						return this.AsSingle();
+					}
+					case TypeCode.Double:
+					{
+						return this.AsDouble();
+					}
+					default:
+					{
+						Contract.Assert( false, "Unknwon type code:" + asType.TypeCode );
+						return null;
+					}
+				}
+			}
 		}
 
 		#region -- Structure Operator Overloads --
@@ -1281,9 +1392,9 @@ namespace MsgPack
 		/// <returns>Raw byte array of <paramref name="value"/>.</returns>
 		public static explicit operator byte[]( MessagePackObject value )
 		{
-			VerifyUnderlyingType<byte[]>( value, "value" );
+			VerifyUnderlyingType<MessagePackString>( value, "value" );
 
-			return value._handleOrTypeCode as byte[];
+			return ( value._handleOrTypeCode as MessagePackString ).GetBytes();
 		}
 
 		/// <summary>
@@ -1293,7 +1404,8 @@ namespace MsgPack
 		/// <returns>Raw byte array of <paramref name="value"/>.</returns>
 		public static explicit operator string( MessagePackObject value )
 		{
-			return Encoding.UTF8.GetString( ( byte[] )value );
+			var asBytes = ( byte[] )value;
+			return Encoding.UTF8.GetString( asBytes, 0, asBytes.Length );
 		}
 
 		#endregion -- Conversion Operator Overloads --

@@ -26,7 +26,9 @@ namespace MsgPack
 	/// <summary>
 	///		Represents unpacking error when message type is unknown or unavailable.
 	/// </summary>
+#if !SILVERLIGHT
 	[Serializable]
+#endif
 	public sealed class MessageTypeException : Exception
 	{
 		/// <summary>
@@ -47,6 +49,8 @@ namespace MsgPack
 		/// <param name="inner">Underlying error.</param>
 		public MessageTypeException( string message, Exception inner ) : base( message, inner ) { }
 
+#if !SILVERLIGHT
 		private MessageTypeException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
+#endif
 	}
 }

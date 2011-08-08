@@ -26,7 +26,9 @@ namespace MsgPack
 	/// <summary>
 	///		Exception occurs when serialized stream contains structures or features which will never be supported by MsgPack/CLI implementation.
 	/// </summary>
+#if !SILVERLIGHT
 	[Serializable]
+#endif
 	public sealed class MessageNotSupportedException : Exception
 	{
 		/// <summary>
@@ -53,7 +55,9 @@ namespace MsgPack
 		/// </param>
 		public MessageNotSupportedException( string message, Exception inner ) : base( message, inner ) { }
 
+#if !SILVERLIGHT
 		private MessageNotSupportedException( SerializationInfo info, StreamingContext context )
 			: base( info, context ) { }
+#endif
 	}
 }

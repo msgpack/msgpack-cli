@@ -37,7 +37,7 @@ namespace MsgPack
 		internal static Encoding Utf8NonBom
 		{
 			get { return MessagePackConvert._utf8NonBom; }
-		} 
+		}
 
 		/// <summary>
 		///		Encode specified string by default encoding.
@@ -79,7 +79,7 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			return _utf8BobBomStrict.GetString( value );
+			return _utf8BobBomStrict.GetString( value, 0, value.Length );
 		}
 
 		private static readonly DateTimeOffset _unixEpocUtc = new DateTimeOffset( 1970, 1, 1, 0, 0, 0, TimeSpan.Zero );

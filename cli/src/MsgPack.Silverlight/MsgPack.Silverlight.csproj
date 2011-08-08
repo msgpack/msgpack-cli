@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MsgPack.Silverlight</RootNamespace>
+    <AssemblyName>MsgPack.Silverlight</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\CommonAssemblyInfo.Pack.cs">
+      <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\BigEndianBinary.cs">
+      <Link>BigEndianBinary.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Binary.cs">
+      <Link>Binary.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Float32Bits.cs">
+      <Link>Float32Bits.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Float64Bits.cs">
+      <Link>Float64Bits.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IClippable.cs">
+      <Link>IClippable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\InvalidMessagePackStreamException.cs">
+      <Link>InvalidMessagePackStreamException.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IPackable.cs">
+      <Link>IPackable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ISegmentLengthRecognizeable.cs">
+      <Link>ISegmentLengthRecognizeable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IUnpackable.cs">
+      <Link>IUnpackable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Linq\StreamEnumerable.cs">
+      <Link>Linq\StreamEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessageNotSupportedException.cs">
+      <Link>MessageNotSupportedException.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackConvert.cs">
+      <Link>MessagePackConvert.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackObject.cs">
+      <Link>MessagePackObject.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackObject.Utilities.cs">
+      <Link>MessagePackObject.Utilities.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackString.cs">
+      <Link>MessagePackString.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessageTypeException.cs">
+      <Link>MessageTypeException.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ObjectPackingOptions.cs">
+      <Link>ObjectPackingOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Packer.cs">
+      <Link>Packer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Packer.Nullable.cs">
+      <Link>Packer.Nullable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Packer.Utilities.cs">
+      <Link>Packer.Utilities.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Packer.ValuePacker.cs">
+      <Link>Packer.ValuePacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\PackingOptions.cs">
+      <Link>PackingOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\StreamingUnpacker.cs">
+      <Link>StreamingUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\StreamPacker.cs">
+      <Link>StreamPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackArrayResult.cs">
+      <Link>UnpackArrayResult.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Unpacker.cs">
+      <Link>Unpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Unpacker.Direct.cs">
+      <Link>Unpacker.Direct.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackException.cs">
+      <Link>UnpackException.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Unpacking.cs">
+      <Link>Unpacking.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Unpacking.Integers.cs">
+      <Link>Unpacking.Integers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Unpacking.Others.cs">
+      <Link>Unpacking.Others.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Unpacking.String.cs">
+      <Link>Unpacking.String.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Validation.cs">
+      <Link>Validation.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
