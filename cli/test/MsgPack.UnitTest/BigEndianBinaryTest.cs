@@ -26,6 +26,7 @@ using NUnit.Framework;
 namespace MsgPack
 {
 	[TestFixture]
+	[Timeout( 1000 )]
 	public sealed class BigEndianBinaryTest
 	{
 		[Test]

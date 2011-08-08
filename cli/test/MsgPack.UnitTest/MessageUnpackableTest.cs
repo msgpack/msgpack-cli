@@ -28,6 +28,7 @@ using NUnit.Framework;
 namespace MsgPack
 {
 	[TestFixture]
+	[Timeout( 1000 )]
 	public class MessageUnpackableTest
 	{
 		[Test]
