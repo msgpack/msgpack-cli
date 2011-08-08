@@ -43,6 +43,7 @@ namespace MsgPack
 		/// <summary>
 		///		<see cref="Packer"/> recursively packs collection items which are not <see cref="MessagePackObject"/>.
 		/// </summary>
+		[Obsolete( "Use MessagePackFormatter instead.", true )]
 		Recursive = 0x2
 	}
 
