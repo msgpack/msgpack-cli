@@ -220,69 +220,36 @@ namespace MsgPack
 		}
 
 		[Test]
-		[Timeout( 5000 )]
+		[Timeout( 10000 )]
 		public void TestArray()
 		{
-			var emptyList = new List<int>();
-			{
-				var output = new MemoryStream();
-				Packer.Create( output ).Pack( emptyList );
-				MessagePackObject obj = UnpackOne( output );
-				Assert.IsFalse( obj.AsList().Any() );
-			}
-
-			{
-				var output = new MemoryStream();
-				Packer.Create( output ).Pack( new[] { 1 } );
-				MessagePackObject obj = UnpackOne( output );
-				var asList = obj.AsList();
-				Assert.AreEqual( 1, asList.Count );
-				Assert.AreEqual( 1, asList[ 0 ].AsInt32() );
-			}
-
-			{
-				var output = new MemoryStream();
-				Packer.Create( output ).Pack( new[] { 1, 2 } );
-				MessagePackObject obj = UnpackOne( output );
-				var asList = obj.AsList();
-				Assert.AreEqual( 2, asList.Count );
-				Assert.AreEqual( 1, asList[ 0 ].AsInt32() );
-				Assert.AreEqual( 2, asList[ 1 ].AsInt32() );
-			}
-
-			var random = new Random();
-
-			for ( int i = 0; i < 100; i++ )
-			{
-				var l = new List<int>();
-				int len = ( int )random.Next( 100 );
-				for ( int j = 0; j < len; j++ )
+			var sw = new Stopwatch();
+			foreach (
+				var count in
+				new[]
 				{
-					l.Add( j );
+					0, // empty
+					1, // only one
+					2, // minimum multiple
+					0xf, // max fix array size
+					0x10, // min array16 size
+					0xffff, // max array16 size
+					0x10000, // min array32 size
 				}
-
-				var output = new MemoryStream();
-				Packer.Create( output ).Pack( l );
-				MessagePackObject obj = UnpackOne( output );
-				var list = obj.AsList();
-				l.SequenceEqual( list.Select( item => item.AsInt32() ) );
-			}
-
-			for ( int i = 0; i < 100; i++ )
+			)
 			{
-				var l = new List<string>();
-				int len = ( int )random.Next( 100 );
-				for ( int j = 0; j < len; j++ )
-				{
-					l.Add( j.ToString() );
-				}
+				sw.Restart();
+				Console.WriteLine( "Array[0x{0:x}]", count );
 				var output = new MemoryStream();
-				Packer.Create( output ).Pack( l );
-				MessagePackObject obj = UnpackOne( output );
-				var list = obj.AsList();
-				Assert.IsTrue( list.All( item => item.IsTypeOf<string>().GetValueOrDefault() ) );
-				l.SequenceEqual( list.Select( item => item.ToString() ) );
+				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToArray() );
+				CollectionAssert.AreEqual(
+					Enumerable.Range( 0, count ).ToArray(),
+					UnpackOne( output ).AsEnumerable().Select( item => item.AsInt32() ).ToArray()
+				);
+				sw.Stop();
 			}
+
+			Console.WriteLine( "Array: {0:0.###} msec/item", sw.Elapsed.TotalMilliseconds / 0x10000 );
 		}
 
 		[Test]
@@ -439,54 +406,104 @@ namespace MsgPack
 				buffer.Append( ' ', indent * 2 ).Append( obj ).Append( " : " ).Append( obj.GetUnderlyingType() ).AppendLine();
 			}
 		}
-
+				
 		[Test]
-		[Timeout( 5000 )]
+		[Timeout( 10000 )]
 		public void TestDictionary()
 		{
-			var emptyDictionary = new Dictionary<int, int>();
-			{
-				var output = new MemoryStream();
-				Packer.Create( output ).Pack( emptyDictionary );
-				MessagePackObject obj = UnpackOne( output );
-				Assert.IsFalse( obj.AsDictionary().Any() );
-			}
-
-			var random = new Random();
-
-			for ( int i = 0; i < 100; i++ )
-			{
-				var d = new Dictionary<int, int>();
-				int len = ( int )random.Next( 100 );
-				for ( int j = 0; j < len; j++ )
+			var sw = new Stopwatch();
+			foreach (
+				var count in
+				new[]
 				{
-					d[ j ] = j;
+					0, // empty
+					1, // only one
+					2, // minimum multiple
+					0xf, // max fix map size
+					0x10, // min map16 size
+					0xffff, // max map16 size
+					0x10000, // min map32 size
 				}
+			)
+			{
+				sw.Restart();
+				Console.WriteLine( "Map[0x{0:x}]", count );
 				var output = new MemoryStream();
-				Packer.Create( output ).Pack( d );
-				MessagePackObject obj = UnpackOne( output );
-				var dictionary = obj.AsDictionary();
-				CollectionAssert.AreEquivalent(
-					d,
-					dictionary.Select( item => new KeyValuePair<int, int>( item.Key.AsInt32(), item.Value.AsInt32() ) ),
-					String.Join( ", ", dictionary.Select( item => "{ " + item.Key + " : " + item.Value + " }" ) )
+				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ) );
+				CollectionAssert.AreEqual(
+					Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ),
+					UnpackOne( output ).AsDictionary().ToDictionary( kv => kv.Key.AsString(), kv => kv.Value.AsInt32() )
 				);
+				sw.Stop();
 			}
 
-			for ( int i = 0; i < 100; i++ )
-			{
-				var d = new Dictionary<string, int>();
-				int len = ( int )random.Next( 100 );
-				for ( int j = 0; j < len; j++ )
+			Console.WriteLine( "Map: {0:0.###} msec/item", sw.Elapsed.TotalMilliseconds / 0x10000 );
+		}
+
+		[Test]
+		[Timeout( 3000 )]
+		public void TestBytes()
+		{
+			var sw = new Stopwatch();
+			foreach (
+				var count in
+				new[]
 				{
-					d[ j.ToString() ] = j;
+					0, // empty
+					1, // only one
+					2, // minimum multiple
+					0x1f, // max fix raw size
+					0x20, // min raw16 size
+					0xffff, // max raw16 size
+					0x10000, // min raw32 size
 				}
+			)
+			{
+				sw.Restart();
+				Console.WriteLine( "byte[0x{0:x}]", count );
 				var output = new MemoryStream();
-				Packer.Create( output ).Pack( d );
-				MessagePackObject obj = UnpackOne( output );
-				var dictionary = obj.AsDictionary();
-				CollectionAssert.AreEquivalent( d, dictionary.Select( item => new KeyValuePair<string, int>( item.Key.AsString(), item.Value.AsInt32() ) ).ToDictionary( item => item.Key, item => item.Value ) );
+				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray() );
+				CollectionAssert.AreEqual(
+					Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray(),
+					UnpackOne( output ).AsBinary()
+				);
+				sw.Stop();
 			}
+
+			Console.WriteLine( "Bytes: {0:0.###} msec/byte", sw.Elapsed.TotalMilliseconds / 0x10000 );
+		}
+
+		[Test]
+		[Timeout( 3000 )]
+		public void TestChars()
+		{
+			var sw = new Stopwatch();
+			foreach (
+				var count in
+				new[]
+				{
+					0, // empty
+					1, // only one
+					2, // minimum multiple
+					0x1f, // max fix raw size
+					0x20, // min raw16 size
+					0xffff, // max raw16 size
+					0x10000, // min raw32 size
+				}
+			)
+			{
+				sw.Restart();
+				Console.WriteLine( "utf-8[0x{0:x}]", count );
+				var output = new MemoryStream();
+				Packer.Create( output ).Pack( String.Join( String.Empty, Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ) ) );
+				Assert.AreEqual(
+					String.Join( String.Empty, Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ) ),
+					UnpackOne( output ).AsString()
+				);
+				sw.Stop();
+			}
+
+			Console.WriteLine( "String: {0:0.###} msec/char", sw.Elapsed.TotalMilliseconds / 0x10000 );
 		}
 	}
 }
