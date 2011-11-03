@@ -340,7 +340,7 @@ namespace MsgPack
 				Assert.AreEqual( heteroList[ 8 ], list[ 8 ] );
 				// MsgPack supports string type as utf-8 encoded bytes...
 				// TODO: usable wrapper dictionary.
-				// FIXME: 1æ¸¡ã—ãŸã¨ãã«ã€å¸¸ã«ã‚³ãƒ³ãƒ‘ã‚¯ãƒˆå´ã«è¡Œãã‚ˆã†ã«ã™ã‚‹ã€‚
+				// FIXME: 1“n‚µ‚½‚Æ‚«‚ÉAí‚ÉƒRƒ“ƒpƒNƒg‘¤‚És‚­‚æ‚¤‚É‚·‚éB
 				Assert.AreEqual(
 					//heteroList[ 9 ].AsDictionary()[ "1" ].AsString(),
 					//list[ 9 ].AsDictionary()[ _utf8NoBom.GetBytes( "1" ) ].AsString()
@@ -408,7 +408,7 @@ namespace MsgPack
 				buffer.Append( ' ', indent * 2 ).Append( obj ).Append( " : " ).Append( obj.GetUnderlyingType() ).AppendLine();
 			}
 		}
-				
+
 		[Test]
 		[Timeout( 10000 )]
 		public void TestDictionary()
@@ -506,6 +506,28 @@ namespace MsgPack
 			}
 
 			Console.WriteLine( "String: {0:0.###} msec/char", sw.Elapsed.TotalMilliseconds / 0x10000 );
+		}
+
+		[Test]
+		public void TestMultipleObjectInStream()
+		{
+			using ( var stream = new MemoryStream() )
+			{
+				var packer = Packer.Create( stream );
+				packer.Pack( 1 );
+				packer.Pack( "1" );
+				stream.Position = 0;
+				var item = Unpacking.UnpackObject( stream );
+				Assert.That( item, Is.Not.Null );
+				Assert.That( item.Value.IsTypeOf<int>().Value );
+				Assert.That( item.Value.GetUnderlyingType().IsPrimitive, Is.True );
+				Assert.That( item.Value.AsInt32(), Is.EqualTo( 1 ) );
+				item = Unpacking.UnpackObject( stream );
+				Assert.That( item, Is.Not.Null );
+				Assert.That( item.Value.GetUnderlyingType(), Is.EqualTo( typeof( String ) ) );
+				Assert.That( item.Value.IsTypeOf<string>().Value );
+				Assert.That( item.Value.AsString(), Is.EqualTo( "1" ) );
+			}
 		}
 	}
 }
