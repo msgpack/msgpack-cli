@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
-using MsgPack.Linq;
+using System.Linq;
 
 namespace MsgPack
 {
@@ -158,7 +158,8 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			return new StreamingUnpacker().Unpack( source );
+			// TODO: Use more efficient custom stream?
+			return new StreamUnpacker().Unpack( new MemoryStream( source.ToArray() ) );
 		}
 	}
 }

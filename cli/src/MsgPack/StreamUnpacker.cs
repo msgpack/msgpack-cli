@@ -540,33 +540,33 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Represents state machine stage (state) of <see cref="StreamingUnpacker"/>.
+		///		Represents state machine stage (state) of <see cref="StreamUnpacker"/>.
 		/// </summary>
 		private enum Stage
 		{
 			/// <summary>
 			///		State machine stays root unpacking.
-			///		<see cref="StreamingUnpacker"/> does not have any intermediate state.
+			///		<see cref="StreamUnpacker"/> does not have any intermediate state.
 			///		This is initial state.
 			/// </summary>
 			Root = 0,
 
 			/// <summary>
 			///		State machine is unpacking some collection.
-			///		<see cref="StreamingUnpacker"/> will unpack next item of context collection.
+			///		<see cref="StreamUnpacker"/> will unpack next item of context collection.
 			/// </summary>
 			UnpackContextCollection,
 
 			/// <summary>
 			///		State machine is unpacking length of array or map.
-			///		<see cref="StreamingUnpacker"/> will unpack scalar as length of collection, 
+			///		<see cref="StreamUnpacker"/> will unpack scalar as length of collection, 
 			///		then add new context collection to the stack and unpack items.
 			/// </summary>
 			UnpackCollectionLength,
 
 			/// <summary>
 			///		State machine is unpacking length of raw binaries.
-			///		<see cref="StreamingUnpacker"/> will unpack scalar as length of binaries, 
+			///		<see cref="StreamUnpacker"/> will unpack scalar as length of binaries, 
 			///		then get following bytes as value.
 			/// </summary>
 			UnpackRawLength,

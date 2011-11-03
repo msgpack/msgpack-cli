@@ -23,9 +23,8 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
-
-using MsgPack.Linq;
 
 // TODO: Remove magic numbers related to MsgPack spec.
 
@@ -47,7 +46,7 @@ namespace MsgPack
 		/// <summary>
 		///		Actual unpackaging strategy.
 		/// </summary>
-		private readonly StreamingUnpacker _unpacker = new StreamingUnpacker();
+		private readonly StreamUnpacker _unpacker = new StreamUnpacker();
 
 		/// <summary>
 		///		If current position MAY be in tail of source then true, otherwise false.
@@ -158,7 +157,7 @@ namespace MsgPack
 
 		private void VerifyNotDisposed()
 		{
-			if ( this._currentSource.Source == null )
+			if ( this._currentSource.Stream == null )
 			{
 				throw new ObjectDisposedException( this.GetType().FullName );
 			}
@@ -212,7 +211,7 @@ namespace MsgPack
 		{
 			while ( !this.IsInTailUltimately() )
 			{
-				this._data = this._unpacker.Unpack( this._currentSource.Source );
+				this._data = this._unpacker.Unpack( this._currentSource.Stream );
 				if ( this._data != null )
 				{
 					yield return this._data.Value;
@@ -511,14 +510,7 @@ namespace MsgPack
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
-			if ( this._currentSource.OwnsStream )
-			{
-				return Unpacking.UnpackObject( this._currentSource.Stream );
-			}
-			else
-			{
-				return Unpacking.UnpackObject( this._currentSource.Source );
-			}
+			return Unpacking.UnpackObject( this._currentSource.Stream );
 		}
 
 		/// <summary>
@@ -526,17 +518,6 @@ namespace MsgPack
 		/// </summary>
 		private struct DataSource
 		{
-			private IEnumerable<byte> _source;
-
-			/// <summary>
-			///		Get data source bytes as <see cref="IEnumerable&lt;T&gt;"/>.
-			/// </summary>
-			/// <value>Data source bytes as <see cref="IEnumerable&lt;T&gt;"/>.</value>
-			public IEnumerable<byte> Source
-			{
-				get { return this._source ?? this.Stream.AsEnumerable(); }
-			}
-
 			/// <summary>
 			///		Indicates whether this unpacker should <see cref="Dispose()"/> <see cref="Stream"/>.
 			/// </summary>
@@ -549,8 +530,8 @@ namespace MsgPack
 
 			public DataSource( IEnumerable<byte> source )
 			{
-				this._source = source;
-				this.Stream = null;
+				// TODO: more efficient custom stream?
+				this.Stream = new MemoryStream( source.ToArray() );
 				this.OwnsStream = false;
 			}
 
@@ -558,7 +539,6 @@ namespace MsgPack
 			{
 				this.Stream = stream;
 				this.OwnsStream = ownsStream;
-				this._source = null;
 			}
 		}
 	}

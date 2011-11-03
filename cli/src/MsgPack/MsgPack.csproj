@@ -95,7 +95,6 @@
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Linq\StreamEnumerable.cs" />
     <Compile Include="MessagePackConvert.cs" />
     <Compile Include="MessagePackObject.Utilities.cs" />
     <Compile Include="MessageNotSupportedException.cs" />
@@ -121,9 +120,6 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StreamingUnpacker.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="StreamPacker.cs" />
     <Compile Include="Unpacking.cs">
       <SubType>Code</SubType>
@@ -186,6 +182,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
