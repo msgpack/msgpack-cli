@@ -37,27 +37,27 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">There is no approptiate MessagePack type to represent specified object.</exception>
 		public Packer PackObject( object boxedValue, PackingOptions options )
 		{
-			if( boxedValue == null )
+			if ( boxedValue == null )
 			{
 				return this.PackNull();
 			}
 			
 			var asPackable = boxedValue as IPackable;
-			if( asPackable != null )
+			if ( asPackable != null )
 			{
 				asPackable.PackToMessage( this, options );
 				return this;
 			}		
-			if( boxedValue is System.Boolean )
+			if ( boxedValue is System.Boolean )
 			{
 				return this.Pack( ( System.Boolean )boxedValue );
 			}
 			
-			if( boxedValue is System.Boolean? )
+			if ( boxedValue is System.Boolean? )
 			{
 				return this.Pack( ( System.Boolean )boxedValue );
 			}
-			if( boxedValue is System.SByte )
+			if ( boxedValue is System.SByte )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -65,14 +65,14 @@ namespace MsgPack
 					: this.PackStrict( ( System.SByte )boxedValue );
 			}
 			
-			if( boxedValue is System.SByte? )
+			if ( boxedValue is System.SByte? )
 			{
 				return 
 					( options == null || !options.IsStrict )
 					? this.Pack( ( System.SByte? )boxedValue )
 					: this.PackStrict( ( System.SByte? )boxedValue );
 			}
-			if( boxedValue is System.Int16 )
+			if ( boxedValue is System.Int16 )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -80,14 +80,14 @@ namespace MsgPack
 					: this.PackStrict( ( System.Int16 )boxedValue );
 			}
 			
-			if( boxedValue is System.Int16? )
+			if ( boxedValue is System.Int16? )
 			{
 				return 
 					( options == null || !options.IsStrict )
 					? this.Pack( ( System.Int16? )boxedValue )
 					: this.PackStrict( ( System.Int16? )boxedValue );
 			}
-			if( boxedValue is System.Int32 )
+			if ( boxedValue is System.Int32 )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -95,14 +95,14 @@ namespace MsgPack
 					: this.PackStrict( ( System.Int32 )boxedValue );
 			}
 			
-			if( boxedValue is System.Int32? )
+			if ( boxedValue is System.Int32? )
 			{
 				return 
 					( options == null || !options.IsStrict )
 					? this.Pack( ( System.Int32? )boxedValue )
 					: this.PackStrict( ( System.Int32? )boxedValue );
 			}
-			if( boxedValue is System.Int64 )
+			if ( boxedValue is System.Int64 )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -110,14 +110,14 @@ namespace MsgPack
 					: this.PackStrict( ( System.Int64 )boxedValue );
 			}
 			
-			if( boxedValue is System.Int64? )
+			if ( boxedValue is System.Int64? )
 			{
 				return 
 					( options == null || !options.IsStrict )
 					? this.Pack( ( System.Int64? )boxedValue )
 					: this.PackStrict( ( System.Int64? )boxedValue );
 			}
-			if( boxedValue is System.Byte )
+			if ( boxedValue is System.Byte )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -125,14 +125,14 @@ namespace MsgPack
 					: this.PackStrict( ( System.Byte )boxedValue );
 			}
 			
-			if( boxedValue is System.Byte? )
+			if ( boxedValue is System.Byte? )
 			{
 				return 
 					( options == null || !options.IsStrict )
 					? this.Pack( ( System.Byte? )boxedValue )
 					: this.PackStrict( ( System.Byte? )boxedValue );
 			}
-			if( boxedValue is System.UInt16 )
+			if ( boxedValue is System.UInt16 )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -140,14 +140,14 @@ namespace MsgPack
 					: this.PackStrict( ( System.UInt16 )boxedValue );
 			}
 			
-			if( boxedValue is System.UInt16? )
+			if ( boxedValue is System.UInt16? )
 			{
 				return 
 					( options == null || !options.IsStrict )
 					? this.Pack( ( System.UInt16? )boxedValue )
 					: this.PackStrict( ( System.UInt16? )boxedValue );
 			}
-			if( boxedValue is System.UInt32 )
+			if ( boxedValue is System.UInt32 )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -155,14 +155,14 @@ namespace MsgPack
 					: this.PackStrict( ( System.UInt32 )boxedValue );
 			}
 			
-			if( boxedValue is System.UInt32? )
+			if ( boxedValue is System.UInt32? )
 			{
 				return 
 					( options == null || !options.IsStrict )
 					? this.Pack( ( System.UInt32? )boxedValue )
 					: this.PackStrict( ( System.UInt32? )boxedValue );
 			}
-			if( boxedValue is System.UInt64 )
+			if ( boxedValue is System.UInt64 )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -170,14 +170,14 @@ namespace MsgPack
 					: this.PackStrict( ( System.UInt64 )boxedValue );
 			}
 			
-			if( boxedValue is System.UInt64? )
+			if ( boxedValue is System.UInt64? )
 			{
 				return 
 					( options == null || !options.IsStrict )
 					? this.Pack( ( System.UInt64? )boxedValue )
 					: this.PackStrict( ( System.UInt64? )boxedValue );
 			}
-			if( boxedValue is System.Single )
+			if ( boxedValue is System.Single )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -185,14 +185,14 @@ namespace MsgPack
 					: this.PackStrict( ( System.Single )boxedValue );
 			}
 			
-			if( boxedValue is System.Single? )
+			if ( boxedValue is System.Single? )
 			{
 				return 
 					( options == null || !options.IsStrict )
 					? this.Pack( ( System.Single? )boxedValue )
 					: this.PackStrict( ( System.Single? )boxedValue );
 			}
-			if( boxedValue is System.Double )
+			if ( boxedValue is System.Double )
 			{
 				return
 					( options == null || !options.IsStrict )
@@ -200,7 +200,7 @@ namespace MsgPack
 					: this.PackStrict( ( System.Double )boxedValue );
 			}
 			
-			if( boxedValue is System.Double? )
+			if ( boxedValue is System.Double? )
 			{
 				return 
 					( options == null || !options.IsStrict )
@@ -208,20 +208,27 @@ namespace MsgPack
 					: this.PackStrict( ( System.Double? )boxedValue );
 			}
 			
-			var asByteArray = boxedValue as byte[];
-			if( asByteArray != null )
+			byte[] asByteArray;
+			if ( ( asByteArray  = boxedValue as byte[] ) != null )
 			{
 				return this.PackRaw( asByteArray );
 			}
 						
-			var asString = boxedValue as string;
-			if( asString != null )
+			String asString;
+			if ( ( asString = boxedValue as string ) != null )
 			{
 				return this.PackString( asString, options == null ? MessagePackConvert.Utf8NonBom : options.StringEncoding );
 			}
+
+			MessagePackString asMessagePackString;
+			if ( ( asMessagePackString = boxedValue as MessagePackString ) != null )
+			{
+				// FIXME: Indicates immutable
+				return this.PackRaw( asMessagePackString.GetBytes() );
+			}
 			
 			var collectionType = ExtractCollectionType( boxedValue.GetType() );
-			if( collectionType != null )
+			if ( collectionType != null )
 			{
 				ValuePacker.GetInstance( collectionType ).PackObject( this, boxedValue, options );
 				return this;
@@ -237,7 +244,7 @@ namespace MsgPack
 			public static ValuePacker GetInstance( Type targetType )
 			{
 				ValuePacker result;
-				if( !_cache.TryGetValue( targetType, out result ) )
+				if ( !_cache.TryGetValue( targetType, out result ) )
 				{
 					var packerType = typeof( ValuePacker<> ).MakeGenericType( targetType );
 					result = ( ValuePacker )packerType.GetField( "Instance" ).GetValue( null );
@@ -258,15 +265,15 @@ namespace MsgPack
 			
 			private static ValuePacker<T> CreateInstance()
 			{
-				if( typeof( T ) == typeof( MessagePackObject ) )
+				if ( typeof( T ) == typeof( MessagePackObject ) )
 				{
 					return Activator.CreateInstance( typeof( MessagePackObjectValuePacker ) ) as ValuePacker<T>;
 				}
-				else if( typeof( IPackable ).IsAssignableFrom( typeof( T ) ) )
+				else if ( typeof( IPackable ).IsAssignableFrom( typeof( T ) ) )
 				{
 					return Activator.CreateInstance( typeof( PackableValuePacker<> ).MakeGenericType( typeof( T ) ) ) as ValuePacker<T>;
 				}
-				else if( typeof( T ) == typeof( byte[] ) )
+				else if ( typeof( T ) == typeof( byte[] ) )
 				{
 					return Activator.CreateInstance( typeof( ByteArrayValuePacker ) ) as ValuePacker<T>;
 				}
@@ -364,12 +371,12 @@ namespace MsgPack
 				}
 
 				var collectionType = ExtractCollectionType( typeof( T ) );
-				if( collectionType != null )
+				if ( collectionType != null )
 				{
-					if( collectionType.IsGenericType )
+					if ( collectionType.IsGenericType )
 					{
 						var genericTypeDefinition = collectionType.GetGenericTypeDefinition();
-						if( genericTypeDefinition == typeof( IList<> ) )
+						if ( genericTypeDefinition == typeof( IList<> ) )
 						{
 							return 
 								Activator.CreateInstance( 
@@ -377,7 +384,7 @@ namespace MsgPack
 									Activator.CreateInstance( typeof( ArrayValuePacker<> ).MakeGenericType( collectionType.GetGenericArguments() ) )
 								)as ValuePacker<T>;
 						}
-						else if( genericTypeDefinition == typeof( IDictionary<,> ) )
+						else if ( genericTypeDefinition == typeof( IDictionary<,> ) )
 						{
 							return 
 								Activator.CreateInstance( 
@@ -388,7 +395,7 @@ namespace MsgPack
 					}
 					else
 					{
-						if( collectionType == typeof( IList ) )
+						if ( collectionType == typeof( IList ) )
 						{
 							return
 								Activator.CreateInstance( 
@@ -396,7 +403,7 @@ namespace MsgPack
 									Activator.CreateInstance( typeof( ArrayValuePacker ) )
 								) as ValuePacker<T>;
 						}
-						else if( collectionType == typeof( IDictionary ) )
+						else if ( collectionType == typeof( IDictionary ) )
 						{
 							return 
 								Activator.CreateInstance( 
@@ -432,7 +439,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, T value, PackingOptions options )
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					packer.PackNull();
 					return;
@@ -679,7 +686,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, TPackable value, PackingOptions options )
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					packer.PackNull();
 					return;
@@ -695,7 +702,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, byte[] value, PackingOptions options )
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					packer.PackNull();
 					return;
@@ -711,7 +718,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, string value, PackingOptions options )
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					packer.PackNull();
 					return;
@@ -728,14 +735,14 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, IList value, PackingOptions options )
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					packer.PackNull();
 					return;
 				}
 				
 				packer.PackArrayHeader( value.Count );
-				foreach( var item in value )
+				foreach ( var item in value )
 				{
 					packer.PackObject( item, options );
 				}
@@ -748,14 +755,14 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, IList<TItem> value, PackingOptions options )
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					packer.PackNull();
 					return;
 				}
 				
 				packer.PackArrayHeader( value.Count );
-				foreach( var item in value )
+				foreach ( var item in value )
 				{
 					ValuePacker<TItem>.Instance.Pack( packer, item, options );
 				}
@@ -768,14 +775,14 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, IDictionary value, PackingOptions options )
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					packer.PackNull();
 					return;
 				}
 				
 				packer.PackMapHeader( value.Count );
-				foreach( DictionaryEntry item in value )
+				foreach ( DictionaryEntry item in value )
 				{
 					packer.PackObject( item.Key, options );
 					packer.PackObject( item.Value, options );
@@ -789,14 +796,14 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, IDictionary<TKey,TValue> value, PackingOptions options )
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					packer.PackNull();
 					return;
 				}
 				
 				packer.PackMapHeader( value.Count );
-				foreach( var item in value )
+				foreach ( var item in value )
 				{
 					ValuePacker<TKey>.Instance.Pack( packer, item.Key, options );
 					ValuePacker<TValue>.Instance.Pack( packer, item.Value, options );
@@ -810,7 +817,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, T value, PackingOptions options )
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					packer.PackNull();
 					return;
