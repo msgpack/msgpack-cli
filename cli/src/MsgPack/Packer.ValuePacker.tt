@@ -64,12 +64,66 @@ var __scalarTypes =
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Text;
 
 namespace MsgPack
 {
 	partial class <#= __typeName #>
 	{
+		private static readonly Dictionary<RuntimeTypeHandle, Action< <#= __typeName #>, object, bool>> _packDispatchTable =
+			new Dictionary<RuntimeTypeHandle, Action< <#= __typeName #>, object, bool>>( <#= __scalarTypes.Length #> * 2 + 3 )
+			{
+				{ typeof( byte[] ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackRawCore( value as byte[], false ) },
+				{ typeof( string ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackStringCore( value as string, Encoding.UTF8 ) },
+				{ typeof( MessagePackString ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackRawCore( ( value as MessagePackString ).GetBytes(), true ) },
+<#
+foreach( var __scalarType in __scalarTypes )
+{
+	if( __scalarType == typeof( bool ) || __scalarType == typeof( float ) || __scalarType == typeof( double ) )
+	{
+#>
+				{ typeof( <#= __scalarType #> ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( <#= __scalarType #> )value ) },
+				{ typeof( <#= __scalarType #>? ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( <#= __scalarType #> )value ) },
+<#				
+	}
+	else
+	{
+#>
+				{ 
+					typeof( <#= __scalarType #> ).TypeHandle, 
+					( packer, value, isStrict ) => 
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( <#= __scalarType #> )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( <#= __scalarType #> )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( <#= __scalarType #>? ).TypeHandle, 
+					( packer, value, isStrict ) =>
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( <#= __scalarType #>? )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( <#= __scalarType #>? )value ); 
+						}
+					}
+				},
+<#
+	}
+}
+#>
+			};
 
 		/// <summary>
 		///		Pack specified <see cref="Object"/> as apporipriate value.
@@ -80,89 +134,38 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">There is no approptiate MessagePack type to represent specified object.</exception>
 		public Packer PackObject( object boxedValue, PackingOptions options )
 		{
+			this.VerifyNotDisposed();
+			this.PrivatePackObject( boxedValue, options );
+			return this;
+		}
+		
+		private void PrivatePackObject( object boxedValue, PackingOptions options )
+		{
 			if ( boxedValue == null )
 			{
-				return this.PackNull();
+				this.PrivatePackNullCore();
+				return;
 			}
 			
 			var asPackable = boxedValue as IPackable;
 			if ( asPackable != null )
 			{
 				asPackable.PackToMessage( this, options );
-				return this;
-			}		
-<#
-foreach( var __scalarType in __scalarTypes )
-{
-#>
-			if ( boxedValue is <#= __scalarType #> )
-			{
-<#
-	if( __scalarType == typeof( bool ) )
-	{
-#>
-				return this.Pack( ( <#= __scalarType #> )boxedValue );
-<#				
-	}
-	else
-	{
-#>
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( <#= __scalarType #> )boxedValue )
-					: this.PackStrict( ( <#= __scalarType #> )boxedValue );
-<#
-	}
-#>
+				return;
 			}
 			
-			if ( boxedValue is <#= __scalarType #>? )
+			Action< <#= __typeName #>, object, bool> pack;
+			if( _packDispatchTable.TryGetValue( boxedValue.GetType().TypeHandle, out pack ) )
 			{
-<#
-	if( __scalarType == typeof( bool ) )
-	{
-#>
-				return this.Pack( ( <#= __scalarType #> )boxedValue );
-<#				
-	}
-	else
-	{
-#>				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( <#= __scalarType #>? )boxedValue )
-					: this.PackStrict( ( <#= __scalarType #>? )boxedValue );
-<#
-	}
-#>
-			}
-<#
-}
-#>
-			
-			byte[] asByteArray;
-			if ( ( asByteArray  = boxedValue as byte[] ) != null )
-			{
-				return this.PackRaw( asByteArray );
-			}
-						
-			String asString;
-			if ( ( asString = boxedValue as string ) != null )
-			{
-				return this.PackString( asString, options == null ? MessagePackConvert.Utf8NonBom : options.StringEncoding );
-			}
-
-			MessagePackString asMessagePackString;
-			if ( ( asMessagePackString = boxedValue as MessagePackString ) != null )
-			{
-				// FIXME: Indicates immutable
-				return this.PackRaw( asMessagePackString.GetBytes() );
+				pack( this, boxedValue, options != null && options.IsStrict );
+				return;
 			}
 			
 			var collectionType = ExtractCollectionType( boxedValue.GetType() );
 			if ( collectionType != null )
 			{
 				ValuePacker.GetInstance( collectionType ).PackObject( this, boxedValue, options );
-				return this;
+				return;
 			}
 			
 			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown object '{0}'.", boxedValue.GetType() ) );
@@ -170,16 +173,24 @@ foreach( var __scalarType in __scalarTypes )
 		
 		private abstract class ValuePacker
 		{
-			private static readonly Dictionary<Type, ValuePacker> _cache = new Dictionary<Type, ValuePacker>();
+			private static readonly object _syncRoot = new object();
+			private static volatile Dictionary<RuntimeTypeHandle, ValuePacker> _cache = new Dictionary<RuntimeTypeHandle, ValuePacker>();
 			
 			public static ValuePacker GetInstance( Type targetType )
 			{
 				ValuePacker result;
-				if ( !_cache.TryGetValue( targetType, out result ) )
+				if ( !_cache.TryGetValue( targetType.TypeHandle, out result ) )
 				{
-					var packerType = typeof( ValuePacker<> ).MakeGenericType( targetType );
-					result = ( ValuePacker )packerType.GetField( "Instance" ).GetValue( null );
-					_cache[ targetType ] = result;
+					lock( _syncRoot )
+					{
+						if ( !_cache.TryGetValue( targetType.TypeHandle, out result ) )
+						{
+							var packerType = typeof( ValuePacker<> ).MakeGenericType( targetType );
+							result = ( ValuePacker )packerType.GetField( "Instance" ).GetValue( null );
+							// This line causes volatile read, so memory fence is leaded.
+							_cache[ targetType.TypeHandle ] = result;
+						}
+					}
 				}
 				
 				return result;
@@ -297,9 +308,11 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, T value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
@@ -318,7 +331,8 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, <#= __scalarType.FullName #> value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -328,6 +342,7 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, <#= __scalarType.FullName #>? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -353,7 +368,7 @@ foreach( var __scalarType in __scalarTypes )
 			{
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
@@ -367,13 +382,15 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, byte[] value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				packer.PackRaw( value );
+				packer.PrivatePackRawCore( value, false );
 			}
 		}
 
@@ -383,14 +400,15 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, string value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				// HACK: use standard path...
-				packer.PackStringCore( value, options == null ? MessagePackConvert.Utf8NonBom : options.StringEncoding  );
+				packer.PrivatePackStringCore( value, options == null ? MessagePackConvert.Utf8NonBom : options.StringEncoding  );
 			}
 		}
 		
@@ -400,16 +418,18 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, IList value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				packer.PackArrayHeader( value.Count );
+				packer.PrivatePackArrayHeaderCore( value.Count );
 				foreach ( var item in value )
 				{
-					packer.PackObject( item, options );
+					packer.PrivatePackObject( item, options );
 				}
 			}
 		}
@@ -420,13 +440,15 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, IList<TItem> value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				packer.PackArrayHeader( value.Count );
+				packer.PrivatePackArrayHeaderCore( value.Count );
 				foreach ( var item in value )
 				{
 					ValuePacker<TItem>.Instance.Pack( packer, item, options );
@@ -440,17 +462,19 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, IDictionary value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				packer.PackMapHeader( value.Count );
+				packer.PrivatePackMapHeaderCore( value.Count );
 				foreach ( DictionaryEntry item in value )
 				{
-					packer.PackObject( item.Key, options );
-					packer.PackObject( item.Value, options );
+					packer.PrivatePackObject( item.Key, options );
+					packer.PrivatePackObject( item.Value, options );
 				}
 			}
 		}
@@ -461,13 +485,15 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, IDictionary<TKey,TValue> value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
 					packer.PackNull();
 					return;
 				}
 				
-				packer.PackMapHeader( value.Count );
+				packer.PrivatePackMapHeaderCore( value.Count );
 				foreach ( var item in value )
 				{
 					ValuePacker<TKey>.Instance.Pack( packer, item.Key, options );
@@ -482,9 +508,11 @@ foreach( var __scalarType in __scalarTypes )
 			
 			public sealed override void Pack( Packer packer, T value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				

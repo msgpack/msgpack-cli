@@ -167,14 +167,14 @@ namespace MsgPack
 				throw new ArgumentNullException( "value" );
 			}
 
-			Contract.EndContractBlock(); 
-			
+			Contract.EndContractBlock();
+
 			foreach ( var b in value )
 			{
 				this.WriteByte( b );
 			}
 		}
-		
+
 		private void StreamWrite<TItem>( IEnumerable<TItem> value, Action<IEnumerable<TItem>, PackingOptions> writeBody, PackingOptions options )
 		{
 			if ( this.CanSeek )
@@ -235,20 +235,24 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
+			this.PrivatePackCore( value );
+			return this;
+		}
 
+		private void PrivatePackCore( sbyte value )
+		{
 			if ( this.TryPackTinySignedInteger( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( value >= 0 && this.TryPackTinyUnsignedInteger( ( ulong )value ) )
 			{
-				return this;
+				return;
 			}
 
 			var b = this.TryPackInt8( value );
-			Debug.Assert( b );
-			return this;
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -263,10 +267,14 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-
-			var b = this.TryPackInt8( value );
-			Debug.Assert( b );
+			this.PrivatePackStrictCore( value );
 			return this;
+		}
+
+		private void PrivatePackStrictCore( sbyte value )
+		{
+			var b = this.TryPackInt8( value );
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -300,15 +308,19 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
+			this.PrivatePackCore( value );
+			return this;
+		}
 
+		private void PrivatePackCore( byte value )
+		{
 			if ( this.TryPackTinyUnsignedInteger( value ) )
 			{
-				return this;
+				return;
 			}
 
 			var b = this.TryPackUInt8( value );
-			Debug.Assert( b );
-			return this;
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -321,10 +333,14 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-
-			var b = this.TryPackUInt8( value );
-			Debug.Assert( b );
+			this.PrivatePackStrictCore( value );
 			return this;
+		}
+
+		private void PrivatePackStrictCore( byte value )
+		{
+			var b = this.TryPackUInt8( value );
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -358,25 +374,29 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
+			this.PrivatePackCore( value );
+			return this;
+		}
 
+		private void PrivatePackCore( short value )
+		{
 			if ( this.TryPackTinySignedInteger( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( value >= 0 && this.TryPackTinyUnsignedInteger( ( ulong )value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackInt8( value ) )
 			{
-				return this;
+				return;
 			}
 
 			var b = this.TryPackInt16( value );
-			Debug.Assert( b );
-			return this;
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -390,10 +410,14 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-
-			var b = this.TryPackInt16( value );
-			Debug.Assert( b );
+			this.PrivatePackStrictCore( value );
 			return this;
+		}
+
+		private void PrivatePackStrictCore( short value )
+		{
+			var b = this.TryPackInt16( value );
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -432,20 +456,24 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
+			this.PrivatePackCore( value );
+			return this;
+		}
 
+		private void PrivatePackCore( ushort value )
+		{
 			if ( this.TryPackTinyUnsignedInteger( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackUInt8( value ) )
 			{
-				return this;
+				return;
 			}
 
 			var b = this.TryPackUInt16( value );
-			Debug.Assert( b );
-			return this;
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -460,10 +488,14 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-
-			var b = this.TryPackUInt16( value );
-			Debug.Assert( b );
+			this.PrivatePackStrictCore( value );
 			return this;
+		}
+
+		private void PrivatePackStrictCore( ushort value )
+		{
+			var b = this.TryPackUInt16( value );
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -502,30 +534,34 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
+			this.PrivatePackCore( value );
+			return this;
+		}
 
+		private void PrivatePackCore( int value )
+		{
 			if ( this.TryPackTinySignedInteger( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( value >= 0 && this.TryPackTinyUnsignedInteger( ( ulong )value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackInt8( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackInt16( value ) )
 			{
-				return this;
+				return;
 			}
 
 			var b = this.TryPackInt32( value );
-			Debug.Assert( b );
-			return this;
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -539,10 +575,14 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-
-			var b = this.TryPackInt32( value );
-			Debug.Assert( b );
+			this.PrivatePackStrictCore( value );
 			return this;
+		}
+
+		private void PrivatePackStrictCore( int value )
+		{
+			var b = this.TryPackInt32( value );
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -583,25 +623,30 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
+			this.PrivatePackCore( value );
+			return this;
+		}
+
+		private void PrivatePackCore( uint value )
+		{
 
 			if ( this.TryPackTinyUnsignedInteger( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackUInt8( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackUInt16( value ) )
 			{
-				return this;
+				return;
 			}
 
 			var b = this.TryPackUInt32( value );
-			Debug.Assert( b );
-			return this;
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -616,10 +661,14 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-
-			var b = this.TryPackUInt32( value );
-			Debug.Assert( b );
+			this.PrivatePackStrictCore( value );
 			return this;
+		}
+
+		private void PrivatePackStrictCore( uint value )
+		{
+			var b = this.TryPackUInt32( value );
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -660,35 +709,39 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
+			this.PrivatePackCore( value );
+			return this;
+		}
 
+		private void PrivatePackCore( long value )
+		{
 			if ( this.TryPackTinySignedInteger( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( value >= 0 && this.TryPackTinyUnsignedInteger( ( ulong )value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackInt8( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackInt16( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackInt32( value ) )
 			{
-				return this;
+				return;
 			}
 
 			var b = this.TryPackInt64( value );
-			Debug.Assert( b );
-			return this;
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -702,10 +755,14 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-
-			var b = this.TryPackInt64( value );
-			Debug.Assert( b );
+			this.PrivatePackStrictCore( value );
 			return this;
+		}
+
+		private void PrivatePackStrictCore( long value )
+		{
+			var b = this.TryPackInt64( value );
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -745,30 +802,34 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
+			this.PrivatePackCore( value );
+			return this;
+		}
 
+		private void PrivatePackCore( ulong value )
+		{
 			if ( this.TryPackTinyUnsignedInteger( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackUInt8( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackUInt16( value ) )
 			{
-				return this;
+				return;
 			}
 
 			if ( this.TryPackUInt32( value ) )
 			{
-				return this;
+				return;
 			}
 
 			var b = this.TryPackUInt64( value );
-			Debug.Assert( b );
-			return this;
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -783,10 +844,14 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-
-			var b = this.TryPackUInt64( value );
-			Debug.Assert( b );
+			this.PrivatePackStrictCore( value );
 			return this;
+		}
+
+		private void PrivatePackStrictCore( ulong value )
+		{
+			var b = this.TryPackUInt64( value );
+			Contract.Assume( b );
 		}
 
 		/// <summary>
@@ -824,7 +889,12 @@ namespace MsgPack
 		public Packer Pack( float value )
 		{
 			this.VerifyNotDisposed();
+			this.PrivatePackCore( value );
+			return this;
+		}
 
+		private void PrivatePackCore( float value )
+		{
 			this.WriteByte( MessagePackCode.Real32 );
 
 			var bits = new Float32Bits( value );
@@ -843,8 +913,6 @@ namespace MsgPack
 				this.WriteByte( bits.Byte2 );
 				this.WriteByte( bits.Byte3 );
 			}
-
-			return this;
 		}
 
 		#endregion -- Single --
@@ -859,7 +927,12 @@ namespace MsgPack
 		public Packer Pack( double value )
 		{
 			this.VerifyNotDisposed();
+			this.PrivatePackCore( value );
+			return this;
+		}
 
+		private void PrivatePackCore( double value )
+		{
 			this.WriteByte( MessagePackCode.Real64 );
 			unchecked
 			{
@@ -873,8 +946,6 @@ namespace MsgPack
 				this.WriteByte( ( byte )( ( bits >> 8 ) & 0xff ) );
 				this.WriteByte( ( byte )( bits & 0xff ) );
 			}
-
-			return this;
 		}
 
 		#endregion -- Double --
@@ -889,9 +960,13 @@ namespace MsgPack
 		public Packer Pack( bool value )
 		{
 			this.VerifyNotDisposed();
-
-			this.WriteByte( value ? ( byte )MessagePackCode.TrueValue : ( byte )MessagePackCode.FalseValue );
+			this.PrivatePackCore( value );
 			return this;
+		}
+
+		private void PrivatePackCore( bool value )
+		{
+			this.WriteByte( value ? ( byte )MessagePackCode.TrueValue : ( byte )MessagePackCode.FalseValue );
 		}
 
 		#endregion -- Boolean --
@@ -1167,7 +1242,7 @@ namespace MsgPack
 				this.PrivatePackNullCore();
 				return;
 			}
-			
+
 			this.PrivatePackRowCore( value );
 		}
 
@@ -1302,7 +1377,7 @@ namespace MsgPack
 			this.PackStringCore( value, encoding );
 			return this;
 		}
-		
+
 		/// <summary>
 		///		Pack specified char stream to current stream with specified <see cref="Encoding"/>.
 		/// </summary>
@@ -1390,7 +1465,6 @@ namespace MsgPack
 
 		#endregion -- String --
 
-#warning 規約に従いリファクタ（T4も）
 		#region -- Enumerable --
 		/// <summary>
 		///		Pack specified collection to current stream with appropriate serialization.
@@ -1429,7 +1503,7 @@ namespace MsgPack
 
 			this.PrivatePackArrayCore( value.Select( item => ( Object )item ), GetCount<TItem>( value ), this.PackObjectsCore, options );
 		}
-		
+
 		private static int? GetCount( System.Collections.IEnumerable value )
 		{
 			var asCollection = value as System.Collections.ICollection;
@@ -1484,9 +1558,8 @@ namespace MsgPack
 		{
 			foreach ( var item in value )
 			{
-				// FIXME: ValuePacker<TItem>.Instance.Pack(item,options);
 				// Dispacthed to Pack(Object)
-				this.PackObject( item, options );
+				ValuePacker<TItem>.Instance.Pack( this, item, options );
 			}
 		}
 

@@ -21,12 +21,251 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Text;
 
 namespace MsgPack
 {
 	partial class Packer
 	{
+		private static readonly Dictionary<RuntimeTypeHandle, Action< Packer, object, bool>> _packDispatchTable =
+			new Dictionary<RuntimeTypeHandle, Action< Packer, object, bool>>( 11 * 2 + 3 )
+			{
+				{ typeof( byte[] ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackRawCore( value as byte[], false ) },
+				{ typeof( string ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackStringCore( value as string, Encoding.UTF8 ) },
+				{ typeof( MessagePackString ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackRawCore( ( value as MessagePackString ).GetBytes(), true ) },
+				{ typeof( System.Boolean ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Boolean )value ) },
+				{ typeof( System.Boolean? ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Boolean )value ) },
+				{ 
+					typeof( System.SByte ).TypeHandle, 
+					( packer, value, isStrict ) => 
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.SByte )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.SByte )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.SByte? ).TypeHandle, 
+					( packer, value, isStrict ) =>
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.SByte? )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.SByte? )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.Int16 ).TypeHandle, 
+					( packer, value, isStrict ) => 
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.Int16 )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.Int16 )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.Int16? ).TypeHandle, 
+					( packer, value, isStrict ) =>
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.Int16? )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.Int16? )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.Int32 ).TypeHandle, 
+					( packer, value, isStrict ) => 
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.Int32 )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.Int32 )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.Int32? ).TypeHandle, 
+					( packer, value, isStrict ) =>
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.Int32? )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.Int32? )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.Int64 ).TypeHandle, 
+					( packer, value, isStrict ) => 
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.Int64 )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.Int64 )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.Int64? ).TypeHandle, 
+					( packer, value, isStrict ) =>
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.Int64? )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.Int64? )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.Byte ).TypeHandle, 
+					( packer, value, isStrict ) => 
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.Byte )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.Byte )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.Byte? ).TypeHandle, 
+					( packer, value, isStrict ) =>
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.Byte? )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.Byte? )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.UInt16 ).TypeHandle, 
+					( packer, value, isStrict ) => 
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.UInt16 )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.UInt16 )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.UInt16? ).TypeHandle, 
+					( packer, value, isStrict ) =>
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.UInt16? )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.UInt16? )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.UInt32 ).TypeHandle, 
+					( packer, value, isStrict ) => 
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.UInt32 )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.UInt32 )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.UInt32? ).TypeHandle, 
+					( packer, value, isStrict ) =>
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.UInt32? )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.UInt32? )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.UInt64 ).TypeHandle, 
+					( packer, value, isStrict ) => 
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.UInt64 )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.UInt64 )value ); 
+						}
+					}
+				},
+				{ 
+					typeof( System.UInt64? ).TypeHandle, 
+					( packer, value, isStrict ) =>
+					{
+						if( !isStrict ) 
+						{
+							packer.PrivatePackCore( ( System.UInt64? )value );
+						} 
+						else 
+						{ 
+							packer.PrivatePackStrictCore( ( System.UInt64? )value ); 
+						}
+					}
+				},
+				{ typeof( System.Single ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Single )value ) },
+				{ typeof( System.Single? ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Single )value ) },
+				{ typeof( System.Double ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Double )value ) },
+				{ typeof( System.Double? ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Double )value ) },
+			};
 
 		/// <summary>
 		///		Pack specified <see cref="Object"/> as apporipriate value.
@@ -37,201 +276,38 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">There is no approptiate MessagePack type to represent specified object.</exception>
 		public Packer PackObject( object boxedValue, PackingOptions options )
 		{
+			this.VerifyNotDisposed();
+			this.PrivatePackObject( boxedValue, options );
+			return this;
+		}
+		
+		private void PrivatePackObject( object boxedValue, PackingOptions options )
+		{
 			if ( boxedValue == null )
 			{
-				return this.PackNull();
+				this.PrivatePackNullCore();
+				return;
 			}
 			
 			var asPackable = boxedValue as IPackable;
 			if ( asPackable != null )
 			{
 				asPackable.PackToMessage( this, options );
-				return this;
-			}		
-			if ( boxedValue is System.Boolean )
-			{
-				return this.Pack( ( System.Boolean )boxedValue );
+				return;
 			}
 			
-			if ( boxedValue is System.Boolean? )
+			Action< Packer, object, bool> pack;
+			if( _packDispatchTable.TryGetValue( boxedValue.GetType().TypeHandle, out pack ) )
 			{
-				return this.Pack( ( System.Boolean )boxedValue );
-			}
-			if ( boxedValue is System.SByte )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.SByte )boxedValue )
-					: this.PackStrict( ( System.SByte )boxedValue );
-			}
-			
-			if ( boxedValue is System.SByte? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.SByte? )boxedValue )
-					: this.PackStrict( ( System.SByte? )boxedValue );
-			}
-			if ( boxedValue is System.Int16 )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Int16 )boxedValue )
-					: this.PackStrict( ( System.Int16 )boxedValue );
-			}
-			
-			if ( boxedValue is System.Int16? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Int16? )boxedValue )
-					: this.PackStrict( ( System.Int16? )boxedValue );
-			}
-			if ( boxedValue is System.Int32 )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Int32 )boxedValue )
-					: this.PackStrict( ( System.Int32 )boxedValue );
-			}
-			
-			if ( boxedValue is System.Int32? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Int32? )boxedValue )
-					: this.PackStrict( ( System.Int32? )boxedValue );
-			}
-			if ( boxedValue is System.Int64 )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Int64 )boxedValue )
-					: this.PackStrict( ( System.Int64 )boxedValue );
-			}
-			
-			if ( boxedValue is System.Int64? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Int64? )boxedValue )
-					: this.PackStrict( ( System.Int64? )boxedValue );
-			}
-			if ( boxedValue is System.Byte )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Byte )boxedValue )
-					: this.PackStrict( ( System.Byte )boxedValue );
-			}
-			
-			if ( boxedValue is System.Byte? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Byte? )boxedValue )
-					: this.PackStrict( ( System.Byte? )boxedValue );
-			}
-			if ( boxedValue is System.UInt16 )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.UInt16 )boxedValue )
-					: this.PackStrict( ( System.UInt16 )boxedValue );
-			}
-			
-			if ( boxedValue is System.UInt16? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.UInt16? )boxedValue )
-					: this.PackStrict( ( System.UInt16? )boxedValue );
-			}
-			if ( boxedValue is System.UInt32 )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.UInt32 )boxedValue )
-					: this.PackStrict( ( System.UInt32 )boxedValue );
-			}
-			
-			if ( boxedValue is System.UInt32? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.UInt32? )boxedValue )
-					: this.PackStrict( ( System.UInt32? )boxedValue );
-			}
-			if ( boxedValue is System.UInt64 )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.UInt64 )boxedValue )
-					: this.PackStrict( ( System.UInt64 )boxedValue );
-			}
-			
-			if ( boxedValue is System.UInt64? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.UInt64? )boxedValue )
-					: this.PackStrict( ( System.UInt64? )boxedValue );
-			}
-			if ( boxedValue is System.Single )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Single )boxedValue )
-					: this.PackStrict( ( System.Single )boxedValue );
-			}
-			
-			if ( boxedValue is System.Single? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Single? )boxedValue )
-					: this.PackStrict( ( System.Single? )boxedValue );
-			}
-			if ( boxedValue is System.Double )
-			{
-				return
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Double )boxedValue )
-					: this.PackStrict( ( System.Double )boxedValue );
-			}
-			
-			if ( boxedValue is System.Double? )
-			{
-				return 
-					( options == null || !options.IsStrict )
-					? this.Pack( ( System.Double? )boxedValue )
-					: this.PackStrict( ( System.Double? )boxedValue );
-			}
-			
-			byte[] asByteArray;
-			if ( ( asByteArray  = boxedValue as byte[] ) != null )
-			{
-				return this.PackRaw( asByteArray );
-			}
-						
-			String asString;
-			if ( ( asString = boxedValue as string ) != null )
-			{
-				return this.PackString( asString, options == null ? MessagePackConvert.Utf8NonBom : options.StringEncoding );
-			}
-
-			MessagePackString asMessagePackString;
-			if ( ( asMessagePackString = boxedValue as MessagePackString ) != null )
-			{
-				// FIXME: Indicates immutable
-				return this.PackRaw( asMessagePackString.GetBytes() );
+				pack( this, boxedValue, options != null && options.IsStrict );
+				return;
 			}
 			
 			var collectionType = ExtractCollectionType( boxedValue.GetType() );
 			if ( collectionType != null )
 			{
 				ValuePacker.GetInstance( collectionType ).PackObject( this, boxedValue, options );
-				return this;
+				return;
 			}
 			
 			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown object '{0}'.", boxedValue.GetType() ) );
@@ -239,16 +315,24 @@ namespace MsgPack
 		
 		private abstract class ValuePacker
 		{
-			private static readonly Dictionary<Type, ValuePacker> _cache = new Dictionary<Type, ValuePacker>();
+			private static readonly object _syncRoot = new object();
+			private static volatile Dictionary<RuntimeTypeHandle, ValuePacker> _cache = new Dictionary<RuntimeTypeHandle, ValuePacker>();
 			
 			public static ValuePacker GetInstance( Type targetType )
 			{
 				ValuePacker result;
-				if ( !_cache.TryGetValue( targetType, out result ) )
+				if ( !_cache.TryGetValue( targetType.TypeHandle, out result ) )
 				{
-					var packerType = typeof( ValuePacker<> ).MakeGenericType( targetType );
-					result = ( ValuePacker )packerType.GetField( "Instance" ).GetValue( null );
-					_cache[ targetType ] = result;
+					lock( _syncRoot )
+					{
+						if ( !_cache.TryGetValue( targetType.TypeHandle, out result ) )
+						{
+							var packerType = typeof( ValuePacker<> ).MakeGenericType( targetType );
+							result = ( ValuePacker )packerType.GetField( "Instance" ).GetValue( null );
+							// This line causes volatile read, so memory fence is leaded.
+							_cache[ targetType.TypeHandle ] = result;
+						}
+					}
 				}
 				
 				return result;
@@ -439,9 +523,11 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, T value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
@@ -456,7 +542,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Boolean value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -466,6 +553,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Boolean? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -476,7 +564,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.SByte value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -486,6 +575,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.SByte? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -496,7 +586,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Int16 value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -506,6 +597,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Int16? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -516,7 +608,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Int32 value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -526,6 +619,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Int32? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -536,7 +630,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Int64 value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -546,6 +641,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Int64? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -556,7 +652,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Byte value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -566,6 +663,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Byte? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -576,7 +674,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.UInt16 value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -586,6 +685,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.UInt16? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -596,7 +696,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.UInt32 value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -606,6 +707,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.UInt32? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -616,7 +718,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.UInt64 value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -626,6 +729,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.UInt64? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -636,7 +740,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Single value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -646,6 +751,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Single? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -656,7 +762,8 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Double value, PackingOptions options )
 			{
-				packer.Pack( value );
+				Contract.Assert( !packer._isDisposed );
+				packer.PrivatePackCore( value );
 			}
 		}
 		
@@ -666,6 +773,7 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, System.Double? value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
 				packer.Pack( value );
 			}
 		}
@@ -688,7 +796,7 @@ namespace MsgPack
 			{
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
@@ -702,13 +810,15 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, byte[] value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				packer.PackRaw( value );
+				packer.PrivatePackRawCore( value, false );
 			}
 		}
 
@@ -718,14 +828,15 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, string value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				// HACK: use standard path...
-				packer.PackStringCore( value, options == null ? MessagePackConvert.Utf8NonBom : options.StringEncoding  );
+				packer.PrivatePackStringCore( value, options == null ? MessagePackConvert.Utf8NonBom : options.StringEncoding  );
 			}
 		}
 		
@@ -735,16 +846,18 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, IList value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				packer.PackArrayHeader( value.Count );
+				packer.PrivatePackArrayHeaderCore( value.Count );
 				foreach ( var item in value )
 				{
-					packer.PackObject( item, options );
+					packer.PrivatePackObject( item, options );
 				}
 			}
 		}
@@ -755,13 +868,15 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, IList<TItem> value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				packer.PackArrayHeader( value.Count );
+				packer.PrivatePackArrayHeaderCore( value.Count );
 				foreach ( var item in value )
 				{
 					ValuePacker<TItem>.Instance.Pack( packer, item, options );
@@ -775,17 +890,19 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, IDictionary value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				
-				packer.PackMapHeader( value.Count );
+				packer.PrivatePackMapHeaderCore( value.Count );
 				foreach ( DictionaryEntry item in value )
 				{
-					packer.PackObject( item.Key, options );
-					packer.PackObject( item.Value, options );
+					packer.PrivatePackObject( item.Key, options );
+					packer.PrivatePackObject( item.Value, options );
 				}
 			}
 		}
@@ -796,13 +913,15 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, IDictionary<TKey,TValue> value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
 					packer.PackNull();
 					return;
 				}
 				
-				packer.PackMapHeader( value.Count );
+				packer.PrivatePackMapHeaderCore( value.Count );
 				foreach ( var item in value )
 				{
 					ValuePacker<TKey>.Instance.Pack( packer, item.Key, options );
@@ -817,9 +936,11 @@ namespace MsgPack
 			
 			public sealed override void Pack( Packer packer, T value, PackingOptions options )
 			{
+				Contract.Assert( !packer._isDisposed );
+
 				if ( value == null )
 				{
-					packer.PackNull();
+					packer.PrivatePackNullCore();
 					return;
 				}
 				

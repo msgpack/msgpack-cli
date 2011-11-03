@@ -94,7 +94,18 @@ foreach( var __type in
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-
+		
+		private void PrivatePackCore( <#= __type.Name #>? value )
+		{
+			if ( value.HasValue )
+			{
+				this.PrivatePackCore( value.Value );
+			}
+			else
+			{
+				this.PrivatePackNullCore();
+			}
+		}
 <#
 	if( __type != typeof( bool ) )
 	{
@@ -111,9 +122,22 @@ foreach( var __type in
 		[CLSCompliant( false )]
 <#
 		}
-#>		public <#= __typeName #> PackStrict( <#= __type.Name #>? value )
+#>
+		public <#= __typeName #> PackStrict( <#= __type.Name #>? value )
 		{
 			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
+		}
+		
+		private void PrivatePackStrictCore( <#= __type.Name #>? value )
+		{
+			if ( value.HasValue )
+			{
+				this.PrivatePackStrictCore( value.Value );
+			}
+			else
+			{
+				this.PrivatePackNullCore();
+			}
 		}
 <#
 	}
