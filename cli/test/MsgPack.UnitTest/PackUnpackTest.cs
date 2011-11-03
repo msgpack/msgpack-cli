@@ -18,8 +18,6 @@
 //
 #endregion -- License Terms --
 
-#define SKIP_LARGE_TEST
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -101,6 +99,7 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 3000000 )]
 		[Explicit]
 		public void TestStringMedium()
 		{
@@ -121,10 +120,11 @@ namespace MsgPack
 				TestString( sb.ToString() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Medium String ({1:#,###.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
+			Console.WriteLine( "Medium String ({1:#,###.0} chars): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 		}
 
 		[Test]
+		[Timeout( 3000000 )]
 		[Explicit]
 		public void TestStringLarge()
 		{
@@ -146,7 +146,7 @@ namespace MsgPack
 				TestString( sb.ToString() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Large String ({1:#,###.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 10.0, avg );
+			Console.WriteLine( "Large String ({1:#,###.0} chars): {0:0.###} msec/object", sw.ElapsedMilliseconds / 10.0, avg );
 			sw.Reset();
 
 			GC.Collect();

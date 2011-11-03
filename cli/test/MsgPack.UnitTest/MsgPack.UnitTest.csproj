@@ -85,7 +85,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Image.cs" />
-    <Compile Include="Linq\StreamEnumerableTest.cs" />
     <Compile Include="MessageUnpackableTest.cs" />
     <Compile Include="PackUnpackTest.cs" />
     <Compile Include="PackUnpackTest.Scalar.cs">
