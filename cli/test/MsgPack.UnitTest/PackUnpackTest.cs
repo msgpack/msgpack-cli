@@ -264,9 +264,9 @@ namespace MsgPack
 			Assert.AreEqual( 3, outer.Count );
 			Assert.AreEqual( 0, outer[ 0 ].AsList().Count );
 			Assert.AreEqual( 1, outer[ 1 ].AsList().Count );
-			Assert.AreEqual( 0, outer[ 1 ].AsList()[ 0 ].AsInt32() ); // FIXME: remove AsInt32()
+			Assert.That( outer[ 1 ].AsList()[ 0 ].AsInt32(), Is.EqualTo( 0 ).With.TypeOf<int>() );
 			Assert.AreEqual( 2, outer[ 2 ].AsList().Count );
-			Assert.AreEqual( 0, outer[ 2 ].AsList()[ 0 ].AsInt32() ); // FIXME: remove AsInt32()
+			Assert.That( outer[ 2 ].AsList()[ 0 ].AsInt32(), Is.EqualTo( 0 ).With.TypeOf<int>() );
 			Assert.AreEqual( 1, outer[ 2 ].AsList()[ 1 ].AsInt32() );
 		}
 
@@ -287,10 +287,10 @@ namespace MsgPack
 			Assert.AreEqual( 3, outer.Count );
 			Assert.AreEqual( 0, outer[ "0" ].AsDictionary().Count );
 			Assert.AreEqual( 1, outer[ "1" ].AsDictionary().Count );
-			Assert.AreEqual( false, outer[ "1" ].AsDictionary()[ 0 ].AsBoolean() ); // FIXME: remove AsBoolean()
+			Assert.That( outer[ "1" ].AsDictionary()[ 0 ].AsBoolean(), Is.False.With.TypeOf<bool>() );
 			Assert.AreEqual( 2, outer[ "2" ].AsDictionary().Count );
-			Assert.AreEqual( false, outer[ "2" ].AsDictionary()[ 0 ].AsBoolean() ); // FIXME: remove AsBoolean()
-			Assert.AreEqual( true, outer[ "2" ].AsDictionary()[ 1 ].AsBoolean() ); // FIXME: remove AsBoolean()
+			Assert.That( outer[ "2" ].AsDictionary()[ 0 ].AsBoolean(), Is.False.With.TypeOf<bool>() );
+			Assert.That( outer[ "2" ].AsDictionary()[ 1 ].AsBoolean(), Is.True.With.TypeOf<bool>() );
 		}
 
 		[Test]
@@ -311,9 +311,6 @@ namespace MsgPack
 					new MessagePackObject(
 						new Dictionary<MessagePackObject,MessagePackObject>()
 						{
-							//{ new MessagePackObject( "1" ), new MessagePackObject( "foo" ) },
-							//{ new MessagePackObject( 2 ), MessagePackObject.Nil },
-							//{ new MessagePackObject( 3333333 ), new MessagePackObject( -1 ) }
 							{ "1", "foo" },
 							{ 2, MessagePackObject.Nil },
 							{ 3333333, -1 }
@@ -338,12 +335,7 @@ namespace MsgPack
 				Assert.AreEqual( heteroList[ 6 ], list[ 6 ] );
 				Assert.AreEqual( heteroList[ 7 ], list[ 7 ] );
 				Assert.AreEqual( heteroList[ 8 ], list[ 8 ] );
-				// MsgPack supports string type as utf-8 encoded bytes...
-				// TODO: usable wrapper dictionary.
-				// FIXME: 1渡したときに、常にコンパクト側に行くようにする。
 				Assert.AreEqual(
-					//heteroList[ 9 ].AsDictionary()[ "1" ].AsString(),
-					//list[ 9 ].AsDictionary()[ _utf8NoBom.GetBytes( "1" ) ].AsString()
 					heteroList[ 9 ].AsDictionary()[ "1" ],
 					list[ 9 ].AsDictionary()[ "1" ]
 				);

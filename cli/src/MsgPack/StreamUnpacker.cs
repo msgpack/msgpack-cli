@@ -17,7 +17,6 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
-#define INLINED
 
 using System;
 using System.Collections.Generic;
@@ -25,9 +24,9 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Diagnostics;
 using System.IO;
+
 namespace MsgPack
 {
-	// FIXME: Stream base
 	/// <summary>
 	///		Implements streaming unpacking. This object is stateful.
 	/// </summary>
@@ -78,15 +77,13 @@ namespace MsgPack
 		///			This behavior is notified via <see cref="IDisposable.Dispose">IEnumerator&lt;T&gt;.Dispose()</see> method.
 		///		</para>
 		/// </remarks>
-#warning ストリームに複数ある場合
 		public MessagePackObject? Unpack( Stream source )
 		{
 			// FIXME:BULK LOAD
 			Contract.Assert( source != null );
 
 			var segmentatedSource = source as ISegmentLengthRecognizeable ?? NullSegmentLengthRecognizeable.Instance;
-			//using ( var enumerator = source.GetEnumerator() )
-			//{
+
 			while ( true )
 			{
 				MessagePackObject? collectionItemOrRoot = null;
@@ -271,15 +268,12 @@ namespace MsgPack
 						this._stage = Stage.Root;
 						Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
 						Contract.Assert( this._bytesBuffer.BackingStore == null, this._bytesBuffer.ToString() ); // null
-						// FIXME:  yield return collectionItemOrRoot;
 						return collectionItemOrRoot;
 					}
 				}
 			}
-			//}
 
-			// FIXME: throw new InvalidMessagePackStreamException( "Unexpectedly end." );
-			return null;
+			throw new InvalidMessagePackStreamException( "Unexpectedly end." );
 		}
 
 		private bool UnpackScalar( Stream source, out MessagePackObject? result )
@@ -302,8 +296,6 @@ namespace MsgPack
 
 		private bool UnpackCollectionLength( Stream source, ISegmentLengthRecognizeable segmentatedSource, out MessagePackObject? unpacked )
 		{
-			//while ( enumerator.MoveNext() )
-			//{
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 
 			if ( this._bytesBuffer.IsFilled )
@@ -325,7 +317,6 @@ namespace MsgPack
 				unpacked = null;
 				return true;
 			}
-			//}
 
 			// Try next iteration.
 			unpacked = null;
@@ -334,8 +325,6 @@ namespace MsgPack
 
 		private bool UnpackRaw( Stream source, ISegmentLengthRecognizeable segmentatedSource, out MessagePackObject? unpacked )
 		{
-			//while ( enumerator.MoveNext() )
-			//{
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 
 			if ( this._bytesBuffer.IsFilled )
@@ -353,7 +342,6 @@ namespace MsgPack
 
 				return this.UnpackRawBytes( source, out unpacked );
 			}
-			//}
 
 			// Need more info.
 			unpacked = null;
@@ -364,15 +352,12 @@ namespace MsgPack
 		{
 			Contract.Assert( this._bytesBuffer.BackingStore != null, this._bytesBuffer.ToString() );
 
-			//while ( enumerator.MoveNext() )
-			//{
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 			if ( this._bytesBuffer.IsFilled )
 			{
 				unpacked = this._bytesBuffer.AsMessagePackObject( this._contextValueHeader.Type );
 				return true;
 			}
-			//}
 
 			// Need more info.
 			unpacked = null;
@@ -392,6 +377,7 @@ namespace MsgPack
 		///		Transit current stage to <see cref="Stage.UnpackRawBytes"/> with cleanuping states.
 		/// </summary>
 		/// <param name="source"><see cref="ISegmentLengthRecognizeable"/> to be notified.</param>
+		/// <param name="length">The known length of the source.</param>
 		private void TransitToUnpackRawBytes( ISegmentLengthRecognizeable source, uint length )
 		{
 			this._stage = Stage.UnpackRawBytes;
@@ -495,8 +481,6 @@ namespace MsgPack
 			MessagePackObject current = item;
 			while ( !this._collectionState.IsEmpty )
 			{
-				//this._collectionState.FeedItem( current );
-				//if ( !this._collectionState.ContextCollectionState.IsFilled )
 				if ( !this._collectionState.FeedItem( current ) )
 				{
 					this.TransitToUnpackContextCollection();
@@ -804,19 +788,6 @@ namespace MsgPack
 				}
 				else if ( ( context.Header.Type & MessageType.IsMap ) != 0 )
 				{
-					//Contract.Assert( context.Items.Length % 2 == 0, context.Items.Length.ToString() );
-					//Dictionary<MessagePackObject, MessagePackObject> dictionary = new Dictionary<MessagePackObject, MessagePackObject>( context.Items.Length / 2 );
-					//for ( int i = 0; i < context.Items.Length; i += 2 )
-					//{
-					//    if ( dictionary.ContainsKey( context.Items[ i ] ) )
-					//    {
-					//        throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Key '{0}' is duplicated.", context.Items[ i ] ) );
-					//    }
-
-					//    dictionary.Add( context.Items[ i ], context.Items[ i + 1 ] );
-					//}
-
-					//return new MessagePackObject( dictionary );
 					Contract.Assert( context.Dictionary != null );
 					Contract.Assert( context.Unpacked == context.Capacity * 2, context.Unpacked + "!=" + ( context.Capacity * 2 ) );
 					return new MessagePackObject( context.Dictionary );
@@ -831,7 +802,6 @@ namespace MsgPack
 			///		Feed new collection item to context collection state.
 			/// </summary>
 			/// <param name="item">New item to feed.</param>
-			//public void FeedItem( MessagePackObject item )
 			public bool FeedItem( MessagePackObject item )
 			{
 				return this._collectionContextStack.Peek().AddUnpackedItem( item ).IsFilled;
@@ -840,7 +810,6 @@ namespace MsgPack
 			/// <summary>
 			///		Represents context collection state.
 			/// </summary>
-			//public struct CollectionContextState
 			public sealed class CollectionContextState
 			{
 				private readonly MessagePackHeader _header;
@@ -937,23 +906,6 @@ namespace MsgPack
 				}
 
 				/// <summary>
-				///		Initialize new instance.
-				/// </summary>
-				/// <param name="header">Header of collection.</param>
-				/// <param name="items">Existent items storage.</param>
-				/// <param name="unpacked">Recognized count of items in this collection.</param>
-				//private CollectionContextState( MessagePackHeader header, MessagePackObject[] items, long unpacked )
-				//{
-				//    Contract.Assert( header.Type != MessageType.Unknown );
-				//    Contract.Assert( items != null );
-				//    Contract.Assert( unpacked <= items.Length );
-
-				//    this._header = header;
-				//    this._items = items;
-				//    this._unpacked = unpacked;
-				//}
-
-				/// <summary>
 				///		Returns string representation of this object.
 				/// </summary>
 				/// <returns>
@@ -961,14 +913,6 @@ namespace MsgPack
 				/// </returns>
 				public override string ToString()
 				{
-					//if ( this._items == null )
-					//{
-					//    return "(null)";
-					//}
-					//else
-					//{
-					//    return String.Format( CultureInfo.CurrentCulture, "{0}({1}/{2})", this._header, this._unpacked, this._items.Length );
-					//}
 					if ( this._items != null )
 					{
 						return String.Format( CultureInfo.CurrentCulture, "{0}({1}/{2})", this._header, this._unpacked, this._capacity );
@@ -1020,7 +964,6 @@ namespace MsgPack
 						}
 					}
 
-					//return new CollectionContextState( this._header, this._items, this._unpacked + 1 );
 					this._unpacked++;
 					return this;
 				}
@@ -1030,7 +973,6 @@ namespace MsgPack
 		/// <summary>
 		///		Represents buffer as value type.
 		/// </summary>
-		// FIXME: to class
 		private struct BytesBuffer
 		{
 			/// <summary>

@@ -24,12 +24,13 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Diagnostics;
+
 namespace MsgPack
 {
-	// FIXME: Stream base
 	/// <summary>
 	///		Implements streaming unpacking. This object is stateful.
 	/// </summary>
+	[Obsolete( "Use StreamUnpacker" )]
 	internal sealed class StreamingUnpacker
 	{
 		private const int _assumedCollectionItemSize = 4;
@@ -77,7 +78,6 @@ namespace MsgPack
 		///			This behavior is notified via <see cref="IDisposable.Dispose">IEnumerator&lt;T&gt;.Dispose()</see> method.
 		///		</para>
 		/// </remarks>
-#warning ストリームに複数ある場合
 		public MessagePackObject? Unpack( IEnumerable<byte> source )
 		{
 			// FIXME:BULK LOAD
@@ -388,6 +388,7 @@ namespace MsgPack
 		///		Transit current stage to <see cref="Stage.UnpackRawBytes"/> with cleanuping states.
 		/// </summary>
 		/// <param name="source"><see cref="ISegmentLengthRecognizeable"/> to be notified.</param>
+		/// <param name="length">The known length of the source.</param>
 		private void TransitToUnpackRawBytes( ISegmentLengthRecognizeable source, uint length )
 		{
 			this._stage = Stage.UnpackRawBytes;
@@ -493,7 +494,7 @@ namespace MsgPack
 			{
 				//this._collectionState.FeedItem( current );
 				//if ( !this._collectionState.ContextCollectionState.IsFilled )
-				if( !this._collectionState.FeedItem( current ) )
+				if ( !this._collectionState.FeedItem( current ) )
 				{
 					this.TransitToUnpackContextCollection();
 					return null;
@@ -1164,11 +1165,11 @@ namespace MsgPack
 					}
 					case MessageType.Int16:
 					{
-						return new MessagePackObject( BigEndianBinary.ToInt16( buffer, 0  ) );
+						return new MessagePackObject( BigEndianBinary.ToInt16( buffer, 0 ) );
 					}
 					case MessageType.Int32:
 					{
-						return new MessagePackObject( BigEndianBinary.ToInt32( buffer, 0  ) );
+						return new MessagePackObject( BigEndianBinary.ToInt32( buffer, 0 ) );
 					}
 					case MessageType.Int64:
 					{
@@ -1176,23 +1177,23 @@ namespace MsgPack
 					}
 					case MessageType.Int8:
 					{
-						return new MessagePackObject( BigEndianBinary.ToSByte( buffer, 0  ) );
+						return new MessagePackObject( BigEndianBinary.ToSByte( buffer, 0 ) );
 					}
 					case MessageType.Single:
 					{
-						return new MessagePackObject( BigEndianBinary.ToSingle( buffer, 0  ) );
+						return new MessagePackObject( BigEndianBinary.ToSingle( buffer, 0 ) );
 					}
 					case MessageType.UInt16:
 					{
-						return new MessagePackObject( BigEndianBinary.ToUInt16( buffer, 0  ) );
+						return new MessagePackObject( BigEndianBinary.ToUInt16( buffer, 0 ) );
 					}
 					case MessageType.UInt32:
 					{
-						return new MessagePackObject( BigEndianBinary.ToUInt32( buffer, 0  ) );
+						return new MessagePackObject( BigEndianBinary.ToUInt32( buffer, 0 ) );
 					}
 					case MessageType.UInt64:
 					{
-						return new MessagePackObject( BigEndianBinary.ToUInt64( buffer, 0  ) );
+						return new MessagePackObject( BigEndianBinary.ToUInt64( buffer, 0 ) );
 					}
 					case MessageType.UInt8:
 					{

@@ -23,7 +23,7 @@ using System;
 namespace MsgPack
 {
 	/// <summary>
-	///		Specify option flags for <see cref="Packer.Pack(Object, ObjectPackingOptions)"/>.
+	///		Specify option flags for <see cref="Packer.Pack(Object, PackingOptions)"/>.
 	/// </summary>
 	[Flags]
 	public enum ObjectPackingOptions

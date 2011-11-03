@@ -26,14 +26,9 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-//using Microsoft.CSharp.RuntimeBinder;
 
 namespace MsgPack
 {
-#warning TODO: Recursive list serialization
-#warning TODO: Recursive dictionary serialization
-#warning TODO: Improve UTF-8 String
-#warning TODO: Improve Dictionary<MPO,MPO> usability
 	partial struct MessagePackObject
 #if !SILVERLIGHT
  : ISerializable
@@ -353,10 +348,29 @@ namespace MsgPack
 			{
 				return String.Empty;
 			}
-
-			if ( this._handleOrTypeCode is ValueTypeCode )
+			
+			ValueTypeCode valueTypeCode;
+			if ( ( valueTypeCode = this._handleOrTypeCode as ValueTypeCode ) != null )
 			{
-				return this._value.ToString();
+				switch ( valueTypeCode.TypeCode )
+				{
+					case TypeCode.Boolean:
+					{
+						return this.AsBoolean().ToString();
+					}
+					case TypeCode.Double:
+					{
+						return this.AsDouble().ToString( CultureInfo.InvariantCulture );
+					}
+					case TypeCode.Single:
+					{
+						return this.AsSingle().ToString( CultureInfo.InvariantCulture );
+					}
+					default:
+					{
+						return this._value.ToString();
+					}
+				}
 			}
 
 			{
