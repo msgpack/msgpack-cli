@@ -48,14 +48,14 @@ Func<Type,bool> __isUnsigned =
 
 var __typeCodes = new Dictionary<Type, string>
 {
-	{ typeof( byte ), "0xcc" },
-	{ typeof( ushort ), "0xcd" },
-	{ typeof( uint ), "0xce" },
-	{ typeof( ulong ), "0xcf" },
-	{ typeof( sbyte ), "0xd0" },
-	{ typeof( short ), "0xd1" },
-	{ typeof( int ), "0xd2" },
-	{ typeof( long ), "0xd3" }
+	{ typeof( byte ), "MessagePackCode.UnsignedInt8" },
+	{ typeof( ushort ), "MessagePackCode.UnsignedInt16" },
+	{ typeof( uint ), "MessagePackCode.UnsignedInt32" },
+	{ typeof( ulong ), "MessagePackCode.UnsignedInt64" },
+	{ typeof( sbyte ), "MessagePackCode.SignedInt8" },
+	{ typeof( short ), "MessagePackCode.SignedInt16" },
+	{ typeof( int ), "MessagePackCode.SignedInt32" },
+	{ typeof( long ), "MessagePackCode.SignedInt64" }
 };
 #>
 #region -- License Terms --
@@ -198,7 +198,7 @@ foreach( var __sourceType in __sourceTypes )
 #>
 			switch ( typeCode )
 			{
-				case 0xca:  // float
+				case MessagePackCode.Real32:  // float
 				{
 <#
 	if( __sourceType == "byte[]" )
@@ -215,23 +215,6 @@ foreach( var __sourceType in __sourceTypes )
 	}
 #>
 				}
-				// case 0xcb:  // double
-				// {
-<#
-	if( __sourceType == "byte[]" )
-	{
-#>
-				//	return ReadDouble( source, offset );
-<#
-	}
-	else
-	{
-#>
-				//	return ReadDouble( source );
-<#
-	}
-#>
-				// }
 				default:
 				{
 					throw new MessageTypeException( "Not Single." );
@@ -348,7 +331,7 @@ foreach( var __sourceType in __sourceTypes )
 #>
 			switch ( typeCode )
 			{
-				case 0xca:  // float
+				case MessagePackCode.Real32:  // float
 				{
 <#
 	if( __sourceType == "byte[]" )
@@ -365,7 +348,7 @@ foreach( var __sourceType in __sourceTypes )
 	}
 #>
 				}
-				case 0xcb:  // double
+				case MessagePackCode.Real64:  // double
 				{
 <#
 	if( __sourceType == "byte[]" )
@@ -577,7 +560,7 @@ foreach( var __sourceType in __sourceTypes )
 		}
 	}
 #>
-			if( typeCode == 0xc0 )
+			if( typeCode == MessagePackCode.NilValue )
 			{
 				// success
 				return true;
@@ -691,7 +674,7 @@ foreach( var __sourceType in __sourceTypes )
 		}
 	}
 #>
-			if( typeCode == 0xc2 )
+			if( typeCode == MessagePackCode.FalseValue )
 			{
 				// success
 <#
@@ -710,7 +693,7 @@ foreach( var __sourceType in __sourceTypes )
 #>
 			}
 
-			if( typeCode == 0xc3 )
+			if( typeCode == MessagePackCode.TrueValue )
 			{
 				// success
 <#
@@ -838,7 +821,7 @@ foreach( var __sourceType in __sourceTypes )
 		}
 	}
 #>
-			if ( ( typeCode & 0xf0 ) == 0x90 )  // FixArray
+			if ( ( typeCode & 0xf0 ) == MessagePackCode.FixedArray )  // FixArray
 			{
 <#
 	if( __sourceType == "byte[]" )
@@ -859,7 +842,7 @@ foreach( var __sourceType in __sourceTypes )
 
 			switch ( typeCode )
 			{
-				case 0xdc : // array 16
+				case MessagePackCode.Array16 : // array 16
 				{
 <#
 	switch( __sourceType )
@@ -881,7 +864,7 @@ foreach( var __sourceType in __sourceTypes )
 	}
 #>
 				}
-				case 0xdd : // array 32
+				case MessagePackCode.Array32 : // array 32
 				{
 <#
 	switch( __sourceType )
@@ -1016,7 +999,7 @@ foreach( var __sourceType in __sourceTypes )
 		}
 	}
 #>
-			if ( ( typeCode & 0xf0 ) == 0x80 )  // FixMap
+			if ( ( typeCode & 0xf0 ) == MessagePackCode.FixedMap )  // FixMap
 			{
 <#
 	if( __sourceType == "byte[]" )
@@ -1037,7 +1020,7 @@ foreach( var __sourceType in __sourceTypes )
 
 			switch ( typeCode )
 			{
-				case 0xde : // map 16
+				case MessagePackCode.Map16 : // map 16
 				{
 <#
 	switch( __sourceType )
@@ -1059,7 +1042,7 @@ foreach( var __sourceType in __sourceTypes )
 	}
 #>
 				}
-				case 0xdf : // map 32
+				case MessagePackCode.Map32 : // map 32
 				{
 <#
 	switch( __sourceType )
@@ -1195,7 +1178,7 @@ foreach( var __sourceType in __sourceTypes )
 		}
 	}
 #>
-			if ( ( typeCode & 0xa0 ) == 0xa0 )  // FixRaw
+			if ( ( typeCode & 0xa0 ) == MessagePackCode.FixedRaw )  // FixRaw
 			{
 <#
 	if( __sourceType == "byte[]" )
@@ -1216,7 +1199,7 @@ foreach( var __sourceType in __sourceTypes )
 
 			switch ( typeCode )
 			{
-				case 0xda : // raw 16
+				case MessagePackCode.Raw16 : // raw 16
 				{
 <#
 	switch( __sourceType )
@@ -1238,7 +1221,7 @@ foreach( var __sourceType in __sourceTypes )
 	}
 #>
 				}
-				case 0xdb : // raw 32
+				case MessagePackCode.Raw32 : // raw 32
 				{
 <#
 	switch( __sourceType )

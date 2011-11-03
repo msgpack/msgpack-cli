@@ -95,6 +95,7 @@
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MessagePackCode.cs" />
     <Compile Include="MessagePackConvert.cs" />
     <Compile Include="MessagePackObject.Utilities.cs" />
     <Compile Include="MessageNotSupportedException.cs" />

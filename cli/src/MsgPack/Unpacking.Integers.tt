@@ -63,14 +63,14 @@ Func<Type,bool> __isUnsigned =
 
 var __typeCodes = new Dictionary<Type, string>
 {
-	{ typeof( byte ), "0xcc" },
-	{ typeof( ushort ), "0xcd" },
-	{ typeof( uint ), "0xce" },
-	{ typeof( ulong ), "0xcf" },
-	{ typeof( sbyte ), "0xd0" },
-	{ typeof( short ), "0xd1" },
-	{ typeof( int ), "0xd2" },
-	{ typeof( long ), "0xd3" }
+	{ typeof( byte ), "MessagePackCode.UnsignedInt8" },
+	{ typeof( ushort ), "MessagePackCode.UnsignedInt16" },
+	{ typeof( uint ), "MessagePackCode.UnsignedInt32" },
+	{ typeof( ulong ), "MessagePackCode.UnsignedInt64" },
+	{ typeof( sbyte ), "MessagePackCode.SignedInt8" },
+	{ typeof( short ), "MessagePackCode.SignedInt16" },
+	{ typeof( int ), "MessagePackCode.SignedInt32" },
+	{ typeof( long ), "MessagePackCode.SignedInt64" }
 };
 #>
 #region -- License Terms --

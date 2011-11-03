@@ -55,14 +55,10 @@ namespace MsgPack
 			}
 			switch ( typeCode )
 			{
-				case 0xca:  // float
+				case MessagePackCode.Real32:  // float
 				{
 					return ReadSingle( source );
 				}
-				// case 0xcb:  // double
-				// {
-				//	return ReadDouble( source );
-				// }
 				default:
 				{
 					throw new MessageTypeException( "Not Single." );
@@ -113,14 +109,10 @@ namespace MsgPack
 			int typeCode = source[ offset ];
 			switch ( typeCode )
 			{
-				case 0xca:  // float
+				case MessagePackCode.Real32:  // float
 				{
 					return new UnpackArrayResult<Single>( ReadSingle( source, offset + 1 ), offset + sizeof( float ) + 1 );
 				}
-				// case 0xcb:  // double
-				// {
-				//	return ReadDouble( source, offset );
-				// }
 				default:
 				{
 					throw new MessageTypeException( "Not Single." );
@@ -152,11 +144,11 @@ namespace MsgPack
 			}
 			switch ( typeCode )
 			{
-				case 0xca:  // float
+				case MessagePackCode.Real32:  // float
 				{
 					return ReadSingle( source );
 				}
-				case 0xcb:  // double
+				case MessagePackCode.Real64:  // double
 				{
 					return ReadDouble( source );
 				}
@@ -210,11 +202,11 @@ namespace MsgPack
 			int typeCode = source[ offset ];
 			switch ( typeCode )
 			{
-				case 0xca:  // float
+				case MessagePackCode.Real32:  // float
 				{
 					return new UnpackArrayResult<Double>( ReadSingle( source, offset + 1 ), offset + sizeof( float ) + 1 );
 				}
-				case 0xcb:  // double
+				case MessagePackCode.Real64:  // double
 				{
 					return new UnpackArrayResult<Double>( ReadDouble( source, offset + 1 ), offset + sizeof( double ) + 1 );
 				}
@@ -266,7 +258,7 @@ namespace MsgPack
 			{
 				throw new UnpackException( "Type header not found." );
 			}
-			if( typeCode == 0xc0 )
+			if( typeCode == MessagePackCode.NilValue )
 			{
 				// success
 				return true;
@@ -352,7 +344,7 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if( typeCode == 0xc0 )
+			if( typeCode == MessagePackCode.NilValue )
 			{
 				// success
 				return true;
@@ -383,13 +375,13 @@ namespace MsgPack
 			{
 				throw new UnpackException( "Type header not found." );
 			}
-			if( typeCode == 0xc2 )
+			if( typeCode == MessagePackCode.FalseValue )
 			{
 				// success
 				return false;
 			}
 
-			if( typeCode == 0xc3 )
+			if( typeCode == MessagePackCode.TrueValue )
 			{
 				// success
 				return true;
@@ -439,13 +431,13 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if( typeCode == 0xc2 )
+			if( typeCode == MessagePackCode.FalseValue )
 			{
 				// success
 				return new UnpackArrayResult<bool>( false, offset + 1 );
 			}
 
-			if( typeCode == 0xc3 )
+			if( typeCode == MessagePackCode.TrueValue )
 			{
 				// success
 				return new UnpackArrayResult<bool>( true, offset + 1 );
@@ -474,7 +466,7 @@ namespace MsgPack
 			{
 				throw new UnpackException( "Type header not found." );
 			}
-			if ( ( typeCode & 0xf0 ) == 0x90 )  // FixArray
+			if ( ( typeCode & 0xf0 ) == MessagePackCode.FixedArray )  // FixArray
 			{
 				return ( typeCode & 0x0f );
 
@@ -482,11 +474,11 @@ namespace MsgPack
 
 			switch ( typeCode )
 			{
-				case 0xdc : // array 16
+				case MessagePackCode.Array16 : // array 16
 				{
 					return UnpackUInt16Body( source );
 				}
-				case 0xdd : // array 32
+				case MessagePackCode.Array32 : // array 32
 				{
 					return UnpackUInt32Body( source );
 				}
@@ -537,18 +529,18 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if ( ( typeCode & 0xf0 ) == 0x90 )  // FixArray
+			if ( ( typeCode & 0xf0 ) == MessagePackCode.FixedArray )  // FixArray
 			{
 				return new UnpackArrayResult<Int64>( typeCode & 0x0f, 1 );
 			}
 
 			switch ( typeCode )
 			{
-				case 0xdc : // array 16
+				case MessagePackCode.Array16 : // array 16
 				{
 					return new UnpackArrayResult<Int64>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
 				}
-				case 0xdd : // array 32
+				case MessagePackCode.Array32 : // array 32
 				{
 					return new UnpackArrayResult<Int64>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
 				}
@@ -579,7 +571,7 @@ namespace MsgPack
 			{
 				throw new UnpackException( "Type header not found." );
 			}
-			if ( ( typeCode & 0xf0 ) == 0x80 )  // FixMap
+			if ( ( typeCode & 0xf0 ) == MessagePackCode.FixedMap )  // FixMap
 			{
 				return ( typeCode & 0x0f );
 
@@ -587,11 +579,11 @@ namespace MsgPack
 
 			switch ( typeCode )
 			{
-				case 0xde : // map 16
+				case MessagePackCode.Map16 : // map 16
 				{
 					return UnpackUInt16Body( source );
 				}
-				case 0xdf : // map 32
+				case MessagePackCode.Map32 : // map 32
 				{
 					return UnpackUInt32Body( source );
 				}
@@ -643,18 +635,18 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if ( ( typeCode & 0xf0 ) == 0x80 )  // FixMap
+			if ( ( typeCode & 0xf0 ) == MessagePackCode.FixedMap )  // FixMap
 			{
 				return new UnpackArrayResult<Int64>( typeCode & 0x0f, offset + 1 );
 			}
 
 			switch ( typeCode )
 			{
-				case 0xde : // map 16
+				case MessagePackCode.Map16 : // map 16
 				{
 					return new UnpackArrayResult<Int64>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
 				}
-				case 0xdf : // map 32
+				case MessagePackCode.Map32 : // map 32
 				{
 					return new UnpackArrayResult<Int64>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
 				}
@@ -686,7 +678,7 @@ namespace MsgPack
 			{
 				throw new UnpackException( "Type header not found." );
 			}
-			if ( ( typeCode & 0xa0 ) == 0xa0 )  // FixRaw
+			if ( ( typeCode & 0xa0 ) == MessagePackCode.FixedRaw )  // FixRaw
 			{
 				return ( typeCode & 0x1f );
 
@@ -694,11 +686,11 @@ namespace MsgPack
 
 			switch ( typeCode )
 			{
-				case 0xda : // raw 16
+				case MessagePackCode.Raw16 : // raw 16
 				{
 					return UnpackUInt16Body( source );
 				}
-				case 0xdb : // raw 32
+				case MessagePackCode.Raw32 : // raw 32
 				{
 					return UnpackUInt32Body( source );
 				}
@@ -749,18 +741,18 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if ( ( typeCode & 0xa0 ) == 0xa0 )  // FixRaw
+			if ( ( typeCode & 0xa0 ) == MessagePackCode.FixedRaw )  // FixRaw
 			{
 				return new UnpackArrayResult<Int64>( typeCode & 0x1f, offset + 1 );
 			}
 
 			switch ( typeCode )
 			{
-				case 0xda : // raw 16
+				case MessagePackCode.Raw16 : // raw 16
 				{
 					return new UnpackArrayResult<Int64>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
 				}
-				case 0xdb : // raw 32
+				case MessagePackCode.Raw32 : // raw 32
 				{
 					return new UnpackArrayResult<Int64>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
 				}

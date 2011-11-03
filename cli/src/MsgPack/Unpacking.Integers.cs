@@ -1214,7 +1214,7 @@ namespace MsgPack
 				// It is positive fixnum value itself.
 				return unchecked( ( byte )typeCode );
 			}
-			if( typeCode != 0xcc )
+			if( typeCode != MessagePackCode.UnsignedInt8 )
 			{
 				return null;
 			}
@@ -1245,7 +1245,7 @@ namespace MsgPack
 				// It is positive fixnum value itself.
 				return new UnpackArrayResult<byte>( ( byte )typeCode, offset +1 );
 			}
-			if( typeCode != 0xcc )
+			if( typeCode != MessagePackCode.UnsignedInt8 )
 			{
 				return null;
 			}
@@ -1270,7 +1270,7 @@ namespace MsgPack
 				// It is positive or negative fixnum value itself.
 				return unchecked( ( sbyte )typeCode );
 			}
-			if( typeCode != 0xd0 )
+			if( typeCode != MessagePackCode.SignedInt8 )
 			{
 				return null;
 			}
@@ -1301,7 +1301,7 @@ namespace MsgPack
 				// It is positive or negative fixnum value itself.
 				return new UnpackArrayResult<sbyte>( ( sbyte )typeCode, offset + 1 );
 			}
-			if( typeCode != 0xd0 )
+			if( typeCode != MessagePackCode.SignedInt8 )
 			{
 				return null;
 			}
@@ -1321,7 +1321,7 @@ namespace MsgPack
 
 		internal static Int16? TryUnpackInt16( Stream source, byte typeCode )
 		{
-			if( typeCode != 0xd1 )
+			if( typeCode != MessagePackCode.SignedInt16 )
 			{
 				return null;
 			}
@@ -1355,7 +1355,7 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if( typeCode != 0xd1 )
+			if( typeCode != MessagePackCode.SignedInt16 )
 			{
 				return null;
 			}
@@ -1383,7 +1383,7 @@ namespace MsgPack
 
 		internal static UInt16? TryUnpackUInt16( Stream source, byte typeCode )
 		{
-			if( typeCode != 0xcd )
+			if( typeCode != MessagePackCode.UnsignedInt16 )
 			{
 				return null;
 			}
@@ -1417,7 +1417,7 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if( typeCode != 0xcd )
+			if( typeCode != MessagePackCode.UnsignedInt16 )
 			{
 				return null;
 			}
@@ -1445,7 +1445,7 @@ namespace MsgPack
 
 		internal static Int32? TryUnpackInt32( Stream source, byte typeCode )
 		{
-			if( typeCode != 0xd2 )
+			if( typeCode != MessagePackCode.SignedInt32 )
 			{
 				return null;
 			}
@@ -1483,7 +1483,7 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if( typeCode != 0xd2 )
+			if( typeCode != MessagePackCode.SignedInt32 )
 			{
 				return null;
 			}
@@ -1515,7 +1515,7 @@ namespace MsgPack
 
 		internal static UInt32? TryUnpackUInt32( Stream source, byte typeCode )
 		{
-			if( typeCode != 0xce )
+			if( typeCode != MessagePackCode.UnsignedInt32 )
 			{
 				return null;
 			}
@@ -1553,7 +1553,7 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if( typeCode != 0xce )
+			if( typeCode != MessagePackCode.UnsignedInt32 )
 			{
 				return null;
 			}
@@ -1585,7 +1585,7 @@ namespace MsgPack
 
 		internal static Int64? TryUnpackInt64( Stream source, byte typeCode )
 		{
-			if( typeCode != 0xd3 )
+			if( typeCode != MessagePackCode.SignedInt64 )
 			{
 				return null;
 			}
@@ -1631,7 +1631,7 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if( typeCode != 0xd3 )
+			if( typeCode != MessagePackCode.SignedInt64 )
 			{
 				return null;
 			}
@@ -1671,7 +1671,7 @@ namespace MsgPack
 
 		internal static UInt64? TryUnpackUInt64( Stream source, byte typeCode )
 		{
-			if( typeCode != 0xcf )
+			if( typeCode != MessagePackCode.UnsignedInt64 )
 			{
 				return null;
 			}
@@ -1717,7 +1717,7 @@ namespace MsgPack
 			}
 
 			int typeCode = source[ offset ];
-			if( typeCode != 0xcf )
+			if( typeCode != MessagePackCode.UnsignedInt64 )
 			{
 				return null;
 			}

@@ -29,7 +29,15 @@ using System.Text;
 
 namespace MsgPack
 {
+	// TODO: Code comment for protected specifically <exception>
 	// TODO: Refactoring or use T4 template.
+
+	/*
+	 *  Convention
+	 *  PackXxx (public, provides overloads) -> PackXxxCore(protected virtual, provides validation) 
+	 *  -> PrivatePackXxx(private, provides null handling) -> PrivatePackXxxCore(private, provides serialization)
+	 * 
+	 */
 
 	/// <summary>
 	///		Implements serialization feature of MsgPack.
@@ -121,28 +129,52 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		When overridden by derived class, write specified byte to stream using implementation specific manner.
+		///		When overridden by derived class, writes specified byte to stream using implementation specific manner.
 		/// </summary>
 		/// <param name="value">A byte to be written.</param>
 		protected abstract void WriteByte( byte value );
 
+		#region -- Bulk writing --
+
+		/// <summary>
+		///		Writse specified bytes to stream using implementation specific most efficient manner.
+		/// </summary>
+		/// <param name="value">Collection of bytes to be written.</param>
 		protected virtual void WriteBytes( ICollection<byte> value )
 		{
+			if ( value == null )
+			{
+				throw new ArgumentNullException( "value" );
+			}
+
+			Contract.EndContractBlock();
+
 			foreach ( var b in value )
 			{
 				this.WriteByte( b );
 			}
 		}
 
+		/// <summary>
+		///		Writse specified bytes to stream using implementation specific most efficient manner.
+		/// </summary>
+		/// <param name="value">Bytes to be written.</param>
+		/// <param name="isImmutable">If the <paramref name="value"/> can be treat as immutable (that is, can be used safely without copying) then <c>true</c>.</param>
 		protected virtual void WriteBytes( byte[] value, bool isImmutable )
 		{
+			if ( value == null )
+			{
+				throw new ArgumentNullException( "value" );
+			}
+
+			Contract.EndContractBlock(); 
+			
 			foreach ( var b in value )
 			{
 				this.WriteByte( b );
 			}
 		}
-
-
+		
 		private void StreamWrite<TItem>( IEnumerable<TItem> value, Action<IEnumerable<TItem>, PackingOptions> writeBody, PackingOptions options )
 		{
 			if ( this.CanSeek )
@@ -187,6 +219,8 @@ namespace MsgPack
 				writeBody( asCollection, options );
 			}
 		}
+
+		#endregion -- Bulk writing --
 
 		#region -- Int8 --
 
@@ -247,7 +281,7 @@ namespace MsgPack
 				return false;
 			}
 
-			this.WriteByte( 0xd0 );
+			this.WriteByte( MessagePackCode.SignedInt8 );
 			this.WriteByte( ( byte )value );
 			return true;
 		}
@@ -305,7 +339,7 @@ namespace MsgPack
 				return false;
 			}
 
-			this.WriteByte( 0xcc );
+			this.WriteByte( MessagePackCode.UnsignedInt8 );
 			this.WriteByte( ( byte )value );
 			return true;
 		}
@@ -374,7 +408,7 @@ namespace MsgPack
 				return false;
 			}
 
-			this.WriteByte( 0xd1 );
+			this.WriteByte( MessagePackCode.SignedInt16 );
 			unchecked
 			{
 				this.WriteByte( ( byte )( ( value >> 8 ) & 0xff ) );
@@ -445,7 +479,7 @@ namespace MsgPack
 				return false;
 			}
 
-			this.WriteByte( 0xcd );
+			this.WriteByte( MessagePackCode.UnsignedInt16 );
 			unchecked
 			{
 				this.WriteByte( ( byte )( ( value >> 8 ) & 0xff ) );
@@ -523,7 +557,7 @@ namespace MsgPack
 				return false;
 			}
 
-			this.WriteByte( 0xd2 );
+			this.WriteByte( MessagePackCode.SignedInt32 );
 			unchecked
 			{
 				this.WriteByte( ( byte )( ( value >> 24 ) & 0xff ) );
@@ -601,7 +635,7 @@ namespace MsgPack
 				return false;
 			}
 
-			this.WriteByte( 0xce );
+			this.WriteByte( MessagePackCode.UnsignedInt32 );
 			unchecked
 			{
 				this.WriteByte( ( byte )( ( value >> 24 ) & 0xff ) );
@@ -681,7 +715,7 @@ namespace MsgPack
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
 		protected bool TryPackInt64( long value )
 		{
-			this.WriteByte( 0xd3 );
+			this.WriteByte( MessagePackCode.SignedInt64 );
 			unchecked
 			{
 				this.WriteByte( ( byte )( ( value >> 56 ) & 0xff ) );
@@ -763,7 +797,7 @@ namespace MsgPack
 		[CLSCompliant( false )]
 		protected bool TryPackUInt64( ulong value )
 		{
-			this.WriteByte( 0xcf );
+			this.WriteByte( MessagePackCode.UnsignedInt64 );
 			unchecked
 			{
 				this.WriteByte( ( byte )( ( value >> 56 ) & 0xff ) );
@@ -791,7 +825,7 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 
-			this.WriteByte( 0xca );
+			this.WriteByte( MessagePackCode.Real32 );
 
 			var bits = new Float32Bits( value );
 
@@ -826,7 +860,7 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 
-			this.WriteByte( 0xcb );
+			this.WriteByte( MessagePackCode.Real64 );
 			unchecked
 			{
 				long bits = BitConverter.DoubleToInt64Bits( value );
@@ -856,7 +890,7 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 
-			this.WriteByte( value ? ( byte )0xc3 : ( byte )0xc2 );
+			this.WriteByte( value ? ( byte )MessagePackCode.TrueValue : ( byte )MessagePackCode.FalseValue );
 			return this;
 		}
 
@@ -872,9 +906,6 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackArrayHeader( int count )
 		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-
 			this.PackArrayHeaderCore( count );
 			return this;
 		}
@@ -890,13 +921,23 @@ namespace MsgPack
 			{
 				throw new ArgumentOutOfRangeException( "count", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "count" ) );
 			}
-			else if ( count < 16 )
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
+			this.PrivatePackArrayHeaderCore( count );
+		}
+
+		private void PrivatePackArrayHeaderCore( int count )
+		{
+			Contract.Requires( 0 <= count );
+			if ( count < 16 )
 			{
-				this.WriteByte( unchecked( ( byte )( 0x90 | count ) ) );
+				this.WriteByte( unchecked( ( byte )( MessagePackCode.FixedArray | count ) ) );
 			}
 			else if ( count <= UInt16.MaxValue )
 			{
-				this.WriteByte( 0xdc );
+				this.WriteByte( MessagePackCode.Array16 );
 				unchecked
 				{
 					this.WriteByte( ( byte )( ( count >> 8 ) & 0xff ) );
@@ -905,7 +946,7 @@ namespace MsgPack
 			}
 			else
 			{
-				this.WriteByte( 0xdd );
+				this.WriteByte( MessagePackCode.Array32 );
 				this.WriteByte( ( byte )( ( count >> 24 ) & 0xff ) );
 				this.WriteByte( ( byte )( ( count >> 16 ) & 0xff ) );
 				this.WriteByte( ( byte )( ( count >> 8 ) & 0xff ) );
@@ -921,9 +962,6 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackMapHeader( int count )
 		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-
 			this.PackMapHeaderCore( count );
 			return this;
 		}
@@ -939,13 +977,24 @@ namespace MsgPack
 			{
 				throw new ArgumentOutOfRangeException( "count", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "count" ) );
 			}
-			else if ( count < 16 )
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
+			this.PrivatePackMapHeaderCore( count );
+		}
+
+		private void PrivatePackMapHeaderCore( int count )
+		{
+			Contract.Requires( 0 <= count );
+
+			if ( count < 16 )
 			{
-				this.WriteByte( unchecked( ( byte )( 0x80 | count ) ) );
+				this.WriteByte( unchecked( ( byte )( MessagePackCode.FixedMap | count ) ) );
 			}
 			else if ( count <= UInt16.MaxValue )
 			{
-				this.WriteByte( 0xde );
+				this.WriteByte( MessagePackCode.Map16 );
 				unchecked
 				{
 					this.WriteByte( ( byte )( ( count >> 8 ) & 0xff ) );
@@ -954,7 +1003,7 @@ namespace MsgPack
 			}
 			else
 			{
-				this.WriteByte( 0xdf );
+				this.WriteByte( MessagePackCode.Map32 );
 				unchecked
 				{
 					this.WriteByte( ( byte )( ( count >> 24 ) & 0xff ) );
@@ -973,7 +1022,6 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackRawHeader( int length )
 		{
-			this.VerifyNotDisposed();
 			this.PackRawHeaderCore( length );
 			return this;
 		}
@@ -989,13 +1037,24 @@ namespace MsgPack
 			{
 				throw new ArgumentOutOfRangeException( "length", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "length" ) );
 			}
-			else if ( length < 32 )
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
+			this.PrivatePackRawHeaderCore( length );
+		}
+
+		private void PrivatePackRawHeaderCore( int length )
+		{
+			Contract.Requires( 0 <= length );
+
+			if ( length < 32 )
 			{
-				this.WriteByte( unchecked( ( byte )( 0xa0 | length ) ) );
+				this.WriteByte( unchecked( ( byte )( MessagePackCode.FixedRaw | length ) ) );
 			}
 			else if ( length <= UInt16.MaxValue )
 			{
-				this.WriteByte( 0xda );
+				this.WriteByte( MessagePackCode.Raw16 );
 				unchecked
 				{
 					this.WriteByte( ( byte )( ( length >> 8 ) & 0xff ) );
@@ -1004,7 +1063,7 @@ namespace MsgPack
 			}
 			else
 			{
-				this.WriteByte( 0xdb );
+				this.WriteByte( MessagePackCode.Raw32 );
 				unchecked
 				{
 					this.WriteByte( ( byte )( ( length >> 24 ) & 0xff ) );
@@ -1048,11 +1107,11 @@ namespace MsgPack
 			var asByteArray = value as byte[];
 			if ( asByteArray == null )
 			{
-				this.PackRawCore( value );
+				this.PrivatePackRaw( value );
 			}
 			else
 			{
-				this.PackRawCore( asByteArray );
+				this.PrivatePackRaw( asByteArray );
 			}
 			return this;
 		}
@@ -1068,75 +1127,63 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.PackRawCore( value );
+			this.PrivatePackRaw( value );
 			return this;
 		}
 
-		internal Packer PackImmutableBytes( byte[] value )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-
-			if ( value == null )
-			{
-				this.PackNull();
-			}
-			else
-			{
-				this.PackRawHeaderCore( value.Length );
-				this.PackRawBodyCore( value, true );
-			}
-
-			return this;
-		}
-
-		private void PackRawCore( byte[] value )
+		private void PrivatePackRaw( byte[] value )
 		{
 			if ( value == null )
 			{
-				this.PackNull();
+				this.PrivatePackNullCore();
 				return;
 			}
 
-			this.PackRawHeaderCore( value.Length );
-			this.PackRawBodyCore( value );
+			PrivatePackRawCore( value, false );
 		}
 
-		private void PackRawCore( IList<byte> value )
+		private void PrivatePackRawCore( byte[] value, bool isImmutable )
+		{
+			this.PrivatePackRawHeaderCore( value.Length );
+			this.WriteBytes( value, isImmutable );
+		}
+
+		private void PrivatePackRaw( IList<byte> value )
 		{
 			if ( value == null )
 			{
-				this.PackNull();
+				this.PrivatePackNullCore();
 				return;
 			}
 
-			this.PackRawHeaderCore( value.Count );
-			this.PackRawBodyCore( value );
+			this.PrivatePackRawHeaderCore( value.Count );
+			this.WriteBytes( value );
 		}
 
 		private void PrivatePackRaw( IEnumerable<byte> value )
 		{
 			if ( value == null )
 			{
-				this.PackNull();
+				this.PrivatePackNullCore();
 				return;
 			}
-
-			this.PackRawCore( value );
+			
+			this.PrivatePackRowCore( value );
 		}
 
-		private void PackRawCore( IEnumerable<byte> value )
+		private void PrivatePackRowCore( IEnumerable<byte> value )
 		{
+
 			if ( !this.CanSeek )
 			{
 				// buffered
-				this.PackRawCore( value.ToArray() );
+				this.PrivatePackRawCore( value.ToArray(), true );
 			}
 			else
 			{
 				// Header
-				this.WriteByte( 0xdb );
-				this.StreamWrite( value, ( items, _ ) => this.PackRawBodyCore( items ), null );
+				this.WriteByte( MessagePackCode.Raw32 );
+				this.StreamWrite( value, ( items, _ ) => this.PrivatePackRawBodyCore( items ), null );
 			}
 		}
 
@@ -1154,23 +1201,35 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.PackRawBodyCore( value );
+			this.WriteBytes( value, false );
 			return this;
 		}
 
-		private void PrivatePackRawBody( byte[] value )
+		private int PrivatePackRawBodyCore( IEnumerable<byte> value )
 		{
 			if ( value == null )
 			{
-				return;
+				return 0;
 			}
 
-			this.PackRawBodyCore( value );
+			var asCollection = value as ICollection<byte>;
+			if ( asCollection != null )
+			{
+				return this.PrivatePackRawBodyCore( asCollection, asCollection.IsReadOnly );
+			}
+
+			int bodyLength = 0;
+
+			foreach ( var b in value )
+			{
+				this.WriteByte( b );
+				bodyLength++;
+			}
+
+			return bodyLength;
 		}
 
-		// TODO: Refactor too comolex call graph...
-
-		private int PackRawBodyCore( ICollection<byte> value, bool isImmutable )
+		private int PrivatePackRawBodyCore( ICollection<byte> value, bool isImmutable )
 		{
 			if ( value == null )
 			{
@@ -1190,30 +1249,6 @@ namespace MsgPack
 			return value.Count;
 		}
 
-		private int PackRawBodyCore( IEnumerable<byte> value )
-		{
-			if ( value == null )
-			{
-				return 0;
-			}
-
-			var asCollection = value as ICollection<byte>;
-			if ( asCollection != null )
-			{
-				return this.PackRawBodyCore( asCollection, asCollection.IsReadOnly );
-			}
-
-			int bodyLength = 0;
-
-			foreach ( var b in value )
-			{
-				this.WriteByte( b );
-				bodyLength++;
-			}
-
-			return bodyLength;
-		}
-
 		#endregion -- Raw --
 
 		#region -- String --
@@ -1226,10 +1261,7 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackString( IEnumerable<char> value )
 		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-
-			this.PrivatePackString( value, Encoding.UTF8 );
+			this.PackStringCore( value, Encoding.UTF8 );
 			return this;
 		}
 
@@ -1241,10 +1273,7 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackString( string value )
 		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-
-			this.PrivatePackString( value, Encoding.UTF8 );
+			this.PackStringCore( value, Encoding.UTF8 );
 			return this;
 		}
 
@@ -1257,8 +1286,7 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackString( IEnumerable<char> value, Encoding encoding )
 		{
-			this.VerifyNotDisposed();
-			this.PrivatePackString( value, encoding );
+			this.PackStringCore( value, encoding );
 			return this;
 		}
 
@@ -1271,43 +1299,10 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackString( string value, Encoding encoding )
 		{
-			this.VerifyNotDisposed();
-			this.PrivatePackString( value, encoding );
+			this.PackStringCore( value, encoding );
 			return this;
 		}
-
-		private void PrivatePackString( IEnumerable<char> value, Encoding encoding )
-		{
-			if ( value == null )
-			{
-				this.PackNull();
-				return;
-			}
-
-			if ( encoding == null )
-			{
-				throw new ArgumentNullException( "encoding" );
-			}
-
-			this.PackStringCore( value, encoding );
-		}
-
-		private void PrivatePackString( string value, Encoding encoding )
-		{
-			if ( value == null )
-			{
-				this.PackNull();
-				return;
-			}
-
-			if ( encoding == null )
-			{
-				throw new ArgumentNullException( "encoding" );
-			}
-
-			this.PackStringCore( value, encoding );
-		}
-
+		
 		/// <summary>
 		///		Pack specified char stream to current stream with specified <see cref="Encoding"/>.
 		/// </summary>
@@ -1315,8 +1310,39 @@ namespace MsgPack
 		/// <param name="encoding"><see cref="Encoding"/> to be used.</param>
 		protected virtual void PackStringCore( IEnumerable<char> value, Encoding encoding )
 		{
+			if ( encoding == null )
+			{
+				throw new ArgumentNullException( "encoding" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
+			this.PrivatePackString( value, encoding );
+		}
+
+		private void PrivatePackString( IEnumerable<char> value, Encoding encoding )
+		{
+			Contract.Requires( encoding != null );
+
+			if ( value == null )
+			{
+				this.PrivatePackNullCore();
+				return;
+			}
+
+			this.PrivatePackStringCore( value, encoding );
+		}
+
+		private void PrivatePackStringCore( IEnumerable<char> value, Encoding encoding )
+		{
+			Contract.Requires( value != null );
+			Contract.Requires( encoding != null );
+
 			// TODO: streaming encoding
-			this.PackImmutableBytes( encoding.GetBytes( value.ToArray() ) );
+			var encoded = encoding.GetBytes( value.ToArray() );
+			this.PrivatePackRawHeaderCore( encoded.Length );
+			this.WriteBytes( encoded, true );
 		}
 
 		/// <summary>
@@ -1326,15 +1352,45 @@ namespace MsgPack
 		/// <param name="encoding"><see cref="Encoding"/> to be used.</param>
 		protected virtual void PackStringCore( string value, Encoding encoding )
 		{
-			// TODO: Use standard path
-			//this.PackRawCore( encoding.GetBytes( value ) );
-			var bytes = encoding.GetBytes( value );
-			this.PackRawHeaderCore( bytes.Length );
-			this.WriteBytes( bytes, true );
+			if ( encoding == null )
+			{
+				throw new ArgumentNullException( "encoding" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
+			this.PrivatePackString( value, encoding );
+		}
+
+
+		private void PrivatePackString( string value, Encoding encoding )
+		{
+			Contract.Requires( encoding != null );
+
+			if ( value == null )
+			{
+				this.PrivatePackNullCore();
+				return;
+			}
+
+			this.PrivatePackStringCore( value, encoding );
+		}
+
+		private void PrivatePackStringCore( string value, Encoding encoding )
+		{
+			Contract.Requires( value != null );
+			Contract.Requires( encoding != null );
+
+			// TODO: streaming encoding
+			var encoded = encoding.GetBytes( value );
+			this.PrivatePackRawHeaderCore( encoded.Length );
+			this.WriteBytes( encoded, true );
 		}
 
 		#endregion -- String --
 
+#warning 規約に従いリファクタ（T4も）
 		#region -- Enumerable --
 		/// <summary>
 		///		Pack specified collection to current stream with appropriate serialization.
@@ -1359,37 +1415,21 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			if ( value == null )
-			{
-				return this.PackNull();
-			}
-
-			this.PackArrayCore( value.Select( item => ( Object )item ), GetCount<TItem>( value ), this.PackObjectsCore, options );
+			this.PrivatePackItems( value, options );
 			return this;
 		}
 
-		/// <summary>
-		///		Pack specified collection to current stream.
-		/// </summary>
-		/// <param name="value">Source collection.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		[Obsolete( "Use Pack<T>(T) instead." )]
-		public Packer PackItems( IEnumerable<MessagePackObject> value )
+		private void PrivatePackItems<TItem>( IEnumerable<TItem> value, PackingOptions options )
 		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-
 			if ( value == null )
 			{
-				return this.PackNull();
+				this.PrivatePackNullCore();
+				return;
 			}
 
-			this.PackArrayCore( value, GetCount( value ), this.PackObjectsCore, null );
-
-			return this;
+			this.PrivatePackArrayCore( value.Select( item => ( Object )item ), GetCount<TItem>( value ), this.PackObjectsCore, options );
 		}
-
+		
 		private static int? GetCount( System.Collections.IEnumerable value )
 		{
 			var asCollection = value as System.Collections.ICollection;
@@ -1421,17 +1461,21 @@ namespace MsgPack
 			return count;
 		}
 
-		private void PackArrayCore<TItem>( IEnumerable<TItem> value, int? count, Action<IEnumerable<TItem>, PackingOptions> packObjects, PackingOptions options )
+		private void PrivatePackArrayCore<TItem>( IEnumerable<TItem> value, int? count, Action<IEnumerable<TItem>, PackingOptions> packObjects, PackingOptions options )
 		{
+			Contract.Requires( value != null );
+			Contract.Requires( packObjects != null );
+			Contract.Requires( 0 <= count.GetValueOrDefault() );
+
 			if ( count != null )
 			{
-				this.PackArrayHeader( count.Value );
+				this.PrivatePackArrayHeaderCore( count.Value );
 				packObjects( value, options );
 			}
 			else
 			{
 				// array32 indicator
-				this.WriteByte( 0xdd );
+				this.WriteByte( MessagePackCode.Array32 );
 				this.StreamWrite( value, packObjects, options );
 			}
 		}
@@ -1440,7 +1484,8 @@ namespace MsgPack
 		{
 			foreach ( var item in value )
 			{
-				// Dispacthed to Pack(Object);
+				// FIXME: ValuePacker<TItem>.Instance.Pack(item,options);
+				// Dispacthed to Pack(Object)
 				this.PackObject( item, options );
 			}
 		}
@@ -1489,21 +1534,6 @@ namespace MsgPack
 			}
 		}
 
-		private void PackMapCore<TKey, TValue>( IEnumerable<KeyValuePair<TKey, TValue>> value, int? count, Action<IEnumerable<KeyValuePair<TKey, TValue>>, PackingOptions> packObjects, PackingOptions options )
-		{
-			if ( count != null )
-			{
-				this.PackMapHeader( count.Value );
-				packObjects( value, options );
-			}
-			else
-			{
-				// array32 indicator
-				this.WriteByte( 0xdd );
-				this.StreamWrite( value, packObjects, options );
-			}
-		}
-
 		#endregion -- IDictionary --
 
 		/// <summary>
@@ -1530,8 +1560,13 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			ValuePacker<T>.Instance.Pack( this, value, options );
+			this.PrivatePackCore<T>( value, options );
 			return this;
+		}
+
+		private void PrivatePackCore<T>( T value, PackingOptions options )
+		{
+			ValuePacker<T>.Instance.Pack( this, value, options );
 		}
 
 		/// <summary>
@@ -1597,8 +1632,13 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.WriteByte( 0xc0 );
+			this.PrivatePackNullCore();
 			return this;
+		}
+
+		private void PrivatePackNullCore()
+		{
+			this.WriteByte( MessagePackCode.NilValue );
 		}
 	}
 }
