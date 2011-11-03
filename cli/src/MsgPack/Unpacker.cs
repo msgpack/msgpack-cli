@@ -249,7 +249,7 @@ namespace MsgPack
 		{
 			return this.GetEnumerator();
 		}
-		
+
 		/// <summary>
 		///		Feed new data source.
 		/// </summary>
@@ -511,9 +511,16 @@ namespace MsgPack
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
-			return Unpacking.UnpackObject( this._currentSource.Source );
+			if ( this._currentSource.OwnsStream )
+			{
+				return Unpacking.UnpackObject( this._currentSource.Stream );
+			}
+			else
+			{
+				return Unpacking.UnpackObject( this._currentSource.Source );
+			}
 		}
-		
+
 		/// <summary>
 		///		Encapselates Stream and ownership information.
 		/// </summary>

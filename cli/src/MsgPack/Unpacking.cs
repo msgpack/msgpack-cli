@@ -133,7 +133,7 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			return new StreamingUnpacker().Unpack( source.AsEnumerable() );
+			return new StreamUnpacker().Unpack( source );
 		}
 
 		/// <summary>

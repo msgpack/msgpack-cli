@@ -46,6 +46,16 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Instrument|AnyCPU'">
+    <OutputPath>bin\Instrument\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.core">
       <HintPath>..\..\lib\nunit.core.dll</HintPath>
@@ -93,12 +103,6 @@
     <Compile Include="TestSuite.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
-      <Project>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</Project>
-      <Name>MsgPack</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\src\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
@@ -126,6 +130,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
+      <Project>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</Project>
+      <Name>MsgPack</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

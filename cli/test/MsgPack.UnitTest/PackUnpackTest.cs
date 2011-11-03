@@ -39,7 +39,9 @@ namespace MsgPack
 
 		private static MessagePackObject UnpackOne( MemoryStream output )
 		{
-			return new Unpacker( output.GetBuffer() ).UnpackObject().Value;
+			output.Seek( 0L, SeekOrigin.Begin );
+			//return new Unpacker( output.GetBuffer() ).UnpackObject().Value;
+			return new Unpacker( output ).UnpackObject().Value;
 		}
 
 		[Test]

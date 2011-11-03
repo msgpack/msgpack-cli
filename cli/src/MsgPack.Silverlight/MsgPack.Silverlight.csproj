@@ -45,6 +45,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Instrument|AnyCPU'">
+    <OutputPath>bin\Instrument\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <NoConfig>true</NoConfig>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
@@ -132,6 +144,9 @@
     </Compile>
     <Compile Include="..\MsgPack\StreamPacker.cs">
       <Link>StreamPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\StreamUnpacker.cs">
+      <Link>StreamUnpacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\UnpackArrayResult.cs">
       <Link>UnpackArrayResult.cs</Link>

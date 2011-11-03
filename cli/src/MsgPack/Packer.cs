@@ -126,6 +126,23 @@ namespace MsgPack
 		/// <param name="value">A byte to be written.</param>
 		protected abstract void WriteByte( byte value );
 
+		protected virtual void WriteBytes( ICollection<byte> value )
+		{
+			foreach ( var b in value )
+			{
+				this.WriteByte( b );
+			}
+		}
+
+		protected virtual void WriteBytes( byte[] value, bool isImmutable )
+		{
+			foreach ( var b in value )
+			{
+				this.WriteByte( b );
+			}
+		}
+
+
 		private void StreamWrite<TItem>( IEnumerable<TItem> value, Action<IEnumerable<TItem>, PackingOptions> writeBody, PackingOptions options )
 		{
 			if ( this.CanSeek )
@@ -1055,6 +1072,24 @@ namespace MsgPack
 			return this;
 		}
 
+		internal Packer PackImmutableBytes( byte[] value )
+		{
+			this.VerifyNotDisposed();
+			Contract.EndContractBlock();
+
+			if ( value == null )
+			{
+				this.PackNull();
+			}
+			else
+			{
+				this.PackRawHeaderCore( value.Length );
+				this.PackRawBodyCore( value, true );
+			}
+
+			return this;
+		}
+
 		private void PackRawCore( byte[] value )
 		{
 			if ( value == null )
@@ -1133,9 +1168,26 @@ namespace MsgPack
 			this.PackRawBodyCore( value );
 		}
 
-		private void PackRawBodyCore( byte[] value )
+		// TODO: Refactor too comolex call graph...
+
+		private int PackRawBodyCore( ICollection<byte> value, bool isImmutable )
 		{
-			this.PackRawBodyCore( value as IEnumerable<byte> );
+			if ( value == null )
+			{
+				return 0;
+			}
+
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+				this.WriteBytes( asArray, isImmutable );
+			}
+			else
+			{
+				this.WriteBytes( value );
+			}
+
+			return value.Count;
 		}
 
 		private int PackRawBodyCore( IEnumerable<byte> value )
@@ -1143,6 +1195,12 @@ namespace MsgPack
 			if ( value == null )
 			{
 				return 0;
+			}
+
+			var asCollection = value as ICollection<byte>;
+			if ( asCollection != null )
+			{
+				return this.PackRawBodyCore( asCollection, asCollection.IsReadOnly );
 			}
 
 			int bodyLength = 0;
@@ -1257,7 +1315,8 @@ namespace MsgPack
 		/// <param name="encoding"><see cref="Encoding"/> to be used.</param>
 		protected virtual void PackStringCore( IEnumerable<char> value, Encoding encoding )
 		{
-			this.PackRawCore( encoding.GetBytes( value.ToArray() ) );
+			// TODO: streaming encoding
+			this.PackImmutableBytes( encoding.GetBytes( value.ToArray() ) );
 		}
 
 		/// <summary>
@@ -1267,7 +1326,11 @@ namespace MsgPack
 		/// <param name="encoding"><see cref="Encoding"/> to be used.</param>
 		protected virtual void PackStringCore( string value, Encoding encoding )
 		{
-			this.PackRawCore( encoding.GetBytes( value ) );
+			// TODO: Use standard path
+			//this.PackRawCore( encoding.GetBytes( value ) );
+			var bytes = encoding.GetBytes( value );
+			this.PackRawHeaderCore( bytes.Length );
+			this.WriteBytes( bytes, true );
 		}
 
 		#endregion -- String --

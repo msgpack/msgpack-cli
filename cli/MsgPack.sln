@@ -22,6 +22,7 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Instrument|Any CPU = Instrument|Any CPU
 		Performance Test|Any CPU = Performance Test|Any CPU
 		PerformanceTest|Any CPU = PerformanceTest|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -29,6 +30,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Instrument|Any CPU.ActiveCfg = Instrument|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Instrument|Any CPU.Build.0 = Instrument|Any CPU
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Performance Test|Any CPU.ActiveCfg = PerformanceTest|Any CPU
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Performance Test|Any CPU.Build.0 = PerformanceTest|Any CPU
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.PerformanceTest|Any CPU.ActiveCfg = PerformanceTest|Any CPU
@@ -37,6 +40,7 @@ Global
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Instrument|Any CPU.ActiveCfg = Instrument|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Performance Test|Any CPU.ActiveCfg = PerformanceTest|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Performance Test|Any CPU.Build.0 = PerformanceTest|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.PerformanceTest|Any CPU.ActiveCfg = PerformanceTest|Any CPU
@@ -45,6 +49,7 @@ Global
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Instrument|Any CPU.ActiveCfg = Instrument|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Performance Test|Any CPU.ActiveCfg = Release|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Performance Test|Any CPU.Build.0 = Release|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.PerformanceTest|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,8 +61,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{3889C9BE-0473-4B41-80E8-C4C923E837E7} = {87A17015-9338-431E-B338-57BDA03984C1}
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418} = {1BD5D488-707E-4030-8AE8-80D93D04963F}
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796} = {1BD5D488-707E-4030-8AE8-80D93D04963F}
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7} = {87A17015-9338-431E-B338-57BDA03984C1}
 	EndGlobalSection
 EndGlobal

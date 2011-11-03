@@ -382,7 +382,8 @@ foreach( var __scalarType in __scalarTypes )
 					return;
 				}
 				
-				packer.PackString( value, options == null ? MessagePackConvert.Utf8NonBom : options.StringEncoding  );
+				// HACK: use standard path...
+				packer.PackStringCore( value, options == null ? MessagePackConvert.Utf8NonBom : options.StringEncoding  );
 			}
 		}
 		

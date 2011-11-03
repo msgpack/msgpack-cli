@@ -54,6 +54,18 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\MsgPack.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Instrument|AnyCPU'">
+    <OutputPath>bin\Instrument\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
+    <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -109,6 +121,9 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StreamingUnpacker.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="StreamPacker.cs" />
     <Compile Include="Unpacking.cs">
       <SubType>Code</SubType>
@@ -137,6 +152,7 @@
       <DependentUpon>Unpacker.Direct.tt</DependentUpon>
     </Compile>
     <Compile Include="UnpackException.cs" />
+    <Compile Include="StreamUnpacker.cs" />
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
@@ -144,7 +160,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Packer.ValuePacker.cs</LastGenOutput>
     </None>
-    <Compile Include="StreamingUnpacker.cs" />
     <None Include="Unpacker.Direct.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Unpacker.Direct.cs</LastGenOutput>

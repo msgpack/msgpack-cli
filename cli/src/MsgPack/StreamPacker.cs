@@ -73,5 +73,10 @@ namespace MsgPack
 		{
 			this._stream.WriteByte( value );
 		}
+
+		protected sealed override void WriteBytes( byte[] asArray, bool isImmutable )
+		{
+			this._stream.Write( asArray, 0, asArray.Length );
+		}
 	}
 }

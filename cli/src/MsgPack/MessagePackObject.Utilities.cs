@@ -872,7 +872,7 @@ namespace MsgPack
 					return null;
 				}
 
-				return encoding.GetString( asBytes.UnsafeGetBuffer() );
+				return encoding.GetString( asBytes.UnsafeGetBuffer(), 0, asBytes.UnsafeGetBuffer().Length );
 			}
 			catch ( ArgumentException ex )
 			{
