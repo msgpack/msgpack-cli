@@ -108,12 +108,6 @@ namespace MsgPack
 		///		Initialize new instance wraps raw byte array.
 		/// </summary>
 		public MessagePackObject( byte[] value )
-			: this( value, false ) { }
-
-		/// <summary>
-		///		Initialize new instance wraps raw byte array.
-		/// </summary>
-		internal MessagePackObject( byte[] value, bool mayString )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
