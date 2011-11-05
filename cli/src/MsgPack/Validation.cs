@@ -97,22 +97,6 @@ namespace MsgPack
 			}
 		}
 
-		//public static void ValidateIsNotNullNorEmpty<T>( ICollection<T> value, string parameterName )
-		//{
-		//    if ( value == null )
-		//    {
-		//        throw new ArgumentNullException( parameterName );
-		//    }
-
-		//    if ( value.Count == 0 )
-		//    {
-		//        throw new ArgumentException(
-		//            String.Format( CultureInfo.CurrentCulture, "'{0}' cannot be empty.", parameterName ),
-		//            parameterName
-		//        );
-		//    }
-		//}
-
 		private static readonly Regex _unicodeTR15Annex7IdentifierPattern =
 			new Regex( 
 				@"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*", 
