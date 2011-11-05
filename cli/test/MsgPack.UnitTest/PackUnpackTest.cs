@@ -32,12 +32,22 @@ namespace MsgPack
 	[Timeout( 1000 )]
 	public partial class PackUnpackTest
 	{
+		private static bool _traceUnpackingBytes = false;
 		private static readonly Encoding _utf8NoBom =
 			new UTF8Encoding( false, false );
 
 		private static MessagePackObject UnpackOne( MemoryStream output )
 		{
 			output.Seek( 0L, SeekOrigin.Begin );
+			if ( _traceUnpackingBytes )
+			{
+				Console.WriteLine( "Unpaking:" );
+				foreach ( var b in output.ToArray().Take( 100 ) )
+				{
+					Console.Write( b.ToString( "x2" ) );
+				}
+				Console.WriteLine();
+			}
 			//return new Unpacker( output.GetBuffer() ).UnpackObject().Value;
 			return new Unpacker( output ).UnpackObject().Value;
 		}
@@ -309,7 +319,7 @@ namespace MsgPack
 					new String( 'a', 40000 ),
 					new String( 'a', 80000 ),
 					new MessagePackObject(
-						new Dictionary<MessagePackObject,MessagePackObject>()
+						new MessagePackObjectDictionary()
 						{
 							{ "1", "foo" },
 							{ 2, MessagePackObject.Nil },
@@ -402,7 +412,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		[Timeout( 10000 )]
+		[Timeout( 60000 )]
 		public void TestDictionary()
 		{
 			var sw = new Stopwatch();

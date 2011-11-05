@@ -242,6 +242,7 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 3000 )]
 		public void TestMap()
 		{
 			var emptyMap = new Dictionary<int, int>();

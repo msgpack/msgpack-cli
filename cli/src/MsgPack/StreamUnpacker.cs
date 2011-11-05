@@ -419,7 +419,7 @@ namespace MsgPack
 			}
 			else
 			{
-				return new MessagePackObject( new Dictionary<MessagePackObject, MessagePackObject>( 0 ) );
+				return new MessagePackObject( new MessagePackObjectDictionary( 0 ) );
 			}
 		}
 
@@ -841,9 +841,9 @@ namespace MsgPack
 					get { return this._header; }
 				}
 
-				private readonly Dictionary<MessagePackObject, MessagePackObject> _dictionary;
+				private readonly MessagePackObjectDictionary _dictionary;
 
-				public Dictionary<MessagePackObject, MessagePackObject> Dictionary
+				public MessagePackObjectDictionary Dictionary
 				{
 					get { return this._dictionary; }
 				}
@@ -917,7 +917,7 @@ namespace MsgPack
 							throw new NotImplementedException( "Maps over 2^31 items are not supported yet." );
 						}
 
-						this._dictionary = new Dictionary<MessagePackObject, MessagePackObject>( unchecked( ( int )( count & 0x7fffffff ) ) );
+						this._dictionary = new MessagePackObjectDictionary( unchecked( ( int )( count & 0x7fffffff ) ) );
 					}
 
 					this._capacity = count;

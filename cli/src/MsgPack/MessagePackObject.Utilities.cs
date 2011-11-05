@@ -95,10 +95,9 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="IDictionary&lt;MessagePackObject, MessagePackObject&gt;"/>.
+		///		Initialize new instance wraps <see cref="MessagePackObjectDictionary"/>.
 		/// </summary>
-		[Obsolete]
-		public MessagePackObject( IDictionary<MessagePackObject, MessagePackObject> value )
+		public MessagePackObject( MessagePackObjectDictionary value )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
@@ -1029,6 +1028,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
+			Contract.EndContractBlock();
+
 			// Short path to return just return not-encoded string.
 			var asString = this._handleOrTypeCode as string;
 			if ( asString != null )
@@ -1036,14 +1037,12 @@ namespace MsgPack
 				return asString;
 			}
 
-			VerifyUnderlyingType<MessagePackString>( this, null );
-
-			Contract.EndContractBlock();
-
 			if ( this.IsNil )
 			{
 				return null;
 			}
+
+			VerifyUnderlyingType<MessagePackString>( this, null );
 
 			try
 			{
@@ -1151,23 +1150,27 @@ namespace MsgPack
 				return null;
 			}
 
-			return this.AsEnumerable().ToList();
+			var asEnumerable = this.AsEnumerable();
+			IList<MessagePackObject> asList;
+			if ( ( asList = asEnumerable as IList<MessagePackObject> ) != null )
+			{
+				return asList;
+			}
+			else
+			{
+				return asEnumerable.ToList();
+			}
 		}
 
 		/// <summary>
-		///		Get underlying value as <see cref="IDictionary&lt;MessagePackObject, MessagePackObject&gt;"/>.
+		///		Get underlying value as <see cref="MessagePackObjectDictionary"/>.
 		/// </summary>
-		/// <returns>Underlying <see cref="IDictionary&lt;MessagePackObject, MessagePackObject&gt;"/>.</returns>
-		public IDictionary<MessagePackObject, MessagePackObject> AsDictionary()
+		/// <returns>Underlying <see cref="MessagePackObjectDictionary"/>.</returns>
+		public MessagePackObjectDictionary AsDictionary()
 		{
-			VerifyUnderlyingType<IDictionary<MessagePackObject, MessagePackObject>>( this, null );
+			VerifyUnderlyingType<MessagePackObjectDictionary>( this, null );
 
-			if ( this.IsNil )
-			{
-				return null;
-			}
-
-			return this._handleOrTypeCode as IDictionary<MessagePackObject, MessagePackObject>;
+			return this._handleOrTypeCode as MessagePackObjectDictionary;
 		}
 
 		#endregion -- Container Type Conversion Methods --
@@ -1350,9 +1353,9 @@ namespace MsgPack
 					return new MessagePackObject( ( boxedValue as IEnumerable<MessagePackObject> ).ToList() );
 				}
 			}
-			else if ( boxedValue is IDictionary<MessagePackObject, MessagePackObject> )
+			else if ( boxedValue is MessagePackObjectDictionary )
 			{
-				return new MessagePackObject( boxedValue as IDictionary<MessagePackObject, MessagePackObject> );
+				return new MessagePackObject( boxedValue as MessagePackObjectDictionary );
 			}
 
 			/*
