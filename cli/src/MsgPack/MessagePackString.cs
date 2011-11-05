@@ -28,6 +28,8 @@ using System.Security.Cryptography;
 
 namespace MsgPack
 {
+#warning Use Dictionary Based approach
+	// Dictionary based approach is better from memory usage and stability.
 	/// <summary>
 	///		Encapselates <see cref="String"/> and its serialized UTF-8 bytes.
 	/// </summary>
@@ -44,13 +46,9 @@ namespace MsgPack
 			this._type = BinaryType.String;
 		}
 
-		public MessagePackString( byte[] encoded, bool mayString )
+		public MessagePackString( byte[] encoded )
 		{
 			this._encoded = encoded;
-			if ( mayString )
-			{
-				this.DecodeIfNeeded();
-			}
 		}
 
 		private void EncodeIfNeeded()

@@ -85,6 +85,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Image.cs" />
+    <Compile Include="MessagePackObjectDictionaryTest.cs" />
     <Compile Include="MessageUnpackableTest.cs" />
     <Compile Include="PackUnpackTest.cs" />
     <Compile Include="PackUnpackTest.Scalar.cs">

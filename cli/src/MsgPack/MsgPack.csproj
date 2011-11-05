@@ -84,6 +84,9 @@
     </Compile>
     <Compile Include="BigEndianBinary.cs" />
     <Compile Include="Binary.cs" />
+    <Compile Include="CollectionDebuggerProxy`1.cs" />
+    <Compile Include="CollectionOperation.cs" />
+    <Compile Include="DictionaryDebuggerProxy`2.cs" />
     <Compile Include="IClippable.cs" />
     <Compile Include="Float32Bits.cs" />
     <Compile Include="Float64Bits.cs" />
@@ -95,10 +98,17 @@
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MessagePackObjectDictionary.Enumerator.cs" />
+    <Compile Include="MessagePackObjectDictionary.KeySet.cs" />
+    <Compile Include="MessagePackObjectDictionary.KeySet.Enumerator.cs" />
+    <Compile Include="MessagePackObjectDictionary.ValueCollection.cs" />
+    <Compile Include="MessagePackObjectDictionary.ValueCollection.Enumerator.cs" />
     <Compile Include="MessagePackCode.cs" />
     <Compile Include="MessagePackConvert.cs" />
     <Compile Include="MessagePackObject.Utilities.cs" />
     <Compile Include="MessageNotSupportedException.cs" />
+    <Compile Include="MessagePackObjectDictionary.cs" />
+    <Compile Include="MessagePackObjectEqualityComparer.cs" />
     <Compile Include="MessagePackString.cs" />
     <Compile Include="Packer.Utilities.cs" />
     <Compile Include="Packer.ValuePacker.cs">
@@ -121,6 +131,7 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetOperation.cs" />
     <Compile Include="StreamPacker.cs" />
     <Compile Include="Unpacking.cs">
       <SubType>Code</SubType>

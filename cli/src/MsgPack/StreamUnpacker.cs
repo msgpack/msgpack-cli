@@ -264,10 +264,14 @@ namespace MsgPack
 
 					if ( collectionItemOrRoot != null )
 					{
+#if DEBUG
 						Contract.Assert( this._collectionState.IsEmpty );
+#endif
 						this._stage = Stage.Root;
+#if DEBUG
 						Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
 						Contract.Assert( this._bytesBuffer.BackingStore == null, this._bytesBuffer.ToString() ); // null
+#endif
 						return collectionItemOrRoot;
 					}
 				}
@@ -278,9 +282,11 @@ namespace MsgPack
 
 		private bool UnpackScalar( Stream source, out MessagePackObject? result )
 		{
+#if DEBUG
 			Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsVariable ) != 0, this._contextValueHeader.ToString() );
 			Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsCollection ) == 0, this._contextValueHeader.ToString() );
 			Contract.Assert( this._bytesBuffer.BackingStore != null, this._bytesBuffer.ToString() );
+#endif
 
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 			if ( this._bytesBuffer.IsFilled )
@@ -350,7 +356,9 @@ namespace MsgPack
 
 		private bool UnpackRawBytes( Stream source, out MessagePackObject? unpacked )
 		{
+#if DEBUG
 			Contract.Assert( this._bytesBuffer.BackingStore != null, this._bytesBuffer.ToString() );
+#endif
 
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 			if ( this._bytesBuffer.IsFilled )
@@ -765,7 +773,9 @@ namespace MsgPack
 			/// <param name="count">Items count of collection object. If collection is map, this value indicates count of entries.</param>
 			public void NewContextCollection( MessagePackHeader header, uint count )
 			{
+#if DEBUG
 				Contract.Assert( ( header.Type & MessageType.IsRawBinary ) == 0, header.Type.ToString() );
+#endif
 
 				this._collectionContextStack.Push( new CollectionContextState( header, count ) );
 			}
@@ -777,19 +787,24 @@ namespace MsgPack
 			/// <returns></returns>
 			public MessagePackObject PopCollection()
 			{
+#if DEBUG
 				Contract.Assert( !this.IsEmpty );
-
+#endif
 				var context = this._collectionContextStack.Pop();
 				if ( ( context.Header.Type & MessageType.IsArray ) != 0 )
 				{
+#if DEBUG
 					Contract.Assert( context.Items != null );
 					Contract.Assert( context.Unpacked == context.Capacity, context.Unpacked + "!=" + context.Capacity );
+#endif
 					return new MessagePackObject( context.Items );
 				}
 				else if ( ( context.Header.Type & MessageType.IsMap ) != 0 )
 				{
+#if DEBUG
 					Contract.Assert( context.Dictionary != null );
 					Contract.Assert( context.Unpacked == context.Capacity * 2, context.Unpacked + "!=" + ( context.Capacity * 2 ) );
+#endif
 					return new MessagePackObject( context.Dictionary );
 				}
 				else
@@ -804,13 +819,16 @@ namespace MsgPack
 			/// <param name="item">New item to feed.</param>
 			public bool FeedItem( MessagePackObject item )
 			{
-				return this._collectionContextStack.Peek().AddUnpackedItem( item ).IsFilled;
+				var top = this._collectionContextStack.Pop();
+				var feeded = top.AddUnpackedItem( item );
+				this._collectionContextStack.Push( feeded );
+				return feeded.IsFilled;
 			}
 
 			/// <summary>
 			///		Represents context collection state.
 			/// </summary>
-			public sealed class CollectionContextState
+			public struct CollectionContextState
 			{
 				private readonly MessagePackHeader _header;
 
@@ -883,6 +901,7 @@ namespace MsgPack
 				public CollectionContextState( MessagePackHeader header, uint count )
 				{
 					Contract.Assert( header.Type != MessageType.Unknown );
+					this = default( CollectionContextState );
 
 					this._header = header;
 					if ( ( header.Type & MessageType.IsMap ) == 0 )
@@ -930,6 +949,7 @@ namespace MsgPack
 				/// <returns>New context state to replace this instance.</returns>
 				public CollectionContextState AddUnpackedItem( MessagePackObject item )
 				{
+#if DEBUG
 					Contract.Assert(
 						( ( this._items != null && this._unpacked < this._capacity )
 						|| ( this._dictionary != null && this._unpacked < this._capacity * 2 )
@@ -938,6 +958,7 @@ namespace MsgPack
 						? this._unpacked + "<" + this._capacity
 						: this._unpacked + "<" + this._capacity * 2
 					);
+#endif
 
 					if ( this._items != null )
 					{
@@ -1004,7 +1025,6 @@ namespace MsgPack
 			{
 				get
 				{
-
 					return this._backingStore == null ? false : this._position == this._backingStore.Length;
 				}
 			}
@@ -1101,7 +1121,9 @@ namespace MsgPack
 			/// <returns><see cref="MessagePackObject"/> which wraps deserialized numeric primitive.</returns>
 			public MessagePackObject AsMessagePackObject( MessageType type )
 			{
+#if DEBUG
 				Contract.Assert( this.IsFilled, "Not filled yet:" + this );
+#endif
 
 				return AsMessagePackObject( this._backingStore, type );
 			}
@@ -1152,7 +1174,7 @@ namespace MsgPack
 					}
 					default:
 					{
-						return new MessagePackObject( buffer, true );
+						return new MessagePackObject( buffer );
 					}
 				}
 			}

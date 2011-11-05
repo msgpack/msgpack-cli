@@ -97,6 +97,7 @@ namespace MsgPack
 		/// <summary>
 		///		Initialize new instance wraps <see cref="IDictionary&lt;MessagePackObject, MessagePackObject&gt;"/>.
 		/// </summary>
+		[Obsolete]
 		public MessagePackObject( IDictionary<MessagePackObject, MessagePackObject> value )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
@@ -117,7 +118,18 @@ namespace MsgPack
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
-			this._handleOrTypeCode = new MessagePackString( value, mayString );
+			this._handleOrTypeCode = new MessagePackString( value );
+		}
+
+		/// <summary>
+		///		Initialize new instance wraps <see cref="MessagePackString"/>.
+		/// </summary>
+		/// <param name="messagePackString"><see cref="MessagePackString"/> which represents byte array or UTF-8 encoded string.</param>
+		internal MessagePackObject( MessagePackString messagePackString )
+		{
+			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			this = new MessagePackObject();
+			this._handleOrTypeCode = messagePackString;
 		}
 
 		#endregion -- Constructors --
@@ -209,22 +221,177 @@ namespace MsgPack
 			var valueTypeCode = this._handleOrTypeCode as ValueTypeCode;
 			if ( valueTypeCode != null )
 			{
+				var otherValuetypeCode = other._handleOrTypeCode as ValueTypeCode;
+				if ( otherValuetypeCode == null )
+				{
+					return false;
+				}
+
 				switch ( valueTypeCode.TypeCode )
 				{
 					case TypeCode.Boolean:
-					case TypeCode.Single:
-					case TypeCode.Double:
 					{
-						if ( !Object.ReferenceEquals( this._handleOrTypeCode, other._handleOrTypeCode ) )
+						if ( otherValuetypeCode.TypeCode != TypeCode.Boolean )
 						{
 							return false;
 						}
 
-						break;
+						return ( bool )this == ( bool )other;
+					}
+					case TypeCode.SByte:
+					case TypeCode.Int16:
+					case TypeCode.Int32:
+					case TypeCode.Int64:
+					{
+						switch ( otherValuetypeCode.TypeCode )
+						{
+							case TypeCode.SByte:
+							case TypeCode.Int16:
+							case TypeCode.Int32:
+							case TypeCode.Int64:
+							{
+								return this._value == other._value;
+							}
+							case TypeCode.Byte:
+							case TypeCode.UInt16:
+							case TypeCode.UInt32:
+							case TypeCode.UInt64:
+							{
+								var thisAsInt64 = unchecked( ( long )this._value );
+								if ( thisAsInt64 < 0L )
+								{
+									return false;
+								}
+
+								return this._value == other._value;
+							}
+							case TypeCode.Single:
+							{
+								return unchecked( ( long )other._value ) == ( float )other;
+							}
+							case TypeCode.Double:
+							{
+								return unchecked( ( long )other._value ) == ( double )other;
+							}
+							default:
+							{
+								return false;
+							}
+						}
+					}
+					case TypeCode.Byte:
+					case TypeCode.UInt16:
+					case TypeCode.UInt32:
+					case TypeCode.UInt64:
+					{
+						switch ( otherValuetypeCode.TypeCode )
+						{
+							case TypeCode.SByte:
+							case TypeCode.Int16:
+							case TypeCode.Int32:
+							case TypeCode.Int64:
+							{
+								var otherAsInt64 = unchecked( ( long )other._value );
+								if ( otherAsInt64 < 0L )
+								{
+									return false;
+								}
+
+								return this._value == other._value;
+							}
+							case TypeCode.Byte:
+							case TypeCode.UInt16:
+							case TypeCode.UInt32:
+							case TypeCode.UInt64:
+							{
+								return this._value == other._value;
+							}
+							case TypeCode.Single:
+							{
+								return this._value == ( float )other;
+							}
+							case TypeCode.Double:
+							{
+								return this._value == ( double )other;
+							}
+							default:
+							{
+								return false;
+							}
+						}
+					}
+					case TypeCode.Single:
+					{
+						switch ( otherValuetypeCode.TypeCode )
+						{
+							case TypeCode.SByte:
+							case TypeCode.Int16:
+							case TypeCode.Int32:
+							case TypeCode.Int64:
+							{
+								return ( float )this == unchecked( ( long )other._value );
+							}
+							case TypeCode.Byte:
+							case TypeCode.UInt16:
+							case TypeCode.UInt32:
+							case TypeCode.UInt64:
+							{
+								return ( float )this == other._value;
+							}
+							case TypeCode.Single:
+							{
+								// Cannot compare _value because there might be not normalized.
+								return ( float )this == ( float )other;
+							}
+							case TypeCode.Double:
+							{
+								return ( float )this == ( double )other;
+							}
+							default:
+							{
+								return false;
+							}
+						}
+					}
+					case TypeCode.Double:
+					{
+						switch ( otherValuetypeCode.TypeCode )
+						{
+							case TypeCode.SByte:
+							case TypeCode.Int16:
+							case TypeCode.Int32:
+							case TypeCode.Int64:
+							{
+								return ( double )this == unchecked( ( long )other._value );
+							}
+							case TypeCode.Byte:
+							case TypeCode.UInt16:
+							case TypeCode.UInt32:
+							case TypeCode.UInt64:
+							{
+								return ( double )this == other._value;
+							}
+							case TypeCode.Single:
+							{
+								return ( double )this == ( float )other;
+							}
+							case TypeCode.Double:
+							{
+								// Cannot compare _value because there might be not normalized.
+								return ( double )this == ( double )other;
+							}
+							default:
+							{
+								return false;
+							}
+						}
+					}
+					default:
+					{
+						// Unsigned
+						return this._value == other._value;
 					}
 				}
-
-				return this._value == other._value;
 			}
 
 			{
@@ -282,7 +449,7 @@ namespace MsgPack
 				}
 			}
 
-			Debug.Assert( false, String.Format( "Unkown handle type '{0}'(value: '{1}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode ) );
+			Debug.Assert( false, String.Format( "Unkown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
 		}
 
@@ -348,7 +515,7 @@ namespace MsgPack
 			{
 				return String.Empty;
 			}
-			
+
 			ValueTypeCode valueTypeCode;
 			if ( ( valueTypeCode = this._handleOrTypeCode as ValueTypeCode ) != null )
 			{
@@ -478,12 +645,12 @@ namespace MsgPack
 				}
 
 				// Can IEnumerable<byte>
-				if ( typeof( IEnumerable<MessagePackObject> ).IsAssignableFrom( type ) 
+				if ( typeof( IEnumerable<MessagePackObject> ).IsAssignableFrom( type )
 					&& this._handleOrTypeCode is MessagePackString )
 				{
 					return true;
 				}
-				
+
 				return type.IsAssignableFrom( this._handleOrTypeCode.GetType() );
 			}
 
@@ -1432,7 +1599,7 @@ namespace MsgPack
 			{
 				get { return this._typeCode; }
 			}
-
+						
 			private readonly Type _type;
 
 			public Type Type
