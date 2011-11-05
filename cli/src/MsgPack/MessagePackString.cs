@@ -19,12 +19,11 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 using System.Diagnostics.Contracts;
-using System.Security.Cryptography;
+using System.Runtime.CompilerServices;
+using System.Security;
+using System.Text;
+using System.Threading;
 
 namespace MsgPack
 {
@@ -41,7 +40,7 @@ namespace MsgPack
 
 		public MessagePackString( string decoded )
 		{
-			this._decoded = decoded; 
+			this._decoded = decoded;
 			this._type = BinaryType.String;
 		}
 
@@ -109,7 +108,7 @@ namespace MsgPack
 			this.EncodeIfNeeded();
 			return this._encoded;
 		}
-		
+
 		public Type GetUnderlyingType()
 		{
 			this.DecodeIfNeeded();
@@ -141,23 +140,14 @@ namespace MsgPack
 
 			if ( this._encoded != null )
 			{
-				using ( var hash =
-#if SILVERLIGHT
- new SHA1Managed()
-#else
- new SHA1Cng()
-#endif
- )
+				int hashCode = 0;
+				for ( int i = 0; i < this._encoded.Length; i++ )
 				{
-					// TODO: caching etc.
-					var hash128 = hash.ComputeHash( this._encoded );
-					return
-						( hash128[ 0 ] << 24 | hash128[ 1 ] << 16 | hash128[ 2 ] << 8 | hash128[ 3 ] )
-						^ ( hash128[ 4 ] << 24 | hash128[ 5 ] << 16 | hash128[ 6 ] << 8 | hash128[ 7 ] )
-						^ ( hash128[ 8 ] << 24 | hash128[ 9 ] << 16 | hash128[ 10 ] << 8 | hash128[ 11 ] )
-						^ ( hash128[ 12 ] << 24 | hash128[ 13 ] << 16 | hash128[ 14 ] << 8 | hash128[ 15 ] )
-						^ ( hash128[ 16 ] << 16 | hash128[ 17 ] );
+					int value = this._encoded[ i ] << ( i % 4 ) * 8;
+					hashCode ^= value;
 				}
+
+				return hashCode;
 			}
 
 			return 0;
@@ -194,18 +184,36 @@ namespace MsgPack
 				return right._encoded == null;
 			}
 
+			if ( left._encoded.Length == 0 )
+			{
+				return right._encoded.Length == 0;
+			}
+
 			if ( left._encoded.Length != right._encoded.Length )
 			{
 				return false;
 			}
 
-#if SILVERLIGHT
-			for ( int i = 0; i < left._encoded.Length; i++ )
-#else
-			for ( long i = 0; i < left._encoded.LongLength; i++ )
-#endif
+			if ( _isFastEqualsDisabled == 0 )
 			{
-				if ( left._encoded[ i ] != right._encoded[ i ] )
+				try
+				{
+					return FastEqualsShim( left._encoded, right._encoded );
+				}
+				catch ( SecurityException )
+				{
+					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
+				}
+			}
+
+			return SlowEquals( left._encoded, right._encoded );
+		}
+
+		private static bool SlowEquals( byte[] x, byte[] y )
+		{
+			for ( int i = 0; i < x.Length; i++ )
+			{
+				if ( x[ i ] != y[ i ] )
 				{
 					return false;
 				}
@@ -214,12 +222,48 @@ namespace MsgPack
 			return true;
 		}
 
+		private static int _isFastEqualsDisabled = 0;
+
+		internal static bool IsFastEqualsDisabled
+		{
+			get { return _isFastEqualsDisabled != 0; }
+		}
+
+		[MethodImpl( MethodImplOptions.NoInlining )]
+		private static bool FastEqualsShim( byte[] x, byte[] y )
+		{
+			if ( _isFastEqualsDisabled != 0 )
+			{
+				return SlowEquals( x, y );
+			}
+
+			return UnsafeFastEquals( x, y );
+		}
+
+		[MethodImpl( MethodImplOptions.NoInlining )]
+		[SecuritySafeCritical]
+		private static bool UnsafeFastEquals( byte[] x, byte[] y )
+		{
+			Contract.Assert( x != null );
+			Contract.Assert( y != null );
+			Contract.Assert( 0 < x.Length );
+			Contract.Assert( x.Length == y.Length );
+
+			int result;
+			if ( !UnsafeNativeMethods.TryMemCmp( x, y, new UIntPtr( unchecked( ( uint )x.Length ) ), out result ) )
+			{
+				Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
+				return SlowEquals( x, y );
+			}
+
+			return result == 0;
+		}
+
 		private enum BinaryType : byte
 		{
 			Unknwon = 0,
 			String,
 			Blob
 		}
-
 	}
 }

@@ -202,6 +202,9 @@
     <Compile Include="..\MsgPack\Unpacking.String.cs">
       <Link>Unpacking.String.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
+      <Link>UnsafeNativeMethods.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Validation.cs">
       <Link>Validation.cs</Link>
     </Compile>
