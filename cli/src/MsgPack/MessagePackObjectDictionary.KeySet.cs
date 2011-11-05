@@ -32,7 +32,9 @@ namespace MsgPack
 		/// <summary>
 		///		Represents the set of <see cref="MessagePackObjectDictionary"/> keys.
 		/// </summary>
+#if !SILVERLIGHT		
 		[Serializable]
+#endif
 		[DebuggerDisplay( "Count={Count}" )]
 		[DebuggerTypeProxy( typeof( CollectionDebuggerProxy<> ) )]
 		[SuppressMessage( "Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "ICollection implementing dictionary should return ICollection implementing values." )]

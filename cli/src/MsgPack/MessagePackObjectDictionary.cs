@@ -51,7 +51,9 @@ namespace MsgPack
 		private Dictionary<MessagePackObject, MessagePackObject> _dictionary;
 		private int _version;
 
+#if !SILVERLIGHT
 		private SerializationInfo _serializationInfo;
+#endif
 
 		/// <summary>
 		///		Gets the number of elements contained in the <see cref="MessagePackObjectDictionary"/>.
@@ -324,10 +326,15 @@ namespace MsgPack
 			}
 			catch ( ArgumentException ex )
 			{
+#if SILVERLIGHT
+				throw new ArgumentException( "Failed to copy specified dictionary.", ex );
+#else
 				throw new ArgumentException( "Failed to copy specified dictionary.", "dictionary", ex );
+#endif
 			}
 		}
 
+#if !SILVERLIGHT
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MessagePackObjectDictionary"/> class with serialized data. .
 		/// </summary>
@@ -459,6 +466,7 @@ namespace MsgPack
 		{
 			throw new SerializationException( "Cannot deserialize MessagePackObjectDictionary due to invalid SerializationInfo." );
 		}
+#endif
 
 		private static void ThrowKeyNotNilException( string parameterName )
 		{

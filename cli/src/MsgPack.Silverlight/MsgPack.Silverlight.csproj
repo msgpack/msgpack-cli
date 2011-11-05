@@ -79,6 +79,15 @@
     <Compile Include="..\MsgPack\Binary.cs">
       <Link>Binary.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
+      <Link>CollectionDebuggerProxy`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\CollectionOperation.cs">
+      <Link>CollectionOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\DictionaryDebuggerProxy`2.cs">
+      <Link>DictionaryDebuggerProxy`2.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Float32Bits.cs">
       <Link>Float32Bits.cs</Link>
     </Compile>
@@ -103,6 +112,9 @@
     <Compile Include="..\MsgPack\MessageNotSupportedException.cs">
       <Link>MessageNotSupportedException.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\MessagePackCode.cs">
+      <Link>MessagePackCode.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\MessagePackConvert.cs">
       <Link>MessagePackConvert.cs</Link>
     </Compile>
@@ -111,6 +123,27 @@
     </Compile>
     <Compile Include="..\MsgPack\MessagePackObject.Utilities.cs">
       <Link>MessagePackObject.Utilities.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackObjectDictionary.cs">
+      <Link>MessagePackObjectDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackObjectDictionary.Enumerator.cs">
+      <Link>MessagePackObjectDictionary.Enumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackObjectDictionary.KeySet.cs">
+      <Link>MessagePackObjectDictionary.KeySet.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackObjectDictionary.KeySet.Enumerator.cs">
+      <Link>MessagePackObjectDictionary.KeySet.Enumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackObjectDictionary.ValueCollection.cs">
+      <Link>MessagePackObjectDictionary.ValueCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackObjectDictionary.ValueCollection.Enumerator.cs">
+      <Link>MessagePackObjectDictionary.ValueCollection.Enumerator.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackObjectEqualityComparer.cs">
+      <Link>MessagePackObjectEqualityComparer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\MessagePackString.cs">
       <Link>MessagePackString.cs</Link>
@@ -135,6 +168,9 @@
     </Compile>
     <Compile Include="..\MsgPack\PackingOptions.cs">
       <Link>PackingOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\SetOperation.cs">
+      <Link>SetOperation.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\StreamPacker.cs">
       <Link>StreamPacker.cs</Link>
@@ -170,6 +206,7 @@
       <Link>Validation.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SilverlightExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

@@ -147,7 +147,13 @@ namespace MsgPack
 
 				if ( this._position == _isDictionary )
 				{
-					return this._enumerator.MoveNext();
+					if ( !this._enumerator.MoveNext() )
+					{
+						return false;
+					}
+
+					this._current = this._enumerator.Current;
+					return true;
 				}
 
 				if ( this._position == _beforeHead )
