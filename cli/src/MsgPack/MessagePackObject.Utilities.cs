@@ -1052,6 +1052,11 @@ namespace MsgPack
 					return null;
 				}
 
+				if ( encoding is UTF8Encoding )
+				{
+					return asBytes.TryGetString();
+				}
+
 				return encoding.GetString( asBytes.UnsafeGetBuffer(), 0, asBytes.UnsafeGetBuffer().Length );
 			}
 			catch ( ArgumentException ex )
