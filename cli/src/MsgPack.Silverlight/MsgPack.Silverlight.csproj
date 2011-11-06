@@ -57,6 +57,19 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <NoConfig>true</NoConfig>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
+    <OutputPath>bin\CodeAnalysis\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <NoConfig>true</NoConfig>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
@@ -93,6 +106,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Float64Bits.cs">
       <Link>Float64Bits.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\GlobalSuppressions.cs">
+      <Link>GlobalSuppressions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\IClippable.cs">
       <Link>IClippable.cs</Link>
@@ -178,9 +194,6 @@
     <Compile Include="..\MsgPack\StreamUnpacker.cs">
       <Link>StreamUnpacker.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\UnpackArrayResult.cs">
-      <Link>UnpackArrayResult.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Unpacker.cs">
       <Link>Unpacker.cs</Link>
     </Compile>
@@ -201,6 +214,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Unpacking.String.cs">
       <Link>Unpacking.String.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackingResult.cs">
+      <Link>UnpackingResult.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
       <Link>UnsafeNativeMethods.cs</Link>
