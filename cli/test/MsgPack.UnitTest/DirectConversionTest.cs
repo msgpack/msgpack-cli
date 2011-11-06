@@ -200,13 +200,13 @@ namespace MsgPack
 				byte[] byteArrayInput = output.ToArray();
 				var arrayLength = Unpacking.UnpackArrayLength( byteArrayInput );
 				Assert.AreEqual( len, arrayLength.Value );
-				int offset = arrayLength.NewOffset;
+				int offset = arrayLength.ReadCount;
 				for ( int j = 0; j < len; j++ )
 				{
 					var uar = Unpacking.UnpackInt32( byteArrayInput, offset );
-					Assert.AreNotEqual( offset, uar.NewOffset );
+					Assert.AreNotEqual( 0, uar.ReadCount );
 					Assert.AreEqual( l[ j ], uar.Value );
-					offset = uar.NewOffset;
+					offset += uar.ReadCount;
 				}
 			}
 
@@ -231,12 +231,12 @@ namespace MsgPack
 				byte[] byteArrayInput = output.ToArray();
 				var arrayLength = Unpacking.UnpackArrayLength( byteArrayInput );
 				Assert.AreEqual( len, arrayLength.Value );
-				int offset = arrayLength.NewOffset;
+				int offset = arrayLength.ReadCount;
 				for ( int j = 0; j < len; j++ )
 				{
 					var uar = Unpacking.UnpackRawLength( byteArrayInput, offset );
 					Assert.AreEqual( l[ j ], Unpacking.UnpackString( byteArrayInput, offset ) );
-					offset = uar.NewOffset + ( int )uar.Value;
+					offset += uar.ReadCount + ( int )uar.Value;
 				}
 			}
 		}
@@ -278,16 +278,16 @@ namespace MsgPack
 				byte[] byteArrayInput = output.ToArray();
 				var arrayLength = Unpacking.UnpackDictionaryCount( byteArrayInput );
 				Assert.AreEqual( len, arrayLength.Value );
-				int offset = arrayLength.NewOffset;
+				int offset = arrayLength.ReadCount;
 				for ( int j = 0; j < len; j++ )
 				{
-					var uar = Unpacking.UnpackInt32( byteArrayInput, offset );
-					Assert.AreNotEqual( offset, uar.NewOffset );
+					var keyUar = Unpacking.UnpackInt32( byteArrayInput, offset );
+					Assert.AreNotEqual( 0, keyUar.ReadCount );
 					int value;
-					Assert.IsTrue( m.TryGetValue( uar.Value, out value ) );
-					uar = Unpacking.UnpackInt32( byteArrayInput, uar.NewOffset );
-					Assert.AreEqual( value, uar.Value );
-					offset = uar.NewOffset;
+					Assert.IsTrue( m.TryGetValue( keyUar.Value, out value ) );
+					var valueUar = Unpacking.UnpackInt32( byteArrayInput, offset + keyUar.ReadCount );
+					Assert.AreEqual( value, valueUar.Value );
+					offset += keyUar.ReadCount + valueUar.ReadCount;
 				}
 			}
 
@@ -314,16 +314,16 @@ namespace MsgPack
 				byte[] byteArrayInput = output.ToArray();
 				var arrayLength = Unpacking.UnpackDictionaryCount( byteArrayInput );
 				Assert.AreEqual( len, arrayLength.Value );
-				int offset = arrayLength.NewOffset;
+				int offset = arrayLength.ReadCount;
 				for ( int j = 0; j < len; j++ )
 				{
 					var length = Unpacking.UnpackRawLength( byteArrayInput, offset );
-					Assert.AreNotEqual( offset, length.NewOffset );
+					Assert.AreNotEqual( 0, length.ReadCount );
 					int value;
 					Assert.IsTrue( m.TryGetValue( Unpacking.UnpackString( byteArrayInput, offset ), out value ) );
-					var uar = Unpacking.UnpackInt32( byteArrayInput, length.NewOffset + ( int )length.Value );
+					var uar = Unpacking.UnpackInt32( byteArrayInput, offset + length.ReadCount + ( int )length.Value );
 					Assert.AreEqual( value, uar.Value );
-					offset = uar.NewOffset;
+					offset += length.ReadCount + uar.ReadCount + ( int )length.Value;
 				}
 			}
 		}

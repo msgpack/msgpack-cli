@@ -94,7 +94,10 @@ foreach( var __type in
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
+<#
+	if( __type != typeof( bool ) && __type != typeof( float ) && __type != typeof( double ) )
+	{
+#>
 		private void PrivatePackCore( <#= __type.Name #>? value )
 		{
 			if ( value.HasValue )
@@ -107,6 +110,8 @@ foreach( var __type in
 			}
 		}
 <#
+	}
+	
 	if( __type != typeof( bool ) )
 	{
 #>
@@ -128,6 +133,10 @@ foreach( var __type in
 			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
 		}
 		
+<#
+		if( __type != typeof( bool ) && __type != typeof( float ) && __type != typeof( double ) )
+		{
+#>
 		private void PrivatePackStrictCore( <#= __type.Name #>? value )
 		{
 			if ( value.HasValue )
@@ -140,6 +149,7 @@ foreach( var __type in
 			}
 		}
 <#
+		}
 	}
 }
 #>

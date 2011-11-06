@@ -261,7 +261,7 @@ foreach( var __type in __integerTypes )
 		if( __sourceType == "byte[]" )
 		{
 #>
-					return new <#= __returnType #>( resultAsInt8.Value.Value, resultAsInt8.Value.NewOffset );
+					return new <#= __returnType #>( resultAsInt8.Value.Value, resultAsInt8.Value.ReadCount );
 <#
 		}
 		else
@@ -301,7 +301,7 @@ foreach( var __type in __integerTypes )
 #>
 					if ( resultAsUInt8.HasValue && resultAsInt8.Value.Value <= SByte.MaxValue )
 					{
-						return new <#= __returnType #>( ( <#= __type.Name #> )resultAsUInt8.Value.Value, resultAsUInt8.Value.NewOffset );
+						return new <#= __returnType #>( ( <#= __type.Name #> )resultAsUInt8.Value.Value, resultAsUInt8.Value.ReadCount );
 					}
 <#
 			}
@@ -328,7 +328,7 @@ foreach( var __type in __integerTypes )
 			if( __sourceType == "byte[]" )
 			{
 #>
-						return new <#= __returnType #>( resultAsUInt8.Value.Value, resultAsUInt8.Value.NewOffset );
+						return new <#= __returnType #>( resultAsUInt8.Value.Value, resultAsUInt8.Value.ReadCount );
 <#
 			}
 			else
@@ -366,7 +366,7 @@ foreach( var __type in __integerTypes )
 			if( __sourceType == "byte[]" )
 			{
 #>
-							return new <#= __returnType #>( resultAsInt16.Value.Value, resultAsInt16.Value.NewOffset );
+							return new <#= __returnType #>( resultAsInt16.Value.Value, resultAsInt16.Value.ReadCount );
 <#
 			}
 			else
@@ -406,7 +406,7 @@ foreach( var __type in __integerTypes )
 #>
 							if ( resultAsUInt16.HasValue && resultAsUInt16.Value.Value <= Int16.MaxValue )
 							{
-								return new <#= __returnType #>( ( <#= __type.Name #> )resultAsUInt16.Value.Value, resultAsUInt16.Value.NewOffset );
+								return new <#= __returnType #>( ( <#= __type.Name #> )resultAsUInt16.Value.Value, resultAsUInt16.Value.ReadCount );
 							}
 <#
 				}
@@ -436,7 +436,7 @@ foreach( var __type in __integerTypes )
 				if( __sourceType == "byte[]" )
 				{
 #>
-								return new <#= __returnType #>( resultAsUInt16.Value.Value, resultAsUInt16.Value.NewOffset );
+								return new <#= __returnType #>( resultAsUInt16.Value.Value, resultAsUInt16.Value.ReadCount );
 <#
 				}
 				else
@@ -474,7 +474,7 @@ foreach( var __type in __integerTypes )
 				if( __sourceType == "byte[]" )
 				{
 #>
-									return new <#= __returnType #>( resultAsInt32.Value.Value, resultAsInt32.Value.NewOffset );
+									return new <#= __returnType #>( resultAsInt32.Value.Value, resultAsInt32.Value.ReadCount );
 <#
 				}
 				else
@@ -514,7 +514,7 @@ foreach( var __type in __integerTypes )
 #>
 									if ( resultAsUInt32.HasValue && resultAsUInt32.Value.Value <= Int32.MaxValue )
 									{
-										return new <#= __returnType #>( ( <#= __type.Name #> )resultAsUInt32.Value.Value, resultAsUInt32.Value.NewOffset );
+										return new <#= __returnType #>( ( <#= __type.Name #> )resultAsUInt32.Value.Value, resultAsUInt32.Value.ReadCount );
 									}
 <#
 					}
@@ -545,7 +545,7 @@ foreach( var __type in __integerTypes )
 				if( __sourceType == "byte[]" )
 				{
 #>
-										return new <#= __returnType #>( resultAsUInt32.Value.Value, resultAsUInt32.Value.NewOffset );
+										return new <#= __returnType #>( resultAsUInt32.Value.Value, resultAsUInt32.Value.ReadCount );
 <#
 				}
 				else
@@ -608,7 +608,7 @@ foreach( var __type in __integerTypes )
 #>
 											if ( resultAsUInt64.HasValue && resultAsUInt64.Value.Value <= Int64.MaxValue )
 											{
-												return new <#= __returnType #>( ( <#= __type.Name #> )resultAsUInt64.Value.Value, resultAsUInt64.Value.NewOffset );
+												return new <#= __returnType #>( ( <#= __type.Name #> )resultAsUInt64.Value.Value, resultAsUInt64.Value.ReadCount );
 											}
 <#
 					}
@@ -665,7 +665,7 @@ foreach( var __type in __integerTypes )
 			if( __sourceType == "byte[]" )
 			{
 #>
-					return new <#= __returnType #>( resultAsUInt8.Value.Value, resultAsUInt8.Value.NewOffset );
+					return new <#= __returnType #>( resultAsUInt8.Value.Value, resultAsUInt8.Value.ReadCount );
 <#
 			}
 			else
@@ -703,7 +703,7 @@ foreach( var __type in __integerTypes )
 #>
 					if ( resultAsInt8.HasValue && resultAsInt8.Value.Value >= 0 )
 					{
-						return new <#= __returnType #>( ( <#= __type.Name #> )resultAsInt8.Value.Value, resultAsInt8.Value.NewOffset );
+						return new <#= __returnType #>( ( <#= __type.Name #> )resultAsInt8.Value.Value, resultAsInt8.Value.ReadCount );
 					}
 <#
 		}
@@ -754,7 +754,7 @@ foreach( var __type in __integerTypes )
 			if( __sourceType == "byte[]" )
 			{
 #>
-							return new <#= __returnType #>( resultAsUInt16.Value.Value, resultAsUInt16.Value.NewOffset );
+							return new <#= __returnType #>( resultAsUInt16.Value.Value, resultAsUInt16.Value.ReadCount );
 <#
 			}
 			else
@@ -792,7 +792,7 @@ foreach( var __type in __integerTypes )
 #>
 							if ( resultAsInt16.HasValue && resultAsInt16.Value.Value >= 0 )
 							{
-								return new <#= __returnType #>( ( <#= __type.Name #> )resultAsInt16.Value.Value, resultAsInt16.Value.NewOffset );
+								return new <#= __returnType #>( ( <#= __type.Name #> )resultAsInt16.Value.Value, resultAsInt16.Value.ReadCount );
 							}
 <#
 			}
@@ -845,7 +845,7 @@ foreach( var __type in __integerTypes )
 			if( __sourceType == "byte[]" )
 			{
 #>
-									return new <#= __returnType #>( resultAsUInt32.Value.Value, resultAsUInt32.Value.NewOffset );
+									return new <#= __returnType #>( resultAsUInt32.Value.Value, resultAsUInt32.Value.ReadCount );
 <#
 			}
 			else
@@ -883,7 +883,7 @@ foreach( var __type in __integerTypes )
 #>
 									if ( resultAsInt32.HasValue && resultAsInt32.Value.Value >= 0 )
 									{
-										return new <#= __returnType #>( ( <#= __type.Name #> )resultAsInt32.Value.Value, resultAsInt32.Value.NewOffset );
+										return new <#= __returnType #>( ( <#= __type.Name #> )resultAsInt32.Value.Value, resultAsInt32.Value.ReadCount );
 									}
 <#
 				}
@@ -961,7 +961,7 @@ foreach( var __type in __integerTypes )
 #>
 											if ( resultAsInt64.HasValue && resultAsInt64.Value.Value >= 0 )
 											{
-												return new <#= __returnType #>( ( <#= __type.Name #> )resultAsInt64.Value.Value, resultAsInt64.Value.NewOffset );
+												return new <#= __returnType #>( ( <#= __type.Name #> )resultAsInt64.Value.Value, resultAsInt64.Value.ReadCount );
 											}
 <#
 					}
@@ -1037,7 +1037,7 @@ foreach( var __sourceType in __sourceTypes )
 		if( __sourceType == "byte[]" )
 		{
 #>
-				return new UnpackArrayResult<byte>( ( byte )typeCode, offset +1 );
+				return new UnpackArrayResult<byte>( ( byte )typeCode, 1 );
 <#
 		}
 		else
@@ -1060,7 +1060,7 @@ foreach( var __sourceType in __sourceTypes )
 		if( __sourceType == "byte[]" )
 		{
 #>
-				return new UnpackArrayResult<sbyte>( ( sbyte )typeCode, offset + 1 );
+				return new UnpackArrayResult<sbyte>( ( sbyte )typeCode, 1 );
 <#
 		}
 		else
@@ -1083,7 +1083,7 @@ foreach( var __sourceType in __sourceTypes )
 		if( __sourceType == "byte[]" )
 		{
 #>
-			return new UnpackArrayResult<<#= __type.Name #>>( Unpack<#= __type.Name #>Body( source, offset + 1 ), offset + sizeof( <#= __csharpPrimitives[ __type ] #> ) + 1 );
+			return new UnpackArrayResult<<#= __type.Name #>>( Unpack<#= __type.Name #>Body( source, offset + 1 ), sizeof( <#= __csharpPrimitives[ __type ] #> ) + 1 );
 		}
 
 		private static <#= __type.Name #> Unpack<#= __type.Name #>Body( <#= __sourceType #> source, int offset )

@@ -27,6 +27,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MsgPack
 {
@@ -108,7 +109,7 @@ namespace MsgPack
 				MessagePackObject result;
 				if ( !this.TryGetValue( key, out result ) )
 				{
-					throw new KeyNotFoundException( String.Format( CultureInfo.CurrentCulture, "Key '{0}'({1} type) does not exist in this dictionary.", key, key.GetUnderlyingType() ) );
+					throw new KeyNotFoundException( String.Format( CultureInfo.CurrentCulture, "Key '{0}'({1} type) does not exist in this dictionary.", key, key.UnderlyingType ) );
 				}
 
 				return result;
@@ -169,16 +170,19 @@ namespace MsgPack
 			get { return this.Values; }
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool ICollection<KeyValuePair<MessagePackObject, MessagePackObject>>.IsReadOnly
 		{
 			get { return false; }
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool IDictionary.IsFixedSize
 		{
 			get { return false; }
 		}
-
+		
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool IDictionary.IsReadOnly
 		{
 			get { return false; }
@@ -194,6 +198,7 @@ namespace MsgPack
 			get { return this.Values; }
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		object IDictionary.this[ object key ]
 		{
 			get
@@ -238,11 +243,13 @@ namespace MsgPack
 			}
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool ICollection.IsSynchronized
 		{
 			get { return false; }
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		object ICollection.SyncRoot
 		{
 			get { return this; }
@@ -356,7 +363,7 @@ namespace MsgPack
 		{
 			if ( info == null )
 			{
-				throw new ArgumentNullException( "Info" );
+				throw new ArgumentNullException( "info" );
 			}
 
 			Contract.EndContractBlock();
@@ -383,7 +390,7 @@ namespace MsgPack
 		{
 			if ( info == null )
 			{
-				throw new ArgumentNullException( "Info" );
+				throw new ArgumentNullException( "info" );
 			}
 
 			Contract.EndContractBlock();
@@ -475,7 +482,7 @@ namespace MsgPack
 
 		private static void ThrowDuplicatedKeyException( MessagePackObject key, string parameterName )
 		{
-			throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "Key '{0}'({1} type) already exists in this dictionary.", key, key.GetUnderlyingType() ), parameterName );
+			throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "Key '{0}'({1} type) already exists in this dictionary.", key, key.UnderlyingType ), parameterName );
 		}
 
 		[Conditional( "DEBUG" )]
@@ -493,16 +500,6 @@ namespace MsgPack
 				Contract.Assert( this._keys == null );
 				Contract.Assert( this._values == null );
 			}
-		}
-
-		/// <summary>
-		///		Verifies object invariant.
-		/// </summary>
-		[ContractInvariantMethod]
-		[EditorBrowsable( EditorBrowsableState.Never )]
-		protected void ObjectInvariant()
-		{
-			// TODO:
 		}
 
 		private static MessagePackObject ValidateObjectArgument( object obj, string parameterName )
@@ -596,7 +593,7 @@ namespace MsgPack
 				}
 				case TypeCode.String:
 				{
-					return value as string;
+					return value.ToString();
 				}
 				case TypeCode.UInt16:
 				{
@@ -670,6 +667,7 @@ namespace MsgPack
 			}
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool ICollection<KeyValuePair<MessagePackObject, MessagePackObject>>.Contains( KeyValuePair<MessagePackObject, MessagePackObject> item )
 		{
 			MessagePackObject value;
@@ -681,6 +679,7 @@ namespace MsgPack
 			return item.Value == value;
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool IDictionary.Contains( object key )
 		{
 			if ( key == null )
@@ -1016,11 +1015,13 @@ namespace MsgPack
 			}
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		void ICollection<KeyValuePair<MessagePackObject, MessagePackObject>>.CopyTo( KeyValuePair<MessagePackObject, MessagePackObject>[] array, int arrayIndex )
 		{
 			CollectionOperation.CopyTo( this, this.Count, 0, array, arrayIndex, this.Count );
 		}
 
+		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		void ICollection.CopyTo( Array array, int index )
 		{
 			DictionaryEntry[] asDictionaryEntries;

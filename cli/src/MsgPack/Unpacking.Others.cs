@@ -73,7 +73,7 @@ namespace MsgPack
 		/// <returns>Converted <see cref="Single"/>.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Single"/>.</exception>
-		public static UnpackArrayResult<Single> UnpackSingle( byte[] source )
+		public static UnpackingResult<Single> UnpackSingle( byte[] source )
 		{
 			return UnpackSingle( source, 0 );
 		}
@@ -87,7 +87,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Single"/>.</exception>
-		public static UnpackArrayResult<Single> UnpackSingle( byte[] source, int offset )
+		public static UnpackingResult<Single> UnpackSingle( byte[] source, int offset )
 		{
 			if( source == null )
 			{
@@ -111,7 +111,7 @@ namespace MsgPack
 			{
 				case MessagePackCode.Real32:  // float
 				{
-					return new UnpackArrayResult<Single>( ReadSingle( source, offset + 1 ), offset + sizeof( float ) + 1 );
+					return new UnpackingResult<Single>( ReadSingle( source, offset + 1 ), sizeof( float ) + 1 );
 				}
 				default:
 				{
@@ -166,7 +166,7 @@ namespace MsgPack
 		/// <returns>Converted <see cref="Double"/>.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Double"/>.</exception>
-		public static UnpackArrayResult<Double> UnpackDouble( byte[] source )
+		public static UnpackingResult<Double> UnpackDouble( byte[] source )
 		{
 			return UnpackDouble( source, 0 );
 		}
@@ -180,7 +180,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Double"/>.</exception>
-		public static UnpackArrayResult<Double> UnpackDouble( byte[] source, int offset )
+		public static UnpackingResult<Double> UnpackDouble( byte[] source, int offset )
 		{
 			if( source == null )
 			{
@@ -204,11 +204,11 @@ namespace MsgPack
 			{
 				case MessagePackCode.Real32:  // float
 				{
-					return new UnpackArrayResult<Double>( ReadSingle( source, offset + 1 ), offset + sizeof( float ) + 1 );
+					return new UnpackingResult<Double>( ReadSingle( source, offset + 1 ), sizeof( float ) + 1 );
 				}
 				case MessagePackCode.Real64:  // double
 				{
-					return new UnpackArrayResult<Double>( ReadDouble( source, offset + 1 ), offset + sizeof( double ) + 1 );
+					return new UnpackingResult<Double>( ReadDouble( source, offset + 1 ), sizeof( double ) + 1 );
 				}
 				default:
 				{
@@ -274,7 +274,7 @@ namespace MsgPack
 		/// <returns>Converted null instance.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<Object> UnpackNull( byte[] source )
+		public static UnpackingResult<Object> UnpackNull( byte[] source )
 		{
 			return UnpackNull( source, 0 );
 		}
@@ -288,14 +288,14 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<Object> UnpackNull( byte[] source, int offset )
+		public static UnpackingResult<Object> UnpackNull( byte[] source, int offset )
 		{
 			if( !TryUnpackNullCore( source, offset ) )
 			{
 				throw new MessageTypeException( "Not nil." );
 			}
 
-			return new UnpackArrayResult<Object>( null, 1 + offset );
+			return new UnpackingResult<Object>( null, 1 );
 		}
 
 		/// <summary>
@@ -396,7 +396,7 @@ namespace MsgPack
 		/// <returns>Converted <see cref="Boolean"/> value.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<Boolean> UnpackBoolean( byte[] source )
+		public static UnpackingResult<Boolean> UnpackBoolean( byte[] source )
 		{
 			return UnpackBoolean( source, 0 );
 		}
@@ -410,7 +410,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
 		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
-		public static UnpackArrayResult<bool> UnpackBoolean( byte[] source, int offset )
+		public static UnpackingResult<bool> UnpackBoolean( byte[] source, int offset )
 
 		{
 			if( source == null )
@@ -434,13 +434,13 @@ namespace MsgPack
 			if( typeCode == MessagePackCode.FalseValue )
 			{
 				// success
-				return new UnpackArrayResult<bool>( false, offset + 1 );
+				return new UnpackingResult<bool>( false, 1 );
 			}
 
 			if( typeCode == MessagePackCode.TrueValue )
 			{
 				// success
-				return new UnpackArrayResult<bool>( true, offset + 1 );
+				return new UnpackingResult<bool>( true, 1 );
 			}
 
 			throw new MessageTypeException( "Not Boolean." );
@@ -495,7 +495,7 @@ namespace MsgPack
 		/// <returns>Converted array length value.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<long> UnpackArrayLength( byte[] source )
+		public static UnpackingResult<long> UnpackArrayLength( byte[] source )
 		{
 			return UnpackArrayLength( source, 0 );
 		}
@@ -509,7 +509,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
 		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
-		public static UnpackArrayResult<Int64> UnpackArrayLength( byte[] source, int offset )
+		public static UnpackingResult<Int64> UnpackArrayLength( byte[] source, int offset )
 		{
 			if( source == null )
 			{
@@ -531,18 +531,18 @@ namespace MsgPack
 			int typeCode = source[ offset ];
 			if ( ( typeCode & 0xf0 ) == MessagePackCode.FixedArray )  // FixArray
 			{
-				return new UnpackArrayResult<Int64>( typeCode & 0x0f, 1 );
+				return new UnpackingResult<Int64>( typeCode & 0x0f, 1 );
 			}
 
 			switch ( typeCode )
 			{
 				case MessagePackCode.Array16 : // array 16
 				{
-					return new UnpackArrayResult<Int64>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
+					return new UnpackingResult<Int64>( UnpackUInt16Body( source, offset + 1 ), sizeof( ushort ) + 1 );
 				}
 				case MessagePackCode.Array32 : // array 32
 				{
-					return new UnpackArrayResult<Int64>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
+					return new UnpackingResult<Int64>( UnpackUInt32Body( source, offset + 1 ), sizeof( uint ) + 1 );
 				}
 				default:
 				{
@@ -601,7 +601,7 @@ namespace MsgPack
 		/// <returns>Converted map count value.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<long> UnpackDictionaryCount( byte[] source )
+		public static UnpackingResult<long> UnpackDictionaryCount( byte[] source )
 		{
 			return UnpackDictionaryCount( source, 0 );
 		}
@@ -615,7 +615,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
 		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
-		public static UnpackArrayResult<Int64> UnpackDictionaryCount( byte[] source, int offset )
+		public static UnpackingResult<Int64> UnpackDictionaryCount( byte[] source, int offset )
 		{
 			if( source == null )
 			{
@@ -637,18 +637,18 @@ namespace MsgPack
 			int typeCode = source[ offset ];
 			if ( ( typeCode & 0xf0 ) == MessagePackCode.FixedMap )  // FixMap
 			{
-				return new UnpackArrayResult<Int64>( typeCode & 0x0f, offset + 1 );
+				return new UnpackingResult<Int64>( typeCode & 0x0f, 1 );
 			}
 
 			switch ( typeCode )
 			{
 				case MessagePackCode.Map16 : // map 16
 				{
-					return new UnpackArrayResult<Int64>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
+					return new UnpackingResult<Int64>( UnpackUInt16Body( source, offset + 1 ), sizeof( ushort ) + 1 );
 				}
 				case MessagePackCode.Map32 : // map 32
 				{
-					return new UnpackArrayResult<Int64>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
+					return new UnpackingResult<Int64>( UnpackUInt32Body( source, offset + 1 ), sizeof( uint ) + 1 );
 				}
 				default:
 				{
@@ -707,7 +707,7 @@ namespace MsgPack
 		/// <returns>Converted raw length value.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<Int64> UnpackRawLength( byte[] source )
+		public static UnpackingResult<Int64> UnpackRawLength( byte[] source )
 		{
 			return UnpackRawLength( source, 0 );
 		}
@@ -721,7 +721,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> is negative.</exception>
 		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
-		public static UnpackArrayResult<Int64> UnpackRawLength( byte[] source, int offset )
+		public static UnpackingResult<Int64> UnpackRawLength( byte[] source, int offset )
 		{
 			if( source == null )
 			{
@@ -743,18 +743,18 @@ namespace MsgPack
 			int typeCode = source[ offset ];
 			if ( ( typeCode & 0xa0 ) == MessagePackCode.FixedRaw )  // FixRaw
 			{
-				return new UnpackArrayResult<Int64>( typeCode & 0x1f, offset + 1 );
+				return new UnpackingResult<Int64>( typeCode & 0x1f, 1 );
 			}
 
 			switch ( typeCode )
 			{
 				case MessagePackCode.Raw16 : // raw 16
 				{
-					return new UnpackArrayResult<Int64>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
+					return new UnpackingResult<Int64>( UnpackUInt16Body( source, offset + 1 ), sizeof( ushort ) + 1 );
 				}
 				case MessagePackCode.Raw32 : // raw 32
 				{
-					return new UnpackArrayResult<Int64>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
+					return new UnpackingResult<Int64>( UnpackUInt32Body( source, offset + 1 ), sizeof( uint ) + 1 );
 				}
 				default:
 				{

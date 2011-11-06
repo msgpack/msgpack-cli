@@ -373,15 +373,6 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Transit current stage to <see cref="Stage.UnpackCollectionLength"/> with cleanuping states.
-		/// </summary>
-		private void TransitToUnpackCollectionLength()
-		{
-			this._stage = Stage.UnpackCollectionLength;
-			this._bytesBuffer = new BytesBuffer( GetLength( this._contextValueHeader.Type ) );
-		}
-
-		/// <summary>
 		///		Transit current stage to <see cref="Stage.UnpackRawBytes"/> with cleanuping states.
 		/// </summary>
 		/// <param name="source"><see cref="ISegmentLengthRecognizeable"/> to be notified.</param>
@@ -409,7 +400,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="header">Header which has type information.</param>
 		/// <returns><see cref="MessagePackObject"/> which wraps appropriate empty collection.</returns>
-		private MessagePackObject CreateEmptyCollection( MessagePackHeader header )
+		private static MessagePackObject CreateEmptyCollection( MessagePackHeader header )
 		{
 			Contract.Assert( header.ValueOrLength == 0, header.ToString() );
 
@@ -704,19 +695,7 @@ namespace MsgPack
 			{
 				return this._type + ":" + this._valueOrLength;
 			}
-
-			/// <summary>
-			///		Set recognized length of non-fixed collection or binary.
-			/// </summary>
-			/// <param name="recognizedLength">Recognized length.</param>
-			/// <returns></returns>
-			public MessagePackHeader SetLength( uint recognizedLength )
-			{
-				Contract.Assert( this._valueOrLength == 0, this.ToString() );
-
-				return new MessagePackHeader( this._type, unchecked( ( uint )recognizedLength ) );
-			}
-
+			
 			public static implicit operator MessagePackHeader( MessageType type )
 			{
 				return new MessagePackHeader( type, 0 );
@@ -746,19 +725,6 @@ namespace MsgPack
 			public bool IsEmpty
 			{
 				get { return this._collectionContextStack.Count == 0; }
-			}
-
-			/// <summary>
-			///		Get state of context collection.
-			/// </summary>
-			/// <value>State of context collection.</value>
-			public CollectionContextState ContextCollectionState
-			{
-				get
-				{
-					Contract.Assert( !this.IsEmpty );
-					return this._collectionContextStack.Peek();
-				}
 			}
 
 			/// <summary>
@@ -865,24 +831,7 @@ namespace MsgPack
 				}
 
 				private readonly long _capacity;
-
-				public long Capacity
-				{
-					get { return this._capacity; }
-				}
-
 				private long _unpacked;
-
-				/// <summary>
-				///		Get count of unpackaged items.
-				/// </summary>
-				/// <value>
-				///		 Count of unpackaged items.
-				/// </value>
-				public long Unpacked
-				{
-					get { return this._unpacked; }
-				}
 
 				/// <summary>
 				///		Get the value which indicates <see cref="Items"/> are filled.
@@ -1003,18 +952,6 @@ namespace MsgPack
 
 			private readonly byte[] _backingStore;
 
-			/// <summary>
-			///		Get backing store of this buffer.
-			/// </summary>
-			/// <value>
-			///		Backing store of this buffer.
-			///		DO NOT modify this value directly.
-			///	</value>
-			public byte[] BackingStore
-			{
-				get { return this._backingStore; }
-			}
-
 			private readonly int _position;
 
 			/// <summary>
@@ -1069,19 +1006,10 @@ namespace MsgPack
 			}
 
 			/// <summary>
-			///		Feed specified byte in this buffer, and increment position.
+			///		Feed specified <see cref="Stream"/> to this buffer, and increment position.
 			/// </summary>
-			/// <param name="b">Byte to be feeded.</param>
+			/// <param name="stream"><see cref="Stream"/> to be feeded.</param>
 			/// <returns>New buffer to replace this object.</returns>
-			public BytesBuffer Feed( byte b )
-			{
-				Contract.Assert( this._backingStore != null, this.ToString() );
-				Contract.Assert( !this.IsFilled, "Already filled:" + this );
-
-				this._backingStore[ this._position ] = b;
-				return new BytesBuffer( this._backingStore, this._position + 1 );
-			}
-
 			public BytesBuffer Feed( Stream stream )
 			{
 				int reading = this._backingStore.Length - this._position;

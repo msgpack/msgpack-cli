@@ -204,7 +204,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-					return new UnpackArrayResult<Single>( ReadSingle( source, offset + 1 ), offset + sizeof( float ) + 1 );
+					return new UnpackArrayResult<Single>( ReadSingle( source, offset + 1 ), sizeof( float ) + 1 );
 <#
 	}
 	else
@@ -337,7 +337,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-					return new UnpackArrayResult<Double>( ReadSingle( source, offset + 1 ), offset + sizeof( float ) + 1 );
+					return new UnpackArrayResult<Double>( ReadSingle( source, offset + 1 ), sizeof( float ) + 1 );
 <#
 	}
 	else
@@ -354,7 +354,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-					return new UnpackArrayResult<Double>( ReadDouble( source, offset + 1 ), offset + sizeof( double ) + 1 );
+					return new UnpackArrayResult<Double>( ReadDouble( source, offset + 1 ), sizeof( double ) + 1 );
 <#
 	}
 	else
@@ -444,7 +444,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-			return new <#= __returnType #>( null, 1 + offset );
+			return new <#= __returnType #>( null, 1 );
 <#
 	}
 	else
@@ -681,7 +681,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-				return new UnpackArrayResult<bool>( false, offset + 1 );
+				return new UnpackArrayResult<bool>( false, 1 );
 <#
 	}
 	else
@@ -700,7 +700,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-				return new UnpackArrayResult<bool>( true, offset + 1 );
+				return new UnpackArrayResult<bool>( true, 1 );
 <#
 	}
 	else
@@ -850,7 +850,7 @@ foreach( var __sourceType in __sourceTypes )
 		case "byte[]" :
 		{
 #>
-					return new <#= __returnType #>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
+					return new <#= __returnType #>( UnpackUInt16Body( source, offset + 1 ), sizeof( ushort ) + 1 );
 <#
 			break;
 		}
@@ -872,7 +872,7 @@ foreach( var __sourceType in __sourceTypes )
 		case "byte[]" :
 		{
 #>
-					return new <#= __returnType #>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
+					return new <#= __returnType #>( UnpackUInt32Body( source, offset + 1 ), sizeof( uint ) + 1 );
 <#
 			break;
 		}
@@ -1005,7 +1005,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-				return new <#= __returnType #>( typeCode & 0x0f, offset + 1 );
+				return new <#= __returnType #>( typeCode & 0x0f, 1 );
 <#
 	}
 	else
@@ -1028,7 +1028,7 @@ foreach( var __sourceType in __sourceTypes )
 		case "byte[]" :
 		{
 #>
-					return new <#= __returnType #>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
+					return new <#= __returnType #>( UnpackUInt16Body( source, offset + 1 ), sizeof( ushort ) + 1 );
 <#
 			break;
 		}
@@ -1050,7 +1050,7 @@ foreach( var __sourceType in __sourceTypes )
 		case "byte[]" :
 		{
 #>
-					return new <#= __returnType #>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
+					return new <#= __returnType #>( UnpackUInt32Body( source, offset + 1 ), sizeof( uint ) + 1 );
 <#
 			break;
 		}
@@ -1184,7 +1184,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-				return new <#= __returnType #>( typeCode & 0x1f, offset + 1 );
+				return new <#= __returnType #>( typeCode & 0x1f, 1 );
 <#
 	}
 	else
@@ -1207,7 +1207,7 @@ foreach( var __sourceType in __sourceTypes )
 		case "byte[]" :
 		{
 #>
-					return new <#= __returnType #>( UnpackUInt16Body( source, offset + 1 ), offset + sizeof( ushort ) + 1 );
+					return new <#= __returnType #>( UnpackUInt16Body( source, offset + 1 ), sizeof( ushort ) + 1 );
 <#
 			break;
 		}
@@ -1229,7 +1229,7 @@ foreach( var __sourceType in __sourceTypes )
 		case "byte[]" :
 		{
 #>
-					return new <#= __returnType #>( UnpackUInt32Body( source, offset + 1 ), offset + sizeof( uint ) + 1 );
+					return new <#= __returnType #>( UnpackUInt32Body( source, offset + 1 ), sizeof( uint ) + 1 );
 <#
 			break;
 		}

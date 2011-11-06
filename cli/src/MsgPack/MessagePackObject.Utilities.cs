@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -29,6 +30,9 @@ using System.Text;
 
 namespace MsgPack
 {
+#if !SILVERLIGHT
+	[Serializable]
+#endif
 	partial struct MessagePackObject
 #if !SILVERLIGHT
  : ISerializable
@@ -528,7 +532,7 @@ namespace MsgPack
 					}
 					default:
 					{
-						return this._value.ToString();
+						return this._value.ToString( CultureInfo.InvariantCulture );
 					}
 				}
 			}
@@ -599,6 +603,7 @@ namespace MsgPack
 		/// </summary>
 		/// <typeparam name="T">Target type.</typeparam>
 		/// <returns>If the underlying value of this instance is <typeparamref name="T"/> then true, otherwise false.</returns>
+		[SuppressMessage( "Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "There are no meaningful parameter." )]
 		public bool? IsTypeOf<T>()
 		{
 			return this.IsTypeOf( typeof( T ) );
@@ -782,29 +787,32 @@ namespace MsgPack
 		///		Get underlying type of this instance.
 		/// </summary>
 		/// <returns>Underlying <see cref="Type"/>.</returns>
-		public Type GetUnderlyingType()
+		public Type UnderlyingType
 		{
-			if ( this._handleOrTypeCode == null )
+			get
 			{
-				return null;
-			}
-
-			var typeCode = this._handleOrTypeCode as ValueTypeCode;
-			if ( typeCode == null )
-			{
-				var asMps = this._handleOrTypeCode as MessagePackString;
-				if ( asMps != null )
+				if ( this._handleOrTypeCode == null )
 				{
-					return asMps.GetUnderlyingType();
+					return null;
+				}
+
+				var typeCode = this._handleOrTypeCode as ValueTypeCode;
+				if ( typeCode == null )
+				{
+					var asMps = this._handleOrTypeCode as MessagePackString;
+					if ( asMps != null )
+					{
+						return asMps.GetUnderlyingType();
+					}
+					else
+					{
+						return this._handleOrTypeCode.GetType();
+					}
 				}
 				else
 				{
-					return this._handleOrTypeCode.GetType();
+					return typeCode.Type;
 				}
-			}
-			else
-			{
-				return typeCode.Type;
 			}
 		}
 
@@ -1195,11 +1203,11 @@ namespace MsgPack
 			{
 				if ( parameterName != null )
 				{
-					throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} MessagePackObject to {1}.", instance.GetUnderlyingType(), typeof( T ) ), parameterName );
+					throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} MessagePackObject to {1}.", instance.UnderlyingType, typeof( T ) ), parameterName );
 				}
 				else
 				{
-					throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} MessagePackObject to {1}.", instance.GetUnderlyingType(), typeof( T ) ) );
+					throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} MessagePackObject to {1}.", instance.UnderlyingType, typeof( T ) ) );
 				}
 			}
 		}
@@ -1217,21 +1225,13 @@ namespace MsgPack
 		/// </exception>
 		public static MessagePackObject FromObject( object boxedValue )
 		{
-			return FromObject( boxedValue, ObjectPackingOptions.None /* ObjectPackingOptions.Recursive */ );
-		}
+			byte[] asByteArray;
+			string asString;
+			IEnumerable<byte> asByteEnumerable;
+			IEnumerable<char> asCharEnumerable;
+			IEnumerable<MessagePackObject> asEnumerable;
+			MessagePackObjectDictionary asDictionary;
 
-		/// <summary>
-		///		Wraps specified object as <see cref="MessagePackObject"/>.
-		/// </summary>
-		/// <param name="boxedValue">Object to be wrapped.</param>
-		/// <param name="options">Wrapping options.</param>
-		/// <returns><see cref="MessagePackObject"/> wrapps <paramref name="boxedValue"/>.</returns>
-		/// <exception cref="MessageTypeException">
-		///		<paramref name="boxedValue"/> is not primitive value type, list of <see cref="MessagePackObject"/>,
-		///		dictionary of <see cref="MessagePackObject"/>, <see cref="String"/>, <see cref="Byte"/>[], or null.
-		/// </exception>
-		public static MessagePackObject FromObject( object boxedValue, ObjectPackingOptions options )
-		{
 			if ( boxedValue == null )
 			{
 				return MessagePackObject.Nil;
@@ -1324,23 +1324,23 @@ namespace MsgPack
 			{
 				return ( bool? )boxedValue ?? MessagePackObject.Nil;
 			}
-			else if ( boxedValue is byte[] )
+			else if ( ( asByteArray = boxedValue as byte[] ) != null )
 			{
-				return new MessagePackObject( boxedValue as byte[] );
+				return new MessagePackObject( asByteArray );
 			}
-			else if ( boxedValue is string )
+			else if ( ( asString = boxedValue as string ) != null )
 			{
-				return new MessagePackObject( boxedValue as string );
+				return new MessagePackObject( asString );
 			}
-			else if ( boxedValue is IEnumerable<byte> )
+			else if ( ( asByteEnumerable = boxedValue as IEnumerable<byte> ) != null )
 			{
-				return new MessagePackObject( ( boxedValue as IEnumerable<byte> ).ToArray() );
+				return new MessagePackObject( ( asByteEnumerable ).ToArray() );
 			}
-			else if ( boxedValue is IEnumerable<char> )
+			else if ( ( asCharEnumerable = boxedValue as IEnumerable<char> ) != null )
 			{
-				return new MessagePackObject( new String( ( boxedValue as IEnumerable<char> ).ToArray() ) );
+				return new MessagePackObject( new String( ( asCharEnumerable ).ToArray() ) );
 			}
-			else if ( boxedValue is IEnumerable<MessagePackObject> )
+			else if ( ( asEnumerable = boxedValue as IEnumerable<MessagePackObject> ) != null )
 			{
 				var asList = boxedValue as IList<MessagePackObject>;
 				if ( asList != null )
@@ -1349,12 +1349,12 @@ namespace MsgPack
 				}
 				else
 				{
-					return new MessagePackObject( ( boxedValue as IEnumerable<MessagePackObject> ).ToList() );
+					return new MessagePackObject( ( asEnumerable ).ToList() );
 				}
 			}
-			else if ( boxedValue is MessagePackObjectDictionary )
+			else if ( ( asDictionary = boxedValue as MessagePackObjectDictionary ) != null )
 			{
-				return new MessagePackObject( boxedValue as MessagePackObjectDictionary );
+				return new MessagePackObject( asDictionary );
 			}
 
 			/*
@@ -1601,7 +1601,7 @@ namespace MsgPack
 			{
 				get { return this._typeCode; }
 			}
-						
+
 			private readonly Type _type;
 
 			public Type Type

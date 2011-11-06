@@ -277,7 +277,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException"><paramref name="source"/> is not raw.</exception>
 		public static string UnpackString( byte[] source, Encoding encoding )
 		{
-			return UnpackString( source, 0, Encoding.UTF8 );
+			return UnpackString( source, 0, encoding );
 		}
 
 		/// <summary>
@@ -320,7 +320,7 @@ namespace MsgPack
 		internal static string UnpackStringCore( byte[] source, int offset, Encoding encoding )
 		{
 			var length = UnpackRawLength( source, offset );
-			if ( length.NewOffset == offset )
+			if ( length.ReadCount == 0 )
 			{
 				throw new MessageTypeException( "Not raw." );
 			}
@@ -330,7 +330,7 @@ namespace MsgPack
 				throw new UnpackException( String.Format( CultureInfo.CurrentCulture, "Too long string. Maximum char length is {0} but actual is {1}.", Int32.MaxValue, length.Value ) );
 			}
 
-			return encoding.GetString( source, length.NewOffset, unchecked( ( int )length.Value ) );
+			return encoding.GetString( source, offset + length.ReadCount, unchecked( ( int )length.Value ) );
 		}
 	}
 }

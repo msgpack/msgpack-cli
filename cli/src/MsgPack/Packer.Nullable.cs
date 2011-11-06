@@ -37,7 +37,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
 		private void PrivatePackCore( SByte? value )
 		{
 			if ( value.HasValue )
@@ -80,7 +79,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
 		private void PrivatePackCore( Byte? value )
 		{
 			if ( value.HasValue )
@@ -122,7 +120,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
 		private void PrivatePackCore( Int16? value )
 		{
 			if ( value.HasValue )
@@ -165,7 +162,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
 		private void PrivatePackCore( UInt16? value )
 		{
 			if ( value.HasValue )
@@ -208,7 +204,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
 		private void PrivatePackCore( Int32? value )
 		{
 			if ( value.HasValue )
@@ -251,7 +246,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
 		private void PrivatePackCore( UInt32? value )
 		{
 			if ( value.HasValue )
@@ -294,7 +288,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
 		private void PrivatePackCore( Int64? value )
 		{
 			if ( value.HasValue )
@@ -337,7 +330,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
 		private void PrivatePackCore( UInt64? value )
 		{
 			if ( value.HasValue )
@@ -380,18 +372,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		
-		private void PrivatePackCore( Single? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
 		/// <summary>
 		///		Pack nullable <see cref="Single"/> value without message size compression.
 		/// </summary>
@@ -402,17 +382,6 @@ namespace MsgPack
 			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
 		}
 		
-		private void PrivatePackStrictCore( Single? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
 		/// <summary>
 		///		Pack nullable <see cref="Double"/> value.
 		/// </summary>
@@ -421,18 +390,6 @@ namespace MsgPack
 		public Packer Pack( Double? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackCore( Double? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
 		}
 		/// <summary>
 		///		Pack nullable <see cref="Double"/> value without message size compression.
@@ -444,17 +401,6 @@ namespace MsgPack
 			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
 		}
 		
-		private void PrivatePackStrictCore( Double? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
 		/// <summary>
 		///		Pack nullable <see cref="Boolean"/> value.
 		/// </summary>
@@ -463,18 +409,6 @@ namespace MsgPack
 		public Packer Pack( Boolean? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackCore( Boolean? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
 		}
 	}
 }
