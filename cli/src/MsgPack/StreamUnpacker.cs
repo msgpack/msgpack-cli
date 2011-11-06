@@ -831,8 +831,20 @@ namespace MsgPack
 				}
 
 				private readonly long _capacity;
+
 				private long _unpacked;
 
+#if DEBUG
+				internal long Capacity
+				{
+					get { return this._capacity; }
+				}
+
+				internal long Unpacked
+				{
+					get { return this._unpacked; }
+				}
+#endif
 				/// <summary>
 				///		Get the value which indicates <see cref="Items"/> are filled.
 				/// </summary>
@@ -951,6 +963,13 @@ namespace MsgPack
 			public static readonly BytesBuffer Null = new BytesBuffer();
 
 			private readonly byte[] _backingStore;
+
+#if DEBUG
+			internal byte[] BackingStore
+			{
+				get { return this._backingStore; }
+			}
+#endif
 
 			private readonly int _position;
 

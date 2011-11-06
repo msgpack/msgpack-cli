@@ -48,7 +48,7 @@ namespace MsgPack
 		
 			if (! messagePackObject.IsTypeOf<IList<MessagePackObject>>().GetValueOrDefault() )
 			{
-				throw new ArgumentException(messagePackObject.GetUnderlyingType().ToString());
+				throw new ArgumentException(messagePackObject.UnderlyingType.ToString());
 			}
 
 			var asList = messagePackObject.AsList();

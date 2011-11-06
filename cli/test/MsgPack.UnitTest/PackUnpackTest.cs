@@ -407,7 +407,7 @@ namespace MsgPack
 			}
 			else
 			{
-				buffer.Append( ' ', indent * 2 ).Append( obj ).Append( " : " ).Append( obj.GetUnderlyingType() ).AppendLine();
+				buffer.Append( ' ', indent * 2 ).Append( obj ).Append( " : " ).Append( obj.UnderlyingType ).AppendLine();
 			}
 		}
 
@@ -522,11 +522,11 @@ namespace MsgPack
 				var item = Unpacking.UnpackObject( stream );
 				Assert.That( item, Is.Not.Null );
 				Assert.That( item.Value.IsTypeOf<int>().Value );
-				Assert.That( item.Value.GetUnderlyingType().IsPrimitive, Is.True );
+				Assert.That( item.Value.UnderlyingType.IsPrimitive, Is.True );
 				Assert.That( item.Value.AsInt32(), Is.EqualTo( 1 ) );
 				item = Unpacking.UnpackObject( stream );
 				Assert.That( item, Is.Not.Null );
-				Assert.That( item.Value.GetUnderlyingType(), Is.EqualTo( typeof( String ) ) );
+				Assert.That( item.Value.UnderlyingType, Is.EqualTo( typeof( String ) ) );
 				Assert.That( item.Value.IsTypeOf<string>().Value );
 				Assert.That( item.Value.AsString(), Is.EqualTo( "1" ) );
 			}
