@@ -28,20 +28,20 @@ namespace MsgPack
 	///		Represents result of direct conversion from the byte array.
 	/// </summary>
 	/// <typeparam name="T">Type of value.</typeparam>
-	public struct UnpackArrayResult<T> : IEquatable<UnpackArrayResult<T>>
+	public struct UnpackingResult<T> : IEquatable<UnpackingResult<T>>
 	{
-		private readonly int _newOffset;
+		private readonly int _readCount;
 
 		/// <summary>
-		///		Get new offset of input byte array.
+		///		Get read bytes count from input byte array.
 		/// </summary>
 		/// <value>
-		///		New offset of input byte array.
+		///		Read bytes count from input byte array.
 		///		If this value equals to old offset, then a value of <see cref="Value"/> property is not undifined.
 		/// </value>
-		public int NewOffset
+		public int ReadCount
 		{
-			get { return this._newOffset; }
+			get { return this._readCount; }
 		}
 
 		private readonly T _value;
@@ -51,49 +51,49 @@ namespace MsgPack
 		/// </summary>
 		/// <value>
 		///		Retrieved value from the byte array.
-		///		If <see cref="NewOffset"/> equals to old offset, then a value of this property is not undefined.
+		///		If <see cref="ReadCount"/> equals to old offset, then a value of this property is not undefined.
 		/// </value>
 		public T Value
 		{
 			get { return this._value; }
 		}
 
-		internal UnpackArrayResult( T value, int newOffset )
+		internal UnpackingResult( T value, int readCount )
 		{
 			this._value = value;
-			this._newOffset = newOffset;
+			this._readCount = readCount;
 		}
 
 		/// <summary>
 		///		Compare two instances are equal.
 		/// </summary>
-		/// <param name="obj"><see cref="UnpackArrayResult&lt;T&gt;"/> instance.</param>
+		/// <param name="obj"><see cref="UnpackingResult&lt;T&gt;"/> instance.</param>
 		/// <returns>
-		///		If <paramref name="obj"/> is <see cref="UnpackArrayResult&lt;T&gt;"/> and its value is equal to this instance, then true.
+		///		If <paramref name="obj"/> is <see cref="UnpackingResult&lt;T&gt;"/> and its value is equal to this instance, then true.
 		///		Otherwise false.
 		/// </returns>
 		public override bool Equals( object obj )
 		{
-			if ( !( obj is UnpackArrayResult<T> ) )
+			if ( !( obj is UnpackingResult<T> ) )
 			{
 				return false;
 			}
 			else
 			{
-				return this.Equals( ( UnpackArrayResult<T> )obj );
+				return this.Equals( ( UnpackingResult<T> )obj );
 			}
 		}
 
 		/// <summary>
 		///		Compare two instances are equal.
 		/// </summary>
-		/// <param name="other"><see cref="UnpackArrayResult&lt;T&gt;"/> instance.</param>
+		/// <param name="other"><see cref="UnpackingResult&lt;T&gt;"/> instance.</param>
 		/// <returns>
 		///		Whether value of <paramref name="other"/> is equal to this instance or not.
 		/// </returns>
-		public bool Equals( UnpackArrayResult<T> other )
+		public bool Equals( UnpackingResult<T> other )
 		{
-			return this._newOffset == other._newOffset && EqualityComparer<T>.Default.Equals( this._value, other._value );
+			return this._readCount == other._readCount && EqualityComparer<T>.Default.Equals( this._value, other._value );
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace MsgPack
 		/// <returns>Hash code of this instance.</returns>
 		public override int GetHashCode()
 		{
-			return this._newOffset.GetHashCode() ^ ( this._value == null ? 0 : this._value.GetHashCode() );
+			return this._readCount.GetHashCode() ^ ( this._value == null ? 0 : this._value.GetHashCode() );
 		}
 
 		/// <summary>
@@ -117,18 +117,18 @@ namespace MsgPack
 		/// </remarks>
 		public override string ToString()
 		{
-			return String.Format( CultureInfo.CurrentCulture, "{0}@{1}", this._value, this._newOffset );
+			return String.Format( CultureInfo.CurrentCulture, "{0}({1} bytes)", this._value, this._readCount );
 		}
 
 		/// <summary>
 		///		Compare two instances are equal.
 		/// </summary>
-		/// <param name="left"><see cref="UnpackArrayResult&lt;T&gt;"/> instance.</param>
-		/// <param name="right"><see cref="UnpackArrayResult&lt;T&gt;"/> instance.</param>
+		/// <param name="left"><see cref="UnpackingResult&lt;T&gt;"/> instance.</param>
+		/// <param name="right"><see cref="UnpackingResult&lt;T&gt;"/> instance.</param>
 		/// <returns>
 		///		Whether value of <paramref name="left"/> and <paramref name="right"/> are equal each other or not.
 		/// </returns>
-		public static bool operator ==( UnpackArrayResult<T> left, UnpackArrayResult<T> right )
+		public static bool operator ==( UnpackingResult<T> left, UnpackingResult<T> right )
 		{
 			return left.Equals( right );
 		}
@@ -136,12 +136,12 @@ namespace MsgPack
 		/// <summary>
 		///		Compare two instances are not equal.
 		/// </summary>
-		/// <param name="left"><see cref="UnpackArrayResult&lt;T&gt;"/> instance.</param>
-		/// <param name="right"><see cref="UnpackArrayResult&lt;T&gt;"/> instance.</param>
+		/// <param name="left"><see cref="UnpackingResult&lt;T&gt;"/> instance.</param>
+		/// <param name="right"><see cref="UnpackingResult&lt;T&gt;"/> instance.</param>
 		/// <returns>
 		///		Whether value of <paramref name="left"/> and <paramref name="right"/> are not equal each other or are equal.
 		/// </returns>		
-		public static bool operator !=( UnpackArrayResult<T> left, UnpackArrayResult<T> right )
+		public static bool operator !=( UnpackingResult<T> left, UnpackingResult<T> right )
 		{
 			return !left.Equals( right );
 		}

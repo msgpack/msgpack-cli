@@ -66,6 +66,17 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
+    <OutputPath>bin\CodeAnalysis\</OutputPath>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+    <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -87,6 +98,7 @@
     <Compile Include="CollectionDebuggerProxy`1.cs" />
     <Compile Include="CollectionOperation.cs" />
     <Compile Include="DictionaryDebuggerProxy`2.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IClippable.cs" />
     <Compile Include="Float32Bits.cs" />
     <Compile Include="Float64Bits.cs" />
@@ -153,7 +165,7 @@
     </Compile>
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Validation.cs" />
-    <Compile Include="UnpackArrayResult.cs" />
+    <Compile Include="UnpackingResult.cs" />
     <Compile Include="Unpacker.cs" />
     <Compile Include="Unpacker.Direct.cs">
       <AutoGen>True</AutoGen>
