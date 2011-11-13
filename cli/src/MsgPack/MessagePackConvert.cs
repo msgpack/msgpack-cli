@@ -82,7 +82,7 @@ namespace MsgPack
 			return _utf8BobBomStrict.GetString( value, 0, value.Length );
 		}
 
-		private static readonly DateTimeOffset _unixEpocUtc = new DateTimeOffset( 1970, 1, 1, 0, 0, 0, TimeSpan.Zero );
+		private static readonly DateTime _unixEpocUtc = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
 		/// <summary>
 		///		Convert specified <see cref="Int64"/> to <see cref="DateTimeOffset"/>.
@@ -109,7 +109,7 @@ namespace MsgPack
 		/// </returns>
 		public static DateTime ToDateTime( long value )
 		{
-			return ToDateTimeOffset( value ).DateTime;
+			return _unixEpocUtc.AddMilliseconds( value );
 		}
 
 		/// <summary>
@@ -133,7 +133,7 @@ namespace MsgPack
 		/// </returns>
 		public static long FromDateTime( DateTime value )
 		{
-			return ( long )value.ToUniversalTime().Subtract( _unixEpocUtc.DateTime ).TotalMilliseconds;
+			return ( long )value.ToUniversalTime().Subtract( _unixEpocUtc ).TotalMilliseconds;
 		}
 	}
 }
