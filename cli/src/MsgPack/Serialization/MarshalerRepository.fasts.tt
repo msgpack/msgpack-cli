@@ -1,0 +1,123 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+var __typeName = "MarshalerRepository";
+var __types = 
+	new Dictionary<Type, Tuple<String,String>>()
+	{
+		{ typeof( bool ), null },
+		{ typeof( byte ), null },
+		{ typeof( sbyte ), null },
+		{ typeof( short ), null },
+		{ typeof( ushort ), null },
+		{ typeof( int ), null },
+		{ typeof( uint ), null },
+		{ typeof( long ), null },
+		{ typeof( ulong ), null },
+		{ typeof( float ), null },
+		{ typeof( double ), null },
+		{ typeof( byte[] ), Tuple.Create( "PackRaw( value )", "UnpackRaw().ToArray()" ) },
+		{ typeof( char[] ), Tuple.Create( "PackString( value )", "UnpackString().ToCharArray()" ) },
+		{ typeof( string ), Tuple.Create( "PackString( value )", "UnpackString()" ) },
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+
+namespace MsgPack.Serialization
+{
+	// This file generated from <#= __typeName #>.tt T4Template.
+	// Do not modify this file. Edit <#= __typeName #>.tt instead.
+
+	partial class <#= __typeName #> 
+	{
+		private static readonly Dictionary<Type, MethodInfo> _factMarshalers =
+			new Dictionary<Type, MethodInfo>( <#= __types.Count #> )
+			{
+<#
+foreach( var __entry in __types )
+{
+	if( __entry.Value != null )
+	{
+#>
+				{ typeof( <#= __entry.Key.FullName #> ), FromExpression.ToMethod( ( Packer packer, <#= __entry.Key.FullName #> value ) => packer.<#= __entry.Value.Item1 #> ) },
+<#
+	}
+	else
+	{
+#>
+				{ typeof( <#= __entry.Key.FullName #> ), FromExpression.ToMethod( ( Packer packer, <#= __entry.Key.FullName #> value ) => packer.Pack( value ) ) },
+<#
+	}
+}
+#>
+			};
+			
+		private static readonly Dictionary<Type, MethodInfo> _factUnmarshalers =
+			new Dictionary<Type, MethodInfo>( <#= __types.Count #> )
+			{
+<#
+foreach( var __entry in __types )
+{
+	if( __entry.Value != null )
+	{
+#>
+				{ typeof( <#= __entry.Key.FullName #> ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.<#= __entry.Value.Item2 #> ) },
+<#
+	}
+	else
+	{
+#>
+				{ typeof( <#= __entry.Key.FullName #> ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Unpack<#= __entry.Key.Name #>() ) },
+<#
+	}
+}
+#>
+			};
+	}
+}

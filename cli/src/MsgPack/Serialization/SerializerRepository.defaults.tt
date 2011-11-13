@@ -1,0 +1,186 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System" #>
+<#@ assembly Name="System.Core" #>
+<#@ assembly Name="System.Numerics" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Numerics" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Text" #>
+<#
+var __typeName = "SerializerRepository";
+var __types =
+	new[]
+	{
+		typeof( ArraySegment<> ),
+		typeof( DictionaryEntry ),
+		typeof( KeyValuePair<,> ),
+		typeof( Complex ),
+		typeof( StringBuilder ),
+		typeof( Uri ),
+		typeof( Version ),		
+	};
+var __tuples =
+	typeof( Tuple<,> ).Assembly
+	.GetTypes()
+	.Where( type => type.IsGenericType && type.Namespace == typeof( Tuple<,> ).Namespace && type.Name == "Tuple" )
+	.ToArray();
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Numerics;
+using System.Reflection;
+
+using MsgPack.Serialization.DefaultSerializers;
+
+namespace MsgPack.Serialization
+{
+	// This file generated from <#= __typeName #>.tt T4Template.
+	// Do not modify this file. Edit <#= __typeName #>.tt instead.
+
+	partial class <#= __typeName #> 
+	{
+		private static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable()
+		{
+			var dictionary = new Dictionary<RuntimeTypeHandle, object>( <#= __types.Length + __tuples.Length #> );
+<#
+foreach( Type __type in __types )
+{
+	if( __type.IsGenericTypeDefinition )
+	{
+#>
+			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, typeof( <#= __type.FullName.Replace( '`', '_' ).Replace( Type.Delimiter, '_' ) #>MessageSerializer<#= GetCSharpTypeArguments( __type ) #> ) );
+<#
+	}
+	else
+	{
+#>
+			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageSerializer() );
+<#
+	}
+}
+	
+foreach( Type __tuple in __tuples )
+{
+#>
+			dictionary.Add( typeof( <#= ToCSharpTypeToken( __tuple ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __tuple.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageSerializer() );
+<#
+}
+#>
+			return dictionary;
+		}
+	}
+}
+<#+
+private static string ToCSharpTypeToken( Type type )
+{
+	if( !type.IsGenericType )
+	{
+		return type.FullName;
+	}
+	
+	return type.Namespace + Type.Delimiter + type.Name.Remove( type.Name.IndexOf( '`' ) ) + "<" + String.Join( string.Empty, Enumerable.Repeat( ',', type.GetGenericArguments().Length - 1 ) ) + ">";
+}
+
+private static string GetCSharpTypeArguments( Type type )
+{
+	var buffer = new StringBuilder();
+	BuildCSharpGenericArgumentsToken( type, buffer, false );
+	return buffer.ToString();
+}
+
+private static void BuildCSharpGenericArgumentsToken( Type type, StringBuilder buffer, bool containsGenericArguments )
+{
+	if( !type.IsGenericType)
+	{
+		return;
+	}
+	
+	buffer.Append('<');
+	
+	bool isFirst = true;
+	foreach( Type genericParameter in type.GetGenericArguments () )
+	{	
+		if( isFirst )
+		{
+			isFirst = false;
+		}
+		else
+		{
+			buffer.Append( ',' ).Append( ' ' );
+		}
+		
+		if( containsGenericArguments )
+		{
+			if( genericParameter.IsGenericParameter )
+			{
+				buffer.Append( genericParameter.Name );
+			}
+			else
+			{
+				buffer.Append( genericParameter.FullName );
+			}
+		}
+	}
+	
+	buffer.Append( '>' );
+}
+
+private static string ToCSharpToken( Type type )
+{
+	if( !type.IsGenericType )
+	{
+		return type.FullName;
+	}
+	
+	StringBuilder buffer = new StringBuilder( type.FullName.Remove( type.FullName.IndexOf( '`' ) ) );
+	BuildCSharpGenericArgumentsToken( type, buffer, false );
+	
+	return buffer.ToString();
+}
+#>

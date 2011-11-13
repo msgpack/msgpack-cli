@@ -16,47 +16,25 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-
-//    This file is copy of MessagePack for Java.
-
 #endregion -- License Terms --
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Text;
 using NUnit.Framework;
+using System.Diagnostics.Contracts;
 
-namespace MsgPack
+namespace MsgPack.Serialization
 {
-	[TestFixture]
-	public class TestSuite
+	[CLSCompliant( false )]
+	[SetUpFixture]
+	public sealed class _SetUpFixture
 	{
-		private static void FeedFile( Unpacker pac, String path )
+		[SetUp]
+		public void SetupCurrentNamespaceTests()
 		{
-			var input = new FileStream( path, FileMode.Open );
-			byte[] buffer = new byte[ 64 * 1024 ];
-			while ( true )
-			{
-				int count = input.Read( buffer, 0, buffer.Length );
-				if ( count <= 0 )
-				{
-					break;
-				}
-				pac.Feed( buffer );
-			}
-		}
-
-		[Test]
-		public void Run()
-		{
-			Unpacker pac = Unpacker.Create();
-			Unpacker pac_compact = Unpacker.Create();
-
-			FeedFile( pac, "." + Path.DirectorySeparatorChar + "cases.mpac" );
-			FeedFile( pac_compact, "." + Path.DirectorySeparatorChar + "cases_compact.mpac" );
-
-			pac.SequenceEqual( pac_compact, EqualityComparer<MessagePackObject>.Default );
+			Contract.ContractFailed += ( sender, e ) => e.SetUnwind();
 		}
 	}
 }

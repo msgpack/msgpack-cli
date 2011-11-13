@@ -59,6 +59,58 @@ namespace MsgPack
 		/// </summary>
 		public StreamUnpacker() { }
 
+		public bool HasMoreEntries
+		{
+			get
+			{
+				if ( this._collectionState.IsEmpty )
+				{
+					return false;
+				}
+
+				return this.ItemsCount < this._contextValueHeader.ValueOrLength;
+			}
+		}
+
+		public uint ItemsCount
+		{
+			get { return this._collectionState.ItemsCount; }
+		}
+
+		public bool IsInArrayHeader
+		{
+			get
+			{
+				switch ( this._stage )
+				{
+					case Stage.UnpackContextCollection:
+					case Stage.UnpackScalar:
+					{
+						return this._collectionState.ItemsCount == 0 && ( this._contextValueHeader.Type & MessageType.IsArray ) == MessageType.IsArray;
+					}
+				}
+
+				return false;
+			}
+		}
+
+		public bool IsInMapHeader
+		{
+			get
+			{
+				switch ( this._stage )
+				{
+					case Stage.UnpackContextCollection:
+					case Stage.UnpackScalar:
+					{
+						return this._collectionState.ItemsCount == 0 && ( this._contextValueHeader.Type & MessageType.IsMap ) == MessageType.IsMap;
+					}
+				}
+
+				return false;
+			}
+		}
+
 		/// <summary>
 		///		Try unpack object from specified source.
 		/// </summary>
@@ -77,8 +129,9 @@ namespace MsgPack
 		///			This behavior is notified via <see cref="IDisposable.Dispose">IEnumerator&lt;T&gt;.Dispose()</see> method.
 		///		</para>
 		/// </remarks>
-		public MessagePackObject? Unpack( Stream source )
+		public MessagePackObject? Unpack( Stream source, UnpackingMode unpackingMode )
 		{
+#warning UnpackingMode
 			// FIXME:BULK LOAD
 			Contract.Assert( source != null );
 
@@ -275,6 +328,25 @@ namespace MsgPack
 						return collectionItemOrRoot;
 					}
 				}
+
+				switch ( unpackingMode )
+				{
+					case UnpackingMode.PerEntry:
+					case UnpackingMode.CurrentDepthOnly:
+					{
+						switch ( this._stage )
+						{
+							case Stage.UnpackContextCollection:
+							case Stage.UnpackScalar:
+							{
+								return this._contextValueHeader.ValueOrLength;
+							}
+						}
+
+						break;
+					}
+				}
+
 			}
 
 			throw new InvalidMessagePackStreamException( "Unexpectedly end." );
@@ -695,7 +767,7 @@ namespace MsgPack
 			{
 				return this._type + ":" + this._valueOrLength;
 			}
-			
+
 			public static implicit operator MessagePackHeader( MessageType type )
 			{
 				return new MessagePackHeader( type, 0 );
@@ -725,6 +797,18 @@ namespace MsgPack
 			public bool IsEmpty
 			{
 				get { return this._collectionContextStack.Count == 0; }
+			}
+
+
+			/// <summary>
+			///		Gets the unpacked items count.
+			/// </summary>
+			/// <value>
+			///		The unpacked items count.
+			/// </value>
+			public uint ItemsCount
+			{
+				get { return this._collectionContextStack.Peek().Unpacked; }
 			}
 
 			/// <summary>
@@ -830,17 +914,17 @@ namespace MsgPack
 					get { return this._items; }
 				}
 
-				private readonly long _capacity;
+				private readonly uint _capacity;
 
-				private long _unpacked;
+				private uint _unpacked;
 
 #if DEBUG
-				internal long Capacity
+				internal uint Capacity
 				{
 					get { return this._capacity; }
 				}
 
-				internal long Unpacked
+				internal uint Unpacked
 				{
 					get { return this._unpacked; }
 				}

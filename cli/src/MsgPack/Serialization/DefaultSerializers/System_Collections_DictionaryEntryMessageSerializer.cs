@@ -1,0 +1,104 @@
+﻿#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections;
+
+namespace MsgPack.Serialization.DefaultSerializers
+{
+	internal sealed class System_Collections_DictionaryEntryMessageSerializer : MessagePackSerializer<DictionaryEntry>
+	{
+		public System_Collections_DictionaryEntryMessageSerializer() { }
+
+		protected sealed override void PackToCore( Packer packer, DictionaryEntry objectTree )
+		{
+			packer.PackMapHeader( 2 );
+			packer.PackString( "Key" );
+			packer.Pack( EnsureMessagePackObject( objectTree.Key ) );
+			packer.PackString( "Value" );
+			packer.Pack( EnsureMessagePackObject( objectTree.Value ) );
+		}
+
+		private MessagePackObject EnsureMessagePackObject( object obj )
+		{
+			if ( !( obj is MessagePackObject ) )
+			{
+				throw new NotSupportedException( "Only MessagePackObject Key/Value is supported." );
+			}
+
+			return ( MessagePackObject )obj;
+		}
+
+		protected sealed override DictionaryEntry UnpackFromCore( Unpacker unpacker )
+		{
+			object key = null;
+			object value = null;
+			bool isKeyFound = false;
+			bool isValueFound = false;
+			while ( unpacker.MoveToNextEntry() )
+			{
+				if ( !unpacker.Data.HasValue )
+				{
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+
+				switch ( unpacker.Data.Value.AsString() )
+				{
+					case "Key":
+					{
+						if ( !unpacker.MoveToNextEntry() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						isKeyFound = true;
+						key = unpacker.Data.Value;
+						break;
+					}
+					case "Value":
+					{
+						if ( !unpacker.MoveToNextEntry() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						isValueFound = true;
+						value = unpacker.Data.Value;
+						break;
+					}
+				}
+			}
+
+			unpacker.MoveToEndCollection();
+
+			if ( !isKeyFound )
+			{
+				throw SerializationExceptions.NewMissingProperty( "Key" );
+			}
+
+			if ( !isValueFound )
+			{
+				throw SerializationExceptions.NewMissingProperty( "Value" );
+			}
+
+			return new DictionaryEntry( key, value );
+		}
+	}
+}

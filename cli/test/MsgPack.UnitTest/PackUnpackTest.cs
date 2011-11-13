@@ -49,7 +49,7 @@ namespace MsgPack
 				Console.WriteLine();
 			}
 			//return new Unpacker( output.GetBuffer() ).UnpackObject().Value;
-			return new Unpacker( output ).UnpackObject().Value;
+			return Unpacker.Create( output ).UnpackObject().Value;
 		}
 
 		[Test]

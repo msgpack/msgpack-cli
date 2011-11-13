@@ -16,39 +16,18 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-
-//    This file is copy of Message Pack for Java.
-
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.IO;
-using NUnit.Framework;
 
-namespace MsgPack
+namespace MsgPack.Serialization
 {
-	[TestFixture]
-	[Timeout( 1000 )]
-	public class MessageUnpackableTest
+	public interface IVerifiable
 	{
-		[Test]
-		public void TestImage()
-		{
-			Image src = new Image();
-			src.title = "msgpack";
-			src.uri = "http://msgpack.org/";
-			src.width = 2560;
-			src.height = 1600;
-			src.size = 4096000;
-
-			var buffer = new MemoryStream();
-			src.PackToMessage( Packer.Create( buffer ), null );
-
-			Image dst = new Image();
-			buffer.Seek( 0L, SeekOrigin.Begin );
-			dst.UnpackFromMessage( Unpacker.Create( buffer ).UnpackObject().Value );
-
-			Assert.AreEqual( src, dst );
-		}
+		void Assert( Stream stream );
 	}
 }

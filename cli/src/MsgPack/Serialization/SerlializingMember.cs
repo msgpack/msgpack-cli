@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -16,39 +16,26 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
-
-//    This file is copy of Message Pack for Java.
-
 #endregion -- License Terms --
 
 using System;
-using System.IO;
-using NUnit.Framework;
+using System.Reflection;
+using System.Runtime.Serialization;
 
-namespace MsgPack
+namespace MsgPack.Serialization
 {
-	[TestFixture]
-	[Timeout( 1000 )]
-	public class MessageUnpackableTest
+	/// <summary>
+	///		Represents serializing member information.
+	/// </summary>
+	internal struct SerlializingMember
 	{
-		[Test]
-		public void TestImage()
+		public readonly MemberInfo Member;
+		public readonly DataMemberContract Contract;
+
+		public SerlializingMember( MemberInfo member )
 		{
-			Image src = new Image();
-			src.title = "msgpack";
-			src.uri = "http://msgpack.org/";
-			src.width = 2560;
-			src.height = 1600;
-			src.size = 4096000;
-
-			var buffer = new MemoryStream();
-			src.PackToMessage( Packer.Create( buffer ), null );
-
-			Image dst = new Image();
-			buffer.Seek( 0L, SeekOrigin.Begin );
-			dst.UnpackFromMessage( Unpacker.Create( buffer ).UnpackObject().Value );
-
-			Assert.AreEqual( src, dst );
+			this.Member = member;
+			this.Contract = new DataMemberContract( member, Attribute.GetCustomAttribute( member, typeof( DataMemberAttribute ) ) as DataMemberAttribute );
 		}
 	}
 }

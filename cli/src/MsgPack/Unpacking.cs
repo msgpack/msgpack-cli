@@ -133,7 +133,7 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			return new StreamUnpacker().Unpack( source );
+			return new StreamUnpacker().Unpack( source, UnpackingMode.EntireTree );
 		}
 
 		/// <summary>
@@ -159,7 +159,7 @@ namespace MsgPack
 			Contract.EndContractBlock();
 
 			// TODO: Use more efficient custom stream?
-			return new StreamUnpacker().Unpack( new MemoryStream( source.ToArray() ) );
+			return new StreamUnpacker().Unpack( new MemoryStream( source.ToArray() ), UnpackingMode.EntireTree );
 		}
 	}
 }

@@ -85,9 +85,28 @@ namespace MsgPack
 		}
 
 		/// <summary>
+		///		 Creates the new <see cref="Unpacker"/> with internal buffer which has default size.
+		/// </summary>
+		/// <returns><see cref="Unpacker"/> instance.</returns>
+		public static Unpacker Create()
+		{
+			return new Unpacker();
+		}
+
+		/// <summary>
+		///		 Creates the new <see cref="Unpacker"/> from specified stream.
+		/// </summary>
+		/// <param name="stream">The stream to be unpacked.</param>
+		/// <returns><see cref="Unpacker"/> instance.</returns>
+		public static Unpacker Create( Stream stream )
+		{
+			return new Unpacker( stream );
+		}
+
+		/// <summary>
 		///		Initialize new instance with default sized on memory buffer.
 		/// </summary>
-		public Unpacker() : this( new MemoryStream( DefaultBufferSize ), true ) { }
+		private Unpacker() : this( new MemoryStream( DefaultBufferSize ), true ) { }
 
 		/// <summary>
 		///		Initialize new instance using specified <see cref="Stream"/> as source.
@@ -95,7 +114,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="source">Source <see cref="Stream"/>.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public Unpacker( Stream source ) : this( source, true ) { }
+		private Unpacker( Stream source ) : this( source, true ) { }
 
 		/// <summary>
 		///		Initialize new instance using specified <see cref="Stream"/> as source.
@@ -103,7 +122,7 @@ namespace MsgPack
 		/// <param name="source">Source <see cref="Stream"/>.</param>
 		/// <param name="ownsStream">If you want to dispose stream when this instance is disposed, then true.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public Unpacker( Stream source, bool ownsStream )
+		private Unpacker( Stream source, bool ownsStream )
 		{
 			if ( source == null )
 			{
@@ -120,7 +139,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="initialData">Source <see cref="Byte"/>[].</param>
 		/// <exception cref="ArgumentNullException"><paramref name="initialData"/> is null.</exception>
-		public Unpacker( byte[] initialData ) : this( initialData, 0, initialData == null ? 0 : initialData.Length ) { }
+		private Unpacker( byte[] initialData ) : this( initialData, 0, initialData == null ? 0 : initialData.Length ) { }
 
 		/// <summary>
 		///		Initialize new instance using specified <see cref="Byte"/>[] as source.
@@ -129,7 +148,7 @@ namespace MsgPack
 		/// <param name="offset">Offset of <paramref name="initialData"/> to copy.</param>
 		/// <param name="count">Count of <paramref name="initialData"/> to copy.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="initialData"/> is null.</exception>
-		public Unpacker( byte[] initialData, int offset, int count )
+		private Unpacker( byte[] initialData, int offset, int count )
 		{
 			Validation.ValidateBuffer( initialData, offset, count, "initialData", "count", true );
 
@@ -143,7 +162,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="source">Source <see cref="IEnumerable&lt;T&gt;">IEnumerable</see>&lt;<see cref="Byte"/>&gt;.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public Unpacker( IEnumerable<byte> source )
+		private Unpacker( IEnumerable<byte> source )
 		{
 			if ( source == null )
 			{
@@ -204,21 +223,119 @@ namespace MsgPack
 		}
 
 		/// <summary>
+		///		Gets a value indicating whether this instance is positioned to array header.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is positioned to array header; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsArrayHeader
+		{
+			get { return this._unpacker.IsInArrayHeader; }
+		}
+
+		/// <summary>
+		///		Gets a value indicating whether this instance is positioned to map header.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is positioned to map header; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsMapHeader
+		{
+			get { return this._unpacker.IsInMapHeader; }
+		}
+
+		/// <summary>
+		///		Gets the items count for current array or map.
+		/// </summary>
+		public long ItemsCount
+		{
+			get
+			{
+				if ( !this.IsArrayHeader && !this.IsMapHeader )
+				{
+					throw new InvalidOperationException( "This instance is not positioned to Array nor Map header." );
+				}
+
+				return this._unpacker.ItemsCount;
+			}
+		}
+
+		/// <summary>
+		///		Move position to next Message Pack entry.
+		/// </summary>
+		/// <returns>
+		///		<c>true</c>, if position is sucessfully move to next entry;
+		///		<c>false</c>, if position reaches to tail of the current collection.
+		/// </returns>
+		/// <remarks>
+		///		For example, Map is consisted by following entries:
+		///		<list type="bullet">
+		///			<item>Single 'header' entry, which contains Type(that is Map) and its Count.</item>
+		///			<item>Entries for each key.</item>
+		///			<item>Entries for each value.</item>
+		///		</list>
+		///		So, <c>{ "Key0":"val0", "Key1":"val0"}</c> has 5 entries as <c>[Map(2), "key0", "val0", "key1", "val1" ]</c>.
+		/// </remarks>
+		public bool MoveToNextEntry()
+		{
+			return this.Read( UnpackingMode.CurrentDepthOnly );
+		}
+
+		/// <summary>
+		///		Move position to end of this collection.
+		/// </summary>
+		public void MoveToEndCollection()
+		{
+			// FIXME: Skipping to avoid DOS
+			while ( this.MoveToNextEntry() )
+			{
+				// NOP
+			}
+		}
+
+		/// <summary>
+		///		Read next Message Pack entry.
+		/// </summary>
+		/// <returns>
+		///		<c>true</c>, if position is sucessfully move to next entry;
+		///		<c>false</c>, if position reaches the tail of the Message Pack stream.
+		/// </returns>
+		public bool Read()
+		{
+			return this.Read( UnpackingMode.PerEntry );
+		}
+
+		private bool Read( UnpackingMode unpackingMode )
+		{
+			while ( !this.IsInTailUltimately() )
+			{
+				this._data = this._unpacker.Unpack( this._currentSource.Stream, unpackingMode );
+				if ( this._data != null )
+				{
+					return true;
+				}
+				else
+				{
+					this._mayInTail = true;
+				}
+			}
+
+			return false;
+		}
+
+		// FIXME: Quota
+
+		/// <summary>
 		///		Get <see cref="IEnumerator&lt;T&gt;"/> to enumerate <see cref="MessagePackObject"/> from source stream.
 		/// </summary>
 		/// <returns><see cref="IEnumerator&lt;T&gt;"/> to enumerate <see cref="MessagePackObject"/> from source stream.</returns>
 		public IEnumerator<MessagePackObject> GetEnumerator()
 		{
-			while ( !this.IsInTailUltimately() )
+			while ( this.Read( UnpackingMode.EntireTree ) )
 			{
-				this._data = this._unpacker.Unpack( this._currentSource.Stream );
 				if ( this._data != null )
 				{
 					yield return this._data.Value;
-				}
-				else
-				{
-					this._mayInTail = true;
 				}
 			}
 		}

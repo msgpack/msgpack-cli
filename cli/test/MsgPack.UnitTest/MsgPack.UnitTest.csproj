@@ -76,6 +76,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -105,6 +106,13 @@
       <DependentUpon>PackUnpackTest.Scalar.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\AutoMessagePackSerializerTest.cs" />
+    <Compile Include="Serialization\ComplexType.cs" />
+    <Compile Include="Serialization\FromExpressionTest.cs" />
+    <Compile Include="Serialization\IVerifiable.cs" />
+    <Compile Include="Serialization\_SetUpFixture.cs" />
+    <Compile Include="Serialization\ComplexTypeWithNonSerialized.cs" />
+    <Compile Include="Serialization\ComplexTypeWithDataContract.cs" />
     <Compile Include="_SetUpFixture.cs" />
     <Compile Include="TestRandom.cs">
       <AutoGen>True</AutoGen>
