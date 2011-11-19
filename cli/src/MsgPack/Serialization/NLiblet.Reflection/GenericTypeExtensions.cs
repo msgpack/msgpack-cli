@@ -43,9 +43,9 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static bool Inherits( this Type source, Type genericType )
 		{
-			Contract.Requires<ArgumentNullException>( source != null );
-			Contract.Requires<ArgumentNullException>( genericType != null );
-			Contract.Requires<ArgumentNullException>( !genericType.IsInterface );
+			Contract.Assert( source != null );
+			Contract.Assert( genericType != null );
+			Contract.Assert( !genericType.IsInterface );
 
 			return FindGenericClass( source, genericType, false ) != null;
 		}
@@ -63,10 +63,10 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static bool ElementInherits( this Type source, Type genericType )
 		{
-			Contract.Requires<ArgumentNullException>( source != null );
-			Contract.Requires<InvalidOperationException>( source.IsArray );
-			Contract.Requires<ArgumentNullException>( genericType != null );
-			Contract.Requires<ArgumentNullException>( !genericType.IsInterface );
+			Contract.Assert( source != null );
+			Contract.Assert( source.IsArray );
+			Contract.Assert( genericType != null );
+			Contract.Assert( !genericType.IsInterface );
 
 			return FindGenericClass( source.GetElementType(), genericType, false ) != null;
 		}
@@ -84,9 +84,9 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static bool Implements( this Type source, Type genericType )
 		{
-			Contract.Requires<ArgumentNullException>( source != null );
-			Contract.Requires<ArgumentNullException>( genericType != null );
-			Contract.Requires<ArgumentException>( genericType.IsInterface );
+			Contract.Assert( source != null );
+			Contract.Assert( genericType != null );
+			Contract.Assert( genericType.IsInterface );
 
 			return EnumerateGenericIntefaces( source, genericType, false ).Any();
 		}
@@ -104,10 +104,10 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static bool ElementImplements( this Type source, Type genericType )
 		{
-			Contract.Requires<ArgumentNullException>( source != null );
-			Contract.Requires<InvalidOperationException>( source.IsArray );
-			Contract.Requires<ArgumentNullException>( genericType != null );
-			Contract.Requires<ArgumentException>( genericType.IsInterface );
+			Contract.Assert( source != null );
+			Contract.Assert( source.IsArray );
+			Contract.Assert( genericType != null );
+			Contract.Assert( genericType.IsInterface );
 
 			return EnumerateGenericIntefaces( source.GetElementType(), genericType, false ).Any();
 		}
@@ -129,9 +129,9 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static Type[] FindGenericTypes( this Type source, Type genericType )
 		{
-			Contract.Requires<ArgumentNullException>( source != null );
-			Contract.Requires<ArgumentNullException>( genericType != null );
-			Contract.Requires<ArgumentException>( genericType.IsGenericType );
+			Contract.Assert( source != null );
+			Contract.Assert( genericType != null );
+			Contract.Assert( genericType.IsGenericType );
 			Contract.Ensures( Contract.Result<Type[]>() != null );
 
 			if ( genericType.IsInterface )
@@ -161,10 +161,10 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static Type[] FindElementGenericTypes( this Type source, Type genericType )
 		{
-			Contract.Requires<ArgumentNullException>( source != null );
-			Contract.Requires<InvalidOperationException>( source.IsArray );
-			Contract.Requires<ArgumentNullException>( genericType != null );
-			Contract.Requires<ArgumentException>( genericType.IsGenericType );
+			Contract.Assert( source != null );
+			Contract.Assert( source.IsArray );
+			Contract.Assert( genericType != null );
+			Contract.Assert( genericType.IsGenericType );
 			Contract.Ensures( Contract.Result<Type[]>() != null );
 
 			if ( genericType.IsInterface )
@@ -234,9 +234,9 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static bool IsClosedTypeOf( this Type source, Type genericTypeDefinition )
 		{
-			Contract.Requires<ArgumentNullException>( source != null );
-			Contract.Requires<ArgumentNullException>( genericTypeDefinition != null );
-			Contract.Requires<ArgumentException>( genericTypeDefinition.IsGenericTypeDefinition );
+			Contract.Assert( source != null );
+			Contract.Assert( genericTypeDefinition != null );
+			Contract.Assert( genericTypeDefinition.IsGenericTypeDefinition );
 
 			if ( !source.IsGenericType || source.IsGenericTypeDefinition )
 			{
@@ -256,7 +256,7 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static string GetName( this Type source )
 		{
-			Contract.Requires<ArgumentNullException>( source != null );
+			Contract.Assert( source != null );
 			if ( !source.IsGenericType )
 			{
 				return source.Name;
@@ -280,7 +280,7 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static string GetFullName( this Type source )
 		{
-			Contract.Requires<ArgumentNullException>( source != null );
+			Contract.Assert( source != null );
 			if ( !source.IsGenericType )
 			{
 				return source.FullName;

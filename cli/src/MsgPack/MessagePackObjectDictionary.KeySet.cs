@@ -72,7 +72,7 @@ namespace MsgPack
 
 			internal KeySet( MessagePackObjectDictionary dictionary )
 			{
-				Contract.Requires( dictionary != null );
+				Contract.Assert( dictionary != null );
 
 				this._dictionary = dictionary;
 			}

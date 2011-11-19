@@ -178,7 +178,7 @@ namespace NLiblet.Reflection
 		public TracingILGenerator( MethodBuilder methodBuilder, TextWriter traceWriter )
 			: this( methodBuilder != null ? methodBuilder.GetILGenerator() : null, false, traceWriter )
 		{
-			Contract.Requires( methodBuilder != null );
+			Contract.Assert( methodBuilder != null );
 		}
 
 		/// <summary>
@@ -189,7 +189,7 @@ namespace NLiblet.Reflection
 		public TracingILGenerator( DynamicMethod dynamicMethod, TextWriter traceWriter )
 			: this( dynamicMethod != null ? dynamicMethod.GetILGenerator() : null, true, traceWriter )
 		{
-			Contract.Requires( dynamicMethod != null );
+			Contract.Assert( dynamicMethod != null );
 		}
 
 		private TracingILGenerator( ILGenerator underlying, bool isInDynamicMethod, TextWriter traceWriter )
@@ -215,7 +215,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitRet()
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ret );
@@ -235,8 +235,8 @@ namespace NLiblet.Reflection
 		/// <returns><see cref="LocalBuilder"/> to refer declared local variable.</returns>
 		public LocalBuilder DeclareLocal( Type localType )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( localType != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( localType != null );
 			Contract.Ensures( Contract.Result<LocalBuilder>() != null );
 
 			return this.DeclareLocalCore( localType, null );
@@ -250,8 +250,8 @@ namespace NLiblet.Reflection
 		/// <returns><see cref="LocalBuilder"/> to refer declared local variable.</returns>
 		public LocalBuilder DeclareLocal( Type localType, bool pinned )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( localType != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( localType != null );
 			Contract.Ensures( Contract.Result<LocalBuilder>() != null );
 
 			return this.DeclareLocalCore( localType, null, pinned );
@@ -266,9 +266,9 @@ namespace NLiblet.Reflection
 		/// <returns><see cref="LocalBuilder"/> to refer declared local variable.</returns>
 		public LocalBuilder DeclareLocal( Type localType, string name )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( localType != null );
-			Contract.Requires( name != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( localType != null );
+			Contract.Assert( name != null );
 			Contract.Ensures( Contract.Result<LocalBuilder>() != null );
 
 			return this.DeclareLocalCore( localType, name );
@@ -284,9 +284,9 @@ namespace NLiblet.Reflection
 		/// <returns><see cref="LocalBuilder"/> to refer declared local variable.</returns>
 		public LocalBuilder DeclareLocal( Type localType, string name, bool pinned )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( localType != null );
-			Contract.Requires( name != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( localType != null );
+			Contract.Assert( name != null );
 			Contract.Ensures( Contract.Result<LocalBuilder>() != null );
 
 			return this.DeclareLocalCore( localType, name, pinned );
@@ -402,12 +402,12 @@ namespace NLiblet.Reflection
 			params Tuple<Type, Action<TracingILGenerator, Label, Type>>[] remainingCatchBlockEmitters
 		)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( tryBlockEmitter != null );
-			Contract.Requires( firstCatchBlock != null );
-			Contract.Requires( firstCatchBlock.Item1 != null && firstCatchBlock.Item2 != null );
-			Contract.Requires( remainingCatchBlockEmitters != null );
-			Contract.Requires( Contract.ForAll( remainingCatchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( tryBlockEmitter != null );
+			Contract.Assert( firstCatchBlock != null );
+			Contract.Assert( firstCatchBlock.Item1 != null && firstCatchBlock.Item2 != null );
+			Contract.Assert( remainingCatchBlockEmitters != null );
+			Contract.Assert( Contract.ForAll( remainingCatchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
 
 			this.EmitExceptionBlockCore( tryBlockEmitter, firstCatchBlock, remainingCatchBlockEmitters, null );
 		}
@@ -442,11 +442,11 @@ namespace NLiblet.Reflection
 			params Tuple<Type, Action<TracingILGenerator, Label, Type>>[] catchBlockEmitters
 		)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( tryBlockEmitter != null );
-			Contract.Requires( finallyBlockEmitter != null );
-			Contract.Requires( catchBlockEmitters != null );
-			Contract.Requires( Contract.ForAll( catchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( tryBlockEmitter != null );
+			Contract.Assert( finallyBlockEmitter != null );
+			Contract.Assert( catchBlockEmitters != null );
+			Contract.Assert( Contract.ForAll( catchBlockEmitters, item => item != null && item.Item1 != null && item.Item2 != null ) );
 
 			this.EmitExceptionBlockCore( tryBlockEmitter, null, catchBlockEmitters, finallyBlockEmitter );
 		}
@@ -483,7 +483,7 @@ namespace NLiblet.Reflection
 		/// <returns><see cref="Label"/> will to be end of begun exception block.</returns>
 		public Label BeginExceptionBlock()
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceWriteLine( ".try" );
@@ -501,9 +501,9 @@ namespace NLiblet.Reflection
 		/// <param name="exceptionType"><see cref="Type"/> for catch.</param>
 		public void BeginCatchBlock( Type exceptionType )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( exceptionType != null );
-			Contract.Requires( this.IsInExceptionBlock );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( exceptionType != null );
+			Contract.Assert( this.IsInExceptionBlock );
 
 			this.Unindent();
 			this.TraceStart();
@@ -520,8 +520,8 @@ namespace NLiblet.Reflection
 		/// </summary>
 		public void BeginExceptFilterBlock()
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( this.IsInExceptionBlock );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( this.IsInExceptionBlock );
 
 			this.Unindent();
 			this.TraceStart();
@@ -536,8 +536,8 @@ namespace NLiblet.Reflection
 		/// </summary>
 		public void BeginFaultBlock()
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( this.IsInExceptionBlock );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( this.IsInExceptionBlock );
 
 			this.Unindent();
 			this.TraceStart();
@@ -552,8 +552,8 @@ namespace NLiblet.Reflection
 		/// </summary>
 		public void BeginFinallyBlock()
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( this.IsInExceptionBlock );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( this.IsInExceptionBlock );
 
 			this.Unindent();
 			this.TraceStart();
@@ -567,8 +567,8 @@ namespace NLiblet.Reflection
 		/// </summary>
 		public void EndExceptionBlock()
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( this.IsInExceptionBlock );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( this.IsInExceptionBlock );
 
 			this.Unindent();
 			this._underlying.EndExceptionBlock();
@@ -585,7 +585,7 @@ namespace NLiblet.Reflection
 		/// <returns><see cref="Label"/> which will be target of branch instructions.</returns>
 		public Label DefineLabel()
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			return this.DefineLabel( "LABEL_" + this._labels.Count.ToString( CultureInfo.InvariantCulture ) );
 		}
@@ -597,8 +597,8 @@ namespace NLiblet.Reflection
 		/// <returns><see cref="Label"/> which will be target of branch instructions.</returns>
 		public Label DefineLabel( string name )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( name != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( name != null );
 
 			var result = this._underlying.DefineLabel();
 			this._labels.Add( result, name );
@@ -628,10 +628,10 @@ namespace NLiblet.Reflection
 		/// <param name="parameterTypes">Parameter <see cref="Type"/>s of the function.</param>
 		public void EmitCalli( CallingConvention unmanagedCallingConvention, Type returnType, Type[] parameterTypes )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( returnType != null );
-			Contract.Requires( parameterTypes != null );
-			Contract.Requires( Contract.ForAll( parameterTypes, item => item != null ) );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( returnType != null );
+			Contract.Assert( parameterTypes != null );
+			Contract.Assert( Contract.ForAll( parameterTypes, item => item != null ) );
 
 			this.TraceStart();
 			this.TraceWrite( "calli " );
@@ -648,17 +648,17 @@ namespace NLiblet.Reflection
 		/// <param name="optionalParameterTypes">Optional varargs parameter <see cref="Type"/>s of the method.</param>
 		public void EmitCalli( CallingConventions managedCallingConventions, Type returnType, Type[] requiredParameterTypes, Type[] optionalParameterTypes )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( returnType != null );
-			Contract.Requires( requiredParameterTypes != null );
-			Contract.Requires( Contract.ForAll( requiredParameterTypes, item => item != null ) );
-			Contract.Requires( optionalParameterTypes != null );
-			Contract.Requires(
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( returnType != null );
+			Contract.Assert( requiredParameterTypes != null );
+			Contract.Assert( Contract.ForAll( requiredParameterTypes, item => item != null ) );
+			Contract.Assert( optionalParameterTypes != null );
+			Contract.Assert(
 				optionalParameterTypes == null
 				|| optionalParameterTypes.Length == 0
 				|| ( managedCallingConventions & CallingConventions.VarArgs ) == CallingConventions.VarArgs
 			);
-			Contract.Requires( optionalParameterTypes == null || Contract.ForAll( optionalParameterTypes, item => item != null ) );
+			Contract.Assert( optionalParameterTypes == null || Contract.ForAll( optionalParameterTypes, item => item != null ) );
 
 			this.TraceStart();
 			this.TraceWrite( "calli " );
@@ -677,9 +677,9 @@ namespace NLiblet.Reflection
 		/// <param name="target">Target <see cref="MethodInfo"/> which must be virtual method.</param>
 		public void EmitConstrainedCallvirt( Type constrainedTo, MethodInfo target )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( constrainedTo != null );
-			Contract.Requires( target != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( constrainedTo != null );
+			Contract.Assert( target != null );
 
 			this.TraceStart();
 			this.TraceWrite( "constraind." );
@@ -700,8 +700,8 @@ namespace NLiblet.Reflection
 		/// <param name="elementType"><see cref="Type"/> of array element.</param>
 		public void EmitReadOnlyLdelema( Type elementType )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( elementType != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( elementType != null );
 
 			this.TraceStart();
 			this.TraceWriteLine( "readonly." );
@@ -723,8 +723,8 @@ namespace NLiblet.Reflection
 		///	</remarks>
 		public void EmitTailCall( MethodInfo target )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( target != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( target != null );
 
 			this.TraceStart();
 			this.TraceWriteLine( "tail." );
@@ -744,8 +744,8 @@ namespace NLiblet.Reflection
 		///	</remarks>
 		public void EmitTailCallVirt( MethodInfo target )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( target != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( target != null );
 
 			this.TraceStart();
 			this.TraceWriteLine( "tail." );
@@ -767,10 +767,10 @@ namespace NLiblet.Reflection
 		///	</remarks>
 		public void EmitTailCalli( CallingConvention unmanagedCallingConvention, Type returnType, Type[] parameterTypes )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( returnType != null );
-			Contract.Requires( parameterTypes != null );
-			Contract.Requires( Contract.ForAll( parameterTypes, item => item != null ) );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( returnType != null );
+			Contract.Assert( parameterTypes != null );
+			Contract.Assert( Contract.ForAll( parameterTypes, item => item != null ) );
 
 			this.TraceStart();
 			this.TraceWriteLine( "tail." );
@@ -793,17 +793,17 @@ namespace NLiblet.Reflection
 		///	</remarks>
 		public void EmitTailCalli( CallingConventions managedCallingConventions, Type returnType, Type[] requiredParameterTypes, Type[] optionalParameterTypes )
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( returnType != null );
-			Contract.Requires( requiredParameterTypes != null );
-			Contract.Requires( Contract.ForAll( requiredParameterTypes, item => item != null ) );
-			Contract.Requires( optionalParameterTypes != null );
-			Contract.Requires(
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( returnType != null );
+			Contract.Assert( requiredParameterTypes != null );
+			Contract.Assert( Contract.ForAll( requiredParameterTypes, item => item != null ) );
+			Contract.Assert( optionalParameterTypes != null );
+			Contract.Assert(
 				optionalParameterTypes == null
 				|| optionalParameterTypes.Length == 0
 				|| ( managedCallingConventions & CallingConventions.VarArgs ) == CallingConventions.VarArgs
 			);
-			Contract.Requires( optionalParameterTypes == null || Contract.ForAll( optionalParameterTypes, item => item != null ) );
+			Contract.Assert( optionalParameterTypes == null || Contract.ForAll( optionalParameterTypes, item => item != null ) );
 
 			this.TraceStart();
 			this.TraceWriteLine( "tail." );
@@ -824,7 +824,7 @@ namespace NLiblet.Reflection
 		/// <param name="alignment">Alignment.</param>
 		public void EmitUnaligned( byte alignment )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceWrite( "unaligned." );
@@ -844,7 +844,7 @@ namespace NLiblet.Reflection
 		/// <param name="value">The string.</param>
 		public void TraceWrite( string value )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 			Contract.Assert( this._trace != null );
 
 			this._trace.Write( value );
@@ -857,7 +857,7 @@ namespace NLiblet.Reflection
 		/// <param name="arg0">Format argument.</param>
 		public void TraceWrite( string format, object arg0 )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 			Contract.Assert( this._trace != null );
 
 			this._trace.Write( format, arg0 );
@@ -870,7 +870,7 @@ namespace NLiblet.Reflection
 		/// <param name="args">Format arguments.</param>
 		public void TraceWrite( string format, params object[] args )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 			Contract.Assert( this._trace != null );
 
 			this._trace.Write( format, args );
@@ -881,7 +881,7 @@ namespace NLiblet.Reflection
 		/// </summary>
 		public void TraceWriteLine()
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 			Contract.Assert( this._trace != null );
 
 			this._trace.WriteLine();
@@ -893,7 +893,7 @@ namespace NLiblet.Reflection
 		/// <param name="value">The string.</param>
 		public void TraceWriteLine( string value )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 			Contract.Assert( this._trace != null );
 
 			this._trace.WriteLine( value );
@@ -906,7 +906,7 @@ namespace NLiblet.Reflection
 		/// <param name="arg0">Format argument.</param>
 		public void TraceWriteLine( string format, object arg0 )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 			Contract.Assert( this._trace != null );
 
 			this._trace.WriteLine( format, arg0 );
@@ -919,7 +919,7 @@ namespace NLiblet.Reflection
 		/// <param name="args">Format arguments.</param>
 		public void TraceWriteLine( string format, params object[] args )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 			Contract.Assert( this._trace != null );
 
 			this._trace.WriteLine( format, args );

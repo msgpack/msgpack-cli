@@ -1005,7 +1005,7 @@ namespace MsgPack
 
 		private void PrivatePackArrayHeaderCore( int count )
 		{
-			Contract.Requires( 0 <= count );
+			Contract.Assert( 0 <= count );
 			if ( count < 16 )
 			{
 				this.WriteByte( unchecked( ( byte )( MessagePackCode.FixedArray | count ) ) );
@@ -1061,7 +1061,7 @@ namespace MsgPack
 
 		private void PrivatePackMapHeaderCore( int count )
 		{
-			Contract.Requires( 0 <= count );
+			Contract.Assert( 0 <= count );
 
 			if ( count < 16 )
 			{
@@ -1121,7 +1121,7 @@ namespace MsgPack
 
 		private void PrivatePackRawHeaderCore( int length )
 		{
-			Contract.Requires( 0 <= length );
+			Contract.Assert( 0 <= length );
 
 			if ( length < 32 )
 			{
@@ -1398,7 +1398,7 @@ namespace MsgPack
 
 		private void PrivatePackString( IEnumerable<char> value, Encoding encoding )
 		{
-			Contract.Requires( encoding != null );
+			Contract.Assert( encoding != null );
 
 			if ( value == null )
 			{
@@ -1411,8 +1411,8 @@ namespace MsgPack
 
 		private void PrivatePackStringCore( IEnumerable<char> value, Encoding encoding )
 		{
-			Contract.Requires( value != null );
-			Contract.Requires( encoding != null );
+			Contract.Assert( value != null );
+			Contract.Assert( encoding != null );
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value.ToArray() );
@@ -1441,7 +1441,7 @@ namespace MsgPack
 
 		private void PrivatePackString( string value, Encoding encoding )
 		{
-			Contract.Requires( encoding != null );
+			Contract.Assert( encoding != null );
 
 			if ( value == null )
 			{
@@ -1454,8 +1454,8 @@ namespace MsgPack
 
 		private void PrivatePackStringCore( string value, Encoding encoding )
 		{
-			Contract.Requires( value != null );
-			Contract.Requires( encoding != null );
+			Contract.Assert( value != null );
+			Contract.Assert( encoding != null );
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value );
@@ -1537,9 +1537,9 @@ namespace MsgPack
 
 		private void PrivatePackArrayCore<TItem>( IEnumerable<TItem> value, int? count, Action<IEnumerable<TItem>, PackingOptions> packObjects, PackingOptions options )
 		{
-			Contract.Requires( value != null );
-			Contract.Requires( packObjects != null );
-			Contract.Requires( 0 <= count.GetValueOrDefault() );
+			Contract.Assert( value != null );
+			Contract.Assert( packObjects != null );
+			Contract.Assert( 0 <= count.GetValueOrDefault() );
 
 			if ( count != null )
 			{

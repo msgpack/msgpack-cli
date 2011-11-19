@@ -44,7 +44,7 @@ namespace NLiblet.Reflection
 		/// </returns>
 		public static bool IsAssignableTo( this Type source, Type target )
 		{
-			Contract.Requires( source != null );
+			Contract.Assert( source != null );
 
 			if ( target == null )
 			{
@@ -68,7 +68,7 @@ namespace NLiblet.Reflection
 		[Pure]
 		public static bool Equals( this Type source, Type other )
 		{
-			Contract.Requires( source != null );
+			Contract.Assert( source != null );
 
 			if ( Object.ReferenceEquals( other, null ) )
 			{

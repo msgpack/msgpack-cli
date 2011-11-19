@@ -161,7 +161,7 @@ namespace MsgPack.Serialization
 
 		public bool Register<T>( object entry )
 		{
-			Contract.Requires( entry != null );
+			Contract.Assert( entry != null );
 
 			if ( this.IsFrozen )
 			{
@@ -173,8 +173,8 @@ namespace MsgPack.Serialization
 
 		public bool RegisterType( Type type )
 		{
-			Contract.Requires( type != null );
-			Contract.Requires( type.IsGenericTypeDefinition );
+			Contract.Assert( type != null );
+			Contract.Assert( type.IsGenericTypeDefinition );
 
 			if ( this.IsFrozen )
 			{

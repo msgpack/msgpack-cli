@@ -34,7 +34,7 @@ namespace MsgPack
 		public static bool IsProperSubsetOf<T>( ISet<T> set, IEnumerable<T> other )
 		{
 			#region CONTRACT
-			Contract.Requires( set != null );
+			Contract.Assert( set != null );
 
 			if ( other == null )
 			{
@@ -69,7 +69,7 @@ namespace MsgPack
 		public static bool IsSubsetOf<T>( ISet<T> set, IEnumerable<T> other )
 		{
 			#region CONTRACT
-			Contract.Requires( set != null );
+			Contract.Assert( set != null );
 
 			if ( other == null )
 			{
@@ -125,7 +125,7 @@ namespace MsgPack
 		public static bool IsProperSupersetOf<T>( ISet<T> set, IEnumerable<T> other )
 		{
 			#region CONTRACT
-			Contract.Requires( set != null );
+			Contract.Assert( set != null );
 
 			if ( other == null )
 			{
@@ -155,7 +155,7 @@ namespace MsgPack
 		public static bool IsSupersetOf<T>( ISet<T> set, IEnumerable<T> other )
 		{
 			#region CONTRACT
-			Contract.Requires( set != null );
+			Contract.Assert( set != null );
 
 			if ( other == null )
 			{
@@ -212,7 +212,7 @@ namespace MsgPack
 		public static bool Overlaps<T>( ISet<T> set, IEnumerable<T> other )
 		{
 			#region CONTRACT
-			Contract.Requires( set != null );
+			Contract.Assert( set != null );
 
 			if ( other == null )
 			{
@@ -232,7 +232,7 @@ namespace MsgPack
 		public static bool SetEquals<T>( ISet<T> set, IEnumerable<T> other )
 		{
 			#region CONTRACT
-			Contract.Requires( set != null );
+			Contract.Assert( set != null );
 
 			if ( other == null )
 			{

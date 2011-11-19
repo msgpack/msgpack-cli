@@ -38,7 +38,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitNop( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Nop );
@@ -52,7 +52,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitBreak( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Break );
@@ -67,7 +67,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdarg_0( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldarg_0 );
@@ -82,7 +82,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdarg_1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldarg_1 );
@@ -97,7 +97,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdarg_2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldarg_2 );
@@ -112,7 +112,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdarg_3( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldarg_3 );
@@ -127,7 +127,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdloc_0( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldloc_0 );
@@ -142,7 +142,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdloc_1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldloc_1 );
@@ -157,7 +157,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdloc_2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldloc_2 );
@@ -172,7 +172,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdloc_3( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldloc_3 );
@@ -187,7 +187,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStloc_0( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stloc_0 );
@@ -202,7 +202,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStloc_1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stloc_1 );
@@ -217,7 +217,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStloc_2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stloc_2 );
@@ -232,7 +232,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStloc_3( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stloc_3 );
@@ -248,7 +248,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdarg_S( System.Byte value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldarg_S );
@@ -266,7 +266,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdarga_S( System.Byte value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldarga_S );
@@ -284,7 +284,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStarg_S( System.Byte value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Starg_S );
@@ -302,7 +302,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdloc_S( System.Byte value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldloc_S );
@@ -320,7 +320,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdloca_S( System.Byte value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldloca_S );
@@ -338,7 +338,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStloc_S( System.Byte value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stloc_S );
@@ -354,7 +354,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitLdnull( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldnull );
@@ -369,7 +369,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_M1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_M1 );
@@ -384,7 +384,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_0( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_0 );
@@ -399,7 +399,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_1 );
@@ -414,7 +414,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_2 );
@@ -429,7 +429,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_3( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_3 );
@@ -444,7 +444,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_4 );
@@ -459,7 +459,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_5( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_5 );
@@ -474,7 +474,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_6( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_6 );
@@ -489,7 +489,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_7( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_7 );
@@ -504,7 +504,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_8 );
@@ -520,7 +520,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4_S( System.Byte value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4_S );
@@ -538,7 +538,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I4( System.Int32 value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I4 );
@@ -556,7 +556,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_I8( System.Int64 value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_I8 );
@@ -574,7 +574,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_R4( System.Byte value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_R4 );
@@ -592,7 +592,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdc_R8( System.Double value)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldc_R8 );
@@ -608,7 +608,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitDup( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Dup );
@@ -622,7 +622,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitPop( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Pop );
@@ -637,8 +637,8 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.MethodInfo"/> as target.</param>
 		public void EmitJmp( System.Reflection.MethodInfo target)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( target != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( target != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Jmp );
@@ -655,8 +655,8 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.MethodInfo"/> as target.</param>
 		public void EmitCall( System.Reflection.MethodInfo target)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( target != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( target != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Call );
@@ -675,7 +675,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Br", Justification = "It is IL suffix." )]
 		public void EmitBr_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Br_S );
@@ -693,7 +693,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitBrfalse_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Brfalse_S );
@@ -711,7 +711,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitBrtrue_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Brtrue_S );
@@ -729,7 +729,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitBeq_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Beq_S );
@@ -747,7 +747,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitBge_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bge_S );
@@ -765,7 +765,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitBgt_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bgt_S );
@@ -783,7 +783,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitBle_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ble_S );
@@ -801,7 +801,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitBlt_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Blt_S );
@@ -820,7 +820,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBne_Un_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bne_Un_S );
@@ -839,7 +839,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBge_Un_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bge_Un_S );
@@ -858,7 +858,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBgt_Un_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bgt_Un_S );
@@ -877,7 +877,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBle_Un_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ble_Un_S );
@@ -896,7 +896,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBlt_Un_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Blt_Un_S );
@@ -914,7 +914,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Br", Justification = "It is IL suffix." )]
 		public void EmitBr( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Br );
@@ -931,7 +931,7 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.Emit.Label"/> as target.</param>
 		public void EmitBrfalse( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Brfalse );
@@ -948,7 +948,7 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.Emit.Label"/> as target.</param>
 		public void EmitBrtrue( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Brtrue );
@@ -965,7 +965,7 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.Emit.Label"/> as target.</param>
 		public void EmitBeq( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Beq );
@@ -982,7 +982,7 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.Emit.Label"/> as target.</param>
 		public void EmitBge( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bge );
@@ -999,7 +999,7 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.Emit.Label"/> as target.</param>
 		public void EmitBgt( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bgt );
@@ -1016,7 +1016,7 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.Emit.Label"/> as target.</param>
 		public void EmitBle( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ble );
@@ -1033,7 +1033,7 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.Emit.Label"/> as target.</param>
 		public void EmitBlt( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Blt );
@@ -1052,7 +1052,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBne_Un( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bne_Un );
@@ -1071,7 +1071,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBge_Un( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bge_Un );
@@ -1090,7 +1090,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBgt_Un( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Bgt_Un );
@@ -1109,7 +1109,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBle_Un( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ble_Un );
@@ -1128,7 +1128,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitBlt_Un( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Blt_Un );
@@ -1145,8 +1145,8 @@ namespace NLiblet.Reflection
 		///	<param name="targets"><see cref="System.Reflection.Emit.Label"/>[] as targets.</param>
 		public void EmitSwitch( params System.Reflection.Emit.Label[] targets)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( targets != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( targets != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Switch );
@@ -1163,7 +1163,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_I1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_I1 );
@@ -1178,7 +1178,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_U1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_U1 );
@@ -1193,7 +1193,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_I2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_I2 );
@@ -1208,7 +1208,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_U2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_U2 );
@@ -1223,7 +1223,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_I4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_I4 );
@@ -1238,7 +1238,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_U4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_U4 );
@@ -1253,7 +1253,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_I8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_I8 );
@@ -1268,7 +1268,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_I( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_I );
@@ -1283,7 +1283,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_R4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_R4 );
@@ -1298,7 +1298,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_R8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_R8 );
@@ -1313,7 +1313,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdind_Ref( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldind_Ref );
@@ -1328,7 +1328,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStind_Ref( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stind_Ref );
@@ -1343,7 +1343,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStind_I1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stind_I1 );
@@ -1358,7 +1358,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStind_I2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stind_I2 );
@@ -1373,7 +1373,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStind_I4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stind_I4 );
@@ -1388,7 +1388,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStind_I8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stind_I8 );
@@ -1403,7 +1403,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStind_R4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stind_R4 );
@@ -1418,7 +1418,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStind_R8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stind_R8 );
@@ -1432,7 +1432,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitAdd( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Add );
@@ -1446,7 +1446,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitSub( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Sub );
@@ -1460,7 +1460,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitMul( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Mul );
@@ -1474,7 +1474,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitDiv( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Div );
@@ -1490,7 +1490,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitDiv_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Div_Un );
@@ -1504,7 +1504,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitRem( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Rem );
@@ -1520,7 +1520,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitRem_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Rem_Un );
@@ -1534,7 +1534,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitAnd( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.And );
@@ -1548,7 +1548,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitOr( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Or );
@@ -1562,7 +1562,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitXor( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Xor );
@@ -1576,7 +1576,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitShl( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Shl );
@@ -1590,7 +1590,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitShr( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Shr );
@@ -1606,7 +1606,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitShr_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Shr_Un );
@@ -1620,7 +1620,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitNeg( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Neg );
@@ -1634,7 +1634,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitNot( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Not );
@@ -1649,7 +1649,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_I1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_I1 );
@@ -1664,7 +1664,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_I2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_I2 );
@@ -1679,7 +1679,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_I4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_I4 );
@@ -1694,7 +1694,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_I8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_I8 );
@@ -1709,7 +1709,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_R4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_R4 );
@@ -1724,7 +1724,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_R8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_R8 );
@@ -1739,7 +1739,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_U4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_U4 );
@@ -1754,7 +1754,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_U8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_U8 );
@@ -1769,8 +1769,8 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.MethodInfo"/> as target.</param>
 		public void EmitCallvirt( System.Reflection.MethodInfo target)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( target != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( target != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Callvirt );
@@ -1787,8 +1787,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitCpobj( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Cpobj );
@@ -1805,8 +1805,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitLdobj( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldobj );
@@ -1823,8 +1823,8 @@ namespace NLiblet.Reflection
 		///	<param name="value"><see cref="System.String"/> as value.</param>
 		public void EmitLdstr( System.String value)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( value != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( value != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldstr );
@@ -1841,8 +1841,8 @@ namespace NLiblet.Reflection
 		///	<param name="constructor"><see cref="System.Reflection.ConstructorInfo"/> as constructor.</param>
 		public void EmitNewobj( System.Reflection.ConstructorInfo constructor)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( constructor != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( constructor != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Newobj );
@@ -1859,8 +1859,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitCastclass( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Castclass );
@@ -1877,8 +1877,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitIsinst( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Isinst );
@@ -1896,7 +1896,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_R_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_R_Un );
@@ -1911,8 +1911,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitUnbox( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Unbox );
@@ -1928,7 +1928,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitThrow( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Throw );
@@ -1943,8 +1943,8 @@ namespace NLiblet.Reflection
 		///	<param name="field"><see cref="System.Reflection.FieldInfo"/> as field.</param>
 		public void EmitLdfld( System.Reflection.FieldInfo field)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( field != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( field != null );
 
 			if( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
 			{
@@ -1969,8 +1969,8 @@ namespace NLiblet.Reflection
 		///	<param name="field"><see cref="System.Reflection.FieldInfo"/> as field.</param>
 		public void EmitLdflda( System.Reflection.FieldInfo field)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( field != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( field != null );
 
 			if( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
 			{
@@ -1995,8 +1995,8 @@ namespace NLiblet.Reflection
 		///	<param name="field"><see cref="System.Reflection.FieldInfo"/> as field.</param>
 		public void EmitStfld( System.Reflection.FieldInfo field)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( field != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( field != null );
 
 			if( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
 			{
@@ -2021,8 +2021,8 @@ namespace NLiblet.Reflection
 		///	<param name="field"><see cref="System.Reflection.FieldInfo"/> as field.</param>
 		public void EmitLdsfld( System.Reflection.FieldInfo field)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( field != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( field != null );
 
 			if( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
 			{
@@ -2047,8 +2047,8 @@ namespace NLiblet.Reflection
 		///	<param name="field"><see cref="System.Reflection.FieldInfo"/> as field.</param>
 		public void EmitLdsflda( System.Reflection.FieldInfo field)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( field != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( field != null );
 
 			if( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
 			{
@@ -2073,8 +2073,8 @@ namespace NLiblet.Reflection
 		///	<param name="field"><see cref="System.Reflection.FieldInfo"/> as field.</param>
 		public void EmitStsfld( System.Reflection.FieldInfo field)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( field != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( field != null );
 
 			if( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
 			{
@@ -2099,8 +2099,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitStobj( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stobj );
@@ -2118,7 +2118,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_I1_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I1_Un );
@@ -2134,7 +2134,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_I2_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I2_Un );
@@ -2150,7 +2150,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_I4_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I4_Un );
@@ -2166,7 +2166,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_I8_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I8_Un );
@@ -2182,7 +2182,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_U1_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U1_Un );
@@ -2198,7 +2198,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_U2_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U2_Un );
@@ -2214,7 +2214,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_U4_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U4_Un );
@@ -2230,7 +2230,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_U8_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U8_Un );
@@ -2246,7 +2246,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_I_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I_Un );
@@ -2262,7 +2262,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitConv_Ovf_U_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U_Un );
@@ -2277,8 +2277,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitBox( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Box );
@@ -2295,8 +2295,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitNewarr( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Newarr );
@@ -2312,7 +2312,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitLdlen( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldlen );
@@ -2327,8 +2327,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitLdelema( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelema );
@@ -2345,7 +2345,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_I1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_I1 );
@@ -2360,7 +2360,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_U1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_U1 );
@@ -2375,7 +2375,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_I2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_I2 );
@@ -2390,7 +2390,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_U2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_U2 );
@@ -2405,7 +2405,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_I4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_I4 );
@@ -2420,7 +2420,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_U4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_U4 );
@@ -2435,7 +2435,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_I8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_I8 );
@@ -2450,7 +2450,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_I( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_I );
@@ -2465,7 +2465,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_R4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_R4 );
@@ -2480,7 +2480,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_R8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_R8 );
@@ -2495,7 +2495,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLdelem_Ref( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem_Ref );
@@ -2510,7 +2510,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStelem_I( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stelem_I );
@@ -2525,7 +2525,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStelem_I1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stelem_I1 );
@@ -2540,7 +2540,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStelem_I2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stelem_I2 );
@@ -2555,7 +2555,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStelem_I4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stelem_I4 );
@@ -2570,7 +2570,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStelem_I8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stelem_I8 );
@@ -2585,7 +2585,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStelem_R4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stelem_R4 );
@@ -2600,7 +2600,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStelem_R8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stelem_R8 );
@@ -2615,7 +2615,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStelem_Ref( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stelem_Ref );
@@ -2630,8 +2630,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitLdelem( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldelem );
@@ -2648,8 +2648,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitStelem( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stelem );
@@ -2667,8 +2667,8 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitUnbox_Any( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Unbox_Any );
@@ -2685,7 +2685,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_I1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I1 );
@@ -2700,7 +2700,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_U1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U1 );
@@ -2715,7 +2715,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_I2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I2 );
@@ -2730,7 +2730,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_U2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U2 );
@@ -2745,7 +2745,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_I4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I4 );
@@ -2760,7 +2760,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_U4( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U4 );
@@ -2775,7 +2775,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_I8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I8 );
@@ -2790,7 +2790,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_U8( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U8 );
@@ -2805,8 +2805,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitRefanyval( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Refanyval );
@@ -2822,7 +2822,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitCkfinite( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ckfinite );
@@ -2837,8 +2837,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitMkrefany( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Mkrefany );
@@ -2855,8 +2855,8 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Type"/> as target.</param>
 		public void EmitLdtoken( System.Type target)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( target != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( target != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldtoken );
@@ -2873,8 +2873,8 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.MethodInfo"/> as target.</param>
 		public void EmitLdtoken( System.Reflection.MethodInfo target)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( target != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( target != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldtoken );
@@ -2891,8 +2891,8 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.FieldInfo"/> as target.</param>
 		public void EmitLdtoken( System.Reflection.FieldInfo target)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( target != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( target != null );
 
 			if( target.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
 			{
@@ -2917,7 +2917,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_U2( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_U2 );
@@ -2932,7 +2932,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_U1( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_U1 );
@@ -2947,7 +2947,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_I( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_I );
@@ -2962,7 +2962,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_I( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_I );
@@ -2977,7 +2977,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_Ovf_U( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_Ovf_U );
@@ -2992,7 +2992,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitAdd_Ovf( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Add_Ovf );
@@ -3008,7 +3008,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitAdd_Ovf_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Add_Ovf_Un );
@@ -3023,7 +3023,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitMul_Ovf( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Mul_Ovf );
@@ -3039,7 +3039,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitMul_Ovf_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Mul_Ovf_Un );
@@ -3054,7 +3054,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitSub_Ovf( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Sub_Ovf );
@@ -3070,7 +3070,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitSub_Ovf_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Sub_Ovf_Un );
@@ -3084,7 +3084,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitEndfinally( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Endfinally );
@@ -3099,7 +3099,7 @@ namespace NLiblet.Reflection
 		///	<param name="target"><see cref="System.Reflection.Emit.Label"/> as target.</param>
 		public void EmitLeave( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Leave );
@@ -3117,7 +3117,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitLeave_S( System.Reflection.Emit.Label target)
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Leave_S );
@@ -3134,7 +3134,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitStind_I( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stind_I );
@@ -3149,7 +3149,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
 		public void EmitConv_U( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Conv_U );
@@ -3163,7 +3163,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitArglist( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Arglist );
@@ -3177,7 +3177,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitCeq( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ceq );
@@ -3191,7 +3191,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitCgt( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Cgt );
@@ -3207,7 +3207,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitCgt_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Cgt_Un );
@@ -3221,7 +3221,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitClt( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Clt );
@@ -3237,7 +3237,7 @@ namespace NLiblet.Reflection
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId="Un", Justification = "It is IL suffix." )]
 		public void EmitClt_Un( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Clt_Un );
@@ -3252,8 +3252,8 @@ namespace NLiblet.Reflection
 		///	<param name="method"><see cref="System.Reflection.MethodInfo"/> as method.</param>
 		public void EmitLdftn( System.Reflection.MethodInfo method)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( method != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( method != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldftn );
@@ -3270,8 +3270,8 @@ namespace NLiblet.Reflection
 		///	<param name="method"><see cref="System.Reflection.MethodInfo"/> as method.</param>
 		public void EmitLdvirtftn( System.Reflection.MethodInfo method)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( method != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( method != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldvirtftn );
@@ -3288,8 +3288,8 @@ namespace NLiblet.Reflection
 		///	<param name="index"><see cref="System.Int32"/> as index.</param>
 		public void EmitLdarg( System.Int32 index)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( UInt16.MinValue <= index && index <= UInt16.MaxValue );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( UInt16.MinValue <= index && index <= UInt16.MaxValue );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldarg );
@@ -3306,8 +3306,8 @@ namespace NLiblet.Reflection
 		///	<param name="index"><see cref="System.Int32"/> as index.</param>
 		public void EmitLdarga( System.Int32 index)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( UInt16.MinValue <= index && index <= UInt16.MaxValue );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( UInt16.MinValue <= index && index <= UInt16.MaxValue );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldarga );
@@ -3324,8 +3324,8 @@ namespace NLiblet.Reflection
 		///	<param name="index"><see cref="System.Int32"/> as index.</param>
 		public void EmitStarg( System.Int32 index)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( UInt16.MinValue <= index && index <= UInt16.MaxValue );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( UInt16.MinValue <= index && index <= UInt16.MaxValue );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Starg );
@@ -3342,8 +3342,8 @@ namespace NLiblet.Reflection
 		///	<param name="index"><see cref="System.Int32"/> as index.</param>
 		public void EmitLdloc( System.Int32 index)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( UInt16.MinValue <= index && index <= UInt16.MaxValue );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( UInt16.MinValue <= index && index <= UInt16.MaxValue );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldloc );
@@ -3360,8 +3360,8 @@ namespace NLiblet.Reflection
 		///	<param name="index"><see cref="System.Int32"/> as index.</param>
 		public void EmitLdloca( System.Int32 index)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( UInt16.MinValue <= index && index <= UInt16.MaxValue );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( UInt16.MinValue <= index && index <= UInt16.MaxValue );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldloca );
@@ -3378,8 +3378,8 @@ namespace NLiblet.Reflection
 		///	<param name="index"><see cref="System.Int32"/> as index.</param>
 		public void EmitStloc( System.Int32 index)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( UInt16.MinValue <= index && index <= UInt16.MaxValue );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( UInt16.MinValue <= index && index <= UInt16.MaxValue );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stloc );
@@ -3395,7 +3395,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitLocalloc( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Localloc );
@@ -3409,7 +3409,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitEndfilter( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Endfilter );
@@ -3424,8 +3424,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitInitobj( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Initobj );
@@ -3441,7 +3441,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitCpblk( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Cpblk );
@@ -3455,7 +3455,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitInitblk( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Initblk );
@@ -3469,7 +3469,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitRethrow( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Rethrow );
@@ -3484,8 +3484,8 @@ namespace NLiblet.Reflection
 		///	<param name="type"><see cref="System.Type"/> as type.</param>
 		public void EmitSizeof( System.Type type)
 		{
-			Contract.Requires( !this.IsEnded );
-			Contract.Requires( type != null );
+			Contract.Assert( !this.IsEnded );
+			Contract.Assert( type != null );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Sizeof );
@@ -3501,7 +3501,7 @@ namespace NLiblet.Reflection
 		///	</summary>
 		public void EmitRefanytype( )
 		{
-			Contract.Requires( !this.IsEnded );
+			Contract.Assert( !this.IsEnded );
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Refanytype );

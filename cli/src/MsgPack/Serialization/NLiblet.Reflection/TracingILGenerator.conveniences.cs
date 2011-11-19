@@ -22,6 +22,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace NLiblet.Reflection
 {
@@ -33,7 +34,7 @@ namespace NLiblet.Reflection
 		/// <param name="target"><see cref="MethodInfo"/> to be called.</param>
 		public void EmitAnyCall( MethodInfo target )
 		{
-			Contract.Requires( target != null );
+			Contract.Assert( target != null );
 
 			if ( target.IsStatic )
 			{
@@ -53,8 +54,8 @@ namespace NLiblet.Reflection
 		/// <param name="property"><see cref="PropertyInfo"/> for target property.</param>
 		public void EmitGetProperty( PropertyInfo property )
 		{
-			Contract.Requires( property != null );
-			Contract.Requires( property.CanRead );
+			Contract.Assert( property != null );
+			Contract.Assert( property.CanRead );
 
 			var getter = property.GetGetMethod( true );
 			if ( getter.IsStatic )
@@ -114,10 +115,10 @@ namespace NLiblet.Reflection
 		/// </param>
 		public void EmitStringFormat( int temporaryLocalArrayIndex, string formatLiteral, params Action<TracingILGenerator>[] argumentLoadingEmitters )
 		{
-			Contract.Requires( formatLiteral != null );
-			Contract.Requires( 0 < formatLiteral.Length );
-			Contract.Requires( argumentLoadingEmitters != null );
-			Contract.Requires( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
+			Contract.Assert( formatLiteral != null );
+			Contract.Assert( 0 < formatLiteral.Length );
+			Contract.Assert( argumentLoadingEmitters != null );
+			Contract.Assert( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
 
 			this.EmitCurrentCulture();
 			this.EmitLdstr( formatLiteral );
@@ -145,11 +146,11 @@ namespace NLiblet.Reflection
 		/// </param>
 		public void EmitStringFormat( int temporaryLocalArrayIndex, Type resource, string resourceKey, params Action<TracingILGenerator>[] argumentLoadingEmitters )
 		{
-			Contract.Requires( resource != null );
-			Contract.Requires( resourceKey != null );
-			Contract.Requires( !String.IsNullOrWhiteSpace( resourceKey ) );
-			Contract.Requires( argumentLoadingEmitters != null );
-			Contract.Requires( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
+			Contract.Assert( resource != null );
+			Contract.Assert( resourceKey != null );
+			Contract.Assert( !String.IsNullOrWhiteSpace( resourceKey ) );
+			Contract.Assert( argumentLoadingEmitters != null );
+			Contract.Assert( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
 
 			this.EmitCurrentCulture();
 			this.EmitGetProperty( resource.GetProperty( resourceKey, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static ) );
@@ -172,10 +173,10 @@ namespace NLiblet.Reflection
 		/// </param>
 		public void EmitStringFormatInvariant( int temporaryLocalArrayIndex, string formatLiteral, params Action<TracingILGenerator>[] argumentLoadingEmitters )
 		{
-			Contract.Requires( formatLiteral != null );
-			Contract.Requires( 0 < formatLiteral.Length );
-			Contract.Requires( argumentLoadingEmitters != null );
-			Contract.Requires( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
+			Contract.Assert( formatLiteral != null );
+			Contract.Assert( 0 < formatLiteral.Length );
+			Contract.Assert( argumentLoadingEmitters != null );
+			Contract.Assert( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
 
 			this.EmitInvariantCulture();
 			this.EmitLdstr( formatLiteral );
@@ -203,11 +204,11 @@ namespace NLiblet.Reflection
 		/// </param>
 		public void EmitStringFormatInvariant( int temporaryLocalArrayIndex, Type resource, string resourceKey, params Action<TracingILGenerator>[] argumentLoadingEmitters )
 		{
-			Contract.Requires( resource != null );
-			Contract.Requires( resourceKey != null );
-			Contract.Requires( !String.IsNullOrWhiteSpace( resourceKey ) );
-			Contract.Requires( argumentLoadingEmitters != null );
-			Contract.Requires( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
+			Contract.Assert( resource != null );
+			Contract.Assert( resourceKey != null );
+			Contract.Assert( !String.IsNullOrWhiteSpace( resourceKey ) );
+			Contract.Assert( argumentLoadingEmitters != null );
+			Contract.Assert( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
 
 			this.EmitInvariantCulture();
 			this.EmitGetProperty( resource.GetProperty( resourceKey, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static ) );
@@ -241,7 +242,7 @@ namespace NLiblet.Reflection
 		///	</param>
 		public void EmitAnyLdarg( int argumentIndex )
 		{
-			Contract.Requires( 0 <= argumentIndex && argumentIndex <= UInt16.MaxValue );
+			Contract.Assert( 0 <= argumentIndex && argumentIndex <= UInt16.MaxValue );
 
 			switch ( argumentIndex )
 			{
@@ -289,7 +290,7 @@ namespace NLiblet.Reflection
 		///	</param>
 		public void EmitAnyLdloc( int localIndex )
 		{
-			Contract.Requires( 0 <= localIndex && localIndex <= UInt16.MaxValue );
+			Contract.Assert( 0 <= localIndex && localIndex <= UInt16.MaxValue );
 
 			switch ( localIndex )
 			{
@@ -338,7 +339,7 @@ namespace NLiblet.Reflection
 		///	</param>
 		public void EmitAnyStloc( int localIndex )
 		{
-			Contract.Requires( 0 <= localIndex && localIndex <= UInt16.MaxValue );
+			Contract.Assert( 0 <= localIndex && localIndex <= UInt16.MaxValue );
 
 			switch ( localIndex )
 			{
@@ -376,6 +377,13 @@ namespace NLiblet.Reflection
 				}
 			}
 		}
+		
+		// TODO: NLiblet
+		public void EmitAnyStloc( LocalBuilder local )
+		{
+			Contract.Assert( local != null );
+			this.EmitAnyStloc( local.LocalIndex );
+		}
 
 		/// <summary>
 		///		Emit array initialization code without initializer.
@@ -386,8 +394,8 @@ namespace NLiblet.Reflection
 		/// <param name="length">Size of array.</param>
 		public void EmitNewarr( Type elementType, long length )
 		{
-			Contract.Requires( elementType != null );
-			Contract.Requires( 0 <= length );
+			Contract.Assert( elementType != null );
+			Contract.Assert( 0 <= length );
 
 			this.EmitNewarrCore( elementType, length );
 		}
@@ -409,10 +417,10 @@ namespace NLiblet.Reflection
 		/// </param>
 		public void EmitNewarr( int arrayLocalIndex, Type elementType, params Action<TracingILGenerator>[] elementLoadingEmitters )
 		{
-			Contract.Requires( 0 <= arrayLocalIndex );
-			Contract.Requires( elementType != null );
-			Contract.Requires( elementLoadingEmitters != null );
-			Contract.Requires( Contract.ForAll( elementLoadingEmitters, item => item != null ) );
+			Contract.Assert( 0 <= arrayLocalIndex );
+			Contract.Assert( elementType != null );
+			Contract.Assert( elementLoadingEmitters != null );
+			Contract.Assert( Contract.ForAll( elementLoadingEmitters, item => item != null ) );
 
 			this.EmitNewarrCore( elementType, elementLoadingEmitters.LongLength );
 			this.EmitAnyStloc( arrayLocalIndex );
@@ -448,11 +456,11 @@ namespace NLiblet.Reflection
 		/// </param>
 		public void EmitNewarr( Action<TracingILGenerator> arrayLoadingEmitter, Action<TracingILGenerator> arrayStoringEmitter, Type elementType, params Action<TracingILGenerator>[] elementLoadingEmitters )
 		{
-			Contract.Requires( arrayLoadingEmitter != null );
-			Contract.Requires( arrayStoringEmitter != null );
-			Contract.Requires( elementType != null );
-			Contract.Requires( elementLoadingEmitters != null );
-			Contract.Requires( Contract.ForAll( elementLoadingEmitters, item => item != null ) );
+			Contract.Assert( arrayLoadingEmitter != null );
+			Contract.Assert( arrayStoringEmitter != null );
+			Contract.Assert( elementType != null );
+			Contract.Assert( elementLoadingEmitters != null );
+			Contract.Assert( Contract.ForAll( elementLoadingEmitters, item => item != null ) );
 
 			this.EmitNewarrCore( elementType, elementLoadingEmitters.LongLength );
 			arrayStoringEmitter( this );
@@ -483,9 +491,9 @@ namespace NLiblet.Reflection
 		/// <param name="index">Index of array element.</param>
 		public void EmitAnyLdelem( Type elementType, Action<TracingILGenerator> arrayLoadingEmitter, long index )
 		{
-			Contract.Requires( elementType != null );
-			Contract.Requires( 0 <= index );
-			Contract.Requires( arrayLoadingEmitter != null );
+			Contract.Assert( elementType != null );
+			Contract.Assert( 0 <= index );
+			Contract.Assert( arrayLoadingEmitter != null );
 
 			arrayLoadingEmitter( this );
 			this.EmitLiteralInteger( index );
@@ -583,10 +591,10 @@ namespace NLiblet.Reflection
 		/// </param>
 		public void EmitAnyStelem( Type elementType, Action<TracingILGenerator> arrayLoadingEmitter, long index, Action<TracingILGenerator> elementLoadingEmitter )
 		{
-			Contract.Requires( elementType != null );
-			Contract.Requires( 0 <= index );
-			Contract.Requires( arrayLoadingEmitter != null );
-			Contract.Requires( elementLoadingEmitter != null );
+			Contract.Assert( elementType != null );
+			Contract.Assert( 0 <= index );
+			Contract.Assert( arrayLoadingEmitter != null );
+			Contract.Assert( elementLoadingEmitter != null );
 
 			arrayLoadingEmitter( this );
 			this.EmitLiteralInteger( index );
@@ -748,7 +756,7 @@ namespace NLiblet.Reflection
 		/// <param name="type">Target <see cref="Type"/>.</param>
 		public void EmitTypeOf( Type type )
 		{
-			Contract.Requires( type != null );
+			Contract.Assert( type != null );
 
 			this.EmitLdtoken( type );
 			this.EmitCall( _type_GetTypeFromHandle );
@@ -783,7 +791,7 @@ namespace NLiblet.Reflection
 		/// <param name="exceptionType"><see cref="Type"/> of initializing and throwing <see cref="Exception"/>.</param>
 		public void EmitThrowNewExceptionWithInnerException( Type exceptionType )
 		{
-			Contract.Requires( exceptionType != null );
+			Contract.Assert( exceptionType != null );
 
 			var ctor = exceptionType.GetConstructor( _standardExceptionConstructorParamterTypesWithInnerException );
 			if ( ctor == null )

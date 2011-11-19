@@ -105,7 +105,7 @@ namespace MsgPack
 			internal Enumerator( MessagePackObjectDictionary dictionary )
 				: this()
 			{
-				Contract.Requires( dictionary != null );
+				Contract.Assert( dictionary != null );
 
 				this = default( Enumerator );
 				this._underlying = dictionary;
@@ -276,7 +276,7 @@ namespace MsgPack
 			internal DictionaryEnumerator( MessagePackObjectDictionary dictionary )
 				: this()
 			{
-				Contract.Requires( dictionary != null );
+				Contract.Assert( dictionary != null );
 
 				this._underlying = new Enumerator( dictionary );
 			}

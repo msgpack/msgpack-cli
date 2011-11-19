@@ -65,7 +65,7 @@ namespace MsgPack
 
 				internal Enumerator( MessagePackObjectDictionary dictionary )
 				{
-					Contract.Requires( dictionary != null );
+					Contract.Assert( dictionary != null );
 
 					this._underlying = dictionary.GetEnumerator();
 				}

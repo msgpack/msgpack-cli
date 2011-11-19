@@ -70,7 +70,7 @@ namespace MsgPack
 
 			internal ValueCollection( MessagePackObjectDictionary dictionary )
 			{
-				Contract.Requires( dictionary != null );
+				Contract.Assert( dictionary != null );
 
 				this._dictionary = dictionary;
 			}
