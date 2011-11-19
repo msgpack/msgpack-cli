@@ -36,7 +36,8 @@ namespace NLiblet.Reflection
 		{
 			Contract.Assert( target != null );
 
-			if ( target.IsStatic )
+			// TODO: NLiblet
+			if ( target.IsStatic || target.DeclaringType.IsValueType )
 			{
 				this.EmitCall( target );
 			}
@@ -57,15 +58,18 @@ namespace NLiblet.Reflection
 			Contract.Assert( property != null );
 			Contract.Assert( property.CanRead );
 
-			var getter = property.GetGetMethod( true );
-			if ( getter.IsStatic )
-			{
-				this.EmitCall( getter );
-			}
-			else
-			{
-				this.EmitCallvirt( getter );
-			}
+			// TODO: NLiblet
+			this.EmitAnyCall( property.GetGetMethod( true ) );
+
+		}
+
+		// TODO: NLiblet
+		public void EmitSetProperty( PropertyInfo property )
+		{
+			Contract.Assert( property != null );
+			Contract.Assert( property.CanWrite );
+
+			this.EmitAnyCall( property.GetSetMethod( true ) );
 		}
 
 		private static readonly PropertyInfo _cultureInfo_CurrentCulture = typeof( CultureInfo ).GetProperty( "CurrentCulture" );
@@ -327,6 +331,35 @@ namespace NLiblet.Reflection
 					break;
 				}
 			}
+		}
+
+		// TODO: NLiblet
+		public void EmitAnyLdloc( LocalBuilder local )
+		{
+			Contract.Assert( local != null );
+			this.EmitAnyLdloc( local.LocalIndex );
+		}
+
+		// TODO: NLiblet
+		public void EmitAnyLdloca( int localIndex )
+		{
+			Contract.Assert( 0 <= localIndex && localIndex <= UInt16.MaxValue );
+
+			if ( localIndex <= Byte.MaxValue )
+			{
+				this.EmitLdloca_S( ( byte )localIndex );
+			}
+			else
+			{
+				this.EmitLdloca( localIndex );
+			}
+		}
+
+		// TODO: NLiblet
+		public void EmitAnyLdloca( LocalBuilder local )
+		{
+			Contract.Assert( local != null );
+			this.EmitAnyLdloca( local.LocalIndex );
 		}
 
 		/// <summary>

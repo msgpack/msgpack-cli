@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using NLiblet.Reflection;
@@ -54,7 +55,7 @@ namespace MsgPack.Serialization
 			 * (see http://msdn.microsoft.com/en-us/library/aa347850.aspx ).
 			 */
 
-			if ( source.IsAssignableTo( typeof( IEnumerable ) ) )
+			if ( !source.IsAssignableTo( typeof( IEnumerable ) ) )
 			{
 				return CollectionTraits.NotCollection;
 			}
@@ -64,17 +65,22 @@ namespace MsgPack.Serialization
 			{
 				if ( source.Implements( typeof( IDictionary<,> ) ) )
 				{
-					var elementType = getEnumerator.ReturnType;
-					return
-						new CollectionTraits(
-							CollectionKind.Map,
-							GetAddMethod( source, elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
-							getEnumerator,
-							GetCollectionTCountProperty( elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
-							elementType
-						);
+					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.IsGenericType && @interface.GetGenericTypeDefinition().TypeHandle.Equals( typeof( IEnumerator<> ).TypeHandle ) );
+					if ( ienumetaorT != null )
+					{
+						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
+						return
+							new CollectionTraits(
+								CollectionKind.Map,
+								GetAddMethod( source, elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
+								getEnumerator,
+								GetDictionaryCountProperty( elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
+								elementType
+							);
+					}
 				}
-				else if ( source.IsAssignableTo( typeof( IDictionary ) ) )
+
+				if ( source.IsAssignableTo( typeof( IDictionary ) ) )
 				{
 					return
 						new CollectionTraits(
@@ -85,7 +91,7 @@ namespace MsgPack.Serialization
 							typeof( DictionaryEntry )
 						);
 				}
-				else
+
 				{
 					var elementType = getEnumerator.ReturnType;
 					return
@@ -285,21 +291,6 @@ namespace MsgPack.Serialization
 		{
 			Contract.Assert( type.IsInterface );
 			return type.Assembly == typeof( Array ).Assembly && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
-		}
-
-		public static T CreateDelegate<T>( this DynamicMethod source )
-			where T : class
-		{
-			return source.CreateDelegate( typeof( T ) ) as T;
-		}
-
-		// TODO: NLiblet
-		public static void EmitSetProperty( this TracingILGenerator source, PropertyInfo property )
-		{
-#if DEBUG
-			Contract.Assert( property.CanWrite, property.ToString() );
-#endif
-			source.EmitAnyCall( property.GetSetMethod() );
 		}
 	}
 }
