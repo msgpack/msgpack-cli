@@ -325,6 +325,10 @@ namespace MsgPack
 				else if ( unpackingMode == UnpackingMode.SubTree )
 				{
 					this._mayInTail = this._unpacker.IsInRoot && !this._unpacker.HasMoreEntries;
+					if ( !this._unpacker.HasMoreEntries )
+					{
+						return false;
+					}
 				}
 				else
 				{
