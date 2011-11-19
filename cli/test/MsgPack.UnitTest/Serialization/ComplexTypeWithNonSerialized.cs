@@ -50,7 +50,7 @@ namespace MsgPack.Serialization
 			NUnit.Framework.Assert.That( map.ContainsKey( "Source" ) );
 			NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
 			NUnit.Framework.Assert.That( map.ContainsKey( "TimeStamp" ) );
-			NUnit.Framework.Assert.That( map[ "TimeStamp" ].AsInt64(), Is.EqualTo( this.TimeStamp.Ticks ) );
+			NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
 			NUnit.Framework.Assert.That( map.ContainsKey( "Data" ) );
 			NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
 			NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
