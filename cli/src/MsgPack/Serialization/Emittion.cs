@@ -252,8 +252,6 @@ namespace MsgPack.Serialization
 
 		public static void EmitUnmarshalValue( TracingILGenerator il, int unpackerArgumentIndex, int contextArgumentIndex, Type valueType, Action<TracingILGenerator,int> unpackerReading )
 		{
-#warning ここから。
-			// アンマーシャルに来るときに、ポインタはどこにあるべきか。
 			var fastUnmarshal = MarshalerRepository.GetFastUnmarshalMethod( valueType );
 			if ( fastUnmarshal != null )
 			{

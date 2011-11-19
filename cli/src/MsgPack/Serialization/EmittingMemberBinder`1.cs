@@ -469,10 +469,7 @@ namespace MsgPack.Serialization
 				memberType,
 				( il0, unpackerArgumentIndex ) =>
 				{
-					il0.EmitAnyLdarg( unpackerArgumentIndex );
 					var endIf = il0.DefineLabel( "END_IF" );
-					il0.EmitGetProperty( _unpackerIsInStartProperty );
-					il0.EmitBrfalse_S( endIf );
 					il0.EmitAnyLdarg( unpackerArgumentIndex );
 					il0.EmitAnyCall( _unpackerReadMethod );
 					il0.EmitBrtrue_S( endIf );
