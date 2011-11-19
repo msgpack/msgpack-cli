@@ -100,7 +100,7 @@ namespace MsgPack.Serialization
 				case TypeCode.DBNull:
 				case TypeCode.Empty:
 				{
-					Tracer.Binding.TraceEvent( Tracer.EventType.UnsupportedType, Tracer.EventId.UnsupportedType, "Field type '{0}' does not supported.", memberType );
+					Tracer.Emit.TraceEvent( Tracer.EventType.UnsupportedType, Tracer.EventId.UnsupportedType, "Field type '{0}' does not supported.", memberType );
 					packing = null;
 					unpacking = null;
 					return false;
@@ -109,14 +109,14 @@ namespace MsgPack.Serialization
 
 			if ( canWrite )
 			{
-				packing = this.CreatePacking( member, memberType, contract );
-				unpacking = this.CreateUnpacking( member, memberType, contract );
-				return true;
+				//packing = this.CreatePacking( member, memberType, contract );
+				//unpacking = this.CreateUnpacking( member, memberType, contract );
+				return this.CreateObjectProcedures( member, memberType, contract, out packing, out unpacking );
 			}
 
 			if ( memberType.IsValueType )
 			{
-				Tracer.Binding.TraceEvent( Tracer.EventType.ReadOnlyValueTypeMember, Tracer.EventId.ReadOnlyValueTypeMember, "Field {0} is read only and its type '{1}' is value type.", member.Name, member.ReflectedType );
+				Tracer.Emit.TraceEvent( Tracer.EventType.ReadOnlyValueTypeMember, Tracer.EventId.ReadOnlyValueTypeMember, "Field {0} is read only and its type '{1}' is value type.", member.Name, member.ReflectedType );
 				packing = null;
 				unpacking = null;
 				return false;
@@ -147,8 +147,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Obsolete]
 		protected abstract Action<Packer, TObject, SerializationContext> CreatePacking( MemberInfo member, Type memberType, DataMemberContract contract );
 
+		[Obsolete]
 		protected abstract Action<Unpacker, TObject, SerializationContext> CreateUnpacking( MemberInfo member, Type memberType, DataMemberContract contract );
 
 		protected abstract bool CreateArrayProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking );

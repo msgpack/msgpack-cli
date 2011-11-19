@@ -65,19 +65,45 @@ namespace MsgPack.Serialization
 			if ( marshaler != null )
 			{
 				this._packing = ( packer, value, context ) => marshaler.MarshalTo( packer, value );
-				this._unpacking = ( unpacker, context ) => marshaler.UnmarshalFrom( unpacker );
+				this._unpacking = 
+					( unpacker, context ) =>
+					{
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						return marshaler.UnmarshalFrom( unpacker );
+					};
 				return;
 			}
 
+			var serializer = this._context.Serializers.Get<T>( this._context.Marshalers );
+			if ( serializer != null )
+			{
+				this._packing = ( packer, value, context ) => serializer.PackTo( packer, value );
+				this._unpacking =
+					( unpacker, context ) =>
+					{
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						return serializer.UnpackFrom( unpacker );
+					};
+				return;
+			}
+
+			// TODO: Pluggable
 			var builder = new EmittingMemberBinder<T>() { Trace = new StringWriter() };
 			if ( !builder.CreateProcedures( SerializationMemberOption.OptOut, out this._packing, out this._unpacking ) )
 			{
-				Tracer.AutoMessagePackSerializer.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
+				Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
 				throw SerializationExceptions.NewTypeIsNotSerializable( typeof( T ) );
 			}
-			Tracer.AutoMessagePackSerializer.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
+			Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
 		}
-
 		/// <summary>
 		///		Serialize specified object with specified <see cref="Packer"/>.
 		/// </summary>

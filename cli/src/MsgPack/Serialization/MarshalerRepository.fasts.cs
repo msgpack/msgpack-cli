@@ -64,8 +64,8 @@ namespace MsgPack.Serialization
 				{ typeof( System.UInt64 ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackUInt64() ) },
 				{ typeof( System.Single ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackSingle() ) },
 				{ typeof( System.Double ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackDouble() ) },
-				{ typeof( System.Byte[] ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackRaw().ToArray() ) },
-				{ typeof( System.Char[] ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackString().ToCharArray() ) },
+				{ typeof( System.Byte[] ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackByteArray() ) },
+				{ typeof( System.Char[] ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackCharArray() ) },
 				{ typeof( System.String ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackString() ) },
 			};
 	}

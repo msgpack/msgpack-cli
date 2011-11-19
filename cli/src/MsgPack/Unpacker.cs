@@ -83,6 +83,51 @@ namespace MsgPack
 		{
 			get { return this._data; }
 		}
+		
+		/// <summary>
+		///		Gets a value indicating whether this instance is positioned to array header.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is positioned to array header; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsArrayHeader
+		{
+			get { return this._unpacker.IsInArrayHeader; }
+		}
+
+		/// <summary>
+		///		Gets a value indicating whether this instance is positioned to map header.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is positioned to map header; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsMapHeader
+		{
+			get { return this._unpacker.IsInMapHeader; }
+		}
+
+		/// <summary>
+		///		Gets the items count for current array or map.
+		/// </summary>
+		public long ItemsCount
+		{
+			get
+			{
+				if ( !this.IsArrayHeader && !this.IsMapHeader )
+				{
+					throw new InvalidOperationException( "This instance is not positioned to Array nor Map header." );
+				}
+
+				return this._unpacker.UnpackingItemsCount;
+			}
+		}
+
+		private bool _isInStart = true;
+
+		public bool IsInStart
+		{
+			get { return this._isInStart; }
+		}
 
 		/// <summary>
 		///		 Creates the new <see cref="Unpacker"/> with internal buffer which has default size.
@@ -223,44 +268,6 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Gets a value indicating whether this instance is positioned to array header.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is positioned to array header; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsArrayHeader
-		{
-			get { return this._unpacker.IsInArrayHeader; }
-		}
-
-		/// <summary>
-		///		Gets a value indicating whether this instance is positioned to map header.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is positioned to map header; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsMapHeader
-		{
-			get { return this._unpacker.IsInMapHeader; }
-		}
-
-		/// <summary>
-		///		Gets the items count for current array or map.
-		/// </summary>
-		public long ItemsCount
-		{
-			get
-			{
-				if ( !this.IsArrayHeader && !this.IsMapHeader )
-				{
-					throw new InvalidOperationException( "This instance is not positioned to Array nor Map header." );
-				}
-
-				return this._unpacker.ItemsCount;
-			}
-		}
-
-		/// <summary>
 		///		Move position to next Message Pack entry.
 		/// </summary>
 		/// <returns>
@@ -278,7 +285,7 @@ namespace MsgPack
 		/// </remarks>
 		public bool MoveToNextEntry()
 		{
-			return this.Read( UnpackingMode.CurrentDepthOnly );
+			return this.Read( UnpackingMode.SubTree );
 		}
 
 		/// <summary>
@@ -307,12 +314,17 @@ namespace MsgPack
 
 		private bool Read( UnpackingMode unpackingMode )
 		{
+			this._isInStart = false;
 			while ( !this.IsInTailUltimately() )
 			{
 				this._data = this._unpacker.Unpack( this._currentSource.Stream, unpackingMode );
 				if ( this._data != null )
 				{
 					return true;
+				}
+				else if ( unpackingMode == UnpackingMode.SubTree )
+				{
+					this._mayInTail = this._unpacker.IsInRoot && !this._unpacker.HasMoreEntries;
 				}
 				else
 				{
@@ -358,6 +370,7 @@ namespace MsgPack
 			}
 
 			this._currentSource = this._successorSources.Dequeue();
+			this._isInStart = true;
 			return false;
 		}
 
@@ -628,6 +641,23 @@ namespace MsgPack
 
 			this.InvalidateCache();
 			return Unpacking.UnpackObject( this._currentSource.Stream );
+		}
+
+		public byte[] UnpackByteArray()
+		{
+			return this.UnpackRaw().ToArray();
+		}
+
+		public char[] UnpackCharArray()
+		{
+			// TODO: Do more efficient...
+			return this.UnpackString().ToCharArray();
+		}
+
+		public char[] UnpackCharArray( Encoding encoding )
+		{
+			// TODO: Do more efficient...
+			return this.UnpackString( encoding ).ToCharArray();
 		}
 
 		/// <summary>

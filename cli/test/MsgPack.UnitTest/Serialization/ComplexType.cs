@@ -45,6 +45,7 @@ namespace MsgPack.Serialization
 			NUnit.Framework.Assert.That( data, Is.Not.Null );
 			var map = data.Value.AsDictionary();
 			NUnit.Framework.Assert.That( map.ContainsKey( "Source" ) );
+			NUnit.Framework.Assert.That( this.Source, Is.Not.Null );
 			NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
 			NUnit.Framework.Assert.That( map.ContainsKey( "TimeStamp" ) );
 			NUnit.Framework.Assert.That( map[ "TimeStamp" ].AsInt64(), Is.EqualTo( this.TimeStamp.Ticks ) );

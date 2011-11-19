@@ -91,9 +91,23 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Property '{0}' is missing.", name ) );
 		}
 
-		internal static Exception NewUnexpectedEndOfStream()
+		internal static readonly MethodInfo NewUnexpectedEndOfStreamMethod = FromExpression.ToMethod( () => NewUnexpectedEndOfStream() );
+
+		public static Exception NewUnexpectedEndOfStream()
 		{
 			return new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+		}
+
+		internal static Exception NewMissingAddMethod( Type type )
+		{
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have appropriate Add method.", type ) );
+		}
+
+		internal static readonly MethodInfo NewCannotReadCollectionHeaderMethod = FromExpression.ToMethod( () => NewCannotReadCollectionHeader() );
+
+		public static Exception NewCannotReadCollectionHeader()
+		{
+			return new InvalidMessagePackStreamException( "Stream ends unexpectedly." );
 		}
 	}
 }

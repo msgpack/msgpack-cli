@@ -99,7 +99,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
-			return this.UnpackFromCore( unpacker);
+			return this.UnpackFromCore( unpacker );
 		}
 
 		/// <summary>

@@ -38,8 +38,8 @@ var __types =
 		{ typeof( ulong ), null },
 		{ typeof( float ), null },
 		{ typeof( double ), null },
-		{ typeof( byte[] ), Tuple.Create( "PackRaw( value )", "UnpackRaw().ToArray()" ) },
-		{ typeof( char[] ), Tuple.Create( "PackString( value )", "UnpackString().ToCharArray()" ) },
+		{ typeof( byte[] ), Tuple.Create( "PackRaw( value )", "UnpackByteArray()" ) },
+		{ typeof( char[] ), Tuple.Create( "PackString( value )", "UnpackCharArray()" ) },
 		{ typeof( string ), Tuple.Create( "PackString( value )", "UnpackString()" ) },
 	};
 #>

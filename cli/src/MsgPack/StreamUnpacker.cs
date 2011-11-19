@@ -59,6 +59,11 @@ namespace MsgPack
 		/// </summary>
 		public StreamUnpacker() { }
 
+		public bool IsInRoot
+		{
+			get { return this._collectionState.IsEmpty; }
+		}
+
 		public bool HasMoreEntries
 		{
 			get
@@ -68,26 +73,22 @@ namespace MsgPack
 					return false;
 				}
 
-				return this.ItemsCount < this._contextValueHeader.ValueOrLength;
+				return this._collectionState.UnpackedItemsCount < this._collectionState.UnpackingItemsCount;
 			}
 		}
 
-		public uint ItemsCount
+		public uint UnpackingItemsCount
 		{
-			get { return this._collectionState.ItemsCount; }
+			get { return this._collectionState.UnpackingItemsCount; }
 		}
 
 		public bool IsInArrayHeader
 		{
 			get
 			{
-				switch ( this._stage )
+				if ( this._stage == Stage.UnpackContextCollection )
 				{
-					case Stage.UnpackContextCollection:
-					case Stage.UnpackScalar:
-					{
-						return this._collectionState.ItemsCount == 0 && ( this._contextValueHeader.Type & MessageType.IsArray ) == MessageType.IsArray;
-					}
+					return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsArray );
 				}
 
 				return false;
@@ -98,13 +99,9 @@ namespace MsgPack
 		{
 			get
 			{
-				switch ( this._stage )
+				if ( this._stage == Stage.UnpackContextCollection )
 				{
-					case Stage.UnpackContextCollection:
-					case Stage.UnpackScalar:
-					{
-						return this._collectionState.ItemsCount == 0 && ( this._contextValueHeader.Type & MessageType.IsMap ) == MessageType.IsMap;
-					}
+					return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsMap );
 				}
 
 				return false;
@@ -134,6 +131,15 @@ namespace MsgPack
 #warning UnpackingMode
 			// FIXME:BULK LOAD
 			Contract.Assert( source != null );
+
+			if ( unpackingMode == UnpackingMode.SubTree )
+			{
+				if ( !this.HasMoreEntries )
+				{
+					// This subtree ends.
+					return null;
+				}
+			}
 
 			var segmentatedSource = source as ISegmentLengthRecognizeable ?? NullSegmentLengthRecognizeable.Instance;
 
@@ -311,6 +317,7 @@ namespace MsgPack
 					} // default
 				} // switch
 
+				var oldCollectionItemOrRoot = collectionItemOrRoot;
 				if ( collectionItemOrRoot != null )
 				{
 					collectionItemOrRoot = this.AddToContextCollection( collectionItemOrRoot.Value );
@@ -329,24 +336,19 @@ namespace MsgPack
 					}
 				}
 
-				switch ( unpackingMode )
+				if ( unpackingMode != UnpackingMode.EntireTree && this._stage == Stage.UnpackContextCollection )
 				{
-					case UnpackingMode.PerEntry:
-					case UnpackingMode.CurrentDepthOnly:
+					if ( this._collectionState.UnpackedItemsCount == 0 )
 					{
-						switch ( this._stage )
-						{
-							case Stage.UnpackContextCollection:
-							case Stage.UnpackScalar:
-							{
-								return this._contextValueHeader.ValueOrLength;
-							}
-						}
-
-						break;
+						// Count
+						return this._collectionState.UnpackingItemsCount;
+					}
+					else 
+					{
+						Contract.Assert( oldCollectionItemOrRoot.HasValue );
+						return oldCollectionItemOrRoot.Value;
 					}
 				}
-
 			}
 
 			throw new InvalidMessagePackStreamException( "Unexpectedly end." );
@@ -799,6 +801,16 @@ namespace MsgPack
 				get { return this._collectionContextStack.Count == 0; }
 			}
 
+			/// <summary>
+			///		Gets the unpacking items count.
+			/// </summary>
+			/// <value>
+			///		The unpacking items count.
+			/// </value>
+			public uint UnpackingItemsCount
+			{
+				get { return this._collectionContextStack.Peek().Capacity; }
+			}
 
 			/// <summary>
 			///		Gets the unpacked items count.
@@ -806,9 +818,19 @@ namespace MsgPack
 			/// <value>
 			///		The unpacked items count.
 			/// </value>
-			public uint ItemsCount
+			public uint UnpackedItemsCount
 			{
 				get { return this._collectionContextStack.Peek().Unpacked; }
+			}
+
+			public bool IsArray
+			{
+				get { return this._collectionContextStack.Peek().Items != null; }
+			}
+
+			public bool IsMap
+			{
+				get { return this._collectionContextStack.Peek().Dictionary != null; }
 			}
 
 			/// <summary>
@@ -918,17 +940,16 @@ namespace MsgPack
 
 				private uint _unpacked;
 
-#if DEBUG
-				internal uint Capacity
+				public uint Capacity
 				{
 					get { return this._capacity; }
 				}
 
-				internal uint Unpacked
+				public uint Unpacked
 				{
 					get { return this._unpacked; }
 				}
-#endif
+
 				/// <summary>
 				///		Get the value which indicates <see cref="Items"/> are filled.
 				/// </summary>

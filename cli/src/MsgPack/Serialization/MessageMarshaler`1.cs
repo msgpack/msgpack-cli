@@ -59,10 +59,10 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
-			if ( !unpacker.Read() )
-			{
-				throw SerializationExceptions.NewUnexpectedEndOfStream();
-			}
+			//if ( !unpacker.Read() )
+			//{
+			//    throw SerializationExceptions.NewUnexpectedEndOfStream();
+			//}
 
 			if ( unpacker.Data.Value.IsNil )
 			{

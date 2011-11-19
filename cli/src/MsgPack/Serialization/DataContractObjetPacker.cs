@@ -47,6 +47,7 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewTypeIsNotSerializableBecauesNotDataContract( typeof( T ) );
 			}
 
+			// TODO: Pluggable
 			var builder = new EmittingMemberBinder<T>();
 			if ( !builder.CreateProcedures( SerializationMemberOption.OptIn, out this._packing, out this._unpacking ) )
 			{

@@ -34,7 +34,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected sealed override StringBuilder UnpackFromCore( Unpacker unpacker )
 		{
-			return new StringBuilder( unpacker.UnpackString() );
+			return new StringBuilder( unpacker.Data.Value.AsString() );
 		}
 	}
 }

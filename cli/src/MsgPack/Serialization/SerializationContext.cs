@@ -21,6 +21,7 @@
 using System;
 using System.Reflection;
 using System.ComponentModel;
+using System.Collections;
 
 namespace MsgPack.Serialization
 {
@@ -33,6 +34,8 @@ namespace MsgPack.Serialization
 	{
 		internal static readonly MethodInfo MarshalTo1Method = typeof( SerializationContext ).GetMethod( "MarshalTo" );
 		internal static readonly MethodInfo UnmarshalFrom1Method = typeof( SerializationContext ).GetMethod( "UnmarshalFrom" );
+		internal static readonly MethodInfo MarshalArrayTo1Method = typeof( SerializationContext ).GetMethod( "MarshalArrayTo" );
+		internal static readonly MethodInfo UnmarshalArrayTo1Method = typeof( SerializationContext ).GetMethod( "UnmarshalArrayTo" );
 
 		private readonly MarshalerRepository _marshalers;
 
@@ -88,9 +91,19 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-#warning コレクションに対する特別処置 -> EmitingMemberBuilder と処理を共通化
-
 			throw SerializationExceptions.NewValueCannotMarshal( typeof( T ) );
+		}
+
+		public void MarshalArrayTo<TCollection>( Packer packer, TCollection collection )
+		{
+			var arrayMarshaler = this._marshalers.GetArrayMarshaler<TCollection>( this._serializers );
+			if ( arrayMarshaler != null )
+			{
+				arrayMarshaler.MarshalTo( packer, collection, this );
+				return;
+			}
+
+			throw SerializationExceptions.NewValueCannotMarshal( typeof( TCollection ) );
 		}
 
 		/// <summary>
@@ -114,6 +127,19 @@ namespace MsgPack.Serialization
 			}
 
 			throw SerializationExceptions.NewValueCannotUnmarshal( typeof( T ) );
+		}
+
+
+		public void UnmarshalArrayTo<TCollection>( Unpacker unpacker, TCollection collection )
+		{
+			var arrayMarshaler = this._marshalers.GetArrayMarshaler<TCollection>( this._serializers );
+			if ( arrayMarshaler != null )
+			{
+				arrayMarshaler.UnmarshalTo( unpacker, collection, this );
+				return;
+			}
+
+			throw SerializationExceptions.NewValueCannotUnmarshal( typeof( TCollection ) );
 		}
 	}
 }

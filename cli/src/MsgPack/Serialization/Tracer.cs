@@ -25,12 +25,12 @@ namespace MsgPack.Serialization
 {
 	internal static class Tracer
 	{
-		public static readonly TraceSource Binding = new TraceSource( "MsgPack.Serialization.Binding" );
-		public static readonly TraceSource AutoMessagePackSerializer = new TraceSource( "MsgPack.Serialization.AutoMessagePackSerializer" );
+		public static readonly TraceSource Emit = new TraceSource( "MsgPack.Serialization.Emit" );
 
 		public static class EventId
 		{
 			public const int ILTrace = 101;
+			public const int DefineType = 102;
 			public const int NoAccessorFound = 901;
 			public const int MultipleAccessorFound = 902;
 			public const int ReadOnlyValueTypeMember = 903;
@@ -40,6 +40,7 @@ namespace MsgPack.Serialization
 		public static class EventType
 		{
 			public const TraceEventType ILTrace = TraceEventType.Verbose;
+			public const TraceEventType DefineType = TraceEventType.Verbose;
 			public const TraceEventType NoAccessorFound = TraceEventType.Verbose;
 			public const TraceEventType MultipleAccessorFound = TraceEventType.Verbose;
 			public const TraceEventType ReadOnlyValueTypeMember = TraceEventType.Verbose;

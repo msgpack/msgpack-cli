@@ -26,6 +26,6 @@ namespace MsgPack
 	{
 		PerEntry,
 		EntireTree,
-		CurrentDepthOnly
+		SubTree
 	}
 }

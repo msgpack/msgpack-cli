@@ -19,21 +19,21 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace MsgPack.Serialization.DefaultSerializers
+namespace MsgPack.Serialization
 {
-	internal sealed class System_UriMessageSerializer : MessagePackSerializer<Uri>
+	/// <summary>
+	///		Define generic factory methods for generic <see cref="ArrayMarshaler{TCollection}"/> classes.
+	/// </summary>
+	public static class ArrayMarshaler
 	{
-		public System_UriMessageSerializer() { }
-
-		protected sealed override void PackToCore( Packer packer, Uri objectTree )
+		public static ArrayMarshaler<T> Create<T>( MarshalerRepository marshalerRepository, SerializerRepository serializerRepository )
 		{
-			packer.PackString( objectTree.ToString() );
-		}
-
-		protected sealed override Uri UnpackFromCore( Unpacker unpacker )
-		{
-			return new Uri( unpacker.Data.Value.AsString() );
+			// TODO: Configurable
+			return new EmittingArrayMarshaler<T>();
 		}
 	}
 }

@@ -29,6 +29,7 @@ using System.Diagnostics;
 namespace MsgPack.Serialization
 {
 	[TestFixture]
+	[Timeout( 1000 )]
 	public class AutoMessagePackSerializerTest
 	{
 		private static bool _traceOn = true;
@@ -38,9 +39,21 @@ namespace MsgPack.Serialization
 		{
 			if ( _traceOn )
 			{
-				Tracer.AutoMessagePackSerializer.Listeners.Clear();
-				Tracer.AutoMessagePackSerializer.Switch.Level = SourceLevels.All;
-				Tracer.AutoMessagePackSerializer.Listeners.Add( new ConsoleTraceListener() );
+				DumpableSerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanDump;
+				//Tracer.Emit.Listeners.Clear();
+				//Tracer.Emit.Switch.Level = SourceLevels.All;
+				//Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+			}
+		}
+
+		[TearDown]
+		public void TearDown()
+		{
+			if ( _traceOn )
+			{
+				DumpableSerializationMethodGeneratorManager.DumpTo();
+				Console.WriteLine( "DumpAssemblyTo: {0}", Path.GetFullPath( "." ) );
+				DumpableSerializationMethodGeneratorManager.Refresh();
 			}
 		}
 
@@ -150,5 +163,15 @@ namespace MsgPack.Serialization
 				unpacked.Assert( buffer );
 			}
 		}
+
+		// TODO: IEnumerable...?
+		// TOOD: IDictionary
+		// TODO: ICollection
+		// TODO: int[]
+		// TOOD: List<T>
+		// TODO: Collection<T>
+		// TODO: ReadOnlyCollection<T>
+		// TODO: ConcurrentDictionary<T>
+		//   more
 	}
 }

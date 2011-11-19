@@ -72,7 +72,7 @@ namespace MsgPack
 			}
 		}
 
-		private static void ValidateIsNotNullNorEmpty( string value, string parameterName )
+		public static void ValidateIsNotNullNorEmpty( string value, string parameterName )
 		{
 			if ( value == null )
 			{

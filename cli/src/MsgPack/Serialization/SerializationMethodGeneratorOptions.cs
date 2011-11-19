@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -20,20 +20,21 @@
 
 using System;
 
-namespace MsgPack.Serialization.DefaultSerializers
+namespace MsgPack.Serialization
 {
-	internal sealed class System_UriMessageSerializer : MessagePackSerializer<Uri>
+	/// <summary>
+	///		Define options of <see cref="SerializationMethodGenerator"/>
+	/// </summary>
+	internal enum SerializationMethodGeneratorOption
 	{
-		public System_UriMessageSerializer() { }
+		/// <summary>
+		///		The generated method IL can be dumped to the other stream.
+		/// </summary>
+		CanDump,
 
-		protected sealed override void PackToCore( Packer packer, Uri objectTree )
-		{
-			packer.PackString( objectTree.ToString() );
-		}
-
-		protected sealed override Uri UnpackFromCore( Unpacker unpacker )
-		{
-			return new Uri( unpacker.Data.Value.AsString() );
-		}
+		/// <summary>
+		///		The entire generated method can be collected by GC when it is no longer used.
+		/// </summary>
+		CanCollect
 	}
 }
