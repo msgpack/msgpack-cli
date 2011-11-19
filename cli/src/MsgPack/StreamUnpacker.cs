@@ -66,15 +66,7 @@ namespace MsgPack
 
 		public bool HasMoreEntries
 		{
-			get
-			{
-				if ( this._collectionState.IsEmpty )
-				{
-					return false;
-				}
-
-				return this._collectionState.UnpackedItemsCount < this._collectionState.UnpackingItemsCount;
-			}
+			get { return this._collectionState.HasMoreEntries; }
 		}
 
 		public uint UnpackingItemsCount
@@ -343,7 +335,7 @@ namespace MsgPack
 						// Count
 						return this._collectionState.UnpackingItemsCount;
 					}
-					else 
+					else
 					{
 						Contract.Assert( oldCollectionItemOrRoot.HasValue );
 						return oldCollectionItemOrRoot.Value;
@@ -831,6 +823,21 @@ namespace MsgPack
 			public bool IsMap
 			{
 				get { return this._collectionContextStack.Peek().Dictionary != null; }
+			}
+
+			public bool HasMoreEntries
+			{
+				get
+				{
+					if ( this._collectionContextStack.Count == 0 )
+					{
+						return false;
+					}
+					else
+					{
+						return !this._collectionContextStack.Peek().IsFilled;
+					}
+				}
 			}
 
 			/// <summary>
