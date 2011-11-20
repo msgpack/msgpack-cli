@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
@@ -49,7 +50,6 @@ namespace MsgPack.Serialization
 
 		public void UnmarshalTo( Unpacker unpacker, TCollection collection, SerializationContext context )
 		{
-
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -64,6 +64,8 @@ namespace MsgPack.Serialization
 			{
 				throw new ArgumentNullException( "context" );
 			}
+
+			Contract.Assert( unpacker.IsArrayHeader );
 
 			this.UnmarshalCore( unpacker, collection, context );
 		}
