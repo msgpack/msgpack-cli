@@ -92,16 +92,21 @@ namespace MsgPack.Serialization
 						);
 				}
 
+				// Block to limit variable scope
 				{
-					var elementType = getEnumerator.ReturnType;
-					return
-						new CollectionTraits(
-							CollectionKind.Array,
-							GetAddMethod( source, elementType ),
-							getEnumerator,
-							null,
-							elementType
-						);
+					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.IsGenericType && @interface.GetGenericTypeDefinition().TypeHandle.Equals( typeof( IEnumerator<> ).TypeHandle ) );
+					if ( ienumetaorT != null )
+					{
+						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
+						return
+							new CollectionTraits(
+								CollectionKind.Array,
+								GetAddMethod( source, elementType ),
+								getEnumerator,
+								null,
+								elementType
+							);
+					}
 				}
 			}
 
