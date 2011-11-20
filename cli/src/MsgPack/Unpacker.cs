@@ -638,13 +638,18 @@ namespace MsgPack
 		/// <remarks>
 		///		This method is NOT direct API, so <see cref="Data"/> will NOT be invalidated.
 		/// </remarks>
-		public MessagePackObject? UnpackObject()
+		public MessagePackObject? TryUnpackObject()
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
 			return Unpacking.UnpackObject( this._currentSource.Stream );
+		}
+
+		public MessagePackObject UnpackObject()
+		{
+			return this.TryUnpackObject().Value;
 		}
 
 		public byte[] UnpackByteArray()
