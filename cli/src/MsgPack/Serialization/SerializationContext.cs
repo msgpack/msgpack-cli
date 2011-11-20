@@ -85,6 +85,16 @@ namespace MsgPack.Serialization
 			}
 
 			var serializer = this._serializers.Get<T>( this._marshalers );
+			if ( serializer == null )
+			{
+				// TODO: Configurable
+				serializer = new AutoMessagePackSerializer<T>( this._marshalers, this._serializers );
+				if ( !this._serializers.Register<T>( serializer ) )
+				{
+					serializer = this._serializers.Get<T>( this._marshalers );
+				}
+			}
+
 			if ( serializer != null )
 			{
 				serializer.PackTo( packer, value );
