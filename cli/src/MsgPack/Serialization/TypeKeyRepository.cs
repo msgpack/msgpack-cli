@@ -95,7 +95,7 @@ namespace MsgPack.Serialization
 
 			if ( matched != null )
 			{
-				return ( TEntry )matched;
+				return matched as TEntry;
 			}
 			else
 			{
