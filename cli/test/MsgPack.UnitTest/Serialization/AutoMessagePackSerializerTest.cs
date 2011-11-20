@@ -57,7 +57,6 @@ namespace MsgPack.Serialization
 				try
 				{
 					DumpableSerializationMethodGeneratorManager.DumpTo();
-					Console.WriteLine( "DumpAssemblyTo: {0}", Path.GetFullPath( "." ) );
 				}
 				finally
 				{
@@ -297,21 +296,8 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		// TODO: テストケースを網羅的にする。少なくとも以下の内容入れる。
-		// TODO: IEnumerable...?
-		// TOOD: IDictionary
-		// TODO: ICollection
-		// TODO: int[]
-		// TOOD: List<T>
-		// TODO: Collection<T>
-		// TODO: ReadOnlyCollection<T>
-		// TODO: ConcurrentDictionary<T>
-		//   more
-		// それぞれ、トップ、別オブジェクト、Array、Map　のキーと値でやる。
-		// 既定のマーシャラもテストする
-		// 明示的なリポジトリもテスト。
-		// そのあとは　RPC。
-		// まずは MPO でやる。基本は　Test First。
+		// TODO: nullable
+		// TODO: RPC
 		// TCP send -> TCP notify -> UDP send -> UDP notify
 		// 0.1 Async TCP Comm
 		// 0.2 Error
@@ -320,7 +306,5 @@ namespace MsgPack.Serialization
 		// 0.5 Silverlight
 		// 0.6 Extensibility
 		// 0.7 Improve error handling
-
-		// FIXME: NameValueCollection
 	}
 }
