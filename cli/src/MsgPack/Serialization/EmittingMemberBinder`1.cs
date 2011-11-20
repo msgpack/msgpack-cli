@@ -330,10 +330,11 @@ namespace MsgPack.Serialization
 			var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 			var collection = il.DeclareLocal( memberType, "collection" );
 #if DEBUG
-			Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ), traits.ElementType.FullName );
+			Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition()==typeof(KeyValuePair<,>)
+				||traits.ElementType == typeof( DictionaryEntry ) );
 #endif
-			var key = il.DeclareLocal( traits.ElementType.GetGenericArguments()[ 0 ], "key" );
-			var value = il.DeclareLocal( traits.ElementType.GetGenericArguments()[ 1 ], "value" );
+			var key =  il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject ), "key" );
+			var value = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject ), "value" );
 
 			Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
 			il.EmitAnyLdarg( 0 );
@@ -370,8 +371,19 @@ namespace MsgPack.Serialization
 					il0.EmitAnyStloc( value );
 
 					il0.EmitAnyLdloc( collection );
+
 					il0.EmitAnyLdloc( key );
+					if ( !traits.ElementType.IsGenericType )
+					{
+						il0.EmitBox( key.LocalType );
+					}
+
 					il0.EmitAnyLdloc( value );
+					if ( !traits.ElementType.IsGenericType )
+					{
+						il0.EmitBox( value.LocalType );
+					}
+
 					il0.EmitAnyCall( traits.AddMethod );
 					if ( traits.AddMethod.ReturnType != typeof( void ) )
 					{

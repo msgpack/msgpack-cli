@@ -49,11 +49,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected sealed override ArraySegment<T> UnpackFromCore( Unpacker unpacker )
 		{
 			T[] array = new T[ unpacker.ItemsCount ];
-			for ( int i = 0; i < array.Length; i++ )
-			{
-				array[ i ] = this._context.UnmarshalFrom<T>( unpacker );
-			}
-
+			this._context.UnmarshalArrayTo( unpacker, array );
 			return new ArraySegment<T>( array );
 		}
 	}
