@@ -37,6 +37,7 @@ namespace MsgPack.Serialization
 			typeof( DebuggableAttribute ).GetConstructor( new[] { typeof( bool ), typeof( bool ) } );
 		private static readonly object[] _debuggableAttributeCtorArguments = new object[] { true, true };
 		private static int _assemblySequence = -1;
+		private int _typeSequence = -1;
 
 		private static DumpableSerializationMethodGeneratorManager _instance = new DumpableSerializationMethodGeneratorManager();
 
@@ -95,7 +96,7 @@ namespace MsgPack.Serialization
 
 		protected sealed override SerializationMethodGenerator CreateGeneratorCore( string operation, Type targetType, string targetMemberName, Type returnType, params Type[] parameterTypes )
 		{
-			return new DumpableSerializationMethodGenerator( this._module, operation, targetType, targetMemberName, returnType, parameterTypes );
+			return new DumpableSerializationMethodGenerator( this._module, Interlocked.Increment( ref this._typeSequence ), operation, targetType, targetMemberName, returnType, parameterTypes );
 		}
 
 		private void DumpToCore()
@@ -108,15 +109,14 @@ namespace MsgPack.Serialization
 		/// </summary>
 		private sealed class DumpableSerializationMethodGenerator : SerializationMethodGenerator
 		{
-			private static int _Typesequence;
 			private MethodInfo _runtimeMethodInfo;
 			private readonly TypeBuilder _typeBuilder;
 			private readonly MethodBuilder _methodBuilder;
 
-			public DumpableSerializationMethodGenerator( ModuleBuilder host, string operation, Type targetType, string targetMemberName, Type returnType, Type[] parameterTypes )
+			public DumpableSerializationMethodGenerator( ModuleBuilder host, int sequence, string operation, Type targetType, string targetMemberName, Type returnType, Type[] parameterTypes )
 			{
 				string methodName = Emittion.BuildMethodName( operation, targetType, targetMemberName );
-				string typeName = String.Join( Type.Delimiter.ToString(), typeof( DumpableSerializationMethodGenerator ).Namespace, "Generated", methodName + "_Holder" + Interlocked.Increment( ref _Typesequence ) );
+				string typeName = String.Join( Type.Delimiter.ToString(), typeof( DumpableSerializationMethodGenerator ).Namespace, "Generated", methodName + "_Holder" + sequence );
 				Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}::{1}", methodName, typeName );
 				this._typeBuilder =
 					host.DefineType(
