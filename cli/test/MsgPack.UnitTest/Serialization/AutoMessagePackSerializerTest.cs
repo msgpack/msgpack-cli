@@ -193,6 +193,33 @@ namespace MsgPack.Serialization
 				return;
 			}
 
+			if ( expected is DateTime )
+			{
+				Assert.That(
+					MillisecondsDateTimeComparer.Instance.Equals( ( DateTime )( object )expected, ( DateTime )( object )actual ),
+					"Expected:{1}({2}){0}Actual :{3}({4})",
+					Environment.NewLine,
+					expected,
+					expected == null ? "(null)" : expected.GetType().FullName,
+					actual,
+					actual == null ? "(null)" : actual.GetType().FullName
+					);
+				return;
+			}
+			else if ( expected is DateTimeOffset )
+			{
+				Assert.That(
+					MillisecondsDateTimeOffsetComparer.Instance.Equals( ( DateTimeOffset )( object )expected, ( DateTimeOffset )( object )actual ),
+				"Expected:{1}({2}){0}Actual :{3}({4})",
+				Environment.NewLine,
+				expected,
+				expected == null ? "(null)" : expected.GetType().FullName,
+				actual,
+				actual == null ? "(null)" : actual.GetType().FullName
+				);
+				return;
+			}
+
 			if ( expected is IEnumerable )
 			{
 				var expecteds = ( ( IEnumerable )expected ).Cast<Object>().ToArray();
@@ -200,62 +227,7 @@ namespace MsgPack.Serialization
 				Assert.That( expecteds.Length, Is.EqualTo( actuals.Length ) );
 				for ( int i = 0; i < expecteds.Length; i++ )
 				{
-					if ( expecteds[ i ] is DateTime )
-					{
-						Assert.That(
-							MillisecondsDateTimeComparer.Instance.Equals( ( DateTime )expecteds[ i ], ( DateTime )actuals[ i ] ),
-							"Expected:[{2}]({3})[{1}]->{4}({5}){0}Actual :[{6}]({7})[{1}]->87}({9})",
-							Environment.NewLine,
-							i,
-							String.Join( ", ", ( ( IEnumerable )expected ).Cast<Object>() ),
-							expected == null ? "(null)" : expected.GetType().FullName,
-							expecteds[ i ],
-							expecteds[ i ] == null ? "(null)" : expecteds[ i ].GetType().FullName,
-							String.Join( ", ", ( ( IEnumerable )actual ).Cast<Object>() ),
-							actual == null ? "(null)" : actual.GetType().FullName,
-							actuals[ i ],
-							actuals[ i ] == null ? "(null)" : actuals[ i ].GetType().FullName
-						);
-					}
-					else if ( expecteds[ i ] is DateTimeOffset )
-					{
-						Assert.That(
-							MillisecondsDateTimeOffsetComparer.Instance.Equals( ( DateTimeOffset )expecteds[ i ], ( DateTimeOffset )actuals[ i ] ),
-							"Expected:[{2}]({3})[{1}]->{4}({5}){0}Actual :[{6}]({7})[{1}]->{8}({9})",
-							Environment.NewLine,
-							i,
-							String.Join( ", ", ( ( IEnumerable )expected ).Cast<Object>() ),
-							expected == null ? "(null)" : expected.GetType().FullName,
-							expecteds[ i ],
-							expecteds[ i ] == null ? "(null)" : expecteds[ i ].GetType().FullName,
-							String.Join( ", ", ( ( IEnumerable )actual ).Cast<Object>() ),
-							actual == null ? "(null)" : actual.GetType().FullName,
-							actuals[ i ],
-							actuals[ i ] == null ? "(null)" : actuals[ i ].GetType().FullName
-						);
-					}
-					else if ( expecteds[ i ] is IEnumerable )
-					{
-						Verify( expecteds[ i ], actuals[ i ] );
-					}
-					else
-					{
-						Assert.That(
-							expecteds[ i ],
-							Is.EqualTo( actuals[ i ] ),
-							"Expected:[{2}]({3})[{1}]->{4}({5}){0}Actual :[{6}]({7})[{1}]->{8}({9})",
-							Environment.NewLine,
-							i,
-							String.Join( ", ", ( ( IEnumerable )expected ).Cast<Object>() ),
-							expected == null ? "(null)" : expected.GetType().FullName,
-							expecteds[ i ],
-							expecteds[ i ] == null ? "(null)" : expecteds[ i ].GetType().FullName,
-							String.Join( ", ", ( ( IEnumerable )actual ).Cast<Object>() ),
-							actual == null ? "(null)" : actual.GetType().FullName,
-							actuals[ i ],
-							actuals[ i ] == null ? "(null)" : actuals[ i ].GetType().FullName
-						);
-					}
+					Verify( expecteds[ i ], actuals[ i ] );
 				}
 				return;
 			}
@@ -276,7 +248,7 @@ namespace MsgPack.Serialization
 
 			Assert.That(
 				EqualityComparer<T>.Default.Equals( expected, actual ),
-					"Expected:{1}({2}){0}Actual :{3}({4})",
+				"Expected:{1}({2}){0}Actual :{3}({4})",
 				Environment.NewLine,
 				expected,
 				expected == null ? "(null)" : expected.GetType().FullName,
