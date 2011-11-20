@@ -24,6 +24,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Diagnostics.Contracts;
 using System.Collections;
+using MsgPack.Serialization.DefaultMarshalers;
 
 namespace MsgPack.Serialization
 {
@@ -59,6 +60,11 @@ namespace MsgPack.Serialization
 
 		public MessageMarshaler<T> Get<T>( SerializerRepository serializerRepository )
 		{
+			if ( typeof( T ).IsEnum )
+			{
+				return new EnumMarshaler<T>();
+			}
+
 			return this._repository.Get<T, MessageMarshaler<T>>( this, serializerRepository ?? SerializerRepository.Default );
 		}
 
@@ -111,6 +117,7 @@ namespace MsgPack.Serialization
 			get { return _default; }
 		}
 
+		[Obsolete]
 		internal static MethodInfo GetFastMarshalMethod( Type valueType )
 		{
 			MethodInfo result;
@@ -118,6 +125,7 @@ namespace MsgPack.Serialization
 			return result;
 		}
 
+		[Obsolete]
 		internal static Action<Packer, T> GetFastMarshalDelegate<T>()
 		{
 			var method = GetFastMarshalMethod( typeof( T ) );
@@ -138,6 +146,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Obsolete]
 		internal static MethodInfo GetFastUnmarshalMethod( Type valueType )
 		{
 			MethodInfo result;
@@ -145,7 +154,8 @@ namespace MsgPack.Serialization
 			return result;
 		}
 
-		internal static Func<Unpacker, T> GetFastUnmarshalDelegate<T>()
+		[Obsolete]
+		internal static Func<MessagePackObject, T> GetFastUnmarshalDelegate<T>()
 		{
 			var method = GetFastUnmarshalMethod( typeof( T ) );
 			if ( method == null )
@@ -153,7 +163,7 @@ namespace MsgPack.Serialization
 				return null;
 			}
 
-			return Delegate.CreateDelegate( typeof( Func<Unpacker, T> ), null, method ) as Func<Unpacker, T>;
+			return Delegate.CreateDelegate( typeof( Func<MessagePackObject, T> ), null, method ) as Func<MessagePackObject, T>;
 		}
 	}
 }
