@@ -68,54 +68,6 @@ namespace MsgPack.Serialization
 foreach( Type __action in __actions )
 {
 #>
-		public static MethodInfo ToInstanceMethod<#= GetCSharpGenericArgumentsToken( __action ) #>( Expression< <#= ToCSharpToken( __action ) #> > source )
-		{
-			return ToInstanceMethodCore( source );
-		}
-<#
-}
-#>
-
-<#
-foreach( Type __func in __funcs )
-{
-#>
-		public static MethodInfo ToInstanceMethod<#= GetCSharpGenericArgumentsToken( __func ) #>( Expression< <#= ToCSharpToken( __func ) #> > source )
-		{
-			return ToInstanceMethodCore( source );
-		}
-<#
-}
-#>
-
-<#
-foreach( Type __action in __actions )
-{
-#>
-		public static MethodInfo ToStaticMethod<#= GetCSharpGenericArgumentsToken( __action ) #>( Expression< <#= ToCSharpToken( __action ) #> > source )
-		{
-			return ToStaticMethodCore( source );
-		}
-<#
-}
-#>
-
-<#
-foreach( Type __func in __funcs )
-{
-#>
-		public static MethodInfo ToStaticMethod<#= GetCSharpGenericArgumentsToken( __func ) #>( Expression< <#= ToCSharpToken( __func ) #> > source )
-		{
-			return ToStaticMethodCore( source );
-		}
-<#
-}
-#>
-
-<#
-foreach( Type __action in __actions )
-{
-#>
 		public static MethodInfo ToMethod<#= GetCSharpGenericArgumentsToken( __action ) #>( Expression< <#= ToCSharpToken( __action ) #> > source )
 		{
 			return ToMethodCore( source );
