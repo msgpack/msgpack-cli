@@ -54,9 +54,15 @@ namespace MsgPack.Serialization
 		{
 			if ( _traceOn )
 			{
-				DumpableSerializationMethodGeneratorManager.DumpTo();
-				Console.WriteLine( "DumpAssemblyTo: {0}", Path.GetFullPath( "." ) );
-				DumpableSerializationMethodGeneratorManager.Refresh();
+				try
+				{
+					DumpableSerializationMethodGeneratorManager.DumpTo();
+					Console.WriteLine( "DumpAssemblyTo: {0}", Path.GetFullPath( "." ) );
+				}
+				finally
+				{
+					DumpableSerializationMethodGeneratorManager.Refresh();
+				}
 			}
 		}
 
