@@ -77,6 +77,46 @@ namespace MsgPack.Serialization
 			return ( unpacker, context ) => target( unpacker );
 		}
 
+		public static Func<Unpacker, SerializationContext, T> Unpack<T>( Func<MessagePackObject, T> target )
+		{
+			if ( typeof( T ).IsValueType && !( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
+			{
+				return
+					( unpacker, context ) =>
+					{
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						if ( unpacker.Data.Value.IsNil )
+						{
+							throw SerializationExceptions.NewValiueTypeCannotBeNull( typeof( T ) );
+						}
+
+						return target( unpacker.Data.Value );
+					};
+			}
+			else
+			{
+				return
+					( unpacker, context ) =>
+					{
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						if ( unpacker.Data.Value.IsNil )
+						{
+							return default( T );
+						}
+
+						return target( unpacker.Data.Value );
+					};
+			}
+		}
+
 		public static Func<Unpacker, SerializationContext, T> UnpackObject<T>( SerlializingMember[] entries, Action<Unpacker, T, SerializationContext>[] unpackings )
 		{
 			var ctor = Construct<T>();
@@ -124,11 +164,6 @@ namespace MsgPack.Serialization
 			return
 				( unpacker, context ) =>
 				{
-					if ( !unpacker.Read() )
-					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
-					}
-
 					return target( unpacker );
 				};
 		}
@@ -141,11 +176,6 @@ namespace MsgPack.Serialization
 				return
 					( unpacker, context ) =>
 					{
-						if ( !unpacker.Read() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
-
 						var array = ctor( unpacker.Data.Value.AsUInt32() );
 						target( unpacker, array, context );
 						return array;
@@ -157,11 +187,6 @@ namespace MsgPack.Serialization
 				return
 					( unpacker, context ) =>
 					{
-						if ( !unpacker.Read() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
-
 						var collection = ctor();
 						target( unpacker, collection, context );
 						return collection;
