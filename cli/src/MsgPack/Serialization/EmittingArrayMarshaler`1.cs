@@ -141,6 +141,7 @@ namespace MsgPack.Serialization
 				il.EmitLdlen();
 				il.EmitAnyStloc( length );
 				il.EmitAnyLdarg( 0 );
+				il.EmitAnyLdloc( length );
 				il.EmitAnyCall( _packerPackArrayHeader );
 				il.EmitPop();
 				Emittion.EmitFor(
