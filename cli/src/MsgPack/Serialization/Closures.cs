@@ -19,11 +19,9 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Linq.Expressions;
+using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq.Expressions;
 
 namespace MsgPack.Serialization
 {
@@ -31,6 +29,8 @@ namespace MsgPack.Serialization
 	{
 		public static Func<T> Construct<T>()
 		{
+			Contract.Assert( !typeof( T ).IsArray );
+
 			if ( typeof( T ).IsValueType )
 			{
 				return () => default( T );
@@ -45,11 +45,18 @@ namespace MsgPack.Serialization
 			return Expression.Lambda<Func<T>>( Expression.New( ctor ) ).Compile();
 		}
 
-		public static Action<Packer,T,SerializationContext> Pack<T>( Action<Packer,T> target )
+		public static Func<uint, T> CreateArray<T>()
+		{
+			Contract.Assert( typeof( T ).IsArray );
+			var length = Expression.Parameter( typeof( uint ), "length" );
+			return Expression.Lambda<Func<uint, T>>( Expression.NewArrayBounds( typeof( T ).GetElementType(), length ), length ).Compile();
+		}
+
+		public static Action<Packer, T, SerializationContext> Pack<T>( Action<Packer, T> target )
 		{
 			return ( packer, value, context ) => target( packer, value );
 		}
-		
+
 		public static Action<Packer, T, SerializationContext> PackObject<T>( SerlializingMember[] entries, Action<Packer, T, SerializationContext>[] packings )
 		{
 			return
@@ -69,7 +76,7 @@ namespace MsgPack.Serialization
 		{
 			return ( unpacker, context ) => target( unpacker );
 		}
-		
+
 		public static Func<Unpacker, SerializationContext, T> UnpackObject<T>( SerlializingMember[] entries, Action<Unpacker, T, SerializationContext>[] unpackings )
 		{
 			var ctor = Construct<T>();
@@ -125,22 +132,41 @@ namespace MsgPack.Serialization
 					return target( unpacker );
 				};
 		}
-		
-		public static Func<Unpacker,SerializationContext ,T> UnpackWithForwarding<T>( Action<Unpacker,T,SerializationContext> target )
-		{
-			var ctor = Construct<T>();
-			return
-				( unpacker, context ) =>
-				{
-					if ( !unpacker.Read() )
-					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
-					}
 
-					var collection = ctor();
-					target( unpacker, collection, context );
-					return collection;
-				};
+		public static Func<Unpacker, SerializationContext, T> UnpackWithForwarding<T>( Action<Unpacker, T, SerializationContext> target )
+		{
+			if ( typeof( T ).IsArray )
+			{
+				var ctor = CreateArray<T>();
+				return
+					( unpacker, context ) =>
+					{
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						var array = ctor( unpacker.Data.Value.AsUInt32() );
+						target( unpacker, array, context );
+						return array;
+					};
+			}
+			else
+			{
+				var ctor = Construct<T>();
+				return
+					( unpacker, context ) =>
+					{
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						var collection = ctor();
+						target( unpacker, collection, context );
+						return collection;
+					};
+			}
 		}
 	}
 }
