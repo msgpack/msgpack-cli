@@ -46,7 +46,7 @@ namespace MsgPack.Serialization
 		/// <returns>Name of the method.</returns>
 		public static string BuildMethodName( string operation, Type targetType, string targetMemberName )
 		{
-			return String.Join( "_", operation, targetType.FullName.Replace( Type.Delimiter, '_' ), targetMemberName );
+			return String.Join( "_", operation, targetType.GetFullName().Replace( Type.Delimiter, '_' ).Replace( '`', '_' ).Replace( '[', '_' ).Replace( ']', '_' ), targetMemberName );
 		}
 
 		/// <summary>
