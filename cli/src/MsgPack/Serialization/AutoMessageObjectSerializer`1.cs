@@ -61,6 +61,14 @@ namespace MsgPack.Serialization
 				return;
 			}
 
+			var arrayMarshaler = this._context.Marshalers.GetArrayMarshaler<T>( this._context.Serializers );
+			if ( arrayMarshaler != null )
+			{
+				this._packing = arrayMarshaler.MarshalTo;
+				this._unpacking = Closures.UnpackWithForwarding<T>( arrayMarshaler.UnmarshalTo );
+				return;
+			}
+
 			var marshaler = this._context.Marshalers.Get<T>( this._context.Serializers );
 			if ( marshaler != null )
 			{
