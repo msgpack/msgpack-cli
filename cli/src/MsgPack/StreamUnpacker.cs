@@ -120,7 +120,6 @@ namespace MsgPack
 		/// </remarks>
 		public MessagePackObject? Unpack( Stream source, UnpackingMode unpackingMode )
 		{
-#warning UnpackingMode
 			// FIXME:BULK LOAD
 			Contract.Assert( source != null );
 
