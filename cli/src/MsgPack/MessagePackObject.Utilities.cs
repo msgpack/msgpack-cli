@@ -1121,6 +1121,12 @@ namespace MsgPack
 			}
 		}
 
+		public char[] AsCharArray()
+		{
+			// TODO: More efficient
+			return this.AsString().ToCharArray();
+		}
+
 		#endregion -- Primitive Type Conversion Methods --
 
 		#region -- Container Type Conversion Methods --
