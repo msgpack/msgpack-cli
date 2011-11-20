@@ -116,54 +116,5 @@ namespace MsgPack.Serialization
 		{
 			get { return _default; }
 		}
-
-		[Obsolete]
-		internal static MethodInfo GetFastMarshalMethod( Type valueType )
-		{
-			MethodInfo result;
-			_factMarshalers.TryGetValue( valueType, out result );
-			return result;
-		}
-
-		[Obsolete]
-		internal static Action<Packer, T> GetFastMarshalDelegate<T>()
-		{
-			var method = GetFastMarshalMethod( typeof( T ) );
-			if ( method == null )
-			{
-				return null;
-			}
-
-			if ( method.ReturnType == typeof( void ) )
-			{
-				return Delegate.CreateDelegate( typeof( Action<Packer, T> ), null, method ) as Action<Packer, T>;
-			}
-			else
-			{
-				Contract.Assert( method.ReturnType == typeof( Packer ) );
-				var func = Delegate.CreateDelegate( typeof( Func<Packer, T, Packer> ), null, method ) as Func<Packer, T, Packer>;
-				return ( packer, value ) => func( packer, value );
-			}
-		}
-
-		[Obsolete]
-		internal static MethodInfo GetFastUnmarshalMethod( Type valueType )
-		{
-			MethodInfo result;
-			_factUnmarshalers.TryGetValue( valueType, out result );
-			return result;
-		}
-
-		[Obsolete]
-		internal static Func<MessagePackObject, T> GetFastUnmarshalDelegate<T>()
-		{
-			var method = GetFastUnmarshalMethod( typeof( T ) );
-			if ( method == null )
-			{
-				return null;
-			}
-
-			return Delegate.CreateDelegate( typeof( Func<MessagePackObject, T> ), null, method ) as Func<MessagePackObject, T>;
-		}
 	}
 }

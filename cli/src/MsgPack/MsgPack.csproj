@@ -214,11 +214,6 @@
     <Compile Include="Serialization\SerializerRepository.cs" />
     <Compile Include="Serialization\DefaultMarshalers\System_Runtime_InteropServices_ComTypes_FILETIMEMessageMarshaler.cs" />
     <Compile Include="Serialization\Tracer.cs" />
-    <Compile Include="Serialization\MarshalerRepository.fasts.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MarshalerRepository.fasts.tt</DependentUpon>
-    </Compile>
     <Compile Include="Serialization\TypeKeyRepository.cs" />
     <Compile Include="SetOperation.cs" />
     <Compile Include="StreamPacker.cs" />
@@ -266,10 +261,6 @@
     <None Include="Serialization\FromExpression.ToMethod.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FromExpression.ToMethod.cs</LastGenOutput>
-    </None>
-    <None Include="Serialization\MarshalerRepository.fasts.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MarshalerRepository.fasts.cs</LastGenOutput>
     </None>
     <None Include="Serialization\MarshalerRepository.defaults.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
