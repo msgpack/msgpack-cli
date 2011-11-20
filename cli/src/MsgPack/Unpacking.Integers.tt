@@ -130,7 +130,7 @@ foreach( var __type in __integerTypes )
 <#
 	}
 #>
-		public static UnpackArrayResult<<#= __type.Name #>> Unpack<#= __type.Name #>( <#= __sourceType #> source )
+		public static UnpackingResult<<#= __type.Name #>> Unpack<#= __type.Name #>( <#= __sourceType #> source )
 		{
 			return Unpack<#= __type.Name #>( source, 0 );
 		}
@@ -180,7 +180,7 @@ foreach( var __type in __integerTypes )
 	String __returnType;
 	if( __sourceType == "byte[]" )
 	{
-		__returnType = "UnpackArrayResult<" + __type.Name + ">";
+		__returnType = "UnpackingResult<" + __type.Name + ">";
 #>
 		public static <#= __returnType #> Unpack<#= __type.Name #>( <#= __sourceType #> source, int offset )
 <#
@@ -1013,7 +1013,7 @@ foreach( var __sourceType in __sourceTypes )
 		case "byte[]" :
 		{
 #>
-		internal static UnpackArrayResult<<#= __type.Name #>>? TryUnpack<#= __type.Name #>( byte[] source, int offset )
+		internal static UnpackingResult<<#= __type.Name #>>? TryUnpack<#= __type.Name #>( byte[] source, int offset )
 		{
 			if( source.Length <= offset )
 			{
@@ -1037,7 +1037,7 @@ foreach( var __sourceType in __sourceTypes )
 		if( __sourceType == "byte[]" )
 		{
 #>
-				return new UnpackArrayResult<byte>( ( byte )typeCode, 1 );
+				return new UnpackingResult<byte>( ( byte )typeCode, 1 );
 <#
 		}
 		else
@@ -1060,7 +1060,7 @@ foreach( var __sourceType in __sourceTypes )
 		if( __sourceType == "byte[]" )
 		{
 #>
-				return new UnpackArrayResult<sbyte>( ( sbyte )typeCode, 1 );
+				return new UnpackingResult<sbyte>( ( sbyte )typeCode, 1 );
 <#
 		}
 		else
@@ -1083,7 +1083,7 @@ foreach( var __sourceType in __sourceTypes )
 		if( __sourceType == "byte[]" )
 		{
 #>
-			return new UnpackArrayResult<<#= __type.Name #>>( Unpack<#= __type.Name #>Body( source, offset + 1 ), sizeof( <#= __csharpPrimitives[ __type ] #> ) + 1 );
+			return new UnpackingResult<<#= __type.Name #>>( Unpack<#= __type.Name #>Body( source, offset + 1 ), sizeof( <#= __csharpPrimitives[ __type ] #> ) + 1 );
 		}
 
 		private static <#= __type.Name #> Unpack<#= __type.Name #>Body( <#= __sourceType #> source, int offset )

@@ -107,7 +107,7 @@ foreach( var __sourceType in __sourceTypes )
 		/// <returns>Converted <see cref="Single"/>.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Single"/>.</exception>
-		public static UnpackArrayResult<Single> UnpackSingle( byte[] source )
+		public static UnpackingResult<Single> UnpackSingle( byte[] source )
 		{
 			return UnpackSingle( source, 0 );
 		}
@@ -135,7 +135,7 @@ foreach( var __sourceType in __sourceTypes )
 	String __returnType;
 	if( __sourceType == "byte[]" )
 	{
-		__returnType = "UnpackArrayResult<Single>";
+		__returnType = "UnpackingResult<Single>";
 #>
 		public static <#= __returnType #> UnpackSingle( <#= __sourceType #> source, int offset )
 <#
@@ -204,7 +204,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-					return new UnpackArrayResult<Single>( ReadSingle( source, offset + 1 ), sizeof( float ) + 1 );
+					return new UnpackingResult<Single>( ReadSingle( source, offset + 1 ), sizeof( float ) + 1 );
 <#
 	}
 	else
@@ -240,7 +240,7 @@ foreach( var __sourceType in __sourceTypes )
 		/// <returns>Converted <see cref="Double"/>.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not compatible for <see cref="Double"/>.</exception>
-		public static UnpackArrayResult<Double> UnpackDouble( byte[] source )
+		public static UnpackingResult<Double> UnpackDouble( byte[] source )
 		{
 			return UnpackDouble( source, 0 );
 		}
@@ -268,7 +268,7 @@ foreach( var __sourceType in __sourceTypes )
 	String __returnType;
 	if( __sourceType == "byte[]" )
 	{
-		__returnType = "UnpackArrayResult<Double>";
+		__returnType = "UnpackingResult<Double>";
 #>
 		public static <#= __returnType #> UnpackDouble( <#= __sourceType #> source, int offset )
 <#
@@ -337,7 +337,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-					return new UnpackArrayResult<Double>( ReadSingle( source, offset + 1 ), sizeof( float ) + 1 );
+					return new UnpackingResult<Double>( ReadSingle( source, offset + 1 ), sizeof( float ) + 1 );
 <#
 	}
 	else
@@ -354,7 +354,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-					return new UnpackArrayResult<Double>( ReadDouble( source, offset + 1 ), sizeof( double ) + 1 );
+					return new UnpackingResult<Double>( ReadDouble( source, offset + 1 ), sizeof( double ) + 1 );
 <#
 	}
 	else
@@ -390,7 +390,7 @@ foreach( var __sourceType in __sourceTypes )
 		/// <returns>Converted null instance.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<Object> UnpackNull( byte[] source )
+		public static UnpackingResult<Object> UnpackNull( byte[] source )
 		{
 			return UnpackNull( source, 0 );
 		}
@@ -418,7 +418,7 @@ foreach( var __sourceType in __sourceTypes )
 	String __returnType;
 	if( __sourceType == "byte[]" )
 	{
-		__returnType = "UnpackArrayResult<Object>";
+		__returnType = "UnpackingResult<Object>";
 #>
 		public static <#= __returnType #> UnpackNull( <#= __sourceType #> source, int offset )
 		{
@@ -587,7 +587,7 @@ foreach( var __sourceType in __sourceTypes )
 		/// <returns>Converted <see cref="Boolean"/> value.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<Boolean> UnpackBoolean( byte[] source )
+		public static UnpackingResult<Boolean> UnpackBoolean( byte[] source )
 		{
 			return UnpackBoolean( source, 0 );
 		}
@@ -615,7 +615,7 @@ foreach( var __sourceType in __sourceTypes )
 	{
 #>
 		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
-		public static UnpackArrayResult<bool> UnpackBoolean( <#= __sourceType #> source, int offset )
+		public static UnpackingResult<bool> UnpackBoolean( <#= __sourceType #> source, int offset )
 <#
 	}
 	else
@@ -681,7 +681,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-				return new UnpackArrayResult<bool>( false, 1 );
+				return new UnpackingResult<bool>( false, 1 );
 <#
 	}
 	else
@@ -700,7 +700,7 @@ foreach( var __sourceType in __sourceTypes )
 	if( __sourceType == "byte[]" )
 	{
 #>
-				return new UnpackArrayResult<bool>( true, 1 );
+				return new UnpackingResult<bool>( true, 1 );
 <#
 	}
 	else
@@ -732,7 +732,7 @@ foreach( var __sourceType in __sourceTypes )
 		/// <returns>Converted array length value.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<long> UnpackArrayLength( byte[] source )
+		public static UnpackingResult<long> UnpackArrayLength( byte[] source )
 		{
 			return UnpackArrayLength( source, 0 );
 		}
@@ -759,7 +759,7 @@ foreach( var __sourceType in __sourceTypes )
 	String __returnType;
 	if( __sourceType == "byte[]" )
 	{
-		__returnType = "UnpackArrayResult<Int64>";
+		__returnType = "UnpackingResult<Int64>";
 #>
 		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
 		public static <#= __returnType #> UnpackArrayLength( <#= __sourceType #> source, int offset )
@@ -910,7 +910,7 @@ foreach( var __sourceType in __sourceTypes )
 		/// <returns>Converted map count value.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<long> UnpackDictionaryCount( byte[] source )
+		public static UnpackingResult<long> UnpackDictionaryCount( byte[] source )
 		{
 			return UnpackDictionaryCount( source, 0 );
 		}
@@ -937,7 +937,7 @@ foreach( var __sourceType in __sourceTypes )
 	String __returnType;
 	if( __sourceType == "byte[]" )
 	{
-		__returnType = "UnpackArrayResult<Int64>";
+		__returnType = "UnpackingResult<Int64>";
 #>
 		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
 		public static <#= __returnType #> UnpackDictionaryCount( <#= __sourceType #> source, int offset )
@@ -1089,7 +1089,7 @@ foreach( var __sourceType in __sourceTypes )
 		/// <returns>Converted raw length value.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 		/// <exception cref="MessageTypeException">Read value from <paramref name="source"/> is not nil.</exception>
-		public static UnpackArrayResult<Int64> UnpackRawLength( byte[] source )
+		public static UnpackingResult<Int64> UnpackRawLength( byte[] source )
 		{
 			return UnpackRawLength( source, 0 );
 		}
@@ -1116,7 +1116,7 @@ foreach( var __sourceType in __sourceTypes )
 	String __returnType;
 	if( __sourceType == "byte[]" )
 	{
-		__returnType = "UnpackArrayResult<Int64>";
+		__returnType = "UnpackingResult<Int64>";
 #>
 		/// <exception cref="MessageTypeException"><paramref name="source"/> is not <see cref="Boolean"/>.</exception>
 		public static <#= __returnType #> UnpackRawLength( <#= __sourceType #> source, int offset )

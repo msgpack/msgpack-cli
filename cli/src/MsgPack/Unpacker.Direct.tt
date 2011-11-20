@@ -104,7 +104,7 @@ foreach( var __type in __types )
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			return Unpacking.Unpack<#= __type.Name #>( this._source.Stream );
+			return Unpacking.Unpack<#= __type.Name #>( this._currentSource.Stream );
 		}
 <#
 }
