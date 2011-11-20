@@ -43,7 +43,7 @@ namespace MsgPack.Serialization
 		public TypeKeyRepository( TypeKeyRepository copiedFrom )
 		{
 			this._lock = new ReaderWriterLockSlim( LockRecursionPolicy.NoRecursion );
-			if ( copiedFrom != null )
+			if ( copiedFrom == null )
 			{
 				this._table = new Dictionary<RuntimeTypeHandle, object>();
 			}
