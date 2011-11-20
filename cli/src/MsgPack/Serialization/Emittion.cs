@@ -26,6 +26,7 @@ using NLiblet.Reflection;
 using System.Reflection.Emit;
 using System.Reflection;
 using System.Diagnostics.Contracts;
+using System.Collections;
 
 namespace MsgPack.Serialization
 {
@@ -36,6 +37,10 @@ namespace MsgPack.Serialization
 		private static readonly PropertyInfo _unpackerIsMapHeaderProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsMapHeader );
 		private static readonly PropertyInfo _unpackerIsArrayHeaderProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsArrayHeader );
 		private static readonly MethodInfo _unpackerReadMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
+		private static readonly PropertyInfo _unpackerDataProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.Data );
+		private static readonly PropertyInfo _nullableMessagePackObjectValueProperty = FromExpression.ToProperty( ( MessagePackObject? value ) => value.Value );
+		private static readonly PropertyInfo _messagePackObjectIsNilProperty = FromExpression.ToProperty( ( MessagePackObject value ) => value.IsNil );
+		private static readonly MethodInfo _ienumeratorMoveNextMethod = FromExpression.ToMethod( ( IEnumerator enumerator ) => enumerator.MoveNext() );
 
 		/// <summary>
 		///		Builds the name of the generating method.
@@ -46,7 +51,7 @@ namespace MsgPack.Serialization
 		/// <returns>Name of the method.</returns>
 		public static string BuildMethodName( string operation, Type targetType, string targetMemberName )
 		{
-			return String.Join( "_", operation, targetType.GetFullName().Replace( Type.Delimiter, '_' ).Replace( '`', '_' ).Replace( '[', '_' ).Replace( ']', '_' ), targetMemberName );
+			return String.Join( "_", operation, targetType.GetFullName().Replace( "[]", "Array" ).Replace( Type.Delimiter, '_' ).Replace( '`', '_' ).Replace( '[', '_' ).Replace( ']', '_' ), targetMemberName );
 		}
 
 		/// <summary>
@@ -102,7 +107,17 @@ namespace MsgPack.Serialization
 			var startLoop = il.DefineLabel( "START_LOOP" );
 			il.MarkLabel( startLoop );
 			var endLoop = il.DefineLabel( "END_LOOP" );
-			var moveNextMethod = traits.GetEnumeratorMethod.ReturnType.GetMethod( "MoveNext", Type.EmptyTypes );
+			var enumeratorType = traits.GetEnumeratorMethod.ReturnType;
+			MethodInfo moveNextMethod;
+			if ( enumeratorType.IsInterface && enumeratorType.IsGenericType && enumeratorType.GetGenericTypeDefinition() == typeof( IEnumerator<> ) )
+			{
+				moveNextMethod = _ienumeratorMoveNextMethod;
+			}
+			else
+			{
+				moveNextMethod = enumeratorType.GetMethod( "MoveNext", Type.EmptyTypes );
+			}
+
 			if ( moveNextMethod.ReturnType != typeof( bool ) )
 			{
 				moveNextMethod = typeof( IEnumerator<> ).MakeGenericType( traits.ElementType ).GetMethod( "MoveNext", Type.EmptyTypes );
@@ -229,46 +244,24 @@ namespace MsgPack.Serialization
 
 		public static void EmitMarshalValue( TracingILGenerator il, int packerArgumentIndex, int contextArgumentIndex, Type valueType, Action<TracingILGenerator> loadValueEmitter )
 		{
-			var fastMarshal = MarshalerRepository.GetFastMarshalMethod( valueType );
-			if ( fastMarshal != null )
-			{
-				il.EmitAnyLdarg( packerArgumentIndex );
-				loadValueEmitter( il );
-				il.EmitAnyCall( fastMarshal );
-				if ( fastMarshal.ReturnType != typeof( void ) )
-				{
-					il.EmitPop();
-				}
-			}
-			else
-			{
-				//  context.MarshalTo( packer, ... ) )
-				il.EmitAnyLdarg( contextArgumentIndex );
-				il.EmitAnyLdarg( packerArgumentIndex );
-				loadValueEmitter( il );
-				il.EmitAnyCall( SerializationContext.MarshalTo1Method.MakeGenericMethod( valueType ) );
-			}
+			//  context.MarshalTo( packer, ... ) )
+			il.EmitAnyLdarg( contextArgumentIndex );
+			il.EmitAnyLdarg( packerArgumentIndex );
+			loadValueEmitter( il );
+			il.EmitAnyCall( SerializationContext.MarshalTo1Method.MakeGenericMethod( valueType ) );
 		}
 
-		public static void EmitUnmarshalValue( TracingILGenerator il, int unpackerArgumentIndex, int contextArgumentIndex, Type valueType, Action<TracingILGenerator,int> unpackerReading )
+		public static void EmitUnmarshalValue( TracingILGenerator il, int unpackerArgumentIndex, int contextArgumentIndex, Type valueType, Action<TracingILGenerator, int> unpackerReading )
 		{
-			var fastUnmarshal = MarshalerRepository.GetFastUnmarshalMethod( valueType );
-			if ( fastUnmarshal != null )
+			if ( unpackerReading != null )
 			{
-				il.EmitAnyLdarg( unpackerArgumentIndex );
-				il.EmitAnyCall( fastUnmarshal );
+				unpackerReading( il, unpackerArgumentIndex );
 			}
-			else
-			{		//  context.Marshalers.Get<T>().UnmarshalFrom( packer, ... ) )
-				if ( unpackerReading != null )
-				{
-					unpackerReading( il, unpackerArgumentIndex );
-				}
 
-				il.EmitAnyLdarg( contextArgumentIndex );
-				il.EmitAnyLdarg( unpackerArgumentIndex );
-				il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( valueType ) );
-			}
+			//  context.Marshalers.Get<T>().UnmarshalFrom( packer, ... ) )
+			il.EmitAnyLdarg( contextArgumentIndex );
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( valueType ) );
 		}
 
 		public static void EmitReadUnpackerIfNotInHeader( TracingILGenerator il, int unpackerArgumentIndex )

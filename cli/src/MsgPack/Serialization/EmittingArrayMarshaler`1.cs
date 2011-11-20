@@ -166,7 +166,7 @@ namespace MsgPack.Serialization
 				 * 		Context.MarshalTo( packer, array[ i ] );
 				 * }
 				 */
-				var collection = il.DeclareLocal( typeof( TCollection ) );
+				var collection = il.DeclareLocal( typeof( TCollection ), "collection" );
 				il.EmitAnyLdarg( 1 );
 				il.EmitAnyStloc( collection );
 				var count = il.DeclareLocal( typeof( int ), "count" );
@@ -174,6 +174,7 @@ namespace MsgPack.Serialization
 				il.EmitGetProperty( traits.CountProperty );
 				il.EmitAnyStloc( count );
 				il.EmitAnyLdarg( 0 );
+				il.EmitAnyLdloc( count );
 				il.EmitAnyCall( _packerPackArrayHeader );
 				il.EmitPop();
 				Emittion.EmitForEach(
@@ -235,7 +236,17 @@ namespace MsgPack.Serialization
 						0,
 						2,
 						traits.ElementType,
-						null
+						( il1, unpackerIndex ) =>
+						{
+							il1.EmitAnyLdarg( unpackerIndex );
+							il1.EmitAnyCall( _unpackerMoveToNextEntryMethod );
+							var endIf = il1.DefineLabel( "END_IF" );
+							il1.EmitBrtrue_S( endIf );
+							il1.EmitAnyLdloc( i );
+							il1.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
+							il1.EmitThrow();
+							il1.MarkLabel( endIf );
+						}
 					);
 					if ( typeof( TCollection ).IsArray )
 					{

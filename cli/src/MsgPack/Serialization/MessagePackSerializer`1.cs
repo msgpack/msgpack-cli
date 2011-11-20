@@ -99,6 +99,14 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
+			if ( unpacker.IsInStart )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+			}
+
 			return this.UnpackFromCore( unpacker );
 		}
 

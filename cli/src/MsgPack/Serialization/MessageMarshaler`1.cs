@@ -59,15 +59,11 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
-			if ( unpacker.Data.Value.IsNil )
+			if ( unpacker.IsInStart )
 			{
-				if ( _isNullable )
+				if ( !unpacker.Read() )
 				{
-					return default( T );
-				}
-				else
-				{
-					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' cannot be nil.", typeof( T ) ) );
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 			}
 
