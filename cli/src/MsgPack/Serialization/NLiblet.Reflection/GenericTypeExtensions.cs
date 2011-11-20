@@ -281,6 +281,26 @@ namespace NLiblet.Reflection
 		public static string GetFullName( this Type source )
 		{
 			Contract.Assert( source != null );
+
+			// TODO: NLiblet
+			if ( source.IsArray )
+			{
+				var elementType = source.GetElementType();
+				if ( !elementType.IsGenericType )
+				{
+					return source.FullName;
+				}
+
+				if ( 1 < source.GetArrayRank() )
+				{
+					return elementType.GetFullName() + "[*]";
+				}
+				else
+				{
+					return elementType.GetFullName() + "[]";
+				}
+			}
+
 			if ( !source.IsGenericType )
 			{
 				return source.FullName;
