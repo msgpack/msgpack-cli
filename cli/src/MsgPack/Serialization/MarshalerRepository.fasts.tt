@@ -38,9 +38,9 @@ var __types =
 		{ typeof( ulong ), null },
 		{ typeof( float ), null },
 		{ typeof( double ), null },
-		{ typeof( byte[] ), Tuple.Create( "PackRaw( value )", "UnpackByteArray()" ) },
-		{ typeof( char[] ), Tuple.Create( "PackString( value )", "UnpackCharArray()" ) },
-		{ typeof( string ), Tuple.Create( "PackString( value )", "UnpackString()" ) },
+		{ typeof( byte[] ), Tuple.Create( "PackRaw( value )", "AsBinary()" ) },
+		{ typeof( char[] ), Tuple.Create( "PackString( value )", "AsCharArray()" ) },
+		{ typeof( string ), Tuple.Create( "PackString( value )", "AsString()" ) },
 	};
 #>
 #region -- License Terms --
@@ -109,13 +109,13 @@ foreach( var __entry in __types )
 	if( __entry.Value != null )
 	{
 #>
-				{ typeof( <#= __entry.Key.FullName #> ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.<#= __entry.Value.Item2 #> ) },
+				{ typeof( <#= __entry.Key.FullName #> ), FromExpression.ToMethod( ( MessagePackObject value ) => value.<#= __entry.Value.Item2 #> ) },
 <#
 	}
 	else
 	{
 #>
-				{ typeof( <#= __entry.Key.FullName #> ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Unpack<#= __entry.Key.Name #>() ) },
+				{ typeof( <#= __entry.Key.FullName #> ), FromExpression.ToMethod( ( MessagePackObject value ) => value.As<#= __entry.Key.Name #>() ) },
 <#
 	}
 }

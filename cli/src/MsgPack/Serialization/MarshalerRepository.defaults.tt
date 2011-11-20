@@ -28,6 +28,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Numerics" #>
 <#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Text" #>
 <#
 var __typeName = "MarshalerRepository";
 // Copied from DsefaultTemplates.tt
@@ -149,6 +150,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using System.Text;
 
 namespace MsgPack.Serialization
 {
@@ -159,31 +161,25 @@ namespace MsgPack.Serialization
 	{
 		private static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable()
 		{
-			var dictionary = new Dictionary<RuntimeTypeHandle, object>( <#= __types.Length #> );
+			var dictionary = new Dictionary<RuntimeTypeHandle, object>( <#= __types.Length #> + 6 );
+			dictionary.Add( typeof( MessagePackObject ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.MsgPack_MessagePackObjectMessageMarshaler() );
 <#
 foreach( Type __type in __types )
 {
-	switch( Type.GetTypeCode( __type ) )
+	if( __type.IsEnum )
 	{
-		case TypeCode.Char:
-		case TypeCode.DateTime:
-		case TypeCode.DBNull:
-		case TypeCode.Decimal:
-		case TypeCode.Empty:
-		case TypeCode.Object:
-		{
-			break;
-		}
-		default:
-		{
-			continue;
-		}
+		continue;
 	}
 #>
 			dictionary.Add( typeof( <#= __type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageMarshaler() );
 <#
 }
 #>
+			dictionary.Add( typeof( Object ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( Object ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageMarshaler() );
+			dictionary.Add( typeof( String ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( String ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageMarshaler() );
+			dictionary.Add( typeof( StringBuilder ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( StringBuilder ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageMarshaler() );
+			dictionary.Add( typeof( Char[] ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( Char ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessageMarshaler() );
+			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( Byte ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessageMarshaler() );
 			return dictionary;
 		}
 	}
