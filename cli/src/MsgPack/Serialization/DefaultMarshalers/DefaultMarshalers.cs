@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.DateTime UnmarshalFromCore( Unpacker unpacker )
 		{
-			return MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ); 
+			return MessagePackConvert.ToDateTime( unpacker.UnpackInt64() ); 
 		}
 	}
 
@@ -50,7 +50,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.DateTimeOffset UnmarshalFromCore( Unpacker unpacker )
 		{
-			return MessagePackConvert.ToDateTimeOffset( unpacker.Data.Value.AsInt64() ); 
+			return MessagePackConvert.ToDateTimeOffset( unpacker.UnpackInt64() ); 
 		}
 	}
 
@@ -63,7 +63,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.Char UnmarshalFromCore( Unpacker unpacker )
 		{
-			return ( System.Char ) unpacker.Data.Value.AsUInt16(); 
+			return ( System.Char ) unpacker.UnpackUInt16(); 
 		}
 	}
 
@@ -76,7 +76,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.Decimal UnmarshalFromCore( Unpacker unpacker )
 		{
-			return System.Decimal.Parse( unpacker.Data.Value.AsString(), CultureInfo.InvariantCulture ); 
+			return System.Decimal.Parse( unpacker.UnpackString(), CultureInfo.InvariantCulture ); 
 		}
 	}
 
@@ -89,7 +89,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.Guid UnmarshalFromCore( Unpacker unpacker )
 		{
-			return new System.Guid( unpacker.Data.Value.AsBinary() ); 
+			return new System.Guid( unpacker.UnpackByteArray() ); 
 		}
 	}
 
@@ -128,7 +128,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.Numerics.BigInteger UnmarshalFromCore( Unpacker unpacker )
 		{
-			return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); 
+			return new System.Numerics.BigInteger( unpacker.UnpackByteArray() ); 
 		}
 	}
 }
