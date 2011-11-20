@@ -21,6 +21,8 @@
 using System;
 using System.IO;
 using System.Diagnostics.Contracts;
+using System.Runtime.Serialization;
+using System.Linq;
 
 namespace MsgPack.Serialization
 {
@@ -49,15 +51,19 @@ namespace MsgPack.Serialization
 		/// <param name="serializers">The serializers.</param>
 		public AutoMessagePackSerializer( MarshalerRepository marshalers, SerializerRepository serializers )
 		{
+			if ( ( typeof( T ).Assembly == typeof( object ).Assembly || typeof( T ).Assembly == typeof( Enumerable ).Assembly )
+				&& typeof( T ).IsPublic && typeof( T ).Name.StartsWith( "Tuple`" ) )
+			{
+				throw new NotImplementedException( "Tuple is not supported yet." );
+			}
+
 			this._context = new SerializationContext( marshalers ?? new MarshalerRepository( MarshalerRepository.Default ), serializers ?? new SerializerRepository( SerializerRepository.Default ) );
 
-			var fastPacking = MarshalerRepository.GetFastMarshalDelegate<T>();
-			if ( fastPacking != null )
+			var marshaler = this._context.Marshalers.Get<T>( this._context.Serializers );
+			if ( marshaler != null )
 			{
-				var fastUnpacking = MarshalerRepository.GetFastUnmarshalDelegate<T>();
-				Contract.Assert( fastUnpacking != null );
-				this._packing = Closures.Pack( fastPacking );
-				this._unpacking = Closures.Unpack( fastUnpacking );
+				this._packing = Closures.Pack<T>( marshaler.MarshalTo );
+				this._unpacking = Closures.UnpackWithForwarding( marshaler.UnmarshalFrom );
 				return;
 			}
 
@@ -66,14 +72,6 @@ namespace MsgPack.Serialization
 			{
 				this._packing = arrayMarshaler.MarshalTo;
 				this._unpacking = Closures.UnpackWithForwarding<T>( arrayMarshaler.UnmarshalTo );
-				return;
-			}
-
-			var marshaler = this._context.Marshalers.Get<T>( this._context.Serializers );
-			if ( marshaler != null )
-			{
-				this._packing = Closures.Pack<T>( marshaler.MarshalTo );
-				this._unpacking = Closures.UnpackWithForwarding( marshaler.UnmarshalFrom );
 				return;
 			}
 
@@ -87,7 +85,7 @@ namespace MsgPack.Serialization
 
 			// TODO: Pluggable
 			var builder = new EmittingMemberBinder<T>() { Trace = new StringWriter() };
-			if ( !builder.CreateProcedures( SerializationMemberOption.OptOut, out this._packing, out this._unpacking ) )
+			if ( !builder.CreateProcedures( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut, out this._packing, out this._unpacking ) )
 			{
 				Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
 				throw SerializationExceptions.NewTypeIsNotSerializable( typeof( T ) );
