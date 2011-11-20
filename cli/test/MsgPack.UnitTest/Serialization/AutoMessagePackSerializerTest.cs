@@ -27,6 +27,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Collections;
+using System.Collections.Specialized;
 
 namespace MsgPack.Serialization
 {
@@ -184,15 +185,64 @@ namespace MsgPack.Serialization
 
 			if ( typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ) )
 			{
-				Assert.That(
-					( ( IEnumerable )expected ).Cast<Object>().SequenceEqual( ( ( IEnumerable )actual ).Cast<Object>() ),
-					"Expected:{1}({2}){0}Actual :{3}({4})",
-					Environment.NewLine,
-					String.Join( ", ", ( ( IEnumerable )expected ).Cast<Object>() ),
-					expected == null ? "(null)" : expected.GetType().FullName,
-					String.Join( ", ", ( ( IEnumerable )actual ).Cast<Object>() ),
-					actual == null ? "(null)" : actual.GetType().FullName
-				);
+				var expecteds = ( ( IEnumerable )expected ).Cast<Object>().ToArray();
+				var actuals = ( ( IEnumerable )actual ).Cast<Object>().ToArray();
+				Assert.That( expecteds.Length, Is.EqualTo( actuals.Length ) );
+				for ( int i = 0; i < expecteds.Length; i++ )
+				{
+					if ( expecteds[ i ] is DateTime )
+					{
+						Assert.That(
+							MillisecondsDateTimeComparer.Instance.Equals( ( DateTime )expecteds[ i ], ( DateTime )actuals[ i ] ),
+							"Expected:[{2}]({3})[{1}]->{4}({5}){0}Actual :[{6}]({7})[{1}]->87}({9})",
+							Environment.NewLine,
+							i,
+							String.Join( ", ", ( ( IEnumerable )expected ).Cast<Object>() ),
+							expected == null ? "(null)" : expected.GetType().FullName,
+							expecteds[ i ],
+							expecteds[ i ] == null ? "(null)" : expecteds[ i ].GetType().FullName,
+							String.Join( ", ", ( ( IEnumerable )actual ).Cast<Object>() ),
+							actual == null ? "(null)" : actual.GetType().FullName,
+							actuals[ i ],
+							actuals[ i ] == null ? "(null)" : actuals[ i ].GetType().FullName
+						);
+					}
+					else if ( expecteds[ i ] is DateTimeOffset )
+					{
+						Assert.That(
+							MillisecondsDateTimeOffsetComparer.Instance.Equals( ( DateTimeOffset )expecteds[ i ], ( DateTimeOffset )actuals[ i ] ),
+							"Expected:[{2}]({3})[{1}]->{4}({5}){0}Actual :[{6}]({7})[{1}]->{8}({9})",
+							Environment.NewLine,
+							i,
+							String.Join( ", ", ( ( IEnumerable )expected ).Cast<Object>() ),
+							expected == null ? "(null)" : expected.GetType().FullName,
+							expecteds[ i ],
+							expecteds[ i ] == null ? "(null)" : expecteds[ i ].GetType().FullName,
+							String.Join( ", ", ( ( IEnumerable )actual ).Cast<Object>() ),
+							actual == null ? "(null)" : actual.GetType().FullName,
+							actuals[ i ],
+							actuals[ i ] == null ? "(null)" : actuals[ i ].GetType().FullName
+						);
+					}
+					else
+					{
+						Assert.That(
+							expecteds[ i ],
+							Is.EqualTo( actuals[ i ] ),
+							"Expected:[{2}]({3})[{1}]->{4}({5}){0}Actual :[{6}]({7})[{1}]->{8}({9})",
+							Environment.NewLine,
+							i,
+							String.Join( ", ", ( ( IEnumerable )expected ).Cast<Object>() ),
+							expected == null ? "(null)" : expected.GetType().FullName,
+							expecteds[ i ],
+							expecteds[ i ] == null ? "(null)" : expecteds[ i ].GetType().FullName,
+							String.Join( ", ", ( ( IEnumerable )actual ).Cast<Object>() ),
+							actual == null ? "(null)" : actual.GetType().FullName,
+							actuals[ i ],
+							actuals[ i ] == null ? "(null)" : actuals[ i ].GetType().FullName
+						);
+					}
+				}
 				return;
 			}
 
@@ -205,6 +255,36 @@ namespace MsgPack.Serialization
 				actual,
 				actual == null ? "(null)" : actual.GetType().FullName
 			);
+		}
+
+		[Test]
+		public void TestNameValueCollection()
+		{
+			var target = new NameValueCollection();
+			target.Add( null, "null-1" );
+			target.Add( null, "null-2" );
+			target.Add( String.Empty, "Empty-1" );
+			target.Add( String.Empty, "Empty-1" );
+			target.Add( "1", "1-1" );
+			target.Add( "1", "1-2" );
+			target.Add( "1", "1-3" );
+			target.Add( "null", null );
+			target.Add( "Empty", String.Empty );
+			target.Add( "2", "2" );
+			var serializer = new AutoMessagePackSerializer<NameValueCollection>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( target, stream );
+				stream.Position = 0;
+				NameValueCollection result = serializer.Unpack( stream );
+				Assert.That( result.GetValues( null ), Is.EquivalentTo( new[] { "null1-", "null-2" } ) );
+				Assert.That( result.GetValues( String.Empty ), Is.EquivalentTo( new[] { "Empty-1", "Empty-2" } ) );
+				Assert.That( result.GetValues( "1" ), Is.EquivalentTo( new[] { "1-1", "1-2", "1-3" } ) );
+				Assert.That( result.GetValues( "null" ), Is.EquivalentTo( new string[] { null } ) );
+				Assert.That( result.GetValues( "Empty" ), Is.EquivalentTo( new string[] { String.Empty } ) );
+				Assert.That( result.GetValues( "2" ), Is.EquivalentTo( new string[] { "2" } ) );
+				Assert.That( result.Count, Is.EqualTo( target.Count ) );
+			}
 		}
 
 		// TODO: テストケースを網羅的にする。少なくとも以下の内容入れる。
@@ -233,13 +313,4 @@ namespace MsgPack.Serialization
 
 		// FIXME: NameValueCollection
 	}
-
-	public sealed class StringKeyedCollection<T> : KeyedCollection<string, T>
-	{
-		protected override string GetKeyForItem( T item )
-		{
-			return item == null ? String.Empty : item.ToString();
-		}
-	}
-
 }
