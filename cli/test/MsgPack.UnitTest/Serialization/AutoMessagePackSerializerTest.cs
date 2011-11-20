@@ -175,21 +175,7 @@ namespace MsgPack.Serialization
 
 		internal static void Verify<T>( T expected, T actual )
 		{
-			if ( typeof( IStructuralEquatable ).IsAssignableFrom( typeof( T ) ) )
-			{
-				Assert.That(
-					( ( IStructuralEquatable )expected ).Equals( actual, EqualityComparer<T>.Default ),
-					"Expected:{1}({2}){0}Actual :{3}({4})",
-					Environment.NewLine,
-					expected,
-					expected == null ? "(null)" : expected.GetType().FullName,
-					actual,
-					actual == null ? "(null)" : actual.GetType().FullName
-				);
-				return;
-			}
-
-			if ( typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ) )
+			if ( expected is IEnumerable )
 			{
 				var expecteds = ( ( IEnumerable )expected ).Cast<Object>().ToArray();
 				var actuals = ( ( IEnumerable )actual ).Cast<Object>().ToArray();
@@ -230,6 +216,10 @@ namespace MsgPack.Serialization
 							actuals[ i ] == null ? "(null)" : actuals[ i ].GetType().FullName
 						);
 					}
+					else if ( expecteds[ i ] is IEnumerable )
+					{
+						Verify( expecteds[ i ], actuals[ i ] );
+					}
 					else
 					{
 						Assert.That(
@@ -249,6 +239,20 @@ namespace MsgPack.Serialization
 						);
 					}
 				}
+				return;
+			}
+
+			if ( expected is IStructuralEquatable )
+			{
+				Assert.That(
+					( ( IStructuralEquatable )expected ).Equals( actual, EqualityComparer<T>.Default ),
+					"Expected:{1}({2}){0}Actual :{3}({4})",
+					Environment.NewLine,
+					expected,
+					expected == null ? "(null)" : expected.GetType().FullName,
+					actual,
+					actual == null ? "(null)" : actual.GetType().FullName
+				);
 				return;
 			}
 
