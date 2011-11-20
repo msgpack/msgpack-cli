@@ -324,7 +324,16 @@ namespace MsgPack
 						Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
 						Contract.Assert( this._bytesBuffer.BackingStore == null, this._bytesBuffer.ToString() ); // null
 #endif
-						return collectionItemOrRoot;
+						if ( unpackingMode == UnpackingMode.EntireTree )
+						{
+							// Entire collection
+							return collectionItemOrRoot;
+						}
+						else
+						{
+							// Last item
+							return oldCollectionItemOrRoot.Value;
+						}
 					}
 				}
 
