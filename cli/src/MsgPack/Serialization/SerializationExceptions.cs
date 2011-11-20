@@ -109,5 +109,12 @@ namespace MsgPack.Serialization
 		{
 			return new InvalidMessagePackStreamException( "Stream ends unexpectedly." );
 		}
+
+		internal static readonly MethodInfo NewValiueTypeCannotBeNullMethod = FromExpression.ToMethod( ( Type type ) => NewValiueTypeCannotBeNull( type ) );
+
+		public static Exception NewValiueTypeCannotBeNull( Type type )
+		{
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot be null '{0}' type value.", type ) );
+		}
 	}
 }
