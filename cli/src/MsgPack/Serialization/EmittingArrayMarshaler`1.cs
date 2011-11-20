@@ -53,15 +53,6 @@ namespace MsgPack.Serialization
 
 		private static void CreateArrayProcedures( out Action<Packer, TCollection, SerializationContext> marshaling, out Action<Unpacker, TCollection, SerializationContext> unmarshaling )
 		{
-			// やること
-			// 1. 要素型を取得
-			// 2. Repository にあればそれを使う。
-			// 3. EmittingMemberBinder で構築
-			// 4. EmittingMemberBinder を以下のように変える
-			//      オブジェクトに対して、SerializationRepository からとってみる。なければ自信をもう一度呼び出す。
-			//      配列はこのオブジェクトを呼び出す（MarshalerRepository経由）
-			// 5.　配列、List<T>、HashSet<T>、などなどについての既定のシリアライザ。
-			// TODO: Pluggable
 			var traits = typeof( TCollection ).GetCollectionTraits();
 			if ( traits.CollectionType != CollectionKind.Array )
 			{
@@ -100,6 +91,7 @@ namespace MsgPack.Serialization
 				il.EmitLdlen();
 				il.EmitAnyStloc( length );
 				il.EmitAnyLdarg( 0 );
+				il.EmitAnyLdloc( length );
 				il.EmitAnyCall( _packerPackArrayHeader );
 				il.EmitPop();
 				Emittion.EmitFor(
@@ -233,27 +225,29 @@ namespace MsgPack.Serialization
 				( il0, i ) =>
 				{
 					il0.EmitAnyLdarg( 1 );
+					if ( typeof( TCollection ).IsArray )
+					{
+						il0.EmitAnyLdloc( i );
+					}
+
 					Emittion.EmitUnmarshalValue(
 						il0,
 						0,
 						2,
 						traits.ElementType,
-						( il1, unpackerArgumentIndex ) =>
-						{
-							il1.EmitAnyLdarg( unpackerArgumentIndex );
-							il1.EmitAnyCall( _unpackerMoveToNextEntryMethod );
-							var endIf = il0.DefineLabel( "END_IF" );
-							il1.EmitBrtrue_S( endIf );
-							il1.EmitAnyLdloc( i );
-							il1.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
-							il1.EmitThrow();
-							il1.MarkLabel( endIf );
-						}
+						null
 					);
-					il0.EmitAnyCall( traits.AddMethod );
-					if ( traits.AddMethod.ReturnType != typeof( void ) )
+					if ( typeof( TCollection ).IsArray )
 					{
-						il0.EmitPop();
+						il0.EmitStelem( traits.ElementType );
+					}
+					else
+					{
+						il0.EmitAnyCall( traits.AddMethod );
+						if ( traits.AddMethod.ReturnType != typeof( void ) )
+						{
+							il0.EmitPop();
+						}
 					}
 				}
 			);
