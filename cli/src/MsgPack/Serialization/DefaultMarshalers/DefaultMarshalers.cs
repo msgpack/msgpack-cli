@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.DateTime UnmarshalFromCore( Unpacker unpacker )
 		{
-			return MessagePackConvert.ToDateTime( unpacker.UnpackInt64() ); 
+			return MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ); 
 		}
 	}
 
@@ -50,7 +50,33 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.DateTimeOffset UnmarshalFromCore( Unpacker unpacker )
 		{
-			return MessagePackConvert.ToDateTimeOffset( unpacker.UnpackInt64() ); 
+			return MessagePackConvert.ToDateTimeOffset( unpacker.Data.Value.AsInt64() ); 
+		}
+	}
+
+	internal sealed class System_BooleanMessageMarshaler : MessageMarshaler< System.Boolean >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.Boolean value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.Boolean UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsBoolean();
+		}
+	}
+
+	internal sealed class System_ByteMessageMarshaler : MessageMarshaler< System.Byte >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.Byte value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.Byte UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsByte();
 		}
 	}
 
@@ -63,7 +89,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.Char UnmarshalFromCore( Unpacker unpacker )
 		{
-			return ( System.Char ) unpacker.UnpackUInt16(); 
+			return ( System.Char ) unpacker.Data.Value.AsUInt16(); 
 		}
 	}
 
@@ -76,7 +102,20 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.Decimal UnmarshalFromCore( Unpacker unpacker )
 		{
-			return System.Decimal.Parse( unpacker.UnpackString(), CultureInfo.InvariantCulture ); 
+			return System.Decimal.Parse( unpacker.Data.Value.AsString(), CultureInfo.InvariantCulture ); 
+		}
+	}
+
+	internal sealed class System_DoubleMessageMarshaler : MessageMarshaler< System.Double >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.Double value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.Double UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsDouble();
 		}
 	}
 
@@ -89,7 +128,72 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.Guid UnmarshalFromCore( Unpacker unpacker )
 		{
-			return new System.Guid( unpacker.UnpackByteArray() ); 
+			return new System.Guid( unpacker.Data.Value.AsBinary() ); 
+		}
+	}
+
+	internal sealed class System_Int16MessageMarshaler : MessageMarshaler< System.Int16 >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.Int16 value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.Int16 UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsInt16();
+		}
+	}
+
+	internal sealed class System_Int32MessageMarshaler : MessageMarshaler< System.Int32 >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.Int32 value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.Int32 UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsInt32();
+		}
+	}
+
+	internal sealed class System_Int64MessageMarshaler : MessageMarshaler< System.Int64 >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.Int64 value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.Int64 UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsInt64();
+		}
+	}
+
+	internal sealed class System_SByteMessageMarshaler : MessageMarshaler< System.SByte >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.SByte value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.SByte UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsSByte();
+		}
+	}
+
+	internal sealed class System_SingleMessageMarshaler : MessageMarshaler< System.Single >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.Single value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.Single UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsSingle();
 		}
 	}
 
@@ -103,6 +207,45 @@ namespace MsgPack.Serialization.DefaultMarshalers
 		protected sealed override  System.TimeSpan UnmarshalFromCore( Unpacker unpacker )
 		{
 			return new System.TimeSpan( unpacker.Data.Value.AsInt64() );
+		}
+	}
+
+	internal sealed class System_UInt16MessageMarshaler : MessageMarshaler< System.UInt16 >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.UInt16 value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.UInt16 UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsUInt16();
+		}
+	}
+
+	internal sealed class System_UInt32MessageMarshaler : MessageMarshaler< System.UInt32 >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.UInt32 value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.UInt32 UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsUInt32();
+		}
+	}
+
+	internal sealed class System_UInt64MessageMarshaler : MessageMarshaler< System.UInt64 >
+	{
+		protected sealed override void MarshalToCore( Packer packer, System.UInt64 value )
+		{
+			packer.Pack( value );
+		}
+
+		protected sealed override  System.UInt64 UnmarshalFromCore( Unpacker unpacker )
+		{
+			return unpacker.Data.Value.AsUInt64();
 		}
 	}
 
@@ -128,7 +271,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override  System.Numerics.BigInteger UnmarshalFromCore( Unpacker unpacker )
 		{
-			return new System.Numerics.BigInteger( unpacker.UnpackByteArray() ); 
+			return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); 
 		}
 	}
 }
