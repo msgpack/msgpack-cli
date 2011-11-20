@@ -79,6 +79,7 @@ namespace MsgPack.Serialization
 		private static readonly Dictionary<Type, MethodInfo> _factMarshalers =
 			new Dictionary<Type, MethodInfo>( <#= __types.Count #> )
 			{
+				{ typeof( MessagePackObject ), FromExpression.ToMethod( ( Packer packer, MessagePackObject value ) => packer.Pack( value ) ) },
 <#
 foreach( var __entry in __types )
 {
@@ -101,6 +102,7 @@ foreach( var __entry in __types )
 		private static readonly Dictionary<Type, MethodInfo> _factUnmarshalers =
 			new Dictionary<Type, MethodInfo>( <#= __types.Count #> )
 			{
+				{ typeof( MessagePackObject ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackObject() ) },
 <#
 foreach( var __entry in __types )
 {

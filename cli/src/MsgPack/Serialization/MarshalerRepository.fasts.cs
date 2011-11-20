@@ -34,6 +34,7 @@ namespace MsgPack.Serialization
 		private static readonly Dictionary<Type, MethodInfo> _factMarshalers =
 			new Dictionary<Type, MethodInfo>( 14 )
 			{
+				{ typeof( MessagePackObject ), FromExpression.ToMethod( ( Packer packer, MessagePackObject value ) => packer.Pack( value ) ) },
 				{ typeof( System.Boolean ), FromExpression.ToMethod( ( Packer packer, System.Boolean value ) => packer.Pack( value ) ) },
 				{ typeof( System.Byte ), FromExpression.ToMethod( ( Packer packer, System.Byte value ) => packer.Pack( value ) ) },
 				{ typeof( System.SByte ), FromExpression.ToMethod( ( Packer packer, System.SByte value ) => packer.Pack( value ) ) },
@@ -53,6 +54,7 @@ namespace MsgPack.Serialization
 		private static readonly Dictionary<Type, MethodInfo> _factUnmarshalers =
 			new Dictionary<Type, MethodInfo>( 14 )
 			{
+				{ typeof( MessagePackObject ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackObject() ) },
 				{ typeof( System.Boolean ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackBoolean() ) },
 				{ typeof( System.Byte ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackByte() ) },
 				{ typeof( System.SByte ), FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackSByte() ) },
