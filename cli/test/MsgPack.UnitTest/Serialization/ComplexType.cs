@@ -38,7 +38,7 @@ namespace MsgPack.Serialization
 			get { return this._history; }
 		}
 
-		public void Assert( Stream stream )
+		public void Verify( Stream stream )
 		{
 			stream.Position = 0;
 			var data = Unpacking.UnpackObject( stream );

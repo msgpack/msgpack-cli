@@ -19,12 +19,11 @@
 #endregion -- License Terms --
 
 using System;
-using System.IO;
 
 namespace MsgPack.Serialization
 {
-	public interface IVerifiable
+	public interface IVerifiable<T>
 	{
-		void Verify( Stream stream );
+		void Verify( T expected );
 	}
 }

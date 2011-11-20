@@ -25,12 +25,14 @@ using System.Text;
 using NUnit.Framework;
 using System.IO;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.Collections;
 
 namespace MsgPack.Serialization
 {
 	[TestFixture]
 	[Timeout( 1000 )]
-	public class AutoMessagePackSerializerTest
+	public partial class AutoMessagePackSerializerTest
 	{
 		private static bool _traceOn = true;
 
@@ -156,14 +158,56 @@ namespace MsgPack.Serialization
 			var target = new AutoMessagePackSerializer<T>();
 			using ( var buffer = new MemoryStream() )
 			{
-				new AutoMessagePackSerializer<T>().Pack( value, buffer );
+				target.Pack( value, buffer );
 				buffer.Position = 0;
 				T unpacked = target.Unpack( buffer );
 				buffer.Position = 0;
-				unpacked.Assert( buffer );
+				unpacked.Verify( buffer );
 			}
 		}
 
+		internal static void Verify<T>( T expected, T actual )
+		{
+			if ( typeof( IStructuralEquatable ).IsAssignableFrom( typeof( T ) ) )
+			{
+				Assert.That(
+					( ( IStructuralEquatable )expected ).Equals( actual, EqualityComparer<T>.Default ),
+					"Expected:{1}({2}){0}Actual :{3}({4})",
+					Environment.NewLine,
+					expected,
+					expected == null ? "(null)" : expected.GetType().FullName,
+					actual,
+					actual == null ? "(null)" : actual.GetType().FullName
+				);
+				return;
+			}
+
+			if ( typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ) )
+			{
+				Assert.That(
+					( ( IEnumerable )expected ).Cast<Object>().SequenceEqual( ( ( IEnumerable )actual ).Cast<Object>() ),
+					"Expected:{1}({2}){0}Actual :{3}({4})",
+					Environment.NewLine,
+					String.Join( ", ", ( ( IEnumerable )expected ).Cast<Object>() ),
+					expected == null ? "(null)" : expected.GetType().FullName,
+					String.Join( ", ", ( ( IEnumerable )actual ).Cast<Object>() ),
+					actual == null ? "(null)" : actual.GetType().FullName
+				);
+				return;
+			}
+
+			Assert.That(
+				EqualityComparer<T>.Default.Equals( expected, actual ),
+					"Expected:{1}({2}){0}Actual :{3}({4})",
+				Environment.NewLine,
+				expected,
+				expected == null ? "(null)" : expected.GetType().FullName,
+				actual,
+				actual == null ? "(null)" : actual.GetType().FullName
+			);
+		}
+
+		// TODO: テストケースを網羅的にする。少なくとも以下の内容入れる。
 		// TODO: IEnumerable...?
 		// TOOD: IDictionary
 		// TODO: ICollection
@@ -173,5 +217,29 @@ namespace MsgPack.Serialization
 		// TODO: ReadOnlyCollection<T>
 		// TODO: ConcurrentDictionary<T>
 		//   more
+		// それぞれ、トップ、別オブジェクト、Array、Map　のキーと値でやる。
+		// 既定のマーシャラもテストする
+		// 明示的なリポジトリもテスト。
+		// そのあとは　RPC。
+		// まずは MPO でやる。基本は　Test First。
+		// TCP send -> TCP notify -> UDP send -> UDP notify
+		// 0.1 Async TCP Comm
+		// 0.2 Error
+		// 0.3 IDL
+		// 0.4 UDP
+		// 0.5 Silverlight
+		// 0.6 Extensibility
+		// 0.7 Improve error handling
+
+		// FIXME: NameValueCollection
 	}
+
+	public sealed class StringKeyedCollection<T> : KeyedCollection<string, T>
+	{
+		protected override string GetKeyForItem( T item )
+		{
+			return item == null ? String.Empty : item.ToString();
+		}
+	}
+
 }

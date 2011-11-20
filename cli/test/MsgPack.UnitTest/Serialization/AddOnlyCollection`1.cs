@@ -19,12 +19,31 @@
 #endregion -- License Terms --
 
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace MsgPack.Serialization
 {
-	public interface IVerifiable
+	public class AddOnlyCollection<T> : IEnumerable<T>
 	{
-		void Verify( Stream stream );
+		private readonly List<T> _underlying = new List<T>();
+
+		public AddOnlyCollection() { }
+
+		public void Add( T item )
+		{
+			this._underlying.Add( item );
+		}
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			return this._underlying.GetEnumerator();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.GetEnumerator();
+		}
 	}
 }

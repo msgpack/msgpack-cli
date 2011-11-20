@@ -41,7 +41,7 @@ namespace MsgPack.Serialization
 		[NonSerialized]
 		public object NonSerialized;
 
-		public void Assert( Stream stream )
+		public void Verify( Stream stream )
 		{
 			stream.Position = 0;
 			var data = Unpacking.UnpackObject( stream );
