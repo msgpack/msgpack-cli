@@ -146,6 +146,7 @@
     <Compile Include="Serialization\ArrayMarshaler.cs" />
     <Compile Include="Serialization\ArrayMarshaler`1.cs" />
     <Compile Include="Serialization\AutoMessageObjectSerializer`1.cs" />
+    <Compile Include="Serialization\Closures.cs" />
     <Compile Include="Serialization\CollectableSerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\CollectionTraits.cs" />
     <Compile Include="Serialization\CollectionKind.cs" />

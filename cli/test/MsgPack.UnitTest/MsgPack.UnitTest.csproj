@@ -117,7 +117,10 @@
     <Compile Include="Serialization\FromExpressionTest.cs" />
     <Compile Include="Serialization\IVerifiable.cs" />
     <Compile Include="Serialization\IVerifiable`1.cs" />
+    <Compile Include="Serialization\MillisecondsDateTimeComparer.cs" />
+    <Compile Include="Serialization\MillisecondsDateTimeOffsetComparer.cs" />
     <Compile Include="Serialization\SimpleCollection`1.cs" />
+    <Compile Include="Serialization\StringKeyedCollection.cs" />
     <Compile Include="Serialization\_SetUpFixture.cs" />
     <Compile Include="Serialization\ComplexTypeWithNonSerialized.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContract.cs" />
