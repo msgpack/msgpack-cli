@@ -27,6 +27,7 @@ namespace MsgPack.Serialization
 	///		<see cref="MessagePackSerializer{T}"/> based on opt-in <see cref="DataContractAttribute"/>.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
+	[Obsolete]
 	public class DataContractObjetPacker<T> : MessagePackSerializer<T>
 	{
 		private readonly Action<Packer, T, SerializationContext> _packing;
