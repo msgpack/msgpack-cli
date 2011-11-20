@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using System.Diagnostics.Contracts;
+using System.Collections;
 
 namespace MsgPack.Serialization
 {
@@ -61,11 +62,11 @@ namespace MsgPack.Serialization
 			return this._repository.Get<T, MessageMarshaler<T>>( this, serializerRepository ?? SerializerRepository.Default );
 		}
 
-		public ArrayMarshaler<T> GetArrayMarshaler<T>( SerializerRepository serializerRepository)
+		public ArrayMarshaler<T> GetArrayMarshaler<T>( SerializerRepository serializerRepository )
 		{
 			var safeSerializerRepository = serializerRepository ?? SerializerRepository.Default;
 			var arrayMarshaler = this._repository.Get<T, ArrayMarshaler<T>>( this, safeSerializerRepository );
-			if ( arrayMarshaler == null )
+			if ( arrayMarshaler == null && typeof( T ) != typeof( string ) && typeof( T ) != typeof( MessagePackObject ) && typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ) )
 			{
 				// TODO: Configurable
 				arrayMarshaler = ArrayMarshaler.Create<T>( this, safeSerializerRepository );
