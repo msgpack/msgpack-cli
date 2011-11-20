@@ -108,7 +108,6 @@ namespace MsgPack.Serialization
 			var il = dynamicMethod.GetILGenerator();
 			var value = il.DeclareLocal( memberType, "value" );
 			var data = il.DeclareLocal( typeof( MessagePackObject ), "data" );
-			// var data = unpacker.Data.Value;
 			il.EmitAnyLdarg( 0 );
 			il.EmitGetProperty( _unpackerDataProperty );
 			il.EmitGetProperty( typeof( Nullable<MessagePackObject> ).GetProperty( "Value" ) );

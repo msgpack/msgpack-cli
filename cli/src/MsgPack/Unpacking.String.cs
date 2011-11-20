@@ -193,7 +193,6 @@ namespace MsgPack
 				int readByte = source.ReadByte();
 				if ( readByte < 0 )
 				{
-					// throw new UnpackException( "Insufficient stream length." );
 					break;
 				}
 
