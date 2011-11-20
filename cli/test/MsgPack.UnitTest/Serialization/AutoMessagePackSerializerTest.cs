@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Reflection;
 
 namespace MsgPack.Serialization
 {
@@ -140,6 +141,12 @@ namespace MsgPack.Serialization
 			TestCoreWithVerify( target );
 		}
 
+		[Test]
+		public void TestEnum()
+		{
+			TestCore( DayOfWeek.Sunday, stream => ( DayOfWeek )Enum.Parse( typeof( DayOfWeek ), Unpacking.UnpackString( stream ) ), ( x, y ) => x == y );
+		}
+
 		private static void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
 			var safeComparer = comparer ?? EqualityComparer<T>.Default.Equals;
@@ -174,6 +181,18 @@ namespace MsgPack.Serialization
 
 		internal static void Verify<T>( T expected, T actual )
 		{
+			if ( expected == null )
+			{
+				Assert.That( actual, Is.Null );
+				return;
+			}
+
+			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
+			{
+				AssertArraySegmentEquals( expected, actual );
+				return;
+			}
+
 			if ( expected is IEnumerable )
 			{
 				var expecteds = ( ( IEnumerable )expected ).Cast<Object>().ToArray();
@@ -296,6 +315,18 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		private static void AssertArraySegmentEquals( object x, object y )
+		{
+			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( x.GetType().GetGenericArguments()[ 0 ] );
+			Assert.That(
+				( bool )type.InvokeMember( "Equals", BindingFlags.InvokeMethod, null, Activator.CreateInstance( type ), new[] { x, y } ),
+				"Expected:{1}{0}Actual :{2}",
+				Environment.NewLine,
+				x,
+				y
+			);
+		}
+
 		// TODO: nullable
 		// TODO: RPC
 		// TCP send -> TCP notify -> UDP send -> UDP notify
@@ -306,5 +337,20 @@ namespace MsgPack.Serialization
 		// 0.5 Silverlight
 		// 0.6 Extensibility
 		// 0.7 Improve error handling
+	}
+
+	public sealed class ArraySegmentEqualityComparer<T> : EqualityComparer<ArraySegment<T>>
+	{
+		public ArraySegmentEqualityComparer() { }
+
+		public sealed override bool Equals( ArraySegment<T> x, ArraySegment<T> y )
+		{
+			return x.Array.Skip( x.Offset ).Take( x.Count ).SequenceEqual( y.Array.Skip( y.Offset ).Take( y.Count ), EqualityComparer<T>.Default );
+		}
+
+		public sealed override int GetHashCode( ArraySegment<T> obj )
+		{
+			return obj.GetHashCode();
+		}
 	}
 }

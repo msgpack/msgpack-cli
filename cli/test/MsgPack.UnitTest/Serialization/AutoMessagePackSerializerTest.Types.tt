@@ -46,6 +46,8 @@ var __fields =
 		new Tuple<Object, string, string, bool>( typeof( Byte[] ), String.Empty, "new Byte[]{ 1, 2, 3, 4 }", true ),
 		new Tuple<Object, string, string, bool>( typeof( Char[] ), String.Empty, "\"ABCD\".ToCharArray()", true ),
 		new Tuple<Object, string, string, bool>( typeof( ArraySegment<Byte> ), String.Empty, "new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } )", true ),
+		new Tuple<Object, string, string, bool>( typeof( ArraySegment<Int32> ), String.Empty, "new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } )", true ),
+		new Tuple<Object, string, string, bool>( typeof( ArraySegment<Decimal> ), String.Empty, "new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } )", true ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Tuple<,,,> ).FullName, new [] { typeof( Int32 ).FullName, typeof( String ).FullName, "MsgPack.MessagePackObject", typeof( Object ).FullName } ), String.Empty, "new Tuple<Int32, String, MessagePackObject, Object>( 1, \"ABC\", new MessagePackObject( \"abc\" ), new MessagePackObject( \"123\" ) ) ", true ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Image", new String[ 0 ] ), String.Empty, "new Image(){ uri = \"http://example.com/logo.png\", title = \"logo\", width = 160, height = 120, size = 13612 }", true ),
 		new Tuple<Object, string, string, bool>( typeof( List<DateTime> ), String.Empty, "new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),

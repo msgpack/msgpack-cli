@@ -408,6 +408,30 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestArraySegmentInt32Field()
+		{
+			TestCoreWithAutoVerify( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ) );
+		}
+		
+		[Test]
+		public void TestArraySegmentInt32FieldArray()
+		{
+			TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), 2 ).ToArray() );
+		}
+		
+		[Test]
+		public void TestArraySegmentDecimalField()
+		{
+			TestCoreWithAutoVerify( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ) );
+		}
+		
+		[Test]
+		public void TestArraySegmentDecimalFieldArray()
+		{
+			TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), 2 ).ToArray() );
+		}
+		
+		[Test]
 		public void TestTuple_Int32_String_MessagePackObject_ObjectField()
 		{
 			TestCoreWithAutoVerify( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) )  );
@@ -1257,6 +1281,22 @@ namespace MsgPack.Serialization
 			set { this._ArraySegmentByteField = value; }
 		}
 
+		private ArraySegment<Int32> _ArraySegmentInt32Field;
+		
+		public ArraySegment<Int32> ArraySegmentInt32Field
+		{
+			get { return this._ArraySegmentInt32Field; }
+			set { this._ArraySegmentInt32Field = value; }
+		}
+
+		private ArraySegment<Decimal> _ArraySegmentDecimalField;
+		
+		public ArraySegment<Decimal> ArraySegmentDecimalField
+		{
+			get { return this._ArraySegmentDecimalField; }
+			set { this._ArraySegmentDecimalField = value; }
+		}
+
 		private System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> _Tuple_Int32_String_MessagePackObject_ObjectField;
 		
 		public System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> Tuple_Int32_String_MessagePackObject_ObjectField
@@ -1583,6 +1623,8 @@ namespace MsgPack.Serialization
 			this._ByteArrayField = new Byte[]{ 1, 2, 3, 4 };
 			this._CharArrayField = "ABCD".ToCharArray();
 			this._ArraySegmentByteField = new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } );
+			this._ArraySegmentInt32Field = new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } );
+			this._ArraySegmentDecimalField = new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } );
 			this._Tuple_Int32_String_MessagePackObject_ObjectField = new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) ;
 			this._Image_Field = new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 };
 			this._ListDateTimeField = new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
@@ -1666,6 +1708,8 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._ByteArrayField, this._ByteArrayField );
 			AutoMessagePackSerializerTest.Verify( expected._CharArrayField, this._CharArrayField );
 			AutoMessagePackSerializerTest.Verify( expected._ArraySegmentByteField, this._ArraySegmentByteField );
+			AutoMessagePackSerializerTest.Verify( expected._ArraySegmentInt32Field, this._ArraySegmentInt32Field );
+			AutoMessagePackSerializerTest.Verify( expected._ArraySegmentDecimalField, this._ArraySegmentDecimalField );
 			AutoMessagePackSerializerTest.Verify( expected._Tuple_Int32_String_MessagePackObject_ObjectField, this._Tuple_Int32_String_MessagePackObject_ObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._Image_Field, this._Image_Field );
 			AutoMessagePackSerializerTest.Verify( expected._ListDateTimeField, this._ListDateTimeField );
