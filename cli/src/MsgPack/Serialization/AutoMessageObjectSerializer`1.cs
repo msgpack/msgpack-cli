@@ -49,49 +49,31 @@ namespace MsgPack.Serialization
 		/// <param name="serializers">The serializers.</param>
 		public AutoMessagePackSerializer( MarshalerRepository marshalers, SerializerRepository serializers )
 		{
-			this._context = new SerializationContext( marshalers ?? MarshalerRepository.Default, serializers ?? SerializerRepository.Default );
+			this._context = new SerializationContext( marshalers ?? new MarshalerRepository( MarshalerRepository.Default ), serializers ?? new SerializerRepository( SerializerRepository.Default ) );
 
 			var fastPacking = MarshalerRepository.GetFastMarshalDelegate<T>();
 			if ( fastPacking != null )
 			{
 				var fastUnpacking = MarshalerRepository.GetFastUnmarshalDelegate<T>();
 				Contract.Assert( fastUnpacking != null );
-				this._packing = ( packer, value, context ) => fastPacking( packer, value );
-				this._unpacking = ( unpacker, context ) => fastUnpacking( unpacker );
+				this._packing = Closures.Pack( fastPacking );
+				this._unpacking = Closures.Unpack( fastUnpacking );
 				return;
 			}
 
 			var marshaler = this._context.Marshalers.Get<T>( this._context.Serializers );
 			if ( marshaler != null )
 			{
-				this._packing = ( packer, value, context ) => marshaler.MarshalTo( packer, value );
-				this._unpacking = 
-					( unpacker, context ) =>
-					{
-						if ( !unpacker.Read() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
-
-						return marshaler.UnmarshalFrom( unpacker );
-					};
+				this._packing = Closures.Pack<T>( marshaler.MarshalTo );
+				this._unpacking = Closures.UnpackWithForwarding( marshaler.UnmarshalFrom );
 				return;
 			}
 
 			var serializer = this._context.Serializers.Get<T>( this._context.Marshalers );
 			if ( serializer != null )
 			{
-				this._packing = ( packer, value, context ) => serializer.PackTo( packer, value );
-				this._unpacking =
-					( unpacker, context ) =>
-					{
-						if ( !unpacker.Read() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
-
-						return serializer.UnpackFrom( unpacker );
-					};
+				this._packing = Closures.Pack<T>( serializer.PackTo );
+				this._unpacking = Closures.UnpackWithForwarding( serializer.UnpackFrom );
 				return;
 			}
 
@@ -102,6 +84,7 @@ namespace MsgPack.Serialization
 				Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
 				throw SerializationExceptions.NewTypeIsNotSerializable( typeof( T ) );
 			}
+
 			Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
 		}
 		/// <summary>

@@ -78,85 +78,12 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			packing = CreatePacking( entries, packings );
-			unpacking = CreateUnpacking( entries, unpackings );
+			packing = Closures.PackObject( entries, packings );
+			unpacking = Closures.UnpackObject( entries, unpackings );
 
 			return true;
 		}
-
-		private Action<Packer, TObject, SerializationContext> CreatePacking( SerlializingMember[] entries, Action<Packer, TObject, SerializationContext>[] packings )
-		{
-			return
-				( packer, target, context ) =>
-				{
-					// TODO: Array for ordered.
-					packer.PackMapHeader( entries.Length );
-					for ( int i = 0; i < entries.Length; i++ )
-					{
-						packer.PackString( entries[ i ].Contract.Name );
-						packings[ i ]( packer, target, context );
-					}
-				};
-		}
-
-		private Func<Unpacker, SerializationContext, TObject> CreateUnpacking( SerlializingMember[] entries, Action<Unpacker, TObject, SerializationContext>[] unpackings )
-		{
-			var ctor = CreateObjectInitializer();
-			return
-				( unpacker, context ) =>
-				{
-					TObject target = ctor();
-
-					if ( !unpacker.IsMapHeader && !unpacker.IsArrayHeader )
-					{
-						if ( !unpacker.Read() )
-						{
-							throw SerializationExceptions.NewCannotReadCollectionHeader();
-						}
-					}
-
-					// TODO: Array for ordered.
-					long count = unpacker.ItemsCount;
-					// TODO: For big struct, use Dictionary<String,SM>
-					for ( long i = 0; i < count; i++ )
-					{
-						if ( !unpacker.MoveToNextEntry() )
-						{
-							throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Some map entries are missing. Declared size is {0}, but actual is {1}.", count, i ) );
-						}
-
-						string memberName = unpacker.Data.Value.AsString();
-						int index = Array.FindIndex( entries, entry => entry.Contract.Name == memberName );
-						if ( index < 0 )
-						{
-							// TODO: OK?
-							// Ignore
-							continue;
-						}
-
-						unpackings[ index ]( unpacker, target, context );
-					}
-
-					return target;
-				};
-		}
-
-		private static Func<TObject> CreateObjectInitializer()
-		{
-			if ( typeof( TObject ).IsValueType )
-			{
-				return () => default( TObject );
-			}
-
-			var ctor = typeof( TObject ).GetConstructor( Type.EmptyTypes );
-			if ( ctor == null )
-			{
-				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( typeof( TObject ) );
-			}
-
-			return Expression.Lambda<Func<TObject>>( Expression.New( ctor ) ).Compile();
-		}
-
+		
 		protected sealed override Action<Packer, TObject, SerializationContext> CreatePacking( MemberInfo member, Type memberType, DataMemberContract contract )
 		{
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", member.DeclaringType, contract.Name, null, _packingMethodParameters );
