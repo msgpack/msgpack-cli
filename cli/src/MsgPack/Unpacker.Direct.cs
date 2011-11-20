@@ -42,6 +42,7 @@ namespace MsgPack
 		public Byte UnpackByte()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackByte( this._currentSource.Stream );
@@ -61,6 +62,7 @@ namespace MsgPack
 		public SByte UnpackSByte()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackSByte( this._currentSource.Stream );
@@ -79,6 +81,7 @@ namespace MsgPack
 		public Int16 UnpackInt16()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackInt16( this._currentSource.Stream );
@@ -98,6 +101,7 @@ namespace MsgPack
 		public UInt16 UnpackUInt16()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackUInt16( this._currentSource.Stream );
@@ -116,6 +120,7 @@ namespace MsgPack
 		public Int32 UnpackInt32()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackInt32( this._currentSource.Stream );
@@ -135,6 +140,7 @@ namespace MsgPack
 		public UInt32 UnpackUInt32()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackUInt32( this._currentSource.Stream );
@@ -153,6 +159,7 @@ namespace MsgPack
 		public Int64 UnpackInt64()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackInt64( this._currentSource.Stream );
@@ -172,6 +179,7 @@ namespace MsgPack
 		public UInt64 UnpackUInt64()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackUInt64( this._currentSource.Stream );
@@ -190,6 +198,7 @@ namespace MsgPack
 		public Single UnpackSingle()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackSingle( this._currentSource.Stream );
@@ -208,6 +217,7 @@ namespace MsgPack
 		public Double UnpackDouble()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			return Unpacking.UnpackDouble( this._currentSource.Stream );

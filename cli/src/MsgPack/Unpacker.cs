@@ -129,6 +129,28 @@ namespace MsgPack
 			get { return this._isInStart; }
 		}
 
+		private UnpackerMode _mode = UnpackerMode.Unknown;
+		private enum UnpackerMode
+		{
+			Unknown = 0,
+			Direct,
+			Streaming
+		}
+
+		private void VerifyMode( UnpackerMode mode )
+		{
+			if ( this._mode == UnpackerMode.Unknown )
+			{
+				this._mode = mode;
+				return;
+			}
+
+			if ( this._mode != mode )
+			{
+				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Reader is in '{0}' mode.", this._mode ) );
+			}
+		}
+
 		/// <summary>
 		///		 Creates the new <see cref="Unpacker"/> with internal buffer which has default size.
 		/// </summary>
@@ -285,6 +307,7 @@ namespace MsgPack
 		/// </remarks>
 		public bool MoveToNextEntry()
 		{
+			this.VerifyMode( UnpackerMode.Streaming );
 			return this.Read( UnpackingMode.SubTree );
 		}
 
@@ -293,6 +316,7 @@ namespace MsgPack
 		/// </summary>
 		public void MoveToEndCollection()
 		{
+			this.VerifyMode( UnpackerMode.Streaming );
 			// FIXME: Skipping to avoid DOS
 			while ( this.MoveToNextEntry() )
 			{
@@ -309,6 +333,7 @@ namespace MsgPack
 		/// </returns>
 		public bool Read()
 		{
+			this.VerifyMode( UnpackerMode.Streaming );
 			return this.Read( UnpackingMode.PerEntry );
 		}
 
@@ -347,12 +372,14 @@ namespace MsgPack
 		/// <returns><see cref="IEnumerator&lt;T&gt;"/> to enumerate <see cref="MessagePackObject"/> from source stream.</returns>
 		public IEnumerator<MessagePackObject> GetEnumerator()
 		{
+			this.VerifyMode( UnpackerMode.Streaming );
 			while ( this.Read( UnpackingMode.EntireTree ) )
 			{
 				if ( this._data != null )
 				{
 					yield return this._data.Value;
 				}
+				this.VerifyMode( UnpackerMode.Streaming );
 			}
 		}
 
@@ -431,6 +458,7 @@ namespace MsgPack
 		public long UnpackArrayLength()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
@@ -465,6 +493,7 @@ namespace MsgPack
 		public long UnpackMapCount()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
@@ -499,6 +528,7 @@ namespace MsgPack
 		public long UnpackRawLength()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
@@ -518,6 +548,7 @@ namespace MsgPack
 		public Object UnpackNull()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
@@ -537,6 +568,7 @@ namespace MsgPack
 		public Boolean TryUnpackNull()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
@@ -556,6 +588,7 @@ namespace MsgPack
 		public Boolean UnpackBoolean()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
@@ -575,6 +608,7 @@ namespace MsgPack
 		public IEnumerable<byte> UnpackRaw()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
@@ -594,6 +628,7 @@ namespace MsgPack
 		public String UnpackString()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
@@ -620,6 +655,7 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
@@ -641,6 +677,7 @@ namespace MsgPack
 		public MessagePackObject? TryUnpackObject()
 		{
 			this.VerifyNotDisposed();
+			this.VerifyMode( UnpackerMode.Direct );
 			Contract.EndContractBlock();
 
 			this.InvalidateCache();
