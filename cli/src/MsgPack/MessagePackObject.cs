@@ -186,6 +186,7 @@ namespace MsgPack
 		}
 
 #if !SILVERLIGHT
+
 		private MessagePackObject( SerializationInfo info, StreamingContext context )
 		{
 			if ( info == null )
@@ -280,10 +281,10 @@ namespace MsgPack
 				}
 			}
 		}
-
+		
 #endif
-		#endregion -- Constructors --
 
+		#endregion -- Constructors --
 
 		#region -- Primitive Type Conversion Methods --
 
@@ -393,6 +394,7 @@ namespace MsgPack
 		#endregion -- Primitive Type Conversion Methods --
 
 #if !SILVERLIGHT
+
 		private static bool AddPrimitiveToSerializationInfo( SerializationInfo info, string name, MessagePackObject value )
 		{
 			if( value.IsNil )
