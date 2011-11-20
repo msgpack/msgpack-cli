@@ -41,6 +41,8 @@ namespace MsgPack.Serialization
 		private static readonly PropertyInfo _nullableMessagePackObjectValueProperty = FromExpression.ToProperty( ( MessagePackObject? value ) => value.Value );
 		private static readonly PropertyInfo _messagePackObjectIsNilProperty = FromExpression.ToProperty( ( MessagePackObject value ) => value.IsNil );
 		private static readonly MethodInfo _ienumeratorMoveNextMethod = FromExpression.ToMethod( ( IEnumerator enumerator ) => enumerator.MoveNext() );
+		private static readonly PropertyInfo _ienumeratorCurrentProperty = FromExpression.ToProperty( ( IEnumerator enumerator ) => enumerator.Current );
+		private static readonly PropertyInfo _idictionaryEnumeratorCurrentProperty = FromExpression.ToProperty( ( IDictionaryEnumerator enumerator ) => enumerator.Entry );
 
 		/// <summary>
 		///		Builds the name of the generating method.
@@ -108,20 +110,34 @@ namespace MsgPack.Serialization
 			il.MarkLabel( startLoop );
 			var endLoop = il.DefineLabel( "END_LOOP" );
 			var enumeratorType = traits.GetEnumeratorMethod.ReturnType;
-			MethodInfo moveNextMethod;
-			if ( enumeratorType.IsInterface && enumeratorType.IsGenericType && enumeratorType.GetGenericTypeDefinition() == typeof( IEnumerator<> ) )
+			MethodInfo moveNextMethod = enumeratorType.GetMethod( "MoveNext", Type.EmptyTypes );
+			PropertyInfo currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" );
+
+			if ( moveNextMethod == null )
 			{
 				moveNextMethod = _ienumeratorMoveNextMethod;
 			}
-			else
+
+			if ( currentProperty == null )
 			{
-				moveNextMethod = enumeratorType.GetMethod( "MoveNext", Type.EmptyTypes );
+				if ( enumeratorType == typeof( IDictionaryEnumerator ) )
+				{
+					currentProperty = _idictionaryEnumeratorCurrentProperty;
+				}
+				else if ( enumeratorType.IsInterface )
+				{
+					if ( enumeratorType.IsGenericType && enumeratorType.GetGenericTypeDefinition() == typeof( IEnumerator<> ) )
+					{
+						currentProperty = typeof( IEnumerator<> ).MakeGenericType( traits.ElementType ).GetProperty( "Current" );
+					}
+					else
+					{
+						currentProperty = _ienumeratorCurrentProperty;
+					}
+				}
 			}
 
-			if ( moveNextMethod.ReturnType != typeof( bool ) )
-			{
-				moveNextMethod = typeof( IEnumerator<> ).MakeGenericType( traits.ElementType ).GetMethod( "MoveNext", Type.EmptyTypes );
-			}
+			Contract.Assert( currentProperty != null, enumeratorType.ToString() );
 
 			// iterates
 			if ( traits.GetEnumeratorMethod.ReturnType.IsValueType )
@@ -140,7 +156,6 @@ namespace MsgPack.Serialization
 				il,
 				() =>
 				{
-					var currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" );
 					if ( traits.GetEnumeratorMethod.ReturnType.IsValueType )
 					{
 						il.EmitAnyLdloca( enumerator );

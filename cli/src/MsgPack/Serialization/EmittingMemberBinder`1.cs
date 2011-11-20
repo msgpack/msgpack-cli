@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using NLiblet.Reflection;
 using System.Globalization;
+using System.Collections;
 
 namespace MsgPack.Serialization
 {
@@ -50,6 +51,8 @@ namespace MsgPack.Serialization
 		private static readonly MethodInfo _unpackerReadMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
 		private static readonly Type[] _packingMethodParameters = new[] { typeof( Packer ), typeof( TObject ), typeof( SerializationContext ) };
 		private static readonly Type[] _unpackingMethodParameters = new[] { typeof( Unpacker ), typeof( TObject ), typeof( SerializationContext ) };
+		private static readonly PropertyInfo _dictionaryEntryKeyProperty = FromExpression.ToProperty( ( DictionaryEntry entry ) => entry.Key );
+		private static readonly PropertyInfo _dictionaryEntryValueProperty = FromExpression.ToProperty( ( DictionaryEntry entry ) => entry.Value );
 
 		protected sealed override bool CreateProcedures( SerlializingMember[] entries, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking )
 		{
@@ -83,7 +86,7 @@ namespace MsgPack.Serialization
 
 			return true;
 		}
-		
+
 		protected sealed override Action<Packer, TObject, SerializationContext> CreatePacking( MemberInfo member, Type memberType, DataMemberContract contract )
 		{
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", member.DeclaringType, contract.Name, null, _packingMethodParameters );
@@ -237,31 +240,70 @@ namespace MsgPack.Serialization
 				collection,
 				( il0, getCurrentEmitter ) =>
 				{
-					getCurrentEmitter();
-					il0.EmitAnyStloc( item );
-					Emittion.EmitMarshalValue(
-						il0,
-						0,
-						2,
-						traits.ElementType.GetGenericArguments()[ 0 ],
-						il1 =>
-						{
-							il1.EmitAnyLdloca( item );
-							il1.EmitGetProperty( keyProperty );
-						}
-					);
+					if ( traits.ElementType.IsGenericType )
+					{
+						Contract.Assert( traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) );
+						getCurrentEmitter();
+						il0.EmitAnyStloc( item );
+						Emittion.EmitMarshalValue(
+							il0,
+							0,
+							2,
+							traits.ElementType.GetGenericArguments()[ 0 ],
+							il1 =>
+							{
+								il1.EmitAnyLdloca( item );
+								il1.EmitGetProperty( keyProperty );
+							}
+						);
 
-					Emittion.EmitMarshalValue(
-						il0,
-						0,
-						2,
-						traits.ElementType.GetGenericArguments()[ 1 ],
-						il1 =>
-						{
-							il1.EmitAnyLdloca( item );
-							il1.EmitGetProperty( valueProperty );
-						}
-					);
+						Emittion.EmitMarshalValue(
+							il0,
+							0,
+							2,
+							traits.ElementType.GetGenericArguments()[ 1 ],
+							il1 =>
+							{
+								il1.EmitAnyLdloca( item );
+								il1.EmitGetProperty( valueProperty );
+							}
+						);
+					}
+					else
+					{
+						Contract.Assert( traits.ElementType == typeof( DictionaryEntry ) );
+						getCurrentEmitter();
+						// DictonaryEntry
+						il0.EmitAnyStloc( item );
+						il0.EmitAnyLdloca( item );
+						il0.EmitGetProperty( _dictionaryEntryKeyProperty );
+						il0.EmitUnbox_Any( typeof( MessagePackObject ) );
+						Emittion.EmitMarshalValue(
+							il0,
+							0,
+							2,
+							typeof( MessagePackObject ),
+							il1 =>
+							{
+								il1.EmitAnyLdloca( item );
+								il1.EmitGetProperty( keyProperty );
+							}
+						);
+
+						il0.EmitAnyLdloca( item );
+						il0.EmitGetProperty( _dictionaryEntryValueProperty );
+						il0.EmitUnbox_Any( typeof( MessagePackObject ) ); Emittion.EmitMarshalValue(
+							il0,
+							0,
+							2,
+							typeof( MessagePackObject ),
+							il1 =>
+							{
+								il1.EmitAnyLdloca( item );
+								il1.EmitGetProperty( valueProperty );
+							}
+						);
+					}
 				}
 			);
 			il.EmitRet();
