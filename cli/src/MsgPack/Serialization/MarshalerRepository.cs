@@ -76,9 +76,12 @@ namespace MsgPack.Serialization
 			{
 				// TODO: Configurable
 				arrayMarshaler = ArrayMarshaler.Create<T>( this, safeSerializerRepository );
-				if ( !this._repository.Register<T>( arrayMarshaler ) )
+				if ( arrayMarshaler != null )
 				{
-					arrayMarshaler = this._repository.Get<T, ArrayMarshaler<T>>( this, serializerRepository ?? SerializerRepository.Default );
+					if ( !this._repository.Register<T>( arrayMarshaler ) )
+					{
+						arrayMarshaler = this._repository.Get<T, ArrayMarshaler<T>>( this, serializerRepository ?? SerializerRepository.Default );
+					}
 				}
 			}
 

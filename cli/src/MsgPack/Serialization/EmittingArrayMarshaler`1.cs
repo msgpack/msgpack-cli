@@ -36,9 +36,9 @@ namespace MsgPack.Serialization
 		private readonly Action<Packer, TCollection, SerializationContext> _marshaling;
 		private readonly Action<Unpacker, TCollection, SerializationContext> _unmarshaling;
 
-		public EmittingArrayMarshaler()
+		public EmittingArrayMarshaler( CollectionTraits traits)
 		{
-			CreateArrayProcedures( out this._marshaling, out this._unmarshaling );
+			CreateArrayProcedures( traits, out this._marshaling, out this._unmarshaling );
 		}
 
 		protected sealed override void MarshalCore( Packer packer, TCollection collection, SerializationContext context )
@@ -51,9 +51,8 @@ namespace MsgPack.Serialization
 			this._unmarshaling( unpacker, collection, context );
 		}
 
-		private static void CreateArrayProcedures( out Action<Packer, TCollection, SerializationContext> marshaling, out Action<Unpacker, TCollection, SerializationContext> unmarshaling )
+		private static void CreateArrayProcedures( CollectionTraits traits, out Action<Packer, TCollection, SerializationContext> marshaling, out Action<Unpacker, TCollection, SerializationContext> unmarshaling )
 		{
-			var traits = typeof( TCollection ).GetCollectionTraits();
 			if ( traits.CollectionType != CollectionKind.Array )
 			{
 				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not list.", typeof( TCollection ) ) );

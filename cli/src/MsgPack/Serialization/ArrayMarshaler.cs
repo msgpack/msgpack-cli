@@ -32,8 +32,17 @@ namespace MsgPack.Serialization
 	{
 		public static ArrayMarshaler<T> Create<T>( MarshalerRepository marshalerRepository, SerializerRepository serializerRepository )
 		{
-			// TODO: Configurable
-			return new EmittingArrayMarshaler<T>();
+			var traits = typeof( T ).GetCollectionTraits();
+
+			if ( traits.CollectionType == CollectionKind.Array )
+			{
+				// TODO: Configurable
+				return new EmittingArrayMarshaler<T>( traits );
+			}
+			else
+			{
+				return null;
+			}
 		}
 	}
 }
