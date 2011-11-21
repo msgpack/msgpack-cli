@@ -45,6 +45,7 @@ namespace MsgPack.Serialization
 		private static readonly PropertyInfo _messagePackObjectIsNilProperty = FromExpression.ToProperty( ( MessagePackObject value ) => value.IsNil );
 		private static readonly PropertyInfo _unpackerItemsCountProperty = FromExpression.ToProperty( ( Unpacker unpadker ) => unpadker.ItemsCount );
 		private static readonly MethodInfo _unpackerMoveToNextEntryMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.MoveToNextEntry() );
+		private static readonly MethodInfo _unpackerMoveToEndCollection = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.MoveToEndCollection() );
 		private static readonly MethodInfo _packerPackArrayHeaderMethod = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackArrayHeader( count ) );
 		private static readonly MethodInfo _packerPackMapHeaderMethod = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackMapHeader( count ) );
 		private static readonly PropertyInfo _unpackerIsInStartProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsInStart );
@@ -446,6 +447,8 @@ namespace MsgPack.Serialization
 					}
 				}
 			);
+			il.EmitAnyLdarg( 0 );
+			il.EmitAnyCall( _unpackerMoveToEndCollection );
 			il.EmitRet();
 
 			return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();

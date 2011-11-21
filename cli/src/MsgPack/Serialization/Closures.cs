@@ -125,6 +125,7 @@ namespace MsgPack.Serialization
 				{
 					T target = ctor();
 
+					// FIXME: Remove
 					if ( !unpacker.IsMapHeader && !unpacker.IsArrayHeader )
 					{
 						if ( !unpacker.Read() )
@@ -154,6 +155,8 @@ namespace MsgPack.Serialization
 
 						unpackings[ index ]( unpacker, target, context );
 					}
+
+					unpacker.MoveToEndCollection();
 
 					return target;
 				};

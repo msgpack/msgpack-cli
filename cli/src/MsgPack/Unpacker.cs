@@ -322,6 +322,8 @@ namespace MsgPack
 			{
 				// NOP
 			}
+
+			this._unpacker.SetEndCollection();
 		}
 
 		/// <summary>

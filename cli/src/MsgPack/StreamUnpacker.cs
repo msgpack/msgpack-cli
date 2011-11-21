@@ -54,8 +54,6 @@ namespace MsgPack
 		/// </summary>
 		private BytesBuffer _bytesBuffer;
 
-		private bool _isInTailOfCollection;
-
 		/// <summary>
 		///		Initialize new instance.
 		/// </summary>
@@ -66,9 +64,16 @@ namespace MsgPack
 			get { return this._collectionState.IsEmpty; }
 		}
 
+		private bool _hasMoreEntries;
+
 		public bool HasMoreEntries
 		{
-			get { return this._collectionState.HasMoreEntries; }
+			get { return this._hasMoreEntries; }
+		}
+
+		public void SetEndCollection()
+		{
+			this._hasMoreEntries = true;
 		}
 
 		public uint UnpackingItemsCount
@@ -127,7 +132,7 @@ namespace MsgPack
 
 			if ( unpackingMode == UnpackingMode.SubTree )
 			{
-				if ( this._isInTailOfCollection )
+				if ( !this._hasMoreEntries )
 				{
 					// This subtree ends.
 					return null;
@@ -313,8 +318,9 @@ namespace MsgPack
 				var oldCollectionItemOrRoot = collectionItemOrRoot;
 				if ( collectionItemOrRoot != null )
 				{
+					int depth = this._collectionState.Depth;
 					collectionItemOrRoot = this.AddToContextCollection( collectionItemOrRoot.Value );
-					this._isInTailOfCollection = !this.HasMoreEntries;
+					this._hasMoreEntries = depth <= this._collectionState.Depth;
 
 					if ( collectionItemOrRoot != null )
 					{
@@ -337,6 +343,10 @@ namespace MsgPack
 							return oldCollectionItemOrRoot.Value;
 						}
 					}
+				}
+				else
+				{
+					this._hasMoreEntries = true;
 				}
 
 				if ( unpackingMode != UnpackingMode.EntireTree && this._stage == Stage.UnpackContextCollection )
@@ -849,6 +859,11 @@ namespace MsgPack
 						return !this._collectionContextStack.Peek().IsFilled;
 					}
 				}
+			}
+
+			public int Depth
+			{
+				get { return this._collectionContextStack.Count; }
 			}
 
 			/// <summary>

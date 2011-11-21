@@ -31,6 +31,7 @@ namespace MsgPack.Serialization
 		private static readonly Type[] _unmarshalingMethodParameters = new[] { typeof( Unpacker ), typeof( TCollection ), typeof( SerializationContext ) };
 		private static readonly PropertyInfo _unpackerItemsCountProperty = FromExpression.ToProperty( ( Unpacker unpadker ) => unpadker.ItemsCount );
 		private static readonly MethodInfo _unpackerMoveToNextEntryMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.MoveToNextEntry() );
+		private static readonly MethodInfo _unpackerMoveToEndCollectionMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.MoveToEndCollection() );
 		private static readonly MethodInfo _packerPackArrayHeader = FromExpression.ToMethod( ( Packer packer, int length ) => packer.PackArrayHeader( length ) );
 		private static readonly MethodInfo _enumerableToArray1Method = typeof( Enumerable ).GetMethod( "ToArray" );
 		private readonly Action<Packer, TCollection, SerializationContext> _marshaling;
@@ -261,6 +262,8 @@ namespace MsgPack.Serialization
 					}
 				}
 			);
+			il.EmitAnyLdarg( 0 );
+			il.EmitAnyCall( _unpackerMoveToEndCollectionMethod );
 			il.EmitRet();
 
 			return dynamicMethod.CreateDelegate<Action<Unpacker, TCollection, SerializationContext>>();
