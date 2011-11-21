@@ -139,7 +139,6 @@ namespace MsgPack.Serialization
 			throw SerializationExceptions.NewValueCannotUnmarshal( typeof( T ) );
 		}
 
-
 		public void UnmarshalArrayTo<TCollection>( Unpacker unpacker, TCollection collection )
 		{
 			var arrayMarshaler = this._marshalers.GetArrayMarshaler<TCollection>( this._serializers );
