@@ -287,6 +287,30 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Test]
+		public void TestByteArrayContent()
+		{
+			var serializer = new AutoMessagePackSerializer<byte[]>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( new byte[] { 1, 2, 3, 4 }, stream );
+				stream.Position = 0;
+				Assert.That( Unpacking.UnpackRaw( stream ).ToArray(), Is.EqualTo( new byte[] { 1, 2, 3, 4 } ) );
+			}
+		}
+
+		[Test]
+		public void TestCharArrayContent()
+		{
+			var serializer = new AutoMessagePackSerializer<char[]>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( new char[] { 'a', 'b', 'c', 'd' }, stream );
+				stream.Position = 0;
+				Assert.That( Unpacking.UnpackString( stream ), Is.EqualTo( "abcd" ) );
+			}
+		}
+
 		private static void AssertArraySegmentEquals( object x, object y )
 		{
 			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( x.GetType().GetGenericArguments()[ 0 ] );

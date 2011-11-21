@@ -1280,6 +1280,15 @@ namespace MsgPack
 			return this;
 		}
 
+		public Packer PackRawBody( IEnumerable<byte> value )
+		{
+			this.VerifyNotDisposed();
+			Contract.EndContractBlock();
+
+			this.PrivatePackRawBodyCore( value );
+			return this;
+		}
+
 		private int PrivatePackRawBodyCore( IEnumerable<byte> value )
 		{
 			if ( value == null )

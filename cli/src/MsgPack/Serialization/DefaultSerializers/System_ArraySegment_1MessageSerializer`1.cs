@@ -19,18 +19,59 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal class System_ArraySegment_1MessageSerializer<T> : MessagePackSerializer<ArraySegment<T>>
 	{
+		private static readonly Action<Packer, ArraySegment<T>, SerializationContext> _packing;
+		private static readonly Func<Unpacker, SerializationContext, ArraySegment<T>> _unpacking;
+
+		static System_ArraySegment_1MessageSerializer()
+		{
+			if ( typeof( T ) == typeof( byte ) )
+			{
+				_packing =
+					Delegate.CreateDelegate(
+						typeof( Action<Packer, ArraySegment<T>, SerializationContext> ),
+						ArraySegmentMessageSerializer.PackByteArraySegmentToMethod
+					) as Action<Packer, ArraySegment<T>, SerializationContext>;
+				_unpacking =
+					Delegate.CreateDelegate(
+						typeof( Func<Unpacker, SerializationContext, ArraySegment<T>> ),
+						ArraySegmentMessageSerializer.UnpackByteArraySegmentFromMethod
+					) as Func<Unpacker, SerializationContext, ArraySegment<T>>;
+			}
+			else if ( typeof( T ) == typeof( char ) )
+			{
+				_packing = Delegate.CreateDelegate(
+					typeof( Action<Packer, ArraySegment<T>, SerializationContext> ),
+					ArraySegmentMessageSerializer.PackCharArraySegmentToMethod
+				) as Action<Packer, ArraySegment<T>, SerializationContext>;
+				_unpacking = Delegate.CreateDelegate(
+					typeof( Func<Unpacker, SerializationContext, ArraySegment<T>> ),
+					ArraySegmentMessageSerializer.UnpackCharArraySegmentFromMethod
+				) as Func<Unpacker, SerializationContext, ArraySegment<T>>;
+			}
+			else
+			{
+				_packing =
+					Delegate.CreateDelegate(
+						typeof( Action<Packer, ArraySegment<T>, SerializationContext> ),
+						ArraySegmentMessageSerializer.PackGenericArraySegmentTo1Method.MakeGenericMethod( typeof( T ) )
+					) as Action<Packer, ArraySegment<T>, SerializationContext>;
+				_unpacking =
+					Delegate.CreateDelegate(
+						typeof( Func<Unpacker, SerializationContext, ArraySegment<T>> ),
+						ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom1Method.MakeGenericMethod( typeof( T ) )
+					) as Func<Unpacker, SerializationContext, ArraySegment<T>>;
+			}
+		}
+
 		private readonly SerializationContext _context;
 
-		public System_ArraySegment_1MessageSerializer() 
-			: this( null, null ){}
+		public System_ArraySegment_1MessageSerializer()
+			: this( null, null ) { }
 
 		public System_ArraySegment_1MessageSerializer( MarshalerRepository marshalers, SerializerRepository serializers )
 		{
@@ -39,18 +80,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected sealed override void PackToCore( Packer packer, ArraySegment<T> objectTree )
 		{
-			packer.PackArrayHeader( objectTree.Count );
-			for ( int i = 0; i < objectTree.Count; i++ )
-			{
-				this._context.MarshalTo( packer, objectTree.Array[ i + objectTree.Offset ] );
-			}
+			_packing( packer, objectTree, this._context );
 		}
 
 		protected sealed override ArraySegment<T> UnpackFromCore( Unpacker unpacker )
 		{
-			T[] array = new T[ unpacker.ItemsCount ];
-			this._context.UnmarshalArrayTo( unpacker, array );
-			return new ArraySegment<T>( array );
+			return _unpacking( unpacker, this._context );
 		}
 	}
 }

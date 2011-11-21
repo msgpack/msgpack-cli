@@ -158,6 +158,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultMarshalers.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\DefaultMarshalers\EnumMarshaler.cs" />
     <Compile Include="Serialization\DefaultMarshalers\EnumMarshaler`1.cs" />
     <Compile Include="Serialization\DefaultMarshalers\MsgPack_MessagePackObjectMessageMarshaler.cs" />
     <Compile Include="Serialization\DefaultMarshalers\System_ObjectMessageMarshaler.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Serialization\DefaultMarshalers\System_Text_StringBuilderMessageMarshaler.cs" />
     <Compile Include="Serialization\DefaultMarshalers\System_ByteArrayMessageMarshaler.cs" />
     <Compile Include="Serialization\DefaultMarshalers\System_CharArrayMessageMarshaler.cs" />
+    <Compile Include="Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_ArraySegment_1MessageSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_DictionaryEntryMessageSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessageSerializer`2.cs" />

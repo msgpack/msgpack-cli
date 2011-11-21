@@ -26,7 +26,14 @@ namespace MsgPack.Serialization.DefaultMarshalers
 	{
 		protected sealed override void MarshalToCore( Packer packer, char[] value )
 		{
-			packer.PackString( value );
+			if ( value == null )
+			{
+				packer.PackNull();
+			}
+			else
+			{
+				packer.PackString( value );
+			}
 		}
 
 		protected sealed override char[] UnmarshalFromCore( Unpacker unpacker )
