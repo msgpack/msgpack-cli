@@ -67,14 +67,6 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-			var arrayMarshaler = this._context.Marshalers.GetArrayMarshaler<T>( this._context.Serializers );
-			if ( arrayMarshaler != null )
-			{
-				this._packing = arrayMarshaler.MarshalTo;
-				this._unpacking = Closures.UnpackWithForwarding<T>( arrayMarshaler.UnmarshalTo );
-				return;
-			}
-
 			var serializer = this._context.Serializers.Get<T>( this._context.Marshalers );
 			if ( serializer != null )
 			{
@@ -83,15 +75,50 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-			// TODO: Pluggable
-			var builder = new EmittingMemberBinder<T>() { Trace = new StringWriter() };
-			if ( !builder.CreateProcedures( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut, out this._packing, out this._unpacking ) )
+			var traits = typeof( T ).GetCollectionTraits();
+			switch ( traits.CollectionType )
 			{
-				Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
-				throw SerializationExceptions.NewTypeIsNotSerializable( typeof( T ) );
+				case CollectionKind.Array:
+				{
+					var arrayMarshaler = this._context.Marshalers.GetArrayMarshaler<T>( this._context.Serializers );
+					if ( arrayMarshaler != null )
+					{
+						this._packing = arrayMarshaler.MarshalTo;
+						this._unpacking = Closures.UnpackWithForwarding<T>( arrayMarshaler.UnmarshalTo );
+						return;
+					} 
+
+					break;
+				}
+				case CollectionKind.Map:
+				{
+					// TODO: Pluggable
+					var builder = new EmittingMemberBinder<T>() { Trace = new StringWriter() };
+					if ( !builder.CreateMapProcedures( traits, out this._packing, out this._unpacking ) )
+					{
+						Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
+						break;
+					}
+
+					Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
+					return;
+				}
+				case CollectionKind.NotCollection:
+				{
+					// TODO: Pluggable
+					var builder = new EmittingMemberBinder<T>() { Trace = new StringWriter() };
+					if ( !builder.CreateProcedures( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut, out this._packing, out this._unpacking ) )
+					{
+						Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
+						break;
+					}
+
+					Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
+					return;
+				}
 			}
 
-			Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
+			throw SerializationExceptions.NewTypeIsNotSerializable( typeof( T ) );
 		}
 		/// <summary>
 		///		Serialize specified object with specified <see cref="Packer"/>.

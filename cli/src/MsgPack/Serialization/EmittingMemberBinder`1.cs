@@ -195,20 +195,81 @@ namespace MsgPack.Serialization
 
 		protected sealed override bool CreateMapProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
 		{
-			packing = CreatePackMapProceduresCore( member, memberType, contract, traits );
+			packing =
+				CreatePackMapProceduresCore(
+					member.DeclaringType,
+					contract.Name,
+					memberType,
+					traits,
+					( il, collection ) =>
+					{
+						il.EmitAnyLdarg( 1 );
+						Emittion.EmitLoadValue( il, member );
+						il.EmitAnyStloc( collection );
+					}
+				);
 			if ( packing == null )
 			{
 				unpacking = null;
 				return false;
 			}
 
-			unpacking = CreateUnpackMapProceduresCore( member, memberType, contract, traits );
+			unpacking = 
+				CreateUnpackMapProceduresCore(
+					member.DeclaringType,
+					contract.Name,
+					memberType,
+					traits,
+					( il, collection ) =>
+					{
+						il.EmitAnyLdarg( 1 );
+						Emittion.EmitLoadValue( il, member );
+						il.EmitAnyStloc( collection );
+					}
+				);
 			return unpacking != null;
 		}
 
-		private Action<Packer, TObject, SerializationContext> CreatePackMapProceduresCore( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits )
+		public sealed override bool CreateMapProcedures( CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking )
 		{
-			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", member.DeclaringType, contract.Name, null, _packingMethodParameters );
+			packing =
+				CreatePackMapProceduresCore(
+					typeof( TObject ),
+					"Instance",
+					typeof( TObject ),
+					traits,
+					( il, collection ) =>
+					{
+						il.EmitAnyLdarg( 1 );
+						il.EmitAnyStloc( collection );
+					}
+				);
+			if ( packing == null )
+			{
+				unpacking = null;
+				return false;
+			}
+
+			unpacking =
+				Closures.UnpackWithForwarding<TObject>(
+					CreateUnpackMapProceduresCore(
+						typeof( TObject ),
+						"Instance",
+						typeof( TObject ),
+						traits,
+						( il, collection ) =>
+						{
+							il.EmitAnyLdarg( 1 );
+							il.EmitAnyStloc( collection );
+						}
+					)
+				);
+			return unpacking != null;
+		}
+
+		private Action<Packer, TObject, SerializationContext> CreatePackMapProceduresCore( Type targetType, string memberName, Type collectionType, CollectionTraits traits, Action<TracingILGenerator, LocalBuilder> loadCollectionEmitter )
+		{
+			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", targetType, memberName, null, _packingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
 
 			/*
@@ -219,13 +280,14 @@ namespace MsgPack.Serialization
 			 * 		Context.MarshalTo( packer, array[ i ] );
 			 * }
 			 */
-			var collection = il.DeclareLocal( memberType, "collection" );
+			var collection = il.DeclareLocal( collectionType, "collection" );
 			var item = il.DeclareLocal( traits.ElementType, "item" );
 			var keyProperty = traits.ElementType.GetProperty( "Key" );
 			var valueProperty = traits.ElementType.GetProperty( "Value" );
-			il.EmitAnyLdarg( 1 );
-			Emittion.EmitLoadValue( il, member );
-			il.EmitAnyStloc( collection );
+			loadCollectionEmitter( il, collection );
+			//il.EmitAnyLdarg( 1 );
+			//Emittion.EmitLoadValue( il, member );
+			//il.EmitAnyStloc( collection );
 			var count = il.DeclareLocal( typeof( int ), "count" );
 			il.EmitAnyLdloc( collection );
 			il.EmitGetProperty( traits.CountProperty );
@@ -311,7 +373,7 @@ namespace MsgPack.Serialization
 			return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
 		}
 
-		private Action<Unpacker, TObject, SerializationContext> CreateUnpackMapProceduresCore( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits )
+		private Action<Unpacker, TObject, SerializationContext> CreateUnpackMapProceduresCore( Type targetType, string memberName, Type collectionType, CollectionTraits traits, Action<TracingILGenerator, LocalBuilder> loadCollectionEmitter )
 		{
 			/*
 			 * int itemCount = unpacker.ItemCount;
@@ -325,15 +387,15 @@ namespace MsgPack.Serialization
 			 *		collection.Add( Context.Serializers.Get<T>().Deserialize( unpacker ) )
 			 * }
 			 */
-			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", member.DeclaringType, contract.Name, null, _unpackingMethodParameters );
+			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", targetType, memberName, null, _unpackingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
 			var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
-			var collection = il.DeclareLocal( memberType, "collection" );
+			var collection = il.DeclareLocal( collectionType, "collection" );
 #if DEBUG
-			Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition()==typeof(KeyValuePair<,>)
-				||traits.ElementType == typeof( DictionaryEntry ) );
+			Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> )
+				|| traits.ElementType == typeof( DictionaryEntry ) );
 #endif
-			var key =  il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject ), "key" );
+			var key = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject ), "key" );
 			var value = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject ), "value" );
 
 			Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
@@ -341,9 +403,7 @@ namespace MsgPack.Serialization
 			il.EmitGetProperty( _unpackerItemsCountProperty );
 			il.EmitConv_Ovf_I4();
 			il.EmitAnyStloc( itemsCount );
-			il.EmitAnyLdarg( 1 );
-			Emittion.EmitLoadValue( il, member );
-			il.EmitAnyStloc( collection );
+			loadCollectionEmitter( il, collection );
 			Emittion.EmitFor(
 				il,
 				itemsCount,
