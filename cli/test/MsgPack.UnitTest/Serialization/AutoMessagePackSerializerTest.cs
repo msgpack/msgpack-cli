@@ -148,6 +148,60 @@ namespace MsgPack.Serialization
 			TestCore( DayOfWeek.Sunday, stream => ( DayOfWeek )Enum.Parse( typeof( DayOfWeek ), Unpacking.UnpackString( stream ) ), ( x, y ) => x == y );
 		}
 
+
+		[Test]
+		public void TestNameValueCollection()
+		{
+			var target = new NameValueCollection();
+			target.Add( null, "null-1" );
+			target.Add( null, "null-2" );
+			target.Add( String.Empty, "Empty-1" );
+			target.Add( String.Empty, "Empty-1" );
+			target.Add( "1", "1-1" );
+			target.Add( "1", "1-2" );
+			target.Add( "1", "1-3" );
+			target.Add( "null", null );
+			target.Add( "Empty", String.Empty );
+			target.Add( "2", "2" );
+			var serializer = new AutoMessagePackSerializer<NameValueCollection>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( target, stream );
+				stream.Position = 0;
+				NameValueCollection result = serializer.Unpack( stream );
+				Assert.That( result.GetValues( null ), Is.EquivalentTo( new[] { "null1-", "null-2" } ) );
+				Assert.That( result.GetValues( String.Empty ), Is.EquivalentTo( new[] { "Empty-1", "Empty-2" } ) );
+				Assert.That( result.GetValues( "1" ), Is.EquivalentTo( new[] { "1-1", "1-2", "1-3" } ) );
+				Assert.That( result.GetValues( "null" ), Is.EquivalentTo( new string[] { null } ) );
+				Assert.That( result.GetValues( "Empty" ), Is.EquivalentTo( new string[] { String.Empty } ) );
+				Assert.That( result.GetValues( "2" ), Is.EquivalentTo( new string[] { "2" } ) );
+				Assert.That( result.Count, Is.EqualTo( target.Count ) );
+			}
+		}
+
+		[Test]
+		public void TestByteArrayContent()
+		{
+			var serializer = new AutoMessagePackSerializer<byte[]>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( new byte[] { 1, 2, 3, 4 }, stream );
+				stream.Position = 0;
+				Assert.That( Unpacking.UnpackRaw( stream ).ToArray(), Is.EqualTo( new byte[] { 1, 2, 3, 4 } ) );
+			}
+		}
+
+		[Test]
+		public void TestCharArrayContent()
+		{
+			var serializer = new AutoMessagePackSerializer<char[]>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( new char[] { 'a', 'b', 'c', 'd' }, stream );
+				stream.Position = 0;
+				Assert.That( Unpacking.UnpackString( stream ), Is.EqualTo( "abcd" ) );
+			}
+		}
 		private static void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
 			var safeComparer = comparer ?? EqualityComparer<T>.Default.Equals;
@@ -279,60 +333,6 @@ namespace MsgPack.Serialization
 			);
 		}
 
-		[Test]
-		public void TestNameValueCollection()
-		{
-			var target = new NameValueCollection();
-			target.Add( null, "null-1" );
-			target.Add( null, "null-2" );
-			target.Add( String.Empty, "Empty-1" );
-			target.Add( String.Empty, "Empty-1" );
-			target.Add( "1", "1-1" );
-			target.Add( "1", "1-2" );
-			target.Add( "1", "1-3" );
-			target.Add( "null", null );
-			target.Add( "Empty", String.Empty );
-			target.Add( "2", "2" );
-			var serializer = new AutoMessagePackSerializer<NameValueCollection>();
-			using ( var stream = new MemoryStream() )
-			{
-				serializer.Pack( target, stream );
-				stream.Position = 0;
-				NameValueCollection result = serializer.Unpack( stream );
-				Assert.That( result.GetValues( null ), Is.EquivalentTo( new[] { "null1-", "null-2" } ) );
-				Assert.That( result.GetValues( String.Empty ), Is.EquivalentTo( new[] { "Empty-1", "Empty-2" } ) );
-				Assert.That( result.GetValues( "1" ), Is.EquivalentTo( new[] { "1-1", "1-2", "1-3" } ) );
-				Assert.That( result.GetValues( "null" ), Is.EquivalentTo( new string[] { null } ) );
-				Assert.That( result.GetValues( "Empty" ), Is.EquivalentTo( new string[] { String.Empty } ) );
-				Assert.That( result.GetValues( "2" ), Is.EquivalentTo( new string[] { "2" } ) );
-				Assert.That( result.Count, Is.EqualTo( target.Count ) );
-			}
-		}
-
-		[Test]
-		public void TestByteArrayContent()
-		{
-			var serializer = new AutoMessagePackSerializer<byte[]>();
-			using ( var stream = new MemoryStream() )
-			{
-				serializer.Pack( new byte[] { 1, 2, 3, 4 }, stream );
-				stream.Position = 0;
-				Assert.That( Unpacking.UnpackRaw( stream ).ToArray(), Is.EqualTo( new byte[] { 1, 2, 3, 4 } ) );
-			}
-		}
-
-		[Test]
-		public void TestCharArrayContent()
-		{
-			var serializer = new AutoMessagePackSerializer<char[]>();
-			using ( var stream = new MemoryStream() )
-			{
-				serializer.Pack( new char[] { 'a', 'b', 'c', 'd' }, stream );
-				stream.Position = 0;
-				Assert.That( Unpacking.UnpackString( stream ), Is.EqualTo( "abcd" ) );
-			}
-		}
-
 		private static void AssertArraySegmentEquals( object x, object y )
 		{
 			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( x.GetType().GetGenericArguments()[ 0 ] );
@@ -355,20 +355,5 @@ namespace MsgPack.Serialization
 		// 0.5 Silverlight
 		// 0.6 Extensibility
 		// 0.7 Improve error handling
-	}
-
-	public sealed class ArraySegmentEqualityComparer<T> : EqualityComparer<ArraySegment<T>>
-	{
-		public ArraySegmentEqualityComparer() { }
-
-		public sealed override bool Equals( ArraySegment<T> x, ArraySegment<T> y )
-		{
-			return x.Array.Skip( x.Offset ).Take( x.Count ).SequenceEqual( y.Array.Skip( y.Offset ).Take( y.Count ), EqualityComparer<T>.Default );
-		}
-
-		public sealed override int GetHashCode( ArraySegment<T> obj )
-		{
-			return obj.GetHashCode();
-		}
 	}
 }

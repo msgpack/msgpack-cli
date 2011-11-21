@@ -107,6 +107,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\AddOnlyCollection`1.cs" />
+    <Compile Include="Serialization\ArraySegmentEqualityComparer`1.cs" />
     <Compile Include="Serialization\AutoMessagePackSerializerTest.cs" />
     <Compile Include="Serialization\AutoMessagePackSerializerTest.Types.cs">
       <AutoGen>True</AutoGen>
