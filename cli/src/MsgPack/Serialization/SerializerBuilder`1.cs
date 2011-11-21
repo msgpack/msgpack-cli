@@ -109,8 +109,6 @@ namespace MsgPack.Serialization
 
 			if ( canWrite )
 			{
-				//packing = this.CreatePacking( member, memberType, contract );
-				//unpacking = this.CreateUnpacking( member, memberType, contract );
 				return this.CreateObjectProcedures( member, memberType, contract, out packing, out unpacking );
 			}
 
