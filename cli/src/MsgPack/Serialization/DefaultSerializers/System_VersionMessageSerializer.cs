@@ -37,21 +37,22 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected sealed override Version UnpackFromCore( Unpacker unpacker )
 		{
-			long length = unpacker.Data.Value.AsInt64();
-			int[] array = new int[ 4 ];
-			for ( int i = 0; i < length && i < 4; i++ )
+			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 			{
-				if ( !unpacker.MoveToNextEntry() )
+				long length = subTreeUnpacker.Data.Value.AsInt64();
+				int[] array = new int[ 4 ];
+				for ( int i = 0; i < length && i < 4; i++ )
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					if ( !subTreeUnpacker.Read() )
+					{
+						throw SerializationExceptions.NewMissingItem( i );
+					}
+
+					array[ i ] = subTreeUnpacker.Data.Value.AsInt32();
 				}
 
-				array[ i ] = unpacker.Data.Value.AsInt32();
+				return new Version( array[ 0 ], array[ 1 ], array[ 2 ], array[ 3 ] );
 			}
-
-			unpacker.MoveToEndCollection();
-
-			return new Version( array[ 0 ], array[ 1 ], array[ 2 ], array[ 3 ] );
 		}
 	}
 }

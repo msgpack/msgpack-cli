@@ -38,14 +38,11 @@ namespace MsgPack.Serialization
 	/// <typeparam name="TObject">Object to be serialized/deserialized.</typeparam>
 	internal sealed class EmittingMemberBinder<TObject> : SerializerBuilder<TObject>
 	{
-		public TextWriter Trace { get; set; }
 
 		private static readonly MethodInfo _packerPackMessagePackObject = FromExpression.ToMethod( ( Packer packer, MessagePackObject value ) => packer.Pack( value ) );
 		private static readonly PropertyInfo _unpackerDataProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.Data );
 		private static readonly PropertyInfo _messagePackObjectIsNilProperty = FromExpression.ToProperty( ( MessagePackObject value ) => value.IsNil );
 		private static readonly PropertyInfo _unpackerItemsCountProperty = FromExpression.ToProperty( ( Unpacker unpadker ) => unpadker.ItemsCount );
-		private static readonly MethodInfo _unpackerMoveToNextEntryMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.MoveToNextEntry() );
-		private static readonly MethodInfo _unpackerMoveToEndCollection = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.MoveToEndCollection() );
 		private static readonly MethodInfo _packerPackArrayHeaderMethod = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackArrayHeader( count ) );
 		private static readonly MethodInfo _packerPackMapHeaderMethod = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackMapHeader( count ) );
 		private static readonly PropertyInfo _unpackerIsInStartProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsInStart );
@@ -217,7 +214,7 @@ namespace MsgPack.Serialization
 				return false;
 			}
 
-			unpacking = 
+			unpacking =
 				CreateUnpackMapProceduresCore(
 					member.DeclaringType,
 					contract.Name,
@@ -275,96 +272,96 @@ namespace MsgPack.Serialization
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", targetType, memberName, null, _packingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
 
-			/*
-			 * 
-			 * // Enumerable
-			 * foreach( var item in map )
-			 * {
-			 * 		Context.MarshalTo( packer, array[ i ] );
-			 * }
-			 */
-			var collection = il.DeclareLocal( collectionType, "collection" );
-			var item = il.DeclareLocal( traits.ElementType, "item" );
-			var keyProperty = traits.ElementType.GetProperty( "Key" );
-			var valueProperty = traits.ElementType.GetProperty( "Value" );
-			loadCollectionEmitter( il, collection );
-			var count = il.DeclareLocal( typeof( int ), "count" );
-			il.EmitAnyLdloc( collection );
-			il.EmitGetProperty( traits.CountProperty );
-			il.EmitAnyStloc( count );
-			il.EmitAnyLdarg( 0 );
-			il.EmitAnyLdloc( count );
-			il.EmitAnyCall( _packerPackMapHeaderMethod );
-			il.EmitPop();
-			Emittion.EmitForEach(
-				il,
-				traits,
-				collection,
-				( il0, getCurrentEmitter ) =>
-				{
-					if ( traits.ElementType.IsGenericType )
+				/*
+				 * 
+				 * // Enumerable
+				 * foreach( var item in map )
+				 * {
+				 * 		Context.MarshalTo( packer, array[ i ] );
+				 * }
+				 */
+				var collection = il.DeclareLocal( collectionType, "collection" );
+				var item = il.DeclareLocal( traits.ElementType, "item" );
+				var keyProperty = traits.ElementType.GetProperty( "Key" );
+				var valueProperty = traits.ElementType.GetProperty( "Value" );
+				loadCollectionEmitter( il, collection );
+				var count = il.DeclareLocal( typeof( int ), "count" );
+				il.EmitAnyLdloc( collection );
+				il.EmitGetProperty( traits.CountProperty );
+				il.EmitAnyStloc( count );
+				il.EmitAnyLdarg( 0 );
+				il.EmitAnyLdloc( count );
+				il.EmitAnyCall( _packerPackMapHeaderMethod );
+				il.EmitPop();
+				Emittion.EmitForEach(
+					il,
+					traits,
+					collection,
+					( il0, getCurrentEmitter ) =>
 					{
-						Contract.Assert( traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) );
-						getCurrentEmitter();
-						il0.EmitAnyStloc( item );
-						Emittion.EmitMarshalValue(
-							il0,
-							0,
-							2,
-							traits.ElementType.GetGenericArguments()[ 0 ],
-							il1 =>
-							{
-								il1.EmitAnyLdloca( item );
-								il1.EmitGetProperty( keyProperty );
-							}
-						);
+						if ( traits.ElementType.IsGenericType )
+						{
+							Contract.Assert( traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) );
+							getCurrentEmitter();
+							il0.EmitAnyStloc( item );
+							Emittion.EmitMarshalValue(
+								il0,
+								0,
+								2,
+								traits.ElementType.GetGenericArguments()[ 0 ],
+								il1 =>
+								{
+									il1.EmitAnyLdloca( item );
+									il1.EmitGetProperty( keyProperty );
+								}
+							);
 
-						Emittion.EmitMarshalValue(
-							il0,
-							0,
-							2,
-							traits.ElementType.GetGenericArguments()[ 1 ],
-							il1 =>
-							{
-								il1.EmitAnyLdloca( item );
-								il1.EmitGetProperty( valueProperty );
-							}
-						);
-					}
-					else
-					{
-						Contract.Assert( traits.ElementType == typeof( DictionaryEntry ) );
-						getCurrentEmitter();
-						il0.EmitAnyStloc( item );
-						Emittion.EmitMarshalValue(
-							il0,
-							0,
-							2,
-							typeof( MessagePackObject ),
-							il1 =>
-							{
-								il0.EmitAnyLdloca( item );
-								il0.EmitGetProperty( _dictionaryEntryKeyProperty );
-								il0.EmitUnbox_Any( typeof( MessagePackObject ) );
-							}
-						);
+							Emittion.EmitMarshalValue(
+								il0,
+								0,
+								2,
+								traits.ElementType.GetGenericArguments()[ 1 ],
+								il1 =>
+								{
+									il1.EmitAnyLdloca( item );
+									il1.EmitGetProperty( valueProperty );
+								}
+							);
+						}
+						else
+						{
+							Contract.Assert( traits.ElementType == typeof( DictionaryEntry ) );
+							getCurrentEmitter();
+							il0.EmitAnyStloc( item );
+							Emittion.EmitMarshalValue(
+								il0,
+								0,
+								2,
+								typeof( MessagePackObject ),
+								il1 =>
+								{
+									il0.EmitAnyLdloca( item );
+									il0.EmitGetProperty( _dictionaryEntryKeyProperty );
+									il0.EmitUnbox_Any( typeof( MessagePackObject ) );
+								}
+							);
 
-						Emittion.EmitMarshalValue(
-							il0,
-							0,
-							2,
-							typeof( MessagePackObject ),
-							il1 =>
-							{
-								il0.EmitAnyLdloca( item );
-								il0.EmitGetProperty( _dictionaryEntryValueProperty );
-								il0.EmitUnbox_Any( typeof( MessagePackObject ) );
-							}
-						);
+							Emittion.EmitMarshalValue(
+								il0,
+								0,
+								2,
+								typeof( MessagePackObject ),
+								il1 =>
+								{
+									il0.EmitAnyLdloca( item );
+									il0.EmitGetProperty( _dictionaryEntryValueProperty );
+									il0.EmitUnbox_Any( typeof( MessagePackObject ) );
+								}
+							);
+						}
 					}
-				}
-			);
-			il.EmitRet();
+				);
+				il.EmitRet();
 
 			return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
 		}
@@ -388,68 +385,69 @@ namespace MsgPack.Serialization
 			var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 			var collection = il.DeclareLocal( collectionType, "collection" );
 #if DEBUG
-			Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> )
-				|| traits.ElementType == typeof( DictionaryEntry ) );
+				Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> )
+					|| traits.ElementType == typeof( DictionaryEntry ) );
 #endif
-			var key = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject ), "key" );
-			var value = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject ), "value" );
+				var key = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject ), "key" );
+				var value = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject ), "value" );
 
-			Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
-			il.EmitAnyLdarg( 0 );
-			il.EmitGetProperty( _unpackerItemsCountProperty );
-			il.EmitConv_Ovf_I4();
-			il.EmitAnyStloc( itemsCount );
-			loadCollectionEmitter( il, collection );
-			Emittion.EmitFor(
-				il,
-				itemsCount,
-				( il0, i ) =>
-				{
-					Action<TracingILGenerator, int> unpackerReading =
-						( il1, unpackerIndex ) =>
+				Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
+				var subTreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subTreeUnpacker" );
+				Emittion.EmitUnpackerBeginReadSubtree( il, 0, subTreeUnpacker );
+				il.EmitAnyLdloc( subTreeUnpacker );
+				il.EmitGetProperty( _unpackerItemsCountProperty );
+				il.EmitConv_Ovf_I4();
+				il.EmitAnyStloc( itemsCount );
+				loadCollectionEmitter( il, collection );
+				Emittion.EmitFor(
+					il,
+					itemsCount,
+					( il0, i ) =>
+					{
+						Action<TracingILGenerator, LocalBuilder> unpackerReading =
+							( il1, unpacker ) =>
+							{
+								il1.EmitAnyLdloc( unpacker );
+								il1.EmitAnyCall( _unpackerReadMethod );
+								var endIf = il1.DefineLabel( "END_IF" );
+								il1.EmitBrtrue_S( endIf );
+								il1.EmitAnyLdloc( i );
+								il1.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
+								il1.EmitThrow();
+								il1.MarkLabel( endIf );
+							};
+
+						// Key
+						Emittion.EmitUnmarshalValue( il0, subTreeUnpacker, 2, key.LocalType, unpackerReading );
+						il0.EmitAnyStloc( key );
+
+						// Value
+						Emittion.EmitUnmarshalValue( il0, subTreeUnpacker, 2, value.LocalType, unpackerReading );
+						il0.EmitAnyStloc( value );
+
+						il0.EmitAnyLdloc( collection );
+
+						il0.EmitAnyLdloc( key );
+						if ( !traits.ElementType.IsGenericType )
 						{
-							il1.EmitAnyLdarg( unpackerIndex );
-							il1.EmitAnyCall( _unpackerMoveToNextEntryMethod );
-							var endIf = il1.DefineLabel( "END_IF" );
-							il1.EmitBrtrue_S( endIf );
-							il1.EmitAnyLdloc( i );
-							il1.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
-							il1.EmitThrow();
-							il1.MarkLabel( endIf );
-						};
+							il0.EmitBox( key.LocalType );
+						}
 
-					// Key
-					Emittion.EmitUnmarshalValue( il0, 0, 2, key.LocalType, unpackerReading );
-					il0.EmitAnyStloc( key );
+						il0.EmitAnyLdloc( value );
+						if ( !traits.ElementType.IsGenericType )
+						{
+							il0.EmitBox( value.LocalType );
+						}
 
-					// Value
-					Emittion.EmitUnmarshalValue( il0, 0, 2, value.LocalType, unpackerReading );
-					il0.EmitAnyStloc( value );
-
-					il0.EmitAnyLdloc( collection );
-
-					il0.EmitAnyLdloc( key );
-					if ( !traits.ElementType.IsGenericType )
-					{
-						il0.EmitBox( key.LocalType );
+						il0.EmitAnyCall( traits.AddMethod );
+						if ( traits.AddMethod.ReturnType != typeof( void ) )
+						{
+							il0.EmitPop();
+						}
 					}
-
-					il0.EmitAnyLdloc( value );
-					if ( !traits.ElementType.IsGenericType )
-					{
-						il0.EmitBox( value.LocalType );
-					}
-
-					il0.EmitAnyCall( traits.AddMethod );
-					if ( traits.AddMethod.ReturnType != typeof( void ) )
-					{
-						il0.EmitPop();
-					}
-				}
-			);
-			il.EmitAnyLdarg( 0 );
-			il.EmitAnyCall( _unpackerMoveToEndCollection );
-			il.EmitRet();
+				);
+				Emittion.EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
+				il.EmitRet();
 
 			return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
 		}
@@ -497,27 +495,18 @@ namespace MsgPack.Serialization
 			 */
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", member.DeclaringType, contract.Name, null, _unpackingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
-			var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
-			var collection = il.DeclareLocal( memberType, "collection" );
-			il.EmitAnyLdarg( 1 );
-			Emittion.EmitUnmarshalValue(
-				il,
-				0,
-				2,
-				memberType,
-				( il0, unpackerArgumentIndex ) =>
-				{
-					var endIf = il0.DefineLabel( "END_IF" );
-					il0.EmitAnyLdarg( unpackerArgumentIndex );
-					il0.EmitAnyCall( _unpackerReadMethod );
-					il0.EmitBrtrue_S( endIf );
-					il0.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
-					il0.EmitThrow();
-					il0.MarkLabel( endIf );
-				}
-			);
-			Emittion.EmitStoreValue( il, member );
-			il.EmitRet();
+				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
+				var collection = il.DeclareLocal( memberType, "collection" );
+				il.EmitAnyLdarg( 1 );
+				Emittion.EmitUnmarshalValue(
+					il,
+					0,
+					2,
+					memberType,
+					null // Dispatching closure shall adjust position.
+				);
+				Emittion.EmitStoreValue( il, member );
+				il.EmitRet();
 
 			return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
 		}

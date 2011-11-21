@@ -30,14 +30,13 @@ namespace MsgPack.Serialization
 		private static readonly Type[] _marshalingMethodParameters = new[] { typeof( Packer ), typeof( TCollection ), typeof( SerializationContext ) };
 		private static readonly Type[] _unmarshalingMethodParameters = new[] { typeof( Unpacker ), typeof( TCollection ), typeof( SerializationContext ) };
 		private static readonly PropertyInfo _unpackerItemsCountProperty = FromExpression.ToProperty( ( Unpacker unpadker ) => unpadker.ItemsCount );
-		private static readonly MethodInfo _unpackerMoveToNextEntryMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.MoveToNextEntry() );
-		private static readonly MethodInfo _unpackerMoveToEndCollectionMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.MoveToEndCollection() );
+		private static readonly MethodInfo _unpackerReadMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
 		private static readonly MethodInfo _packerPackArrayHeader = FromExpression.ToMethod( ( Packer packer, int length ) => packer.PackArrayHeader( length ) );
 		private static readonly MethodInfo _enumerableToArray1Method = typeof( Enumerable ).GetMethod( "ToArray" );
 		private readonly Action<Packer, TCollection, SerializationContext> _marshaling;
 		private readonly Action<Unpacker, TCollection, SerializationContext> _unmarshaling;
 
-		public EmittingArrayMarshaler( CollectionTraits traits)
+		public EmittingArrayMarshaler( CollectionTraits traits )
 		{
 			CreateArrayProcedures( traits, out this._marshaling, out this._unmarshaling );
 		}
@@ -215,59 +214,59 @@ namespace MsgPack.Serialization
 			var il = dynamicMethod.GetILGenerator();
 			var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 
-			Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
-			il.EmitAnyLdarg( 0 );
-			il.EmitGetProperty( _unpackerItemsCountProperty );
-			il.EmitConv_Ovf_I4();
-			il.EmitAnyStloc( itemsCount );
-			Emittion.EmitFor(
-				il,
-				itemsCount,
-				( il0, i ) =>
-				{
-					il0.EmitAnyLdarg( 1 );
-					if ( typeof( TCollection ).IsArray )
+				Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
+				var subTreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subTreeUnpacker" );
+				Emittion.EmitUnpackerBeginReadSubtree( il, 0, subTreeUnpacker );
+				il.EmitAnyLdloc( subTreeUnpacker );
+				il.EmitGetProperty( _unpackerItemsCountProperty );
+				il.EmitConv_Ovf_I4();
+				il.EmitAnyStloc( itemsCount );
+				Emittion.EmitFor(
+					il,
+					itemsCount,
+					( il0, i ) =>
 					{
-						il0.EmitAnyLdloc( i );
-					}
+						il0.EmitAnyLdarg( 1 );
+						if ( typeof( TCollection ).IsArray )
+						{
+							il0.EmitAnyLdloc( i );
+						}
 
-					Emittion.EmitUnmarshalValue(
-						il0,
-						0,
-						2,
-						traits.ElementType,
-						( il1, unpackerIndex ) =>
+						Emittion.EmitUnmarshalValue(
+							il0,
+							subTreeUnpacker,
+							2,
+							traits.ElementType,
+							( il1, unpacker ) =>
+							{
+								il1.EmitAnyLdloc( unpacker );
+								il1.EmitAnyCall( _unpackerReadMethod );
+								var endIf = il1.DefineLabel( "END_IF" );
+								il1.EmitBrtrue_S( endIf );
+								il1.EmitAnyLdloc( i );
+								il1.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
+								il1.EmitThrow();
+								il1.MarkLabel( endIf );
+							}
+						);
+						if ( typeof( TCollection ).IsArray )
 						{
-							il1.EmitAnyLdarg( unpackerIndex );
-							il1.EmitAnyCall( _unpackerMoveToNextEntryMethod );
-							var endIf = il1.DefineLabel( "END_IF" );
-							il1.EmitBrtrue_S( endIf );
-							il1.EmitAnyLdloc( i );
-							il1.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
-							il1.EmitThrow();
-							il1.MarkLabel( endIf );
+							il0.EmitStelem( traits.ElementType );
 						}
-					);
-					if ( typeof( TCollection ).IsArray )
-					{
-						il0.EmitStelem( traits.ElementType );
-					}
-					else
-					{
-						il0.EmitAnyCall( traits.AddMethod );
-						if ( traits.AddMethod.ReturnType != typeof( void ) )
+						else
 						{
-							il0.EmitPop();
+							il0.EmitAnyCall( traits.AddMethod );
+							if ( traits.AddMethod.ReturnType != typeof( void ) )
+							{
+								il0.EmitPop();
+							}
 						}
 					}
-				}
-			);
-			il.EmitAnyLdarg( 0 );
-			il.EmitAnyCall( _unpackerMoveToEndCollectionMethod );
-			il.EmitRet();
+				);
+				Emittion.EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
+				il.EmitRet();
 
 			return dynamicMethod.CreateDelegate<Action<Unpacker, TCollection, SerializationContext>>();
 		}
-
 	}
 }

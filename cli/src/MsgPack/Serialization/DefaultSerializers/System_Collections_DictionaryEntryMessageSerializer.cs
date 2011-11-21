@@ -52,41 +52,42 @@ namespace MsgPack.Serialization.DefaultSerializers
 			object value = null;
 			bool isKeyFound = false;
 			bool isValueFound = false;
-			while ( unpacker.MoveToNextEntry() )
+			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 			{
-				if ( !unpacker.Data.HasValue )
+				while ( subTreeUnpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
-
-				switch ( unpacker.Data.Value.AsString() )
-				{
-					case "Key":
+					if ( !subTreeUnpacker.Data.HasValue )
 					{
-						if ( !unpacker.MoveToNextEntry() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
-
-						isKeyFound = true;
-						key = unpacker.Data.Value;
-						break;
+						throw SerializationExceptions.NewUnexpectedEndOfStream();
 					}
-					case "Value":
-					{
-						if ( !unpacker.MoveToNextEntry() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
 
-						isValueFound = true;
-						value = unpacker.Data.Value;
-						break;
+					switch ( subTreeUnpacker.Data.Value.AsString() )
+					{
+						case "Key":
+						{
+							if ( !subTreeUnpacker.Read() )
+							{
+								throw SerializationExceptions.NewUnexpectedEndOfStream();
+							}
+
+							isKeyFound = true;
+							key = subTreeUnpacker.Data.Value;
+							break;
+						}
+						case "Value":
+						{
+							if ( !subTreeUnpacker.Read() )
+							{
+								throw SerializationExceptions.NewUnexpectedEndOfStream();
+							}
+
+							isValueFound = true;
+							value = subTreeUnpacker.Data.Value;
+							break;
+						}
 					}
 				}
 			}
-
-			unpacker.MoveToEndCollection();
 
 			if ( !isKeyFound )
 			{

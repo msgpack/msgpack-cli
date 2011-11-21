@@ -39,6 +39,7 @@ namespace MsgPack.Serialization
 		private static readonly PropertyInfo _unpackerIsMapHeaderProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsMapHeader );
 		private static readonly PropertyInfo _unpackerIsArrayHeaderProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsArrayHeader );
 		private static readonly MethodInfo _unpackerReadMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
+		private static readonly MethodInfo _unpackerReadSubTreeMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.ReadSubtree() );
 		private static readonly PropertyInfo _unpackerDataProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.Data );
 		private static readonly PropertyInfo _nullableMessagePackObjectValueProperty = FromExpression.ToProperty( ( MessagePackObject? value ) => value.Value );
 		private static readonly PropertyInfo _messagePackObjectIsNilProperty = FromExpression.ToProperty( ( MessagePackObject value ) => value.IsNil );
@@ -292,6 +293,19 @@ namespace MsgPack.Serialization
 			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( valueType ) );
 		}
 
+		public static void EmitUnmarshalValue( TracingILGenerator il, LocalBuilder unpacker, int contextArgumentIndex, Type valueType, Action<TracingILGenerator, LocalBuilder> unpackerReading )
+		{
+			if ( unpackerReading != null )
+			{
+				unpackerReading( il, unpacker );
+			}
+
+			//  context.Marshalers.Get<T>().UnmarshalFrom( packer, ... ) )
+			il.EmitAnyLdarg( contextArgumentIndex );
+			il.EmitAnyLdloc( unpacker );
+			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( valueType ) );
+		}
+
 		public static void EmitReadUnpackerIfNotInHeader( TracingILGenerator il, int unpackerArgumentIndex )
 		{
 			/*
@@ -317,6 +331,26 @@ namespace MsgPack.Serialization
 			il.EmitAnyCall( SerializationExceptions.NewCannotReadCollectionHeaderMethod );
 			il.EmitThrow();
 			il.MarkLabel( endIf );
+		}
+
+		public static void EmitUnpackerBeginReadSubtree( TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder subTreeUnpacker )
+		{
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitAnyCall( _unpackerReadSubTreeMethod );
+			il.EmitAnyStloc( subTreeUnpacker );
+			il.BeginExceptionBlock();
+		}
+
+		public static void EmitUnpackerEndReadSubtree( TracingILGenerator il, LocalBuilder subTreeUnpacker )
+		{
+			il.BeginFinallyBlock();
+			il.EmitAnyLdloc( subTreeUnpacker );
+			var endIf = il.DefineLabel( "END_IF" );
+			il.EmitBrfalse_S( endIf );
+			il.EmitAnyLdloc( subTreeUnpacker );
+			il.EmitAnyCall( _idisposableDisposeMethod );
+			il.MarkLabel( endIf );
+			il.EndExceptionBlock();
 		}
 	}
 }

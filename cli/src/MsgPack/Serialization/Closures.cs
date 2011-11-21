@@ -134,29 +134,36 @@ namespace MsgPack.Serialization
 						}
 					}
 
-					// TODO: Array for ordered.
-					long count = unpacker.ItemsCount;
-					// TODO: For big struct, use Dictionary<String,SM>
-					for ( long i = 0; i < count; i++ )
+					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						if ( !unpacker.MoveToNextEntry() )
+						// TODO: Array for ordered.
+						long count = subTreeUnpacker.ItemsCount;
+						// TODO: For big struct, use Dictionary<String,SM>
+						for ( long i = 0; i < count; i++ )
 						{
-							throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Some map entries are missing. Declared size is {0}, but actual is {1}.", count, i ) );
-						}
+							if ( !subTreeUnpacker.Read() )
+							{
+								throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Some map entries are missing. Declared size is {0}, but actual is {1}.", count, i ) );
+							}
 
-						string memberName = unpacker.Data.Value.AsString();
-						int index = Array.FindIndex( entries, entry => entry.Contract.Name == memberName );
-						if ( index < 0 )
-						{
-							// TODO: OK?
-							// Ignore
-							continue;
-						}
+							string memberName = subTreeUnpacker.Data.Value.AsString();
+							int index = Array.FindIndex( entries, entry => entry.Contract.Name == memberName );
+							if ( index < 0 )
+							{
+								// TODO: OK?
+								// Ignore
+								continue;
+							}
 
-						unpackings[ index ]( unpacker, target, context );
+							if ( !subTreeUnpacker.Read() )
+							{
+								// TODO: message fix
+								throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Some map entries are missing. Declared size is {0}, but actual is {1}.", count, i ) );
+							}
+
+							unpackings[ index ]( subTreeUnpacker, target, context );
+						}
 					}
-
-					unpacker.MoveToEndCollection();
 
 					return target;
 				};

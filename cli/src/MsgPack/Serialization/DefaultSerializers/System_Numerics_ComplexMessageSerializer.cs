@@ -42,41 +42,42 @@ namespace MsgPack.Serialization.DefaultSerializers
 			double imaginary = 0;
 			bool isRealFound = false;
 			bool isImaginaryFound = false;
-			while ( unpacker.MoveToNextEntry() )
+			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 			{
-				if ( !unpacker.Data.HasValue )
+				while ( subTreeUnpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
-
-				switch ( unpacker.Data.Value.AsString() )
-				{
-					case "Real":
+					if ( !subTreeUnpacker.Data.HasValue )
 					{
-						if ( !unpacker.MoveToNextEntry() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
-
-						isRealFound = true;
-						real = unpacker.Data.Value.AsDouble();
-						break;
+						throw SerializationExceptions.NewUnexpectedEndOfStream();
 					}
-					case "Imaginary":
-					{
-						if ( !unpacker.MoveToNextEntry() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
 
-						isImaginaryFound = true;
-						imaginary = unpacker.Data.Value.AsDouble();
-						break;
+					switch ( subTreeUnpacker.Data.Value.AsString() )
+					{
+						case "Real":
+						{
+							if ( !subTreeUnpacker.Read() )
+							{
+								throw SerializationExceptions.NewUnexpectedEndOfStream();
+							}
+
+							isRealFound = true;
+							real = subTreeUnpacker.Data.Value.AsDouble();
+							break;
+						}
+						case "Imaginary":
+						{
+							if ( !subTreeUnpacker.Read() )
+							{
+								throw SerializationExceptions.NewUnexpectedEndOfStream();
+							}
+
+							isImaginaryFound = true;
+							imaginary = subTreeUnpacker.Data.Value.AsDouble();
+							break;
+						}
 					}
 				}
 			}
-
-			unpacker.MoveToEndCollection();
 
 			if ( !isRealFound )
 			{

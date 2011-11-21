@@ -1510,7 +1510,7 @@ namespace MsgPack
 				return;
 			}
 
-			this.PrivatePackArrayCore( value.Select( item => ( Object )item ), GetCount<TItem>( value ), this.PackObjectsCore, options );
+			this.PrivatePackArrayCore( value, GetCount<TItem>( value ), this.PackObjectsCore, options );
 		}
 
 		private static int? GetCount( System.Collections.IEnumerable value )

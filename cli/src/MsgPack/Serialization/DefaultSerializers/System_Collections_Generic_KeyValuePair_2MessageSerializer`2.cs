@@ -50,41 +50,42 @@ namespace MsgPack.Serialization.DefaultSerializers
 			TValue value = default( TValue );
 			bool isKeyFound = false;
 			bool isValueFound = false;
-			while ( unpacker.MoveToNextEntry() )
+			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 			{
-				if ( !unpacker.Data.HasValue )
+				while ( subTreeUnpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
-
-				switch ( unpacker.Data.Value.AsString() )
-				{
-					case "Key":
+					if ( !subTreeUnpacker.Data.HasValue )
 					{
-						if ( !unpacker.MoveToNextEntry() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
-
-						isKeyFound = true;
-						key = this._context.UnmarshalFrom<TKey>( unpacker );
-						break;
+						throw SerializationExceptions.NewUnexpectedEndOfStream();
 					}
-					case "Value":
-					{
-						if ( !unpacker.MoveToNextEntry() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
 
-						isValueFound = true;
-						value = this._context.UnmarshalFrom<TValue>( unpacker );
-						break;
+					switch ( subTreeUnpacker.Data.Value.AsString() )
+					{
+						case "Key":
+						{
+							if ( !subTreeUnpacker.Read() )
+							{
+								throw SerializationExceptions.NewUnexpectedEndOfStream();
+							}
+
+							isKeyFound = true;
+							key = this._context.UnmarshalFrom<TKey>( subTreeUnpacker );
+							break;
+						}
+						case "Value":
+						{
+							if ( !subTreeUnpacker.Read() )
+							{
+								throw SerializationExceptions.NewUnexpectedEndOfStream();
+							}
+
+							isValueFound = true;
+							value = this._context.UnmarshalFrom<TValue>( subTreeUnpacker );
+							break;
+						}
 					}
 				}
 			}
-
-			unpacker.MoveToEndCollection();
 
 			if ( !isKeyFound )
 			{
