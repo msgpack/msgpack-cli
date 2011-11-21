@@ -54,6 +54,8 @@ namespace MsgPack
 		/// </summary>
 		private BytesBuffer _bytesBuffer;
 
+		private bool _isInTailOfCollection;
+
 		/// <summary>
 		///		Initialize new instance.
 		/// </summary>
@@ -125,7 +127,7 @@ namespace MsgPack
 
 			if ( unpackingMode == UnpackingMode.SubTree )
 			{
-				if ( !this.HasMoreEntries )
+				if ( this._isInTailOfCollection )
 				{
 					// This subtree ends.
 					return null;
@@ -312,6 +314,7 @@ namespace MsgPack
 				if ( collectionItemOrRoot != null )
 				{
 					collectionItemOrRoot = this.AddToContextCollection( collectionItemOrRoot.Value );
+					this._isInTailOfCollection = !this.HasMoreEntries;
 
 					if ( collectionItemOrRoot != null )
 					{
