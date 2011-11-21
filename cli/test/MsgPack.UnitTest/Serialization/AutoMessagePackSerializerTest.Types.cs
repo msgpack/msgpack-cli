@@ -18,7 +18,7 @@
 //
 #endregion -- License Terms --
 
-#pragma warning suppress 3003
+#pragma warning disable 3003
 #warning LINE51--Tuple
 using System;
 using System.Collections;
