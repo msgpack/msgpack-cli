@@ -29,11 +29,12 @@ using System.Collections.ObjectModel;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace MsgPack.Serialization
 {
 	[TestFixture]
-	[Timeout( 1000 )]
+	[Timeout( 3000 )]
 	public partial class AutoMessagePackSerializerTest
 	{
 		private static bool _traceOn = true;
@@ -243,6 +244,27 @@ namespace MsgPack.Serialization
 					actual,
 					actual == null ? "(null)" : actual.GetType().FullName
 				);
+				return;
+			}
+
+			if ( expected is FILETIME )
+			{
+				Verify( ( ( dynamic )expected ).dwHighDateTime, ( ( dynamic )actual ).dwHighDateTime );
+				Verify( ( ( dynamic )expected ).dwLowDateTime, ( ( dynamic )actual ).dwLowDateTime );
+				return;
+			}
+
+			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
+			{
+				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
+				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
+				return;
+			}
+
+			if ( expected is DictionaryEntry )
+			{
+				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
+				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
 				return;
 			}
 
