@@ -19,15 +19,30 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultMarshalers
 {
 	internal sealed class EnumMarshaler<T> : MessageMarshaler<T>
 	{
+		private static readonly Func<Unpacker, T> _unpacking;
+
+		static EnumMarshaler()
+		{
+			if ( typeof( T ).IsValueType )
+			{
+				_unpacking =
+					Delegate.CreateDelegate(
+						typeof( Func<Unpacker, T> ),
+						EnumMarshaler.Unmarshal1Method.MakeGenericMethod( typeof( T ) )
+					) as Func<Unpacker, T>;
+			}
+			else
+			{
+				_unpacking = _ => { throw new NotSupportedException(); };
+			}
+		}
+
 		public EnumMarshaler()
 		{
 			if ( !typeof( T ).IsEnum )
@@ -35,7 +50,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not enum.", typeof( T ) ) );
 			}
 		}
-		
+
 		protected sealed override void MarshalToCore( Packer packer, T value )
 		{
 			packer.PackString( value.ToString() );
@@ -43,15 +58,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 
 		protected sealed override T UnmarshalFromCore( Unpacker unpacker )
 		{
-			// TODO: Avoid boxing...
-			try
-			{
-				return ( T )Enum.Parse( typeof( T ), unpacker.Data.Value.AsString() );
-			}
-			catch( ArgumentException ae)
-			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.Data.Value.AsString(), typeof( T ) ) ,ae);
-			}
+			return _unpacking( unpacker );
 		}
 	}
 }
