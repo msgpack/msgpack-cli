@@ -27,6 +27,8 @@ using System.Reflection.Emit;
 using System.Reflection;
 using System.Diagnostics.Contracts;
 using System.Collections;
+using System.Globalization;
+using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
 {
@@ -233,12 +235,23 @@ namespace MsgPack.Serialization
 			var asProperty = member as PropertyInfo;
 			if ( asProperty != null )
 			{
+				if ( !asProperty.CanWrite )
+				{
+					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot set value to '{0}.{1}' property.", asProperty.DeclaringType, asProperty.Name ) );
+				}
+
 				il.EmitSetProperty( asProperty );
 			}
 			else
 			{
 				Contract.Assert( member is FieldInfo, member.ToString() + ":" + member.MemberType );
-				il.EmitStfld( member as FieldInfo );
+				var asField = member as FieldInfo;
+				if ( asField.IsInitOnly )
+				{
+					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot set value to '{0}.{1}' field.", asField.DeclaringType, asField.Name ) );
+				}
+
+				il.EmitStfld( asField );
 			}
 		}
 
