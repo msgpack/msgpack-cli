@@ -98,6 +98,7 @@
     <Compile Include="CollectionDebuggerProxy`1.cs" />
     <Compile Include="CollectionOperation.cs" />
     <Compile Include="DictionaryDebuggerProxy`2.cs" />
+    <Compile Include="EnumerableStream.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IClippable.cs" />
     <Compile Include="Float32Bits.cs" />
@@ -219,6 +220,8 @@
     <Compile Include="Serialization\TypeKeyRepository.cs" />
     <Compile Include="SetOperation.cs" />
     <Compile Include="StreamPacker.cs" />
+    <Compile Include="StreamUnpacker.cs" />
+    <Compile Include="SubtreeUnpacker.cs" />
     <Compile Include="Unpacking.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -248,7 +251,7 @@
       <DependentUpon>Unpacker.Direct.tt</DependentUpon>
     </Compile>
     <Compile Include="UnpackException.cs" />
-    <Compile Include="StreamUnpacker.cs" />
+    <Compile Include="StreamingUnpacker.cs" />
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>

@@ -101,11 +101,9 @@ foreach( var __type in __types )
 #>
 		public <#= __type.Name #> Unpack<#= __type.Name #>()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			return Unpacking.Unpack<#= __type.Name #>( this._currentSource.Stream );
+			return Unpacking.Unpack<#= __type.Name #>( this.UnderlyingStream );
 		}
 <#
 }

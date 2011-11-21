@@ -33,44 +33,8 @@ namespace MsgPack
 	/// <summary>
 	///		Implements deserializing feature of MsgPack.
 	/// </summary>
-	public partial class Unpacker : IEnumerable<MessagePackObject>, IDisposable
+	public abstract partial class Unpacker : IEnumerable<MessagePackObject>, IDisposable
 	{
-		/// <summary>
-		///		Default buffer size.
-		/// </summary>
-		/// <remarks>
-		///		This value is subject to change.
-		/// </remarks>
-		public static readonly int DefaultBufferSize = 1024 * 64;
-
-		/// <summary>
-		///		Actual unpackaging strategy.
-		/// </summary>
-		private readonly StreamUnpacker _unpacker = new StreamUnpacker();
-
-		/// <summary>
-		///		If current position MAY be in tail of source then true, otherwise false.
-		/// </summary>
-		/// <remarks>
-		///		This value should be refered via <see cref="IsInTailUltimately"/>.
-		/// </remarks>
-		private bool _mayInTail;
-
-		/// <summary>
-		///		Queue of successors of data source.
-		/// </summary>
-		private readonly Queue<DataSource> _successorSources = new Queue<DataSource>();
-
-		/// <summary>
-		///		Current data source.
-		/// </summary>
-		private DataSource _currentSource;
-
-		/// <summary>
-		///		Last unpacked data or null.
-		/// </summary>
-		private MessagePackObject? _data;
-
 		/// <summary>
 		///		Get last unpacked data.
 		/// </summary>
@@ -79,20 +43,20 @@ namespace MsgPack
 		///		If you use any of directory APIs (methods which return non-<see cref="MessagePackObject"/>), 
 		///		then this property to be invalidated.
 		/// </remarks>
-		public MessagePackObject? Data
+		public abstract MessagePackObject? Data
 		{
-			get { return this._data; }
+			get;
 		}
-		
+
 		/// <summary>
 		///		Gets a value indicating whether this instance is positioned to array header.
 		/// </summary>
 		/// <value>
 		/// 	<c>true</c> if this instance is positioned to array header; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsArrayHeader
+		public abstract bool IsArrayHeader
 		{
-			get { return this._unpacker.IsInArrayHeader; }
+			get;
 		}
 
 		/// <summary>
@@ -101,44 +65,34 @@ namespace MsgPack
 		/// <value>
 		/// 	<c>true</c> if this instance is positioned to map header; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsMapHeader
+		public abstract bool IsMapHeader
 		{
-			get { return this._unpacker.IsInMapHeader; }
+			get;
 		}
 
 		/// <summary>
 		///		Gets the items count for current array or map.
 		/// </summary>
-		public long ItemsCount
+		public abstract long ItemsCount
 		{
-			get
-			{
-				if ( !this.IsArrayHeader && !this.IsMapHeader )
-				{
-					throw new InvalidOperationException( "This instance is not positioned to Array nor Map header." );
-				}
-
-				return this._unpacker.UnpackingItemsCount;
-			}
+			get;
 		}
 
-		private bool _isInStart = true;
-
-		public bool IsInStart
+		public abstract bool IsInStart
 		{
-			get { return this._isInStart; }
+			get;
 		}
 
 		private UnpackerMode _mode = UnpackerMode.Unknown;
-		private enum UnpackerMode
-		{
-			Unknown = 0,
-			Direct,
-			Streaming
-		}
+		private bool _isSubtreeReading = false;
 
 		private void VerifyMode( UnpackerMode mode )
 		{
+			if ( this._mode == UnpackerMode.Disposed )
+			{
+				throw new ObjectDisposedException( this.GetType().FullName );
+			}
+
 			if ( this._mode == UnpackerMode.Unknown )
 			{
 				this._mode = mode;
@@ -151,13 +105,18 @@ namespace MsgPack
 			}
 		}
 
+		protected virtual Stream UnderlyingStream
+		{
+			get { throw new NotSupportedException(); }
+		}
+
 		/// <summary>
 		///		 Creates the new <see cref="Unpacker"/> with internal buffer which has default size.
 		/// </summary>
 		/// <returns><see cref="Unpacker"/> instance.</returns>
 		public static Unpacker Create()
 		{
-			return new Unpacker();
+			return new StreamUnpacker();
 		}
 
 		/// <summary>
@@ -167,87 +126,10 @@ namespace MsgPack
 		/// <returns><see cref="Unpacker"/> instance.</returns>
 		public static Unpacker Create( Stream stream )
 		{
-			return new Unpacker( stream );
+			return new StreamUnpacker( stream );
 		}
 
-		/// <summary>
-		///		Initialize new instance with default sized on memory buffer.
-		/// </summary>
-		private Unpacker() : this( new MemoryStream( DefaultBufferSize ), true ) { }
-
-		/// <summary>
-		///		Initialize new instance using specified <see cref="Stream"/> as source.
-		///		This instance will have <see cref="Stream"/> ownership.
-		/// </summary>
-		/// <param name="source">Source <see cref="Stream"/>.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		private Unpacker( Stream source ) : this( source, true ) { }
-
-		/// <summary>
-		///		Initialize new instance using specified <see cref="Stream"/> as source.
-		/// </summary>
-		/// <param name="source">Source <see cref="Stream"/>.</param>
-		/// <param name="ownsStream">If you want to dispose stream when this instance is disposed, then true.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		private Unpacker( Stream source, bool ownsStream )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException( "source" );
-			}
-
-			Contract.EndContractBlock();
-
-			this._currentSource = new DataSource( source, ownsStream );
-		}
-
-		/// <summary>
-		///		Initialize new instance using specified <see cref="Byte"/>[] as source.
-		/// </summary>
-		/// <param name="initialData">Source <see cref="Byte"/>[].</param>
-		/// <exception cref="ArgumentNullException"><paramref name="initialData"/> is null.</exception>
-		private Unpacker( byte[] initialData ) : this( initialData, 0, initialData == null ? 0 : initialData.Length ) { }
-
-		/// <summary>
-		///		Initialize new instance using specified <see cref="Byte"/>[] as source.
-		/// </summary>
-		/// <param name="initialData">Source <see cref="Byte"/>[].</param>
-		/// <param name="offset">Offset of <paramref name="initialData"/> to copy.</param>
-		/// <param name="count">Count of <paramref name="initialData"/> to copy.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="initialData"/> is null.</exception>
-		private Unpacker( byte[] initialData, int offset, int count )
-		{
-			Validation.ValidateBuffer( initialData, offset, count, "initialData", "count", true );
-
-			Contract.EndContractBlock();
-
-			this._currentSource = new DataSource( initialData );
-		}
-
-		/// <summary>
-		///		Initialize new instance using specified <see cref="IEnumerable&lt;T&gt;">IEnumerable</see>&lt;<see cref="Byte"/>&gt; as source.
-		/// </summary>
-		/// <param name="source">Source <see cref="IEnumerable&lt;T&gt;">IEnumerable</see>&lt;<see cref="Byte"/>&gt;.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		private Unpacker( IEnumerable<byte> source )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException( "source" );
-			}
-
-			Contract.EndContractBlock();
-
-			this._currentSource = new DataSource( source );
-		}
-
-		private void VerifyNotDisposed()
-		{
-			if ( this._currentSource.Stream == null )
-			{
-				throw new ObjectDisposedException( this.GetType().FullName );
-			}
-		}
+		protected Unpacker() { }
 
 		/// <summary>
 		///		Clean up internal resources.
@@ -263,67 +145,31 @@ namespace MsgPack
 		/// </summary>
 		protected virtual void Dispose( bool disposing )
 		{
-			var source = this._currentSource;
-			if ( source.Stream != null && source.OwnsStream )
-			{
-				source.Stream.Dispose();
-				this._currentSource = default( DataSource );
-			}
-
-			foreach ( var successor in this._successorSources.ToArray() )
-			{
-				if ( successor.Stream != null && successor.OwnsStream )
-				{
-					successor.Stream.Dispose();
-				}
-			}
-
-			this._successorSources.Clear();
+			// nop
 		}
 
-		/// <summary>
-		///		Invalidate internal cache.
-		/// </summary>
-		private void InvalidateCache()
+		public Unpacker ReadSubtree()
 		{
-			this._data = null;
-		}
-
-		/// <summary>
-		///		Move position to next Message Pack entry.
-		/// </summary>
-		/// <returns>
-		///		<c>true</c>, if position is sucessfully move to next entry;
-		///		<c>false</c>, if position reaches to tail of the current collection.
-		/// </returns>
-		/// <remarks>
-		///		For example, Map is consisted by following entries:
-		///		<list type="bullet">
-		///			<item>Single 'header' entry, which contains Type(that is Map) and its Count.</item>
-		///			<item>Entries for each key.</item>
-		///			<item>Entries for each value.</item>
-		///		</list>
-		///		So, <c>{ "Key0":"val0", "Key1":"val0"}</c> has 5 entries as <c>[Map(2), "key0", "val0", "key1", "val1" ]</c>.
-		/// </remarks>
-		public bool MoveToNextEntry()
-		{
-			this.VerifyMode( UnpackerMode.Streaming );
-			return this.Read( UnpackingMode.SubTree );
-		}
-
-		/// <summary>
-		///		Move position to end of this collection.
-		/// </summary>
-		public void MoveToEndCollection()
-		{
-			this.VerifyMode( UnpackerMode.Streaming );
-			// FIXME: Skipping to avoid DOS
-			while ( this.MoveToNextEntry() )
+			if ( !this.IsArrayHeader && !this.IsMapHeader )
 			{
-				// NOP
+				throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
 			}
 
-			this._unpacker.SetEndCollection();
+			this._isSubtreeReading = true;
+			return this.ReadSubtreeCore();
+		}
+
+		protected abstract Unpacker ReadSubtreeCore();
+
+		protected internal void EndReadSubtree()
+		{
+			if ( !this._isSubtreeReading)
+			{
+				throw new InvalidOperationException( "This unpacker is not in 'Subtree' mode." );
+			}
+
+			this._isSubtreeReading = false;
+			//this.Read();
 		}
 
 		/// <summary>
@@ -336,35 +182,15 @@ namespace MsgPack
 		public bool Read()
 		{
 			this.VerifyMode( UnpackerMode.Streaming );
-			return this.Read( UnpackingMode.PerEntry );
-		}
-
-		private bool Read( UnpackingMode unpackingMode )
-		{
-			this._isInStart = false;
-			while ( !this.IsInTailUltimately() )
+			if ( this._isSubtreeReading )
 			{
-				this._data = this._unpacker.Unpack( this._currentSource.Stream, unpackingMode );
-				if ( this._data != null )
-				{
-					return true;
-				}
-				else if ( unpackingMode == UnpackingMode.SubTree )
-				{
-					this._mayInTail = this._unpacker.IsInRoot && !this._unpacker.HasMoreEntries;
-					if ( !this._unpacker.HasMoreEntries )
-					{
-						return false;
-					}
-				}
-				else
-				{
-					this._mayInTail = true;
-				}
+				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
 			}
 
-			return false;
+			return this.ReadCore();
 		}
+
+		protected abstract bool ReadCore();
 
 		// FIXME: Quota
 
@@ -375,36 +201,14 @@ namespace MsgPack
 		public IEnumerator<MessagePackObject> GetEnumerator()
 		{
 			this.VerifyMode( UnpackerMode.Streaming );
-			while ( this.Read( UnpackingMode.EntireTree ) )
+			while ( this.Read() )
 			{
-				if ( this._data != null )
+				if ( this.Data != null )
 				{
-					yield return this._data.Value;
+					yield return this.Data.Value;
 				}
 				this.VerifyMode( UnpackerMode.Streaming );
 			}
-		}
-
-		/// <summary>
-		///		Determins this instance is in tail of all data sources.
-		///		This method deque successors when needed.
-		/// </summary>
-		/// <returns>If this instance is in tail of all data sources then true, otherwise false.</returns>
-		private bool IsInTailUltimately()
-		{
-			if ( !this._mayInTail )
-			{
-				return false;
-			}
-
-			if ( this._successorSources.Count == 0 )
-			{
-				return true;
-			}
-
-			this._currentSource = this._successorSources.Dequeue();
-			this._isInStart = true;
-			return false;
 		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -426,7 +230,7 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			this._successorSources.Enqueue( new DataSource( newData ) );
+			this.FeedCore( new EnumerableStream( newData ), true );
 		}
 
 		/// <summary>
@@ -444,8 +248,10 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			this._successorSources.Enqueue( new DataSource( stream, ownsStream ) );
+			this.FeedCore( stream, ownsStream );
 		}
+
+		protected abstract void FeedCore( Stream stream, bool ownsStream );
 
 		/// <summary>
 		///		Unpack length of array from current buffer.
@@ -459,12 +265,9 @@ namespace MsgPack
 		/// </remarks>
 		public long UnpackArrayLength()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.UnpackArrayLength( this._currentSource.Stream );
+			return Unpacking.UnpackArrayLength( this.UnderlyingStream );
 		}
 
 		/// <summary>
@@ -494,12 +297,9 @@ namespace MsgPack
 		/// </remarks>
 		public long UnpackMapCount()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.UnpackDictionaryCount( this._currentSource.Stream );
+			return Unpacking.UnpackDictionaryCount( this.UnderlyingStream );
 		}
 
 		/// <summary>
@@ -529,12 +329,9 @@ namespace MsgPack
 		/// </remarks>
 		public long UnpackRawLength()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.UnpackRawLength( this._currentSource.Stream );
+			return Unpacking.UnpackRawLength( this.UnderlyingStream );
 		}
 
 		/// <summary>
@@ -549,12 +346,9 @@ namespace MsgPack
 		/// </remarks>
 		public Object UnpackNull()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.UnpackNull( this._currentSource.Stream );
+			return Unpacking.UnpackNull( this.UnderlyingStream );
 		}
 
 		/// <summary>
@@ -569,12 +363,9 @@ namespace MsgPack
 		/// </remarks>
 		public Boolean TryUnpackNull()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.TryUnpackNull( this._currentSource.Stream );
+			return Unpacking.TryUnpackNull( this.UnderlyingStream );
 		}
 
 		/// <summary>
@@ -589,12 +380,9 @@ namespace MsgPack
 		/// </remarks>
 		public Boolean UnpackBoolean()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.UnpackBoolean( this._currentSource.Stream );
+			return Unpacking.UnpackBoolean( this.UnderlyingStream );
 		}
 
 		/// <summary>
@@ -609,12 +397,9 @@ namespace MsgPack
 		/// </remarks>
 		public IEnumerable<byte> UnpackRaw()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.UnpackRaw( this._currentSource.Stream );
+			return Unpacking.UnpackRaw( this.UnderlyingStream );
 		}
 
 		/// <summary>
@@ -629,12 +414,9 @@ namespace MsgPack
 		/// </remarks>
 		public String UnpackString()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.UnpackString( this._currentSource.Stream );
+			return Unpacking.UnpackString( this.UnderlyingStream );
 		}
 
 		/// <summary>
@@ -656,12 +438,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.UnpackString( this._currentSource.Stream, encoding );
+			return Unpacking.UnpackString( this.UnderlyingStream, encoding );
 		}
 
 		/// <summary>
@@ -678,12 +457,9 @@ namespace MsgPack
 		/// </remarks>
 		public MessagePackObject? TryUnpackObject()
 		{
-			this.VerifyNotDisposed();
 			this.VerifyMode( UnpackerMode.Direct );
-			Contract.EndContractBlock();
 
-			this.InvalidateCache();
-			return Unpacking.UnpackObject( this._currentSource.Stream );
+			return Unpacking.UnpackObject( this.UnderlyingStream );
 		}
 
 		public MessagePackObject UnpackObject()
@@ -691,50 +467,13 @@ namespace MsgPack
 			return this.TryUnpackObject().Value;
 		}
 
-		public byte[] UnpackByteArray()
+		private enum UnpackerMode
 		{
-			return this.UnpackRaw().ToArray();
-		}
-
-		public char[] UnpackCharArray()
-		{
-			// TODO: Do more efficient...
-			return this.UnpackString().ToCharArray();
-		}
-
-		public char[] UnpackCharArray( Encoding encoding )
-		{
-			// TODO: Do more efficient...
-			return this.UnpackString( encoding ).ToCharArray();
-		}
-
-		/// <summary>
-		///		Encapselates Stream and ownership information.
-		/// </summary>
-		private struct DataSource
-		{
-			/// <summary>
-			///		Indicates whether this unpacker should <see cref="Dispose()"/> <see cref="Stream"/>.
-			/// </summary>
-			public readonly bool OwnsStream;
-
-			/// <summary>
-			///		Underlying stream of this source. This value could be null.
-			/// </summary>
-			public readonly Stream Stream;
-
-			public DataSource( IEnumerable<byte> source )
-			{
-				// TODO: more efficient custom stream?
-				this.Stream = new MemoryStream( source.ToArray() );
-				this.OwnsStream = false;
-			}
-
-			public DataSource( Stream stream, bool ownsStream )
-			{
-				this.Stream = stream;
-				this.OwnsStream = ownsStream;
-			}
+			Unknown = 0,
+			Direct,
+			Streaming,
+			Disposed,
+			Subtree
 		}
 	}
 }
