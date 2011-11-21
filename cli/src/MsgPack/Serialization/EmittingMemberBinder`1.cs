@@ -169,8 +169,9 @@ namespace MsgPack.Serialization
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", member.DeclaringType, contract.Name, null, _packingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
 			il.EmitAnyLdarg( 2 );
-			il.EmitAnyLdarg( 1 );
 			il.EmitAnyLdarg( 0 );
+			il.EmitAnyLdarg( 1 );
+			Emittion.EmitLoadValue( il, member );
 			il.EmitAnyCall( SerializationContext.MarshalArrayTo1Method.MakeGenericMethod( memberType ) );
 			il.EmitRet();
 
@@ -185,8 +186,9 @@ namespace MsgPack.Serialization
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", member.DeclaringType, contract.Name, null, _unpackingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
 			il.EmitAnyLdarg( 2 );
-			il.EmitAnyLdarg( 1 );
 			il.EmitAnyLdarg( 0 );
+			il.EmitAnyLdarg( 1 );
+			Emittion.EmitLoadValue( il, member );
 			il.EmitAnyCall( SerializationContext.UnmarshalArrayTo1Method.MakeGenericMethod( memberType ) );
 			il.EmitRet();
 
@@ -285,9 +287,6 @@ namespace MsgPack.Serialization
 			var keyProperty = traits.ElementType.GetProperty( "Key" );
 			var valueProperty = traits.ElementType.GetProperty( "Value" );
 			loadCollectionEmitter( il, collection );
-			//il.EmitAnyLdarg( 1 );
-			//Emittion.EmitLoadValue( il, member );
-			//il.EmitAnyStloc( collection );
 			var count = il.DeclareLocal( typeof( int ), "count" );
 			il.EmitAnyLdloc( collection );
 			il.EmitGetProperty( traits.CountProperty );
@@ -335,11 +334,7 @@ namespace MsgPack.Serialization
 					{
 						Contract.Assert( traits.ElementType == typeof( DictionaryEntry ) );
 						getCurrentEmitter();
-						// DictonaryEntry
 						il0.EmitAnyStloc( item );
-						il0.EmitAnyLdloca( item );
-						il0.EmitGetProperty( _dictionaryEntryKeyProperty );
-						il0.EmitUnbox_Any( typeof( MessagePackObject ) );
 						Emittion.EmitMarshalValue(
 							il0,
 							0,
@@ -347,22 +342,22 @@ namespace MsgPack.Serialization
 							typeof( MessagePackObject ),
 							il1 =>
 							{
-								il1.EmitAnyLdloca( item );
-								il1.EmitGetProperty( keyProperty );
+								il0.EmitAnyLdloca( item );
+								il0.EmitGetProperty( _dictionaryEntryKeyProperty );
+								il0.EmitUnbox_Any( typeof( MessagePackObject ) );
 							}
 						);
 
-						il0.EmitAnyLdloca( item );
-						il0.EmitGetProperty( _dictionaryEntryValueProperty );
-						il0.EmitUnbox_Any( typeof( MessagePackObject ) ); Emittion.EmitMarshalValue(
+						Emittion.EmitMarshalValue(
 							il0,
 							0,
 							2,
 							typeof( MessagePackObject ),
 							il1 =>
 							{
-								il1.EmitAnyLdloca( item );
-								il1.EmitGetProperty( valueProperty );
+								il0.EmitAnyLdloca( item );
+								il0.EmitGetProperty( _dictionaryEntryValueProperty );
+								il0.EmitUnbox_Any( typeof( MessagePackObject ) );
 							}
 						);
 					}
