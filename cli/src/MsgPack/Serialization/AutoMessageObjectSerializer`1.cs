@@ -86,34 +86,30 @@ namespace MsgPack.Serialization
 						this._packing = arrayMarshaler.MarshalTo;
 						this._unpacking = Closures.UnpackWithForwarding<T>( arrayMarshaler.UnmarshalTo );
 						return;
-					} 
+					}
 
 					break;
 				}
 				case CollectionKind.Map:
 				{
 					// TODO: Pluggable
-					var builder = new EmittingMemberBinder<T>() { Trace = new StringWriter() };
+					var builder = new EmittingMemberBinder<T>();
 					if ( !builder.CreateMapProcedures( traits, out this._packing, out this._unpacking ) )
 					{
-						Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
 						break;
 					}
 
-					Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
 					return;
 				}
 				case CollectionKind.NotCollection:
 				{
 					// TODO: Pluggable
-					var builder = new EmittingMemberBinder<T>() { Trace = new StringWriter() };
+					var builder = new EmittingMemberBinder<T>();
 					if ( !builder.CreateProcedures( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut, out this._packing, out this._unpacking ) )
 					{
-						Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
 						break;
 					}
 
-					Tracer.Emit.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, builder.Trace.ToString() );
 					return;
 				}
 			}

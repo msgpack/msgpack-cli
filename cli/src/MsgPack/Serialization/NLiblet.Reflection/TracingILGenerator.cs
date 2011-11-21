@@ -220,10 +220,20 @@ namespace NLiblet.Reflection
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ret );
 			this._underlying.Emit( OpCodes.Ret );
-			this.TraceLocals();
-			this._trace.Flush();
-			this._realTrace.Write( this._traceBuffer );
+			this.FlushTrace();
 			this._isEnded = true;
+		}
+
+		// TODO: NLiblet
+		public void FlushTrace()
+		{
+			if ( 0 < this._traceBuffer.Length )
+			{
+				this.TraceLocals();
+				this._trace.Flush();
+				this._realTrace.Write( this._traceBuffer );
+				this._traceBuffer.Clear();
+			}
 		}
 
 		#region -- Locals --

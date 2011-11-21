@@ -112,16 +112,19 @@ namespace MsgPack.Serialization
 		protected abstract TDelegate CreateDelegateCore<TDelegate>()
 			where TDelegate : class;
 
-		private void FlushTrace()
+		public void FlushTrace()
 		{
 			StringWriter writer = this._trace as StringWriter;
 			if ( writer != null )
 			{
+				var buffer = writer.GetStringBuilder();
 				var source = Tracer.Emit;
-				if ( source != null )
+				if ( source != null && 0 < buffer.Length )
 				{
-					source.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, writer.GetStringBuilder() );
+					source.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, buffer );
 				}
+
+				buffer.Clear();
 			}
 		}
 	}

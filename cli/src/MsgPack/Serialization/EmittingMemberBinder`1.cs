@@ -89,61 +89,77 @@ namespace MsgPack.Serialization
 		{
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", member.DeclaringType, contract.Name, null, _packingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
-			var value = il.DeclareLocal( memberType, "value" );
-			Emittion.EmitPackLiteralString( il, 0, contract.Name );
-			Emittion.EmitMarshalValue(
-				il, 0, 2, value.LocalType,
-				il0 =>
-				{
-					il0.EmitLdarg_1();
-					Emittion.EmitLoadValue( il0, member );
-				}
-			);
-			il.EmitRet();
-			return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
+			try
+			{
+				var value = il.DeclareLocal( memberType, "value" );
+				Emittion.EmitPackLiteralString( il, 0, contract.Name );
+				Emittion.EmitMarshalValue(
+					il, 0, 2, value.LocalType,
+					il0 =>
+					{
+						il0.EmitLdarg_1();
+						Emittion.EmitLoadValue( il0, member );
+					}
+				);
+				il.EmitRet();
+				return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
+			}
+			finally
+			{
+				il.FlushTrace();
+				dynamicMethod.FlushTrace();
+			}
 		}
 
 		protected sealed override Action<Unpacker, TObject, SerializationContext> CreateUnpacking( MemberInfo member, Type memberType, DataMemberContract contract )
 		{
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", member.DeclaringType, contract.Name, null, _unpackingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
-			var value = il.DeclareLocal( memberType, "value" );
-			var data = il.DeclareLocal( typeof( MessagePackObject ), "data" );
-			il.EmitAnyLdarg( 0 );
-			il.EmitGetProperty( _unpackerDataProperty );
-			il.EmitGetProperty( typeof( Nullable<MessagePackObject> ).GetProperty( "Value" ) );
-			il.EmitAnyStloc( data );
+			try
+			{
+				var value = il.DeclareLocal( memberType, "value" );
+				var data = il.DeclareLocal( typeof( MessagePackObject ), "data" );
+				il.EmitAnyLdarg( 0 );
+				il.EmitGetProperty( _unpackerDataProperty );
+				il.EmitGetProperty( typeof( Nullable<MessagePackObject> ).GetProperty( "Value" ) );
+				il.EmitAnyStloc( data );
 
-			var endIf = il.DefineLabel( "END_IF" );
-			var endOfMethod = il.DefineLabel( "END_OF_METHOD" );
-			il.EmitAnyLdloc( data );
-			il.EmitGetProperty( _messagePackObjectIsNilProperty );
-			il.EmitBrfalse_S( endIf );
-			if ( memberType.IsValueType )
-			{
-				// throw SerializationExceptions.NewValueTypeCannotBeNull( "..."< typeof( ... ), typeof( ... ) );
-				il.EmitLdstr( member.Name );
-				il.EmitTypeOf( memberType );
-				il.EmitTypeOf( member.DeclaringType );
-				il.EmitAnyCall( SerializationExceptions.NewValueTypeCannotBeNullMethod );
-				il.EmitThrow();
-			}
-			else
-			{
-				// target.... = null;
-				il.EmitAnyLdarg( 1 );
-				il.EmitLdnull();
+				var endIf = il.DefineLabel( "END_IF" );
+				var endOfMethod = il.DefineLabel( "END_OF_METHOD" );
+				il.EmitAnyLdloc( data );
+				il.EmitGetProperty( _messagePackObjectIsNilProperty );
+				il.EmitBrfalse_S( endIf );
+				if ( memberType.IsValueType )
+				{
+					// throw SerializationExceptions.NewValueTypeCannotBeNull( "..."< typeof( ... ), typeof( ... ) );
+					il.EmitLdstr( member.Name );
+					il.EmitTypeOf( memberType );
+					il.EmitTypeOf( member.DeclaringType );
+					il.EmitAnyCall( SerializationExceptions.NewValueTypeCannotBeNullMethod );
+					il.EmitThrow();
+				}
+				else
+				{
+					// target.... = null;
+					il.EmitAnyLdarg( 1 );
+					il.EmitLdnull();
+					Emittion.EmitStoreValue( il, member );
+					il.EmitBr_S( endOfMethod );
+				}
+
+				il.MarkLabel( endIf );
+				// target.... = context.UnmarshalFrom<T>( unpacker );
+				Emittion.EmitUnmarshalValue( il, 0, 2, memberType, null ); // Dispatching closure shall adjust position.
 				Emittion.EmitStoreValue( il, member );
-				il.EmitBr_S( endOfMethod );
+				il.MarkLabel( endOfMethod );
+				il.EmitRet();
+				return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
 			}
-
-			il.MarkLabel( endIf );
-			// target.... = context.UnmarshalFrom<T>( unpacker );
-			Emittion.EmitUnmarshalValue( il, 0, 2, memberType, null /*unpackerReading*/ );
-			Emittion.EmitStoreValue( il, member );
-			il.MarkLabel( endOfMethod );
-			il.EmitRet();
-			return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
+			finally
+			{
+				dynamicMethod.FlushTrace();
+				il.FlushTrace();
+			}
 		}
 
 		protected sealed override bool CreateArrayProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
@@ -166,14 +182,22 @@ namespace MsgPack.Serialization
 			 */
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", member.DeclaringType, contract.Name, null, _packingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
-			il.EmitAnyLdarg( 2 );
-			il.EmitAnyLdarg( 0 );
-			il.EmitAnyLdarg( 1 );
-			Emittion.EmitLoadValue( il, member );
-			il.EmitAnyCall( SerializationContext.MarshalArrayTo1Method.MakeGenericMethod( memberType ) );
-			il.EmitRet();
+			try
+			{
+				il.EmitAnyLdarg( 2 );
+				il.EmitAnyLdarg( 0 );
+				il.EmitAnyLdarg( 1 );
+				Emittion.EmitLoadValue( il, member );
+				il.EmitAnyCall( SerializationContext.MarshalArrayTo1Method.MakeGenericMethod( memberType ) );
+				il.EmitRet();
 
-			return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
+				return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
+			}
+			finally
+			{
+				il.FlushTrace();
+				dynamicMethod.FlushTrace();
+			}
 		}
 
 		private static Action<Unpacker, TObject, SerializationContext> CreateUnpackArrayProceduresCore( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits )
@@ -183,14 +207,22 @@ namespace MsgPack.Serialization
 			 */
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", member.DeclaringType, contract.Name, null, _unpackingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
-			il.EmitAnyLdarg( 2 );
-			il.EmitAnyLdarg( 0 );
-			il.EmitAnyLdarg( 1 );
-			Emittion.EmitLoadValue( il, member );
-			il.EmitAnyCall( SerializationContext.UnmarshalArrayTo1Method.MakeGenericMethod( memberType ) );
-			il.EmitRet();
+			try
+			{
+				il.EmitAnyLdarg( 2 );
+				il.EmitAnyLdarg( 0 );
+				il.EmitAnyLdarg( 1 );
+				Emittion.EmitLoadValue( il, member );
+				il.EmitAnyCall( SerializationContext.UnmarshalArrayTo1Method.MakeGenericMethod( memberType ) );
+				il.EmitRet();
 
-			return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
+				return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
+			}
+			finally
+			{
+				il.FlushTrace();
+				dynamicMethod.FlushTrace();
+			}
 		}
 
 		protected sealed override bool CreateMapProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
@@ -271,6 +303,8 @@ namespace MsgPack.Serialization
 		{
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", targetType, memberName, null, _packingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
+			try
+			{
 
 				/*
 				 * 
@@ -363,7 +397,13 @@ namespace MsgPack.Serialization
 				);
 				il.EmitRet();
 
-			return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
+				return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
+			}
+			finally
+			{
+				il.FlushTrace();
+				dynamicMethod.FlushTrace();
+			}
 		}
 
 		private Action<Unpacker, TObject, SerializationContext> CreateUnpackMapProceduresCore( Type targetType, string memberName, Type collectionType, CollectionTraits traits, Action<TracingILGenerator, LocalBuilder> loadCollectionEmitter )
@@ -382,8 +422,10 @@ namespace MsgPack.Serialization
 			 */
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", targetType, memberName, null, _unpackingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
-			var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
-			var collection = il.DeclareLocal( collectionType, "collection" );
+			try
+			{
+				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
+				var collection = il.DeclareLocal( collectionType, "collection" );
 #if DEBUG
 				Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> )
 					|| traits.ElementType == typeof( DictionaryEntry ) );
@@ -449,7 +491,13 @@ namespace MsgPack.Serialization
 				Emittion.EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
 				il.EmitRet();
 
-			return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
+				return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
+			}
+			finally
+			{
+				il.FlushTrace();
+				dynamicMethod.FlushTrace();
+			}
 		}
 
 		protected sealed override bool CreateObjectProcedures( MemberInfo member, Type memberType, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
@@ -472,20 +520,28 @@ namespace MsgPack.Serialization
 			 */
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", member.DeclaringType, contract.Name, null, _packingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
-			Emittion.EmitMarshalValue(
-				il,
-				0,
-				2,
-				memberType,
-				il0 =>
-				{
-					il0.EmitAnyLdarg( 1 );
-					Emittion.EmitLoadValue( il0, member );
-				}
-			);
-			il.EmitRet();
+			try
+			{
+				Emittion.EmitMarshalValue(
+					il,
+					0,
+					2,
+					memberType,
+					il0 =>
+					{
+						il0.EmitAnyLdarg( 1 );
+						Emittion.EmitLoadValue( il0, member );
+					}
+				);
+				il.EmitRet();
 
-			return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
+				return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
+			}
+			finally
+			{
+				il.FlushTrace();
+				dynamicMethod.FlushTrace();
+			}
 		}
 
 		private Action<Unpacker, TObject, SerializationContext> CreateUnpackObjectProceduresCore( MemberInfo member, Type memberType, DataMemberContract contract )
@@ -495,6 +551,8 @@ namespace MsgPack.Serialization
 			 */
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", member.DeclaringType, contract.Name, null, _unpackingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
+			try
+			{
 				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 				var collection = il.DeclareLocal( memberType, "collection" );
 				il.EmitAnyLdarg( 1 );
@@ -508,7 +566,13 @@ namespace MsgPack.Serialization
 				Emittion.EmitStoreValue( il, member );
 				il.EmitRet();
 
-			return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
+				return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
+			}
+			finally
+			{
+				il.FlushTrace();
+				dynamicMethod.FlushTrace();
+			}
 		}
 
 		private static string BuildMethodName( string action )

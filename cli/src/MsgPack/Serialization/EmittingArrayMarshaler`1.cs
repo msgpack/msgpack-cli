@@ -74,127 +74,135 @@ namespace MsgPack.Serialization
 			 */
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Marshal", typeof( TCollection ), "Items", null, _marshalingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
-			// Array
-			if ( typeof( TCollection ).IsArray )
+			try
 			{
-				/*
-				 * // array
-				 *  packer.PackArrayHeader( length );
-				 * for( int i = 0; i < length; i++ )
-				 * {
-				 * 		Context.Serializers.Get<T>().Serialize( packer, collection[ i ] );
-				 * }
-				 */
-				var length = il.DeclareLocal( typeof( int ), "length" );
-				il.EmitLdarg( 1 );
-				il.EmitLdlen();
-				il.EmitAnyStloc( length );
-				il.EmitAnyLdarg( 0 );
-				il.EmitAnyLdloc( length );
-				il.EmitAnyCall( _packerPackArrayHeader );
-				il.EmitPop();
-				Emittion.EmitFor(
-					il,
-					length,
-					( il0, i ) =>
-					{
-						Emittion.EmitMarshalValue(
-							il0,
-							0,
-							2,
-							traits.ElementType,
-							il1 =>
-							{
-								il1.EmitAnyLdarg( 1 );
-								il1.EmitAnyLdloc( i );
-								il1.EmitLdelem( traits.ElementType );
-							}
-						);
-					}
-				);
-			}
-			else if ( traits.CountProperty == null )
-			{
-				/*
-				 *  array = collection.ToArray();
-				 *  packer.PackArrayHeader( length );
-				 * for( int i = 0; i < length; i++ )
-				 * {
-				 * 		Context.Serializers.Get<T>().Serialize( packer, array[ i ] );
-				 * }
-				 */
-				var array = il.DeclareLocal( traits.ElementType.MakeArrayType(), "array" );
-				il.EmitLdarg( 1 );
-				il.EmitAnyCall( _enumerableToArray1Method.MakeGenericMethod( traits.ElementType ) );
-				il.EmitAnyStloc( array );
-				var length = il.DeclareLocal( typeof( int ), "length" );
-				il.EmitAnyLdloc( array );
-				il.EmitLdlen();
-				il.EmitAnyStloc( length );
-				il.EmitAnyLdarg( 0 );
-				il.EmitAnyLdloc( length );
-				il.EmitAnyCall( _packerPackArrayHeader );
-				il.EmitPop();
-				Emittion.EmitFor(
-					il,
-					length,
-					( il0, i ) =>
-					{
-						Emittion.EmitMarshalValue(
-							il0,
-							0,
-							2,
-							traits.ElementType,
-							il1 =>
-							{
-								il1.EmitAnyLdloc( array );
-								il1.EmitAnyLdloc( i );
-								il1.EmitLdelem( traits.ElementType );
-							}
-						);
-					}
-				);
-			}
-			else
-			{
-				/*
-				 * // Enumerable
-				 *  packer.PackArrayHeader( collection.Count );
-				 * foreach( var item in list )
-				 * {
-				 * 		Context.MarshalTo( packer, array[ i ] );
-				 * }
-				 */
-				var collection = il.DeclareLocal( typeof( TCollection ), "collection" );
-				il.EmitAnyLdarg( 1 );
-				il.EmitAnyStloc( collection );
-				var count = il.DeclareLocal( typeof( int ), "count" );
-				il.EmitLdarg( 1 );
-				il.EmitGetProperty( traits.CountProperty );
-				il.EmitAnyStloc( count );
-				il.EmitAnyLdarg( 0 );
-				il.EmitAnyLdloc( count );
-				il.EmitAnyCall( _packerPackArrayHeader );
-				il.EmitPop();
-				Emittion.EmitForEach(
-					il,
-					traits,
-					collection,
-					( il0, getCurrentEmitter ) =>
-					{
-						Emittion.EmitMarshalValue(
-							il0,
-							0,
-							2,
-							traits.ElementType,
-							_ => getCurrentEmitter()
-						);
-					}
-				);
-			}
-			il.EmitRet();
+				// Array
+				if ( typeof( TCollection ).IsArray )
+				{
+					/*
+					 * // array
+					 *  packer.PackArrayHeader( length );
+					 * for( int i = 0; i < length; i++ )
+					 * {
+					 * 		Context.Serializers.Get<T>().Serialize( packer, collection[ i ] );
+					 * }
+					 */
+					var length = il.DeclareLocal( typeof( int ), "length" );
+					il.EmitLdarg( 1 );
+					il.EmitLdlen();
+					il.EmitAnyStloc( length );
+					il.EmitAnyLdarg( 0 );
+					il.EmitAnyLdloc( length );
+					il.EmitAnyCall( _packerPackArrayHeader );
+					il.EmitPop();
+					Emittion.EmitFor(
+						il,
+						length,
+						( il0, i ) =>
+						{
+							Emittion.EmitMarshalValue(
+								il0,
+								0,
+								2,
+								traits.ElementType,
+								il1 =>
+								{
+									il1.EmitAnyLdarg( 1 );
+									il1.EmitAnyLdloc( i );
+									il1.EmitLdelem( traits.ElementType );
+								}
+							);
+						}
+					);
+				}
+				else if ( traits.CountProperty == null )
+				{
+					/*
+					 *  array = collection.ToArray();
+					 *  packer.PackArrayHeader( length );
+					 * for( int i = 0; i < length; i++ )
+					 * {
+					 * 		Context.Serializers.Get<T>().Serialize( packer, array[ i ] );
+					 * }
+					 */
+					var array = il.DeclareLocal( traits.ElementType.MakeArrayType(), "array" );
+					il.EmitLdarg( 1 );
+					il.EmitAnyCall( _enumerableToArray1Method.MakeGenericMethod( traits.ElementType ) );
+					il.EmitAnyStloc( array );
+					var length = il.DeclareLocal( typeof( int ), "length" );
+					il.EmitAnyLdloc( array );
+					il.EmitLdlen();
+					il.EmitAnyStloc( length );
+					il.EmitAnyLdarg( 0 );
+					il.EmitAnyLdloc( length );
+					il.EmitAnyCall( _packerPackArrayHeader );
+					il.EmitPop();
+					Emittion.EmitFor(
+						il,
+						length,
+						( il0, i ) =>
+						{
+							Emittion.EmitMarshalValue(
+								il0,
+								0,
+								2,
+								traits.ElementType,
+								il1 =>
+								{
+									il1.EmitAnyLdloc( array );
+									il1.EmitAnyLdloc( i );
+									il1.EmitLdelem( traits.ElementType );
+								}
+							);
+						}
+					);
+				}
+				else
+				{
+					/*
+					 * // Enumerable
+					 *  packer.PackArrayHeader( collection.Count );
+					 * foreach( var item in list )
+					 * {
+					 * 		Context.MarshalTo( packer, array[ i ] );
+					 * }
+					 */
+					var collection = il.DeclareLocal( typeof( TCollection ), "collection" );
+					il.EmitAnyLdarg( 1 );
+					il.EmitAnyStloc( collection );
+					var count = il.DeclareLocal( typeof( int ), "count" );
+					il.EmitLdarg( 1 );
+					il.EmitGetProperty( traits.CountProperty );
+					il.EmitAnyStloc( count );
+					il.EmitAnyLdarg( 0 );
+					il.EmitAnyLdloc( count );
+					il.EmitAnyCall( _packerPackArrayHeader );
+					il.EmitPop();
+					Emittion.EmitForEach(
+						il,
+						traits,
+						collection,
+						( il0, getCurrentEmitter ) =>
+						{
+							Emittion.EmitMarshalValue(
+								il0,
+								0,
+								2,
+								traits.ElementType,
+								_ => getCurrentEmitter()
+							);
+						}
+					);
+				}
+				il.EmitRet();
 
-			return dynamicMethod.CreateDelegate<Action<Packer, TCollection, SerializationContext>>();
+				return dynamicMethod.CreateDelegate<Action<Packer, TCollection, SerializationContext>>();
+			}
+			finally
+			{
+				il.FlushTrace();
+				dynamicMethod.FlushTrace();
+			}
 		}
 
 		private static Action<Unpacker, TCollection, SerializationContext> CreateUnpackArrayProceduresCore( CollectionTraits traits )
@@ -212,7 +220,9 @@ namespace MsgPack.Serialization
 			 */
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unmarshal", typeof( TCollection ), "Items", null, _unmarshalingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
-			var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
+			try
+			{
+				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 
 				Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
 				var subTreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subTreeUnpacker" );
@@ -266,7 +276,13 @@ namespace MsgPack.Serialization
 				Emittion.EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
 				il.EmitRet();
 
-			return dynamicMethod.CreateDelegate<Action<Unpacker, TCollection, SerializationContext>>();
+				return dynamicMethod.CreateDelegate<Action<Unpacker, TCollection, SerializationContext>>();
+			}
+			finally
+			{
+				il.FlushTrace();
+				dynamicMethod.FlushTrace();
+			}
 		}
 	}
 }

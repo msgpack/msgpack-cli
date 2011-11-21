@@ -306,8 +306,10 @@ namespace MsgPack.Serialization
 			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( valueType ) );
 		}
 
+		// FIXME: Remove?
 		public static void EmitReadUnpackerIfNotInHeader( TracingILGenerator il, int unpackerArgumentIndex )
 		{
+			return;
 			/*
 			 *	if ( !unpacker.IsMapHeader && !unpacker.IsArrayHeader )
 			 *	{
