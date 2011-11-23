@@ -152,7 +152,6 @@
     <Compile Include="Serialization\CollectionTraits.cs" />
     <Compile Include="Serialization\CollectionKind.cs" />
     <Compile Include="Serialization\DataContractMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\DataContractObjetPacker.cs" />
     <Compile Include="Serialization\DataMemberContract.cs" />
     <Compile Include="Serialization\DefaultMarshalers\DefaultMarshalers.cs">
       <AutoGen>True</AutoGen>
@@ -162,6 +161,8 @@
     <Compile Include="Serialization\DefaultMarshalers\EnumMarshaler.cs" />
     <Compile Include="Serialization\DefaultMarshalers\EnumMarshaler`1.cs" />
     <Compile Include="Serialization\DefaultMarshalers\MsgPack_MessagePackObjectMessageMarshaler.cs" />
+    <Compile Include="Serialization\DefaultMarshalers\NullableMarshaler.cs" />
+    <Compile Include="Serialization\DefaultMarshalers\NullableMarshaler`1.cs" />
     <Compile Include="Serialization\DefaultMarshalers\System_ObjectMessageMarshaler.cs" />
     <Compile Include="Serialization\DefaultMarshalers\System_StringMessageMarshaler.cs" />
     <Compile Include="Serialization\DefaultMarshalers\System_Text_StringBuilderMessageMarshaler.cs" />

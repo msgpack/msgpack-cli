@@ -65,6 +65,11 @@ namespace MsgPack.Serialization
 				return new EnumMarshaler<T>();
 			}
 
+			if ( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
+			{
+				return new NullableMarshaler<T>();
+			}
+
 			return this._repository.Get<T, MessageMarshaler<T>>( this, serializerRepository ?? SerializerRepository.Default );
 		}
 

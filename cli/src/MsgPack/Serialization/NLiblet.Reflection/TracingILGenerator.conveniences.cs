@@ -285,6 +285,20 @@ namespace NLiblet.Reflection
 			}
 		}
 
+		// TODO: NLiblet
+		public void EmitAnyLdarga( int argumentIndex )
+		{
+			Contract.Assert( 0 <= argumentIndex && argumentIndex <= UInt16.MaxValue );
+			if ( argumentIndex < Byte.MaxValue )
+			{
+				this.EmitLdarga_S( unchecked( ( byte )argumentIndex ) );
+			}
+			else
+			{
+				this.EmitLdarga( argumentIndex );
+			}
+		}
+
 		/// <summary>
 		///		Emit apprpriate 'ldloc.*' instruction.
 		///		Post condition is that the loaded value will be added on the evaluation stack.

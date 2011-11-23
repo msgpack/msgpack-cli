@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -19,19 +19,15 @@
 #endregion -- License Terms --
 
 using System;
+using System.Reflection;
 
 namespace MsgPack.Serialization.DefaultMarshalers
 {
-	internal sealed class MsgPack_MessagePackObjectMessageMarshaler : MessageMarshaler<MessagePackObject>
+	internal static class NullableMarshaler
 	{
-		protected sealed override void MarshalToCore( Packer packer, MessagePackObject value )
-		{
-			packer.Pack( value );
-		}
-
-		protected sealed override MessagePackObject UnmarshalFromCore( Unpacker unpacker )
-		{
-			return unpacker.Data.Value;
-		}
+		public static readonly PropertyInfo MessagePackObject_IsNilProperty = FromExpression.ToProperty( ( MessagePackObject value ) => value.IsNil );
+		public static readonly PropertyInfo Nullable_MessagePackObject_ValueProperty = FromExpression.ToProperty( ( MessagePackObject? value ) => value.Value );
+		public static readonly PropertyInfo UnpackerDataProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.Data );
+		public static readonly MethodInfo PackerPackNull = FromExpression.ToMethod( ( Packer packer ) => packer.PackNull() );
 	}
 }

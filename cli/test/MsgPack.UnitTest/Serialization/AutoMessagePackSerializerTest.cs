@@ -278,6 +278,25 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Test]
+		public void TestNullable()
+		{
+			var serializer = new AutoMessagePackSerializer<int?>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( 1, stream );
+				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( 1 ) );
+
+				stream.Position = 0;
+				serializer.Pack( null, stream );
+				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( null ) );
+			}
+		}
+
 		private static void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
 			var safeComparer = comparer ?? EqualityComparer<T>.Default.Equals;
