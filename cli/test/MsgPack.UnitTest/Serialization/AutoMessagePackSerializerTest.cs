@@ -245,7 +245,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyKeyValuePairArray()
 		{
-			var serializer = new AutoMessagePackSerializer<KeyValuePair<string,int>[]>();
+			var serializer = new AutoMessagePackSerializer<KeyValuePair<string, int>[]>();
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( new KeyValuePair<string, int>[ 0 ], stream );
@@ -258,13 +258,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyMap()
 		{
-			var serializer = new AutoMessagePackSerializer<Dictionary<string,int>>();
+			var serializer = new AutoMessagePackSerializer<Dictionary<string, int>>();
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( new Dictionary<string,int>(), stream );
+				serializer.Pack( new Dictionary<string, int>(), stream );
 				Assert.That( stream.Length, Is.EqualTo( 1 ) );
 				stream.Position = 0;
-				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new Dictionary<string,int>() ) );
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new Dictionary<string, int>() ) );
 			}
 		}
 
@@ -369,8 +369,12 @@ namespace MsgPack.Serialization
 
 			if ( expected is FILETIME )
 			{
-				Verify( ( ( dynamic )expected ).dwHighDateTime, ( ( dynamic )actual ).dwHighDateTime );
-				Verify( ( ( dynamic )expected ).dwLowDateTime, ( ( dynamic )actual ).dwLowDateTime );
+				var expectedFileTime = ( FILETIME )( object )expected;
+				var actualFileTime = ( FILETIME )( object )actual;
+				Verify(
+					DateTime.FromFileTimeUtc( ( ( ( long )expectedFileTime.dwHighDateTime ) << 32 ) | ( expectedFileTime.dwLowDateTime & 0xffffffff ) ),
+					DateTime.FromFileTimeUtc( ( ( ( long )actualFileTime.dwHighDateTime ) << 32 ) | ( actualFileTime.dwLowDateTime & 0xffffffff ) )
+				);
 				return;
 			}
 

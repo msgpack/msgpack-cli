@@ -254,13 +254,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFILETIMEField()
 		{
-			TestCoreWithAutoVerify( ToFileTime( DateTime.Now ) );
+			TestCoreWithAutoVerify( ToFileTime( DateTime.UtcNow ) );
 		}
 		
 		[Test]
 		public void TestFILETIMEFieldArray()
 		{
-			TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.Now ), 2 ).ToArray() );
+			TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.UtcNow ), 2 ).ToArray() );
 		}
 		
 		[Test]
@@ -1590,7 +1590,7 @@ namespace MsgPack.Serialization
 			this._DateTimeOffsetField = DateTimeOffset.UtcNow;
 			this._UriField = new Uri( "http://example.com/" );
 			this._VersionField = new Version( 1, 2, 3, 4 );
-			this._FILETIMEField = ToFileTime( DateTime.Now );
+			this._FILETIMEField = ToFileTime( DateTime.UtcNow );
 			this._TimeSpanField = TimeSpan.FromMilliseconds( 123456789 );
 			this._GuidField = Guid.NewGuid();
 			this._CharField = '　';
