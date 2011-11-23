@@ -25,12 +25,11 @@ using System.Linq;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: EmittingMessagePackArraySerializer<T>
 	/// <summary>
 	///		Reflection.Emit based <see cref="MessagePackArraySerializer{TCollection}"/>.
 	/// </summary>
 	/// <typeparam name="TCollection">The type of the target collection.</typeparam>
-	internal sealed class EmittingArrayMarshaler<TCollection> : MessagePackArraySerializer<TCollection>
+	internal sealed class EmittingMessagePackArraySerializer<TCollection> : MessagePackArraySerializer<TCollection>
 	{
 		private static readonly Type[] _marshalingMethodParameters = new[] { typeof( Packer ), typeof( TCollection ), typeof( SerializationContext ) };
 		private static readonly Type[] _unmarshalingMethodParameters = new[] { typeof( Unpacker ), typeof( TCollection ), typeof( SerializationContext ) };
@@ -43,10 +42,10 @@ namespace MsgPack.Serialization
 		private readonly Action<Unpacker, TCollection, SerializationContext> _unmarshaling;
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="EmittingArrayMarshaler&lt;TCollection&gt;"/> class.
+		///		Initializes a new instance of the <see cref="EmittingMessagePackArraySerializer&lt;TCollection&gt;"/> class.
 		/// </summary>
 		/// <param name="traits"><see cref="CollectionTraits"/> which contains collection kind and metadata of required methods.</param>
-		public EmittingArrayMarshaler( CollectionTraits traits )
+		public EmittingMessagePackArraySerializer( CollectionTraits traits )
 		{
 			CreateArrayProcedures( traits, out this._marshaling, out this._unmarshaling );
 		}

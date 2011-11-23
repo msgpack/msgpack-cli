@@ -45,7 +45,7 @@ namespace MsgPack.Serialization
 			if ( traits.CollectionType == CollectionKind.Array )
 			{
 				// TODO: Configurable
-				return new EmittingArrayMarshaler<T>( traits );
+				return new EmittingMessagePackArraySerializer<T>( traits );
 			}
 			else
 			{
