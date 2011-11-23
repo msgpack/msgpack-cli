@@ -236,17 +236,12 @@ namespace MsgPack.Serialization
 					itemsCount,
 					( il0, i ) =>
 					{
-						il0.EmitAnyLdarg( 1 );
-						if ( typeof( TCollection ).IsArray )
-						{
-							il0.EmitAnyLdloc( i );
-						}
-
+						var value = il0.DeclareLocal( traits.ElementType, "value" );
 						Emittion.EmitUnmarshalValue(
 							il0,
 							0,
 							2,
-							traits.ElementType,
+							value,
 							( il1, unpacker ) =>
 							{
 								il1.EmitAnyLdarg( unpacker );
@@ -259,6 +254,15 @@ namespace MsgPack.Serialization
 								il1.MarkLabel( endIf );
 							}
 						);
+
+						il0.EmitAnyLdarg( 1 );
+						if ( typeof( TCollection ).IsArray )
+						{
+							il0.EmitAnyLdloc( i );
+						}
+
+						il0.EmitAnyLdloc( value );
+
 						if ( typeof( TCollection ).IsArray )
 						{
 							il0.EmitStelem( traits.ElementType );

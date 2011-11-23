@@ -149,7 +149,8 @@ namespace MsgPack.Serialization
 
 				il.MarkLabel( endIf );
 				// target.... = context.UnmarshalFrom<T>( unpacker );
-				Emittion.EmitUnmarshalValue( il, 0, 2, memberType, null ); // Dispatching closure shall adjust position.
+				Emittion.EmitUnmarshalValue( il, 0, 2, value, null ); // Dispatching closure shall adjust position.
+				il.EmitAnyLdloc( value );
 				Emittion.EmitStoreValue( il, member );
 				il.MarkLabel( endOfMethod );
 				il.EmitRet();
@@ -458,12 +459,10 @@ namespace MsgPack.Serialization
 							};
 
 						// Key
-						Emittion.EmitUnmarshalValue( il0, 0, 2, key.LocalType, unpackerReading );
-						il0.EmitAnyStloc( key );
+						Emittion.EmitUnmarshalValue( il0, 0, 2, key, unpackerReading );
 
 						// Value
-						Emittion.EmitUnmarshalValue( il0, 0, 2, value.LocalType, unpackerReading );
-						il0.EmitAnyStloc( value );
+						Emittion.EmitUnmarshalValue( il0, 0, 2, value, unpackerReading );
 
 						il0.EmitAnyLdloc( collection );
 
@@ -552,14 +551,15 @@ namespace MsgPack.Serialization
 			{
 				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 				var collection = il.DeclareLocal( memberType, "collection" );
-				il.EmitAnyLdarg( 1 );
 				Emittion.EmitUnmarshalValue(
 					il,
 					0,
 					2,
-					memberType,
+					collection,
 					null // Dispatching closure shall adjust position.
 				);
+				il.EmitAnyLdarg( 1 );
+				il.EmitAnyLdloc( collection );
 				Emittion.EmitStoreValue( il, member );
 				il.EmitRet();
 

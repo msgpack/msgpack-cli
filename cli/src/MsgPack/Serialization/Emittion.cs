@@ -280,17 +280,50 @@ namespace MsgPack.Serialization
 			il.EmitAnyCall( SerializationContext.MarshalTo1Method.MakeGenericMethod( valueType ) );
 		}
 
-		public static void EmitUnmarshalValue( TracingILGenerator il, int unpackerArgumentIndex, int contextArgumentIndex, Type valueType, Action<TracingILGenerator, int> unpackerReading )
+		public static void EmitUnmarshalValue( TracingILGenerator il, int unpackerArgumentIndex, int contextArgumentIndex, LocalBuilder value, Action<TracingILGenerator, int> unpackerReading )
 		{
 			if ( unpackerReading != null )
 			{
 				unpackerReading( il, unpackerArgumentIndex );
 			}
 
-			//  context.Marshalers.Get<T>().UnmarshalFrom( packer, ... ) )
+			/*
+			 * if( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+			 * {
+			 *		
+			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
+			 * }
+			 * else
+			 * {
+			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
+			 * }
+			 */
+
+			var then = il.DefineLabel( "THEN" );
+			var endIf = il.DefineLabel( "END_IF" );
+
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitGetProperty( _unpackerIsArrayHeaderProperty );
+			il.EmitBrtrue_S( then );
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitGetProperty( _unpackerIsMapHeaderProperty );
+			il.EmitBrtrue_S( then );
+			// else
 			il.EmitAnyLdarg( contextArgumentIndex );
 			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( valueType ) );
+			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( value.LocalType ) );
+			il.EmitAnyStloc( value );
+			il.EmitBr_S( endIf );
+			// then
+			var subTreeUnpacker = il.DeclareLocal(typeof(Unpacker), "subTreeUnpacker");
+			il.MarkLabel( then );
+			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subTreeUnpacker );
+			il.EmitAnyLdarg( contextArgumentIndex );
+			il.EmitAnyLdloc( subTreeUnpacker );
+			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( value.LocalType ) );
+			il.EmitAnyStloc( value );
+			EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
+			il.MarkLabel( endIf );
 		}
 
 		public static void EmitUnmarshalValue( TracingILGenerator il, LocalBuilder unpacker, int contextArgumentIndex, Type valueType, Action<TracingILGenerator, LocalBuilder> unpackerReading )
