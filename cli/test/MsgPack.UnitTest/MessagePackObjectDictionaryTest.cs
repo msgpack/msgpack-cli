@@ -179,7 +179,6 @@ namespace MsgPack
 					Double.MinValue,
 					Double.MaxValue,
 					DateTime.UtcNow,
-					new byte[ 0 ],
 					new byte[] { 1 },
 					String.Empty,
 					" ",
