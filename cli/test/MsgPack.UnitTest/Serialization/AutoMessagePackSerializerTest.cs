@@ -147,8 +147,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore( DayOfWeek.Sunday, stream => ( DayOfWeek )Enum.Parse( typeof( DayOfWeek ), Unpacking.UnpackString( stream ) ), ( x, y ) => x == y );
 		}
-
-
+		
 		[Test]
 		public void TestNameValueCollection()
 		{
@@ -156,11 +155,11 @@ namespace MsgPack.Serialization
 			target.Add( null, "null-1" );
 			target.Add( null, "null-2" );
 			target.Add( String.Empty, "Empty-1" );
-			target.Add( String.Empty, "Empty-1" );
+			target.Add( String.Empty, "Empty-2" );
 			target.Add( "1", "1-1" );
 			target.Add( "1", "1-2" );
 			target.Add( "1", "1-3" );
-			target.Add( "null", null );
+			target.Add( "null", null ); // This value will not be packed.
 			target.Add( "Empty", String.Empty );
 			target.Add( "2", "2" );
 			var serializer = new AutoMessagePackSerializer<NameValueCollection>();
@@ -169,13 +168,14 @@ namespace MsgPack.Serialization
 				serializer.Pack( target, stream );
 				stream.Position = 0;
 				NameValueCollection result = serializer.Unpack( stream );
-				Assert.That( result.GetValues( null ), Is.EquivalentTo( new[] { "null1-", "null-2" } ) );
+				Assert.That( result.GetValues( null ), Is.EquivalentTo( new[] { "null-1", "null-2" } ) );
 				Assert.That( result.GetValues( String.Empty ), Is.EquivalentTo( new[] { "Empty-1", "Empty-2" } ) );
 				Assert.That( result.GetValues( "1" ), Is.EquivalentTo( new[] { "1-1", "1-2", "1-3" } ) );
-				Assert.That( result.GetValues( "null" ), Is.EquivalentTo( new string[] { null } ) );
+				Assert.That( result.GetValues( "null" ), Is.Null );
 				Assert.That( result.GetValues( "Empty" ), Is.EquivalentTo( new string[] { String.Empty } ) );
 				Assert.That( result.GetValues( "2" ), Is.EquivalentTo( new string[] { "2" } ) );
-				Assert.That( result.Count, Is.EqualTo( target.Count ) );
+				// null only value is not packed.
+				Assert.That( result.Count, Is.EqualTo( target.Count - 1 ) );
 			}
 		}
 

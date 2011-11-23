@@ -25,6 +25,7 @@
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Collections.Specialized" #>
 <#@ import namespace="System.Diagnostics" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Numerics" #>
@@ -42,6 +43,7 @@ var __types =
 		typeof( StringBuilder ),
 		typeof( Uri ),
 		typeof( Version ),		
+		typeof( NameValueCollection ),		
 	};
 var __tuples =
 	typeof( Tuple<,> ).Assembly
@@ -72,6 +74,7 @@ var __tuples =
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Numerics;
 using System.Reflection;

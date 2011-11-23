@@ -216,6 +216,7 @@
     <Compile Include="Serialization\SerializerBuilder`1.cs" />
     <Compile Include="Serialization\SerializerRepository.cs" />
     <Compile Include="Serialization\DefaultMarshalers\System_Runtime_InteropServices_ComTypes_FILETIMEMessageMarshaler.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessageSerializer.cs" />
     <Compile Include="Serialization\Tracer.cs" />
     <Compile Include="Serialization\TypeKeyRepository.cs" />
     <Compile Include="SetOperation.cs" />

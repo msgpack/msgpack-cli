@@ -21,6 +21,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Numerics;
 using System.Reflection;
@@ -36,7 +37,7 @@ namespace MsgPack.Serialization
 	{
 		private static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable()
 		{
-			var dictionary = new Dictionary<RuntimeTypeHandle, object>( 7 );
+			var dictionary = new Dictionary<RuntimeTypeHandle, object>( 8 );
 			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessageSerializer<> ) );
 			dictionary.Add( typeof( System.Collections.DictionaryEntry ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_DictionaryEntryMessageSerializer() );
 			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessageSerializer<, > ) );
@@ -44,6 +45,7 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( System.Text.StringBuilder ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Text_StringBuilderMessageSerializer() );
 			dictionary.Add( typeof( System.Uri ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UriMessageSerializer() );
 			dictionary.Add( typeof( System.Version ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_VersionMessageSerializer() );
+			dictionary.Add( typeof( System.Collections.Specialized.NameValueCollection ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Specialized_NameValueCollectionMessageSerializer() );
 			return dictionary;
 		}
 	}
