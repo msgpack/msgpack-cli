@@ -341,6 +341,17 @@ namespace MsgPack.Serialization
 				return;
 			}
 
+			if ( expected is IDictionary )
+			{
+				var actuals = ( IDictionary )actual;
+				foreach ( DictionaryEntry entry in ( ( IDictionary )expected ) )
+				{
+					Assert.That( actuals.Contains( entry.Key ), "'{0}' is not in '[{1}]'", entry.Key, String.Join( ", ", actuals.Keys.OfType<object>() ) );
+					Verify( entry.Value, actuals[ entry.Key ] );
+				}
+				return;
+			}
+
 			if ( expected is IEnumerable )
 			{
 				var expecteds = ( ( IEnumerable )expected ).Cast<Object>().ToArray();
