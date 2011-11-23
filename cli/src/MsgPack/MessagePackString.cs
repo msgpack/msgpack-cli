@@ -138,6 +138,12 @@ namespace MsgPack
 				return this._decoded.GetHashCode();
 			}
 
+			this.DecodeIfNeeded();
+			if ( this._decoded != null )
+			{
+				return this._decoded.GetHashCode();
+			}
+
 			if ( this._encoded != null )
 			{
 				int hashCode = 0;
