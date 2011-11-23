@@ -95,25 +95,25 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Gets the registered <see cref="ArrayMarshaler{T}"/> from this repository.
+		///		Gets the registered <see cref="MessagePackArraySerializer{T}"/> from this repository.
 		/// </summary>
 		/// <typeparam name="T">Type of the object to be marshaled/unmarshaled.</typeparam>
 		/// <returns>
-		///		<see cref="ArrayMarshaler{T}"/>. If no appropriate mashalers has benn registered, then <c>null</c>.
+		///		<see cref="MessagePackArraySerializer{T}"/>. If no appropriate mashalers has benn registered, then <c>null</c>.
 		/// </returns>
-		public ArrayMarshaler<T> GetArrayMarshaler<T>( SerializerRepository serializerRepository )
+		public MessagePackArraySerializer<T> GetArrayMarshaler<T>( SerializerRepository serializerRepository )
 		{
 			var safeSerializerRepository = serializerRepository ?? SerializerRepository.Default;
-			var arrayMarshaler = this._repository.Get<T, ArrayMarshaler<T>>( this, safeSerializerRepository );
+			var arrayMarshaler = this._repository.Get<T, MessagePackArraySerializer<T>>( this, safeSerializerRepository );
 			if ( arrayMarshaler == null && typeof( T ) != typeof( string ) && typeof( T ) != typeof( MessagePackObject ) && typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ) )
 			{
 				// TODO: Configurable
-				arrayMarshaler = ArrayMarshaler.Create<T>( this, safeSerializerRepository );
+				arrayMarshaler = MessagePackArraySerializer.Create<T>( this, safeSerializerRepository );
 				if ( arrayMarshaler != null )
 				{
 					if ( !this._repository.Register<T>( arrayMarshaler ) )
 					{
-						arrayMarshaler = this._repository.Get<T, ArrayMarshaler<T>>( this, serializerRepository ?? SerializerRepository.Default );
+						arrayMarshaler = this._repository.Get<T, MessagePackArraySerializer<T>>( this, serializerRepository ?? SerializerRepository.Default );
 					}
 				}
 			}

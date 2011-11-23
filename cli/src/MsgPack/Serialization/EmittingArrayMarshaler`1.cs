@@ -27,10 +27,10 @@ namespace MsgPack.Serialization
 {
 	// FIXME: EmittingMessagePackArraySerializer<T>
 	/// <summary>
-	///		Reflection.Emit based <see cref="ArrayMarshaler{TCollection}"/>.
+	///		Reflection.Emit based <see cref="MessagePackArraySerializer{TCollection}"/>.
 	/// </summary>
 	/// <typeparam name="TCollection">The type of the target collection.</typeparam>
-	internal sealed class EmittingArrayMarshaler<TCollection> : ArrayMarshaler<TCollection>
+	internal sealed class EmittingArrayMarshaler<TCollection> : MessagePackArraySerializer<TCollection>
 	{
 		private static readonly Type[] _marshalingMethodParameters = new[] { typeof( Packer ), typeof( TCollection ), typeof( SerializationContext ) };
 		private static readonly Type[] _unmarshalingMethodParameters = new[] { typeof( Unpacker ), typeof( TCollection ), typeof( SerializationContext ) };

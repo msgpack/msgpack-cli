@@ -23,23 +23,22 @@ using System.Collections.Generic;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: MessagePackArraySerializer
 	/// <summary>
-	///		Define generic factory methods for generic <see cref="ArrayMarshaler{TCollection}"/> classes.
+	///		Define generic factory methods for generic <see cref="MessagePackArraySerializer{TCollection}"/> classes.
 	/// </summary>
-	public static class ArrayMarshaler
+	public static class MessagePackArraySerializer
 	{
 		/// <summary>
-		///		Create appropriate <see cref="ArrayMarshaler{T}"/> instance.
+		///		Create appropriate <see cref="MessagePackArraySerializer{T}"/> instance.
 		/// </summary>
 		/// <typeparam name="T">Type of the array. This is not have to be <see cref="Array"/>, but must be <see cref="IEnumerable{T}"/> and has <c>Add(T)</c> method.</typeparam>
 		/// <param name="marshalerRepository">Referencing <see cref="MarshalerRepository"/>. To use system default repository, specify <c>null</c>.</param>
 		/// <param name="serializerRepository">Referencing <see cref="SerializerRepository"/>. To use system default repository, specify <c>null</c>.</param>
 		/// <returns>
-		///		Appropriate <see cref="ArrayMarshaler{T}"/> instance.
+		///		Appropriate <see cref="MessagePackArraySerializer{T}"/> instance.
 		///		If <typeparamref name="T"/> is not appropriate, then <c>null</c>.
 		/// </returns>
-		public static ArrayMarshaler<T> Create<T>( MarshalerRepository marshalerRepository, SerializerRepository serializerRepository )
+		public static MessagePackArraySerializer<T> Create<T>( MarshalerRepository marshalerRepository, SerializerRepository serializerRepository )
 		{
 			var traits = typeof( T ).GetCollectionTraits();
 

@@ -144,8 +144,8 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\ArrayMarshaler.cs" />
-    <Compile Include="Serialization\ArrayMarshaler`1.cs" />
+    <Compile Include="Serialization\MessagePackArraySerializer.cs" />
+    <Compile Include="Serialization\MessagePackArraySerializer`1.cs" />
     <Compile Include="Serialization\AutoMessageObjectSerializer`1.cs" />
     <Compile Include="Serialization\Closures.cs" />
     <Compile Include="Serialization\CollectableSerializationMethodGeneratorManager.cs" />

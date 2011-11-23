@@ -23,12 +23,11 @@ using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: MessagePackArraySerializer<T>
 	/// <summary>
 	///		Handles array (or list) marshaling.
 	/// </summary>
 	/// <typeparam name="TCollection">Type of the target collection.</typeparam>
-	public abstract class ArrayMarshaler<TCollection>
+	public abstract class MessagePackArraySerializer<TCollection>
 	{
 		/// <summary>
 		///		Marshals specified collection to the packer.
