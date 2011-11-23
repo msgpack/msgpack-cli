@@ -52,7 +52,8 @@ namespace MsgPack.Serialization
 				this._table = copiedFrom.GetClonedTable();
 			}
 		}
-
+#warning FIXME!
+// FIXME: Cache Marshaler/Serializer in client side using TypeBuilder to improve performance.
 		public TypeKeyRepository( Dictionary<RuntimeTypeHandle, object> table )
 		{
 			this._lock = new ReaderWriterLockSlim( LockRecursionPolicy.NoRecursion );

@@ -1280,6 +1280,15 @@ namespace MsgPack
 			return this;
 		}
 
+		/// <summary>
+		///		Packs specified byte sequence to current stream without any header.
+		/// </summary>
+		/// <param name="value">Source byte array.</param>
+		/// <returns>This instance.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <remarks>
+		///		If you forget to write header first, then resulting stream will be corrupsed.
+		/// </remarks>
 		public Packer PackRawBody( IEnumerable<byte> value )
 		{
 			this.VerifyNotDisposed();

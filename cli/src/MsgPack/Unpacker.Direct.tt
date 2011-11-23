@@ -88,9 +88,12 @@ foreach( var __type in __types )
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="<#= __type.Name #>"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 <#
 	if( !__isClsCompliant( __type ) )
 	{

@@ -36,9 +36,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public Byte UnpackByte()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -53,9 +56,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="SByte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		[CLSCompliant( false )]
 		public SByte UnpackSByte()
 		{
@@ -71,9 +77,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Int16"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public Int16 UnpackInt16()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -88,9 +97,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="UInt16"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		[CLSCompliant( false )]
 		public UInt16 UnpackUInt16()
 		{
@@ -106,9 +118,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Int32"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public Int32 UnpackInt32()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -123,9 +138,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="UInt32"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		[CLSCompliant( false )]
 		public UInt32 UnpackUInt32()
 		{
@@ -141,9 +159,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Int64"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public Int64 UnpackInt64()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -158,9 +179,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="UInt64"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		[CLSCompliant( false )]
 		public UInt64 UnpackUInt64()
 		{
@@ -176,9 +200,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Single"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public Single UnpackSingle()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -193,9 +220,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Double"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public Double UnpackDouble()
 		{
 			this.VerifyMode( UnpackerMode.Direct );

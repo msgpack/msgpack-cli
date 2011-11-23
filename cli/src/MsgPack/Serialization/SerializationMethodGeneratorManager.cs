@@ -22,6 +22,7 @@ using System;
 
 namespace MsgPack.Serialization
 {
+	// FIXME: Goodbye DynamicMethod
 	/// <summary>
 	///		Defines common features and interfaces for <see cref="SerializationMethodGeneratorManager"/>
 	///		which manages individual <see cref="SerializationMethodGenerator"/>.

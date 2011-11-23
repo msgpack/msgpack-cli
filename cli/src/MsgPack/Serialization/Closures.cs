@@ -91,7 +91,7 @@ namespace MsgPack.Serialization
 
 						if ( unpacker.Data.Value.IsNil )
 						{
-							throw SerializationExceptions.NewValiueTypeCannotBeNull( typeof( T ) );
+							throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
 						}
 
 						return target( unpacker.Data.Value );

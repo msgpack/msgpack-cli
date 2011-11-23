@@ -29,7 +29,7 @@ namespace MsgPack.Serialization
 	///		Allows MessagePack is used from WCF.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class DataContractMessagePackSerializer<T> : XmlObjectSerializer
+	internal class DataContractMessagePackSerializer<T> : XmlObjectSerializer
 	{
 		/*
 		 * Strategy

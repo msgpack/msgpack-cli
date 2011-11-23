@@ -23,8 +23,19 @@ using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
+	// FIXME: MessagePackArraySerializer<T>
+	/// <summary>
+	///		Handles array (or list) marshaling.
+	/// </summary>
+	/// <typeparam name="TCollection">Type of the target collection.</typeparam>
 	public abstract class ArrayMarshaler<TCollection>
 	{
+		/// <summary>
+		///		Marshals specified collection to the packer.
+		/// </summary>
+		/// <param name="packer">The packer to be put marshaled collection.</param>
+		/// <param name="collection">The collection to be marshaled.</param>
+		/// <param name="context">The context.</param>
 		public void MarshalTo( Packer packer, TCollection collection, SerializationContext context )
 		{
 			if ( packer == null )
@@ -46,8 +57,20 @@ namespace MsgPack.Serialization
 			this.MarshalCore( packer, collection, context );
 		}
 
+		/// <summary>
+		///		Marshals specified collection to the packer.
+		/// </summary>
+		/// <param name="packer">The packer to be put marshaled collection.</param>
+		/// <param name="collection">The collection to be marshaled.</param>
+		/// <param name="context">The context.</param>
 		protected abstract void MarshalCore( Packer packer, TCollection collection, SerializationContext context );
 
+		/// <summary>
+		///		Unmarshals collection to the specified collection.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be extract marshaled collection.</param>
+		/// <param name="collection">The collection to be put unmarshaled items.</param>
+		/// <param name="context">The context.</param>
 		public void UnmarshalTo( Unpacker unpacker, TCollection collection, SerializationContext context )
 		{
 			if ( unpacker == null )
@@ -70,6 +93,12 @@ namespace MsgPack.Serialization
 			this.UnmarshalCore( unpacker, collection, context );
 		}
 
+		/// <summary>
+		///		Unmarshals collection to the specified collection.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be extract marshaled collection.</param>
+		/// <param name="collection">The collection to be put unmarshaled items.</param>
+		/// <param name="context">The context.</param>
 		protected abstract void UnmarshalCore( Unpacker unpacker, TCollection collection, SerializationContext context );
 	}
 }

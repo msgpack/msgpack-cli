@@ -47,9 +47,9 @@ namespace MsgPack.Serialization
 		public static DumpableSerializationMethodGeneratorManager Instance
 		{
 			get { return DumpableSerializationMethodGeneratorManager._instance; }
-		} 
+		}
 
-		
+
 		public static void Refresh()
 		{
 			_instance = new DumpableSerializationMethodGeneratorManager();
@@ -58,7 +58,6 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Save ILs as modules to specified directory.
 		/// </summary>
-		/// <param name="targetDirectory">Target directory.</param>
 		/// <exception cref="PathTooLongException">
 		///		The file path generated is too long on the current platform.
 		/// </exception>
@@ -72,7 +71,6 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public static void DumpTo()
 		{
-
 			Instance.DumpToCore();
 		}
 

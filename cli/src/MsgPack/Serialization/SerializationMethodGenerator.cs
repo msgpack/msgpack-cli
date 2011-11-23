@@ -73,13 +73,13 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		Delegate to invoke generated method.
 		///		This value will not be <c>null</c>.
-		///		Note that the delegate may throw <see cref="VerificationException"/>,
+		///		Note that the delegate may throw <see cref="System.Security.VerificationException"/>,
 		///		<see cref="InvalidProgramException"/>, or <see cref="ExecutionEngineException"/>
 		///		when the emitted IL is not correct.
 		/// </returns>
 		/// <exception cref="InvalidOperationException">
 		///		<typeparamref name="TDelegate"/> is not delegate, namely is not derived from <see cref="MulticastDelegate"/>.
-		///		Or, the signature of <typeparamref name="TDelegate"/> is not compatible for previous <see cref="SerializationMethodGenerator.CreateGenerator"/> invocation parameters.
+		///		Or, the signature of <typeparamref name="TDelegate"/> is not compatible for previous <see cref="SerializationMethodGeneratorManager.CreateGenerator"/> invocation parameters.
 		/// </exception>
 		public TDelegate CreateDelegate<TDelegate>()
 			where TDelegate : class
@@ -101,13 +101,13 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		Delegate to invoke generated method.
 		///		This value will not be <c>null</c>.
-		///		Note that the delegate may throw <see cref="VerificationException"/>,
+		///		Note that the delegate may throw <see cref="System.Security.VerificationException"/>,
 		///		<see cref="InvalidProgramException"/>, or <see cref="ExecutionEngineException"/>
 		///		when the emitted IL is not correct.
 		/// </returns>
 		/// <exception cref="InvalidOperationException">
 		///		<typeparamref name="TDelegate"/> is not delegate, namely is not derived from <see cref="MulticastDelegate"/>.
-		///		Or, the signature of <typeparamref name="TDelegate"/> is not compatible for previous <see cref="SerializationMethodGenerator.CreateGenerator"/> invocation parameters.
+		///		Or, the signature of <typeparamref name="TDelegate"/> is not compatible for previous <see cref="SerializationMethodGeneratorManager.CreateGenerator"/> invocation parameters.
 		/// </exception>
 		protected abstract TDelegate CreateDelegateCore<TDelegate>()
 			where TDelegate : class;

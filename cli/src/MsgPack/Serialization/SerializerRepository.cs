@@ -25,17 +25,30 @@ using System.Reflection;
 
 namespace MsgPack.Serialization
 {
+	/// <summary>
+	///		Repository of known <see cref="MessagePackSerializer{T}"/>s.
+	/// </summary>
 	public sealed partial class SerializerRepository
 	{
 		internal static MethodInfo Get1Method = typeof( SerializerRepository ).GetMethod( "Get", Type.EmptyTypes );
 
 		private readonly TypeKeyRepository _repository;
 
+		/// <summary>
+		/// Initializes a new empty instance of the <see cref="SerializerRepository"/> class.
+		/// </summary>
 		public SerializerRepository()
 		{
 			this._repository = new TypeKeyRepository();
 		}
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="SerializerRepository"/> class  which has copied serializers.
+		/// </summary>
+		/// <param name="copiedFrom">The repository which will be copied its contents.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="copiedFrom"/> is <c>null</c>.
+		/// </exception>
 		public SerializerRepository( SerializerRepository copiedFrom )
 		{
 			if ( copiedFrom == null )
@@ -52,11 +65,29 @@ namespace MsgPack.Serialization
 			this._repository.Freeze();
 		}
 
+		/// <summary>
+		///		Gets the registered <see cref="MessagePackSerializer{T}"/> from this repository.
+		/// </summary>
+		/// <typeparam name="T">Type of the object to be marshaled/unmarshaled.</typeparam>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. If no appropriate mashalers has benn registered, then <c>null</c>.
+		/// </returns>
 		public MessagePackSerializer<T> Get<T>( MarshalerRepository marshalerRepository )
 		{
 			return this._repository.Get<T, MessagePackSerializer<T>>( marshalerRepository ?? MarshalerRepository.Default, this );
 		}
 
+		/// <summary>
+		///		Register <see cref="MessagePackSerializer{T}"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of serialization target.</typeparam>
+		/// <param name="serializer"><see cref="MessagePackSerializer{T}"/> instance.</param>
+		/// <returns>
+		///		<c>true</c> if success to register; otherwise, <c>false</c>.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="serializer"/> is <c>null</c>.
+		/// </exception>
 		public bool Register<T>( MessagePackSerializer<T> serializer )
 		{
 			if ( serializer == null )
@@ -67,7 +98,25 @@ namespace MsgPack.Serialization
 			return this._repository.Register<T>( serializer );
 		}
 
-
+		/// <summary>
+		///		Register <see cref="MessagePackSerializer{T}"/> type for generic type definition.
+		/// </summary>
+		/// <param name="serializerType"><see cref="MessagePackSerializer{T}"/> type.</param>
+		/// <returns>
+		///		<c>true</c> if success to register; otherwise, <c>false</c>.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="serializerType"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		<paramref name="serializerType"/> is not generic type definition.
+		/// </exception>
+		/// <remarks>
+		///		Registering type is must be following:
+		///		<list type="bullet">
+		///			<item>It has public default constructor.</item>
+		///		</list>
+		/// </remarks>
 		public bool RegisterSerializerType( Type serializerType )
 		{
 			if ( serializerType == null )
@@ -85,6 +134,14 @@ namespace MsgPack.Serialization
 
 		private static readonly SerializerRepository _default = new SerializerRepository( InitializeDefaultTable() );
 
+		/// <summary>
+		///		Gets the system default repository.
+		/// </summary>
+		/// <value>
+		///		The system default repository.
+		///		This value will not be <c>null</c>.
+		///		Note that the repository is frozen.
+		/// </value>
 		public static SerializerRepository Default
 		{
 			get { return _default; }

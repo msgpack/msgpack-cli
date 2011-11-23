@@ -21,6 +21,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
@@ -31,29 +32,66 @@ namespace MsgPack.Serialization
 	{
 		private readonly MemberInfo _member;
 		private readonly DataMemberAttribute _attribute;
-
+		
+		/// <summary>
+		///		Gets the name of the member.
+		/// </summary>
+		/// <value>
+		///		The name of the member.
+		/// </value>
+		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
 		public string Name
 		{
 			get { return this._attribute == null ? this._member.Name : ( this._attribute.Name ?? this._member.Name ); }
 		}
 
+		/// <summary>
+		///		Gets the order of the member.
+		/// </summary>
+		/// <value>
+		///		The order of the member. Default is <c>-1</c>.
+		/// </value>
+		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
 		public int Order
 		{
 			get { return this._attribute == null ? -1 : this._attribute.Order; }
 		}
 
+		// TODO: IsRequired
+		/// <summary>
+		///		Gets a value indicating whether this instance is required.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is required; otherwise, <c>false</c>.
+		/// </value>
+		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
 		public bool IsRequired
 		{
 			get { return this._attribute == null ? false : this._attribute.IsRequired; }
 		}
 
+		// TODO: EmitDefaultValue
+		/// <summary>
+		///		Gets a value indicating whether emits default value or not.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if emits default value; otherwise, <c>false</c>.
+		/// </value>
+		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
 		public bool EmitDefaultValue
 		{
 			get { return this._attribute == null ? true : this._attribute.EmitDefaultValue; }
 		}
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="DataMemberContract"/> struct.
+		/// </summary>
+		/// <param name="member">The target member.</param>
+		/// <param name="attribute">The data contract member attribute. This value can be <c>null</c>.</param>
 		public DataMemberContract( MemberInfo member, DataMemberAttribute attribute )
 		{
+			Contract.Assert( member != null );
+
 			this._member = member;
 			this._attribute = attribute;
 		}

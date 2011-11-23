@@ -22,8 +22,11 @@ using System;
 using System.Runtime.Serialization;
 using System.Globalization;
 
+#pragma warning disable 1591
+
 namespace MsgPack.Serialization
 {
+	// FIXME: Unify to serializer
 	/// <summary>
 	///		Implements message marshaling. Marshaling usually treat 'simple value' type like Value Types, <see cref="Uri"/>, <see cref="Version"/>, etc.
 	/// </summary>

@@ -26,20 +26,28 @@ using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
 {
-#warning TODO:comment
 	/// <summary>
 	///		Build serializer for <typeparamref name="TObject"/>.
 	/// </summary>
 	/// <typeparam name="TObject">Object to be serialized/deserialized.</typeparam>
 	internal abstract class SerializerBuilder<TObject>
 	{
+		// TODO: boolean base -> Exception base
+
+		/// <summary>
+		///		Create serializer procedures.
+		/// </summary>
+		/// <param name="option">Member searching option.</param>
+		/// <param name="packing">Packing procedure.</param>
+		/// <param name="unpacking">Unpacking procedure.</param>
+		/// <returns></returns>
 		public bool CreateProcedures( SerializationMemberOption option, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking )
 		{
 			var entries =
 				typeof( TObject ).FindMembers(
 					MemberTypes.Field | MemberTypes.Property,
 					BindingFlags.Public | BindingFlags.Instance,
-					GetMemberFileter( option ), null
+					GetMemberFilter( option ), null
 				).Select( member => new SerlializingMember( member ) )
 				.OrderBy( member => member.Contract.Order )
 				.ToArray();
@@ -52,9 +60,16 @@ namespace MsgPack.Serialization
 			return this.CreateProcedures( entries, out packing, out unpacking );
 		}
 
+		/// <summary>
+		///		Create serializer procedures.
+		/// </summary>
+		/// <param name="entries">Serialization target members. This will not be <c>null</c>.</param>
+		/// <param name="packing">Packing procedure.</param>
+		/// <param name="unpacking">Unpacking procedure.</param>
+		/// <returns></returns>
 		protected abstract bool CreateProcedures( SerlializingMember[] entries, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking );
 
-		private static MemberFilter GetMemberFileter( SerializationMemberOption option )
+		private static MemberFilter GetMemberFilter( SerializationMemberOption option )
 		{
 			switch ( option )
 			{
@@ -83,11 +98,27 @@ namespace MsgPack.Serialization
 			return !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) );
 		}
 
+		/// <summary>
+		///		Create serialization/deserialization procedure for the field.
+		/// </summary>
+		/// <param name="field">Target field.</param>
+		/// <param name="contract">Contract information.</param>
+		/// <param name="packing">Packing procedure.</param>
+		/// <param name="unpacking">Unpacking procedure.</param>
+		/// <returns></returns>
 		protected bool CreateProcedures( FieldInfo field, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
 		{
 			return this.CreateProceduresCore( field, field.FieldType, !field.IsInitOnly, contract, out packing, out unpacking );
 		}
 
+		/// <summary>
+		///		Create serialization/deserialization procedures for the property.
+		/// </summary>
+		/// <param name="property">Target property.</param>
+		/// <param name="contract">Contract information.</param>
+		/// <param name="packing">Packing procedure.</param>
+		/// <param name="unpacking">Unpacking procedure.</param>
+		/// <returns></returns>
 		protected bool CreateProcedures( PropertyInfo property, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
 		{
 			return this.CreateProceduresCore( property, property.PropertyType, property.CanWrite, contract, out packing, out unpacking );
@@ -145,18 +176,48 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		[Obsolete]
-		protected abstract Action<Packer, TObject, SerializationContext> CreatePacking( MemberInfo member, Type memberType, DataMemberContract contract );
-
-		[Obsolete]
-		protected abstract Action<Unpacker, TObject, SerializationContext> CreateUnpacking( MemberInfo member, Type memberType, DataMemberContract contract );
-
+		/// <summary>
+		///		Create serialization/deserialization procedures for the array type member.
+		/// </summary>
+		/// <param name="member">Metadata of the target member.</param>
+		/// <param name="memberType">Type of the target member.</param>
+		/// <param name="contract">Contract of the target member.</param>
+		/// <param name="traits"><see cref="CollectionTraits"/> which contains collection kind and metadata of required methods.</param>
+		/// <param name="packing">Packing procedure.</param>
+		/// <param name="unpacking">Unpacking procedure.</param>
+		/// <returns></returns>
 		protected abstract bool CreateArrayProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking );
 
+		/// <summary>
+		///		Create serialization/deserialization procedures for the map(dictionary) type member.
+		/// </summary>
+		/// <param name="member">Metadata of the target member.</param>
+		/// <param name="memberType">Type of the target member.</param>
+		/// <param name="contract">Contract of the target member.</param>
+		/// <param name="traits"><see cref="CollectionTraits"/> which contains collection kind and metadata of required methods.</param>
+		/// <param name="packing">Packing procedure.</param>
+		/// <param name="unpacking">Unpacking procedure.</param>
+		/// <returns></returns>
 		protected abstract bool CreateMapProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking );
 
+		/// <summary>
+		///		Create serialization/deserialization procedures for the non collection type member.
+		/// </summary>
+		/// <param name="member">Metadata of the target member.</param>
+		/// <param name="memberType">Type of the target member.</param>
+		/// <param name="contract">Contract of the target member.</param>
+		/// <param name="packing">Packing procedure.</param>
+		/// <param name="unpacking">Unpacking procedure.</param>
+		/// <returns></returns>
 		protected abstract bool CreateObjectProcedures( MemberInfo member, Type memberType, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking );
 
+		/// <summary>
+		///		Create serialization/deserialization procedures for the map(dictionary) object.
+		/// </summary>
+		/// <param name="traits"><see cref="CollectionTraits"/> which contains collection kind and metadata of required methods.</param>
+		/// <param name="packing">Packing procedure.</param>
+		/// <param name="unpacking">Unpacking procedure.</param>
+		/// <returns></returns>
 		public abstract bool CreateMapProcedures( CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking );
 	}
 }

@@ -101,7 +101,7 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-			throw SerializationExceptions.NewValueCannotMarshal( typeof( T ) );
+			throw SerializationExceptions.NewTypeCannotSerialize( typeof( T ) );
 		}
 
 		public void MarshalArrayTo<TCollection>( Packer packer, TCollection collection )
@@ -113,7 +113,7 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-			throw SerializationExceptions.NewValueCannotMarshal( typeof( TCollection ) );
+			throw SerializationExceptions.NewTypeCannotSerialize( typeof( TCollection ) );
 		}
 
 		/// <summary>
@@ -136,7 +136,7 @@ namespace MsgPack.Serialization
 				return serializer.UnpackFrom( unpacker );
 			}
 
-			throw SerializationExceptions.NewValueCannotUnmarshal( typeof( T ) );
+			throw SerializationExceptions.NewTypeCannotDeserialize( typeof( T ) );
 		}
 
 		public void UnmarshalArrayTo<TCollection>( Unpacker unpacker, TCollection collection )
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-			throw SerializationExceptions.NewValueCannotUnmarshal( typeof( TCollection ) );
+			throw SerializationExceptions.NewTypeCannotDeserialize( typeof( TCollection ) );
 		}
 	}
 }

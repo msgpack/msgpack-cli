@@ -25,6 +25,11 @@ using System.Linq;
 
 namespace MsgPack.Serialization
 {
+	// FIXME: EmittingMessagePackArraySerializer<T>
+	/// <summary>
+	///		Reflection.Emit based <see cref="ArrayMarshaler{TCollection}"/>.
+	/// </summary>
+	/// <typeparam name="TCollection">The type of the target collection.</typeparam>
 	internal sealed class EmittingArrayMarshaler<TCollection> : ArrayMarshaler<TCollection>
 	{
 		private static readonly Type[] _marshalingMethodParameters = new[] { typeof( Packer ), typeof( TCollection ), typeof( SerializationContext ) };
@@ -33,15 +38,18 @@ namespace MsgPack.Serialization
 		private static readonly MethodInfo _unpackerReadMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
 		private static readonly MethodInfo _packerPackArrayHeader = FromExpression.ToMethod( ( Packer packer, int length ) => packer.PackArrayHeader( length ) );
 		private static readonly MethodInfo _enumerableToArray1Method = typeof( Enumerable ).GetMethod( "ToArray" );
+
 		private readonly Action<Packer, TCollection, SerializationContext> _marshaling;
 		private readonly Action<Unpacker, TCollection, SerializationContext> _unmarshaling;
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="EmittingArrayMarshaler&lt;TCollection&gt;"/> class.
+		/// </summary>
+		/// <param name="traits"><see cref="CollectionTraits"/> which contains collection kind and metadata of required methods.</param>
 		public EmittingArrayMarshaler( CollectionTraits traits )
 		{
 			CreateArrayProcedures( traits, out this._marshaling, out this._unmarshaling );
 		}
-
-#warning TODO: Loop structure should be C#
 
 		protected sealed override void MarshalCore( Packer packer, TCollection collection, SerializationContext context )
 		{
@@ -55,6 +63,7 @@ namespace MsgPack.Serialization
 
 		private static void CreateArrayProcedures( CollectionTraits traits, out Action<Packer, TCollection, SerializationContext> marshaling, out Action<Unpacker, TCollection, SerializationContext> unmarshaling )
 		{
+			// FIXME: Caching
 			if ( traits.CollectionType != CollectionKind.Array )
 			{
 				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not list.", typeof( TCollection ) ) );
@@ -71,9 +80,6 @@ namespace MsgPack.Serialization
 
 		private static Action<Packer, TCollection, SerializationContext> CreatePackMarshalProcedure( CollectionTraits traits )
 		{
-			/*
-			 * context.Marshalers.Get<T[]>().Marshal( packer, collection );
-			 */
 			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Marshal", typeof( TCollection ), "Items", null, _marshalingMethodParameters );
 			var il = dynamicMethod.GetILGenerator();
 			try
@@ -226,7 +232,6 @@ namespace MsgPack.Serialization
 			{
 				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 
-				Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
 				il.EmitAnyLdarg( 0 );
 				il.EmitGetProperty( _unpackerItemsCountProperty );
 				il.EmitConv_Ovf_I4();

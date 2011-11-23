@@ -32,8 +32,6 @@ namespace MsgPack.Serialization
 	/// <typeparam name="T"></typeparam>
 	public class AutoMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
-		// public bool IsPublicOnly { get; set; }
-
 		private readonly Action<Packer, T, SerializationContext> _packing;
 		private readonly Func<Unpacker, SerializationContext, T> _unpacking;
 		private readonly SerializationContext _context;
@@ -114,7 +112,7 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			throw SerializationExceptions.NewTypeIsNotSerializable( typeof( T ) );
+			throw SerializationExceptions.NewTypeCannotSerialize( typeof( T ) );
 		}
 		/// <summary>
 		///		Serialize specified object with specified <see cref="Packer"/>.

@@ -19,15 +19,15 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Diagnostics;
 
 namespace MsgPack
 {
+	// TODO: Expose base subtree unpacker as API
+	/// <summary>
+	///		Defines subtree unpacking unpacker.
+	/// </summary>
 	internal sealed class SubtreeUnpacker : Unpacker
 	{
 		private readonly StreamUnpacker _root;

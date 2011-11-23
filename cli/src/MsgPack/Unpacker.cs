@@ -23,10 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
-
-// TODO: Remove magic numbers related to MsgPack spec.
 
 namespace MsgPack
 {
@@ -35,6 +32,8 @@ namespace MsgPack
 	/// </summary>
 	public abstract partial class Unpacker : IEnumerable<MessagePackObject>, IDisposable
 	{
+		#region -- Properties --
+
 		/// <summary>
 		///		Get last unpacked data.
 		/// </summary>
@@ -73,11 +72,23 @@ namespace MsgPack
 		/// <summary>
 		///		Gets the items count for current array or map.
 		/// </summary>
+		/// <value>
+		///		The items count for current array or map.
+		/// </value>
+		/// <exception cref="InvalidOperationException">
+		///		Both of the <see cref="IsArrayHeader"/> and <see cref="IsMapHeader"/> are <c>false</c>.
+		/// </exception>
 		public abstract long ItemsCount
 		{
 			get;
 		}
 
+		/// <summary>
+		///	 Gets a value indicating whether this instance is in start position.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is in start; otherwise, <c>false</c>.
+		/// </value>
 		public abstract bool IsInStart
 		{
 			get;
@@ -86,6 +97,16 @@ namespace MsgPack
 		private UnpackerMode _mode = UnpackerMode.Unknown;
 		private bool _isSubtreeReading = false;
 
+		/// <summary>
+		///		Verifies the mode.
+		/// </summary>
+		/// <param name="mode">The mode to be.</param>
+		/// <exception cref="ObjectDisposedException">
+		///		Already disposed.
+		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		///		Is in incompatible mode.
+		/// </exception>
 		private void VerifyMode( UnpackerMode mode )
 		{
 			if ( this._mode == UnpackerMode.Disposed )
@@ -105,10 +126,20 @@ namespace MsgPack
 			}
 		}
 
+		/// <summary>
+		///		Gets the underlying stream to handle direct API.
+		/// </summary>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		protected virtual Stream UnderlyingStream
 		{
 			get { throw new NotSupportedException(); }
 		}
+
+		#endregion -- Properties --
+
+		#region -- Factories --
 
 		/// <summary>
 		///		 Creates the new <see cref="Unpacker"/> with internal buffer which has default size.
@@ -129,10 +160,17 @@ namespace MsgPack
 			return new StreamUnpacker( stream );
 		}
 
+		#endregion -- Factories --
+
+		#region -- Ctor / Dispose --
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="Unpacker"/> class.
+		/// </summary>
 		protected Unpacker() { }
 
 		/// <summary>
-		///		Clean up internal resources.
+		///		Releases all managed resources
 		/// </summary>
 		public void Dispose()
 		{
@@ -141,13 +179,38 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Clean up internal resources.
+		///		Releases unmanaged and optionally managed resources
 		/// </summary>
+		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		protected virtual void Dispose( bool disposing )
 		{
 			// nop
 		}
 
+		#endregion -- Ctor / Dispose --
+
+		#region -- Streaming API --
+
+		//		<note>
+		//			<strong>For Implementers</strong>
+		//			This method must be returns <see cref="SubtreeUnpacker"/>.
+		//		</note>
+		/// <summary>
+		///		Starts unpacking of current subtree.
+		/// </summary>
+		/// <returns>
+		///		<see cref="Unpacker"/> to unpack current subtree.
+		///		This will not be <c>null</c>.
+		///	</returns>
+		///	<exception cref="InvalidOperationException">
+		///		This unpacker is not positioned on the header of array nor map.
+		///	</exception>
+		///	<remarks>
+		///		While subtree unpacker is used, this instance will be 'locked' (called 'subtree' mode) and be unavailable.
+		///		When you finish to unpack subtree, you must invoke <see cref="Unpacker.Dispose()"/>, 
+		///		or you faces <see cref="InvalidOperationException"/> when you use the parent instance.
+		///		Subtree unpacker can only unpack subtree, so you can handle collection deserialization easily.
+		///	</remarks>
 		public Unpacker ReadSubtree()
 		{
 			if ( !this.IsArrayHeader && !this.IsMapHeader )
@@ -160,20 +223,37 @@ namespace MsgPack
 			return subTreeReader;
 		}
 
+		/// <summary>
+		///		Starts unpacking of current subtree.
+		/// </summary>
+		/// <returns>
+		///		<see cref="Unpacker"/> to unpack current subtree.
+		///		This will not be <c>null</c>.
+		///	</returns>
 		protected abstract Unpacker ReadSubtreeCore();
 
+		/// <summary>
+		///		Ends the read subtree.
+		/// </summary>
+		/// <remarks>
+		///		This method only be called from subtree unpacker.
+		///		Custom subtree unpacker implementation must call this method from its <see cref="Dispose(bool)"/> method.
+		/// </remarks>
 		protected internal void EndReadSubtree()
 		{
 			this._isSubtreeReading = false;
 		}
 
 		/// <summary>
-		///		Read next Message Pack entry.
+		///		Reads next Message Pack entry.
 		/// </summary>
 		/// <returns>
 		///		<c>true</c>, if position is sucessfully move to next entry;
 		///		<c>false</c>, if position reaches the tail of the Message Pack stream.
 		/// </returns>
+		/// <exception cref="InvalidOperationException">
+		///		This instance is in 'subtree' mode.
+		/// </exception>
 		public bool Read()
 		{
 			this.VerifyMode( UnpackerMode.Streaming );
@@ -185,12 +265,19 @@ namespace MsgPack
 			return this.ReadCore();
 		}
 
+		/// <summary>
+		///		Reads next Message Pack entry.
+		/// </summary>
+		/// <returns>
+		///		<c>true</c>, if position is sucessfully move to next entry;
+		///		<c>false</c>, if position reaches the tail of the Message Pack stream.
+		/// </returns>
 		protected abstract bool ReadCore();
 
 		// FIXME: Quota
 
 		/// <summary>
-		///		Get <see cref="IEnumerator&lt;T&gt;"/> to enumerate <see cref="MessagePackObject"/> from source stream.
+		///		Gets <see cref="IEnumerator&lt;T&gt;"/> to enumerate <see cref="MessagePackObject"/> from source stream.
 		/// </summary>
 		/// <returns><see cref="IEnumerator&lt;T&gt;"/> to enumerate <see cref="MessagePackObject"/> from source stream.</returns>
 		public IEnumerator<MessagePackObject> GetEnumerator()
@@ -211,8 +298,12 @@ namespace MsgPack
 			return this.GetEnumerator();
 		}
 
+		#endregion -- Streaming API --
+
+		#region -- Feeding API --
+
 		/// <summary>
-		///		Feed new data source.
+		///		Feeds new data source.
 		/// </summary>
 		/// <param name="newData">New data source to feed.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="newData"/> is null.</exception>
@@ -229,7 +320,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Feed new data source.
+		///		Feeds new data source.
 		/// </summary>
 		/// <param name="stream">New data source to feed.</param>
 		/// <param name="ownsStream">If <paramref name="stream"/> should be disposed in this instance then true.</param>
@@ -246,7 +337,16 @@ namespace MsgPack
 			this.FeedCore( stream, ownsStream );
 		}
 
+		/// <summary>
+		///		Feeds new data source.
+		/// </summary>
+		/// <param name="stream">New data source to feed. This will not be <c>null</c>.</param>
+		/// <param name="ownsStream">If <paramref name="stream"/> should be disposed in this instance then true.</param>
 		protected abstract void FeedCore( Stream stream, bool ownsStream );
+
+		#endregion -- Feeding API --
+
+		#region -- Direct API --
 
 		/// <summary>
 		///		Unpack length of array from current buffer.
@@ -255,9 +355,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public long UnpackArrayLength()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -272,9 +375,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public long UnpackListCount()
 		{
 			return this.UnpackArrayLength();
@@ -287,9 +393,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public long UnpackMapCount()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -304,9 +413,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public long UnpackDictionaryCount()
 		{
 			return this.UnpackMapCount();
@@ -319,9 +431,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public long UnpackRawLength()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -336,9 +451,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public Object UnpackNull()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -353,9 +471,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public Boolean TryUnpackNull()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -370,9 +491,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public Boolean UnpackBoolean()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -387,9 +511,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public IEnumerable<byte> UnpackRaw()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -404,9 +531,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public String UnpackString()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -423,9 +553,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
 		/// <exception cref="MessageTypeException">Current value is not <see cref="Byte"/>.</exception>
-		/// <remarks>
-		///		This method is direct API, so <see cref="Data"/> will be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public String UnpackString( Encoding encoding )
 		{
 			if ( encoding == null )
@@ -447,9 +580,12 @@ namespace MsgPack
 		/// </returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
-		/// <remarks>
-		///		This method is NOT direct API, so <see cref="Data"/> will NOT be invalidated.
-		/// </remarks>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public MessagePackObject? TryUnpackObject()
 		{
 			this.VerifyMode( UnpackerMode.Direct );
@@ -457,10 +593,28 @@ namespace MsgPack
 			return Unpacking.UnpackObject( this.UnderlyingStream );
 		}
 
+		/// <summary>
+		///		Unpack <see cref="MessagePackObject"/> from current stream.
+		/// </summary>
+		/// <returns>
+		///		<see cref="MessagePackObject"/>.
+		///		If current stream does not contain enough bytes, so this value may be null.
+		/// </returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <exception cref="UnpackException">Failed to unpack due to malformed or collapsed source.</exception>
+		/// <exception cref="InvalidOperationException">
+		///		There is no data on the current stream.
+		///		Or this instance is in 'streaming' or 'subtree' mode.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This instance does not supoort direct API.
+		/// </exception>
 		public MessagePackObject UnpackObject()
 		{
 			return this.TryUnpackObject().Value;
 		}
+
+		#endregion -- Direct API --
 
 		private enum UnpackerMode
 		{

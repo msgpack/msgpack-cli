@@ -20,12 +20,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Linq;
 
 namespace MsgPack
 {
+	/// <summary>
+	///		Stream based unpacker.
+	/// </summary>
 	internal sealed class StreamUnpacker : Unpacker
 	{
 		/// <summary>
@@ -59,8 +61,17 @@ namespace MsgPack
 		/// </summary>
 		private DataSource _currentSource;
 
+		/// <summary>
+		///		Last unpacked data or null.
+		/// </summary>
 		private MessagePackObject? _data;
 
+		/// <summary>
+		///		Get last unpacked data.
+		/// </summary>
+		/// <value>
+		///		Last unpacked data or null.
+		/// </value>
 		public sealed override MessagePackObject? Data
 		{
 			get { return this._data; }
@@ -91,6 +102,12 @@ namespace MsgPack
 		/// <summary>
 		///		Gets the items count for current array or map.
 		/// </summary>
+		/// <value>
+		///		The items count for current array or map.
+		/// </value>
+		/// <exception cref="InvalidOperationException">
+		///		Both of the <see cref="IsArrayHeader"/> and <see cref="IsMapHeader"/> are <c>false</c>.
+		/// </exception>
 		public sealed override long ItemsCount
 		{
 			get
@@ -106,11 +123,20 @@ namespace MsgPack
 
 		private bool _isInStart = true;
 
+		/// <summary>
+		///		Gets a value indicating whether this instance is in start position.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is in start; otherwise, <c>false</c>.
+		/// </value>
 		public sealed override bool IsInStart
 		{
 			get { return this._isInStart; }
 		}
 
+		/// <summary>
+		///		Gets the underlying stream to handle direct API.
+		/// </summary>
 		protected sealed override Stream UnderlyingStream
 		{
 			get { return this._currentSource.Stream; }
@@ -204,16 +230,40 @@ namespace MsgPack
 			this._successorSources.Clear();
 		}
 
+		/// <summary>
+		///		Starts unpacking of current subtree.
+		/// </summary>
+		/// <returns>
+		///		<see cref="Unpacker"/> to unpack current subtree.
+		///		This will not be <c>null</c>.
+		/// </returns>
 		protected sealed override Unpacker ReadSubtreeCore()
 		{
 			return new SubtreeUnpacker( this );
 		}
-		
+
+		/// <summary>
+		///		Reads next Message Pack entry.
+		/// </summary>
+		/// <returns>
+		///		<c>true</c>, if position is sucessfully move to next entry;
+		///		<c>false</c>, if position reaches the tail of the Message Pack stream.
+		/// </returns>
 		protected sealed override bool ReadCore()
 		{
 			return this.Read( UnpackingMode.PerEntry );
 		}
 
+		/// <summary>
+		///		Read subtree item from current stream.
+		/// </summary>
+		/// <returns>
+		///		<c>true</c>, if position is sucessfully move to next entry;
+		///		<c>false</c>, if position reaches the tail of the Message Pack stream.
+		/// </returns>
+		/// <remarks>
+		///		This method only be called from <see cref="SubtreeUnpacker"/>.
+		/// </remarks>
 		internal bool ReadSubtreeItem()
 		{
 			return this.ReadCore();
@@ -263,6 +313,11 @@ namespace MsgPack
 			return false;
 		}
 
+		/// <summary>
+		///		Feeds new data source.
+		/// </summary>
+		/// <param name="stream">New data source to feed. This will not be <c>null</c>.</param>
+		/// <param name="ownsStream">If <paramref name="stream"/> should be disposed in this instance then true.</param>
 		protected sealed override void FeedCore( Stream stream, bool ownsStream )
 		{
 			this._successorSources.Enqueue( new DataSource( stream, ownsStream ) );
@@ -274,7 +329,7 @@ namespace MsgPack
 		private struct DataSource
 		{
 			/// <summary>
-			///		Indicates whether this unpacker should <see cref="Dispose()"/> <see cref="Stream"/>.
+			///		Indicates whether this unpacker should <see cref="IDisposable.Dispose"/> <see cref="Stream"/>.
 			/// </summary>
 			public readonly bool OwnsStream;
 

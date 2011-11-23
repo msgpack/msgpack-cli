@@ -271,6 +271,7 @@ namespace MsgPack.Serialization
 			il.EmitPop();
 		}
 
+		// TODO: Caching
 		public static void EmitMarshalValue( TracingILGenerator il, int packerArgumentIndex, int contextArgumentIndex, Type valueType, Action<TracingILGenerator> loadValueEmitter )
 		{
 			//  context.MarshalTo( packer, ... ) )
@@ -280,6 +281,7 @@ namespace MsgPack.Serialization
 			il.EmitAnyCall( SerializationContext.MarshalTo1Method.MakeGenericMethod( valueType ) );
 		}
 
+		// TODO: Caching
 		public static void EmitUnmarshalValue( TracingILGenerator il, int unpackerArgumentIndex, int contextArgumentIndex, LocalBuilder value, Action<TracingILGenerator, int> unpackerReading )
 		{
 			if ( unpackerReading != null )
@@ -337,35 +339,6 @@ namespace MsgPack.Serialization
 			il.EmitAnyLdarg( contextArgumentIndex );
 			il.EmitAnyLdloc( unpacker );
 			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( valueType ) );
-		}
-
-		// FIXME: Remove?
-		public static void EmitReadUnpackerIfNotInHeader( TracingILGenerator il, int unpackerArgumentIndex )
-		{
-			return;
-			/*
-			 *	if ( !unpacker.IsMapHeader && !unpacker.IsArrayHeader )
-			 *	{
-			 *		if ( !unpacker.Read() )
-			 *		{
-			 *			throw SerializationExceptions.NewCannotReadCollectionHeader();
-			 *		}
-			 *	}
-			 */
-
-			var endIf = il.DefineLabel( "END_IF" );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( _unpackerIsMapHeaderProperty );
-			il.EmitBrtrue_S( endIf );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( _unpackerIsArrayHeaderProperty );
-			il.EmitBrtrue_S( endIf );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitAnyCall( _unpackerReadMethod );
-			il.EmitBrtrue_S( endIf );
-			il.EmitAnyCall( SerializationExceptions.NewCannotReadCollectionHeaderMethod );
-			il.EmitThrow();
-			il.MarkLabel( endIf );
 		}
 
 		public static void EmitUnpackerBeginReadSubtree( TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder subTreeUnpacker )

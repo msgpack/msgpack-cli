@@ -123,8 +123,9 @@ namespace MsgPack
 		///		Try unpack object from specified source.
 		/// </summary>
 		/// <param name="source">Input source to unpack.</param>
+		/// <param name="unpackingMode"><see cref="UnpackingMode"/> that controls unpacking flow.</param>
 		/// <returns>
-		/// 
+		///		Unpacked entry. The mean of the entry depends on specified <paramref name="unpackingMode"/>.
 		/// </returns>
 		/// <remarks>
 		///		<para>

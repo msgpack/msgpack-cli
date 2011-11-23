@@ -1121,6 +1121,10 @@ namespace MsgPack
 			}
 		}
 
+		/// <summary>
+		///		Get underlying value as UTF-16 charcter array.
+		/// </summary>
+		/// <returns>Underlying string.</returns>
 		public char[] AsCharArray()
 		{
 			// TODO: More efficient

@@ -19,19 +19,16 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using NLiblet.Reflection;
-using System.Globalization;
-using System.Collections;
 
 namespace MsgPack.Serialization
 {
+	// TODO: Rename to EmittingSerializerBuilder
 	/// <summary>
 	///		<see cref="SerializerBuilder{T}"/> implementation using Reflection.Emit.
 	/// </summary>
@@ -83,84 +80,6 @@ namespace MsgPack.Serialization
 			unpacking = Closures.UnpackObject( entries, unpackings );
 
 			return true;
-		}
-
-		protected sealed override Action<Packer, TObject, SerializationContext> CreatePacking( MemberInfo member, Type memberType, DataMemberContract contract )
-		{
-			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", member.DeclaringType, contract.Name, null, _packingMethodParameters );
-			var il = dynamicMethod.GetILGenerator();
-			try
-			{
-				var value = il.DeclareLocal( memberType, "value" );
-				Emittion.EmitPackLiteralString( il, 0, contract.Name );
-				Emittion.EmitMarshalValue(
-					il, 0, 2, value.LocalType,
-					il0 =>
-					{
-						il0.EmitLdarg_1();
-						Emittion.EmitLoadValue( il0, member );
-					}
-				);
-				il.EmitRet();
-				return dynamicMethod.CreateDelegate<Action<Packer, TObject, SerializationContext>>();
-			}
-			finally
-			{
-				il.FlushTrace();
-				dynamicMethod.FlushTrace();
-			}
-		}
-
-		protected sealed override Action<Unpacker, TObject, SerializationContext> CreateUnpacking( MemberInfo member, Type memberType, DataMemberContract contract )
-		{
-			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", member.DeclaringType, contract.Name, null, _unpackingMethodParameters );
-			var il = dynamicMethod.GetILGenerator();
-			try
-			{
-				var value = il.DeclareLocal( memberType, "value" );
-				var data = il.DeclareLocal( typeof( MessagePackObject ), "data" );
-				il.EmitAnyLdarg( 0 );
-				il.EmitGetProperty( _unpackerDataProperty );
-				il.EmitGetProperty( typeof( Nullable<MessagePackObject> ).GetProperty( "Value" ) );
-				il.EmitAnyStloc( data );
-
-				var endIf = il.DefineLabel( "END_IF" );
-				var endOfMethod = il.DefineLabel( "END_OF_METHOD" );
-				il.EmitAnyLdloc( data );
-				il.EmitGetProperty( _messagePackObjectIsNilProperty );
-				il.EmitBrfalse_S( endIf );
-				if ( memberType.IsValueType )
-				{
-					// throw SerializationExceptions.NewValueTypeCannotBeNull( "..."< typeof( ... ), typeof( ... ) );
-					il.EmitLdstr( member.Name );
-					il.EmitTypeOf( memberType );
-					il.EmitTypeOf( member.DeclaringType );
-					il.EmitAnyCall( SerializationExceptions.NewValueTypeCannotBeNullMethod );
-					il.EmitThrow();
-				}
-				else
-				{
-					// target.... = null;
-					il.EmitAnyLdarg( 1 );
-					il.EmitLdnull();
-					Emittion.EmitStoreValue( il, member );
-					il.EmitBr_S( endOfMethod );
-				}
-
-				il.MarkLabel( endIf );
-				// target.... = context.UnmarshalFrom<T>( unpacker );
-				Emittion.EmitUnmarshalValue( il, 0, 2, value, null ); // Dispatching closure shall adjust position.
-				il.EmitAnyLdloc( value );
-				Emittion.EmitStoreValue( il, member );
-				il.MarkLabel( endOfMethod );
-				il.EmitRet();
-				return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();
-			}
-			finally
-			{
-				dynamicMethod.FlushTrace();
-				il.FlushTrace();
-			}
 		}
 
 		protected sealed override bool CreateArrayProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
@@ -434,7 +353,6 @@ namespace MsgPack.Serialization
 				var key = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject ), "key" );
 				var value = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject ), "value" );
 
-				Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
 				il.EmitAnyLdarg( 0 );
 				il.EmitGetProperty( _unpackerItemsCountProperty );
 				il.EmitConv_Ovf_I4();
