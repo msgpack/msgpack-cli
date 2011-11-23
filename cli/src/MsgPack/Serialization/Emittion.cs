@@ -75,7 +75,7 @@ namespace MsgPack.Serialization
 			il.EmitAnyLdloc( i );
 			il.EmitAnyLdloc( count );
 			var endFor = il.DefineLabel( "END_FOR" );
-			il.EmitBeq_S( endFor );
+			il.EmitBeq( endFor );
 
 			bodyEmitter( il, i );
 			// increment
@@ -83,7 +83,7 @@ namespace MsgPack.Serialization
 			il.EmitLdc_I4_1();
 			il.EmitAdd();
 			il.EmitAnyStloc( i );
-			il.EmitBr_S( forCond );
+			il.EmitBr( forCond );
 			il.MarkLabel( endFor );
 		}
 
@@ -153,7 +153,7 @@ namespace MsgPack.Serialization
 			}
 
 			il.EmitAnyCall( moveNextMethod );
-			il.EmitBrfalse_S( endLoop );
+			il.EmitBrfalse( endLoop );
 
 			bodyEmitter(
 				il,
@@ -171,7 +171,7 @@ namespace MsgPack.Serialization
 				}
 			);
 
-			il.EmitBr_S( startLoop );
+			il.EmitBr( startLoop );
 			il.MarkLabel( endLoop );
 
 			if ( typeof( IDisposable ).IsAssignableFrom( traits.GetEnumeratorMethod.ReturnType ) )
