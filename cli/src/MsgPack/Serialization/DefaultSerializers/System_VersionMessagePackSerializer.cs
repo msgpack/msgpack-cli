@@ -23,9 +23,9 @@ using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class System_VersionMessageSerializer : MessagePackSerializer<Version>
+	internal sealed class System_VersionMessagePackSerializer : MessagePackSerializer<Version>
 	{
-		public System_VersionMessageSerializer() { }
+		public System_VersionMessagePackSerializer() { }
 
 		protected sealed override void PackToCore( Packer packer, Version objectTree )
 		{

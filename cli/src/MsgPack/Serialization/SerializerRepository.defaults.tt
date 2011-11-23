@@ -33,22 +33,115 @@
 <#@ import namespace="System.Text" #>
 <#
 var __typeName = "SerializerRepository";
-var __types =
+// Copied from DefaultSerializers.tt
+var __excludes =
+	new HashSet<Type>()
+	{
+		// Special(manual) handlings on builtin marshaler:
+		// typeof( System.Guid ),
+		// typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
+		// Special(manual) handlings on builtin serializer:
+		typeof( System.ArraySegment<> ),
+		typeof( System.Collections.DictionaryEntry ),
+		typeof( System.Collections.Generic.KeyValuePair<,> ),
+		typeof( System.Numerics.Complex ),
+		// Special handling on serializer:
+		typeof( System.Nullable<> ),
+		// Not supported:
+		typeof( void ),
+		typeof( System.IntPtr ),
+		typeof( System.UIntPtr ),
+		typeof( System.ModuleHandle ),
+		typeof( System.RuntimeTypeHandle ),
+		typeof( System.RuntimeFieldHandle ),
+		typeof( System.RuntimeMethodHandle ),
+		typeof( System.RuntimeArgumentHandle ),
+		typeof( System.ArgIterator ),
+		typeof( System.ConsoleKeyInfo ),
+		typeof( System.TypedReference ),
+		typeof( System.ComponentModel.Design.Serialization.MemberRelationship ),
+		typeof( System.Diagnostics.CounterSample ),
+		typeof( System.Diagnostics.Eventing.EventDescriptor ),
+		typeof( System.Diagnostics.SymbolStore.SymbolToken ),
+		typeof( System.IO.WaitForChangedResult ),
+		typeof( System.Net.Sockets.IPPacketInformation ),
+		typeof( System.Net.Sockets.SocketInformation ),
+		typeof( System.Reflection.CustomAttributeNamedArgument ),
+		typeof( System.Reflection.CustomAttributeTypedArgument ),
+		typeof( System.Reflection.InterfaceMapping ),
+		typeof( System.Reflection.ParameterModifier ),
+		typeof( System.Reflection.Emit.EventToken ),
+		typeof( System.Reflection.Emit.FieldToken ),
+		typeof( System.Reflection.Emit.Label ),
+		typeof( System.Reflection.Emit.MethodToken ),
+		typeof( System.Reflection.Emit.OpCode ),
+		typeof( System.Reflection.Emit.ParameterToken ),
+		typeof( System.Reflection.Emit.PropertyToken ),
+		typeof( System.Reflection.Emit.SignatureToken ),
+		typeof( System.Reflection.Emit.StringToken ),
+		typeof( System.Reflection.Emit.TypeToken ),
+		typeof( System.Runtime.InteropServices.ArrayWithOffset ),
+		typeof( System.Runtime.InteropServices.GCHandle ),
+		typeof( System.Runtime.InteropServices.HandleRef ),
+		typeof( System.Runtime.InteropServices.ComTypes.BIND_OPTS ),
+		typeof( System.Runtime.InteropServices.ComTypes.BINDPTR ),
+		typeof( System.Runtime.InteropServices.ComTypes.CONNECTDATA ),
+		typeof( System.Runtime.InteropServices.ComTypes.DISPPARAMS ),
+		typeof( System.Runtime.InteropServices.ComTypes.ELEMDESC ),
+		typeof( System.Runtime.InteropServices.ComTypes.EXCEPINFO ),
+		typeof( System.Runtime.InteropServices.ComTypes.FORMATETC ),
+		typeof( System.Runtime.InteropServices.ComTypes.FUNCDESC ),
+		typeof( System.Runtime.InteropServices.ComTypes.IDLDESC ),
+		typeof( System.Runtime.InteropServices.ComTypes.PARAMDESC ),
+		typeof( System.Runtime.InteropServices.ComTypes.STATDATA ),
+		typeof( System.Runtime.InteropServices.ComTypes.STATSTG ),
+		typeof( System.Runtime.InteropServices.ComTypes.STGMEDIUM ),
+		typeof( System.Runtime.InteropServices.ComTypes.TYPEATTR ),
+		typeof( System.Runtime.InteropServices.ComTypes.TYPEDESC ),
+		typeof( System.Runtime.InteropServices.ComTypes.TYPELIBATTR ),
+		typeof( System.Runtime.InteropServices.ComTypes.VARDESC ),
+		typeof( System.Runtime.Serialization.SerializationEntry ),
+		typeof( System.Runtime.Serialization.StreamingContext ),
+		typeof( System.Security.Cryptography.CngProperty ),
+		typeof( System.Security.Cryptography.DSAParameters ),
+		typeof( System.Security.Cryptography.RSAParameters ),
+		typeof( System.Security.Cryptography.CngProperty ),
+		typeof( System.Security.Cryptography.X509Certificates.X509ChainStatus ),
+		typeof( System.Threading.AsyncFlowControl ),
+		typeof( System.Threading.CancellationToken ),
+		typeof( System.Threading.CancellationTokenRegistration ),
+		typeof( System.Threading.LockCookie ),
+		typeof( System.Threading.NativeOverlapped ),
+		typeof( System.Threading.SpinLock ),
+		typeof( System.Threading.SpinWait ),
+		typeof( System.Threading.Tasks.ParallelLoopResult ),
+	};
+var __structTypes = 
+	typeof( object ).Assembly.GetTypes()
+	.Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
+	.Concat(
+		typeof( TraceListener ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
+	).Concat(
+		typeof( Enumerable ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
+	).Concat(
+		typeof( BigInteger ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
+	).Except( __excludes )
+	.ToArray();
+var __classTypes =
 	new[]
 	{
 		typeof( ArraySegment<> ),
 		typeof( DictionaryEntry ),
 		typeof( KeyValuePair<,> ),
 		typeof( Complex ),
-		typeof( StringBuilder ),
 		typeof( Uri ),
 		typeof( Version ),		
 		typeof( NameValueCollection ),		
 	};
 var __tuples =
-	typeof( Tuple<,> ).Assembly
+	typeof( Tuple<> ).Assembly
 	.GetTypes()
-	.Where( type => type.IsGenericType && type.Namespace == typeof( Tuple<,> ).Namespace && type.Name == "Tuple" )
+	.Where( type => type.IsGenericType && type.Namespace == typeof( Tuple<> ).Namespace && type.Name == "Tuple" )
 	.ToArray();
 #>
 #region -- License Terms --
@@ -78,6 +171,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Numerics;
 using System.Reflection;
+using System.Text;
 
 using MsgPack.Serialization.DefaultSerializers;
 
@@ -90,20 +184,37 @@ namespace MsgPack.Serialization
 	{
 		private static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable()
 		{
-			var dictionary = new Dictionary<RuntimeTypeHandle, object>( <#= __types.Length + __tuples.Length #> );
+			var dictionary = new Dictionary<RuntimeTypeHandle, object>( <#= __structTypes.Length + __classTypes.Length + __tuples.Length + 6 #> );
+			dictionary.Add( typeof( MessagePackObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer() );
+			dictionary.Add( typeof( Object ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Object ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
+			dictionary.Add( typeof( String ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( String ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
+			dictionary.Add( typeof( StringBuilder ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( StringBuilder ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
+			dictionary.Add( typeof( Char[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Char ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessagePackSerializer() );
+			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Byte ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessagePackSerializer() );
 <#
-foreach( Type __type in __types )
+foreach( Type __type in __structTypes )
+{
+	if( __type.IsEnum )
+	{
+		continue;
+	}
+#>
+			dictionary.Add( typeof( <#= __type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
+<#
+}
+
+foreach( Type __type in __classTypes )
 {
 	if( __type.IsGenericTypeDefinition )
 	{
 #>
-			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, typeof( <#= __type.FullName.Replace( '`', '_' ).Replace( Type.Delimiter, '_' ) #>MessageSerializer<#= GetCSharpTypeArguments( __type ) #> ) );
+			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, typeof( <#= __type.FullName.Replace( '`', '_' ).Replace( Type.Delimiter, '_' ) #>MessagePackSerializer<#= GetCSharpTypeArguments( __type ) #> ) );
 <#
 	}
 	else
 	{
 #>
-			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageSerializer() );
+			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
 <#
 	}
 }
@@ -111,7 +222,7 @@ foreach( Type __type in __types )
 foreach( Type __tuple in __tuples )
 {
 #>
-			dictionary.Add( typeof( <#= ToCSharpTypeToken( __tuple ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __tuple.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageSerializer() );
+			dictionary.Add( typeof( <#= ToCSharpTypeToken( __tuple ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __tuple.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
 <#
 }
 #>

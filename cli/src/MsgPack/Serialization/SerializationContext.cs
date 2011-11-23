@@ -25,11 +25,11 @@ using System.Collections;
 
 namespace MsgPack.Serialization
 {
+	// FIXME: MsgPack.Serialization.Serializers namespace which contains types for custom serializer 
 	/// <summary>
 	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Represents serialization context information for internal serialization logic.
 	/// </summary>
-	[EditorBrowsable( EditorBrowsableState.Never )]
 	public sealed class SerializationContext
 	{
 		internal static readonly MethodInfo MarshalTo1Method = typeof( SerializationContext ).GetMethod( "MarshalTo" );
@@ -37,18 +37,7 @@ namespace MsgPack.Serialization
 		internal static readonly MethodInfo MarshalArrayTo1Method = typeof( SerializationContext ).GetMethod( "MarshalArrayTo" );
 		internal static readonly MethodInfo UnmarshalArrayTo1Method = typeof( SerializationContext ).GetMethod( "UnmarshalArrayTo" );
 
-		private readonly MarshalerRepository _marshalers;
-
-		/// <summary>
-		///		Gets the current <see cref="MarshalerRepository"/>.
-		/// </summary>
-		/// <value>
-		///		The  current <see cref="MarshalerRepository"/>.
-		/// </value>
-		public MarshalerRepository Marshalers
-		{
-			get { return this._marshalers; }
-		}
+		private static readonly SerializationContext _default = new SerializationContext( SerializerRepository.Default );
 
 		private readonly SerializerRepository _serializers;
 
@@ -63,9 +52,14 @@ namespace MsgPack.Serialization
 			get { return this._serializers; }
 		}
 
-		internal SerializationContext( MarshalerRepository marshalers, SerializerRepository serializers )
+		public SerializationContext()
+			: this( new SerializerRepository( SerializerRepository.Default ) )
 		{
-			this._marshalers = marshalers;
+
+		}
+
+		internal SerializationContext( SerializerRepository serializers )
+		{
 			this._serializers = serializers;
 		}
 
@@ -75,23 +69,24 @@ namespace MsgPack.Serialization
 		/// <typeparam name="T">Type of <paramref name="value"/>.</typeparam>
 		/// <param name="packer">The packer to be passed marshaled <paramref name="value"/>.</param>
 		/// <param name="value">The value to be marshaled.</param>
+		[Obsolete]
 		public void MarshalTo<T>( Packer packer, T value )
 		{
-			var marshaler = this._marshalers.Get<T>( this._serializers );
-			if ( marshaler != null )
-			{
-				marshaler.MarshalTo( packer, value );
-				return;
-			}
-
-			var serializer = this._serializers.Get<T>( this._marshalers );
+			var serializer = this._serializers.Get<T>( this );
 			if ( serializer == null )
 			{
+				var arraySerializer = this._serializers.GetArray<T>( this );
+				if ( arraySerializer != null )
+				{
+					arraySerializer.MarshalTo( packer, value, this );
+					return;
+				}
+	
 				// TODO: Configurable
-				serializer = new AutoMessagePackSerializer<T>( this._marshalers, this._serializers );
+				serializer = new AutoMessagePackSerializer<T>( this );
 				if ( !this._serializers.Register<T>( serializer ) )
 				{
-					serializer = this._serializers.Get<T>( this._marshalers );
+					serializer = this._serializers.Get<T>( this );
 				}
 			}
 
@@ -104,9 +99,10 @@ namespace MsgPack.Serialization
 			throw SerializationExceptions.NewTypeCannotSerialize( typeof( T ) );
 		}
 
+		[Obsolete]
 		public void MarshalArrayTo<TCollection>( Packer packer, TCollection collection )
 		{
-			var arrayMarshaler = this._marshalers.GetArrayMarshaler<TCollection>( this._serializers );
+			var arrayMarshaler = this._serializers.GetArray<TCollection>( this );
 			if ( arrayMarshaler != null )
 			{
 				arrayMarshaler.MarshalTo( packer, collection, this );
@@ -122,15 +118,30 @@ namespace MsgPack.Serialization
 		/// <typeparam name="T">Type of the unmarshaled value.</typeparam>
 		/// <param name="unpacker">The unpacker to be queried unmarshaling value via <see cref="P:Unpacker.Data"/> property.</param>
 		/// <returns>Unmarshaled value.</returns>
+		[Obsolete]
 		public T UnmarshalFrom<T>( Unpacker unpacker )
 		{
-			var marshaler = this._marshalers.Get<T>( this._serializers );
-			if ( marshaler != null )
+			var serializer = this._serializers.Get<T>( this );
+			if ( serializer == null )
 			{
-				return marshaler.UnmarshalFrom( unpacker );
-			}
 
-			var serializer = this._serializers.Get<T>( this._marshalers );
+				var arrayMarshaler = this._serializers.GetArray<T>( this );
+				if ( arrayMarshaler != null )
+				{
+					// FIXME: Unify
+					T collection = typeof( T ).IsArray ? ( T )( object )Array.CreateInstance( typeof( T ).GetElementType(), unpacker.Data.Value.AsInt32() ) : Activator.CreateInstance<T>();
+					arrayMarshaler.UnmarshalTo( unpacker, collection, this );
+					return collection;
+				}
+
+				// TODO: Configurable
+				serializer = new AutoMessagePackSerializer<T>( this );
+				if ( !this._serializers.Register<T>( serializer ) )
+				{
+					serializer = this._serializers.Get<T>( this );
+				}
+			} 
+			
 			if ( serializer != null )
 			{
 				return serializer.UnpackFrom( unpacker );
@@ -139,9 +150,10 @@ namespace MsgPack.Serialization
 			throw SerializationExceptions.NewTypeCannotDeserialize( typeof( T ) );
 		}
 
+		[Obsolete]
 		public void UnmarshalArrayTo<TCollection>( Unpacker unpacker, TCollection collection )
 		{
-			var arrayMarshaler = this._marshalers.GetArrayMarshaler<TCollection>( this._serializers );
+			var arrayMarshaler = this._serializers.GetArray<TCollection>( this );
 			if ( arrayMarshaler != null )
 			{
 				arrayMarshaler.UnmarshalTo( unpacker, collection, this );

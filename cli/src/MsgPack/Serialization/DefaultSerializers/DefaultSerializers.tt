@@ -30,14 +30,11 @@
 <#@ import namespace="System.Reflection" #>
 <#@ import namespace="System.Text" #>
 <#
-var __typeName = "MarshalerRepository";
-// Copied from DsefaultTemplates.tt
 var __excludes =
 	new HashSet<Type>()
 	{
 		// Special(manual) handlings on builtin marshaler:
-		// typeof( System.Guid ),
-		// typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
+		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
 		// Special(manual) handlings on builtin serializer:
 		typeof( System.ArraySegment<> ),
 		typeof( System.Collections.DictionaryEntry ),
@@ -125,6 +122,17 @@ var __types =
 		typeof( BigInteger ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	).Except( __excludes )
 	.ToArray();
+	
+var __workArounds =
+	new Dictionary<Type, WorkAround>()
+	{
+		{ typeof( char ), new WorkAround(){ PackCode = "packer.Pack( ( System.UInt16 )value );", UnpackCode = "return ( System.Char ) unpacker.Data.Value.AsUInt16(); " } },
+		{ typeof( decimal ), new WorkAround(){ PackCode = "packer.Pack( value.ToString( \"G\", CultureInfo.InvariantCulture ) );", UnpackCode = "return System.Decimal.Parse( unpacker.Data.Value.AsString(), CultureInfo.InvariantCulture ); " } },
+		{ typeof( DateTime ), new WorkAround(){ PackCode = "packer.Pack( MessagePackConvert.FromDateTime( value ) );", UnpackCode = "return MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ); " } },
+		{ typeof( DateTimeOffset ), new WorkAround(){ PackCode = "packer.Pack( MessagePackConvert.FromDateTimeOffset( value ) );", UnpackCode = "return MessagePackConvert.ToDateTimeOffset( unpacker.Data.Value.AsInt64() ); " } },
+		{ typeof( Guid ), new WorkAround(){ PackCode = "packer.Pack( value.ToByteArray() );", UnpackCode = "return new System.Guid( unpacker.Data.Value.AsBinary() ); " } },
+		{ typeof( BigInteger ), new WorkAround(){ PackCode = "packer.Pack( value.ToByteArray() );", UnpackCode = "return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); " } },
+	};
 #>
 #region -- License Terms --
 //
@@ -150,19 +158,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using System.Text;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.DefaultSerializers
 {
-	// This file generated from <#= __typeName #>.tt T4Template.
-	// Do not modify this file. Edit <#= __typeName #>.tt instead.
-
-	partial class <#= __typeName #> 
-	{
-		private static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable()
-		{
-			var dictionary = new Dictionary<RuntimeTypeHandle, object>( <#= __types.Length #> + 6 );
-			dictionary.Add( typeof( MessagePackObject ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.MsgPack_MessagePackObjectMessageMarshaler() );
+	// This file generated from DefaultMarshalers.tt T4Template.
+	// Do not modify this file. Edit DefaultMarshalers.tt instead.
 <#
 foreach( Type __type in __types )
 {
@@ -171,16 +171,197 @@ foreach( Type __type in __types )
 		continue;
 	}
 #>
-			dictionary.Add( typeof( <#= __type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageMarshaler() );
+
+<#
+	if( __type.IsGenericTypeDefinition && !__workArounds.ContainsKey( __type ) )
+	{
+#>
+#error <#= __type #> cannot be generated
+<#
+		continue;
+	}
+	
+	var ctors = __type.GetConstructors( BindingFlags.Public | BindingFlags.Instance ).Where( item => item.GetParameters().Length == 1 ).Where( item => IsMessagePackPrimitive( item.GetParameters()[ 0 ].ParameterType ) ).ToArray();
+#>
+	internal sealed class <#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
+	{
+		protected sealed override void PackToCore( Packer packer, <#= __type.FullName #> value )
+		{
+<#
+	if ( __workArounds.ContainsKey( __type ) )
+	{
+#>
+			<#= __workArounds[ __type ].PackCode #>
+<#
+	}
+	else if ( __type.IsPrimitive )
+	{
+#>
+			packer.Pack( value );
+<#
+	}
+	else if ( ctors.Length != 1 )
+	{
+#>
+#error <#= __type.FullName #> has <#= ctors.Length #> parameter constructors
+			/*
+<#
+foreach( var ctor in ctors )
+{
+#>
+			 * <#= ctor #>
 <#
 }
 #>
-			dictionary.Add( typeof( Object ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( Object ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageMarshaler() );
-			dictionary.Add( typeof( String ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( String ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageMarshaler() );
-			dictionary.Add( typeof( StringBuilder ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( StringBuilder ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessageMarshaler() );
-			dictionary.Add( typeof( Char[] ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( Char ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessageMarshaler() );
-			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultMarshalers.<#= typeof( Byte ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessageMarshaler() );
-			return dictionary;
+			 */
+<#
+	}
+	else if ( IsMessagePackPrimitive( ctors[ 0 ].GetParameters()[ 0 ].ParameterType ) )
+	{
+#>
+			packer.Pack( value.<#= Pascalize( ctors[ 0 ].GetParameters()[ 0 ].Name ) #> );
+<#
+	}
+	else
+	{
+#>
+#error ParameterType '<#= ctors[ 0 ].GetParameters()[ 0 ].ParameterType #>' is not primitive.
+<#
+	}
+#>
+		}
+
+		protected sealed override  <#= __type.FullName #> UnpackFromCore( Unpacker unpacker )
+		{
+<#
+	if ( __workArounds.ContainsKey( __type ) )
+	{
+#>
+			<#= __workArounds[ __type ].UnpackCode #>
+<#
+	}
+	else if ( __type.IsPrimitive )
+	{
+#>
+			return unpacker.Data.Value.As<#= __type.Name #>();
+<#
+	}
+	else if ( ctors.Length != 1 )
+	{
+#>
+#error <#= __type.FullName #> has <#= ctors.Length #> parameter constructors
+			/*
+<#
+foreach( var ctor in ctors )
+{
+#>
+			 * <#= ctor #>
+<#
+}
+#>
+			 */
+<#
+	}
+	else if ( IsMessagePackPrimitive( ctors[ 0 ].GetParameters()[ 0 ].ParameterType ) )
+	{
+#>
+			return new <#= __type.FullName #>( unpacker.Data.Value.As<#= ctors[ 0 ].GetParameters()[ 0 ].ParameterType.Name #>() );
+<#
+	}
+	else
+	{
+#>
+#error ParameterType '<#= ctors[ 0 ].GetParameters()[ 0 ].ParameterType #>' is not primitive.
+<#
+	}
+#>
+		}
+	}
+<#
+}
+#>
+}
+<#+
+private static string Pascalize( string value )
+{
+	if( String.IsNullOrEmpty( value ) )
+	{
+		return value;
+	}
+	
+	return Char.ToUpperInvariant( value[ 0 ] ) + value.Substring( 1 );
+}
+
+private static void BuildCSharpGenericArgumentsToken( Type type, StringBuilder buffer )
+{
+	if( !type.IsGenericType)
+	{
+		return;
+	}
+	
+	buffer.Append('<');
+	
+	bool isFirst = true;
+	foreach( Type genericParameter in type.GetGenericArguments () )
+	{	
+		if( isFirst )
+		{
+			isFirst = false;
+		}
+		else
+		{
+			buffer.Append( ',' ).Append( ' ' );
+		}
+		
+		if( genericParameter.IsGenericParameter )
+		{
+			buffer.Append( genericParameter.Name );
+		}
+		else
+		{
+			buffer.Append( genericParameter.FullName );
+		}	
+	}
+	
+	buffer.Append( '>' );}
+
+private static string ToCSharpToken( Type type )
+{
+	if( !type.IsGenericType )
+	{
+		return type.FullName;
+	}
+	
+	StringBuilder buffer = new StringBuilder( type.FullName.Remove( type.FullName.IndexOf( '`' ) ) );
+
+	BuildCSharpGenericArgumentsToken( type, buffer );
+	
+	return buffer.ToString();
+}
+
+private static bool IsMessagePackPrimitive( Type type )
+{
+	switch( Type.GetTypeCode( type ) )
+	{
+		case TypeCode.Char:
+		case TypeCode.DateTime:
+		case TypeCode.DBNull:
+		case TypeCode.Decimal:
+		case TypeCode.Empty:
+		case TypeCode.Object:
+		{
+			return false;
+		}
+		default:
+		{
+			return true;
 		}
 	}
 }
+
+private struct WorkAround
+{
+	public string PackCode;
+	public string UnpackCode;
+}
+#>

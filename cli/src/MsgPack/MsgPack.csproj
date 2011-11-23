@@ -144,6 +144,11 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\DefaultSerializers\DefaultSerializers.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DefaultSerializers.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\MessagePackArraySerializer.cs" />
     <Compile Include="Serialization\MessagePackArraySerializer`1.cs" />
     <Compile Include="Serialization\AutoMessageObjectSerializer`1.cs" />
@@ -153,29 +158,23 @@
     <Compile Include="Serialization\CollectionKind.cs" />
     <Compile Include="Serialization\DataContractMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DataMemberContract.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\DefaultMarshalers.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DefaultMarshalers.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\DefaultMarshalers\EnumMarshaler.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\EnumMarshaler`1.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\MsgPack_MessagePackObjectMessageMarshaler.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\NullableMarshaler.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\NullableMarshaler`1.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\System_ObjectMessageMarshaler.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\System_StringMessageMarshaler.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\System_Text_StringBuilderMessageMarshaler.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\System_ByteArrayMessageMarshaler.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\System_CharArrayMessageMarshaler.cs" />
+    <Compile Include="Serialization\DefaultSerializers\EnumMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\NullableMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_StringMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Text_StringBuilderMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_ByteArrayMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_CharArrayMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializers\System_ArraySegment_1MessageSerializer`1.cs" />
-    <Compile Include="Serialization\DefaultSerializers\System_Collections_DictionaryEntryMessageSerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessageSerializer`2.cs" />
-    <Compile Include="Serialization\DefaultSerializers\System_Numerics_ComplexMessageSerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializers\System_Text_StringBuilderMessageSerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializers\System_UriMessageSerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializers\System_VersionMessageSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_ArraySegment_1MessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_DictionaryEntryMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs" />
     <Compile Include="Serialization\DumpableSerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\EmittingMessagePackArraySerializer`1.cs" />
     <Compile Include="Serialization\EmittingMemberBinder`1.cs" />
@@ -185,12 +184,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FromExpression.ToMethod.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Serialization\MarshalerRepository.cs" />
-    <Compile Include="Serialization\MarshalerRepository.defaults.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MarshalerRepository.defaults.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\SerializationMethodGenerator.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\GenericTypeExtensions.cs" />
@@ -208,7 +201,6 @@
       <DependentUpon>SerializerRepository.defaults.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\SerlializingMember.cs" />
-    <Compile Include="Serialization\MessageMarshaler`1.cs" />
     <Compile Include="Serialization\MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ReflectionExtensions.cs" />
     <Compile Include="Serialization\SerializationContext.cs" />
@@ -216,8 +208,8 @@
     <Compile Include="Serialization\SerializationMemberOption.cs" />
     <Compile Include="Serialization\SerializerBuilder`1.cs" />
     <Compile Include="Serialization\SerializerRepository.cs" />
-    <Compile Include="Serialization\DefaultMarshalers\System_Runtime_InteropServices_ComTypes_FILETIMEMessageMarshaler.cs" />
-    <Compile Include="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessageSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Compile Include="Serialization\Tracer.cs" />
     <Compile Include="Serialization\TypeKeyRepository.cs" />
     <Compile Include="SetOperation.cs" />
@@ -261,17 +253,13 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Packer.ValuePacker.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\DefaultMarshalers\DefaultMarshalers.tt">
+    <None Include="Serialization\DefaultSerializers\DefaultSerializers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DefaultMarshalers.cs</LastGenOutput>
+      <LastGenOutput>DefaultSerializers.cs</LastGenOutput>
     </None>
     <None Include="Serialization\FromExpression.ToMethod.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FromExpression.ToMethod.cs</LastGenOutput>
-    </None>
-    <None Include="Serialization\MarshalerRepository.defaults.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MarshalerRepository.defaults.cs</LastGenOutput>
     </None>
     <None Include="Serialization\SerializerRepository.defaults.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

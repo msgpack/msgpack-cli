@@ -84,7 +84,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public TEntry Get<T, TEntry>( MarshalerRepository marshalerRepository, SerializerRepository serializerRepository )
+		public TEntry Get<T, TEntry>( SerializationContext context )
 			where TEntry : class
 		{
 			object matched;
@@ -105,7 +105,7 @@ namespace MsgPack.Serialization
 				var type = genericDefinitionMatched as Type;
 				Contract.Assert( type != null );
 				Contract.Assert( type.IsGenericTypeDefinition );
-				var result = ( TEntry )Activator.CreateInstance( type.MakeGenericType( typeof( T ).GetGenericArguments() ), marshalerRepository, serializerRepository );
+				var result = ( TEntry )Activator.CreateInstance( type.MakeGenericType( typeof( T ).GetGenericArguments() ), context );
 				Contract.Assert( result != null );
 				return result;
 			}

@@ -20,16 +20,16 @@
 
 using System;
 
-namespace MsgPack.Serialization.DefaultMarshalers
+namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class MsgPack_MessagePackObjectMessageMarshaler : MessageMarshaler<MessagePackObject>
+	internal sealed class MsgPack_MessagePackObjectMessagePackSerializer : MessagePackSerializer<MessagePackObject>
 	{
-		protected sealed override void MarshalToCore( Packer packer, MessagePackObject value )
+		protected sealed override void PackToCore( Packer packer, MessagePackObject value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override MessagePackObject UnmarshalFromCore( Unpacker unpacker )
+		protected sealed override MessagePackObject UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value;
 		}

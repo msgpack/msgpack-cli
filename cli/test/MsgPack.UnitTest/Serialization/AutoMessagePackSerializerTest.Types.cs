@@ -941,7 +941,7 @@ namespace MsgPack.Serialization
 
 		private static void TestCoreWithAutoVerify<T>( T value )
 		{
-			var target = new AutoMessagePackSerializer<T>();
+			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( value, buffer );
@@ -955,7 +955,7 @@ namespace MsgPack.Serialization
 		private static void TestCoreWithVerifiable1<T>( T value )
 			where T : IVerifiable<T>
 		{
-			var target = new AutoMessagePackSerializer<T>();
+			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( value, buffer );
@@ -969,7 +969,7 @@ namespace MsgPack.Serialization
 		private static void TestCoreWithVerifiable1<T>( T[] value )
 			where T : IVerifiable<T>
 		{
-			var target = new AutoMessagePackSerializer<T[]>();
+			var target = new AutoMessagePackSerializer<T[]>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( value, buffer );

@@ -22,12 +22,13 @@ using System;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal class System_ArraySegment_1MessageSerializer<T> : MessagePackSerializer<ArraySegment<T>>
+	// FIXME: Caching
+	internal class System_ArraySegment_1MessagePackSerializer<T> : MessagePackSerializer<ArraySegment<T>>
 	{
 		private static readonly Action<Packer, ArraySegment<T>, SerializationContext> _packing;
 		private static readonly Func<Unpacker, SerializationContext, ArraySegment<T>> _unpacking;
 
-		static System_ArraySegment_1MessageSerializer()
+		static System_ArraySegment_1MessagePackSerializer()
 		{
 			if ( typeof( T ) == typeof( byte ) )
 			{
@@ -69,13 +70,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		private readonly SerializationContext _context;
-
-		public System_ArraySegment_1MessageSerializer()
-			: this( null, null ) { }
-
-		public System_ArraySegment_1MessageSerializer( MarshalerRepository marshalers, SerializerRepository serializers )
+		
+		public System_ArraySegment_1MessagePackSerializer( SerializationContext context )
 		{
-			this._context = new SerializationContext( marshalers ?? MarshalerRepository.Default, serializers ?? SerializerRepository.Default );
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			this._context = context;
 		}
 
 		protected sealed override void PackToCore( Packer packer, ArraySegment<T> objectTree )

@@ -32,19 +32,18 @@ namespace MsgPack.Serialization
 		///		Create appropriate <see cref="MessagePackArraySerializer{T}"/> instance.
 		/// </summary>
 		/// <typeparam name="T">Type of the array. This is not have to be <see cref="Array"/>, but must be <see cref="IEnumerable{T}"/> and has <c>Add(T)</c> method.</typeparam>
-		/// <param name="marshalerRepository">Referencing <see cref="MarshalerRepository"/>. To use system default repository, specify <c>null</c>.</param>
-		/// <param name="serializerRepository">Referencing <see cref="SerializerRepository"/>. To use system default repository, specify <c>null</c>.</param>
 		/// <returns>
 		///		Appropriate <see cref="MessagePackArraySerializer{T}"/> instance.
 		///		If <typeparamref name="T"/> is not appropriate, then <c>null</c>.
 		/// </returns>
-		public static MessagePackArraySerializer<T> Create<T>( MarshalerRepository marshalerRepository, SerializerRepository serializerRepository )
+		public static MessagePackArraySerializer<T> Create<T>( SerializationContext context )
 		{
 			var traits = typeof( T ).GetCollectionTraits();
 
 			if ( traits.CollectionType == CollectionKind.Array )
 			{
 				// TODO: Configurable
+				// FIXME: Context
 				return new EmittingMessagePackArraySerializer<T>( traits );
 			}
 			else

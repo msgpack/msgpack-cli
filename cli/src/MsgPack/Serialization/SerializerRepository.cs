@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using MsgPack.Serialization.DefaultSerializers;
+using System.Collections;
 
 namespace MsgPack.Serialization
 {
@@ -32,7 +34,9 @@ namespace MsgPack.Serialization
 	{
 		internal static MethodInfo Get1Method = typeof( SerializerRepository ).GetMethod( "Get", Type.EmptyTypes );
 
+		// TODO: Unification
 		private readonly TypeKeyRepository _repository;
+		private readonly TypeKeyRepository _arrayRepository;
 
 		/// <summary>
 		/// Initializes a new empty instance of the <see cref="SerializerRepository"/> class.
@@ -40,6 +44,7 @@ namespace MsgPack.Serialization
 		public SerializerRepository()
 		{
 			this._repository = new TypeKeyRepository();
+			this._arrayRepository = new TypeKeyRepository();
 		}
 
 		/// <summary>
@@ -57,12 +62,15 @@ namespace MsgPack.Serialization
 			}
 
 			this._repository = new TypeKeyRepository( copiedFrom._repository );
+			this._arrayRepository = new TypeKeyRepository( copiedFrom._arrayRepository );
 		}
 
 		private SerializerRepository( Dictionary<RuntimeTypeHandle, object> table )
 		{
 			this._repository = new TypeKeyRepository( table );
 			this._repository.Freeze();
+			this._arrayRepository = new TypeKeyRepository();
+			this._arrayRepository.Freeze();
 		}
 
 		/// <summary>
@@ -72,9 +80,48 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		<see cref="MessagePackSerializer{T}"/>. If no appropriate mashalers has benn registered, then <c>null</c>.
 		/// </returns>
-		public MessagePackSerializer<T> Get<T>( MarshalerRepository marshalerRepository )
+		public MessagePackSerializer<T> Get<T>( SerializationContext context )
 		{
-			return this._repository.Get<T, MessagePackSerializer<T>>( marshalerRepository ?? MarshalerRepository.Default, this );
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			if ( typeof( T ).IsEnum )
+			{
+				return new EnumMessagePackSerializer<T>();
+			}
+
+			if ( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
+			{
+				return new NullableMessagePackSerializer<T>( context );
+			}
+
+			return this._repository.Get<T, MessagePackSerializer<T>>( context );
+		}
+
+		public MessagePackArraySerializer<T> GetArray<T>( SerializationContext context )
+		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			var arrayMarshaler = this._arrayRepository.Get<T, MessagePackArraySerializer<T>>( context );
+			if ( arrayMarshaler == null && typeof( T ) != typeof( string ) && typeof( T ) != typeof( MessagePackObject ) && typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ) )
+			{
+				// TODO: Configurable
+				arrayMarshaler = MessagePackArraySerializer.Create<T>( context );
+				if ( arrayMarshaler != null )
+				{
+					if ( !this._arrayRepository.Register<T>( arrayMarshaler ) )
+					{
+						arrayMarshaler = this._arrayRepository.Get<T, MessagePackArraySerializer<T>>( context );
+					}
+				}
+			}
+
+			return arrayMarshaler;
 		}
 
 		/// <summary>
@@ -114,7 +161,7 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		Registering type is must be following:
 		///		<list type="bullet">
-		///			<item>It has public default constructor.</item>
+		///			<item>It has public constructor which has an argument typed <see cref="SerializationContext"/>.</item>
 		///		</list>
 		/// </remarks>
 		public bool RegisterSerializerType( Type serializerType )

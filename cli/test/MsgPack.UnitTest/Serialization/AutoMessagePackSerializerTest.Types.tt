@@ -192,7 +192,7 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 
 		private static void TestCoreWithAutoVerify<T>( T value )
 		{
-			var target = new AutoMessagePackSerializer<T>();
+			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( value, buffer );
@@ -206,7 +206,7 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		private static void TestCoreWithVerifiable1<T>( T value )
 			where T : IVerifiable<T>
 		{
-			var target = new AutoMessagePackSerializer<T>();
+			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( value, buffer );
@@ -220,7 +220,7 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		private static void TestCoreWithVerifiable1<T>( T[] value )
 			where T : IVerifiable<T>
 		{
-			var target = new AutoMessagePackSerializer<T[]>();
+			var target = new AutoMessagePackSerializer<T[]>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( value, buffer );

@@ -19,36 +19,37 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using System.Collections;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class System_Collections_Generic_KeyValuePair_2MessageSerializer<TKey, TValue> : MessagePackSerializer<KeyValuePair<TKey, TValue>>
+	internal sealed class System_Collections_DictionaryEntryMessagePackSerializer : MessagePackSerializer<DictionaryEntry>
 	{
-		private readonly SerializationContext _context;
+		public System_Collections_DictionaryEntryMessagePackSerializer() { }
 
-		public System_Collections_Generic_KeyValuePair_2MessageSerializer()
-			: this( null, null ) { }
-
-		public System_Collections_Generic_KeyValuePair_2MessageSerializer( MarshalerRepository marshalers, SerializerRepository serializers )
-		{
-			this._context = new SerializationContext( marshalers ?? MarshalerRepository.Default, serializers ?? SerializerRepository.Default );
-		}
-
-		protected sealed override void PackToCore( Packer packer, KeyValuePair<TKey, TValue> objectTree )
+		protected sealed override void PackToCore( Packer packer, DictionaryEntry objectTree )
 		{
 			packer.PackMapHeader( 2 );
 			packer.PackString( "Key" );
-			this._context.MarshalTo( packer, objectTree.Key );
+			packer.Pack( EnsureMessagePackObject( objectTree.Key ) );
 			packer.PackString( "Value" );
-			this._context.MarshalTo( packer, objectTree.Value );
+			packer.Pack( EnsureMessagePackObject( objectTree.Value ) );
 		}
 
-		protected sealed override KeyValuePair<TKey, TValue> UnpackFromCore( Unpacker unpacker )
+		private MessagePackObject EnsureMessagePackObject( object obj )
 		{
-			TKey key = default( TKey );
-			TValue value = default( TValue );
+			if ( !( obj is MessagePackObject ) )
+			{
+				throw new NotSupportedException( "Only MessagePackObject Key/Value is supported." );
+			}
+
+			return ( MessagePackObject )obj;
+		}
+
+		protected sealed override DictionaryEntry UnpackFromCore( Unpacker unpacker )
+		{
+			object key = null;
+			object value = null;
 			bool isKeyFound = false;
 			bool isValueFound = false;
 
@@ -69,17 +70,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 						}
 
 						isKeyFound = true;
-						if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
-						{
-							using ( var subTreeUnpacker = unpacker.ReadSubtree() )
-							{
-								key = this._context.UnmarshalFrom<TKey>( subTreeUnpacker );
-							}
-						}
-						else
-						{
-							key = this._context.UnmarshalFrom<TKey>( unpacker );
-						}
+						key = unpacker.Data.Value;
 						break;
 					}
 					case "Value":
@@ -90,17 +81,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 						}
 
 						isValueFound = true;
-						if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
-						{
-							using ( var subTreeUnpacker = unpacker.ReadSubtree() )
-							{
-								value = this._context.UnmarshalFrom<TValue>( subTreeUnpacker );
-							}
-						}
-						else
-						{
-							value = this._context.UnmarshalFrom<TValue>( unpacker );
-						}
+						value = unpacker.Data.Value;
 						break;
 					}
 				}
@@ -116,7 +97,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw SerializationExceptions.NewMissingProperty( "Value" );
 			}
 
-			return new KeyValuePair<TKey, TValue>( key, value );
+			return new DictionaryEntry( key, value );
 		}
 	}
 }

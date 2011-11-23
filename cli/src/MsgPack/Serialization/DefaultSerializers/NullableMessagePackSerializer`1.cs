@@ -22,15 +22,15 @@ using System;
 using System.Globalization;
 using System.Reflection;
 
-namespace MsgPack.Serialization.DefaultMarshalers
+namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class NullableMarshaler<T> : MessageMarshaler<T>
+	internal sealed class NullableMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
 		private static readonly PropertyInfo _nullableTHasValueProperty;
 		private static readonly PropertyInfo _nullableTValueProperty;
 		private static readonly MethodInfo _nullableTImplicitOperator;
 
-		static NullableMarshaler()
+		static NullableMessagePackSerializer()
 		{
 			if ( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
 			{
@@ -40,21 +40,24 @@ namespace MsgPack.Serialization.DefaultMarshalers
 			}
 		}
 
+		// FIXME: Caching
 		private readonly SerializationContext _context;
 		private readonly Action<Packer, T> _packing;
 		private readonly Func<Unpacker, T> _unpacking;
 
-		public NullableMarshaler()
-			: this( null, null ) { }
-
-		public NullableMarshaler( MarshalerRepository marshalers, SerializerRepository serializers )
+		public NullableMessagePackSerializer( SerializationContext context )
 		{
 			if ( _nullableTImplicitOperator == null )
 			{
 				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not nullable type.", typeof( T ) ) );
 			}
 
-			this._context = new SerializationContext( marshalers ?? MarshalerRepository.Default, serializers ?? SerializerRepository.Default );
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			this._context = context;
 			var packing = CreatePacking();
 			var unpacking = CreateUnpacking();
 			this._packing = ( packer, value ) => packing( packer, value, this._context );
@@ -82,7 +85,7 @@ namespace MsgPack.Serialization.DefaultMarshalers
 				il.EmitGetProperty( _nullableTHasValueProperty );
 				il.EmitBrtrue_S( endIf );
 				il.EmitAnyLdarg( 0 );
-				il.EmitAnyCall( NullableMarshaler.PackerPackNull );
+				il.EmitAnyCall( NullableMessagePackSerializer.PackerPackNull );
 				il.EmitPop();
 				il.EmitBr_S( endMethod );
 
@@ -133,13 +136,13 @@ namespace MsgPack.Serialization.DefaultMarshalers
 				var endIf = il.DefineLabel( "END_IF" );
 				var endMethod = il.DefineLabel( "END_METHOD" );
 				il.EmitAnyLdarg( 0 );
-				il.EmitGetProperty( NullableMarshaler.UnpackerDataProperty );
+				il.EmitGetProperty( NullableMessagePackSerializer.UnpackerDataProperty );
 				il.EmitAnyStloc( mayBeNullData );
 				il.EmitAnyLdloca( mayBeNullData );
-				il.EmitGetProperty( NullableMarshaler.Nullable_MessagePackObject_ValueProperty );
+				il.EmitGetProperty( NullableMessagePackSerializer.Nullable_MessagePackObject_ValueProperty );
 				il.EmitAnyStloc( data );
 				il.EmitAnyLdloca( data );
-				il.EmitGetProperty( NullableMarshaler.MessagePackObject_IsNilProperty );
+				il.EmitGetProperty( NullableMessagePackSerializer.MessagePackObject_IsNilProperty );
 				il.EmitBrfalse_S( endIf );
 				il.EmitAnyLdloca( result );
 				il.EmitInitobj( result.LocalType );
@@ -162,12 +165,12 @@ namespace MsgPack.Serialization.DefaultMarshalers
 			}
 		}
 
-		protected sealed override void MarshalToCore( Packer packer, T value )
+		protected sealed override void PackToCore( Packer packer, T value )
 		{
 			this._packing( packer, value );
 		}
 
-		protected sealed override T UnmarshalFromCore( Unpacker unpacker )
+		protected sealed override T UnpackFromCore( Unpacker unpacker )
 		{
 			return this._unpacking( unpacker );
 		}

@@ -23,18 +23,19 @@ using System.Text;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class System_Text_StringBuilderMessageSerializer : MessagePackSerializer<StringBuilder>
+	internal sealed class System_Text_StringBuilderMessagePackSerializer : MessagePackSerializer<StringBuilder>
 	{
-		public System_Text_StringBuilderMessageSerializer() { }
-
-		protected sealed override void PackToCore( Packer packer, StringBuilder objectTree )
+		protected sealed override void PackToCore( Packer packer, StringBuilder value )
 		{
-			packer.PackString( objectTree.ToString() );
+			// NOTE: More efficient?
+			packer.Pack( value.ToString() );
 		}
 
 		protected sealed override StringBuilder UnpackFromCore( Unpacker unpacker )
 		{
-			return new StringBuilder( unpacker.Data.Value.AsString() );
+			// NOTE: More efficient?
+			var result = unpacker.Data.Value;
+			return result.IsNil ? null : new StringBuilder( result.AsString() );
 		}
 	}
 }

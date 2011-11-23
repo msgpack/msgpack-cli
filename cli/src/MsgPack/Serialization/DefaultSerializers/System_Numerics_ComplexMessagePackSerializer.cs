@@ -19,39 +19,30 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections;
+using System.Numerics;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class System_Collections_DictionaryEntryMessageSerializer : MessagePackSerializer<DictionaryEntry>
+	internal sealed class System_Numerics_ComplexMessagePackSerializer : MessagePackSerializer<Complex>
 	{
-		public System_Collections_DictionaryEntryMessageSerializer() { }
+		public System_Numerics_ComplexMessagePackSerializer() { }
 
-		protected sealed override void PackToCore( Packer packer, DictionaryEntry objectTree )
+		protected sealed override void PackToCore( Packer packer, Complex objectTree )
 		{
 			packer.PackMapHeader( 2 );
-			packer.PackString( "Key" );
-			packer.Pack( EnsureMessagePackObject( objectTree.Key ) );
-			packer.PackString( "Value" );
-			packer.Pack( EnsureMessagePackObject( objectTree.Value ) );
+			packer.PackString( "Real" );
+			packer.Pack( objectTree.Real );
+			packer.PackString( "Imaginary" );
+			packer.Pack( objectTree.Imaginary );
 		}
 
-		private MessagePackObject EnsureMessagePackObject( object obj )
+		protected sealed override Complex UnpackFromCore( Unpacker unpacker )
 		{
-			if ( !( obj is MessagePackObject ) )
-			{
-				throw new NotSupportedException( "Only MessagePackObject Key/Value is supported." );
-			}
-
-			return ( MessagePackObject )obj;
-		}
-
-		protected sealed override DictionaryEntry UnpackFromCore( Unpacker unpacker )
-		{
-			object key = null;
-			object value = null;
-			bool isKeyFound = false;
-			bool isValueFound = false;
+			double real = 0;
+			double imaginary = 0;
+			bool isRealFound = false;
+			bool isImaginaryFound = false;
 
 			while ( unpacker.Read() )
 			{
@@ -62,42 +53,42 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 				switch ( unpacker.Data.Value.AsString() )
 				{
-					case "Key":
+					case "Real":
 					{
 						if ( !unpacker.Read() )
 						{
 							throw SerializationExceptions.NewUnexpectedEndOfStream();
 						}
 
-						isKeyFound = true;
-						key = unpacker.Data.Value;
+						isRealFound = true;
+						real = unpacker.Data.Value.AsDouble();
 						break;
 					}
-					case "Value":
+					case "Imaginary":
 					{
 						if ( !unpacker.Read() )
 						{
 							throw SerializationExceptions.NewUnexpectedEndOfStream();
 						}
 
-						isValueFound = true;
-						value = unpacker.Data.Value;
+						isImaginaryFound = true;
+						imaginary = unpacker.Data.Value.AsDouble();
 						break;
 					}
 				}
 			}
 
-			if ( !isKeyFound )
+			if ( !isRealFound )
 			{
-				throw SerializationExceptions.NewMissingProperty( "Key" );
+				throw SerializationExceptions.NewMissingProperty( "Real" );
 			}
 
-			if ( !isValueFound )
+			if ( !isImaginaryFound )
 			{
-				throw SerializationExceptions.NewMissingProperty( "Value" );
+				throw SerializationExceptions.NewMissingProperty( "Imaginary" );
 			}
 
-			return new DictionaryEntry( key, value );
+			return new Complex( real, imaginary );
 		}
 	}
 }

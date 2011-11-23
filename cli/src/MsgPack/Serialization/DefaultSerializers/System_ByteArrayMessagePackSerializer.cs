@@ -20,19 +20,19 @@
 
 using System;
 
-namespace MsgPack.Serialization.DefaultMarshalers
+namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class System_StringMessageMarshaler : MessageMarshaler<string>
+	internal sealed class System_ByteArrayMessagePackSerializer : MessagePackSerializer<byte[]>
 	{
-		protected sealed override void MarshalToCore( Packer packer, string value )
+		protected sealed override void PackToCore( Packer packer, byte[] value )
 		{
-			packer.PackString( value );
+			packer.PackRaw( value );
 		}
 
-		protected sealed override string UnmarshalFromCore( Unpacker unpacker )
+		protected sealed override byte[] UnpackFromCore( Unpacker unpacker )
 		{
 			var result = unpacker.Data.Value;
-			return result.IsNil ? null : result.AsString();
+			return result.IsNil ? null : result.AsBinary();
 		}
 	}
 }

@@ -28,7 +28,7 @@ using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class System_Collections_Specialized_NameValueCollectionMessageSerializer : MessagePackSerializer<NameValueCollection>
+	internal sealed class System_Collections_Specialized_NameValueCollectionMessagePackSerializer : MessagePackSerializer<NameValueCollection>
 	{
 		protected sealed override void PackToCore( Packer packer, NameValueCollection objectTree )
 		{

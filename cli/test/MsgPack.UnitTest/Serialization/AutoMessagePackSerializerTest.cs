@@ -36,6 +36,14 @@ namespace MsgPack.Serialization
 	public partial class AutoMessagePackSerializerTest
 	{
 		private static bool _traceOn = false;
+		private static bool _reuseContext = false;
+
+		private static readonly SerializationContext _defaultContext = new SerializationContext();
+
+		private static SerializationContext GetSerializationContext()
+		{
+			return _reuseContext ? _defaultContext : new SerializationContext();
+		}
 
 		[SetUp]
 		public void SetUp()
@@ -165,7 +173,7 @@ namespace MsgPack.Serialization
 			target.Add( "null", null ); // This value will not be packed.
 			target.Add( "Empty", String.Empty );
 			target.Add( "2", "2" );
-			var serializer = new AutoMessagePackSerializer<NameValueCollection>();
+			var serializer = new AutoMessagePackSerializer<NameValueCollection>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( target, stream );
@@ -187,7 +195,7 @@ namespace MsgPack.Serialization
 		{
 			var target = new NameValueCollection();
 			target.Add( null, "null" );
-			var serializer = new AutoMessagePackSerializer<NameValueCollection>();
+			var serializer = new AutoMessagePackSerializer<NameValueCollection>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( target, stream );
@@ -197,7 +205,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestByteArrayContent()
 		{
-			var serializer = new AutoMessagePackSerializer<byte[]>();
+			var serializer = new AutoMessagePackSerializer<byte[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( new byte[] { 1, 2, 3, 4 }, stream );
@@ -209,7 +217,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestCharArrayContent()
 		{
-			var serializer = new AutoMessagePackSerializer<char[]>();
+			var serializer = new AutoMessagePackSerializer<char[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( new char[] { 'a', 'b', 'c', 'd' }, stream );
@@ -221,7 +229,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyBytes()
 		{
-			var serializer = new AutoMessagePackSerializer<byte[]>();
+			var serializer = new AutoMessagePackSerializer<byte[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( new byte[ 0 ], stream );
@@ -234,7 +242,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyString()
 		{
-			var serializer = new AutoMessagePackSerializer<string>();
+			var serializer = new AutoMessagePackSerializer<string>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( String.Empty, stream );
@@ -247,7 +255,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyIntArray()
 		{
-			var serializer = new AutoMessagePackSerializer<int[]>();
+			var serializer = new AutoMessagePackSerializer<int[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( new int[ 0 ], stream );
@@ -260,7 +268,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyKeyValuePairArray()
 		{
-			var serializer = new AutoMessagePackSerializer<KeyValuePair<string, int>[]>();
+			var serializer = new AutoMessagePackSerializer<KeyValuePair<string, int>[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( new KeyValuePair<string, int>[ 0 ], stream );
@@ -273,7 +281,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyMap()
 		{
-			var serializer = new AutoMessagePackSerializer<Dictionary<string, int>>();
+			var serializer = new AutoMessagePackSerializer<Dictionary<string, int>>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( new Dictionary<string, int>(), stream );
@@ -286,7 +294,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestNullable()
 		{
-			var serializer = new AutoMessagePackSerializer<int?>();
+			var serializer = new AutoMessagePackSerializer<int?>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( 1, stream );
@@ -305,10 +313,10 @@ namespace MsgPack.Serialization
 		private static void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
 			var safeComparer = comparer ?? EqualityComparer<T>.Default.Equals;
-			var target = new AutoMessagePackSerializer<T>();
+			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
-				new AutoMessagePackSerializer<T>().Pack( value, buffer );
+				new AutoMessagePackSerializer<T>( GetSerializationContext() ).Pack( value, buffer );
 				buffer.Position = 0;
 				T intermediate = unpacking( buffer );
 				Assert.That( safeComparer( intermediate, value ), "Expected:{1}{0}Actual :{2}", Environment.NewLine, value, intermediate );
@@ -321,7 +329,7 @@ namespace MsgPack.Serialization
 		private static void TestCoreWithVerify<T>( T value )
 			where T : IVerifiable
 		{
-			var target = new AutoMessagePackSerializer<T>();
+			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( value, buffer );

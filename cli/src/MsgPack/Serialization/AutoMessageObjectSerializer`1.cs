@@ -39,33 +39,22 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Initializes a new instance of the <see cref="AutoMessagePackSerializer&lt;T&gt;"/> class.
 		/// </summary>
-		public AutoMessagePackSerializer()
-			: this( null, null ) { }
-
-		/// <summary>
-		///		Initializes a new instance of the <see cref="AutoMessagePackSerializer&lt;T&gt;"/> class.
-		/// </summary>
-		/// <param name="marshalers">The marshalers.</param>
-		/// <param name="serializers">The serializers.</param>
-		public AutoMessagePackSerializer( MarshalerRepository marshalers, SerializerRepository serializers )
+		public AutoMessagePackSerializer( SerializationContext context )
 		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
 			if ( ( typeof( T ).Assembly == typeof( object ).Assembly || typeof( T ).Assembly == typeof( Enumerable ).Assembly )
 				&& typeof( T ).IsPublic && typeof( T ).Name.StartsWith( "Tuple`" ) )
 			{
 				throw new NotImplementedException( "Tuple is not supported yet." );
 			}
 
-			this._context = new SerializationContext( marshalers ?? new MarshalerRepository( MarshalerRepository.Default ), serializers ?? new SerializerRepository( SerializerRepository.Default ) );
+			this._context = context;
 
-			var marshaler = this._context.Marshalers.Get<T>( this._context.Serializers );
-			if ( marshaler != null )
-			{
-				this._packing = Closures.Pack<T>( marshaler.MarshalTo );
-				this._unpacking = Closures.UnpackWithForwarding( marshaler.UnmarshalFrom );
-				return;
-			}
-
-			var serializer = this._context.Serializers.Get<T>( this._context.Marshalers );
+			var serializer = this._context.Serializers.Get<T>( this._context );
 			if ( serializer != null )
 			{
 				this._packing = Closures.Pack<T>( serializer.PackTo );
@@ -78,7 +67,7 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					var arrayMarshaler = this._context.Marshalers.GetArrayMarshaler<T>( this._context.Serializers );
+					var arrayMarshaler = this._context.Serializers.GetArray<T>( this._context );
 					if ( arrayMarshaler != null )
 					{
 						this._packing = arrayMarshaler.MarshalTo;

@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -19,26 +19,20 @@
 #endregion -- License Terms --
 
 using System;
-using System.Globalization;
-using System.Reflection;
-using System.Runtime.Serialization;
 
-namespace MsgPack.Serialization.DefaultMarshalers
+namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal static class EnumMarshaler
+	internal sealed class System_StringMessagePackSerializer : MessagePackSerializer<string>
 	{
-		public static readonly MethodInfo Unmarshal1Method = typeof( EnumMarshaler ).GetMethod( "Unmarshal" );
-
-		public static T Unmarshal<T>( Unpacker unpacker )
-			where T : struct
+		protected sealed override void PackToCore( Packer packer, string value )
 		{
-			T value;
-			if ( !Enum.TryParse( unpacker.Data.Value.AsString(), out value ) )
-			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.Data.Value.AsString(), typeof( T ) ) );
-			}
+			packer.PackString( value );
+		}
 
-			return value;
+		protected sealed override string UnpackFromCore( Unpacker unpacker )
+		{
+			var result = unpacker.Data.Value;
+			return result.IsNil ? null : result.AsString();
 		}
 	}
 }
