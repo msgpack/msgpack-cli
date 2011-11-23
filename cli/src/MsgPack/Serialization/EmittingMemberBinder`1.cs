@@ -434,9 +434,7 @@ namespace MsgPack.Serialization
 				var value = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject ), "value" );
 
 				Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
-				var subTreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subTreeUnpacker" );
-				Emittion.EmitUnpackerBeginReadSubtree( il, 0, subTreeUnpacker );
-				il.EmitAnyLdloc( subTreeUnpacker );
+				il.EmitAnyLdarg( 0 );
 				il.EmitGetProperty( _unpackerItemsCountProperty );
 				il.EmitConv_Ovf_I4();
 				il.EmitAnyStloc( itemsCount );
@@ -446,10 +444,10 @@ namespace MsgPack.Serialization
 					itemsCount,
 					( il0, i ) =>
 					{
-						Action<TracingILGenerator, LocalBuilder> unpackerReading =
+						Action<TracingILGenerator, int> unpackerReading =
 							( il1, unpacker ) =>
 							{
-								il1.EmitAnyLdloc( unpacker );
+								il1.EmitAnyLdarg( unpacker );
 								il1.EmitAnyCall( _unpackerReadMethod );
 								var endIf = il1.DefineLabel( "END_IF" );
 								il1.EmitBrtrue_S( endIf );
@@ -460,11 +458,11 @@ namespace MsgPack.Serialization
 							};
 
 						// Key
-						Emittion.EmitUnmarshalValue( il0, subTreeUnpacker, 2, key.LocalType, unpackerReading );
+						Emittion.EmitUnmarshalValue( il0, 0, 2, key.LocalType, unpackerReading );
 						il0.EmitAnyStloc( key );
 
 						// Value
-						Emittion.EmitUnmarshalValue( il0, subTreeUnpacker, 2, value.LocalType, unpackerReading );
+						Emittion.EmitUnmarshalValue( il0, 0, 2, value.LocalType, unpackerReading );
 						il0.EmitAnyStloc( value );
 
 						il0.EmitAnyLdloc( collection );
@@ -488,7 +486,6 @@ namespace MsgPack.Serialization
 						}
 					}
 				);
-				Emittion.EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
 				il.EmitRet();
 
 				return dynamicMethod.CreateDelegate<Action<Unpacker, TObject, SerializationContext>>();

@@ -125,15 +125,6 @@ namespace MsgPack.Serialization
 				{
 					T target = ctor();
 
-					// FIXME: Remove?
-					if ( !unpacker.IsMapHeader && !unpacker.IsArrayHeader )
-					{
-						if ( !unpacker.Read() )
-						{
-							throw SerializationExceptions.NewCannotReadCollectionHeader();
-						}
-					}
-
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
 						// TODO: Array for ordered.
@@ -161,7 +152,17 @@ namespace MsgPack.Serialization
 								throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Some map entries are missing. Declared size is {0}, but actual is {1}.", count, i ) );
 							}
 
-							unpackings[ index ]( subTreeUnpacker, target, context );
+							if ( subTreeUnpacker.IsArrayHeader || subTreeUnpacker.IsMapHeader )
+							{
+								using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+								{
+									unpackings[ index ]( subSubTreeUnpacker, target, context );
+								}
+							}
+							else
+							{
+								unpackings[ index ]( subTreeUnpacker, target, context );
+							}
 						}
 					}
 

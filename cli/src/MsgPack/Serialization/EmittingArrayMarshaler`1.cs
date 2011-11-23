@@ -41,6 +41,8 @@ namespace MsgPack.Serialization
 			CreateArrayProcedures( traits, out this._marshaling, out this._unmarshaling );
 		}
 
+#warning TODO: Loop structure should be C#
+
 		protected sealed override void MarshalCore( Packer packer, TCollection collection, SerializationContext context )
 		{
 			this._marshaling( packer, collection, context );
@@ -225,9 +227,7 @@ namespace MsgPack.Serialization
 				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 
 				Emittion.EmitReadUnpackerIfNotInHeader( il, 0 );
-				var subTreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subTreeUnpacker" );
-				Emittion.EmitUnpackerBeginReadSubtree( il, 0, subTreeUnpacker );
-				il.EmitAnyLdloc( subTreeUnpacker );
+				il.EmitAnyLdarg( 0 );
 				il.EmitGetProperty( _unpackerItemsCountProperty );
 				il.EmitConv_Ovf_I4();
 				il.EmitAnyStloc( itemsCount );
@@ -244,12 +244,12 @@ namespace MsgPack.Serialization
 
 						Emittion.EmitUnmarshalValue(
 							il0,
-							subTreeUnpacker,
+							0,
 							2,
 							traits.ElementType,
 							( il1, unpacker ) =>
 							{
-								il1.EmitAnyLdloc( unpacker );
+								il1.EmitAnyLdarg( unpacker );
 								il1.EmitAnyCall( _unpackerReadMethod );
 								var endIf = il1.DefineLabel( "END_IF" );
 								il1.EmitBrtrue_S( endIf );
@@ -273,7 +273,6 @@ namespace MsgPack.Serialization
 						}
 					}
 				);
-				Emittion.EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
 				il.EmitRet();
 
 				return dynamicMethod.CreateDelegate<Action<Unpacker, TCollection, SerializationContext>>();
