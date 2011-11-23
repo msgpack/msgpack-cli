@@ -202,6 +202,72 @@ namespace MsgPack.Serialization
 				Assert.That( Unpacking.UnpackString( stream ), Is.EqualTo( "abcd" ) );
 			}
 		}
+
+		[Test]
+		public void TestEmptyBytes()
+		{
+			var serializer = new AutoMessagePackSerializer<byte[]>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( new byte[ 0 ], stream );
+				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
+			}
+		}
+
+		[Test]
+		public void TestEmptyString()
+		{
+			var serializer = new AutoMessagePackSerializer<string>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( String.Empty, stream );
+				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( String.Empty ) );
+			}
+		}
+
+		[Test]
+		public void TestEmptyIntArray()
+		{
+			var serializer = new AutoMessagePackSerializer<int[]>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( new int[ 0 ], stream );
+				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new int[ 0 ] ) );
+			}
+		}
+
+		[Test]
+		public void TestEmptyKeyValuePairArray()
+		{
+			var serializer = new AutoMessagePackSerializer<KeyValuePair<string,int>[]>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( new KeyValuePair<string, int>[ 0 ], stream );
+				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new KeyValuePair<string, int>[ 0 ] ) );
+			}
+		}
+
+		[Test]
+		public void TestEmptyMap()
+		{
+			var serializer = new AutoMessagePackSerializer<Dictionary<string,int>>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( new Dictionary<string,int>(), stream );
+				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new Dictionary<string,int>() ) );
+			}
+		}
+
 		private static void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
 			var safeComparer = comparer ?? EqualityComparer<T>.Default.Equals;

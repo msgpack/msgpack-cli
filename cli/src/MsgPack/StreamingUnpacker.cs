@@ -78,13 +78,20 @@ namespace MsgPack
 
 		public uint UnpackingItemsCount
 		{
-			get { return this._collectionState.UnpackingItemsCount; }
+			get { return this._wasEmptyCollection ? 0 : this._collectionState.UnpackingItemsCount; }
 		}
+
+		private bool _wasEmptyCollection;
 
 		public bool IsInArrayHeader
 		{
 			get
 			{
+				if ( this._wasEmptyCollection )
+				{
+					return true;
+				}
+
 				if ( this._stage == Stage.UnpackContextCollection )
 				{
 					return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsArray );
@@ -98,6 +105,11 @@ namespace MsgPack
 		{
 			get
 			{
+				if ( this._wasEmptyCollection )
+				{
+					return true;
+				}
+
 				if ( this._stage == Stage.UnpackContextCollection )
 				{
 					return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsMap );
@@ -132,13 +144,14 @@ namespace MsgPack
 
 			if ( unpackingMode == UnpackingMode.SubTree )
 			{
-				if ( !this._hasMoreEntries )
+				if ( !this._hasMoreEntries || this._wasEmptyCollection )
 				{
 					// This subtree ends.
 					return null;
 				}
 			}
 
+			this._wasEmptyCollection = false;
 			var segmentatedSource = source as ISegmentLengthRecognizeable ?? NullSegmentLengthRecognizeable.Instance;
 
 			while ( true )
@@ -339,8 +352,18 @@ namespace MsgPack
 						}
 						else
 						{
-							// Last item
-							return oldCollectionItemOrRoot.Value;
+							if ( ( oldCollectionItemOrRoot.Value.IsArray && oldCollectionItemOrRoot.Value.AsList().Count == 0 )
+								|| ( oldCollectionItemOrRoot.Value.IsMap && oldCollectionItemOrRoot.Value.AsDictionary().Count == 0 ) )
+							{
+								// It was empty collection.
+								this._wasEmptyCollection = true;
+								return 0;
+							}
+							else
+							{
+								// Last item
+								return oldCollectionItemOrRoot.Value;
+							}
 						}
 					}
 				}
