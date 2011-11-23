@@ -252,6 +252,7 @@ namespace MsgPack
 								if ( header.ValueOrLength == 0 )
 								{
 									collectionItemOrRoot = CreateEmptyCollection( header );
+									this._wasEmptyCollection = true;
 								}
 								else
 								{
@@ -356,7 +357,6 @@ namespace MsgPack
 								|| ( oldCollectionItemOrRoot.Value.IsMap && oldCollectionItemOrRoot.Value.AsDictionary().Count == 0 ) )
 							{
 								// It was empty collection.
-								this._wasEmptyCollection = true;
 								return 0;
 							}
 							else
@@ -423,6 +423,7 @@ namespace MsgPack
 				{
 					// empty collection
 					unpacked = CreateEmptyCollection( this._contextValueHeader );
+					this._wasEmptyCollection = true;
 					return true;
 				}
 
@@ -450,6 +451,7 @@ namespace MsgPack
 				{
 					// empty collection
 					unpacked = CreateEmptyCollection( this._contextValueHeader );
+					// Empty raw is not considered as EmptyCollection.
 					return true;
 				}
 
