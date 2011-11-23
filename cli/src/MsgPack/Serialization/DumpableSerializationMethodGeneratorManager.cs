@@ -39,20 +39,30 @@ namespace MsgPack.Serialization
 		private static int _assemblySequence = -1;
 		private int _typeSequence = -1;
 
-		private static DumpableSerializationMethodGeneratorManager _instance = new DumpableSerializationMethodGeneratorManager();
+		private static DumpableSerializationMethodGeneratorManager _canDump = new DumpableSerializationMethodGeneratorManager( true );
 
 		/// <summary>
-		///		Get the singleton instance.
+		///		Get the singleton instance for can-dump mode.
 		/// </summary>
-		public static DumpableSerializationMethodGeneratorManager Instance
+		public static DumpableSerializationMethodGeneratorManager CanDump
 		{
-			get { return DumpableSerializationMethodGeneratorManager._instance; }
+			get { return DumpableSerializationMethodGeneratorManager._canDump; }
 		}
 
+		private static DumpableSerializationMethodGeneratorManager _fast = new DumpableSerializationMethodGeneratorManager( false );
 
-		public static void Refresh()
+		/// <summary>
+		///		Get the singleton instance for fast mode.
+		/// </summary>
+		public static DumpableSerializationMethodGeneratorManager Fast
 		{
-			_instance = new DumpableSerializationMethodGeneratorManager();
+			get { return DumpableSerializationMethodGeneratorManager._fast; }
+		}
+
+		internal static void Refresh()
+		{
+			_canDump = new DumpableSerializationMethodGeneratorManager( true );
+			_fast = new DumpableSerializationMethodGeneratorManager( false );
 		}
 
 		/// <summary>
@@ -71,14 +81,14 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public static void DumpTo()
 		{
-			Instance.DumpToCore();
+			_canDump.DumpToCore();
 		}
 
 		private readonly AssemblyBuilder _assembly;
 		private readonly ModuleBuilder _module;
 		private readonly string _moduleFileName;
 
-		private DumpableSerializationMethodGeneratorManager()
+		private DumpableSerializationMethodGeneratorManager( bool isDebuggable )
 		{
 			var assemblyName = typeof( DumpableSerializationMethodGenerator ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
 			this._assembly =
@@ -86,8 +96,34 @@ namespace MsgPack.Serialization
 					new AssemblyName( assemblyName ),
 					AssemblyBuilderAccess.RunAndSave
 				);
-			this._assembly.SetCustomAttribute( new CustomAttributeBuilder( _debuggableAttributeCtor, _debuggableAttributeCtorArguments ) );
+			if ( isDebuggable )
+			{
+				this._assembly.SetCustomAttribute( new CustomAttributeBuilder( _debuggableAttributeCtor, _debuggableAttributeCtorArguments ) );
+			}
+			else
+			{
+				this._assembly.SetCustomAttribute(
+					new CustomAttributeBuilder(
+						typeof( DebuggableAttribute ).GetConstructor( new[] { typeof( DebuggableAttribute.DebuggingModes ) } ),
+						new object[] { DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints }
+					)
+				);
+			}
 
+			this._assembly.SetCustomAttribute(
+				new CustomAttributeBuilder(
+					typeof( System.Runtime.CompilerServices.CompilationRelaxationsAttribute ).GetConstructor( new[] { typeof( int ) } ),
+					new object[] { 8 }
+				)
+			);
+			this._assembly.SetCustomAttribute(
+				new CustomAttributeBuilder(
+					typeof( System.Security.SecurityRulesAttribute ).GetConstructor( new[] { typeof( System.Security.SecurityRuleSet ) } ),
+					new object[] { System.Security.SecurityRuleSet.Level2 },
+					new[] { typeof( System.Security.SecurityRulesAttribute ).GetProperty( "SkipVerificationInFullTrust" ) },
+					new object[] { true }
+				)
+			);
 			this._moduleFileName = assemblyName + ".dll";
 			this._module = this._assembly.DefineDynamicModule( assemblyName, this._moduleFileName, true );
 		}

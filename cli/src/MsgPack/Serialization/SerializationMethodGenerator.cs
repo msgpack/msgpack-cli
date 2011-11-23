@@ -112,6 +112,9 @@ namespace MsgPack.Serialization
 		protected abstract TDelegate CreateDelegateCore<TDelegate>()
 			where TDelegate : class;
 
+		/// <summary>
+		///		Flushes the trace.
+		/// </summary>
 		public void FlushTrace()
 		{
 			StringWriter writer = this._trace as StringWriter;

@@ -27,14 +27,21 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal enum SerializationMethodGeneratorOption
 	{
+#if !SILVERLIGHT
 		/// <summary>
-		///		The generated method IL can be dumped to the other stream.
+		///		The generated method IL can be dumped to the current directory.
 		/// </summary>
 		CanDump,
+#endif
 
 		/// <summary>
 		///		The entire generated method can be collected by GC when it is no longer used.
 		/// </summary>
-		CanCollect
+		CanCollect,
+
+		/// <summary>
+		///		Prefer performance. This options is default.
+		/// </summary>
+		Fast
 	}
 }

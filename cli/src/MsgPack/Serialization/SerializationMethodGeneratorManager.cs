@@ -22,7 +22,6 @@ using System;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: Goodbye DynamicMethod
 	/// <summary>
 	///		Defines common features and interfaces for <see cref="SerializationMethodGeneratorManager"/>
 	///		which manages individual <see cref="SerializationMethodGenerator"/>.
@@ -54,13 +53,20 @@ namespace MsgPack.Serialization
 		///	</returns>
 		public static SerializationMethodGeneratorManager Get( SerializationMethodGeneratorOption option )
 		{
-			if ( option == SerializationMethodGeneratorOption.CanDump )
+			switch ( option )
 			{
-				return DumpableSerializationMethodGeneratorManager.Instance;
-			}
-			else
-			{
-				return CollectableSerializationMethodGeneratorManager.Instance;
+				case SerializationMethodGeneratorOption.CanDump:
+				{
+					return DumpableSerializationMethodGeneratorManager.CanDump;
+				}
+				case SerializationMethodGeneratorOption.CanCollect:
+				{
+					return CollectableSerializationMethodGeneratorManager.Instance;
+				}
+				default:
+				{
+					return DumpableSerializationMethodGeneratorManager.Fast;
+				}
 			}
 		}
 

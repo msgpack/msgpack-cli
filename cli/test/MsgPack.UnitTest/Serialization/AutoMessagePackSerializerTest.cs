@@ -19,17 +19,15 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using System.IO;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
+using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {
@@ -37,14 +35,21 @@ namespace MsgPack.Serialization
 	[Timeout( 3000 )]
 	public partial class AutoMessagePackSerializerTest
 	{
-		private static bool _traceOn = true;
+		private static bool _traceOn = false;
 
 		[SetUp]
 		public void SetUp()
 		{
 			if ( _traceOn )
 			{
-				DumpableSerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanDump;
+				/*
+				 * Core2 Duo 6300 1.83GHz Windows 7 x64:
+				 * CanCollect : 8.60 sec
+				 * CanDump    : 4.14 sec
+				 * Fast       : 4.15 sec
+				 * 
+				 */
+				DumpableSerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.Fast;
 				//Tracer.Emit.Listeners.Clear();
 				//Tracer.Emit.Switch.Level = SourceLevels.All;
 				//Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
@@ -304,8 +309,6 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			{
 				new AutoMessagePackSerializer<T>().Pack( value, buffer );
-				Console.WriteLine( "Length:{0}", buffer.Length );
-				Console.WriteLine( BitConverter.ToString( buffer.ToArray() ) );
 				buffer.Position = 0;
 				T intermediate = unpacking( buffer );
 				Assert.That( safeComparer( intermediate, value ), "Expected:{1}{0}Actual :{2}", Environment.NewLine, value, intermediate );
