@@ -41,6 +41,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.PackMapHeader( objectTree.Count );
 			foreach ( string key in objectTree )
 			{
+				if ( key == null )
+				{
+					throw new NotSupportedException( "null key is not supported." );
+				}
+
 				var values = objectTree.GetValues( key );
 				if ( values == null )
 				{

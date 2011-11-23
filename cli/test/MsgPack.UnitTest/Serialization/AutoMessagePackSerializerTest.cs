@@ -147,13 +147,11 @@ namespace MsgPack.Serialization
 		{
 			TestCore( DayOfWeek.Sunday, stream => ( DayOfWeek )Enum.Parse( typeof( DayOfWeek ), Unpacking.UnpackString( stream ) ), ( x, y ) => x == y );
 		}
-		
+
 		[Test]
 		public void TestNameValueCollection()
 		{
 			var target = new NameValueCollection();
-			target.Add( null, "null-1" );
-			target.Add( null, "null-2" );
 			target.Add( String.Empty, "Empty-1" );
 			target.Add( String.Empty, "Empty-2" );
 			target.Add( "1", "1-1" );
@@ -168,7 +166,6 @@ namespace MsgPack.Serialization
 				serializer.Pack( target, stream );
 				stream.Position = 0;
 				NameValueCollection result = serializer.Unpack( stream );
-				Assert.That( result.GetValues( null ), Is.EquivalentTo( new[] { "null-1", "null-2" } ) );
 				Assert.That( result.GetValues( String.Empty ), Is.EquivalentTo( new[] { "Empty-1", "Empty-2" } ) );
 				Assert.That( result.GetValues( "1" ), Is.EquivalentTo( new[] { "1-1", "1-2", "1-3" } ) );
 				Assert.That( result.GetValues( "null" ), Is.Null );
@@ -176,6 +173,19 @@ namespace MsgPack.Serialization
 				Assert.That( result.GetValues( "2" ), Is.EquivalentTo( new string[] { "2" } ) );
 				// null only value is not packed.
 				Assert.That( result.Count, Is.EqualTo( target.Count - 1 ) );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestNameValueCollection_NullKey()
+		{
+			var target = new NameValueCollection();
+			target.Add( null, "null" );
+			var serializer = new AutoMessagePackSerializer<NameValueCollection>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( target, stream );
 			}
 		}
 
