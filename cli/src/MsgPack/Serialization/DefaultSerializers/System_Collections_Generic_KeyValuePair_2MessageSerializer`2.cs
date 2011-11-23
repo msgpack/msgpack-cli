@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -50,39 +51,57 @@ namespace MsgPack.Serialization.DefaultSerializers
 			TValue value = default( TValue );
 			bool isKeyFound = false;
 			bool isValueFound = false;
-			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+
+			while ( unpacker.Read() )
 			{
-				while ( subTreeUnpacker.Read() )
+				if ( !unpacker.Data.HasValue )
 				{
-					if ( !subTreeUnpacker.Data.HasValue )
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+
+				switch ( unpacker.Data.Value.AsString() )
+				{
+					case "Key":
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						isKeyFound = true;
+						if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+						{
+							using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+							{
+								key = this._context.UnmarshalFrom<TKey>( subTreeUnpacker );
+							}
+						}
+						else
+						{
+							key = this._context.UnmarshalFrom<TKey>( unpacker );
+						}
+						break;
 					}
-
-					switch ( subTreeUnpacker.Data.Value.AsString() )
+					case "Value":
 					{
-						case "Key":
+						if ( !unpacker.Read() )
 						{
-							if ( !subTreeUnpacker.Read() )
-							{
-								throw SerializationExceptions.NewUnexpectedEndOfStream();
-							}
-
-							isKeyFound = true;
-							key = this._context.UnmarshalFrom<TKey>( subTreeUnpacker );
-							break;
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
 						}
-						case "Value":
+
+						isValueFound = true;
+						if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
 						{
-							if ( !subTreeUnpacker.Read() )
+							using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 							{
-								throw SerializationExceptions.NewUnexpectedEndOfStream();
+								value = this._context.UnmarshalFrom<TValue>( subTreeUnpacker );
 							}
-
-							isValueFound = true;
-							value = this._context.UnmarshalFrom<TValue>( subTreeUnpacker );
-							break;
 						}
+						else
+						{
+							value = this._context.UnmarshalFrom<TValue>( unpacker );
+						}
+						break;
 					}
 				}
 			}

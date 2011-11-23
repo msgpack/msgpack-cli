@@ -20,6 +20,7 @@
 
 using System;
 using System.Numerics;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -42,39 +43,37 @@ namespace MsgPack.Serialization.DefaultSerializers
 			double imaginary = 0;
 			bool isRealFound = false;
 			bool isImaginaryFound = false;
-			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+
+			while ( unpacker.Read() )
 			{
-				while ( subTreeUnpacker.Read() )
+				if ( !unpacker.Data.HasValue )
 				{
-					if ( !subTreeUnpacker.Data.HasValue )
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+
+				switch ( unpacker.Data.Value.AsString() )
+				{
+					case "Real":
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						isRealFound = true;
+						real = unpacker.Data.Value.AsDouble();
+						break;
 					}
-
-					switch ( subTreeUnpacker.Data.Value.AsString() )
+					case "Imaginary":
 					{
-						case "Real":
+						if ( !unpacker.Read() )
 						{
-							if ( !subTreeUnpacker.Read() )
-							{
-								throw SerializationExceptions.NewUnexpectedEndOfStream();
-							}
-
-							isRealFound = true;
-							real = subTreeUnpacker.Data.Value.AsDouble();
-							break;
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
 						}
-						case "Imaginary":
-						{
-							if ( !subTreeUnpacker.Read() )
-							{
-								throw SerializationExceptions.NewUnexpectedEndOfStream();
-							}
 
-							isImaginaryFound = true;
-							imaginary = subTreeUnpacker.Data.Value.AsDouble();
-							break;
-						}
+						isImaginaryFound = true;
+						imaginary = unpacker.Data.Value.AsDouble();
+						break;
 					}
 				}
 			}

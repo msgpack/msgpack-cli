@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -37,22 +38,19 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected sealed override Version UnpackFromCore( Unpacker unpacker )
 		{
-			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+			long length = unpacker.Data.Value.AsInt64();
+			int[] array = new int[ 4 ];
+			for ( int i = 0; i < length && i < 4; i++ )
 			{
-				long length = subTreeUnpacker.Data.Value.AsInt64();
-				int[] array = new int[ 4 ];
-				for ( int i = 0; i < length && i < 4; i++ )
+				if ( !unpacker.Read() )
 				{
-					if ( !subTreeUnpacker.Read() )
-					{
-						throw SerializationExceptions.NewMissingItem( i );
-					}
-
-					array[ i ] = subTreeUnpacker.Data.Value.AsInt32();
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
-				return new Version( array[ 0 ], array[ 1 ], array[ 2 ], array[ 3 ] );
+				array[ i ] = unpacker.Data.Value.AsInt32();
 			}
+
+			return new Version( array[ 0 ], array[ 1 ], array[ 2 ], array[ 3 ] );
 		}
 	}
 }

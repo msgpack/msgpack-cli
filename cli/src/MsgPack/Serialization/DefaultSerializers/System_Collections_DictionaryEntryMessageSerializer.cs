@@ -52,39 +52,37 @@ namespace MsgPack.Serialization.DefaultSerializers
 			object value = null;
 			bool isKeyFound = false;
 			bool isValueFound = false;
-			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
+
+			while ( unpacker.Read() )
 			{
-				while ( subTreeUnpacker.Read() )
+				if ( !unpacker.Data.HasValue )
 				{
-					if ( !subTreeUnpacker.Data.HasValue )
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+
+				switch ( unpacker.Data.Value.AsString() )
+				{
+					case "Key":
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						isKeyFound = true;
+						key = unpacker.Data.Value;
+						break;
 					}
-
-					switch ( subTreeUnpacker.Data.Value.AsString() )
+					case "Value":
 					{
-						case "Key":
+						if ( !unpacker.Read() )
 						{
-							if ( !subTreeUnpacker.Read() )
-							{
-								throw SerializationExceptions.NewUnexpectedEndOfStream();
-							}
-
-							isKeyFound = true;
-							key = subTreeUnpacker.Data.Value;
-							break;
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
 						}
-						case "Value":
-						{
-							if ( !subTreeUnpacker.Read() )
-							{
-								throw SerializationExceptions.NewUnexpectedEndOfStream();
-							}
 
-							isValueFound = true;
-							value = subTreeUnpacker.Data.Value;
-							break;
-						}
+						isValueFound = true;
+						value = unpacker.Data.Value;
+						break;
 					}
 				}
 			}
