@@ -364,7 +364,7 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( "StringValue" );
 		}
-		
+
 		[Test]
 		public void TestStringFieldArray()
 		{
