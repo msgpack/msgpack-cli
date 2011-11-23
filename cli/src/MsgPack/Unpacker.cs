@@ -155,21 +155,16 @@ namespace MsgPack
 				throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
 			}
 
-			this._isSubtreeReading = true;
-			return this.ReadSubtreeCore();
+			var subTreeReader = this.ReadSubtreeCore();
+			this._isSubtreeReading = !Object.ReferenceEquals( subTreeReader, this );
+			return subTreeReader;
 		}
 
 		protected abstract Unpacker ReadSubtreeCore();
 
 		protected internal void EndReadSubtree()
 		{
-			if ( !this._isSubtreeReading)
-			{
-				throw new InvalidOperationException( "This unpacker is not in 'Subtree' mode." );
-			}
-
 			this._isSubtreeReading = false;
-			//this.Read();
 		}
 
 		/// <summary>

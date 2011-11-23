@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Diagnostics;
 
 namespace MsgPack
 {
@@ -94,6 +95,11 @@ namespace MsgPack
 
 		protected sealed override Unpacker ReadSubtreeCore()
 		{
+			if ( this._unpacked == 0 )
+			{
+				return this;
+			}
+
 			return new SubtreeUnpacker( this._root, this );
 		}
 
