@@ -41,9 +41,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		// FIXME: Caching
-		private readonly SerializationContext _context;
-		private readonly Action<Packer, T> _packing;
-		private readonly Func<Unpacker, T> _unpacking;
+		private readonly MessagePackSerializer<T> _underlying;
 
 		public NullableMessagePackSerializer( SerializationContext context )
 		{
@@ -57,17 +55,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw new ArgumentNullException( "context" );
 			}
 
-			this._context = context;
-			var packing = CreatePacking();
-			var unpacking = CreateUnpacking();
-			this._packing = ( packer, value ) => packing( packer, value, this._context );
-			this._unpacking = unpacker => unpacking( unpacker, this._context );
+			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( T ) );
+			CreatePacking( emitter );
+			CreateUnpacking( emitter );
+			this._underlying = emitter.CreateInstance<T>( context );
 		}
 
-		private Action<Packer, T, SerializationContext> CreatePacking()
+		private void CreatePacking( SerializerEmitter emitter )
 		{
-			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Pack", typeof( T ), "Instance", typeof( void ), typeof( Packer ), typeof( T ), typeof( SerializationContext ) );
-			var il = dynamicMethod.GetILGenerator();
+			var il = emitter.GetPackToMethodILGenerator();
 			try
 			{
 				/*
@@ -81,44 +77,40 @@ namespace MsgPack.Serialization.DefaultSerializers
 				 */
 				var endIf = il.DefineLabel( "END_IF" );
 				var endMethod = il.DefineLabel( "END_METHOD" );
-				il.EmitAnyLdarga( 1 );
+				il.EmitAnyLdarga( 2 );
 				il.EmitGetProperty( _nullableTHasValueProperty );
 				il.EmitBrtrue_S( endIf );
-				il.EmitAnyLdarg( 0 );
+				il.EmitAnyLdarg( 1 );
 				il.EmitAnyCall( NullableMessagePackSerializer.PackerPackNull );
 				il.EmitPop();
 				il.EmitBr_S( endMethod );
 
 				il.MarkLabel( endIf );
 				Emittion.EmitMarshalValue(
+					emitter,
 					il,
-					0,
-					2,
+					1,
 					_nullableTValueProperty.PropertyType,
 					il0 =>
 					{
-						il0.EmitAnyLdarga( 1 );
+						il0.EmitAnyLdarga( 2 );
 						il.EmitGetProperty( _nullableTValueProperty );
 					}
 				);
 
 				il.MarkLabel( endMethod );
 				il.EmitRet();
-
-				return dynamicMethod.CreateDelegate<Action<Packer, T, SerializationContext>>();
 			}
 			finally
 			{
 				il.FlushTrace();
-				dynamicMethod.FlushTrace();
+				emitter.FlushTrace();
 			}
 		}
 
-
-		private Func<Unpacker, SerializationContext, T> CreateUnpacking()
+		private void CreateUnpacking( SerializerEmitter emitter )
 		{
-			var dynamicMethod = SerializationMethodGeneratorManager.Get().CreateGenerator( "Unpack", typeof( T ), "Instance", typeof( T ), typeof( Unpacker ), typeof( SerializationContext ) );
-			var il = dynamicMethod.GetILGenerator();
+			var il = emitter.GetUnpackFromMethodILGenerator();
 			try
 			{
 				/*
@@ -135,7 +127,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				var value = il.DeclareLocal( _nullableTValueProperty.PropertyType, "value" );
 				var endIf = il.DefineLabel( "END_IF" );
 				var endMethod = il.DefineLabel( "END_METHOD" );
-				il.EmitAnyLdarg( 0 );
+				il.EmitAnyLdarg( 1 );
 				il.EmitGetProperty( NullableMessagePackSerializer.UnpackerDataProperty );
 				il.EmitAnyStloc( mayBeNullData );
 				il.EmitAnyLdloca( mayBeNullData );
@@ -149,30 +141,29 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.EmitBr_S( endMethod );
 
 				il.MarkLabel( endIf );
-				Emittion.EmitUnmarshalValue( il, 0, 1, value, null );
+				Emittion.EmitUnmarshalValue( emitter, il, 1, value, null );
 				il.EmitAnyLdloc( value );
 				il.EmitAnyCall( _nullableTImplicitOperator );
 				il.EmitAnyStloc( result );
 				il.MarkLabel( endMethod );
 				il.EmitAnyLdloc( result );
 				il.EmitRet();
-				return dynamicMethod.CreateDelegate<Func<Unpacker, SerializationContext, T>>();
 			}
 			finally
 			{
 				il.FlushTrace();
-				dynamicMethod.FlushTrace();
+				emitter.FlushTrace();
 			}
 		}
 
 		protected sealed override void PackToCore( Packer packer, T value )
 		{
-			this._packing( packer, value );
+			this._underlying.PackTo( packer, value );
 		}
 
 		protected sealed override T UnpackFromCore( Unpacker unpacker )
 		{
-			return this._unpacking( unpacker );
+			return this._underlying.UnpackFrom( unpacker );
 		}
 	}
 }

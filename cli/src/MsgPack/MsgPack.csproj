@@ -149,6 +149,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultSerializers.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\FromExpression.ToConstructor.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FromExpression.ToConstructor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\IdentifierUtility.cs" />
     <Compile Include="Serialization\MessagePackArraySerializer.cs" />
     <Compile Include="Serialization\MessagePackArraySerializer`1.cs" />
     <Compile Include="Serialization\AutoMessageObjectSerializer`1.cs" />
@@ -195,6 +201,7 @@
     <Compile Include="Serialization\NLiblet.Reflection\TracingILGenerator.emits.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorOptions.cs" />
+    <Compile Include="Serialization\SerializerEmitter.cs" />
     <Compile Include="Serialization\SerializerRepository.defaults.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -257,6 +264,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DefaultSerializers.cs</LastGenOutput>
     </None>
+    <None Include="Serialization\FromExpression.ToConstructor.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FromExpression.ToConstructor.cs</LastGenOutput>
+    </None>
     <None Include="Serialization\FromExpression.ToMethod.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FromExpression.ToMethod.cs</LastGenOutput>
@@ -291,7 +302,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

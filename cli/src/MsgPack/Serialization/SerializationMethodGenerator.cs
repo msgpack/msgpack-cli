@@ -23,6 +23,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using NLiblet.Reflection;
+using System.Reflection;
+using System.Linq.Expressions;
 
 namespace MsgPack.Serialization
 {
@@ -129,6 +131,21 @@ namespace MsgPack.Serialization
 
 				buffer.Clear();
 			}
+		}
+
+		public FieldInfo RegisterMarshaler( Type targetType )
+		{
+			if ( targetType == null )
+			{
+				throw new ArgumentNullException( "taretType" ); 
+			}
+
+			return this.RegisterMarshalerCore( targetType );
+		}
+
+		protected virtual FieldInfo RegisterMarshalerCore( Type targetType )
+		{
+			return null;
 		}
 	}
 }

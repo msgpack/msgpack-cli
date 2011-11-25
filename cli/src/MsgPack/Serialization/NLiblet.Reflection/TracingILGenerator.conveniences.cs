@@ -72,6 +72,21 @@ namespace NLiblet.Reflection
 			this.EmitAnyCall( property.GetSetMethod( true ) );
 		}
 
+		// TODO: NLiblet
+		public void EmitCallConstructor( ConstructorInfo constructor )
+		{
+			Contract.Assert( constructor != null );
+			Contract.Assert( !constructor.IsStatic );
+
+			this.TraceStart();
+			this.TraceOpCode( OpCodes.Call );
+			this.TraceWrite( " " );
+			this.TraceOperand( constructor );
+			this.TraceWriteLine();
+
+			this._underlying.Emit( OpCodes.Call, constructor );
+		}
+
 		private static readonly PropertyInfo _cultureInfo_CurrentCulture = typeof( CultureInfo ).GetProperty( "CurrentCulture" );
 		private static readonly PropertyInfo _cultureInfo_InvariantCulture = typeof( CultureInfo ).GetProperty( "InvariantCulture" );
 
@@ -272,9 +287,10 @@ namespace NLiblet.Reflection
 				}
 				default:
 				{
-					if ( argumentIndex <= Byte.MaxValue )
+					// TODO:NLiblet
+					if ( SByte.MinValue <= argumentIndex && argumentIndex <= SByte.MaxValue )
 					{
-						this.EmitLdarg_S( unchecked( ( byte )argumentIndex ) );
+						this.EmitLdarg_S( unchecked( ( byte )( sbyte )argumentIndex ) );
 					}
 					else
 					{
@@ -289,9 +305,9 @@ namespace NLiblet.Reflection
 		public void EmitAnyLdarga( int argumentIndex )
 		{
 			Contract.Assert( 0 <= argumentIndex && argumentIndex <= UInt16.MaxValue );
-			if ( argumentIndex < Byte.MaxValue )
+			if ( SByte.MinValue <= argumentIndex && argumentIndex <= SByte.MaxValue )
 			{
-				this.EmitLdarga_S( unchecked( ( byte )argumentIndex ) );
+				this.EmitLdarga_S( unchecked( ( byte )( sbyte )argumentIndex ) );
 			}
 			else
 			{
@@ -334,9 +350,10 @@ namespace NLiblet.Reflection
 				}
 				default:
 				{
-					if ( localIndex <= Byte.MaxValue )
+					// TODO:NLiblet
+					if ( SByte.MinValue <= localIndex && localIndex <= SByte.MaxValue )
 					{
-						this.EmitLdloc_S( unchecked( ( byte )localIndex ) );
+						this.EmitLdloc_S( unchecked( ( byte )( sbyte )localIndex ) );
 					}
 					else
 					{
@@ -359,9 +376,10 @@ namespace NLiblet.Reflection
 		{
 			Contract.Assert( 0 <= localIndex && localIndex <= UInt16.MaxValue );
 
-			if ( localIndex <= Byte.MaxValue )
+			// TODO:NLiblet
+			if ( SByte.MinValue <= localIndex && localIndex <= SByte.MaxValue )
 			{
-				this.EmitLdloca_S( ( byte )localIndex );
+				this.EmitLdloca_S( ( byte )( sbyte )localIndex );
 			}
 			else
 			{
@@ -374,6 +392,72 @@ namespace NLiblet.Reflection
 		{
 			Contract.Assert( local != null );
 			this.EmitAnyLdloca( local.LocalIndex );
+		}
+
+		// TODO: NLiblet
+		public void EmitAnyLdc_I4( int value )
+		{
+			switch ( value )
+			{
+				case 0:
+				{
+					this.EmitLdc_I4_0();
+					break;
+				}
+				case 1:
+				{
+					this.EmitLdc_I4_1();
+					break;
+				}
+				case 2:
+				{
+					this.EmitLdc_I4_2();
+					break;
+				}
+				case 3:
+				{
+					this.EmitLdc_I4_3();
+					break;
+				}
+				case 4:
+				{
+					this.EmitLdc_I4_4();
+					break;
+				}
+				case 5:
+				{
+					this.EmitLdc_I4_5();
+					break;
+				}
+				case 6:
+				{
+					this.EmitLdc_I4_6();
+					break;
+				}
+				case 7:
+				{
+					this.EmitLdc_I4_7();
+					break;
+				}
+				case -1:
+				{
+					this.EmitLdc_I4_M1();
+					break;
+				}
+				default:
+				{
+					if ( SByte.MinValue <= value && value <= SByte.MaxValue )
+					{
+						this.EmitLdc_I4_S( unchecked( ( byte )( sbyte )value ) );
+					}
+					else
+					{
+						this.EmitLdc_I4( value );
+					}
+
+					break;
+				}
+			}
 		}
 
 		/// <summary>
@@ -412,9 +496,10 @@ namespace NLiblet.Reflection
 				}
 				default:
 				{
-					if ( localIndex <= Byte.MaxValue )
+					// TODO:NLiblet
+					if ( SByte.MinValue <= localIndex && localIndex <= SByte.MaxValue )
 					{
-						this.EmitStloc_S( unchecked( ( byte )localIndex ) );
+						this.EmitStloc_S( unchecked( ( byte )( sbyte )localIndex ) );
 					}
 					else
 					{
@@ -424,7 +509,7 @@ namespace NLiblet.Reflection
 				}
 			}
 		}
-		
+
 		// TODO: NLiblet
 		public void EmitAnyStloc( LocalBuilder local )
 		{

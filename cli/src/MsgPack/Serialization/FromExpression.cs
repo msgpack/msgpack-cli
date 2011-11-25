@@ -25,20 +25,18 @@ using System.Reflection;
 
 namespace MsgPack.Serialization
 {
+	// TODO: NLiblet
 	internal static partial class FromExpression
 	{
-		// TODO: NLiblet
 		public static PropertyInfo ToProperty<TSource, T>( Expression<Func<TSource, T>> source )
 		{
 			return ToPropertyCore( source );
 		}
 
-		// TODO: NLiblet
 		public static PropertyInfo ToProperty<T>( Expression<Func<T>> source )
 		{
 			return ToPropertyCore( source );
 		}
-
 
 		private static PropertyInfo ToPropertyCore<T>( Expression<T> source )
 		{
@@ -62,19 +60,6 @@ namespace MsgPack.Serialization
 			return property;
 		}
 
-		// TODO: NLiblet
-		private static MethodInfo ToInstanceMethodCore<T>( Expression<T> source )
-		{
-			return ToMethodCore( source );
-		}
-
-
-		// TODO: NLiblet
-		private static MethodInfo ToStaticMethodCore<T>( Expression<T> source )
-		{
-			return ToMethodCore( source );
-		}
-
 		private static MethodInfo ToMethodCore<T>( Expression<T> source )
 		{
 			if ( source == null )
@@ -91,6 +76,54 @@ namespace MsgPack.Serialization
 			return methodCallExpression.Method;
 		}
 
+		private static ConstructorInfo ToConstructorCore<T>( Expression<T> source )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			var newObjectExpression = source.Body as NewExpression;
+			if ( newObjectExpression == null )
+			{
+				ThrowNotValidExpressionTypeException( source );
+			}
+
+			return newObjectExpression.Constructor;
+		}
+
+		public static MethodInfo ToOperator<T, TResult>( Expression<Func<T, TResult>> source )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			var unaryExpression = source.Body as UnaryExpression;
+			if ( unaryExpression == null )
+			{
+				ThrowNotValidExpressionTypeException( source );
+			}
+
+			return unaryExpression.Method;
+		}
+
+		public static MethodInfo ToOperator<T1, T2, TResult>( Expression<Func<T1, T2, TResult>> source )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			var binaryExpression = source.Body as BinaryExpression;
+			if ( binaryExpression == null )
+			{
+				ThrowNotValidExpressionTypeException( source );
+			}
+
+			return binaryExpression.Method;
+		}
+		
 		private static void ThrowNotValidExpressionTypeException( Expression source )
 		{
 			throw new NotSupportedException(

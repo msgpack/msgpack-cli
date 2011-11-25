@@ -162,5 +162,53 @@ namespace MsgPack.Serialization
 
 			throw SerializationExceptions.NewTypeCannotDeserialize( typeof( TCollection ) );
 		}
+
+		public MessagePackSerializer<T> Get<T>()
+		{
+			var serializer = this._serializers.Get<T>( this );
+			if ( serializer == null )
+			{
+				// FIXME: Unify
+				var arrayMarshaler = this._serializers.GetArray<T>( this );
+				if ( arrayMarshaler != null )
+				{
+					return new ShimArraySerializer<T>( arrayMarshaler, this );
+				}
+
+				// TODO: Configurable
+				serializer = new AutoMessagePackSerializer<T>( this );
+				if ( !this._serializers.Register<T>( serializer ) )
+				{
+					serializer = this._serializers.Get<T>( this );
+				}
+			}
+
+			return serializer;
+		}
+	}
+
+	[Obsolete]
+	internal sealed class ShimArraySerializer<T> : MessagePackSerializer<T>
+	{
+		private readonly MessagePackArraySerializer<T> _underying;
+		private readonly SerializationContext _context;
+
+		public ShimArraySerializer( MessagePackArraySerializer<T> arrayMarshaler, SerializationContext serializationContext )
+		{
+			this._underying = arrayMarshaler;
+			this._context = serializationContext;
+		}
+
+		protected override void PackToCore( Packer packer, T objectTree )
+		{
+			this._underying.MarshalTo( packer, objectTree, this._context );
+		}
+
+		protected override T UnpackFromCore( Unpacker unpacker )
+		{
+			T collection = typeof( T ).IsArray ? ( T )( object )Array.CreateInstance( typeof( T ).GetElementType(), unpacker.Data.Value.AsInt32() ) : Activator.CreateInstance<T>();
+			this._underying.UnmarshalTo( unpacker, collection, this._context );
+			return collection;
+		}
 	}
 }

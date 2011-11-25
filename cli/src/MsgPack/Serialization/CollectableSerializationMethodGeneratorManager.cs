@@ -62,7 +62,7 @@ namespace MsgPack.Serialization
 
 			public CollectableSerializationMethodGenerator( string operation, Type targetType, string targetMemberName, Type returnType, Type[] parameterTypes )
 			{
-				this._dynamicMethod = new DynamicMethod( Emittion.BuildMethodName( operation, targetType, targetMemberName ), returnType, parameterTypes.Length == 0 ? null : parameterTypes );
+				this._dynamicMethod = new DynamicMethod( IdentifierUtility.BuildMethodName( operation, targetType, targetMemberName ), returnType, parameterTypes.Length == 0 ? null : parameterTypes );
 			}
 
 			public sealed override TracingILGenerator GetILGenerator()

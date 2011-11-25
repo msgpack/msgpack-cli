@@ -169,6 +169,8 @@ namespace NLiblet.Reflection
 			get { return this._isEnded; }
 		}
 
+		// TODO: NLiblet
+		private readonly bool _isDebuggable;
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="TracingILGenerator"/> class.
@@ -176,7 +178,7 @@ namespace NLiblet.Reflection
 		/// <param name="methodBuilder">The method builder.</param>
 		/// <param name="traceWriter">The trace writer.</param>
 		public TracingILGenerator( MethodBuilder methodBuilder, TextWriter traceWriter )
-			: this( methodBuilder != null ? methodBuilder.GetILGenerator() : null, false, traceWriter )
+			: this( methodBuilder != null ? methodBuilder.GetILGenerator() : null, false, traceWriter, false )
 		{
 			Contract.Assert( methodBuilder != null );
 		}
@@ -187,12 +189,25 @@ namespace NLiblet.Reflection
 		/// <param name="dynamicMethod">The dynamic method.</param>
 		/// <param name="traceWriter">The trace writer.</param>
 		public TracingILGenerator( DynamicMethod dynamicMethod, TextWriter traceWriter )
-			: this( dynamicMethod != null ? dynamicMethod.GetILGenerator() : null, true, traceWriter )
+			: this( dynamicMethod != null ? dynamicMethod.GetILGenerator() : null, true, traceWriter, false )
 		{
 			Contract.Assert( dynamicMethod != null );
 		}
 
-		private TracingILGenerator( ILGenerator underlying, bool isInDynamicMethod, TextWriter traceWriter )
+		// TODO: NLIblet
+		/// <summary>
+		///		Initializes a new instance of the <see cref="TracingILGenerator"/> class.
+		/// </summary>
+		/// <param name="methodBuilder">The method builder.</param>
+		/// <param name="traceWriter">The trace writer.</param>
+		public TracingILGenerator( MethodBuilder methodBuilder, TextWriter traceWriter, bool isDebuggable )
+			: this( methodBuilder != null ? methodBuilder.GetILGenerator() : null, false, traceWriter, isDebuggable )
+		{
+			Contract.Assert( methodBuilder != null );
+		}
+
+		// TODO: NLiblet
+		private TracingILGenerator( ILGenerator underlying, bool isInDynamicMethod, TextWriter traceWriter, bool isDebuggable )
 		{
 			this._underlying = underlying;
 			this._realTrace = traceWriter ?? TextWriter.Null;
@@ -200,6 +215,7 @@ namespace NLiblet.Reflection
 			this._trace = traceWriter != null ? new StringWriter( this._traceBuffer, CultureInfo.InvariantCulture ) : TextWriter.Null;
 			this._isInDynamicMethod = isInDynamicMethod;
 			this._endOfMethod = underlying == null ? default( Label ) : underlying.DefineLabel();
+			this._isDebuggable = isDebuggable;
 		}
 
 		/// <summary>
@@ -306,7 +322,8 @@ namespace NLiblet.Reflection
 		{
 			var result = this._underlying.DeclareLocal( localType );
 			this._localDeclarations.Add( result, name );
-			if ( !this._isInDynamicMethod )
+			// TODO: NLiblet
+			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
 				{
@@ -324,7 +341,8 @@ namespace NLiblet.Reflection
 		{
 			var result = this._underlying.DeclareLocal( localType, pinned );
 			this._localDeclarations.Add( result, name );
-			if ( !this._isInDynamicMethod )
+			// TODO: NLiblet
+			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
 				{
@@ -967,30 +985,34 @@ namespace NLiblet.Reflection
 			WriteType( this._trace, field.FieldType );
 			this._trace.Write( " " );
 
-			var modreqs = field.GetRequiredCustomModifiers();
-			if ( 0 < modreqs.Length )
+			// TODO: NLiblet
+			if ( !( field is FieldBuilder ) )
 			{
-				this._trace.Write( "modreq(" );
-
-				foreach ( var modreq in modreqs )
+				var modreqs = field.GetRequiredCustomModifiers();
+				if ( 0 < modreqs.Length )
 				{
-					WriteType( this._trace, modreq );
+					this._trace.Write( "modreq(" );
+
+					foreach ( var modreq in modreqs )
+					{
+						WriteType( this._trace, modreq );
+					}
+
+					this._trace.Write( ") " );
 				}
 
-				this._trace.Write( ") " );
-			}
-
-			var modopts = field.GetOptionalCustomModifiers();
-			if ( 0 < modopts.Length )
-			{
-				this._trace.Write( "modopt(" );
-
-				foreach ( var modopt in modopts )
+				var modopts = field.GetOptionalCustomModifiers();
+				if ( 0 < modopts.Length )
 				{
-					WriteType( this._trace, modopt );
-				}
+					this._trace.Write( "modopt(" );
 
-				this._trace.Write( ") " );
+					foreach ( var modopt in modopts )
+					{
+						WriteType( this._trace, modopt );
+					}
+
+					this._trace.Write( ") " );
+				}
 			}
 
 			if ( this._isInDynamicMethod || !( field is FieldBuilder ) ) // declaring type of the field should be omitted for same type.

@@ -61,7 +61,8 @@ namespace MsgPack.Serialization
 				}
 				case SerializationMethodGeneratorOption.CanCollect:
 				{
-					return CollectableSerializationMethodGeneratorManager.Instance;
+					//return CollectableSerializationMethodGeneratorManager.Instance;
+					throw new NotSupportedException();
 				}
 				default:
 				{
@@ -114,5 +115,10 @@ namespace MsgPack.Serialization
 		///		The new <see cref="SerializationMethodGenerator"/> instance.
 		/// </returns>
 		protected abstract SerializationMethodGenerator CreateGeneratorCore( string operation, Type targetType, string targetMemberName, Type returnType, params Type[] parameterTypes );
+
+		public virtual SerializerEmitter CreateEmitter( Type targetType )
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

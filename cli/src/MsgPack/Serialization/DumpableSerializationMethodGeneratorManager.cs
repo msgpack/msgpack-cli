@@ -25,9 +25,14 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 using NLiblet.Reflection;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MsgPack.Serialization
 {
+	// FIXME: Delegate based -> Instance Based & Unify to base class
+	// FIXME: Collectable
+	// FIXME: RENAME
 	/// <summary>
 	///		Manages <see cref="SerializationMethodGenerator"/> which generates dumpable serialization methods.
 	/// </summary>
@@ -138,6 +143,12 @@ namespace MsgPack.Serialization
 			this._assembly.Save( this._moduleFileName );
 		}
 
+		public sealed override SerializerEmitter CreateEmitter( Type targetType )
+		{
+			// FIXME: IsDebuggable
+			return new SerializerEmitter( this._module, Interlocked.Increment( ref this._typeSequence ), targetType, false );
+		}
+
 		/// <summary>
 		///		Genereates serialization methods which can be save to file.
 		/// </summary>
@@ -146,10 +157,11 @@ namespace MsgPack.Serialization
 			private MethodInfo _runtimeMethodInfo;
 			private readonly TypeBuilder _typeBuilder;
 			private readonly MethodBuilder _methodBuilder;
+			private readonly Dictionary<RuntimeTypeHandle, FieldBuilder> _marshalers;
 
 			public DumpableSerializationMethodGenerator( ModuleBuilder host, int sequence, string operation, Type targetType, string targetMemberName, Type returnType, Type[] parameterTypes )
 			{
-				string methodName = Emittion.BuildMethodName( operation, targetType, targetMemberName );
+				string methodName = IdentifierUtility.BuildMethodName( operation, targetType, targetMemberName );
 				string typeName = String.Join( Type.Delimiter.ToString(), typeof( DumpableSerializationMethodGenerator ).Namespace, "Generated", methodName + "_Holder" + sequence );
 				Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}::{1}", methodName, typeName );
 				this._typeBuilder =
@@ -166,6 +178,8 @@ namespace MsgPack.Serialization
 						returnType,
 						parameterTypes
 					);
+
+				this._marshalers = new Dictionary<RuntimeTypeHandle, FieldBuilder>();
 			}
 
 			private static TypeBuilder CreateTypeBuilder( ModuleBuilder host, string methodName )
@@ -193,7 +207,6 @@ namespace MsgPack.Serialization
 				{
 					this._runtimeMethodInfo = this._typeBuilder.CreateType().GetMethod( this._methodBuilder.Name );
 				}
-
 
 				return Delegate.CreateDelegate( typeof( TDelegate ), this._runtimeMethodInfo ) as TDelegate;
 			}

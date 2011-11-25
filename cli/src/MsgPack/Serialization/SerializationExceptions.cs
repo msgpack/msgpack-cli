@@ -128,12 +128,17 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
+		///		<see cref="MethodInfo"/> of <see cref="NewMissingProperty"/> method.
+		/// </summary>
+		internal static readonly MethodInfo NewMissingPropertyMethod = FromExpression.ToMethod( ( string name ) => NewMissingProperty( name ) );
+
+		/// <summary>
 		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that required field is not found on the unpacking stream.
 		/// </summary>
 		/// <param name="name">The name of the property.</param>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
-		internal static Exception NewMissingProperty( string name )
+		public static Exception NewMissingProperty( string name )
 		{
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Property '{0}' is missing.", name ) );
 		}

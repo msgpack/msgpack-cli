@@ -35,7 +35,7 @@ namespace MsgPack.Serialization
 	[Timeout( 3000 )]
 	public partial class AutoMessagePackSerializerTest
 	{
-		private static bool _traceOn = false;
+		private static bool _traceOn = true;
 		private static bool _reuseContext = false;
 
 		private static readonly SerializationContext _defaultContext = new SerializationContext();
@@ -50,18 +50,19 @@ namespace MsgPack.Serialization
 		{
 			if ( _traceOn )
 			{
-				/*
-				 * Core2 Duo 6300 1.83GHz Windows 7 x64:
-				 * CanCollect : 8.60 sec
-				 * CanDump    : 4.14 sec
-				 * Fast       : 4.15 sec
-				 * 
-				 */
-				DumpableSerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.Fast;
 				//Tracer.Emit.Listeners.Clear();
 				//Tracer.Emit.Switch.Level = SourceLevels.All;
 				//Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
+
+			/*
+			 * Core2 Duo 6300 1.83GHz Windows 7 x64:
+			 * CanCollect : 8.60 sec
+			 * CanDump    : 4.14 sec
+			 * Fast       : 4.15 sec
+			 * 
+			 */
+			SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanDump;
 		}
 
 		[TearDown]
