@@ -393,6 +393,55 @@ namespace MsgPack.Serialization
 			il.MarkLabel( endIf );
 		}
 
+		public static void EmitUnmarshalCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType, Action<TracingILGenerator, int> unpackerReading )
+		{
+			if ( unpackerReading != null )
+			{
+				unpackerReading( il, unpackerArgumentIndex );
+			}
+
+			/*
+			 * if( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+			 * {
+			 *		
+			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
+			 * }
+			 * else
+			 * {
+			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
+			 * }
+			 */
+
+			var then = il.DefineLabel( "THEN" );
+			var endIf = il.DefineLabel( "END_IF" );
+			var serializerField = emitter.RegisterSerializer( memberType );
+
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitGetProperty( _unpackerIsArrayHeaderProperty );
+			il.EmitBrtrue_S( then );
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitGetProperty( _unpackerIsMapHeaderProperty );
+			il.EmitBrtrue_S( then );
+			// else
+			il.EmitTypeOf( memberType );
+			il.EmitAnyCall( SerializationExceptions.NewTypeCannotDeserializeMethod );
+			il.EmitThrow();
+			// then
+			var subTreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subTreeUnpacker" );
+			il.MarkLabel( then );
+			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subTreeUnpacker );
+			il.EmitLdarg_0();
+			il.EmitLdfld( serializerField );
+			il.EmitAnyLdloc( subTreeUnpacker );
+			il.EmitAnyLdloc( target );
+			Emittion.EmitLoadValue( il, member );
+			var unpackTo = serializerField.FieldType.GetMethod( "UnpackTo", new[] { typeof( Unpacker ), memberType } );
+			Contract.Assert( unpackTo != null, serializerField.FieldType + " does not declare UnpackTo(Unpacker," + memberType + ")" );
+			il.EmitAnyCall( unpackTo );
+			EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
+			il.MarkLabel( endIf );
+		}
+
 		public static void EmitUnpackerBeginReadSubtree( TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder subTreeUnpacker )
 		{
 			il.EmitAnyLdarg( unpackerArgumentIndex );
@@ -457,14 +506,35 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		public static void EmitConstruction( TracingILGenerator il, Type type )
+		{
+			Contract.Assert( il != null );
+			Contract.Assert( type != null );
+
+			if ( type.IsValueType )
+			{
+				return;
+			}
+
+			// TODO: For collection, supports .ctor(IEnumerable<> other)
+
+			var ctor = type.GetConstructor( Type.EmptyTypes );
+			if ( ctor == null )
+			{
+				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( type );
+			}
+
+			il.EmitNewobj( ctor );
+		}
+
 		/// <summary>
 		///		Emit member unpacking boiler plates.
 		/// </summary>
 		/// <param name="emitter"><see cref="SerializerEmitter"/> to register the filed which holds descendant serializers.</param>
 		/// <param name="il"><see cref="TracingILGenerator"/> to emit instructions.</param>
 		/// <param name="unpackerArgumentIndex">Index of unpacker argument. Note that the index of the first argument of instance method is 1, not 0.</param>
-		/// <param name="members">Tuple of member information that to be unpacked. The 1st item is name of the member, the 2nd item is the local to be stored, and the 3rd item is optional 'found' marker local.</param>
-		public static void EmitUnpackMembers( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, params Tuple<string, LocalBuilder, LocalBuilder>[] members )
+		/// <param name="members">Tuple of member information that to be unpacked. The 1st item is metadata of the member, the 2nd the name of the member, the 3rd item is the local to be stored, and the 4th item is optional 'found' marker local.</param>
+		public static void EmitUnpackMembers( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, params Tuple<MemberInfo, string, LocalBuilder, LocalBuilder>[] members )
 		{
 			// TODO: Compare mmember name as Byte[], not string to avoid string decoding (and its allocation).
 			/*
@@ -508,7 +578,7 @@ namespace MsgPack.Serialization
 			{
 				// TODO: binary comparison
 				il.EmitAnyLdloc( memberName );
-				il.EmitLdstr( members[ i ].Item1 );
+				il.EmitLdstr( members[ i ].Item2 );
 				il.EmitAnyCall( Metadata._String.op_Inequality );
 				var endIf0 = il.DefineLabel( "END_IF_0_" + i );
 				il.EmitBrtrue_S( endIf0 );
@@ -519,11 +589,20 @@ namespace MsgPack.Serialization
 				il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
 				il.EmitThrow();
 				il.MarkLabel( endIf1 );
-				Emittion.EmitUnmarshalValue( emitter, il, unpackerArgumentIndex, members[ i ].Item2, null );
-				if ( members[ i ].Item3 != null )
+
+				if ( members[ i ].Item3 == null )
+				{
+					Emittion.EmitUnmarshalCollectionValue( emitter, il, unpackerArgumentIndex, target, members[ i ].Item1, members[ i ].Item1.GetMemberValueType(), null );
+				}
+				else
+				{
+					Emittion.EmitUnmarshalValue( emitter, il, unpackerArgumentIndex, members[ i ].Item3, null );
+				}
+
+				if ( members[ i ].Item4 != null )
 				{
 					il.EmitLdc_I4_1();
-					il.EmitAnyStloc( members[ i ].Item3 );
+					il.EmitAnyStloc( members[ i ].Item4 );
 				}
 
 				il.EmitBr( whileCond );
@@ -534,12 +613,12 @@ namespace MsgPack.Serialization
 
 			for ( int i = 0; i < members.Length; i++ )
 			{
-				if ( members[ i ].Item3 != null )
+				if ( members[ i ].Item4 != null )
 				{
 					var endIf = il.DefineLabel( "END_IF_2_" + i );
-					il.EmitAnyLdloc( members[ i ].Item3 );
+					il.EmitAnyLdloc( members[ i ].Item4 );
 					il.EmitBrtrue_S( endIf );
-					il.EmitLdstr( members[ i ].Item1 );
+					il.EmitLdstr( members[ i ].Item2 );
 					il.EmitAnyCall( SerializationExceptions.NewMissingPropertyMethod );
 					il.EmitThrow();
 					il.MarkLabel( endIf );

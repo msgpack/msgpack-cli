@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace MsgPack.Serialization.Metadata
 {
@@ -34,7 +35,9 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _Unpacker
 	{
 		public static readonly MethodInfo Read = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
+		public static readonly MethodInfo ReadSubtree = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.ReadSubtree() );
 		public static readonly PropertyInfo Data = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.Data );
+		public static readonly PropertyInfo ItemsCount = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.ItemsCount );
 	}
 
 
@@ -50,6 +53,11 @@ namespace MsgPack.Serialization.Metadata
 	{
 		public static readonly PropertyInfo HasValue = FromExpression.ToProperty( ( Nullable<T> nullable ) => nullable.HasValue );
 		public static readonly PropertyInfo Value = FromExpression.ToProperty( ( Nullable<T> nullable ) => nullable.Value );
+	}
+
+	internal static class _IDisposable
+	{
+		public static readonly MethodInfo Dispose = FromExpression.ToMethod( ( IDisposable disposable ) => disposable.Dispose() );
 	}
 
 	internal static class _MessagePackObject
@@ -118,8 +126,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 					emitter,
 					il,
 					1,
-					Tuple.Create( "Key", key, isKeyFound ),
-					Tuple.Create( "Value", value, isValueFound )
+					null,
+					new Tuple<MemberInfo, string, LocalBuilder, LocalBuilder>( Metadata._KeyValuePair<TKey, TValue>.Key, "Key", key, isKeyFound ),
+					new Tuple<MemberInfo, string, LocalBuilder, LocalBuilder>( Metadata._KeyValuePair<TKey, TValue>.Value, "Value", value, isValueFound )
 				);
 
 				var result = il.DeclareLocal( typeof( KeyValuePair<TKey, TValue> ), "result" );

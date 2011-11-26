@@ -95,7 +95,8 @@ namespace MsgPack.Serialization
 		private readonly ConstructorBuilder _constructorBuilder;
 		private readonly TypeBuilder _typeBuilder;
 		private readonly MethodBuilder _packMethodBuilder;
-		private readonly MethodBuilder _unpackMethodBuilder;
+		private readonly MethodBuilder _unpackFromMethodBuilder;
+		private MethodBuilder _unpackToMethodBuilder;
 		private readonly Dictionary<RuntimeTypeHandle, FieldBuilder> _serializers;
 		private readonly bool _isDebuggable;
 
@@ -127,7 +128,7 @@ namespace MsgPack.Serialization
 					new Type[] { typeof( Packer ), targetType }
 				);
 
-			this._unpackMethodBuilder =
+			this._unpackFromMethodBuilder =
 				this._typeBuilder.DefineMethod(
 					"UnpackFromCore",
 					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final,
@@ -137,7 +138,7 @@ namespace MsgPack.Serialization
 				);
 
 			this._typeBuilder.DefineMethodOverride( this._packMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._packMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-			this._typeBuilder.DefineMethodOverride( this._unpackMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._unpackMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+			this._typeBuilder.DefineMethodOverride( this._unpackFromMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._unpackFromMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
 
 			this._serializers = new Dictionary<RuntimeTypeHandle, FieldBuilder>();
 			this._isDebuggable = isDebuggable;
@@ -157,10 +158,34 @@ namespace MsgPack.Serialization
 		{
 			if ( IsTraceEnabled )
 			{
-				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackMethodBuilder );
+				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethodBuilder );
+			}
+			
+			return new TracingILGenerator( this._unpackFromMethodBuilder, this.Trace, this._isDebuggable );
+		}
+
+		public TracingILGenerator GetUnpackToMethodILGenerator()
+		{
+			if ( IsTraceEnabled )
+			{
+				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackToMethodBuilder );
 			}
 
-			return new TracingILGenerator( this._unpackMethodBuilder, this.Trace, this._isDebuggable );
+			if ( this._unpackToMethodBuilder == null )
+			{
+				this._unpackToMethodBuilder =
+					this._typeBuilder.DefineMethod(
+						"UnpackToCore",
+						MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final,
+						CallingConventions.HasThis,
+						null,
+						new Type[] { typeof( Unpacker ), this._unpackFromMethodBuilder.ReturnType }
+					);
+
+				this._typeBuilder.DefineMethodOverride( this._unpackToMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._unpackToMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+			}
+
+			return new TracingILGenerator( this._unpackToMethodBuilder, this.Trace, this._isDebuggable );
 		}
 
 		public ConstructorInfo Create()

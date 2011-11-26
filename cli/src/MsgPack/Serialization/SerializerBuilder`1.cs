@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
@@ -34,6 +35,21 @@ namespace MsgPack.Serialization
 	{
 		// TODO: boolean base -> Exception base
 
+		private readonly SerializationContext _context;
+
+		public SerializationContext Context
+		{
+			get { return this._context; }
+		}
+
+		protected SerializerBuilder() : this( new SerializationContext() ) { }
+
+		protected SerializerBuilder( SerializationContext context )
+		{
+			this._context = context;
+		}
+
+
 		/// <summary>
 		///		Create serializer procedures.
 		/// </summary>
@@ -41,6 +57,7 @@ namespace MsgPack.Serialization
 		/// <param name="packing">Packing procedure.</param>
 		/// <param name="unpacking">Unpacking procedure.</param>
 		/// <returns></returns>
+		[Obsolete]
 		public bool CreateProcedures( SerializationMemberOption option, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking )
 		{
 			var entries =
@@ -60,6 +77,25 @@ namespace MsgPack.Serialization
 			return this.CreateProcedures( entries, out packing, out unpacking );
 		}
 
+		public MessagePackSerializer<TObject> CreateSerializer( SerializationMemberOption option )
+		{
+			var entries =
+				typeof( TObject ).FindMembers(
+					MemberTypes.Field | MemberTypes.Property,
+					BindingFlags.Public | BindingFlags.Instance,
+					GetMemberFilter( option ), null
+				).Select( member => new SerlializingMember( member ) )
+				.OrderBy( member => member.Contract.Order )
+				.ToArray();
+
+			if ( entries.Length == 0 )
+			{
+				throw SerializationExceptions.NewNoSerializableFieldsException( typeof( TObject ) );
+			}
+
+			return this.CreateSerializer( entries );
+		}
+
 		/// <summary>
 		///		Create serializer procedures.
 		/// </summary>
@@ -67,7 +103,13 @@ namespace MsgPack.Serialization
 		/// <param name="packing">Packing procedure.</param>
 		/// <param name="unpacking">Unpacking procedure.</param>
 		/// <returns></returns>
-		protected abstract bool CreateProcedures( SerlializingMember[] entries, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking );
+		[Obsolete]
+		protected virtual bool CreateProcedures( SerlializingMember[] entries, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking )
+		{
+			throw new NotImplementedException();
+		}
+
+		protected abstract MessagePackSerializer<TObject> CreateSerializer( SerlializingMember[] entries );
 
 		private static MemberFilter GetMemberFilter( SerializationMemberOption option )
 		{
@@ -106,10 +148,12 @@ namespace MsgPack.Serialization
 		/// <param name="packing">Packing procedure.</param>
 		/// <param name="unpacking">Unpacking procedure.</param>
 		/// <returns></returns>
+		[Obsolete]
 		protected bool CreateProcedures( FieldInfo field, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
 		{
 			return this.CreateProceduresCore( field, field.FieldType, !field.IsInitOnly, contract, out packing, out unpacking );
 		}
+
 
 		/// <summary>
 		///		Create serialization/deserialization procedures for the property.
@@ -119,11 +163,29 @@ namespace MsgPack.Serialization
 		/// <param name="packing">Packing procedure.</param>
 		/// <param name="unpacking">Unpacking procedure.</param>
 		/// <returns></returns>
+		[Obsolete]
 		protected bool CreateProcedures( PropertyInfo property, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
 		{
 			return this.CreateProceduresCore( property, property.PropertyType, property.CanWrite, contract, out packing, out unpacking );
 		}
 
+		protected ConstructorInfo CreateSerializer( MemberInfo member, DataMemberContract contract )
+		{
+			PropertyInfo property;
+			FieldInfo field;
+			if ( ( property = member as PropertyInfo ) != null )
+			{
+				return this.CreateSerializerCore( property, property.PropertyType, property.CanWrite, contract );
+			}
+			else
+			{
+				field = member as FieldInfo;
+				Contract.Assert( field != null );
+				return this.CreateSerializerCore( field, field.FieldType, !field.IsInitOnly, contract );
+			}
+		}
+
+		[Obsolete]
 		private bool CreateProceduresCore( MemberInfo member, Type memberType, bool canWrite, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
 		{
 			switch ( Type.GetTypeCode( memberType ) )
@@ -176,6 +238,52 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		private ConstructorInfo CreateSerializerCore( MemberInfo member, Type memberType, bool canWrite, DataMemberContract contract )
+		{
+			switch ( Type.GetTypeCode( memberType ) )
+			{
+				case TypeCode.DBNull:
+				case TypeCode.Empty:
+				{
+					Tracer.Emit.TraceEvent( Tracer.EventType.UnsupportedType, Tracer.EventId.UnsupportedType, "Field type '{0}' does not supported.", memberType );
+					return null;
+				}
+			}
+
+			if ( canWrite )
+			{
+				return this.CreateObjectSerializer( member, memberType );
+			}
+
+			if ( memberType.IsValueType )
+			{
+				Tracer.Emit.TraceEvent( Tracer.EventType.ReadOnlyValueTypeMember, Tracer.EventId.ReadOnlyValueTypeMember, "Field {0} is read only and its type '{1}' is value type.", member.Name, member.ReflectedType );
+				return null;
+			}
+
+			var collectionTrait = memberType.GetCollectionTraits();
+			switch ( collectionTrait.CollectionType )
+			{
+				case CollectionKind.NotCollection:
+				{
+					return this.CreateObjectSerializer( member, memberType );
+				}
+				case CollectionKind.Map:
+				{
+					return this.CreateMapSerializer( member, memberType );
+				}
+				case CollectionKind.Array:
+				{
+					return this.CreateArraySerializer( member, memberType );
+				}
+				default:
+				{
+					// error
+					return null;
+				}
+			}
+		}
+
 		/// <summary>
 		///		Create serialization/deserialization procedures for the array type member.
 		/// </summary>
@@ -186,7 +294,13 @@ namespace MsgPack.Serialization
 		/// <param name="packing">Packing procedure.</param>
 		/// <param name="unpacking">Unpacking procedure.</param>
 		/// <returns></returns>
-		protected abstract bool CreateArrayProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking );
+		[Obsolete]
+		protected virtual bool CreateArrayProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
+		{
+			throw new NotImplementedException();
+		}
+
+		protected abstract ConstructorInfo CreateArraySerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
 		///		Create serialization/deserialization procedures for the map(dictionary) type member.
@@ -198,7 +312,13 @@ namespace MsgPack.Serialization
 		/// <param name="packing">Packing procedure.</param>
 		/// <param name="unpacking">Unpacking procedure.</param>
 		/// <returns></returns>
-		protected abstract bool CreateMapProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking );
+		[Obsolete]
+		protected virtual bool CreateMapProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
+		{
+			throw new NotImplementedException();
+		}
+
+		protected abstract ConstructorInfo CreateMapSerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
 		///		Create serialization/deserialization procedures for the non collection type member.
@@ -209,7 +329,13 @@ namespace MsgPack.Serialization
 		/// <param name="packing">Packing procedure.</param>
 		/// <param name="unpacking">Unpacking procedure.</param>
 		/// <returns></returns>
-		protected abstract bool CreateObjectProcedures( MemberInfo member, Type memberType, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking );
+		[Obsolete]
+		protected virtual bool CreateObjectProcedures( MemberInfo member, Type memberType, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
+		{
+			throw new NotImplementedException();
+		}
+
+		protected abstract ConstructorInfo CreateObjectSerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
 		///		Create serialization/deserialization procedures for the map(dictionary) object.
@@ -218,6 +344,12 @@ namespace MsgPack.Serialization
 		/// <param name="packing">Packing procedure.</param>
 		/// <param name="unpacking">Unpacking procedure.</param>
 		/// <returns></returns>
-		public abstract bool CreateMapProcedures( CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking );
+		[Obsolete]
+		public virtual bool CreateMapProcedures( CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking )
+		{
+			throw new NotImplementedException();
+		}
+
+		public abstract MessagePackSerializer<TObject> CreateMapSerializer();
 	}
 }

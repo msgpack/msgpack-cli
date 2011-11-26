@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Globalization;
+using System.Reflection;
 
 namespace MsgPack.Serialization
 {
@@ -33,6 +35,8 @@ namespace MsgPack.Serialization
 	/// <typeparam name="T"></typeparam>
 	public abstract class MessagePackSerializer<T>
 	{
+		internal static MethodInfo UnpackToCoreMethod = FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
+
 		/// <summary>
 		///		Serialize specified object to the <see cref="Stream"/>.
 		/// </summary>
@@ -116,5 +120,29 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
 		/// <returns>Deserialized object.</returns>
 		protected abstract T UnpackFromCore( Unpacker unpacker );
+
+
+		public void UnpackTo( Unpacker unpacker, T collection )
+		{
+			if ( unpacker == null )
+			{
+				throw new ArgumentNullException( "unpacker" );
+			}
+
+			if ( unpacker.IsInStart )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+			}
+
+			this.UnpackToCore( unpacker, collection );
+		}
+
+		protected virtual void UnpackToCore( Unpacker unpacker, T collection )
+		{
+			throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported by '{0}'.", this.GetType() ) );
+		}
 	}
 }

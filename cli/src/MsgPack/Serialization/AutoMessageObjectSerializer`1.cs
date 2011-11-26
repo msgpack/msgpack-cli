@@ -32,9 +32,14 @@ namespace MsgPack.Serialization
 	/// <typeparam name="T"></typeparam>
 	public class AutoMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
+		[Obsolete]
 		private readonly Action<Packer, T, SerializationContext> _packing;
+		[Obsolete]
 		private readonly Func<Unpacker, SerializationContext, T> _unpacking;
+		[Obsolete]
 		private readonly SerializationContext _context;
+
+		private readonly MessagePackSerializer<T> _underlying;
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="AutoMessagePackSerializer&lt;T&gt;"/> class.
@@ -52,13 +57,59 @@ namespace MsgPack.Serialization
 				throw new NotImplementedException( "Tuple is not supported yet." );
 			}
 
-			this._context = context;
+			//this._context = context;
 
-			var serializer = this._context.Serializers.Get<T>( this._context );
+			//var serializer = this._context.Serializers.Get<T>( this._context );
+			//if ( serializer != null )
+			//{
+			//    this._packing = Closures.Pack<T>( serializer.PackTo );
+			//    this._unpacking = Closures.UnpackWithForwarding( serializer.UnpackFrom );
+			//    return;
+			//}
+
+			//var traits = typeof( T ).GetCollectionTraits();
+			//switch ( traits.CollectionType )
+			//{
+			//    case CollectionKind.Array:
+			//    {
+			//        var arrayMarshaler = this._context.Serializers.GetArray<T>( this._context );
+			//        if ( arrayMarshaler != null )
+			//        {
+			//            this._packing = arrayMarshaler.MarshalTo;
+			//            this._unpacking = Closures.UnpackWithForwarding<T>( arrayMarshaler.UnmarshalTo );
+			//            return;
+			//        }
+
+			//        break;
+			//    }
+			//    case CollectionKind.Map:
+			//    {
+			//        // TODO: Pluggable
+			//        var builder = new EmittingMemberBinder<T>( context );
+			//        if ( !builder.CreateMapProcedures( traits, out this._packing, out this._unpacking ) )
+			//        {
+			//            break;
+			//        }
+
+			//        return;
+			//    }
+			//    case CollectionKind.NotCollection:
+			//    {
+			//        // TODO: Pluggable
+			//        var builder = new EmittingMemberBinder<T>( context );
+			//        if ( !builder.CreateProcedures( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut, out this._packing, out this._unpacking ) )
+			//        {
+			//            break;
+			//        }
+
+			//        return;
+			//    }
+			//}
+
+			var serializer = context.Serializers.Get<T>( context );
 			if ( serializer != null )
 			{
-				this._packing = Closures.Pack<T>( serializer.PackTo );
-				this._unpacking = Closures.UnpackWithForwarding( serializer.UnpackFrom );
+				this._underlying = serializer;
 				return;
 			}
 
@@ -67,36 +118,21 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					var arrayMarshaler = this._context.Serializers.GetArray<T>( this._context );
-					if ( arrayMarshaler != null )
-					{
-						this._packing = arrayMarshaler.MarshalTo;
-						this._unpacking = Closures.UnpackWithForwarding<T>( arrayMarshaler.UnmarshalTo );
-						return;
-					}
-
-					break;
+					this._underlying = context.GetArray<T>();
+					Contract.Assert( this._underlying != null );
+					return;
 				}
 				case CollectionKind.Map:
 				{
-					// TODO: Pluggable
-					var builder = new EmittingMemberBinder<T>();
-					if ( !builder.CreateMapProcedures( traits, out this._packing, out this._unpacking ) )
-					{
-						break;
-					}
-
+					this._underlying = new EmittingMemberBinder<T>( context ).CreateMapSerializer();
+					Contract.Assert( this._underlying != null );
 					return;
 				}
 				case CollectionKind.NotCollection:
 				{
 					// TODO: Pluggable
-					var builder = new EmittingMemberBinder<T>();
-					if ( !builder.CreateProcedures( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut, out this._packing, out this._unpacking ) )
-					{
-						break;
-					}
-
+					this._underlying = new EmittingMemberBinder<T>( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
+					Contract.Assert( this._underlying != null );
 					return;
 				}
 			}
@@ -110,7 +146,7 @@ namespace MsgPack.Serialization
 		/// <param name="objectTree">Object to be serialized.</param>
 		protected sealed override void PackToCore( Packer packer, T objectTree )
 		{
-			this._packing( packer, objectTree, this._context );
+			this._underlying.PackTo( packer, objectTree );
 		}
 
 		/// <summary>
@@ -120,7 +156,12 @@ namespace MsgPack.Serialization
 		/// <returns>Deserialized object.</returns>
 		protected sealed override T UnpackFromCore( Unpacker unpacker )
 		{
-			return this._unpacking( unpacker, this._context );
+			return this._underlying.UnpackFrom( unpacker );
+		}
+
+		protected sealed override void UnpackToCore( Unpacker unpacker, T collection )
+		{
+			this._underlying.UnpackTo( unpacker, collection );
 		}
 	}
 }

@@ -35,6 +35,20 @@ namespace MsgPack.Serialization
 		private static readonly Type[] _nonGenericListTypeArguments = new[] { typeof( object ) };
 		private static readonly Type[] _nonGenericDictionaryTypeArguments = new[] { typeof( object ), typeof( object ) };
 
+		public static Type GetMemberValueType( this MemberInfo source )
+		{
+			PropertyInfo asProperty = source as PropertyInfo;
+			FieldInfo asField = source as FieldInfo;
+			return asProperty != null ? asProperty.PropertyType : asField.FieldType;
+		}
+
+		public static bool CanSetValue( this MemberInfo source )
+		{
+			PropertyInfo asProperty = source as PropertyInfo;
+			FieldInfo asField = source as FieldInfo;
+			return asProperty != null ? asProperty.CanWrite : !asField.IsInitOnly;
+		}
+
 		public static CollectionTraits GetCollectionTraits( this Type source )
 		{
 			Contract.Assert( !source.ContainsGenericParameters );
@@ -205,13 +219,13 @@ namespace MsgPack.Serialization
 
 			if ( idictionary != null )
 			{
-				return 
-					new CollectionTraits( 
+				return
+					new CollectionTraits(
 						CollectionKind.Map,
-						GetAddMethod( source, typeof( object ), typeof( object ) ), 
-						idictionary.GetMethod( "GetEnumerator", Type.EmptyTypes ), 
+						GetAddMethod( source, typeof( object ), typeof( object ) ),
+						idictionary.GetMethod( "GetEnumerator", Type.EmptyTypes ),
 						_icollectionCount,
-						typeof( object )  
+						typeof( object )
 					);
 			}
 
@@ -223,8 +237,8 @@ namespace MsgPack.Serialization
 					return
 						new CollectionTraits(
 							CollectionKind.Array,
-							addMethod, 
-							ienumerable.GetMethod( "GetEnumerator", Type.EmptyTypes ), 
+							addMethod,
+							ienumerable.GetMethod( "GetEnumerator", Type.EmptyTypes ),
 							_icollectionCount,
 							typeof( object )
 						);

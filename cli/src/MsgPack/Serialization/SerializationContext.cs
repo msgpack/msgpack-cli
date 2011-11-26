@@ -32,9 +32,13 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationContext
 	{
+		[Obsolete]
 		internal static readonly MethodInfo MarshalTo1Method = typeof( SerializationContext ).GetMethod( "MarshalTo" );
+		[Obsolete]
 		internal static readonly MethodInfo UnmarshalFrom1Method = typeof( SerializationContext ).GetMethod( "UnmarshalFrom" );
+		[Obsolete]
 		internal static readonly MethodInfo MarshalArrayTo1Method = typeof( SerializationContext ).GetMethod( "MarshalArrayTo" );
+		[Obsolete]
 		internal static readonly MethodInfo UnmarshalArrayTo1Method = typeof( SerializationContext ).GetMethod( "UnmarshalArrayTo" );
 
 		private static readonly SerializationContext _default = new SerializationContext( SerializerRepository.Default );
@@ -81,7 +85,7 @@ namespace MsgPack.Serialization
 					arraySerializer.MarshalTo( packer, value, this );
 					return;
 				}
-	
+
 				// TODO: Configurable
 				serializer = new AutoMessagePackSerializer<T>( this );
 				if ( !this._serializers.Register<T>( serializer ) )
@@ -140,8 +144,8 @@ namespace MsgPack.Serialization
 				{
 					serializer = this._serializers.Get<T>( this );
 				}
-			} 
-			
+			}
+
 			if ( serializer != null )
 			{
 				return serializer.UnpackFrom( unpacker );
@@ -185,13 +189,34 @@ namespace MsgPack.Serialization
 
 			return serializer;
 		}
+
+		[Obsolete( "Unify to Register" )]
+		public MessagePackSerializer<T> GetArray<T>()
+		{
+			// FIXME: Unify
+			var arrayMarshaler = this._serializers.GetArray<T>( this );
+			if ( arrayMarshaler != null )
+			{
+				return new ShimArraySerializer<T>( arrayMarshaler, this );
+			}
+
+			return null;
+		}
+
 	}
 
 	[Obsolete]
 	internal sealed class ShimArraySerializer<T> : MessagePackSerializer<T>
 	{
 		private readonly MessagePackArraySerializer<T> _underying;
+		[Obsolete]
 		private readonly SerializationContext _context;
+
+		public ShimArraySerializer( SerializationContext context )
+		{
+			this._underying = context.Serializers.GetArray<T>( context );
+			this._context = context;
+		}
 
 		public ShimArraySerializer( MessagePackArraySerializer<T> arrayMarshaler, SerializationContext serializationContext )
 		{
@@ -206,9 +231,14 @@ namespace MsgPack.Serialization
 
 		protected override T UnpackFromCore( Unpacker unpacker )
 		{
-			T collection = typeof( T ).IsArray ? ( T )( object )Array.CreateInstance( typeof( T ).GetElementType(), unpacker.Data.Value.AsInt32() ) : Activator.CreateInstance<T>();
+			T collection = typeof( T ).IsArray ? ( T )( object )Array.CreateInstance( typeof( T ).GetElementType(), unpacker.Data.Value.AsUInt32() ) : Closures.Construct<T>()();
 			this._underying.UnmarshalTo( unpacker, collection, this._context );
 			return collection;
+		}
+
+		protected override void UnpackToCore( Unpacker unpacker, T collection )
+		{
+			this._underying.UnmarshalTo( unpacker, collection, this._context );
 		}
 	}
 }
