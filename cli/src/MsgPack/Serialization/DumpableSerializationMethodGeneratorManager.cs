@@ -24,17 +24,13 @@ using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
-using NLiblet.Reflection;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: Delegate based -> Instance Based & Unify to base class
 	// FIXME: Collectable
 	// FIXME: RENAME
 	/// <summary>
-	///		Manages <see cref="SerializationMethodGenerator"/> which generates dumpable serialization methods.
+	///		Manages serializer generators.
 	/// </summary>
 	internal sealed class DumpableSerializationMethodGeneratorManager : SerializationMethodGeneratorManager
 	{
@@ -44,7 +40,17 @@ namespace MsgPack.Serialization
 		private static int _assemblySequence = -1;
 		private int _typeSequence = -1;
 
-		private static DumpableSerializationMethodGeneratorManager _canDump = new DumpableSerializationMethodGeneratorManager( true );
+		private static DumpableSerializationMethodGeneratorManager _canCollect = new DumpableSerializationMethodGeneratorManager( false, true );
+
+		/// <summary>
+		///		Get the singleton instance for can-collect mode.
+		/// </summary>
+		public static DumpableSerializationMethodGeneratorManager CanCollect
+		{
+			get { return DumpableSerializationMethodGeneratorManager._canCollect; }
+		}
+
+		private static DumpableSerializationMethodGeneratorManager _canDump = new DumpableSerializationMethodGeneratorManager( true, false );
 
 		/// <summary>
 		///		Get the singleton instance for can-dump mode.
@@ -54,7 +60,7 @@ namespace MsgPack.Serialization
 			get { return DumpableSerializationMethodGeneratorManager._canDump; }
 		}
 
-		private static DumpableSerializationMethodGeneratorManager _fast = new DumpableSerializationMethodGeneratorManager( false );
+		private static DumpableSerializationMethodGeneratorManager _fast = new DumpableSerializationMethodGeneratorManager( false, false );
 
 		/// <summary>
 		///		Get the singleton instance for fast mode.
@@ -66,8 +72,9 @@ namespace MsgPack.Serialization
 
 		internal static void Refresh()
 		{
-			_canDump = new DumpableSerializationMethodGeneratorManager( true );
-			_fast = new DumpableSerializationMethodGeneratorManager( false );
+			_canCollect = new DumpableSerializationMethodGeneratorManager( false, true );
+			_canDump = new DumpableSerializationMethodGeneratorManager( true, false );
+			_fast = new DumpableSerializationMethodGeneratorManager( false, false );
 		}
 
 		/// <summary>
@@ -92,15 +99,23 @@ namespace MsgPack.Serialization
 		private readonly AssemblyBuilder _assembly;
 		private readonly ModuleBuilder _module;
 		private readonly string _moduleFileName;
+		private readonly bool _isDebuggable;
 
-		private DumpableSerializationMethodGeneratorManager( bool isDebuggable )
+		private DumpableSerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable )
 		{
-			var assemblyName = typeof( DumpableSerializationMethodGenerator ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
+			this._isDebuggable = isDebuggable;
+
+			var assemblyName = typeof( DumpableSerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
 			this._assembly =
 				AppDomain.CurrentDomain.DefineDynamicAssembly(
 					new AssemblyName( assemblyName ),
-					AssemblyBuilderAccess.RunAndSave
+#if !SILVERLIGHT
+					isDebuggable ? AssemblyBuilderAccess.RunAndSave : ( isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run )
+#else
+					AssemblyBuilderAccess.Run 
+#endif
 				);
+
 			if ( isDebuggable )
 			{
 				this._assembly.SetCustomAttribute( new CustomAttributeBuilder( _debuggableAttributeCtor, _debuggableAttributeCtorArguments ) );
@@ -130,12 +145,14 @@ namespace MsgPack.Serialization
 				)
 			);
 			this._moduleFileName = assemblyName + ".dll";
-			this._module = this._assembly.DefineDynamicModule( assemblyName, this._moduleFileName, true );
-		}
-
-		protected sealed override SerializationMethodGenerator CreateGeneratorCore( string operation, Type targetType, string targetMemberName, Type returnType, params Type[] parameterTypes )
-		{
-			return new DumpableSerializationMethodGenerator( this._module, Interlocked.Increment( ref this._typeSequence ), operation, targetType, targetMemberName, returnType, parameterTypes );
+			if ( isDebuggable )
+			{
+				this._module = this._assembly.DefineDynamicModule( assemblyName, this._moduleFileName, true );
+			}
+			else
+			{
+				this._module = this._assembly.DefineDynamicModule( assemblyName, true );
+			}
 		}
 
 		private void DumpToCore()
@@ -143,73 +160,9 @@ namespace MsgPack.Serialization
 			this._assembly.Save( this._moduleFileName );
 		}
 
-		public sealed override SerializerEmitter CreateEmitter( Type targetType )
+		protected sealed override SerializerEmitter CreateEmitterCore( Type targetType )
 		{
-			// FIXME: IsDebuggable
-			return new SerializerEmitter( this._module, Interlocked.Increment( ref this._typeSequence ), targetType, false );
-		}
-
-		/// <summary>
-		///		Genereates serialization methods which can be save to file.
-		/// </summary>
-		private sealed class DumpableSerializationMethodGenerator : SerializationMethodGenerator
-		{
-			private MethodInfo _runtimeMethodInfo;
-			private readonly TypeBuilder _typeBuilder;
-			private readonly MethodBuilder _methodBuilder;
-			private readonly Dictionary<RuntimeTypeHandle, FieldBuilder> _marshalers;
-
-			public DumpableSerializationMethodGenerator( ModuleBuilder host, int sequence, string operation, Type targetType, string targetMemberName, Type returnType, Type[] parameterTypes )
-			{
-				string methodName = IdentifierUtility.BuildMethodName( operation, targetType, targetMemberName );
-				string typeName = String.Join( Type.Delimiter.ToString(), typeof( DumpableSerializationMethodGenerator ).Namespace, "Generated", methodName + "_Holder" + sequence );
-				Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}::{1}", methodName, typeName );
-				this._typeBuilder =
-					host.DefineType(
-						typeName,
-						TypeAttributes.Abstract | TypeAttributes.Sealed | TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.AutoLayout | TypeAttributes.BeforeFieldInit
-					);
-
-				this._methodBuilder =
-					this._typeBuilder.DefineMethod(
-						methodName,
-						MethodAttributes.Public | MethodAttributes.Static,
-						CallingConventions.Standard,
-						returnType,
-						parameterTypes
-					);
-
-				this._marshalers = new Dictionary<RuntimeTypeHandle, FieldBuilder>();
-			}
-
-			private static TypeBuilder CreateTypeBuilder( ModuleBuilder host, string methodName )
-			{
-				return
-					host.DefineType(
-						String.Join( Type.Delimiter.ToString(), typeof( DumpableSerializationMethodGenerator ).Namespace, "Generated", methodName + "_Holder" ),
-						TypeAttributes.Abstract | TypeAttributes.Sealed | TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.AutoLayout | TypeAttributes.BeforeFieldInit
-					);
-			}
-
-			public sealed override TracingILGenerator GetILGenerator()
-			{
-				if ( IsTraceEnabled )
-				{
-					this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._methodBuilder );
-				}
-
-				return new TracingILGenerator( this._methodBuilder, this.Trace );
-			}
-
-			protected sealed override TDelegate CreateDelegateCore<TDelegate>()
-			{
-				if ( this._runtimeMethodInfo == null )
-				{
-					this._runtimeMethodInfo = this._typeBuilder.CreateType().GetMethod( this._methodBuilder.Name );
-				}
-
-				return Delegate.CreateDelegate( typeof( TDelegate ), this._runtimeMethodInfo ) as TDelegate;
-			}
+			return new SerializerEmitter( this._module, Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
 		}
 	}
 }

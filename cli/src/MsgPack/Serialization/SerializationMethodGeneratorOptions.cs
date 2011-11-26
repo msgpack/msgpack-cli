@@ -23,7 +23,7 @@ using System;
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Define options of <see cref="SerializationMethodGenerator"/>
+	///		Define options of <see cref="SerializationMethodGeneratorManager"/>
 	/// </summary>
 	internal enum SerializationMethodGeneratorOption
 	{
@@ -32,12 +32,12 @@ namespace MsgPack.Serialization
 		///		The generated method IL can be dumped to the current directory.
 		/// </summary>
 		CanDump,
-#endif
 
 		/// <summary>
 		///		The entire generated method can be collected by GC when it is no longer used.
 		/// </summary>
 		CanCollect,
+#endif
 
 		/// <summary>
 		///		Prefer performance. This options is default.

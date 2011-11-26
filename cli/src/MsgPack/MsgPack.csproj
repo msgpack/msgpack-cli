@@ -166,7 +166,6 @@
     </Compile>
     <Compile Include="Serialization\IdentifierUtility.cs" />
     <Compile Include="Serialization\AutoMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\CollectableSerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\CollectionTraits.cs" />
     <Compile Include="Serialization\CollectionKind.cs" />
     <Compile Include="Serialization\DataContractMessagePackSerializer`1.cs" />
@@ -197,7 +196,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FromExpression.ToMethod.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\SerializationMethodGenerator.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\GenericTypeExtensions.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\ReflectionExtensions.cs">
       <SubType>Code</SubType>
