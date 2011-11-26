@@ -35,9 +35,7 @@ namespace MsgPack.Serialization
 		internal static MethodInfo Get1Method = typeof( SerializerRepository ).GetMethod( "Get", Type.EmptyTypes );
 		internal static MethodInfo Register1Method = typeof( SerializerRepository ).GetMethod( "Register", Type.EmptyTypes );
 
-		// TODO: Unification
 		private readonly TypeKeyRepository _repository;
-		private readonly TypeKeyRepository _arrayRepository;
 
 		/// <summary>
 		/// Initializes a new empty instance of the <see cref="SerializerRepository"/> class.
@@ -45,7 +43,6 @@ namespace MsgPack.Serialization
 		public SerializerRepository()
 		{
 			this._repository = new TypeKeyRepository();
-			this._arrayRepository = new TypeKeyRepository();
 		}
 
 		/// <summary>
@@ -63,15 +60,12 @@ namespace MsgPack.Serialization
 			}
 
 			this._repository = new TypeKeyRepository( copiedFrom._repository );
-			this._arrayRepository = new TypeKeyRepository( copiedFrom._arrayRepository );
 		}
 
 		private SerializerRepository( Dictionary<RuntimeTypeHandle, object> table )
 		{
 			this._repository = new TypeKeyRepository( table );
 			this._repository.Freeze();
-			this._arrayRepository = new TypeKeyRepository();
-			this._arrayRepository.Freeze();
 		}
 
 		/// <summary>
