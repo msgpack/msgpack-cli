@@ -24,6 +24,9 @@ using NLiblet.Reflection;
 
 namespace MsgPack.Serialization
 {
+	/// <summary>
+	///		Utilities related to member/type ID.
+	/// </summary>
 	internal static class IdentifierUtility
 	{
 		/// <summary>

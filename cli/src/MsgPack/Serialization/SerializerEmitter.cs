@@ -19,29 +19,16 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Threading;
 using NLiblet.Reflection;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq.Expressions;
 
 namespace MsgPack.Serialization
 {
-	/*
-	 *	移植法：
-	 *	作成メソッドにEmitter を渡す
-	 *		Dynamicxxxはさようなら
-	 *		引数をすべて 1 つずらす
-	 *		戻り値は void に
-	 *	コンストラクタで Emitter.CreateInstance( context ) でとれるシリアライザを保存
-	 *	上記を対象のプロパティ分繰り返す
-	 *	テストテストテスト
-	 */
-
 	/// <summary>
 	///		Genereates serialization methods which can be save to file.
 	/// </summary>
@@ -100,6 +87,13 @@ namespace MsgPack.Serialization
 		private readonly Dictionary<RuntimeTypeHandle, FieldBuilder> _serializers;
 		private readonly bool _isDebuggable;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SerializerEmitter"/> class.
+		/// </summary>
+		/// <param name="host">The host <see cref="ModuleBuilder"/>.</param>
+		/// <param name="sequence">The sequence number to name new type..</param>
+		/// <param name="targetType">Type of the serialization target.</param>
+		/// <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
 		public SerializerEmitter( ModuleBuilder host, int sequence, Type targetType, bool isDebuggable )
 		{
 			string typeName =
@@ -144,6 +138,13 @@ namespace MsgPack.Serialization
 			this._isDebuggable = isDebuggable;
 		}
 
+		/// <summary>
+		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		/// </summary>
+		/// <returns>
+		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		///		This value will not be <c>null</c>.
+		/// </returns>
 		public TracingILGenerator GetPackToMethodILGenerator()
 		{
 			if ( IsTraceEnabled )
@@ -154,16 +155,33 @@ namespace MsgPack.Serialization
 			return new TracingILGenerator( this._packMethodBuilder, this.Trace, this._isDebuggable );
 		}
 
+		/// <summary>
+		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		/// </summary>
+		/// <returns>
+		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		///		This value will not be <c>null</c>.
+		/// </returns>
 		public TracingILGenerator GetUnpackFromMethodILGenerator()
 		{
 			if ( IsTraceEnabled )
 			{
 				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethodBuilder );
 			}
-			
+
 			return new TracingILGenerator( this._unpackFromMethodBuilder, this.Trace, this._isDebuggable );
 		}
 
+		/// <summary>
+		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		/// </summary>
+		/// <returns>
+		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		/// </returns>
+		/// <remarks>
+		///		When this method is called, <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> will be overridden.
+		///		This value will not be <c>null</c>.
+		/// </remarks>
 		public TracingILGenerator GetUnpackToMethodILGenerator()
 		{
 			if ( IsTraceEnabled )
@@ -188,13 +206,35 @@ namespace MsgPack.Serialization
 			return new TracingILGenerator( this._unpackToMethodBuilder, this.Trace, this._isDebuggable );
 		}
 
+		/// <summary>
+		///		Creates the serializer type built now and returns its constructor.
+		/// </summary>
+		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
+		/// <returns>
+		///		Newly built <see cref="MessagePackSerializer{T}"/> type constructor.
+		///		This value will not be <c>null</c>.
+		///	</returns>
 		public ConstructorInfo Create()
 		{
 			if ( !this._typeBuilder.IsCreated() )
 			{
+				/*
+				 *	.ctor( SerializationContext ) : base()
+				 *	{
+				 *		this._serializer0 = context.GetSerializer<T0>();
+				 *		this._serializer1 = context.GetSerializer<T1>();
+				 *		this._serializer2 = context.GetSerializer<T2>();
+				 *			:
+				 *	}
+				 * 
+				 * 
+				 */
 				var il = this._constructorBuilder.GetILGenerator();
+				// : base()
 				il.Emit( OpCodes.Ldarg_0 );
 				il.Emit( OpCodes.Call, this._typeBuilder.BaseType.GetConstructor( BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null ) );
+				
+				// this._serializerN = context.GetSerializer<T>();
 				foreach ( var entry in this._serializers )
 				{
 					var targetType = Type.GetTypeFromHandle( entry.Key );
@@ -204,12 +244,22 @@ namespace MsgPack.Serialization
 					il.Emit( OpCodes.Callvirt, getMethod );
 					il.Emit( OpCodes.Stfld, entry.Value );
 				}
+
 				il.Emit( OpCodes.Ret );
 			}
 
 			return this._typeBuilder.CreateType().GetConstructor( _constructorParameterTypes );
 		}
 
+		/// <summary>
+		///		Creates the serializer type built now and returns its new instance.
+		/// </summary>
+		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
+		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
+		/// <returns>
+		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
+		///		This value will not be <c>null</c>.
+		///	</returns>
 		public MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
 		{
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ) );
@@ -223,6 +273,14 @@ namespace MsgPack.Serialization
 				).Compile()( context );
 		}
 
+		/// <summary>
+		///		Regisgter using <see cref="MessagePackSerializer{T}"/> target type to the current emitting session.
+		/// </summary>
+		/// <param name="targetType">Type to be serialized/deserialized.</param>
+		/// <returns>
+		///		<see cref="FieldInfo"/> to refer the serializer in current building type.
+		///		This value will not be <c>null</c>.
+		/// </returns>
 		public FieldInfo RegisterSerializer( Type targetType )
 		{
 			if ( this._typeBuilder.IsCreated() )

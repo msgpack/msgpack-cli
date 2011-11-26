@@ -32,8 +32,6 @@ namespace MsgPack.Serialization
 	/// <typeparam name="TObject">Object to be serialized/deserialized.</typeparam>
 	internal abstract class SerializerBuilder<TObject>
 	{
-		// TODO: boolean base -> Exception base
-
 		private readonly SerializationContext _context;
 
 		public SerializationContext Context

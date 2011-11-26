@@ -35,8 +35,8 @@ namespace MsgPack.Serialization
 	[Timeout( 3000 )]
 	public partial class AutoMessagePackSerializerTest
 	{
-		private static bool _traceOn = true;
-		private static bool _reuseContext = false;
+		private static bool _traceOn = false;
+		private static bool _reuseContext = true;
 
 		private static readonly SerializationContext _defaultContext = new SerializationContext();
 
@@ -58,11 +58,11 @@ namespace MsgPack.Serialization
 			/*
 			 * Core2 Duo 6300 1.83GHz Windows 7 x64:
 			 * CanCollect : 8.60 sec
-			 * CanDump    : 4.14 sec
-			 * Fast       : 4.15 sec
+			 * CanDump    : 7.16 sec
+			 * Fast       : 4.18 sec
 			 * 
 			 */
-			SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanDump;
+			SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanCollect;
 		}
 
 		[TearDown]
