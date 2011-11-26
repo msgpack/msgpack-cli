@@ -29,7 +29,6 @@ using NLiblet.Reflection;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: null handling
 	// FIXME: Comment
 	/// <summary>
 	///		<see cref="SerializerBuilder{T}"/> implementation using Reflection.Emit.

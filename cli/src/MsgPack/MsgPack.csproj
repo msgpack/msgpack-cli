@@ -223,6 +223,7 @@
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Compile Include="Serialization\Tracer.cs" />
     <Compile Include="Serialization\TypeKeyRepository.cs" />
+    <Compile Include="Serialization\MessagePackSerializer.cs" />
     <Compile Include="SetOperation.cs" />
     <Compile Include="StreamPacker.cs" />
     <Compile Include="StreamUnpacker.cs" />
