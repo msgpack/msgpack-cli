@@ -57,12 +57,12 @@ namespace MsgPack.Serialization
 
 			/*
 			 * Core2 Duo 6300 1.83GHz Windows 7 x64:
-			 * CanCollect : 8.60 sec
-			 * CanDump    : 7.16 sec
-			 * Fast       : 4.18 sec
+			 * CanCollect : 4.35 sec
+			 * CanDump    : 4.18 sec
+			 * Fast       : 3.43 sec
 			 * 
 			 */
-			SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanCollect;
+			SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanDump;
 		}
 
 		[TearDown]
