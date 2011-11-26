@@ -441,8 +441,28 @@ namespace MsgPack.Serialization
 
 			if ( expected is DictionaryEntry )
 			{
-				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
-				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
+				var expectedEntry  =( DictionaryEntry )( object )expected ;
+				var actualEntry = ( DictionaryEntry )( object )actual ;
+
+				if ( expectedEntry.Key == null )
+				{
+					Assert.That( ( ( MessagePackObject )actualEntry.Key ).IsNil );
+				}
+				else
+				{
+					Verify( ( MessagePackObject )expectedEntry.Key, ( MessagePackObject )actualEntry.Key );
+				}
+
+
+				if ( expectedEntry.Value == null )
+				{
+					Assert.That( ( ( MessagePackObject )actualEntry.Value ).IsNil );
+				}
+				else
+				{
+					Verify( ( MessagePackObject )expectedEntry.Value, ( MessagePackObject )actualEntry.Value );
+				}
+				
 				return;
 			}
 
@@ -469,7 +489,6 @@ namespace MsgPack.Serialization
 			);
 		}
 
-		// TODO: nullable
 		// TODO: RPC
 		// TCP send -> TCP notify -> UDP send -> UDP notify
 		// 0.1 Async TCP Comm

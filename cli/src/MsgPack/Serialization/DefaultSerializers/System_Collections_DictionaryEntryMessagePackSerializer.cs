@@ -38,6 +38,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private MessagePackObject EnsureMessagePackObject( object obj )
 		{
+			if ( obj == null )
+			{
+				return MessagePackObject.Nil;
+			}
+
 			if ( !( obj is MessagePackObject ) )
 			{
 				throw new NotSupportedException( "Only MessagePackObject Key/Value is supported." );

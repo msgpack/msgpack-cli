@@ -41,6 +41,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		public static void PackByteArraySegmentTo( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer )
 		{
+			if ( objectTree.Array == null )
+			{
+				packer.PackRawHeader( 0 );
+				return;
+			}
+
 			packer.PackRawHeader( objectTree.Count );
 			packer.PackRawBody( objectTree.Array.Skip( objectTree.Offset ).Take( objectTree.Count ) );
 		}

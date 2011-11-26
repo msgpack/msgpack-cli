@@ -48,6 +48,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestNullFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Object ) );
+		}
+		
+		[Test]
+		public void TestNullFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Object[] ) );
+		}	
+		
+		[Test]
 		public void TestTrueField()
 		{
 			TestCoreWithAutoVerify( true );
@@ -240,6 +252,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestUriFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Uri ) );
+		}
+		
+		[Test]
+		public void TestUriFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Uri[] ) );
+		}	
+		
+		[Test]
 		public void TestVersionField()
 		{
 			TestCoreWithAutoVerify( new Version( 1, 2, 3, 4 ) );
@@ -250,6 +274,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3, 4 ), 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestVersionFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Version ) );
+		}
+		
+		[Test]
+		public void TestVersionFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Version[] ) );
+		}	
 		
 		[Test]
 		public void TestFILETIMEField()
@@ -372,6 +408,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestStringFieldNull()
+		{
+			TestCoreWithAutoVerify( default( String ) );
+		}
+		
+		[Test]
+		public void TestStringFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( String[] ) );
+		}	
+		
+		[Test]
 		public void TestByteArrayField()
 		{
 			TestCoreWithAutoVerify( new Byte[]{ 1, 2, 3, 4 } );
@@ -384,6 +432,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestByteArrayFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Byte[] ) );
+		}
+		
+		[Test]
+		public void TestByteArrayFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Byte[][] ) );
+		}	
+		
+		[Test]
 		public void TestCharArrayField()
 		{
 			TestCoreWithAutoVerify( "ABCD".ToCharArray() );
@@ -394,6 +454,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( "ABCD".ToCharArray(), 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestCharArrayFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Char[] ) );
+		}
+		
+		[Test]
+		public void TestCharArrayFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Char[][] ) );
+		}	
 		
 		[Test]
 		public void TestArraySegmentByteField()
@@ -444,6 +516,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestImage_FieldNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Image ) );
+		}
+		
+		[Test]
+		public void TestImage_FieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Image[] ) );
+		}	
+		
+		[Test]
 		public void TestListDateTimeField()
 		{
 			TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
@@ -454,6 +538,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestListDateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( List<DateTime> ) );
+		}
+		
+		[Test]
+		public void TestListDateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( List<DateTime>[] ) );
+		}	
 		
 		[Test]
 		public void TestDictionaryStringDateTimeField()
@@ -468,6 +564,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestDictionaryStringDateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Dictionary<String, DateTime> ) );
+		}
+		
+		[Test]
+		public void TestDictionaryStringDateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Dictionary<String, DateTime>[] ) );
+		}	
+		
+		[Test]
 		public void TestCollectionDateTimeField()
 		{
 			TestCoreWithAutoVerify( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
@@ -478,6 +586,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestCollectionDateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Collection<DateTime> ) );
+		}
+		
+		[Test]
+		public void TestCollectionDateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Collection<DateTime>[] ) );
+		}	
 		
 		[Test]
 		public void TestStringKeyedCollection_DateTimeField()
@@ -492,6 +612,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime> ) );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime>[] ) );
+		}	
+		
+		[Test]
 		public void TestObservableCollectionDateTimeField()
 		{
 			TestCoreWithAutoVerify( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
@@ -502,6 +634,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( ObservableCollection<DateTime> ) );
+		}
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( ObservableCollection<DateTime>[] ) );
+		}	
 		
 		[Test]
 		public void TestHashSetDateTimeField()
@@ -516,6 +660,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestHashSetDateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( HashSet<DateTime> ) );
+		}
+		
+		[Test]
+		public void TestHashSetDateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( HashSet<DateTime>[] ) );
+		}	
+		
+		[Test]
 		public void TestICollectionDateTimeField()
 		{
 			TestCoreWithAutoVerify( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
@@ -526,6 +682,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestICollectionDateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( ICollection<DateTime> ) );
+		}
+		
+		[Test]
+		public void TestICollectionDateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( ICollection<DateTime>[] ) );
+		}	
 		
 		[Test]
 		public void TestISetDateTimeField()
@@ -540,6 +708,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestISetDateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( ISet<DateTime> ) );
+		}
+		
+		[Test]
+		public void TestISetDateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( ISet<DateTime>[] ) );
+		}	
+		
+		[Test]
 		public void TestIListDateTimeField()
 		{
 			TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
@@ -550,6 +730,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestIListDateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( IList<DateTime> ) );
+		}
+		
+		[Test]
+		public void TestIListDateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( IList<DateTime>[] ) );
+		}	
 		
 		[Test]
 		public void TestIDictionaryStringDateTimeField()
@@ -564,6 +756,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestIDictionaryStringDateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( IDictionary<String, DateTime> ) );
+		}
+		
+		[Test]
+		public void TestIDictionaryStringDateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( IDictionary<String, DateTime>[] ) );
+		}	
+		
+		[Test]
 		public void TestAddOnlyCollection_DateTimeField()
 		{
 			TestCoreWithAutoVerify( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
@@ -574,6 +778,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime> ) );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime>[] ) );
+		}	
 		
 		[Test]
 		public void TestObjectField()
@@ -588,6 +804,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Object ) );
+		}
+		
+		[Test]
+		public void TestObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Object[] ) );
+		}	
+		
+		[Test]
 		public void TestObjectArrayField()
 		{
 			TestCoreWithAutoVerify( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -598,6 +826,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestObjectArrayFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Object[] ) );
+		}
+		
+		[Test]
+		public void TestObjectArrayFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Object[][] ) );
+		}	
 		
 		[Test]
 		public void TestArrayListField()
@@ -612,6 +852,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestArrayListFieldNull()
+		{
+			TestCoreWithAutoVerify( default( ArrayList ) );
+		}
+		
+		[Test]
+		public void TestArrayListFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( ArrayList[] ) );
+		}	
+		
+		[Test]
 		public void TestHashtableField()
 		{
 			TestCoreWithAutoVerify( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } } );
@@ -622,6 +874,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestHashtableFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Hashtable ) );
+		}
+		
+		[Test]
+		public void TestHashtableFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Hashtable[] ) );
+		}	
 		
 		[Test]
 		public void TestListObjectField()
@@ -636,6 +900,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestListObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( List<Object> ) );
+		}
+		
+		[Test]
+		public void TestListObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( List<Object>[] ) );
+		}	
+		
+		[Test]
 		public void TestDictionaryObjectObjectField()
 		{
 			TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } } );
@@ -646,6 +922,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Dictionary<Object, Object> ) );
+		}
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Dictionary<Object, Object>[] ) );
+		}	
 		
 		[Test]
 		public void TestCollectionObjectField()
@@ -660,6 +948,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestCollectionObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( Collection<Object> ) );
+		}
+		
+		[Test]
+		public void TestCollectionObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( Collection<Object>[] ) );
+		}	
+		
+		[Test]
 		public void TestStringKeyedCollection_ObjectField()
 		{
 			TestCoreWithAutoVerify( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -670,6 +970,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object> ) );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object>[] ) );
+		}	
 		
 		[Test]
 		public void TestObservableCollectionObjectField()
@@ -684,6 +996,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestObservableCollectionObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( ObservableCollection<Object> ) );
+		}
+		
+		[Test]
+		public void TestObservableCollectionObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( ObservableCollection<Object>[] ) );
+		}	
+		
+		[Test]
 		public void TestHashSetObjectField()
 		{
 			TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -694,6 +1018,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestHashSetObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( HashSet<Object> ) );
+		}
+		
+		[Test]
+		public void TestHashSetObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( HashSet<Object>[] ) );
+		}	
 		
 		[Test]
 		public void TestICollectionObjectField()
@@ -708,6 +1044,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestICollectionObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( ICollection<Object> ) );
+		}
+		
+		[Test]
+		public void TestICollectionObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( ICollection<Object>[] ) );
+		}	
+		
+		[Test]
 		public void TestISetObjectField()
 		{
 			TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -718,6 +1066,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestISetObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( ISet<Object> ) );
+		}
+		
+		[Test]
+		public void TestISetObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( ISet<Object>[] ) );
+		}	
 		
 		[Test]
 		public void TestIListObjectField()
@@ -732,6 +1092,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestIListObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( IList<Object> ) );
+		}
+		
+		[Test]
+		public void TestIListObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( IList<Object>[] ) );
+		}	
+		
+		[Test]
 		public void TestIDictionaryObjectObjectField()
 		{
 			TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } } );
@@ -742,6 +1114,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( IDictionary<Object, Object> ) );
+		}
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( IDictionary<Object, Object>[] ) );
+		}	
 		
 		[Test]
 		public void TestAddOnlyCollection_ObjectField()
@@ -756,6 +1140,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestAddOnlyCollection_ObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object> ) );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_ObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object>[] ) );
+		}	
+		
+		[Test]
 		public void TestMessagePackObject_Field()
 		{
 			TestCoreWithAutoVerify( new MessagePackObject( 1 ) );
@@ -766,6 +1162,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestMessagePackObject_FieldNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.MessagePackObject ) );
+		}
+		
+		[Test]
+		public void TestMessagePackObject_FieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ) );
+		}	
 		
 		[Test]
 		public void TestMessagePackObjectArray_Field()
@@ -780,6 +1188,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestMessagePackObjectArray_FieldNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ) );
+		}
+		
+		[Test]
+		public void TestMessagePackObjectArray_FieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[][] ) );
+		}	
+		
+		[Test]
 		public void TestList_MessagePackObjectField()
 		{
 			TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -790,6 +1210,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject>[] ) );
+		}	
 		
 		[Test]
 		public void TestDictionary_MessagePackObject_MessagePackObjectField()
@@ -804,6 +1236,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ) );
+		}	
+		
+		[Test]
 		public void TestCollection_MessagePackObjectField()
 		{
 			TestCoreWithAutoVerify( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -814,6 +1258,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>[] ) );
+		}	
 		
 		[Test]
 		public void TestStringKeyedCollection_MessagePackObjectField()
@@ -828,6 +1284,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>[] ) );
+		}	
+		
+		[Test]
 		public void TestObservableCollection_MessagePackObjectField()
 		{
 			TestCoreWithAutoVerify( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -838,6 +1306,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>[] ) );
+		}	
 		
 		[Test]
 		public void TestHashSet_MessagePackObjectField()
@@ -852,6 +1332,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestHashSet_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestHashSet_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject>[] ) );
+		}	
+		
+		[Test]
 		public void TestICollection_MessagePackObjectField()
 		{
 			TestCoreWithAutoVerify( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -862,6 +1354,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject>[] ) );
+		}	
 		
 		[Test]
 		public void TestISet_MessagePackObjectField()
@@ -876,6 +1380,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestISet_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestISet_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject>[] ) );
+		}	
+		
+		[Test]
 		public void TestIList_MessagePackObjectField()
 		{
 			TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -886,6 +1402,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject>[] ) );
+		}	
 		
 		[Test]
 		public void TestIDictionary_MessagePackObject_MessagePackObjectField()
@@ -900,6 +1428,18 @@ namespace MsgPack.Serialization
 		}
 		
 		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ) );
+		}	
+		
+		[Test]
 		public void TestAddOnlyCollection_MessagePackObjectField()
 		{
 			TestCoreWithAutoVerify( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
@@ -910,6 +1450,18 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> ) );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>[] ) );
+		}	
 		
 		[Test]
 		public void TestComplexTypeGeneratedEnclosure()

@@ -30,6 +30,11 @@ namespace MsgPack.Serialization
 
 		public sealed override bool Equals( ArraySegment<T> x, ArraySegment<T> y )
 		{
+			if ( x.Count == 0 )
+			{
+				return y.Count == 0;
+			}
+
 			return x.Array.Skip( x.Offset ).Take( x.Count ).SequenceEqual( y.Array.Skip( y.Offset ).Take( y.Count ), EqualityComparer<T>.Default );
 		}
 

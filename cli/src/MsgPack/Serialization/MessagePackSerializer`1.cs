@@ -115,6 +115,12 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "packer" );
 			}
 
+			if ( objectTree == null )
+			{
+				packer.PackNull();
+				return;
+			}
+
 			this.PackToCore( packer, objectTree );
 		}
 
@@ -155,6 +161,20 @@ namespace MsgPack.Serialization
 				{
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
+			}
+
+			if ( typeof( T ) != typeof( MessagePackObject ) && unpacker.Data.Value.IsNil )
+			{
+				if ( typeof( T ).IsValueType )
+				{
+					if ( !( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
+					{
+						throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
+					}
+				}
+
+				// null
+				return default( T );
 			}
 
 			return this.UnpackFromCore( unpacker );
@@ -206,6 +226,11 @@ namespace MsgPack.Serialization
 				{
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
+			}
+
+			if ( unpacker.Data.Value.IsNil )
+			{
+				return;
 			}
 
 			this.UnpackToCore( unpacker, collection );

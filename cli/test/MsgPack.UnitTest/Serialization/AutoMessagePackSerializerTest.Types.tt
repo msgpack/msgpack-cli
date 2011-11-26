@@ -156,6 +156,23 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		}
 		
 <#
+	if( !( __item.Item1 is Type ) || !( __item.Item1 as Type ).IsValueType )
+	{
+#>
+		[Test]
+		public void Test<#= ToFieldName( __item ) #>Null()
+		{
+			TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ) );
+		}
+		
+		[Test]
+		public void Test<#= ToFieldName( __item ) #>ArrayNull()
+		{
+			TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ) );
+		}	
+		
+<#
+	}
 }
 // In object
 #>
