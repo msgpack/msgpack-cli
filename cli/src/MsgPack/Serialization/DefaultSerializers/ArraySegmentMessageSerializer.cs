@@ -26,56 +26,65 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal static class ArraySegmentMessageSerializer
 	{
-		public static readonly MethodInfo PackByteArraySegmentToMethod = 
-			FromExpression.ToMethod( ( Packer packer, ArraySegment<byte> objectTree, SerializationContext context ) => PackByteArraySegmentTo( packer, objectTree, context ) );
+		public static readonly MethodInfo PackByteArraySegmentToMethod =
+			FromExpression.ToMethod( ( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer ) => PackByteArraySegmentTo( packer, objectTree, itemSerializer ) );
 		public static readonly MethodInfo PackCharArraySegmentToMethod =
-			FromExpression.ToMethod( ( Packer packer, ArraySegment<char> objectTree, SerializationContext context ) => PackCharArraySegmentTo( packer, objectTree, context ) );
+			FromExpression.ToMethod( ( Packer packer, ArraySegment<char> objectTree, MessagePackSerializer<char> itemSerializer ) => PackCharArraySegmentTo( packer, objectTree, itemSerializer ) );
 		public static readonly MethodInfo PackGenericArraySegmentTo1Method =
 			typeof( ArraySegmentMessageSerializer ).GetMethod( "PackGenericArraySegmentTo" );
 		public static readonly MethodInfo UnpackByteArraySegmentFromMethod =
-			FromExpression.ToMethod( ( Unpacker unpacker, SerializationContext context ) => UnpackByteArraySegmentFrom( unpacker, context ) );
+			FromExpression.ToMethod( ( Unpacker unpacker, MessagePackSerializer<byte> itemSerializer ) => UnpackByteArraySegmentFrom( unpacker, itemSerializer ) );
 		public static readonly MethodInfo UnpackCharArraySegmentFromMethod =
-			FromExpression.ToMethod( ( Unpacker unpacker, SerializationContext context ) => UnpackCharArraySegmentFrom( unpacker, context ) );
+			FromExpression.ToMethod( ( Unpacker unpacker, MessagePackSerializer<char> itemSerializer ) => UnpackCharArraySegmentFrom( unpacker, itemSerializer ) );
 		public static readonly MethodInfo UnpackGenericArraySegmentFrom1Method =
 			typeof( ArraySegmentMessageSerializer ).GetMethod( "UnpackGenericArraySegmentFrom" );
 
-		public static void PackByteArraySegmentTo( Packer packer, ArraySegment<byte> objectTree, SerializationContext context )
+		public static void PackByteArraySegmentTo( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer )
 		{
 			packer.PackRawHeader( objectTree.Count );
 			packer.PackRawBody( objectTree.Array.Skip( objectTree.Offset ).Take( objectTree.Count ) );
 		}
 
-		public static void PackCharArraySegmentTo( Packer packer, ArraySegment<char> objectTree, SerializationContext context )
+		public static void PackCharArraySegmentTo( Packer packer, ArraySegment<char> objectTree, MessagePackSerializer<char> itemSerializer )
 		{
 			// TODO: More efficient
 			packer.PackRawHeader( objectTree.Count );
 			packer.PackRawBody( MessagePackConvert.EncodeString( new string( objectTree.Array.Skip( objectTree.Offset ).Take( objectTree.Count ).ToArray() ) ) );
 		}
 
-		public static void PackGenericArraySegmentTo<T>( Packer packer, ArraySegment<T> objectTree, SerializationContext context )
+		public static void PackGenericArraySegmentTo<T>( Packer packer, ArraySegment<T> objectTree, MessagePackSerializer<T> itemSerializer )
 		{
 			packer.PackArrayHeader( objectTree.Count );
 			for ( int i = 0; i < objectTree.Count; i++ )
 			{
-				context.MarshalTo( packer, objectTree.Array[ i + objectTree.Offset ] );
+				itemSerializer.PackTo( packer, objectTree.Array[ i + objectTree.Offset ] );
 			}
 		}
 
-		public static ArraySegment<byte> UnpackByteArraySegmentFrom( Unpacker unpacker, SerializationContext context )
+		public static ArraySegment<byte> UnpackByteArraySegmentFrom( Unpacker unpacker, MessagePackSerializer<byte> itemSerializer )
 		{
 			return new ArraySegment<byte>( unpacker.Data.Value.AsBinary() );
 		}
 
-		public static ArraySegment<char> UnpackCharArraySegmentFrom( Unpacker unpacker, SerializationContext context )
+		public static ArraySegment<char> UnpackCharArraySegmentFrom( Unpacker unpacker, MessagePackSerializer<char> itemSerializer )
 		{
 			// TODO: More efficient
 			return new ArraySegment<char>( unpacker.Data.Value.AsCharArray() );
 		}
 
-		public static ArraySegment<T> UnpackGenericArraySegmentFrom<T>( Unpacker unpacker, SerializationContext context )
+		public static ArraySegment<T> UnpackGenericArraySegmentFrom<T>( Unpacker unpacker, MessagePackSerializer<T> itemSerializer )
 		{
 			T[] array = new T[ unpacker.ItemsCount ];
-			context.UnmarshalArrayTo( unpacker, array );
+			for ( int i = 0; i < array.Length; i++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+
+				array[ i ] = itemSerializer.UnpackFrom( unpacker );
+			}
+
 			return new ArraySegment<T>( array );
 		}
 	}
