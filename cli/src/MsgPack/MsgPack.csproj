@@ -165,7 +165,7 @@
       <DependentUpon>FromExpression.ToConstructor.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\IdentifierUtility.cs" />
-    <Compile Include="Serialization\AutoMessageObjectSerializer`1.cs" />
+    <Compile Include="Serialization\AutoMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectableSerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\CollectionTraits.cs" />
     <Compile Include="Serialization\CollectionKind.cs" />
