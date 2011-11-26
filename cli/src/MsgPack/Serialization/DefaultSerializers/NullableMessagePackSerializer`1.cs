@@ -27,6 +27,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class NullableMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
 		// TODO: -> Metadata
+		// TODO: comment
 		private static readonly PropertyInfo _nullableTHasValueProperty;
 		private static readonly PropertyInfo _nullableTValueProperty;
 		private static readonly MethodInfo _nullableTImplicitOperator;

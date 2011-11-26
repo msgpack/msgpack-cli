@@ -22,7 +22,6 @@ using System;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	// FIXME: Caching
 	internal class System_ArraySegment_1MessagePackSerializer<T> : MessagePackSerializer<ArraySegment<T>>
 	{
 		private static readonly Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> _packing;
