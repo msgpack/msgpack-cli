@@ -539,13 +539,13 @@ namespace MsgPack.Serialization
 			if ( target.LocalType.IsArray )
 			{
 				initialCountLoadingEmitter( il );
-				il.EmitNewarr( target.LocalType );
+				il.EmitNewarr( target.LocalType.GetElementType() );
 				il.EmitAnyStloc( target );
 				return;
 			}
 
 			ConstructorInfo ctor = target.LocalType.GetConstructor( _ctor_Int32_ParameterTypes );
-			if ( ctor != null )
+			if ( ctor != null && initialCountLoadingEmitter != null )
 			{
 				if ( target.LocalType.IsValueType )
 				{

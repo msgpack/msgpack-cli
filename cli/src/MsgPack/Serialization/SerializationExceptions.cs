@@ -203,5 +203,18 @@ namespace MsgPack.Serialization
 		{
 			return new InvalidOperationException( "Unpacker is not in the map header" );
 		}
+
+		internal static readonly MethodInfo NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod = FromExpression.ToMethod( ( Type type ) => SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( type ) );
+
+		/// <summary>
+		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Returns new exception to notify that operation is not supported because <paramref name="type"/> cannot be instanciated.
+		/// </summary>
+		/// <param name="type">Type.</param>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static Exception NewNotSupportedBecauseCannotInstanciateAbstractType( Type type )
+		{
+			return new NotSupportedException( String.Format( "This operation is not supported because '{0}' cannot be instanciated.", type ) );
+		}
 	}
 }

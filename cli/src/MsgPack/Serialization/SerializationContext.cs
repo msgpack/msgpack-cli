@@ -172,12 +172,12 @@ namespace MsgPack.Serialization
 			var serializer = this._serializers.Get<T>( this );
 			if ( serializer == null )
 			{
-				// FIXME: Unify
-				var arrayMarshaler = this._serializers.GetArray<T>( this );
-				if ( arrayMarshaler != null )
-				{
-					return new ShimArraySerializer<T>( arrayMarshaler, this );
-				}
+				//// FIXME: Unify
+				//var arrayMarshaler = this._serializers.GetArray<T>( this );
+				//if ( arrayMarshaler != null )
+				//{
+				//    return new ShimArraySerializer<T>( arrayMarshaler, this );
+				//}
 
 				// TODO: Configurable
 				serializer = new AutoMessagePackSerializer<T>( this );

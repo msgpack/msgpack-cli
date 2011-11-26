@@ -70,8 +70,7 @@ namespace MsgPack.Serialization
 				var locals = entries.Select( item => item.Member.CanSetValue() ? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name ) : null ).ToArray();
 
 				var result = unpackerIL.DeclareLocal( typeof( TObject ), "result" );
-				Emittion.EmitConstruction( unpackerIL, result.LocalType );
-				unpackerIL.EmitAnyStloc( result );
+				Emittion.EmitConstruction( unpackerIL, result, null );
 
 				Emittion.EmitUnpackMembers(
 					emitter,
@@ -244,7 +243,10 @@ namespace MsgPack.Serialization
 					 */
 					var collection = il.DeclareLocal( typeof( TObject ), "collection" );
 					il.EmitAnyLdarg( 2 );
-					Emittion.EmitLoadValue( il, memberOrNull );
+					if ( memberOrNull != null )
+					{
+						Emittion.EmitLoadValue( il, memberOrNull );
+					}
 					il.EmitAnyStloc( collection );
 					var count = il.DeclareLocal( typeof( int ), "count" );
 					il.EmitAnyLdarg( 2 );
@@ -285,9 +287,23 @@ namespace MsgPack.Serialization
 		private static void CreateUnpackArrayProceduresCore( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType )
 		{
 			var traits = collectionType.GetCollectionTraits();
+			CreateArrayUnpackFrom( emitter, collectionType );
+			CreateArrayUnpackTo( emitter, memberOrNull, collectionType, traits );
+		}
+
+		private static void CreateArrayUnpackFrom( SerializerEmitter emitter, Type collectionType )
+		{
 			var unpackFromIL = emitter.GetUnpackFromMethodILGenerator();
 			try
 			{
+				if ( collectionType.IsInterface || collectionType.IsAbstract )
+				{
+					unpackFromIL.EmitTypeOf( collectionType );
+					unpackFromIL.EmitAnyCall( SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod );
+					unpackFromIL.EmitThrow();
+					return;
+				}
+
 				/*
 				 *	if( !unpacker.IsArrayHeader )
 				 *	{
@@ -301,7 +317,7 @@ namespace MsgPack.Serialization
 				unpackFromIL.EmitAnyCall( SerializationExceptions.NewIsNotArrayHeaderMethod );
 				unpackFromIL.EmitThrow();
 				unpackFromIL.MarkLabel( endIf );
-				var collection = unpackFromIL.DeclareLocal(collectionType, "collection");
+				var collection = unpackFromIL.DeclareLocal( collectionType, "collection" );
 				Emittion.EmitConstruction(
 					unpackFromIL,
 					collection,
@@ -309,6 +325,7 @@ namespace MsgPack.Serialization
 					{
 						il.EmitAnyLdarg( 1 );
 						il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
+						il.EmitConv_Ovf_I4();
 					}
 				);
 
@@ -323,18 +340,21 @@ namespace MsgPack.Serialization
 			{
 				unpackFromIL.FlushTrace();
 			}
+		}
 
+		private static void CreateArrayUnpackTo( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType, CollectionTraits traits )
+		{
 			/*
-			 * int itemCount = unpacker.ItemCount;
-			 * for( int i = 0; i < array.Length; i++ )
-			 * {
-			 *		if( !unpacker.MoveToNextEntry() )
-			 *		{
-			 *			throw new SerializationException();
-			 *		}
-			 *		collection.Add( Context.Serializers.Get<T>().Deserialize( unpacker ) )
-			 * }
-			 */
+					  * int itemCount = unpacker.ItemCount;
+					  * for( int i = 0; i < array.Length; i++ )
+					  * {
+					  *		if( !unpacker.MoveToNextEntry() )
+					  *		{
+					  *			throw new SerializationException();
+					  *		}
+					  *		collection.Add( Context.Serializers.Get<T>().Deserialize( unpacker ) )
+					  * }
+					  */
 			var unpackToIL = emitter.GetUnpackToMethodILGenerator();
 			try
 			{
@@ -374,7 +394,7 @@ namespace MsgPack.Serialization
 						}
 						else
 						{
-							il.EmitAnyLdarg( 1 );
+							il.EmitAnyLdarg( 2 );
 						}
 
 						if ( collectionType.IsArray )
@@ -420,7 +440,7 @@ namespace MsgPack.Serialization
 		{
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( collectionType );
 			var traits = collectionType.GetCollectionTraits();
-			CreatePackMapProceduresCore(
+			CreateMapPack(
 				emitter,
 				collectionType,
 				traits,
@@ -435,7 +455,7 @@ namespace MsgPack.Serialization
 					il.EmitAnyStloc( collection );
 				}
 			);
-			CreateUnpackMapProceduresCore(
+			CreateMapUnpack(
 				emitter,
 				memberOrNull,
 				collectionType,
@@ -445,7 +465,7 @@ namespace MsgPack.Serialization
 			return emitter;
 		}
 
-		private static void CreatePackMapProceduresCore( SerializerEmitter emiter, Type collectionType, CollectionTraits traits, Action<TracingILGenerator, LocalBuilder> loadCollectionEmitter )
+		private static void CreateMapPack( SerializerEmitter emiter, Type collectionType, CollectionTraits traits, Action<TracingILGenerator, LocalBuilder> loadCollectionEmitter )
 		{
 			var il = emiter.GetPackToMethodILGenerator();
 			try
@@ -549,23 +569,25 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void CreateUnpackMapProceduresCore( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType, CollectionTraits traits )
+		private static void CreateMapUnpack( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType, CollectionTraits traits )
 		{
-			/*
-			 * int itemCount = unpacker.ItemCount;
-			 * var collection = target....;
-			 * for( int i = 0; i < array.Length; i++ )
-			 * {
-			 *		if( !unpacker.MoveToNextEntry() )
-			 *		{
-			 *			throw new SerializationException();
-			 *		}
-			 *		collection.Add( Context.Serializers.Get<T>().Deserialize( unpacker ) )
-			 * }
-			 */
+			CreateMapUnpackFrom( emitter, memberOrNull, collectionType );
+			CreateMapUnpackTo( emitter, traits );
+		}
+
+		private static void CreateMapUnpackFrom( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType )
+		{
 			var unpackFromIL = emitter.GetUnpackFromMethodILGenerator();
 			try
 			{
+				if ( collectionType.IsInterface || collectionType.IsAbstract )
+				{
+					unpackFromIL.EmitTypeOf( collectionType );
+					unpackFromIL.EmitAnyCall( SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod );
+					unpackFromIL.EmitThrow();
+					return;
+				}
+
 				unpackFromIL.EmitAnyLdarg( 1 );
 				unpackFromIL.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
 				var endIf = unpackFromIL.DefineLabel( "END_IF" );
@@ -606,6 +628,22 @@ namespace MsgPack.Serialization
 			{
 				unpackFromIL.FlushTrace();
 			}
+		}
+
+		private static void CreateMapUnpackTo( SerializerEmitter emitter, CollectionTraits traits )
+		{
+			/*
+			 * int itemCount = unpacker.ItemCount;
+			 * var collection = target....;
+			 * for( int i = 0; i < array.Length; i++ )
+			 * {
+			 *		if( !unpacker.MoveToNextEntry() )
+			 *		{
+			 *			throw new SerializationException();
+			 *		}
+			 *		collection.Add( Context.Serializers.Get<T>().Deserialize( unpacker ) )
+			 * }
+			 */
 
 			var unpackToIL = emitter.GetUnpackToMethodILGenerator();
 			try
@@ -617,7 +655,7 @@ namespace MsgPack.Serialization
 				unpackToIL.EmitAnyCall( SerializationExceptions.NewIsNotArrayHeaderMethod );
 				unpackToIL.EmitThrow();
 				unpackToIL.MarkLabel( endIf );
-				
+
 				var itemsCount = unpackToIL.DeclareLocal( typeof( int ), "itemsCount" );
 #if DEBUG
 				Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> )
@@ -687,12 +725,12 @@ namespace MsgPack.Serialization
 		protected sealed override ConstructorInfo CreateObjectSerializer( MemberInfo member, Type memberType )
 		{
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( memberType );
-			CreatePackObjectProceduresCore( emitter, member, memberType );
-			CreateUnpackObjectProceduresCore( emitter, member, memberType );
+			CreateObjectPack( emitter, member, memberType );
+			CreateObjectUnpack( emitter, member, memberType );
 			return emitter.Create();
 		}
 
-		private static void CreatePackObjectProceduresCore( SerializerEmitter emitter, MemberInfo member, Type memberType )
+		private static void CreateObjectPack( SerializerEmitter emitter, MemberInfo member, Type memberType )
 		{
 			/*
 			 * Context.Serializers.Get<T>().Serialize( packer, value.... );
@@ -719,7 +757,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void CreateUnpackObjectProceduresCore( SerializerEmitter emitter, MemberInfo member, Type memberType )
+		private static void CreateObjectUnpack( SerializerEmitter emitter, MemberInfo member, Type memberType )
 		{
 			/*
 			 * Context.Serializers.Get<T>().Deserialize( packer, value.... );

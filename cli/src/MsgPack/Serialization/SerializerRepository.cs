@@ -101,6 +101,7 @@ namespace MsgPack.Serialization
 			return this._repository.Get<T, MessagePackSerializer<T>>( context );
 		}
 
+		[Obsolete]
 		public MessagePackArraySerializer<T> GetArray<T>( SerializationContext context )
 		{
 			if ( context == null )

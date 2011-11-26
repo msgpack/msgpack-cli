@@ -111,7 +111,7 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					this._underlying = context.GetArray<T>();
+					this._underlying = new EmittingMemberBinder<T>( context ).CreateArraySerializer();
 					Contract.Assert( this._underlying != null );
 					return;
 				}
