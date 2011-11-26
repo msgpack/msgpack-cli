@@ -209,7 +209,6 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Creates the serializer type built now and returns its constructor.
 		/// </summary>
-		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
 		/// <returns>
 		///		Newly built <see cref="MessagePackSerializer{T}"/> type constructor.
 		///		This value will not be <c>null</c>.
@@ -226,8 +225,6 @@ namespace MsgPack.Serialization
 				 *		this._serializer2 = context.GetSerializer<T2>();
 				 *			:
 				 *	}
-				 * 
-				 * 
 				 */
 				var il = this._constructorBuilder.GetILGenerator();
 				// : base()
