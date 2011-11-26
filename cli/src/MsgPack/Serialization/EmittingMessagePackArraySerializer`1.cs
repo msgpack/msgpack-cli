@@ -25,6 +25,7 @@ using System.Linq;
 
 namespace MsgPack.Serialization
 {
+	// FIXME: EmittingMessagePackArraySerializer<T>
 	/// <summary>
 	///		Reflection.Emit based <see cref="MessagePackArraySerializer{TCollection}"/>.
 	/// </summary>

@@ -242,6 +242,15 @@ namespace MsgPack.Serialization
 		protected abstract ConstructorInfo CreateObjectSerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
+		///		Creates serializer as <typeparamref name="TObject"/> is array type.
+		/// </summary>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public abstract MessagePackSerializer<TObject> CreateArraySerializer();
+
+		/// <summary>
 		///		Creates serializer as <typeparamref name="TObject"/> is map type.
 		/// </summary>
 		/// <returns>

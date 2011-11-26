@@ -27,6 +27,7 @@ namespace MsgPack.Serialization
 	///		Handles array (or list) marshaling.
 	/// </summary>
 	/// <typeparam name="TCollection">Type of the target collection.</typeparam>
+	[Obsolete]
 	public abstract class MessagePackArraySerializer<TCollection>// : MessagePackSerializer<TCollection>
 	{
 		/// <summary>

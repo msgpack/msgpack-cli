@@ -118,6 +118,17 @@ namespace MsgPack.Serialization
 
 		/// <summary>
 		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Returns new exception to notify that target type is not serializable because it does not have both of public default constructor and public constructor with an Int32 parameter.
+		/// </summary>
+		/// <param name="type">The target type.</param>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		internal static Exception NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( Type type )
+		{
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have both of default (parameterless) public constructor and  public constructor with an Int32 parameter.", type ) );
+		}
+
+		/// <summary>
+		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that there are no serializable fields and properties on the target type.
 		/// </summary>
 		/// <param name="type">The target type.</param>
@@ -167,6 +178,30 @@ namespace MsgPack.Serialization
 		internal static Exception NewMissingAddMethod( Type type )
 		{
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have appropriate Add method.", type ) );
+		}
+
+		internal static readonly MethodInfo NewIsNotArrayHeaderMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsNotArrayHeader() );
+
+		/// <summary>
+		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Returns new exception to notify that unpacker is not in the array header, that is the state is invalid.
+		/// </summary>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static Exception NewIsNotArrayHeader()
+		{
+			return new InvalidOperationException( "Unpacker is not in the array header" );
+		}
+
+		internal static readonly MethodInfo NewIsNotMapHeaderMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsNotMapHeader() );
+
+		/// <summary>
+		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Returns new exception to notify that unpacker is not in the array header, that is the state is invalid.
+		/// </summary>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static Exception NewIsNotMapHeader()
+		{
+			return new InvalidOperationException( "Unpacker is not in the map header" );
 		}
 	}
 }

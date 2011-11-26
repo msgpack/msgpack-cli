@@ -32,13 +32,6 @@ namespace MsgPack.Serialization
 	/// <typeparam name="T"></typeparam>
 	public class AutoMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
-		[Obsolete]
-		private readonly Action<Packer, T, SerializationContext> _packing;
-		[Obsolete]
-		private readonly Func<Unpacker, SerializationContext, T> _unpacking;
-		[Obsolete]
-		private readonly SerializationContext _context;
-
 		private readonly MessagePackSerializer<T> _underlying;
 
 		/// <summary>

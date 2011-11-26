@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -19,14 +19,13 @@
 #endregion -- License Terms --
 
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
 {
-	internal static class _Packer
+	internal static class _Enumerable
 	{
-		public static readonly MethodInfo PackArrayHeader = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackArrayHeader( count ) );
-		public static readonly MethodInfo PackMapHeader = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackMapHeader( count ) );
-		public static readonly MethodInfo PackString = FromExpression.ToMethod( ( Packer packer, string value ) => packer.PackString( value ) );
+		public static readonly MethodInfo ToArray1Method = typeof( Enumerable ).GetMethod( "ToArray" );
 	}
 }

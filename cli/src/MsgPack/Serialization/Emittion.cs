@@ -47,6 +47,7 @@ namespace MsgPack.Serialization
 		private static readonly MethodInfo _ienumeratorMoveNextMethod = FromExpression.ToMethod( ( IEnumerator enumerator ) => enumerator.MoveNext() );
 		private static readonly PropertyInfo _ienumeratorCurrentProperty = FromExpression.ToProperty( ( IEnumerator enumerator ) => enumerator.Current );
 		private static readonly PropertyInfo _idictionaryEnumeratorCurrentProperty = FromExpression.ToProperty( ( IDictionaryEnumerator enumerator ) => enumerator.Entry );
+		private static readonly Type[] _ctor_Int32_ParameterTypes = new[] { typeof( int ) };
 
 		/// <summary>
 		///		Emits 'for' statement on current IL stream.
@@ -506,6 +507,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Obsolete]
 		public static void EmitConstruction( TracingILGenerator il, Type type )
 		{
 			Contract.Assert( il != null );
@@ -525,6 +527,56 @@ namespace MsgPack.Serialization
 			}
 
 			il.EmitNewobj( ctor );
+		}
+
+		public static void EmitConstruction( TracingILGenerator il, LocalBuilder target, Action<TracingILGenerator> initialCountLoadingEmitter )
+		{
+			Contract.Assert( il != null );
+			Contract.Assert( target != null );
+
+			// TODO: For collection, supports .ctor(IEnumerable<> other)
+
+			if ( target.LocalType.IsArray )
+			{
+				initialCountLoadingEmitter( il );
+				il.EmitNewarr( target.LocalType );
+				il.EmitAnyStloc( target );
+				return;
+			}
+
+			ConstructorInfo ctor = target.LocalType.GetConstructor( _ctor_Int32_ParameterTypes );
+			if ( ctor != null )
+			{
+				if ( target.LocalType.IsValueType )
+				{
+					il.EmitAnyLdloca( target );
+					initialCountLoadingEmitter( il );
+					il.EmitCallConstructor( ctor );
+					il.EmitAnyStloc( target );
+				}
+				else
+				{
+					initialCountLoadingEmitter( il );
+					il.EmitNewobj( ctor );
+					il.EmitAnyStloc( target );
+				}
+				return;
+			}
+
+			if ( target.LocalType.IsValueType )
+			{
+				// ValueType instance has been initialized by the runtime.
+				return;
+			}
+
+			ctor = target.LocalType.GetConstructor( Type.EmptyTypes );
+			if ( ctor == null )
+			{
+				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( target.LocalType );
+			}
+
+			il.EmitNewobj( ctor );
+			il.EmitAnyStloc( target );
 		}
 
 		/// <summary>

@@ -26,6 +26,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Define generic factory methods for generic <see cref="MessagePackArraySerializer{TCollection}"/> classes.
 	/// </summary>
+	[Obsolete]
 	public static class MessagePackArraySerializer
 	{
 		/// <summary>
