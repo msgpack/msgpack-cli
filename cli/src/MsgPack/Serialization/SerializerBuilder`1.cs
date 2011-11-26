@@ -60,7 +60,7 @@ namespace MsgPack.Serialization
 					MemberTypes.Field | MemberTypes.Property,
 					BindingFlags.Public | BindingFlags.Instance,
 					GetMemberFilter( option ), null
-				).Select( member => new SerlializingMember( member ) )
+				).Select( member => new SerializingMember( member ) )
 				.OrderBy( member => member.Contract.Order )
 				.ToArray();
 
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		<see cref="MessagePackSerializer{T}"/>. This value will not be <c>null</c>.
 		/// </returns>
-		protected abstract MessagePackSerializer<TObject> CreateSerializer( SerlializingMember[] entries );
+		protected abstract MessagePackSerializer<TObject> CreateSerializer( SerializingMember[] entries );
 
 		private static MemberFilter GetMemberFilter( SerializationMemberOption option )
 		{

@@ -211,7 +211,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SerializerRepository.defaults.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\SerlializingMember.cs" />
+    <Compile Include="Serialization\SerializingMember.cs" />
     <Compile Include="Serialization\MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ReflectionExtensions.cs" />
     <Compile Include="Serialization\SerializationContext.cs" />

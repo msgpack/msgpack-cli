@@ -24,16 +24,15 @@ using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
 {
-	//FIXME: typo
 	/// <summary>
 	///		Represents serializing member information.
 	/// </summary>
-	internal struct SerlializingMember
+	internal struct SerializingMember
 	{
 		public readonly MemberInfo Member;
 		public readonly DataMemberContract Contract;
 
-		public SerlializingMember( MemberInfo member )
+		public SerializingMember( MemberInfo member )
 		{
 			this.Member = member;
 			this.Contract = new DataMemberContract( member, Attribute.GetCustomAttribute( member, typeof( DataMemberAttribute ) ) as DataMemberAttribute );

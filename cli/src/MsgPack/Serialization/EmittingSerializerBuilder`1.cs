@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 	{
 		public EmittingSerializerBuilder( SerializationContext context ) : base( context ) { }
 
-		protected sealed override MessagePackSerializer<TObject> CreateSerializer( SerlializingMember[] entries )
+		protected sealed override MessagePackSerializer<TObject> CreateSerializer( SerializingMember[] entries )
 		{
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ) );
 
