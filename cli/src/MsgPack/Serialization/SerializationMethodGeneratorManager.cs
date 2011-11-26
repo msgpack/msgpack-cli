@@ -28,7 +28,7 @@ namespace MsgPack.Serialization
 	internal abstract class SerializationMethodGeneratorManager
 	{
 		// TODO: Configurable
-		internal static SerializationMethodGeneratorOption DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanCollect;
+		internal static SerializationMethodGeneratorOption DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.Fast;
 
 		/// <summary>
 		///		Get the appropriate <see cref="SerializationMethodGeneratorManager"/> for the current configuration.
