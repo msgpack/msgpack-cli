@@ -27,8 +27,6 @@ using System.Threading;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: Collectable
-	// FIXME: RENAME
 	/// <summary>
 	///		Manages serializer generators.
 	/// </summary>
