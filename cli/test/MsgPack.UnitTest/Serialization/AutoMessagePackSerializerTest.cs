@@ -72,11 +72,11 @@ namespace MsgPack.Serialization
 			{
 				try
 				{
-					DumpableSerializationMethodGeneratorManager.DumpTo();
+					DefaultSerializationMethodGeneratorManager.DumpTo();
 				}
 				finally
 				{
-					DumpableSerializationMethodGeneratorManager.Refresh();
+					DefaultSerializationMethodGeneratorManager.Refresh();
 				}
 			}
 		}

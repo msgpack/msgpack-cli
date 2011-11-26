@@ -56,15 +56,15 @@ namespace MsgPack.Serialization
 			{
 				case SerializationMethodGeneratorOption.CanDump:
 				{
-					return DumpableSerializationMethodGeneratorManager.CanDump;
+					return DefaultSerializationMethodGeneratorManager.CanDump;
 				}
 				case SerializationMethodGeneratorOption.CanCollect:
 				{
-					return DumpableSerializationMethodGeneratorManager.CanCollect;
+					return DefaultSerializationMethodGeneratorManager.CanCollect;
 				}
 				default:
 				{
-					return DumpableSerializationMethodGeneratorManager.Fast;
+					return DefaultSerializationMethodGeneratorManager.Fast;
 				}
 			}
 		}

@@ -187,7 +187,7 @@
     <Compile Include="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs" />
-    <Compile Include="Serialization\DumpableSerializationMethodGeneratorManager.cs" />
+    <Compile Include="Serialization\DefaultSerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\EmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\Emittion.cs" />
     <Compile Include="Serialization\FromExpression.cs" />

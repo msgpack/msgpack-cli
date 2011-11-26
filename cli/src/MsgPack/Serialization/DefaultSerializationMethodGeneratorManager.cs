@@ -32,7 +32,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Manages serializer generators.
 	/// </summary>
-	internal sealed class DumpableSerializationMethodGeneratorManager : SerializationMethodGeneratorManager
+	internal sealed class DefaultSerializationMethodGeneratorManager : SerializationMethodGeneratorManager
 	{
 		private static readonly ConstructorInfo _debuggableAttributeCtor =
 			typeof( DebuggableAttribute ).GetConstructor( new[] { typeof( bool ), typeof( bool ) } );
@@ -40,41 +40,41 @@ namespace MsgPack.Serialization
 		private static int _assemblySequence = -1;
 		private int _typeSequence = -1;
 
-		private static DumpableSerializationMethodGeneratorManager _canCollect = new DumpableSerializationMethodGeneratorManager( false, true );
+		private static DefaultSerializationMethodGeneratorManager _canCollect = new DefaultSerializationMethodGeneratorManager( false, true );
 
 		/// <summary>
 		///		Get the singleton instance for can-collect mode.
 		/// </summary>
-		public static DumpableSerializationMethodGeneratorManager CanCollect
+		public static DefaultSerializationMethodGeneratorManager CanCollect
 		{
-			get { return DumpableSerializationMethodGeneratorManager._canCollect; }
+			get { return DefaultSerializationMethodGeneratorManager._canCollect; }
 		}
 
-		private static DumpableSerializationMethodGeneratorManager _canDump = new DumpableSerializationMethodGeneratorManager( true, false );
+		private static DefaultSerializationMethodGeneratorManager _canDump = new DefaultSerializationMethodGeneratorManager( true, false );
 
 		/// <summary>
 		///		Get the singleton instance for can-dump mode.
 		/// </summary>
-		public static DumpableSerializationMethodGeneratorManager CanDump
+		public static DefaultSerializationMethodGeneratorManager CanDump
 		{
-			get { return DumpableSerializationMethodGeneratorManager._canDump; }
+			get { return DefaultSerializationMethodGeneratorManager._canDump; }
 		}
 
-		private static DumpableSerializationMethodGeneratorManager _fast = new DumpableSerializationMethodGeneratorManager( false, false );
+		private static DefaultSerializationMethodGeneratorManager _fast = new DefaultSerializationMethodGeneratorManager( false, false );
 
 		/// <summary>
 		///		Get the singleton instance for fast mode.
 		/// </summary>
-		public static DumpableSerializationMethodGeneratorManager Fast
+		public static DefaultSerializationMethodGeneratorManager Fast
 		{
-			get { return DumpableSerializationMethodGeneratorManager._fast; }
+			get { return DefaultSerializationMethodGeneratorManager._fast; }
 		}
 
 		internal static void Refresh()
 		{
-			_canCollect = new DumpableSerializationMethodGeneratorManager( false, true );
-			_canDump = new DumpableSerializationMethodGeneratorManager( true, false );
-			_fast = new DumpableSerializationMethodGeneratorManager( false, false );
+			_canCollect = new DefaultSerializationMethodGeneratorManager( false, true );
+			_canDump = new DefaultSerializationMethodGeneratorManager( true, false );
+			_fast = new DefaultSerializationMethodGeneratorManager( false, false );
 		}
 
 		/// <summary>
@@ -101,11 +101,11 @@ namespace MsgPack.Serialization
 		private readonly string _moduleFileName;
 		private readonly bool _isDebuggable;
 
-		private DumpableSerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable )
+		private DefaultSerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable )
 		{
 			this._isDebuggable = isDebuggable;
 
-			var assemblyName = typeof( DumpableSerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
+			var assemblyName = typeof( DefaultSerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
 			this._assembly =
 				AppDomain.CurrentDomain.DefineDynamicAssembly(
 					new AssemblyName( assemblyName ),
