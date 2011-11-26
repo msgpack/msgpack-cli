@@ -31,7 +31,6 @@ namespace MsgPack.Serialization
 {
 	// FIXME: null handling
 	// FIXME: Comment
-	// TODO: Rename to EmittingSerializerBuilder
 	/// <summary>
 	///		<see cref="SerializerBuilder{T}"/> implementation using Reflection.Emit.
 	/// </summary>

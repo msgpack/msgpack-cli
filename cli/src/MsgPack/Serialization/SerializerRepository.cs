@@ -32,9 +32,6 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed partial class SerializerRepository
 	{
-		internal static MethodInfo Get1Method = typeof( SerializerRepository ).GetMethod( "Get", Type.EmptyTypes );
-		internal static MethodInfo Register1Method = typeof( SerializerRepository ).GetMethod( "Register", Type.EmptyTypes );
-
 		private readonly TypeKeyRepository _repository;
 
 		/// <summary>

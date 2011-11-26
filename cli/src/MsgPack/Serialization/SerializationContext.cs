@@ -19,9 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Reflection;
-using System.ComponentModel;
-using System.Collections;
 
 namespace MsgPack.Serialization
 {
@@ -31,15 +28,6 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationContext
 	{
-		[Obsolete]
-		internal static readonly MethodInfo MarshalTo1Method = typeof( SerializationContext ).GetMethod( "MarshalTo" );
-		[Obsolete]
-		internal static readonly MethodInfo UnmarshalFrom1Method = typeof( SerializationContext ).GetMethod( "UnmarshalFrom" );
-		[Obsolete]
-		internal static readonly MethodInfo MarshalArrayTo1Method = typeof( SerializationContext ).GetMethod( "MarshalArrayTo" );
-		[Obsolete]
-		internal static readonly MethodInfo UnmarshalArrayTo1Method = typeof( SerializationContext ).GetMethod( "UnmarshalArrayTo" );
-
 		private static readonly SerializationContext _default = new SerializationContext( SerializerRepository.Default );
 
 		private readonly SerializerRepository _serializers;
@@ -59,10 +47,7 @@ namespace MsgPack.Serialization
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.Default"/>.
 		/// </summary>
 		public SerializationContext()
-			: this( new SerializerRepository( SerializerRepository.Default ) )
-		{
-
-		}
+			: this( new SerializerRepository( SerializerRepository.Default ) ) { }
 
 		internal SerializationContext( SerializerRepository serializers )
 		{
