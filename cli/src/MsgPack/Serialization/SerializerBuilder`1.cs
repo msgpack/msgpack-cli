@@ -19,11 +19,10 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
@@ -119,7 +118,7 @@ namespace MsgPack.Serialization
 		/// <param name="member">Metadata of target member.</param>
 		/// <param name="contract">Contract information of target member.</param>
 		/// <returns>
-		///		<see cref="ConsctructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
+		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
 		///		This value will not be <c>null</c>.
 		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
 		/// </returns>
@@ -184,31 +183,14 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-
-		/// <summary>
-		///		Create serialization/deserialization procedures for the array type member.
-		/// </summary>
-		/// <param name="member">Metadata of the target member.</param>
-		/// <param name="memberType">Type of the target member.</param>
-		/// <param name="contract">Contract of the target member.</param>
-		/// <param name="traits"><see cref="CollectionTraits"/> which contains collection kind and metadata of required methods.</param>
-		/// <param name="packing">Packing procedure.</param>
-		/// <param name="unpacking">Unpacking procedure.</param>
-		/// <returns></returns>
-		[Obsolete]
-		protected virtual bool CreateArrayProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
-		{
-			throw new NotImplementedException();
-		}
-
+		
 		/// <summary>
 		///		Creates serializer to serialize/deserialize specified array type member and returns its
 		/// </summary>
 		/// <param name="member">Metadata of target member.</param>
 		/// <param name="memberType"><see cref="Type"/> of member value.</param>
-		/// <param name="contract">Contract information of target member.</param>
 		/// <returns>
-		///		<see cref="ConsctructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
+		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
 		///		This value will not be <c>null</c>.
 		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
 		/// </returns>
@@ -219,9 +201,8 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="member">Metadata of target member.</param>
 		/// <param name="memberType"><see cref="Type"/> of member value.</param>
-		/// <param name="contract">Contract information of target member.</param>
 		/// <returns>
-		///		<see cref="ConsctructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
+		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
 		///		This value will not be <c>null</c>.
 		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
 		/// </returns>
@@ -233,9 +214,8 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="member">Metadata of target member.</param>
 		/// <param name="memberType"><see cref="Type"/> of member value.</param>
-		/// <param name="contract">Contract information of target member.</param>
 		/// <returns>
-		///		<see cref="ConsctructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
+		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
 		///		This value will not be <c>null</c>.
 		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
 		/// </returns>

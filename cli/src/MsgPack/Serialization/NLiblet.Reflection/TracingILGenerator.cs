@@ -200,6 +200,7 @@ namespace NLiblet.Reflection
 		/// </summary>
 		/// <param name="methodBuilder">The method builder.</param>
 		/// <param name="traceWriter">The trace writer.</param>
+		/// <param name="isDebuggable"><c>true</c> if the underlying builders are debuggable; othersie <c>false</c>.</param>
 		public TracingILGenerator( MethodBuilder methodBuilder, TextWriter traceWriter, bool isDebuggable )
 			: this( methodBuilder != null ? methodBuilder.GetILGenerator() : null, false, traceWriter, isDebuggable )
 		{

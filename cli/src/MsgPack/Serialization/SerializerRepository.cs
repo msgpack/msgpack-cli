@@ -101,31 +101,6 @@ namespace MsgPack.Serialization
 			return this._repository.Get<T, MessagePackSerializer<T>>( context );
 		}
 
-		[Obsolete]
-		public MessagePackArraySerializer<T> GetArray<T>( SerializationContext context )
-		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			var arrayMarshaler = this._arrayRepository.Get<T, MessagePackArraySerializer<T>>( context );
-			if ( arrayMarshaler == null && typeof( T ) != typeof( string ) && typeof( T ) != typeof( MessagePackObject ) && typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ) )
-			{
-				// TODO: Configurable
-				arrayMarshaler = MessagePackArraySerializer.Create<T>( context );
-				if ( arrayMarshaler != null )
-				{
-					if ( !this._arrayRepository.Register<T>( arrayMarshaler ) )
-					{
-						arrayMarshaler = this._arrayRepository.Get<T, MessagePackArraySerializer<T>>( context );
-					}
-				}
-			}
-
-			return arrayMarshaler;
-		}
-
 		/// <summary>
 		///		Register <see cref="MessagePackSerializer{T}"/>.
 		/// </summary>

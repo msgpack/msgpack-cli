@@ -78,17 +78,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw new ArgumentNullException( "context" );
 			}
 
-			var serializer = context.Serializers.Get<T>( context );
-			if ( serializer == null )
-			{
-				serializer = new AutoMessagePackSerializer<T>( context );
-				if ( !context.Serializers.Register<T>( serializer ) )
-				{
-					serializer = context.Serializers.Get<T>( context );
-				}
-			}
-
-			this._itemSerializer = serializer;
+			this._itemSerializer = context.GetSerializer<T>();
 		}
 
 		protected sealed override void PackToCore( Packer packer, ArraySegment<T> objectTree )

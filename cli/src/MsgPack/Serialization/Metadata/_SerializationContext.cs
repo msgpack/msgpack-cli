@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -20,23 +20,11 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.Metadata
 {
-	//FIXME: typo
-	/// <summary>
-	///		Represents serializing member information.
-	/// </summary>
-	internal struct SerlializingMember
+	internal static class _SerializationContext
 	{
-		public readonly MemberInfo Member;
-		public readonly DataMemberContract Contract;
-
-		public SerlializingMember( MemberInfo member )
-		{
-			this.Member = member;
-			this.Contract = new DataMemberContract( member, Attribute.GetCustomAttribute( member, typeof( DataMemberAttribute ) ) as DataMemberAttribute );
-		}
+		public static readonly MethodInfo GetSerializer1_Method = typeof( SerializationContext ).GetMethod( "GetSerializer" );
 	}
 }

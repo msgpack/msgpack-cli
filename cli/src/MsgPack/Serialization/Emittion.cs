@@ -19,31 +19,21 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NLiblet.Reflection;
-using System.Reflection.Emit;
-using System.Reflection;
-using System.Diagnostics.Contracts;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.Serialization;
+using NLiblet.Reflection;
 
 namespace MsgPack.Serialization
 {
-	// FIXME : restructuring
+	// FIXME : comment
 	internal static class Emittion
 	{
-		private static readonly MethodInfo _packerPackStringMethod = FromExpression.ToMethod( ( Packer packer, String value ) => packer.PackString( value ) );
-		private static readonly MethodInfo _idisposableDisposeMethod = FromExpression.ToMethod( ( IDisposable disposable ) => disposable.Dispose() );
-		private static readonly PropertyInfo _unpackerIsMapHeaderProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsMapHeader );
-		private static readonly PropertyInfo _unpackerIsArrayHeaderProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsArrayHeader );
-		private static readonly MethodInfo _unpackerReadMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
-		private static readonly MethodInfo _unpackerReadSubTreeMethod = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.ReadSubtree() );
-		private static readonly PropertyInfo _unpackerDataProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.Data );
-		private static readonly PropertyInfo _nullableMessagePackObjectValueProperty = FromExpression.ToProperty( ( MessagePackObject? value ) => value.Value );
-		private static readonly PropertyInfo _messagePackObjectIsNilProperty = FromExpression.ToProperty( ( MessagePackObject value ) => value.IsNil );
+		// TODO: -> Metadata
 		private static readonly MethodInfo _ienumeratorMoveNextMethod = FromExpression.ToMethod( ( IEnumerator enumerator ) => enumerator.MoveNext() );
 		private static readonly PropertyInfo _ienumeratorCurrentProperty = FromExpression.ToProperty( ( IEnumerator enumerator ) => enumerator.Current );
 		private static readonly PropertyInfo _idictionaryEnumeratorCurrentProperty = FromExpression.ToProperty( ( IDictionaryEnumerator enumerator ) => enumerator.Entry );
@@ -180,13 +170,13 @@ namespace MsgPack.Serialization
 					{
 						il.EmitAnyLdloc( enumerator );
 						il.EmitBox( traits.GetEnumeratorMethod.ReturnType );
-						il.EmitAnyCall( _idisposableDisposeMethod );
+						il.EmitAnyCall( Metadata._IDisposable.Dispose );
 					}
 				}
 				else
 				{
 					il.EmitAnyLdloc( enumerator );
-					il.EmitAnyCall( _idisposableDisposeMethod );
+					il.EmitAnyCall( Metadata._IDisposable.Dispose );
 				}
 
 				il.EndExceptionBlock();
@@ -246,32 +236,6 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		/// <summary>
-		///		Emits <see cref="M:Packer.PackString(String)"/> method.
-		/// </summary>
-		/// <param name="il">IL generator to be emitted to.</param>
-		/// <param name="packerArgumentIndex">Index to packer argument.</param>
-		/// <param name="literal">String literal to be emmitted.</param>
-		public static void EmitPackLiteralString( TracingILGenerator il, int packerArgumentIndex, string literal )
-		{
-			// packer.PackString( "..." );
-			il.EmitAnyLdarg( packerArgumentIndex );
-			il.EmitLdstr( literal );
-			il.EmitAnyCall( _packerPackStringMethod );
-			il.EmitPop();
-		}
-
-		// TODO: Caching
-		[Obsolete]
-		public static void EmitMarshalValue( TracingILGenerator il, int packerArgumentIndex, int contextArgumentIndex, Type valueType, Action<TracingILGenerator> loadValueEmitter )
-		{
-			//  context.MarshalTo( packer, ... ) )
-			il.EmitAnyLdarg( contextArgumentIndex );
-			il.EmitAnyLdarg( packerArgumentIndex );
-			loadValueEmitter( il );
-			il.EmitAnyCall( SerializationContext.MarshalTo1Method.MakeGenericMethod( valueType ) );
-		}
-
 		public static void EmitMarshalValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, Action<TracingILGenerator> loadValueEmitter )
 		{
 			var serializerField = emitter.RegisterSerializer( valueType );
@@ -281,68 +245,6 @@ namespace MsgPack.Serialization
 			il.EmitAnyLdarg( packerArgumentIndex );
 			loadValueEmitter( il );
 			il.EmitAnyCall( serializerField.FieldType.GetMethod( "PackTo" ) );
-		}
-
-		// TODO: Caching
-		[Obsolete]
-		public static void EmitUnmarshalValue( TracingILGenerator il, int unpackerArgumentIndex, int contextArgumentIndex, LocalBuilder value, Action<TracingILGenerator, int> unpackerReading )
-		{
-			if ( unpackerReading != null )
-			{
-				unpackerReading( il, unpackerArgumentIndex );
-			}
-
-			/*
-			 * if( unpacker.IsArrayHeader || unpacker.IsMapHeader )
-			 * {
-			 *		
-			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
-			 * }
-			 * else
-			 * {
-			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
-			 * }
-			 */
-
-			var then = il.DefineLabel( "THEN" );
-			var endIf = il.DefineLabel( "END_IF" );
-
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( _unpackerIsArrayHeaderProperty );
-			il.EmitBrtrue_S( then );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( _unpackerIsMapHeaderProperty );
-			il.EmitBrtrue_S( then );
-			// else
-			il.EmitAnyLdarg( contextArgumentIndex );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( value.LocalType ) );
-			il.EmitAnyStloc( value );
-			il.EmitBr_S( endIf );
-			// then
-			var subTreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subTreeUnpacker" );
-			il.MarkLabel( then );
-			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subTreeUnpacker );
-			il.EmitAnyLdarg( contextArgumentIndex );
-			il.EmitAnyLdloc( subTreeUnpacker );
-			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( value.LocalType ) );
-			il.EmitAnyStloc( value );
-			EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
-			il.MarkLabel( endIf );
-		}
-
-		[Obsolete( "", true )]
-		public static void EmitUnmarshalValue( TracingILGenerator il, LocalBuilder unpacker, int contextArgumentIndex, Type valueType, Action<TracingILGenerator, LocalBuilder> unpackerReading )
-		{
-			if ( unpackerReading != null )
-			{
-				unpackerReading( il, unpacker );
-			}
-
-			//  context.Marshalers.Get<T>().UnmarshalFrom( packer, ... ) )
-			il.EmitAnyLdarg( contextArgumentIndex );
-			il.EmitAnyLdloc( unpacker );
-			il.EmitAnyCall( SerializationContext.UnmarshalFrom1Method.MakeGenericMethod( valueType ) );
 		}
 
 		public static void EmitUnmarshalValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Action<TracingILGenerator, int> unpackerReading )
@@ -369,10 +271,10 @@ namespace MsgPack.Serialization
 			var serializerField = emitter.RegisterSerializer( value.LocalType );
 
 			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( _unpackerIsArrayHeaderProperty );
+			il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
 			il.EmitBrtrue_S( then );
 			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( _unpackerIsMapHeaderProperty );
+			il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
 			il.EmitBrtrue_S( then );
 			// else
 			il.EmitLdarg_0();
@@ -418,10 +320,10 @@ namespace MsgPack.Serialization
 			var serializerField = emitter.RegisterSerializer( memberType );
 
 			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( _unpackerIsArrayHeaderProperty );
+			il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
 			il.EmitBrtrue_S( then );
 			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( _unpackerIsMapHeaderProperty );
+			il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
 			il.EmitBrtrue_S( then );
 			// else
 			il.EmitTypeOf( memberType );
@@ -446,7 +348,7 @@ namespace MsgPack.Serialization
 		public static void EmitUnpackerBeginReadSubtree( TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder subTreeUnpacker )
 		{
 			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitAnyCall( _unpackerReadSubTreeMethod );
+			il.EmitAnyCall( Metadata._Unpacker.ReadSubtree );
 			il.EmitAnyStloc( subTreeUnpacker );
 			il.BeginExceptionBlock();
 		}
@@ -458,7 +360,7 @@ namespace MsgPack.Serialization
 			var endIf = il.DefineLabel( "END_IF" );
 			il.EmitBrfalse_S( endIf );
 			il.EmitAnyLdloc( subTreeUnpacker );
-			il.EmitAnyCall( _idisposableDisposeMethod );
+			il.EmitAnyCall( Metadata._IDisposable.Dispose );
 			il.MarkLabel( endIf );
 			il.EndExceptionBlock();
 		}
@@ -505,28 +407,6 @@ namespace MsgPack.Serialization
 					}
 				);
 			}
-		}
-
-		[Obsolete]
-		public static void EmitConstruction( TracingILGenerator il, Type type )
-		{
-			Contract.Assert( il != null );
-			Contract.Assert( type != null );
-
-			if ( type.IsValueType )
-			{
-				return;
-			}
-
-			// TODO: For collection, supports .ctor(IEnumerable<> other)
-
-			var ctor = type.GetConstructor( Type.EmptyTypes );
-			if ( ctor == null )
-			{
-				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( type );
-			}
-
-			il.EmitNewobj( ctor );
 		}
 
 		public static void EmitConstruction( TracingILGenerator il, LocalBuilder target, Action<TracingILGenerator> initialCountLoadingEmitter )
@@ -584,6 +464,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="emitter"><see cref="SerializerEmitter"/> to register the filed which holds descendant serializers.</param>
 		/// <param name="il"><see cref="TracingILGenerator"/> to emit instructions.</param>
+		/// <param name="target">Local variable which holds deserializing target instance.</param>
 		/// <param name="unpackerArgumentIndex">Index of unpacker argument. Note that the index of the first argument of instance method is 1, not 0.</param>
 		/// <param name="members">Tuple of member information that to be unpacked. The 1st item is metadata of the member, the 2nd the name of the member, the 3rd item is the local to be stored, and the 4th item is optional 'found' marker local.</param>
 		public static void EmitUnpackMembers( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, params Tuple<MemberInfo, string, LocalBuilder, LocalBuilder>[] members )

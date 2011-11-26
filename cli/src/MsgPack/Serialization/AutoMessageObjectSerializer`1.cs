@@ -50,55 +50,6 @@ namespace MsgPack.Serialization
 				throw new NotImplementedException( "Tuple is not supported yet." );
 			}
 
-			//this._context = context;
-
-			//var serializer = this._context.Serializers.Get<T>( this._context );
-			//if ( serializer != null )
-			//{
-			//    this._packing = Closures.Pack<T>( serializer.PackTo );
-			//    this._unpacking = Closures.UnpackWithForwarding( serializer.UnpackFrom );
-			//    return;
-			//}
-
-			//var traits = typeof( T ).GetCollectionTraits();
-			//switch ( traits.CollectionType )
-			//{
-			//    case CollectionKind.Array:
-			//    {
-			//        var arrayMarshaler = this._context.Serializers.GetArray<T>( this._context );
-			//        if ( arrayMarshaler != null )
-			//        {
-			//            this._packing = arrayMarshaler.MarshalTo;
-			//            this._unpacking = Closures.UnpackWithForwarding<T>( arrayMarshaler.UnmarshalTo );
-			//            return;
-			//        }
-
-			//        break;
-			//    }
-			//    case CollectionKind.Map:
-			//    {
-			//        // TODO: Pluggable
-			//        var builder = new EmittingMemberBinder<T>( context );
-			//        if ( !builder.CreateMapProcedures( traits, out this._packing, out this._unpacking ) )
-			//        {
-			//            break;
-			//        }
-
-			//        return;
-			//    }
-			//    case CollectionKind.NotCollection:
-			//    {
-			//        // TODO: Pluggable
-			//        var builder = new EmittingMemberBinder<T>( context );
-			//        if ( !builder.CreateProcedures( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut, out this._packing, out this._unpacking ) )
-			//        {
-			//            break;
-			//        }
-
-			//        return;
-			//    }
-			//}
-
 			var serializer = context.Serializers.Get<T>( context );
 			if ( serializer != null )
 			{
@@ -111,27 +62,36 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					this._underlying = new EmittingMemberBinder<T>( context ).CreateArraySerializer();
-					Contract.Assert( this._underlying != null );
-					return;
+					serializer = new EmittingMemberBinder<T>( context ).CreateArraySerializer();
+					break;
 				}
 				case CollectionKind.Map:
 				{
-					this._underlying = new EmittingMemberBinder<T>( context ).CreateMapSerializer();
-					Contract.Assert( this._underlying != null );
-					return;
+					serializer = new EmittingMemberBinder<T>( context ).CreateMapSerializer();
+					break;
 				}
 				case CollectionKind.NotCollection:
 				{
-					// TODO: Pluggable
-					this._underlying = new EmittingMemberBinder<T>( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
-					Contract.Assert( this._underlying != null );
-					return;
+					serializer = new EmittingMemberBinder<T>( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
+					break;
 				}
+			}
+
+			if ( serializer != null )
+			{
+				if ( !context.Serializers.Register<T>( serializer ) )
+				{
+					serializer = context.Serializers.Get<T>( context );
+					Contract.Assert( serializer != null );
+				}
+
+				this._underlying = serializer;
+				return;
 			}
 
 			throw SerializationExceptions.NewTypeCannotSerialize( typeof( T ) );
 		}
+
 		/// <summary>
 		///		Serialize specified object with specified <see cref="Packer"/>.
 		/// </summary>
@@ -152,6 +112,17 @@ namespace MsgPack.Serialization
 			return this._underlying.UnpackFrom( unpacker );
 		}
 
+		/// <summary>
+		///		Deserialize collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
+		/// </summary>
+		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
+		/// <param name="collection">Collection that the items to be stored. This value will not be <c>null</c>.</param>
+		/// <exception cref="SerializationException">
+		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="T"/> is not collection.
+		/// </exception>
 		protected sealed override void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			this._underlying.UnpackTo( unpacker, collection );

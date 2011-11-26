@@ -198,7 +198,7 @@ namespace MsgPack.Serialization
 				foreach ( var entry in this._serializers )
 				{
 					var targetType = Type.GetTypeFromHandle( entry.Key );
-					var getMethod = _serializationContextGet1Method.MakeGenericMethod( targetType );
+					var getMethod = Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType );
 					il.Emit( OpCodes.Ldarg_0 );
 					il.Emit( OpCodes.Ldarg_1 );
 					il.Emit( OpCodes.Callvirt, getMethod );
