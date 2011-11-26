@@ -155,6 +155,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackUnpackTest.Scalar.cs</LastGenOutput>
     </None>
+    <None Include="PEVerify.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Serialization\AutoMessagePackSerializerTest.Types.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AutoMessagePackSerializerTest.Types.cs</LastGenOutput>
