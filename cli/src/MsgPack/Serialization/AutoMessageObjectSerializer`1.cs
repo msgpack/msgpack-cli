@@ -62,17 +62,17 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					serializer = new EmittingMemberBinder<T>( context ).CreateArraySerializer();
+					serializer = new EmittingSerializerBuilder<T>( context ).CreateArraySerializer();
 					break;
 				}
 				case CollectionKind.Map:
 				{
-					serializer = new EmittingMemberBinder<T>( context ).CreateMapSerializer();
+					serializer = new EmittingSerializerBuilder<T>( context ).CreateMapSerializer();
 					break;
 				}
 				case CollectionKind.NotCollection:
 				{
-					serializer = new EmittingMemberBinder<T>( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
+					serializer = new EmittingSerializerBuilder<T>( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
 					break;
 				}
 			}

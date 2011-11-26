@@ -36,9 +36,9 @@ namespace MsgPack.Serialization
 	///		<see cref="SerializerBuilder{T}"/> implementation using Reflection.Emit.
 	/// </summary>
 	/// <typeparam name="TObject">Object to be serialized/deserialized.</typeparam>
-	internal sealed class EmittingMemberBinder<TObject> : SerializerBuilder<TObject>
+	internal sealed class EmittingSerializerBuilder<TObject> : SerializerBuilder<TObject>
 	{
-		public EmittingMemberBinder( SerializationContext context ) : base( context ) { }
+		public EmittingSerializerBuilder( SerializationContext context ) : base( context ) { }
 
 		protected sealed override MessagePackSerializer<TObject> CreateSerializer( SerlializingMember[] entries )
 		{
