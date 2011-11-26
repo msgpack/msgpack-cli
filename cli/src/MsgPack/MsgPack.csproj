@@ -149,6 +149,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultSerializers.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\Metadata\_String.cs" />
+    <Compile Include="Serialization\Metadata\_MessagePackObject.cs" />
+    <Compile Include="Serialization\Metadata\_IDisposable.cs" />
+    <Compile Include="Serialization\Metadata\_Nullable`1.cs" />
+    <Compile Include="Serialization\Metadata\_KeyValuePair`2.cs" />
+    <Compile Include="Serialization\Metadata\_DictionaryEntry.cs" />
+    <Compile Include="Serialization\Metadata\_Unpacker.cs" />
+    <Compile Include="Serialization\Metadata\_Packer.cs" />
     <Compile Include="Serialization\FromExpression.ToConstructor.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

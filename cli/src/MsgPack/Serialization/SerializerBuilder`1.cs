@@ -49,34 +49,13 @@ namespace MsgPack.Serialization
 			this._context = context;
 		}
 
-
 		/// <summary>
-		///		Create serializer procedures.
+		///		Creates serializer for <typeparamref name="TObject"/>.
 		/// </summary>
-		/// <param name="option">Member searching option.</param>
-		/// <param name="packing">Packing procedure.</param>
-		/// <param name="unpacking">Unpacking procedure.</param>
-		/// <returns></returns>
-		[Obsolete]
-		public bool CreateProcedures( SerializationMemberOption option, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking )
-		{
-			var entries =
-				typeof( TObject ).FindMembers(
-					MemberTypes.Field | MemberTypes.Property,
-					BindingFlags.Public | BindingFlags.Instance,
-					GetMemberFilter( option ), null
-				).Select( member => new SerlializingMember( member ) )
-				.OrderBy( member => member.Contract.Order )
-				.ToArray();
-
-			if ( entries.Length == 0 )
-			{
-				throw SerializationExceptions.NewNoSerializableFieldsException( typeof( TObject ) );
-			}
-
-			return this.CreateProcedures( entries, out packing, out unpacking );
-		}
-
+		/// <param name="option">Option to control members binding.</param>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. This value will not be <c>null</c>.
+		/// </returns>
 		public MessagePackSerializer<TObject> CreateSerializer( SerializationMemberOption option )
 		{
 			var entries =
@@ -97,18 +76,12 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Create serializer procedures.
+		///		Creates serializer for <typeparamref name="TObject"/>.
 		/// </summary>
-		/// <param name="entries">Serialization target members. This will not be <c>null</c>.</param>
-		/// <param name="packing">Packing procedure.</param>
-		/// <param name="unpacking">Unpacking procedure.</param>
-		/// <returns></returns>
-		[Obsolete]
-		protected virtual bool CreateProcedures( SerlializingMember[] entries, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking )
-		{
-			throw new NotImplementedException();
-		}
-
+		/// <param name="entries">Serialization target members. This will not be <c>null</c> nor empty.</param>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. This value will not be <c>null</c>.
+		/// </returns>
 		protected abstract MessagePackSerializer<TObject> CreateSerializer( SerlializingMember[] entries );
 
 		private static MemberFilter GetMemberFilter( SerializationMemberOption option )
@@ -139,36 +112,17 @@ namespace MsgPack.Serialization
 		{
 			return !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) );
 		}
-
+		
 		/// <summary>
-		///		Create serialization/deserialization procedure for the field.
+		///		Creates serializer to serialize/deserialize specified member and returns its
 		/// </summary>
-		/// <param name="field">Target field.</param>
-		/// <param name="contract">Contract information.</param>
-		/// <param name="packing">Packing procedure.</param>
-		/// <param name="unpacking">Unpacking procedure.</param>
-		/// <returns></returns>
-		[Obsolete]
-		protected bool CreateProcedures( FieldInfo field, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
-		{
-			return this.CreateProceduresCore( field, field.FieldType, !field.IsInitOnly, contract, out packing, out unpacking );
-		}
-
-
-		/// <summary>
-		///		Create serialization/deserialization procedures for the property.
-		/// </summary>
-		/// <param name="property">Target property.</param>
-		/// <param name="contract">Contract information.</param>
-		/// <param name="packing">Packing procedure.</param>
-		/// <param name="unpacking">Unpacking procedure.</param>
-		/// <returns></returns>
-		[Obsolete]
-		protected bool CreateProcedures( PropertyInfo property, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
-		{
-			return this.CreateProceduresCore( property, property.PropertyType, property.CanWrite, contract, out packing, out unpacking );
-		}
-
+		/// <param name="member">Metadata of target member.</param>
+		/// <param name="contract">Contract information of target member.</param>
+		/// <returns>
+		///		<see cref="ConsctructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
+		/// </returns>
 		protected ConstructorInfo CreateSerializer( MemberInfo member, DataMemberContract contract )
 		{
 			PropertyInfo property;
@@ -182,59 +136,6 @@ namespace MsgPack.Serialization
 				field = member as FieldInfo;
 				Contract.Assert( field != null );
 				return this.CreateSerializerCore( field, field.FieldType, !field.IsInitOnly, contract );
-			}
-		}
-
-		[Obsolete]
-		private bool CreateProceduresCore( MemberInfo member, Type memberType, bool canWrite, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
-		{
-			switch ( Type.GetTypeCode( memberType ) )
-			{
-				case TypeCode.DBNull:
-				case TypeCode.Empty:
-				{
-					Tracer.Emit.TraceEvent( Tracer.EventType.UnsupportedType, Tracer.EventId.UnsupportedType, "Field type '{0}' does not supported.", memberType );
-					packing = null;
-					unpacking = null;
-					return false;
-				}
-			}
-
-			if ( canWrite )
-			{
-				return this.CreateObjectProcedures( member, memberType, contract, out packing, out unpacking );
-			}
-
-			if ( memberType.IsValueType )
-			{
-				Tracer.Emit.TraceEvent( Tracer.EventType.ReadOnlyValueTypeMember, Tracer.EventId.ReadOnlyValueTypeMember, "Field {0} is read only and its type '{1}' is value type.", member.Name, member.ReflectedType );
-				packing = null;
-				unpacking = null;
-				return false;
-			}
-
-			var collectionTrait = memberType.GetCollectionTraits();
-			switch ( collectionTrait.CollectionType )
-			{
-				case CollectionKind.NotCollection:
-				{
-					return this.CreateObjectProcedures( member, memberType, contract, out packing, out unpacking );
-				}
-				case CollectionKind.Map:
-				{
-					return this.CreateMapProcedures( member, memberType, contract, collectionTrait, out packing, out unpacking );
-				}
-				case CollectionKind.Array:
-				{
-					return this.CreateArrayProcedures( member, memberType, contract, collectionTrait, out packing, out unpacking );
-				}
-				default:
-				{
-					// error
-					packing = null;
-					unpacking = null;
-					return false;
-				}
 			}
 		}
 
@@ -300,56 +201,53 @@ namespace MsgPack.Serialization
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		///		Creates serializer to serialize/deserialize specified array type member and returns its
+		/// </summary>
+		/// <param name="member">Metadata of target member.</param>
+		/// <param name="memberType"><see cref="Type"/> of member value.</param>
+		/// <param name="contract">Contract information of target member.</param>
+		/// <returns>
+		///		<see cref="ConsctructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
+		/// </returns>
 		protected abstract ConstructorInfo CreateArraySerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
-		///		Create serialization/deserialization procedures for the map(dictionary) type member.
+		///		Creates serializer to serialize/deserialize specified map type member and returns its
 		/// </summary>
-		/// <param name="member">Metadata of the target member.</param>
-		/// <param name="memberType">Type of the target member.</param>
-		/// <param name="contract">Contract of the target member.</param>
-		/// <param name="traits"><see cref="CollectionTraits"/> which contains collection kind and metadata of required methods.</param>
-		/// <param name="packing">Packing procedure.</param>
-		/// <param name="unpacking">Unpacking procedure.</param>
-		/// <returns></returns>
-		[Obsolete]
-		protected virtual bool CreateMapProcedures( MemberInfo member, Type memberType, DataMemberContract contract, CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
-		{
-			throw new NotImplementedException();
-		}
-
+		/// <param name="member">Metadata of target member.</param>
+		/// <param name="memberType"><see cref="Type"/> of member value.</param>
+		/// <param name="contract">Contract information of target member.</param>
+		/// <returns>
+		///		<see cref="ConsctructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
+		/// </returns>
 		protected abstract ConstructorInfo CreateMapSerializer( MemberInfo member, Type memberType );
 
-		/// <summary>
-		///		Create serialization/deserialization procedures for the non collection type member.
-		/// </summary>
-		/// <param name="member">Metadata of the target member.</param>
-		/// <param name="memberType">Type of the target member.</param>
-		/// <param name="contract">Contract of the target member.</param>
-		/// <param name="packing">Packing procedure.</param>
-		/// <param name="unpacking">Unpacking procedure.</param>
-		/// <returns></returns>
-		[Obsolete]
-		protected virtual bool CreateObjectProcedures( MemberInfo member, Type memberType, DataMemberContract contract, out Action<Packer, TObject, SerializationContext> packing, out Action<Unpacker, TObject, SerializationContext> unpacking )
-		{
-			throw new NotImplementedException();
-		}
 
+		/// <summary>
+		///		Creates serializer to serialize/deserialize specified object type member and returns its
+		/// </summary>
+		/// <param name="member">Metadata of target member.</param>
+		/// <param name="memberType"><see cref="Type"/> of member value.</param>
+		/// <param name="contract">Contract information of target member.</param>
+		/// <returns>
+		///		<see cref="ConsctructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
+		/// </returns>
 		protected abstract ConstructorInfo CreateObjectSerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
-		///		Create serialization/deserialization procedures for the map(dictionary) object.
+		///		Creates serializer as <typeparamref name="TObject"/> is map type.
 		/// </summary>
-		/// <param name="traits"><see cref="CollectionTraits"/> which contains collection kind and metadata of required methods.</param>
-		/// <param name="packing">Packing procedure.</param>
-		/// <param name="unpacking">Unpacking procedure.</param>
-		/// <returns></returns>
-		[Obsolete]
-		public virtual bool CreateMapProcedures( CollectionTraits traits, out Action<Packer, TObject, SerializationContext> packing, out Func<Unpacker, SerializationContext, TObject> unpacking )
-		{
-			throw new NotImplementedException();
-		}
-
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		/// </returns>
 		public abstract MessagePackSerializer<TObject> CreateMapSerializer();
 	}
 }

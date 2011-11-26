@@ -359,12 +359,14 @@ namespace MsgPack.Serialization
 			{
 				Assert.That(
 					MillisecondsDateTimeComparer.Instance.Equals( ( DateTime )( object )expected, ( DateTime )( object )actual ),
-					"Expected:{1}({2}){0}Actual :{3}({4})",
+					"Expected:{1}({2},{3}){0}Actual :{4}({5},{6})",
 					Environment.NewLine,
 					expected,
 					expected == null ? "(null)" : expected.GetType().FullName,
+					( ( DateTime )( object )expected ).Kind,
 					actual,
-					actual == null ? "(null)" : actual.GetType().FullName
+					actual == null ? "(null)" : actual.GetType().FullName,
+					( ( DateTime )( object )actual ).Kind
 					);
 				return;
 			}
