@@ -131,7 +131,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TextComplexObject()
+		public void TestComplexObject()
 		{
 			var target = new ComplexType() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
@@ -139,7 +139,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TextComplexObjectTypeWithDataContract()
+		public void TestComplexObjectTypeWithDataContract()
 		{
 			var target = new ComplexTypeWithDataContract() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TextComplexObjectTypeWithNonSerialized()
+		public void TestComplexObjectTypeWithNonSerialized()
 		{
 			var target = new ComplexTypeWithNonSerialized() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
