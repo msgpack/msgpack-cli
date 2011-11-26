@@ -19,10 +19,9 @@
 #endregion -- License Terms --
 
 using System;
-using System.IO;
 using System.Diagnostics.Contracts;
-using System.Runtime.Serialization;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
 {
@@ -30,7 +29,7 @@ namespace MsgPack.Serialization
 	///		<see cref="MessagePackSerializer{T}"/> based on reflection, opt-out based.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class AutoMessagePackSerializer<T> : MessagePackSerializer<T>
+	internal class AutoMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
 		private readonly MessagePackSerializer<T> _underlying;
 

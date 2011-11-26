@@ -33,7 +33,37 @@ namespace MsgPack.Serialization
 	/// <typeparam name="T">Target type.</typeparam>
 	public abstract class MessagePackSerializer<T>
 	{
+		// TODO: Metadata
 		internal static MethodInfo UnpackToCoreMethod = FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
+
+		/// <summary>
+		///		Creates new <see cref="MessagePackSerializer{T}"/> instance with new <see cref="SerializationContext"/>.
+		/// </summary>
+		/// <returns>
+		///		New <see cref="MessagePackSerializer{T}"/> instance to serialize/deserialize the object tree which the top is <typeparamref name="T"/>.
+		/// </returns>
+		public static MessagePackSerializer<T> Create()
+		{
+			return MessagePackSerializer<T>.Create( new SerializationContext() );
+		}
+
+		/// <summary>
+		///		Creates new <see cref="MessagePackSerializer{T}"/> instance with specified <see cref="SerializationContext"/>.
+		/// </summary>
+		/// <param name="context">
+		///		<see cref="SerializationContext"/> to store known/created serializers.
+		/// </param>
+		/// <returns>
+		///		New <see cref="MessagePackSerializer{T}"/> instance to serialize/deserialize the object tree which the top is <typeparamref name="T"/>.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		public static MessagePackSerializer<T> Create( SerializationContext context )
+		{
+			// TODO: Configurable
+			return new AutoMessagePackSerializer<T>( context );
+		}
 
 		/// <summary>
 		///		Serialize specified object to the <see cref="Stream"/>.
