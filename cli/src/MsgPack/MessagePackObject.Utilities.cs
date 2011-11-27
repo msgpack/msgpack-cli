@@ -40,17 +40,17 @@ namespace MsgPack
 	{
 		#region -- Type Code Constants --
 
-		private static readonly ValueTypeCode _sbyteTypeCode = new ValueTypeCode( typeof( sbyte ) );
-		private static readonly ValueTypeCode _byteTypeCode = new ValueTypeCode( typeof( byte ) );
-		private static readonly ValueTypeCode _int16TypeCode = new ValueTypeCode( typeof( short ) );
-		private static readonly ValueTypeCode _uint16TypeCode = new ValueTypeCode( typeof( ushort ) );
-		private static readonly ValueTypeCode _int32TypeCode = new ValueTypeCode( typeof( int ) );
-		private static readonly ValueTypeCode _uint32TypeCode = new ValueTypeCode( typeof( uint ) );
-		private static readonly ValueTypeCode _int64TypeCode = new ValueTypeCode( typeof( long ) );
-		private static readonly ValueTypeCode _uint64TypeCode = new ValueTypeCode( typeof( ulong ) );
-		private static readonly ValueTypeCode _singleTypeCode = new ValueTypeCode( typeof( float ) );
-		private static readonly ValueTypeCode _doubleTypeCode = new ValueTypeCode( typeof( double ) );
-		private static readonly ValueTypeCode _booleanTypeCode = new ValueTypeCode( typeof( bool ) );
+		private static readonly ValueTypeCode _sbyteTypeCode = new ValueTypeCode( typeof( sbyte ), MessagePackValueTypeCode.Int8 );
+		private static readonly ValueTypeCode _byteTypeCode = new ValueTypeCode( typeof( byte ), MessagePackValueTypeCode.UInt8 );
+		private static readonly ValueTypeCode _int16TypeCode = new ValueTypeCode( typeof( short ), MessagePackValueTypeCode.Int16 );
+		private static readonly ValueTypeCode _uint16TypeCode = new ValueTypeCode( typeof( ushort ), MessagePackValueTypeCode.UInt16 );
+		private static readonly ValueTypeCode _int32TypeCode = new ValueTypeCode( typeof( int ), MessagePackValueTypeCode.Int32 );
+		private static readonly ValueTypeCode _uint32TypeCode = new ValueTypeCode( typeof( uint ), MessagePackValueTypeCode.UInt32 );
+		private static readonly ValueTypeCode _int64TypeCode = new ValueTypeCode( typeof( long ), MessagePackValueTypeCode.Int64 );
+		private static readonly ValueTypeCode _uint64TypeCode = new ValueTypeCode( typeof( ulong ), MessagePackValueTypeCode.UInt64 );
+		private static readonly ValueTypeCode _singleTypeCode = new ValueTypeCode( typeof( float ), MessagePackValueTypeCode.Single );
+		private static readonly ValueTypeCode _doubleTypeCode = new ValueTypeCode( typeof( double ), MessagePackValueTypeCode.Double );
+		private static readonly ValueTypeCode _booleanTypeCode = new ValueTypeCode( typeof( bool ), MessagePackValueTypeCode.Boolean );
 
 		#endregion -- Type Code Constants --
 
@@ -224,170 +224,70 @@ namespace MsgPack
 					return false;
 				}
 
-				switch ( valueTypeCode.TypeCode )
+				if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Boolean )
 				{
-					case TypeCode.Boolean:
+					if ( otherValuetypeCode.TypeCode != MessagePackValueTypeCode.Boolean )
 					{
-						if ( otherValuetypeCode.TypeCode != TypeCode.Boolean )
-						{
-							return false;
-						}
+						return false;
+					}
 
-						return ( bool )this == ( bool )other;
-					}
-					case TypeCode.SByte:
-					case TypeCode.Int16:
-					case TypeCode.Int32:
-					case TypeCode.Int64:
-					{
-						switch ( otherValuetypeCode.TypeCode )
-						{
-							case TypeCode.SByte:
-							case TypeCode.Int16:
-							case TypeCode.Int32:
-							case TypeCode.Int64:
-							{
-								return this._value == other._value;
-							}
-							case TypeCode.Byte:
-							case TypeCode.UInt16:
-							case TypeCode.UInt32:
-							case TypeCode.UInt64:
-							{
-								var thisAsInt64 = unchecked( ( long )this._value );
-								if ( thisAsInt64 < 0L )
-								{
-									return false;
-								}
+					return ( bool )this == ( bool )other;
+				}
 
-								return this._value == other._value;
-							}
-							case TypeCode.Single:
-							{
-								return unchecked( ( long )other._value ) == ( float )other;
-							}
-							case TypeCode.Double:
-							{
-								return unchecked( ( long )other._value ) == ( double )other;
-							}
-							default:
-							{
-								return false;
-							}
-						}
-					}
-					case TypeCode.Byte:
-					case TypeCode.UInt16:
-					case TypeCode.UInt32:
-					case TypeCode.UInt64:
+				if ( valueTypeCode.IsInteger )
+				{
+					if ( otherValuetypeCode.IsInteger )
 					{
-						switch ( otherValuetypeCode.TypeCode )
-						{
-							case TypeCode.SByte:
-							case TypeCode.Int16:
-							case TypeCode.Int32:
-							case TypeCode.Int64:
-							{
-								var otherAsInt64 = unchecked( ( long )other._value );
-								if ( otherAsInt64 < 0L )
-								{
-									return false;
-								}
+						return IntegerIntegerEquals( this._value, valueTypeCode, other._value, otherValuetypeCode );
+					}
+					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
+					{
+						return IntegerSingleEquals( this, other );
+					}
+					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
+					{
+						return IntegerDoubleEquals( this, other );
+					}
+				}
+				else if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Double )
+				{
+					if ( otherValuetypeCode.IsInteger )
+					{
+						return IntegerDoubleEquals( other, this );
+					}
+					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
+					{
+						return ( double )this == ( float )other;
+					}
+					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
+					{
+						// Cannot compare _value because there might be not normalized.
+						return ( double )this == ( double )other;
+					}
+				}
+				else if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Single )
+				{
+					if ( otherValuetypeCode.IsInteger )
+					{
+						return IntegerSingleEquals( other, this );
+					}
+					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
+					{
+						// Cannot compare _value because there might be not normalized.
+						return ( float )this == ( float )other;
+					}
+					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
+					{
+						return ( float )this == ( double )other;
+					}
+				}
+			}
 
-								return this._value == other._value;
-							}
-							case TypeCode.Byte:
-							case TypeCode.UInt16:
-							case TypeCode.UInt32:
-							case TypeCode.UInt64:
-							{
-								return this._value == other._value;
-							}
-							case TypeCode.Single:
-							{
-								return this._value == ( float )other;
-							}
-							case TypeCode.Double:
-							{
-								return this._value == ( double )other;
-							}
-							default:
-							{
-								return false;
-							}
-						}
-					}
-					case TypeCode.Single:
-					{
-						switch ( otherValuetypeCode.TypeCode )
-						{
-							case TypeCode.SByte:
-							case TypeCode.Int16:
-							case TypeCode.Int32:
-							case TypeCode.Int64:
-							{
-								return ( float )this == unchecked( ( long )other._value );
-							}
-							case TypeCode.Byte:
-							case TypeCode.UInt16:
-							case TypeCode.UInt32:
-							case TypeCode.UInt64:
-							{
-								return ( float )this == other._value;
-							}
-							case TypeCode.Single:
-							{
-								// Cannot compare _value because there might be not normalized.
-								return ( float )this == ( float )other;
-							}
-							case TypeCode.Double:
-							{
-								return ( float )this == ( double )other;
-							}
-							default:
-							{
-								return false;
-							}
-						}
-					}
-					case TypeCode.Double:
-					{
-						switch ( otherValuetypeCode.TypeCode )
-						{
-							case TypeCode.SByte:
-							case TypeCode.Int16:
-							case TypeCode.Int32:
-							case TypeCode.Int64:
-							{
-								return ( double )this == unchecked( ( long )other._value );
-							}
-							case TypeCode.Byte:
-							case TypeCode.UInt16:
-							case TypeCode.UInt32:
-							case TypeCode.UInt64:
-							{
-								return ( double )this == other._value;
-							}
-							case TypeCode.Single:
-							{
-								return ( double )this == ( float )other;
-							}
-							case TypeCode.Double:
-							{
-								// Cannot compare _value because there might be not normalized.
-								return ( double )this == ( double )other;
-							}
-							default:
-							{
-								return false;
-							}
-						}
-					}
-					default:
-					{
-						// Unsigned
-						return this._value == other._value;
-					}
+			{
+				var asMps = this._handleOrTypeCode as MessagePackString;
+				if ( asMps != null )
+				{
+					return asMps.Equals( other._handleOrTypeCode as MessagePackString );
 				}
 			}
 
@@ -438,16 +338,56 @@ namespace MsgPack
 				}
 			}
 
-			{
-				var asMps = this._handleOrTypeCode as MessagePackString;
-				if ( asMps != null )
-				{
-					return asMps.Equals( other._handleOrTypeCode as MessagePackString );
-				}
-			}
-
 			Debug.Assert( false, String.Format( "Unkown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
+		}
+
+		private bool IntegerIntegerEquals( ulong left, ValueTypeCode leftTypeCode, ulong right, ValueTypeCode rightTypeCode )
+		{
+			if ( leftTypeCode.IsSigned )
+			{
+				if ( rightTypeCode.IsSigned )
+				{
+					return left == right;
+				}
+				else
+				{
+					var leftAsInt64 = unchecked( ( long )left );
+					if ( leftAsInt64 < 0L )
+					{
+						return false;
+					}
+
+					return left == right;
+				}
+			}
+			else
+			{
+				if ( rightTypeCode.IsSigned )
+				{
+					var rightAsInt64 = unchecked( ( long )right );
+					if ( rightAsInt64 < 0L )
+					{
+						return false;
+					}
+
+					return left == right;
+				}
+				else
+				{
+					return left == right;
+				}
+			}
+		}
+
+		private bool IntegerSingleEquals( MessagePackObject integer, MessagePackObject real )
+		{
+			return integer._value == ( float )real;
+		}
+
+		private bool IntegerDoubleEquals( MessagePackObject integer, MessagePackObject real )
+		{
+			return integer._value == ( double )real;
 		}
 
 		/// <summary>
@@ -518,15 +458,15 @@ namespace MsgPack
 			{
 				switch ( valueTypeCode.TypeCode )
 				{
-					case TypeCode.Boolean:
+					case MessagePackValueTypeCode.Boolean:
 					{
 						return this.AsBoolean().ToString();
 					}
-					case TypeCode.Double:
+					case MessagePackValueTypeCode.Double:
 					{
 						return this.AsDouble().ToString( CultureInfo.InvariantCulture );
 					}
-					case TypeCode.Single:
+					case MessagePackValueTypeCode.Single:
 					{
 						return this.AsSingle().ToString( CultureInfo.InvariantCulture );
 					}
@@ -848,7 +788,7 @@ namespace MsgPack
 
 			switch ( typeCode.TypeCode )
 			{
-				case TypeCode.Single:
+				case MessagePackValueTypeCode.Single:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -861,7 +801,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.Double:
+				case MessagePackValueTypeCode.Double:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -874,7 +814,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.SByte:
+				case MessagePackValueTypeCode.Int8:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -887,7 +827,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.Int16:
+				case MessagePackValueTypeCode.Int16:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -900,7 +840,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.Int32:
+				case MessagePackValueTypeCode.Int32:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -913,7 +853,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.Int64:
+				case MessagePackValueTypeCode.Int64:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -926,7 +866,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.Byte:
+				case MessagePackValueTypeCode.UInt8:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -939,7 +879,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.UInt16:
+				case MessagePackValueTypeCode.UInt16:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -952,7 +892,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.UInt32:
+				case MessagePackValueTypeCode.UInt32:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -965,7 +905,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.UInt64:
+				case MessagePackValueTypeCode.UInt64:
 				{
 					if ( options == null || !options.IsStrict )
 					{
@@ -978,7 +918,7 @@ namespace MsgPack
 
 					return;
 				}
-				case TypeCode.Boolean:
+				case MessagePackValueTypeCode.Boolean:
 				{
 					packer.Pack( this._value != 0 );
 					return;
@@ -1205,7 +1145,7 @@ namespace MsgPack
 				}
 				else
 				{
-					throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Do not convert nil MessagePackObject to {0}.", typeof( T ) ) );
+					ThrowCannotBeNilAs<T>();
 				}
 			}
 
@@ -1217,8 +1157,25 @@ namespace MsgPack
 				}
 				else
 				{
-					throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} MessagePackObject to {1}.", instance.UnderlyingType, typeof( T ) ) );
+					ThrowInvalidTypeAs<T>( instance );
 				}
+			}
+		}
+
+		private static void ThrowCannotBeNilAs<T>()
+		{
+			throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Do not convert nil MessagePackObject to {0}.", typeof( T ) ) );
+		}
+
+		private static void ThrowInvalidTypeAs<T>( MessagePackObject instance )
+		{
+			if ( instance._handleOrTypeCode is ValueTypeCode )
+			{
+				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} (binary:0x{2:x}) MessagePackObject to {1}.", instance.UnderlyingType, typeof( T ), instance._value ) );
+			}
+			else
+			{
+				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} MessagePackObject to {1}.", instance.UnderlyingType, typeof( T ) ) );
 			}
 		}
 
@@ -1462,47 +1419,47 @@ namespace MsgPack
 			{
 				switch ( asType.TypeCode )
 				{
-					case TypeCode.Boolean:
+					case MessagePackValueTypeCode.Boolean:
 					{
 						return this.AsBoolean();
 					}
-					case TypeCode.Byte:
+					case MessagePackValueTypeCode.Int8:
 					{
 						return this.AsByte();
 					}
-					case TypeCode.Int16:
+					case MessagePackValueTypeCode.Int16:
 					{
 						return this.AsInt16();
 					}
-					case TypeCode.Int32:
+					case MessagePackValueTypeCode.Int32:
 					{
 						return this.AsInt32();
 					}
-					case TypeCode.Int64:
+					case MessagePackValueTypeCode.Int64:
 					{
 						return this.AsInt64();
 					}
-					case TypeCode.SByte:
+					case MessagePackValueTypeCode.UInt8:
 					{
 						return this.AsSByte();
 					}
-					case TypeCode.UInt16:
+					case MessagePackValueTypeCode.UInt16:
 					{
 						return this.AsUInt16();
 					}
-					case TypeCode.UInt32:
+					case MessagePackValueTypeCode.UInt32:
 					{
 						return this.AsUInt32();
 					}
-					case TypeCode.UInt64:
+					case MessagePackValueTypeCode.UInt64:
 					{
 						return this.AsUInt64();
 					}
-					case TypeCode.Single:
+					case MessagePackValueTypeCode.Single:
 					{
 						return this.AsSingle();
 					}
-					case TypeCode.Double:
+					case MessagePackValueTypeCode.Double:
 					{
 						return this.AsDouble();
 					}
@@ -1603,13 +1560,39 @@ namespace MsgPack
 
 		#endregion -- Conversion Operator Overloads --
 
+		private enum MessagePackValueTypeCode
+		{
+			Int8 = 1,
+			Int16 = 3,
+			Int32 = 5,
+			Int64 = 7,
+			UInt8 = 2,
+			UInt16 = 4,
+			UInt32 = 6,
+			UInt64 = 8,
+			Boolean = 10,
+			Single = 11,
+			Double = 13,
+			Object = 16
+		}
+
 		private sealed class ValueTypeCode
 		{
-			private readonly TypeCode _typeCode;
+			private readonly MessagePackValueTypeCode _typeCode;
 
-			public TypeCode TypeCode
+			public MessagePackValueTypeCode TypeCode
 			{
 				get { return this._typeCode; }
+			}
+
+			public bool IsSigned
+			{
+				get { return ( ( int )this._typeCode ) % 2 != 0; }
+			}
+
+			public bool IsInteger
+			{
+				get { return ( ( int )this._typeCode ) < 10; }
 			}
 
 			private readonly Type _type;
@@ -1619,16 +1602,16 @@ namespace MsgPack
 				get { return this._type; }
 			}
 
-			internal ValueTypeCode( Type type )
+			internal ValueTypeCode( Type type, MessagePackValueTypeCode typeCode )
 			{
 				this._type = type;
-				this._typeCode = Type.GetTypeCode( type );
+				this._typeCode = typeCode;
 			}
 
 			public override string ToString()
 			{
 				// For debuggability.
-				return this._typeCode == System.TypeCode.Object ? this._type.FullName : this._typeCode.ToString();
+				return this._typeCode == MessagePackValueTypeCode.Object ? this._type.FullName : this._typeCode.ToString();
 			}
 		}
 	}

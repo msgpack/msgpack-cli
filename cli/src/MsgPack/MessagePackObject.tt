@@ -330,38 +330,179 @@ if( __IsNotCLSCompliant( t ) )
 #>
 		public static explicit operator <#= t.Name #>( <#= __typeName #> value )
 		{
-			VerifyUnderlyingType<<#= t.Name #>>( value, "value" );
-
-<# 
-	if ( t == typeof( ulong ) )
+<#
+	if( t.IsValueType )
 	{
 #>
-			return value._value;
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<#= "<" + t.Name  + ">" #>();
+			}
 <#
 	}
-	else if ( t == typeof( bool ) )
+
+	if ( t == typeof( bool ) )
 	{
 #>
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null || typeCode.TypeCode != MessagePackValueTypeCode.Boolean )
+			{
+				ThrowInvalidTypeAs<bool>( value );
+			}
+			
 			return value._value != 0;
 <#
 	}
 	else if ( t == typeof( float ) )
 	{
 #>
-			return BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<float>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					return ( float )( unchecked( ( long )value._value ) );
+				}
+				else
+				{
+					return ( float )value._value;
+				}
+			}
+			else
+			{
+				return BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 <#
 	}
 	else if ( t == typeof( double ) )
 	{
 #>
-			return BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<double>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					return ( double )( unchecked( ( long )value._value ) );
+				}
+				else
+				{
+					return ( double )value._value;
+				}
+			}
+			else
+			{			
+				return BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+<#
+	}
+	else if ( t.Name[ 0 ] == 'U' )
+	{
+#>
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+<#
+		if ( t == typeof( UInt64 ) )
+		{
+#>
+				if( typeCode.IsSigned )
+				{
+					if( Int64.MaxValue < value._value )
+					{
+						// Negative.
+						ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
+					}
+				}
+
+				return value._value;
+<#
+		}
+		else
+		{
+#>
+				const ulong maxValue = unchecked( ( ulong )<#= t.Name #>.MaxValue );
+				
+				if( maxValue < value._value )
+				{
+					// Overflow or negative.
+					ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
+				}
+
+				return unchecked( ( <#= t.Name #> )value._value );
+<#
+		}
+#>
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 <#
 	}
 	else
 	{
 #>
-			// It's safe since already verified based on type code.
-			return unchecked( ( <#= t.Name #> )value._value );
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					const long minValue = ( long )<#= t.Name #>.MinValue;
+					const long maxValue = ( long )<#= t.Name #>.MaxValue;
+					
+					long asInt64 = unchecked( ( long )value._value );
+					if( asInt64 < minValue || maxValue < asInt64 )
+					{
+						ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
+					}
+
+					return unchecked( ( <#= t.Name #> )asInt64 );
+				}
+				else
+				{
+					const ulong maxValue = unchecked( ( ulong )<#= t.Name #>.MaxValue );
+					if( maxValue < value._value )
+					{
+						ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
+					}
+					
+					return ( <#= t.Name #> )value._value;
+				}
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 <#
 	}
 #>

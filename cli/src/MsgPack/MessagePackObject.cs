@@ -598,8 +598,16 @@ namespace MsgPack
 		/// <returns><see cref="Boolean"/> instance corresponds to <paramref name="value"/>.</returns>
 		public static explicit operator Boolean( MessagePackObject value )
 		{
-			VerifyUnderlyingType<Boolean>( value, "value" );
-
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<Boolean>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null || typeCode.TypeCode != MessagePackValueTypeCode.Boolean )
+			{
+				ThrowInvalidTypeAs<bool>( value );
+			}
+			
 			return value._value != 0;
 		}
 
@@ -610,10 +618,51 @@ namespace MsgPack
 		/// <returns><see cref="Byte"/> instance corresponds to <paramref name="value"/>.</returns>
 		public static explicit operator Byte( MessagePackObject value )
 		{
-			VerifyUnderlyingType<Byte>( value, "value" );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<Byte>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<Byte>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					const long minValue = ( long )Byte.MinValue;
+					const long maxValue = ( long )Byte.MaxValue;
+					
+					long asInt64 = unchecked( ( long )value._value );
+					if( asInt64 < minValue || maxValue < asInt64 )
+					{
+						ThrowInvalidTypeAs<Byte>( value );
+					}
 
-			// It's safe since already verified based on type code.
-			return unchecked( ( Byte )value._value );
+					return unchecked( ( Byte )asInt64 );
+				}
+				else
+				{
+					const ulong maxValue = unchecked( ( ulong )Byte.MaxValue );
+					if( maxValue < value._value )
+					{
+						ThrowInvalidTypeAs<Byte>( value );
+					}
+					
+					return ( Byte )value._value;
+				}
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( Byte )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( Byte )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 		}
 
 		/// <summary>
@@ -624,10 +673,51 @@ namespace MsgPack
 		[CLSCompliant( false )]
 		public static explicit operator SByte( MessagePackObject value )
 		{
-			VerifyUnderlyingType<SByte>( value, "value" );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<SByte>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<SByte>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					const long minValue = ( long )SByte.MinValue;
+					const long maxValue = ( long )SByte.MaxValue;
+					
+					long asInt64 = unchecked( ( long )value._value );
+					if( asInt64 < minValue || maxValue < asInt64 )
+					{
+						ThrowInvalidTypeAs<SByte>( value );
+					}
 
-			// It's safe since already verified based on type code.
-			return unchecked( ( SByte )value._value );
+					return unchecked( ( SByte )asInt64 );
+				}
+				else
+				{
+					const ulong maxValue = unchecked( ( ulong )SByte.MaxValue );
+					if( maxValue < value._value )
+					{
+						ThrowInvalidTypeAs<SByte>( value );
+					}
+					
+					return ( SByte )value._value;
+				}
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( SByte )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( SByte )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 		}
 
 		/// <summary>
@@ -637,10 +727,51 @@ namespace MsgPack
 		/// <returns><see cref="Int16"/> instance corresponds to <paramref name="value"/>.</returns>
 		public static explicit operator Int16( MessagePackObject value )
 		{
-			VerifyUnderlyingType<Int16>( value, "value" );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<Int16>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<Int16>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					const long minValue = ( long )Int16.MinValue;
+					const long maxValue = ( long )Int16.MaxValue;
+					
+					long asInt64 = unchecked( ( long )value._value );
+					if( asInt64 < minValue || maxValue < asInt64 )
+					{
+						ThrowInvalidTypeAs<Int16>( value );
+					}
 
-			// It's safe since already verified based on type code.
-			return unchecked( ( Int16 )value._value );
+					return unchecked( ( Int16 )asInt64 );
+				}
+				else
+				{
+					const ulong maxValue = unchecked( ( ulong )Int16.MaxValue );
+					if( maxValue < value._value )
+					{
+						ThrowInvalidTypeAs<Int16>( value );
+					}
+					
+					return ( Int16 )value._value;
+				}
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( Int16 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( Int16 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 		}
 
 		/// <summary>
@@ -651,10 +782,37 @@ namespace MsgPack
 		[CLSCompliant( false )]
 		public static explicit operator UInt16( MessagePackObject value )
 		{
-			VerifyUnderlyingType<UInt16>( value, "value" );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<UInt16>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<UInt16>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				const ulong maxValue = unchecked( ( ulong )UInt16.MaxValue );
+				
+				if( maxValue < value._value )
+				{
+					// Overflow or negative.
+					ThrowInvalidTypeAs<UInt16>( value );
+				}
 
-			// It's safe since already verified based on type code.
-			return unchecked( ( UInt16 )value._value );
+				return unchecked( ( UInt16 )value._value );
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( UInt16 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( UInt16 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 		}
 
 		/// <summary>
@@ -664,10 +822,51 @@ namespace MsgPack
 		/// <returns><see cref="Int32"/> instance corresponds to <paramref name="value"/>.</returns>
 		public static explicit operator Int32( MessagePackObject value )
 		{
-			VerifyUnderlyingType<Int32>( value, "value" );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<Int32>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<Int32>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					const long minValue = ( long )Int32.MinValue;
+					const long maxValue = ( long )Int32.MaxValue;
+					
+					long asInt64 = unchecked( ( long )value._value );
+					if( asInt64 < minValue || maxValue < asInt64 )
+					{
+						ThrowInvalidTypeAs<Int32>( value );
+					}
 
-			// It's safe since already verified based on type code.
-			return unchecked( ( Int32 )value._value );
+					return unchecked( ( Int32 )asInt64 );
+				}
+				else
+				{
+					const ulong maxValue = unchecked( ( ulong )Int32.MaxValue );
+					if( maxValue < value._value )
+					{
+						ThrowInvalidTypeAs<Int32>( value );
+					}
+					
+					return ( Int32 )value._value;
+				}
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( Int32 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( Int32 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 		}
 
 		/// <summary>
@@ -678,10 +877,37 @@ namespace MsgPack
 		[CLSCompliant( false )]
 		public static explicit operator UInt32( MessagePackObject value )
 		{
-			VerifyUnderlyingType<UInt32>( value, "value" );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<UInt32>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<UInt32>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				const ulong maxValue = unchecked( ( ulong )UInt32.MaxValue );
+				
+				if( maxValue < value._value )
+				{
+					// Overflow or negative.
+					ThrowInvalidTypeAs<UInt32>( value );
+				}
 
-			// It's safe since already verified based on type code.
-			return unchecked( ( UInt32 )value._value );
+				return unchecked( ( UInt32 )value._value );
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( UInt32 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( UInt32 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 		}
 
 		/// <summary>
@@ -691,10 +917,51 @@ namespace MsgPack
 		/// <returns><see cref="Int64"/> instance corresponds to <paramref name="value"/>.</returns>
 		public static explicit operator Int64( MessagePackObject value )
 		{
-			VerifyUnderlyingType<Int64>( value, "value" );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<Int64>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<Int64>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					const long minValue = ( long )Int64.MinValue;
+					const long maxValue = ( long )Int64.MaxValue;
+					
+					long asInt64 = unchecked( ( long )value._value );
+					if( asInt64 < minValue || maxValue < asInt64 )
+					{
+						ThrowInvalidTypeAs<Int64>( value );
+					}
 
-			// It's safe since already verified based on type code.
-			return unchecked( ( Int64 )value._value );
+					return unchecked( ( Int64 )asInt64 );
+				}
+				else
+				{
+					const ulong maxValue = unchecked( ( ulong )Int64.MaxValue );
+					if( maxValue < value._value )
+					{
+						ThrowInvalidTypeAs<Int64>( value );
+					}
+					
+					return ( Int64 )value._value;
+				}
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( Int64 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( Int64 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 		}
 
 		/// <summary>
@@ -705,9 +972,38 @@ namespace MsgPack
 		[CLSCompliant( false )]
 		public static explicit operator UInt64( MessagePackObject value )
 		{
-			VerifyUnderlyingType<UInt64>( value, "value" );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<UInt64>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<UInt64>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					if( Int64.MaxValue < value._value )
+					{
+						// Negative.
+						ThrowInvalidTypeAs<UInt64>( value );
+					}
+				}
 
-			return value._value;
+				return value._value;
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( UInt64 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
+			else
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( UInt64 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 		}
 
 		/// <summary>
@@ -717,9 +1013,31 @@ namespace MsgPack
 		/// <returns><see cref="Single"/> instance corresponds to <paramref name="value"/>.</returns>
 		public static explicit operator Single( MessagePackObject value )
 		{
-			VerifyUnderlyingType<Single>( value, "value" );
-
-			return BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<Single>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<float>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					return ( float )( unchecked( ( long )value._value ) );
+				}
+				else
+				{
+					return ( float )value._value;
+				}
+			}
+			else
+			{
+				return BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 		}
 
 		/// <summary>
@@ -729,9 +1047,31 @@ namespace MsgPack
 		/// <returns><see cref="Double"/> instance corresponds to <paramref name="value"/>.</returns>
 		public static explicit operator Double( MessagePackObject value )
 		{
-			VerifyUnderlyingType<Double>( value, "value" );
-
-			return BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<Double>();
+			}
+			var typeCode = value._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<double>( value );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					return ( double )( unchecked( ( long )value._value ) );
+				}
+				else
+				{
+					return ( double )value._value;
+				}
+			}
+			else
+			{			
+				return BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
 		}
 
 		#endregion -- Conversion Operator Overloads --

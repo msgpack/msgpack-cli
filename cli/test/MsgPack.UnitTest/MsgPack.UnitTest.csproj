@@ -97,6 +97,11 @@
     </Compile>
     <Compile Include="Image.cs" />
     <Compile Include="MessagePackObjectDictionaryTest.cs" />
+    <Compile Include="MessagePackObjectTest.Conversion.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.Conversion.tt</DependentUpon>
+    </Compile>
     <Compile Include="MessagePackStringTest.cs" />
     <Compile Include="MessageUnpackableTest.cs" />
     <Compile Include="PackUnpackTest.cs" />
@@ -150,6 +155,10 @@
     <None Include="DirectConversionTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DirectConversionTest.Scalar.cs</LastGenOutput>
+    </None>
+    <None Include="MessagePackObjectTest.Conversion.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackObjectTest.Conversion.cs</LastGenOutput>
     </None>
     <None Include="PackUnpackTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
