@@ -36,6 +36,7 @@ namespace MsgPack.Serialization
 		}
 
 		private readonly ReaderWriterLockSlim _lock;
+
 		private readonly Dictionary<RuntimeTypeHandle, object> _table;
 
 		public TypeKeyRepository() : this( default( TypeKeyRepository ) ) { }
@@ -43,6 +44,7 @@ namespace MsgPack.Serialization
 		public TypeKeyRepository( TypeKeyRepository copiedFrom )
 		{
 			this._lock = new ReaderWriterLockSlim( LockRecursionPolicy.NoRecursion );
+
 			if ( copiedFrom == null )
 			{
 				this._table = new Dictionary<RuntimeTypeHandle, object>();
@@ -62,14 +64,18 @@ namespace MsgPack.Serialization
 		private Dictionary<RuntimeTypeHandle, object> GetClonedTable()
 		{
 			bool holdsReadLock = false;
+#if !SILVERLIGHT
 			RuntimeHelpers.PrepareConstrainedRegions();
+#endif
 			try { }
 			finally
 			{
 				this._lock.EnterReadLock();
 				holdsReadLock = true;
 			}
+#if !SILVERLIGHT
 			RuntimeHelpers.PrepareConstrainedRegions();
+#endif
 			try
 			{
 				return new Dictionary<RuntimeTypeHandle, object>( this._table );
@@ -113,14 +119,18 @@ namespace MsgPack.Serialization
 		private bool Get<T>( out object matched, out object genericDefinitionMatched )
 		{
 			bool holdsReadLock = false;
+#if !SILVERLIGHT
 			RuntimeHelpers.PrepareConstrainedRegions();
+#endif
 			try { }
 			finally
 			{
 				this._lock.EnterReadLock();
 				holdsReadLock = true;
 			}
+#if !SILVERLIGHT
 			RuntimeHelpers.PrepareConstrainedRegions();
+#endif
 			try
 			{
 				object result;
@@ -189,14 +199,18 @@ namespace MsgPack.Serialization
 			if ( !this._table.ContainsKey( key.TypeHandle ) )
 			{
 				bool holdsWriteLock = false;
+#if !SILVERLIGHT
 				RuntimeHelpers.PrepareConstrainedRegions();
+#endif
 				try { }
 				finally
 				{
 					this._lock.EnterWriteLock();
 					holdsWriteLock = true;
 				}
+#if !SILVERLIGHT
 				RuntimeHelpers.PrepareConstrainedRegions();
+#endif
 				try
 				{
 					if ( !this._table.ContainsKey( key.TypeHandle ) )

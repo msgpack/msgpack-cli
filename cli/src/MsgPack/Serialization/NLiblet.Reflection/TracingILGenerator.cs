@@ -647,6 +647,7 @@ namespace NLiblet.Reflection
 
 		#endregion
 
+#if !SILVERLIGHT
 		#region -- Calli --
 
 		/// <summary>
@@ -696,6 +697,7 @@ namespace NLiblet.Reflection
 		}
 
 		#endregion
+#endif
 
 		#region -- Constrained. --
 
@@ -785,6 +787,7 @@ namespace NLiblet.Reflection
 			this.EmitRet();
 		}
 
+#if !SILVERLIGHT
 		/// <summary>
 		///		Emit 'calli' instruction for indirect unmanaged function call as tail call.
 		/// </summary>
@@ -842,6 +845,7 @@ namespace NLiblet.Reflection
 			this.EmitCalli( managedCallingConventions, returnType, requiredParameterTypes, optionalParameterTypes );
 			this.EmitRet();
 		}
+#endif
 
 		#endregion
 
@@ -987,6 +991,7 @@ namespace NLiblet.Reflection
 			this._trace.Write( " " );
 
 			// TODO: NLiblet
+#if !SILVERLIGHT
 			if ( !( field is FieldBuilder ) )
 			{
 				var modreqs = field.GetRequiredCustomModifiers();
@@ -1015,6 +1020,7 @@ namespace NLiblet.Reflection
 					this._trace.Write( ") " );
 				}
 			}
+#endif
 
 			if ( this._isInDynamicMethod || !( field is FieldBuilder ) ) // declaring type of the field should be omitted for same type.
 			{

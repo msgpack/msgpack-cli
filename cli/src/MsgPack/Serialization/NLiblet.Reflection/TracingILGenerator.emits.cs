@@ -1947,6 +1947,7 @@ namespace NLiblet.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
+#if !SILVERLIGHT
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -1956,7 +1957,7 @@ namespace NLiblet.Reflection
 					this.TraceWriteLine();
 				}
 			}
-
+#endif
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldfld );
@@ -1977,6 +1978,7 @@ namespace NLiblet.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
+#if !SILVERLIGHT
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -1986,7 +1988,7 @@ namespace NLiblet.Reflection
 					this.TraceWriteLine();
 				}
 			}
-
+#endif
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldflda );
@@ -2007,6 +2009,7 @@ namespace NLiblet.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
+#if !SILVERLIGHT
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -2016,6 +2019,7 @@ namespace NLiblet.Reflection
 					this.TraceWriteLine();
 				}
 			}
+#endif
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stfld );
@@ -2036,6 +2040,7 @@ namespace NLiblet.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
+#if !SILVERLIGHT
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -2045,7 +2050,7 @@ namespace NLiblet.Reflection
 					this.TraceWriteLine();
 				}
 			}
-
+#endif
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldsfld );
@@ -2066,6 +2071,7 @@ namespace NLiblet.Reflection
 			Contract.Assert( field != null );
 
 			// TODO: NLiblet
+#if !SILVERLIGHT
 			if ( !( field is FieldBuilder ) )
 			{
 				if ( field.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -2075,6 +2081,7 @@ namespace NLiblet.Reflection
 					this.TraceWriteLine();
 				}
 			}
+#endif
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldsflda );
@@ -2094,6 +2101,7 @@ namespace NLiblet.Reflection
 			Contract.Assert( !this.IsEnded );
 			Contract.Assert( field != null );
 
+#if !SILVERLIGHT
 			// TODO: NLiblet
 			if ( !( field is FieldBuilder ) )
 			{
@@ -2104,7 +2112,7 @@ namespace NLiblet.Reflection
 					this.TraceWriteLine();
 				}
 			}
-
+#endif
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Stsfld );
@@ -2917,6 +2925,7 @@ namespace NLiblet.Reflection
 			Contract.Assert( target != null );
 
 			// TODO: NLiblet
+#if !SILVERLIGHT
 			if ( !( target is FieldBuilder ) )
 			{
 				if ( target.GetRequiredCustomModifiers().Any( item => typeof( IsVolatile ).Equals( item ) ) )
@@ -2926,6 +2935,7 @@ namespace NLiblet.Reflection
 					this.TraceWriteLine();
 				}
 			}
+#endif
 
 			this.TraceStart();
 			this.TraceOpCode( OpCodes.Ldtoken );

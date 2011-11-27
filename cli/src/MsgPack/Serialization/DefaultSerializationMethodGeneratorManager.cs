@@ -38,6 +38,7 @@ namespace MsgPack.Serialization
 		private static int _assemblySequence = -1;
 		private int _typeSequence = -1;
 
+#if !SILVERLIGHT
 		private static DefaultSerializationMethodGeneratorManager _canCollect = new DefaultSerializationMethodGeneratorManager( false, true );
 
 		/// <summary>
@@ -57,6 +58,7 @@ namespace MsgPack.Serialization
 		{
 			get { return DefaultSerializationMethodGeneratorManager._canDump; }
 		}
+#endif
 
 		private static DefaultSerializationMethodGeneratorManager _fast = new DefaultSerializationMethodGeneratorManager( false, false );
 
@@ -70,11 +72,14 @@ namespace MsgPack.Serialization
 
 		internal static void Refresh()
 		{
+#if !SILVERLIGHT
 			_canCollect = new DefaultSerializationMethodGeneratorManager( false, true );
 			_canDump = new DefaultSerializationMethodGeneratorManager( true, false );
+#endif
 			_fast = new DefaultSerializationMethodGeneratorManager( false, false );
 		}
 
+#if !SILVERLIGHT
 		/// <summary>
 		///		Save ILs as modules to specified directory.
 		/// </summary>
@@ -93,6 +98,7 @@ namespace MsgPack.Serialization
 		{
 			_canDump.DumpToCore();
 		}
+#endif
 
 		private readonly AssemblyBuilder _assembly;
 		private readonly ModuleBuilder _module;
@@ -134,6 +140,7 @@ namespace MsgPack.Serialization
 					new object[] { 8 }
 				)
 			);
+#if !SILVERLIGHT
 			this._assembly.SetCustomAttribute(
 				new CustomAttributeBuilder(
 					typeof( System.Security.SecurityRulesAttribute ).GetConstructor( new[] { typeof( System.Security.SecurityRuleSet ) } ),
@@ -142,7 +149,13 @@ namespace MsgPack.Serialization
 					new object[] { true }
 				)
 			);
+#endif
+
 			this._moduleFileName = assemblyName + ".dll";
+
+#if SILVERLIGHT
+			this._module = this._assembly.DefineDynamicModule( assemblyName, true );
+#else
 			if ( isDebuggable )
 			{
 				this._module = this._assembly.DefineDynamicModule( assemblyName, this._moduleFileName, true );
@@ -151,12 +164,15 @@ namespace MsgPack.Serialization
 			{
 				this._module = this._assembly.DefineDynamicModule( assemblyName, true );
 			}
+#endif
 		}
 
+#if !SILVERLIGHT
 		private void DumpToCore()
 		{
 			this._assembly.Save( this._moduleFileName );
 		}
+#endif
 
 		protected sealed override SerializerEmitter CreateEmitterCore( Type targetType )
 		{

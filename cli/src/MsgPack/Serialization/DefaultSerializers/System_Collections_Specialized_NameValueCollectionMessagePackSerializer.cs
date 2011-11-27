@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+#if !SILVERLIGHT
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,3 +93,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 	}
 }
+#endif

@@ -107,7 +107,11 @@ namespace MsgPack.Serialization
 
 		private static bool FilterAllBuNotNonSerialized( MemberInfo member, object filterCriteria )
 		{
+#if SILVERLIGHT
+			return true;
+#else
 			return !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) );
+#endif
 		}
 		
 		/// <summary>

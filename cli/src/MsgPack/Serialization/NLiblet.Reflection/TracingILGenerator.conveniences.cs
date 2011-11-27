@@ -554,10 +554,12 @@ namespace NLiblet.Reflection
 			Contract.Assert( elementLoadingEmitters != null );
 			Contract.Assert( Contract.ForAll( elementLoadingEmitters, item => item != null ) );
 
-			this.EmitNewarrCore( elementType, elementLoadingEmitters.LongLength );
+			// TODO: NLiblet
+			this.EmitNewarrCore( elementType, elementLoadingEmitters.Length );
 			this.EmitAnyStloc( arrayLocalIndex );
 
-			for ( long i = 0; i < elementLoadingEmitters.LongLength; i++ )
+			// TODO: NLiblet
+			for ( long i = 0; i < elementLoadingEmitters.Length; i++ )
 			{
 				this.EmitAnyStelem( elementType, il => il.EmitAnyLdloc( arrayLocalIndex ), i, elementLoadingEmitters[ i ] );
 			}
@@ -594,10 +596,12 @@ namespace NLiblet.Reflection
 			Contract.Assert( elementLoadingEmitters != null );
 			Contract.Assert( Contract.ForAll( elementLoadingEmitters, item => item != null ) );
 
-			this.EmitNewarrCore( elementType, elementLoadingEmitters.LongLength );
+			// TODO: NLiblet
+			this.EmitNewarrCore( elementType, elementLoadingEmitters.Length );
 			arrayStoringEmitter( this );
 
-			for ( long i = 0; i < elementLoadingEmitters.LongLength; i++ )
+			// TODO: NLiblet
+			for ( long i = 0; i < elementLoadingEmitters.Length; i++ )
 			{
 				arrayLoadingEmitter( this );
 				this.EmitAnyStelem( elementType, null, i, elementLoadingEmitters[ i ] );

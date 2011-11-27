@@ -249,6 +249,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 	}
 
+#if !SILVERLIGHT
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
 		protected sealed override void PackToCore( Packer packer, System.Collections.Specialized.BitVector32 value )
@@ -261,6 +262,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return new System.Collections.Specialized.BitVector32( unpacker.Data.Value.AsInt32() );
 		}
 	}
+#endif
 
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{

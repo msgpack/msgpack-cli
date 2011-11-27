@@ -72,6 +72,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
+    <Reference Include="System.Numerics, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -100,6 +102,9 @@
     </Compile>
     <Compile Include="..\MsgPack\DictionaryDebuggerProxy`2.cs">
       <Link>DictionaryDebuggerProxy`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\EnumerableStream.cs">
+      <Link>EnumerableStream.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Float32Bits.cs">
       <Link>Float32Bits.cs</Link>
@@ -185,14 +190,206 @@
     <Compile Include="..\MsgPack\PackingOptions.cs">
       <Link>PackingOptions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AutoMessagePackSerializer`1.cs">
+      <Link>Serialization\AutoMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionKind.cs">
+      <Link>Serialization\CollectionKind.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionTraits.cs">
+      <Link>Serialization\CollectionTraits.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DataContractMessagePackSerializer`1.cs">
+      <Link>Serialization\DataContractMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DataMemberContract.cs">
+      <Link>Serialization\DataMemberContract.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializationMethodGeneratorManager.cs">
+      <Link>Serialization\DefaultSerializationMethodGeneratorManager.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs">
+      <Link>Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DefaultSerializers.cs">
+      <Link>Serialization\DefaultSerializers\DefaultSerializers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\EnumMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_ArraySegment_1MessagePackSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\System_ArraySegment_1MessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_ByteArrayMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_ByteArrayMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_CharArrayMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_CharArrayMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_DictionaryEntryMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_DictionaryEntryMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessagePackSerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_StringMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_StringMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Text_StringBuilderMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Text_StringBuilderMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializerBuilder`1.cs">
+      <Link>Serialization\EmittingSerializerBuilder`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Emittion.cs">
+      <Link>Serialization\Emittion.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\FromExpression.cs">
+      <Link>Serialization\FromExpression.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\FromExpression.ToConstructor.cs">
+      <Link>Serialization\FromExpression.ToConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\FromExpression.ToMethod.cs">
+      <Link>Serialization\FromExpression.ToMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\IdentifierUtility.cs">
+      <Link>Serialization\IdentifierUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.cs">
+      <Link>Serialization\MessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializer`1.cs">
+      <Link>Serialization\MessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_DictionaryEntry.cs">
+      <Link>Serialization\Metadata\_DictionaryEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_Enumerable.cs">
+      <Link>Serialization\Metadata\_Enumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_IDisposable.cs">
+      <Link>Serialization\Metadata\_IDisposable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_KeyValuePair`2.cs">
+      <Link>Serialization\Metadata\_KeyValuePair`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_MessagePackObject.cs">
+      <Link>Serialization\Metadata\_MessagePackObject.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_Nullable`1.cs">
+      <Link>Serialization\Metadata\_Nullable`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_Packer.cs">
+      <Link>Serialization\Metadata\_Packer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_SerializationContext.cs">
+      <Link>Serialization\Metadata\_SerializationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_String.cs">
+      <Link>Serialization\Metadata\_String.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_Unpacker.cs">
+      <Link>Serialization\Metadata\_Unpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\GenericTypeExtensions.cs">
+      <Link>Serialization\NLiblet.Reflection\GenericTypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\ReflectionExtensions.cs">
+      <Link>Serialization\NLiblet.Reflection\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\TracingILGenerator.conveniences.cs">
+      <Link>Serialization\NLiblet.Reflection\TracingILGenerator.conveniences.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\TracingILGenerator.cs">
+      <Link>Serialization\NLiblet.Reflection\TracingILGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\TracingILGenerator.emits.cs">
+      <Link>Serialization\NLiblet.Reflection\TracingILGenerator.emits.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
+      <Link>Serialization\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationContext.cs">
+      <Link>Serialization\SerializationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationExceptions.cs">
+      <Link>Serialization\SerializationExceptions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationMemberOption.cs">
+      <Link>Serialization\SerializationMemberOption.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationMethodGeneratorManager.cs">
+      <Link>Serialization\SerializationMethodGeneratorManager.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationMethodGeneratorOptions.cs">
+      <Link>Serialization\SerializationMethodGeneratorOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerBuilder`1.cs">
+      <Link>Serialization\SerializerBuilder`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerEmitter.cs">
+      <Link>Serialization\SerializerEmitter.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerRepository.cs">
+      <Link>Serialization\SerializerRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerRepository.defaults.cs">
+      <Link>Serialization\SerializerRepository.defaults.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
+      <Link>Serialization\SerializingMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Tracer.cs">
+      <Link>Serialization\Tracer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs">
+      <Link>Serialization\TypeKeyRepository.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\SetOperation.cs">
       <Link>SetOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\StreamingUnpacker.cs">
+      <Link>StreamingUnpacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\StreamPacker.cs">
       <Link>StreamPacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\StreamUnpacker.cs">
       <Link>StreamUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\SubtreeUnpacker.cs">
+      <Link>SubtreeUnpacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Unpacker.cs">
       <Link>Unpacker.cs</Link>
@@ -215,6 +412,9 @@
     <Compile Include="..\MsgPack\Unpacking.String.cs">
       <Link>Unpacking.String.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\UnpackingMode.cs">
+      <Link>UnpackingMode.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\UnpackingResult.cs">
       <Link>UnpackingResult.cs</Link>
     </Compile>
@@ -225,8 +425,18 @@
       <Link>Validation.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\LockRecursionPolicy.cs" />
+    <Compile Include="Serialization\ReaderWriterLockSlim.cs" />
+    <Compile Include="Serialization\SourceLevels.cs" />
+    <Compile Include="Serialization\SourceSwitch.cs" />
+    <Compile Include="Serialization\TraceEventType.cs" />
+    <Compile Include="Serialization\TraceSource.cs" />
     <Compile Include="SilverlightExtensions.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

@@ -18,33 +18,23 @@
 //
 #endregion -- License Terms --
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-namespace MsgPack
-{
 #if SILVERLIGHT
-	internal static class SilverlightExtensions
+using System;
+
+namespace MsgPack.Serialization
+{
+	/// <summary>
+	///		System.Diagnostics.SourceSwitch alternative.
+	/// </summary>
+	internal sealed class SourceSwitch
 	{
-		public static int FindIndex<T>( this List<T> source, Predicate<T> predicate )
+		public SourceLevels Level
 		{
-			for ( int i = 0; i < source.Count; i++ )
-			{
-				if ( predicate( source[ i ] ) )
-				{
-					return i;
-				}
-			}
-
-			return -1;
+			get;
+			set;
 		}
 
-		public static IEnumerable<Type> FindInterfaces( this Type source, Func<Type,object,bool> filter, object filterCriteria )
-		{
-			return source.GetInterfaces().Where( type => filter( type, filterCriteria ) );
-		}
+		internal SourceSwitch() { }
 	}
-#endif
 }
+#endif

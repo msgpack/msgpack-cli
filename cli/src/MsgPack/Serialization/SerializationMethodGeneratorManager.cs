@@ -52,6 +52,9 @@ namespace MsgPack.Serialization
 		///	</returns>
 		public static SerializationMethodGeneratorManager Get( SerializationMethodGeneratorOption option )
 		{
+#if SILVERLIGHT
+			return DefaultSerializationMethodGeneratorManager.Fast;
+#else
 			switch ( option )
 			{
 				case SerializationMethodGeneratorOption.CanDump:
@@ -67,6 +70,7 @@ namespace MsgPack.Serialization
 					return DefaultSerializationMethodGeneratorManager.Fast;
 				}
 			}
+#endif
 		}
 
 		public SerializerEmitter CreateEmitter( Type targetType )

@@ -133,6 +133,12 @@ var __workArounds =
 		{ typeof( Guid ), new WorkAround(){ PackCode = "packer.Pack( value.ToByteArray() );", UnpackCode = "return new System.Guid( unpacker.Data.Value.AsBinary() ); " } },
 		{ typeof( BigInteger ), new WorkAround(){ PackCode = "packer.Pack( value.ToByteArray() );", UnpackCode = "return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); " } },
 	};
+
+var __notInSLs =
+	new HashSet<Type>()
+	{
+		typeof( System.Collections.Specialized.BitVector32 ),
+	};
 #>
 #region -- License Terms --
 //
@@ -182,6 +188,13 @@ foreach( Type __type in __types )
 	}
 	
 	var ctors = __type.GetConstructors( BindingFlags.Public | BindingFlags.Instance ).Where( item => item.GetParameters().Length == 1 ).Where( item => IsMessagePackPrimitive( item.GetParameters()[ 0 ].ParameterType ) ).ToArray();
+	
+	if ( __notInSLs.Contains( __type ) )
+	{
+#>
+#if !SILVERLIGHT
+<#
+	}
 #>
 	internal sealed class <#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
 	{
@@ -278,6 +291,12 @@ foreach( var ctor in ctors )
 		}
 	}
 <#
+	if ( __notInSLs.Contains( __type ) )
+	{
+#>
+#endif
+<#
+	}
 }
 #>
 }

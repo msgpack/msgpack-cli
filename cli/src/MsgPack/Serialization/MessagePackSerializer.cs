@@ -61,5 +61,19 @@ namespace MsgPack.Serialization
 			// TODO: Configurable
 			return new AutoMessagePackSerializer<T>( context );
 		}
+
+#if !SILVERLIGHT
+		/// <summary>
+		///		Get or set method generator option to control generated serialization code traits.
+		/// </summary>
+		/// <value>
+		///		The <see cref="SerializationMethodGeneratorOption"/> which represents generated serialization code traits.
+		/// </value>
+		public static SerializationMethodGeneratorOption SerializationMethodGeneratorOption
+		{
+			get { return SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption; }
+			set { SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = value; }
+		}
+#endif
 	}
 }

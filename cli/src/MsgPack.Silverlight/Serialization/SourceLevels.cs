@@ -19,32 +19,17 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
-namespace MsgPack
+namespace MsgPack.Serialization
 {
-#if SILVERLIGHT
-	internal static class SilverlightExtensions
+	/// <summary>
+	///		System.Diagnostics.SourceLevels alternative.
+	/// </summary>
+	[Flags]
+	internal enum SourceLevels
 	{
-		public static int FindIndex<T>( this List<T> source, Predicate<T> predicate )
-		{
-			for ( int i = 0; i < source.Count; i++ )
-			{
-				if ( predicate( source[ i ] ) )
-				{
-					return i;
-				}
-			}
-
-			return -1;
-		}
-
-		public static IEnumerable<Type> FindInterfaces( this Type source, Func<Type,object,bool> filter, object filterCriteria )
-		{
-			return source.GetInterfaces().Where( type => filter( type, filterCriteria ) );
-		}
+		Verbose = 0x1,
+		Information = 0x2,
+		All = unchecked( ( int )0xffffffff )
 	}
-#endif
 }
