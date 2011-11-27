@@ -966,6 +966,7 @@ namespace MsgPack
 			/// </summary>
 			/// <param name="header">Header of collection object.</param>
 			/// <param name="count">Items count of collection object. If collection is map, this value indicates count of entries.</param>
+			/// <param name="mode">Unpacking mode.</param>
 			public void NewContextCollection( MessagePackHeader header, uint count, UnpackingMode mode )
 			{
 #if DEBUG
