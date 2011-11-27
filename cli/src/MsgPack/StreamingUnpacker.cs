@@ -24,6 +24,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace MsgPack
 {
@@ -40,11 +41,6 @@ namespace MsgPack
 		private readonly CollectionUnpackagingState _collectionState = new CollectionUnpackagingState();
 
 		/// <summary>
-		///		Stage of this state machine instance.
-		/// </summary>
-		private Stage _stage;
-
-		/// <summary>
 		///		Context header of unpackaging message.
 		/// </summary>
 		private MessagePackHeader _contextValueHeader;
@@ -53,11 +49,6 @@ namespace MsgPack
 		///		Buffer for unpackaging scalar or binary value.
 		/// </summary>
 		private BytesBuffer _bytesBuffer;
-
-		/// <summary>
-		///		Initialize new instance.
-		/// </summary>
-		public StreamingUnpacker() { }
 
 		public bool IsInRoot
 		{
@@ -82,6 +73,7 @@ namespace MsgPack
 		}
 
 		private bool _wasEmptyCollection;
+		private bool _isInCollection;
 
 		public bool IsInArrayHeader
 		{
@@ -92,7 +84,7 @@ namespace MsgPack
 					return true;
 				}
 
-				if ( this._stage == Stage.UnpackContextCollection )
+				if ( this._isInCollection )
 				{
 					return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsArray );
 				}
@@ -110,13 +102,36 @@ namespace MsgPack
 					return true;
 				}
 
-				if ( this._stage == Stage.UnpackContextCollection )
+				if ( this._isInCollection )
 				{
 					return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsMap );
 				}
 
 				return false;
 			}
+		}
+
+		private delegate bool Unpacking( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked );
+
+		private Unpacking _next;
+
+		private readonly Unpacking _unpackHeader;
+		private readonly Unpacking _unpackCollectionLength;
+		private readonly Unpacking _unpackRawLength;
+		private readonly Unpacking _unpackRawBytes;
+		private readonly Unpacking _unpackScalar;
+
+		/// <summary>
+		///		Initialize new instance.
+		/// </summary>
+		public StreamingUnpacker()
+		{
+			this._unpackCollectionLength = this.UnpackCollectionLength;
+			this._unpackHeader = this.UnpackHeader;
+			this._unpackRawLength = this.UnpackRawLength;
+			this._unpackRawBytes = this.UnpackRawBytes;
+			this._unpackScalar = this.UnpackScalar;
+			this._next = this._unpackHeader;
 		}
 
 		/// <summary>
@@ -155,181 +170,9 @@ namespace MsgPack
 			this._wasEmptyCollection = false;
 			var segmentatedSource = source as ISegmentLengthRecognizeable ?? NullSegmentLengthRecognizeable.Instance;
 
-			while ( true )
+			MessagePackObject? collectionItemOrRoot;
+			while ( this._next( source, segmentatedSource, unpackingMode, out collectionItemOrRoot ) )
 			{
-				MessagePackObject? collectionItemOrRoot = null;
-
-				switch ( this._stage )
-				{
-					case Stage.UnpackCollectionLength:
-					{
-						if ( !this.UnpackCollectionLength( source, segmentatedSource, out collectionItemOrRoot ) )
-						{
-							// Need to get more data
-							return null;
-						}
-
-						break;
-					}
-					case Stage.UnpackRawLength:
-					{
-						if ( !this.UnpackRaw( source, segmentatedSource, out collectionItemOrRoot ) )
-						{
-							// Need to get more data
-							return null;
-						}
-
-						break;
-					}
-					case Stage.UnpackRawBytes:
-					{
-						if ( !this.UnpackRawBytes( source, out  collectionItemOrRoot ) )
-						{
-							// Need to get more data
-							return null;
-						}
-
-						break;
-					}
-					case Stage.UnpackScalar:
-					{
-						if ( !this.UnpackScalar( source, out collectionItemOrRoot ) )
-						{
-							// Need to get more data.
-							return null;
-						}
-
-						break;
-					}
-					default:
-					{
-						#region UnpackHeaderAndFixedValue
-
-						var b = source.ReadByte();
-						if ( b < 0 )
-						{
-							return null;
-						}
-
-						var header = _headerArray[ b ];
-						this._contextValueHeader = header;
-						switch ( header.Type )
-						{
-							case MessageType.Array16:
-							case MessageType.Array32:
-							case MessageType.Map16:
-							case MessageType.Map32:
-							{
-								// Transit to UnpackCollectionLength
-								this._stage = Stage.UnpackCollectionLength;
-								this._bytesBuffer = new BytesBuffer( GetLength( header.Type ) );
-
-								if ( !this.UnpackCollectionLength( source, segmentatedSource, out collectionItemOrRoot ) )
-								{
-									// Need to get more data
-									return null;
-								}
-
-								break;
-							}
-							case MessageType.Raw16:
-							case MessageType.Raw32:
-							{
-								this._stage = Stage.UnpackRawLength;
-								this._bytesBuffer = new BytesBuffer( GetLength( header.Type ) );
-
-								// Try to get length.
-								if ( !this.UnpackRaw( source, segmentatedSource, out collectionItemOrRoot ) )
-								{
-									// Need to get more data
-									return null;
-								}
-
-								break;
-							}
-							case MessageType.FixArray:
-							case MessageType.FixMap:
-							{
-								if ( header.ValueOrLength == 0 )
-								{
-									collectionItemOrRoot = CreateEmptyCollection( header );
-									this._wasEmptyCollection = true;
-								}
-								else
-								{
-									segmentatedSource.NotifySegmentLength( header.ValueOrLength * _assumedCollectionItemSize * ( ( header.Type & MessageType.IsMap ) != 0 ? 2 : 1 ) );
-									this._collectionState.NewContextCollection( header, header.ValueOrLength );
-									this.TransitToUnpackContextCollection();
-								}
-
-								break;
-							}
-							case MessageType.FixRaw:
-							{
-								if ( header.ValueOrLength == 0 )
-								{
-									collectionItemOrRoot = Binary.Empty;
-								}
-								else
-								{
-									this.TransitToUnpackRawBytes( segmentatedSource, header.ValueOrLength );
-									// Try to get body.
-									if ( !this.UnpackRawBytes( source, out collectionItemOrRoot ) )
-									{
-										return null;
-									}
-								}
-
-								Contract.Assert( collectionItemOrRoot != null );
-								break;
-							}
-							case MessageType.Nil:
-							{
-								collectionItemOrRoot = MessagePackObject.Nil;
-								break;
-							}
-							case MessageType.True:
-							{
-								collectionItemOrRoot = new MessagePackObject( true );
-								break;
-							}
-							case MessageType.False:
-							{
-								collectionItemOrRoot = new MessagePackObject( false );
-								break;
-							}
-							case MessageType.NegativeFixNum:
-							{
-								collectionItemOrRoot = new MessagePackObject( unchecked( ( sbyte )b ) );
-								break;
-							}
-							case MessageType.PositiveFixNum:
-							{
-								collectionItemOrRoot = new MessagePackObject( ( byte )b );
-								break;
-							}
-							default:
-							{
-								// Transit to UnpackScalar
-								this._stage = Stage.UnpackScalar;
-								this._bytesBuffer = new BytesBuffer( GetLength( this._contextValueHeader.Type ) );
-
-								// Try to get body.
-								if ( !this.UnpackScalar( source, out collectionItemOrRoot ) )
-								{
-									// Need more data
-									return null;
-								}
-
-								break;
-							}
-						} //default
-						#endregion UnpackHeaderAndFixedValue
-
-						break;
-					} // default
-				} // switch
-
 				var oldCollectionItemOrRoot = collectionItemOrRoot;
 				if ( collectionItemOrRoot != null )
 				{
@@ -342,7 +185,8 @@ namespace MsgPack
 #if DEBUG
 						Contract.Assert( this._collectionState.IsEmpty );
 #endif
-						this._stage = Stage.Root;
+						this._next = this._unpackHeader;
+						this._isInCollection = false;
 #if DEBUG
 						Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
 						Contract.Assert( this._bytesBuffer.BackingStore == null, this._bytesBuffer.ToString() ); // null
@@ -373,7 +217,7 @@ namespace MsgPack
 					this._hasMoreEntries = true;
 				}
 
-				if ( unpackingMode != UnpackingMode.EntireTree && this._stage == Stage.UnpackContextCollection )
+				if ( unpackingMode != UnpackingMode.EntireTree && this._isInCollection )
 				{
 					if ( this._collectionState.UnpackedItemsCount == 0 )
 					{
@@ -388,10 +232,228 @@ namespace MsgPack
 				}
 			}
 
-			throw new InvalidMessagePackStreamException( "Unexpectedly end." );
+			return null;
 		}
 
-		private bool UnpackScalar( Stream source, out MessagePackObject? result )
+		private delegate bool HeaderUnpacking( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result );
+
+		private static readonly HeaderUnpacking[] _headerUnpackings = InitializeHeaderUnpackings();
+
+		private static HeaderUnpacking[] InitializeHeaderUnpackings()
+		{
+			HeaderUnpacking[] result = new HeaderUnpacking[ 256 ];
+			for ( int i = 0; i < 0x80; i++ )
+			{
+				result[ i ] = UnpackPositiveFixNum;
+			}
+			result[ 0x80 ] = UnpackEmptyMap;
+			for ( int i = 0x81; i < 0x90; i++ )
+			{
+				result[ i ] = UnpackFixMapLength;
+			}
+			result[ 0x90 ] = UnpackEmptyArray;
+			for ( int i = 0x91; i < 0xa0; i++ )
+			{
+				result[ i ] = UnpackFixArrayLength;
+			}
+			result[ 0xa0 ] = UnpackEmptyRaw;
+			for ( int i = 0xa0; i < 0xc0; i++ )
+			{
+				result[ i ] = UnpackFixRawLength;
+			}
+			result[ 0xc0 ] = UnpackNil;
+			// 0xc1 : Undefined
+			result[ 0xc1 ] = ThrowInvalidHeaderException;
+			result[ 0xc2 ] = UnpackFalse;
+			result[ 0xc3 ] = UnpackTrue;
+			// 0xc4-0xc9 : Undefined
+			for ( int i = 0xc4; i < 0xca; i++ )
+			{
+				result[ i ] = ThrowInvalidHeaderException;
+			}
+			result[ 0xca ] = UnpackScalarHeader;
+			result[ 0xcb ] = UnpackScalarHeader;
+			result[ 0xcc ] = UnpackScalarHeader;
+			result[ 0xcd ] = UnpackScalarHeader;
+			result[ 0xce ] = UnpackScalarHeader;
+			result[ 0xcf ] = UnpackScalarHeader;
+			result[ 0xd0 ] = UnpackScalarHeader;
+			result[ 0xd1 ] = UnpackScalarHeader;
+			result[ 0xd2 ] = UnpackScalarHeader;
+			result[ 0xd3 ] = UnpackScalarHeader;
+			// 0xd4-0xd9 : Undefined
+			for ( int i = 0xd4; i < 0xda; i++ )
+			{
+				result[ i ] = ThrowInvalidHeaderException;
+			}
+			result[ 0xda ] = UnpackRawHeader;
+			result[ 0xdb ] = UnpackRawHeader;
+			result[ 0xdc ] = UnpackArrayOrMapHeader;
+			result[ 0xdd ] = UnpackArrayOrMapHeader;
+			result[ 0xde ] = UnpackArrayOrMapHeader;
+			result[ 0xdf ] = UnpackArrayOrMapHeader;
+			for ( int i = 0xe0; i < 0x100; i++ )
+			{
+				result[ i ] = UnpackNegativeFixNum;
+			}
+
+			return result;
+		}
+
+		private static readonly MessagePackObject?[] _positveFixNums =
+			Enumerable.Range( 0, 0x80 ).Select( i => new MessagePackObject?( unchecked( ( byte )i ) ) ).ToArray();
+
+		private static bool UnpackPositiveFixNum( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			result = _positveFixNums[ b & 0x7f ];
+			return true;
+		}
+
+		private static readonly MessagePackObject?[] _negavieFixNums =
+			Enumerable.Range( 0xe0, 0x20 ).Select( i => new MessagePackObject?( unchecked( ( sbyte )( i - 0x100 ) ) ) ).ToArray();
+
+		private static bool UnpackNegativeFixNum( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			result = _negavieFixNums[ b & 0x1f ];
+			return true;
+		}
+
+		private static bool UnpackEmptyMap( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			result = new MessagePackObject( new MessagePackObjectDictionary( 0 ) );
+			@this._wasEmptyCollection = true;
+			return true;
+		}
+
+		private static bool UnpackFixMapLength( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			var header = _headerArray[ b ];
+			segmentatedSource.NotifySegmentLength( header.ValueOrLength * _assumedCollectionItemSize * 2 );
+			@this._collectionState.NewContextCollection( header, header.ValueOrLength, unpackingMode );
+			result = null;
+			@this.TransitToUnpackContextCollection();
+			return true;
+		}
+
+		private static bool UnpackEmptyArray( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			result = new MessagePackObject( new List<MessagePackObject>( 0 ) );
+			@this._wasEmptyCollection = true;
+			return true;
+		}
+
+		private static bool UnpackFixArrayLength( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			var header = _headerArray[ b ];
+			segmentatedSource.NotifySegmentLength( header.ValueOrLength * _assumedCollectionItemSize );
+			@this._collectionState.NewContextCollection( header, header.ValueOrLength, unpackingMode );
+			result = null;
+			@this.TransitToUnpackContextCollection();
+			return true;
+		}
+
+		private static readonly MessagePackObject? _emptyBinary = Binary.Empty;
+
+		private static bool UnpackEmptyRaw( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			result = _emptyBinary;
+			return true;
+		}
+
+		private static bool UnpackFixRawLength( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			@this.TransitToUnpackRawBytes( segmentatedSource, unchecked( ( uint )( b & 0x1f ) ) );
+			// Try to get body.
+			return @this.UnpackRawBytes( source, segmentatedSource, unpackingMode, out result );
+		}
+		private static readonly MessagePackObject? _nil = MessagePackObject.Nil;
+
+		private static bool UnpackNil( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			result = _nil;
+			return true;
+		}
+
+		private static readonly MessagePackObject? _false = false;
+
+		private static bool UnpackFalse( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			result = _false;
+			return true;
+		}
+
+		private static readonly MessagePackObject? _true = true;
+
+		private static bool UnpackTrue( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			result = _true;
+			return true;
+		}
+
+		private static readonly uint[] _scalarLengthes = new uint[] { 1, 2, 4, 8 };
+
+		private static bool UnpackScalarHeader( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			// Transit to UnpackScalar
+			@this._next = @this._unpackScalar;
+			@this._isInCollection = false;
+			@this._bytesBuffer = new BytesBuffer( _scalarLengthes[ b % 4 ] );
+
+			// Try to get body.
+			if ( !@this.UnpackScalar( source, segmentatedSource, unpackingMode, out result ) )
+			{
+				// Need more data
+				return false;
+			}
+
+			return true;
+		}
+
+		private static bool UnpackRawHeader( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			@this._next = @this._unpackRawLength;
+			@this._isInCollection = false;
+			@this._bytesBuffer = new BytesBuffer( unchecked( ( uint )( ( b % 2 + 1 ) * 2 ) ) );
+
+			// Try to get length.
+			return @this.UnpackRawLength( source, segmentatedSource, unpackingMode, out result );
+		}
+
+		private static bool UnpackArrayOrMapHeader( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			// Transit to UnpackCollectionLength
+			@this._next = @this._unpackCollectionLength;
+			@this._isInCollection = false;
+			@this._bytesBuffer = new BytesBuffer( unchecked( ( uint )( ( b % 2 + 1 ) * 2 ) ) );
+
+			if ( !@this.UnpackCollectionLength( source, segmentatedSource, unpackingMode, out result ) )
+			{
+				// Need to get more data
+				return false;
+			}
+
+			return true;
+		}
+
+		private static bool ThrowInvalidHeaderException( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Header '0x{0:x2}' is not available.", b ) );
+		}
+
+		private bool UnpackHeader( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		{
+			var b = source.ReadByte();
+			if ( b < 0 )
+			{
+				result = null;
+				return false;
+			}
+
+			this._contextValueHeader = _headerArray[ b ];
+			return _headerUnpackings[ b ]( this, b, source, segmentatedSource, unpackingMode, out result );
+		}
+
+		private bool UnpackScalar( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
 #if DEBUG
 			Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsVariable ) != 0, this._contextValueHeader.ToString() );
@@ -402,16 +464,16 @@ namespace MsgPack
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 			if ( this._bytesBuffer.IsFilled )
 			{
-				result = this._bytesBuffer.AsMessagePackObject( this._contextValueHeader.Type );
+				unpacked = this._bytesBuffer.AsMessagePackObject( this._contextValueHeader.Type );
 				return true;
 			}
 
 			// Need more data.
-			result = null;
+			unpacked = null;
 			return false;
 		}
 
-		private bool UnpackCollectionLength( Stream source, ISegmentLengthRecognizeable segmentatedSource, out MessagePackObject? unpacked )
+		private bool UnpackCollectionLength( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 
@@ -428,7 +490,7 @@ namespace MsgPack
 					return true;
 				}
 
-				this._collectionState.NewContextCollection( this._contextValueHeader, length );
+				this._collectionState.NewContextCollection( this._contextValueHeader, length, unpackingMode );
 				segmentatedSource.NotifySegmentLength( length * _assumedCollectionItemSize * ( ( this._contextValueHeader.Type & MessageType.IsMap ) != 0 ? 2 : 1 ) );
 				this.TransitToUnpackContextCollection();
 
@@ -441,7 +503,7 @@ namespace MsgPack
 			return false;
 		}
 
-		private bool UnpackRaw( Stream source, ISegmentLengthRecognizeable segmentatedSource, out MessagePackObject? unpacked )
+		private bool UnpackRawLength( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 
@@ -459,7 +521,7 @@ namespace MsgPack
 				segmentatedSource.NotifySegmentLength( length );
 				this.TransitToUnpackRawBytes( segmentatedSource, length );
 
-				return this.UnpackRawBytes( source, out unpacked );
+				return this.UnpackRawBytes( source, segmentatedSource, unpackingMode, out unpacked );
 			}
 
 			// Need more info.
@@ -467,7 +529,7 @@ namespace MsgPack
 			return false;
 		}
 
-		private bool UnpackRawBytes( Stream source, out MessagePackObject? unpacked )
+		private bool UnpackRawBytes( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
 #if DEBUG
 			Contract.Assert( this._bytesBuffer.BackingStore != null, this._bytesBuffer.ToString() );
@@ -492,7 +554,8 @@ namespace MsgPack
 		/// <param name="length">The known length of the source.</param>
 		private void TransitToUnpackRawBytes( ISegmentLengthRecognizeable source, uint length )
 		{
-			this._stage = Stage.UnpackRawBytes;
+			this._next = this._unpackRawBytes;
+			this._isInCollection = false;
 			// Allocate buffer to store raw binaries.
 			source.NotifySegmentLength( length );
 			this._bytesBuffer = new BytesBuffer( length );
@@ -503,7 +566,8 @@ namespace MsgPack
 		/// </summary>
 		private void TransitToUnpackContextCollection()
 		{
-			this._stage = Stage.UnpackContextCollection;
+			this._next = this._unpackHeader;
+			this._isInCollection = true;
 			this._contextValueHeader = MessagePackHeader.Null;
 			this._bytesBuffer = BytesBuffer.Null;
 		}
@@ -554,7 +618,7 @@ namespace MsgPack
 			result[ 0xc2 ] = MessageType.False;
 			result[ 0xc3 ] = MessageType.True;
 			// 0xc4-0xc9 : Undefined
-			result[ 0xca ] = MessageType.Single;
+			result[ 0xca ] = MessageType.Single; // 1
 			result[ 0xcb ] = MessageType.Double;
 			result[ 0xcc ] = MessageType.UInt8;
 			result[ 0xcd ] = MessageType.UInt16;
@@ -864,12 +928,12 @@ namespace MsgPack
 
 			public bool IsArray
 			{
-				get { return this._collectionContextStack.Peek().Items != null; }
+				get { return this._collectionContextStack.Peek().IsArray; }
 			}
 
 			public bool IsMap
 			{
-				get { return this._collectionContextStack.Peek().Dictionary != null; }
+				get { return this._collectionContextStack.Peek().IsMap; }
 			}
 
 			public bool HasMoreEntries
@@ -902,13 +966,13 @@ namespace MsgPack
 			/// </summary>
 			/// <param name="header">Header of collection object.</param>
 			/// <param name="count">Items count of collection object. If collection is map, this value indicates count of entries.</param>
-			public void NewContextCollection( MessagePackHeader header, uint count )
+			public void NewContextCollection( MessagePackHeader header, uint count, UnpackingMode mode )
 			{
 #if DEBUG
 				Contract.Assert( ( header.Type & MessageType.IsRawBinary ) == 0, header.Type.ToString() );
 #endif
 
-				this._collectionContextStack.Push( new CollectionContextState( header, count ) );
+				this._collectionContextStack.Push( CollectionContextState.Create( header, count, mode ) );
 			}
 
 			/// <summary>
@@ -918,30 +982,7 @@ namespace MsgPack
 			/// <returns></returns>
 			public MessagePackObject PopCollection()
 			{
-#if DEBUG
-				Contract.Assert( !this.IsEmpty );
-#endif
-				var context = this._collectionContextStack.Pop();
-				if ( ( context.Header.Type & MessageType.IsArray ) != 0 )
-				{
-#if DEBUG
-					Contract.Assert( context.Items != null );
-					Contract.Assert( context.Unpacked == context.Capacity, context.Unpacked + "!=" + context.Capacity );
-#endif
-					return new MessagePackObject( context.Items );
-				}
-				else if ( ( context.Header.Type & MessageType.IsMap ) != 0 )
-				{
-#if DEBUG
-					Contract.Assert( context.Dictionary != null );
-					Contract.Assert( context.Unpacked == context.Capacity * 2, context.Unpacked + "!=" + ( context.Capacity * 2 ) );
-#endif
-					return new MessagePackObject( context.Dictionary );
-				}
-				else
-				{
-					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown collection type: {0}(0x{0:x})", context.Header.Type ) );
-				}
+				return this._collectionContextStack.Pop().GetCollection();
 			}
 
 			/// <summary>
@@ -950,168 +991,241 @@ namespace MsgPack
 			/// <param name="item">New item to feed.</param>
 			public bool FeedItem( MessagePackObject item )
 			{
-				var top = this._collectionContextStack.Pop();
-				var feeded = top.AddUnpackedItem( item );
-				this._collectionContextStack.Push( feeded );
-				return feeded.IsFilled;
+				var top = this._collectionContextStack.Peek();
+				top.AddUnpackedItem( item );
+				return top.IsFilled;
 			}
 
-			/// <summary>
-			///		Represents context collection state.
-			/// </summary>
-			public struct CollectionContextState
+			public abstract class CollectionContextState
 			{
-				private readonly MessagePackHeader _header;
+				public abstract uint Capacity { get; }
+				public abstract uint Unpacked { get; }
+				public abstract bool IsFilled { get; }
+				public abstract bool IsArray { get; }
+				public abstract bool IsMap { get; }
+				public abstract void AddUnpackedItem( MessagePackObject item );
+				public abstract MessagePackObject GetCollection();
 
-				/// <summary>
-				///		Get header of this collection.
-				/// </summary>
-				/// <value>Header of this collection.</value>
-				public MessagePackHeader Header
+				public static CollectionContextState Create( MessagePackHeader header, uint count, UnpackingMode mode )
 				{
-					get { return this._header; }
+					if ( mode != UnpackingMode.EntireTree )
+					{
+						if ( ( header.Type & MessageType.IsArray ) != 0 )
+						{
+							return new ArrayForgettingCollectionContextState( count );
+						}
+						else if ( ( header.Type & MessageType.IsMap ) != 0 )
+						{
+							return new MapForgettingCollectionContextState( count );
+						}
+						else
+						{
+							throw new InvalidMessagePackStreamException();
+						}
+					}
+					else
+					{
+						if ( ( header.Type & MessageType.IsArray ) != 0 )
+						{
+							return new ArrayCollectionContextState( count );
+						}
+						else if ( ( header.Type & MessageType.IsMap ) != 0 )
+						{
+							return new MapCollectionContextState( count );
+						}
+						else
+						{
+							throw new InvalidMessagePackStreamException();
+						}
+					}
 				}
+			}
 
-				private readonly MessagePackObjectDictionary _dictionary;
-
-				public MessagePackObjectDictionary Dictionary
-				{
-					get { return this._dictionary; }
-				}
-
-				private MessagePackObject? _key;
-
-				private readonly MessagePackObject[] _items;
-
-				/// <summary>
-				///		Get storage for items of this collection.
-				/// </summary>
-				/// <value>
-				///		Storage for items of this collection.
-				///		Do not modify this array directly.
-				/// </value>
-				public MessagePackObject[] Items
-				{
-					get { return this._items; }
-				}
-
+			public abstract class ForgettingCollectionContextState : CollectionContextState
+			{
 				private readonly uint _capacity;
 
-				private uint _unpacked;
-
-				public uint Capacity
+				public sealed override uint Capacity
 				{
 					get { return this._capacity; }
 				}
 
-				public uint Unpacked
+				private uint _unpacked;
+
+				public sealed override uint Unpacked
 				{
 					get { return this._unpacked; }
 				}
 
-				/// <summary>
-				///		Get the value which indicates <see cref="Items"/> are filled.
-				/// </summary>
-				/// <value>If <see cref="Items"/> are filled then true.</value>
-				public bool IsFilled
+				protected ForgettingCollectionContextState( uint count )
 				{
-					get { return this._unpacked == this._capacity * ( this._items != null ? 1 : 2 ); }
-				}
-
-				/// <summary>
-				///		Initialize new instance.
-				/// </summary>
-				/// <param name="header">Header of collection.</param>
-				/// <param name="count">Recognized count of items in this collection.</param>
-				public CollectionContextState( MessagePackHeader header, uint count )
-				{
-					Contract.Assert( header.Type != MessageType.Unknown );
-					this = default( CollectionContextState );
-
-					this._header = header;
-					if ( ( header.Type & MessageType.IsMap ) == 0 )
-					{
-						Contract.Assert( ( header.Type & MessageType.IsArray ) != 0 );
-						this._items = new MessagePackObject[ count ];
-					}
-					else
-					{
-						Contract.Assert( ( header.Type & MessageType.IsArray ) == 0 );
-						if ( Int32.MaxValue < count )
-						{
-							throw new NotImplementedException( "Maps over 2^31 items are not supported yet." );
-						}
-
-						this._dictionary = new MessagePackObjectDictionary( unchecked( ( int )( count & 0x7fffffff ) ) );
-					}
-
 					this._capacity = count;
-					this._unpacked = 0;
 				}
 
-				/// <summary>
-				///		Returns string representation of this object.
-				/// </summary>
-				/// <returns>
-				///		String which format is "<em>Header</em>(<em>Unpacked</em>/<em>Length</em>)".
-				/// </returns>
-				public override string ToString()
+				public sealed override void AddUnpackedItem( MessagePackObject item )
 				{
-					if ( this._items != null )
-					{
-						return String.Format( CultureInfo.CurrentCulture, "{0}({1}/{2})", this._header, this._unpacked, this._capacity );
-					}
-					else
-					{
-						return String.Format( CultureInfo.CurrentCulture, "{0}({1}/{2})", this._header, this._unpacked / 2.0, this._capacity );
-					}
+					this._unpacked++;
 				}
 
-				/// <summary>
-				///		Add unpackaged item to this collection.
-				/// </summary>
-				/// <param name="item">Item to be added.</param>
-				/// <returns>New context state to replace this instance.</returns>
-				public CollectionContextState AddUnpackedItem( MessagePackObject item )
+				public sealed override MessagePackObject GetCollection()
 				{
 #if DEBUG
-					Contract.Assert(
-						( ( this._items != null && this._unpacked < this._capacity )
-						|| ( this._dictionary != null && this._unpacked < this._capacity * 2 )
-						),
-						this._items != null
-						? this._unpacked + "<" + this._capacity
-						: this._unpacked + "<" + this._capacity * 2
-					);
+					Contract.Assert( this.IsFilled );
 #endif
+					return MessagePackObject.Nil;
+				}
+			}
 
-					if ( this._items != null )
+			public sealed class ArrayForgettingCollectionContextState : ForgettingCollectionContextState
+			{
+				public sealed override bool IsFilled
+				{
+					get { return this.Capacity == this.Unpacked; }
+				}
+
+				public sealed override bool IsArray
+				{
+					get { return true; }
+				}
+
+				public sealed override bool IsMap
+				{
+					get { return false; }
+				}
+
+				public ArrayForgettingCollectionContextState( uint count ) : base( count ) { }
+			}
+
+			public sealed class MapForgettingCollectionContextState : ForgettingCollectionContextState
+			{
+				public sealed override bool IsFilled
+				{
+					get { return this.Capacity * 2 == this.Unpacked; }
+				}
+
+				public sealed override bool IsArray
+				{
+					get { return false; }
+				}
+
+				public sealed override bool IsMap
+				{
+					get { return true; }
+				}
+
+				public MapForgettingCollectionContextState( uint count ) : base( count ) { }
+			}
+
+			public sealed class ArrayCollectionContextState : CollectionContextState
+			{
+				private readonly MessagePackObject[] _items;
+
+				public sealed override uint Capacity
+				{
+					get { return unchecked( ( uint )( this._items.Length ) ); }
+				}
+
+				private uint _unpacked;
+
+				public sealed override uint Unpacked
+				{
+					get { return this._unpacked; }
+				}
+
+				public sealed override bool IsFilled
+				{
+					get { return this._unpacked == this._items.Length; }
+				}
+
+				public sealed override bool IsArray
+				{
+					get { return true; }
+				}
+
+				public sealed override bool IsMap
+				{
+					get { return false; }
+				}
+
+				public ArrayCollectionContextState( uint count )
+				{
+					this._items = new MessagePackObject[ count ];
+				}
+
+				public sealed override void AddUnpackedItem( MessagePackObject item )
+				{
+					this._items[ this._unpacked ] = item;
+					this._unpacked++;
+				}
+
+				public sealed override MessagePackObject GetCollection()
+				{
+#if DEBUG
+					Contract.Assert( this.IsFilled );
+#endif
+					return new MessagePackObject( this._items );
+				}
+			}
+
+			public sealed class MapCollectionContextState : CollectionContextState
+			{
+				private MessagePackObject _key;
+				private readonly MessagePackObjectDictionary _dictionary;
+				private readonly uint _capacity;
+
+				public sealed override uint Capacity
+				{
+					get { return this._capacity; }
+				}
+
+				private uint _unpacked;
+
+				public sealed override uint Unpacked
+				{
+					get { return this._unpacked; }
+				}
+
+				public sealed override bool IsFilled
+				{
+					get { return this._dictionary.Count == this._capacity; }
+				}
+
+				public sealed override bool IsArray
+				{
+					get { return false; }
+				}
+
+				public sealed override bool IsMap
+				{
+					get { return true; }
+				}
+
+				public MapCollectionContextState( uint count )
+				{
+					this._capacity = count;
+					this._dictionary = new MessagePackObjectDictionary( unchecked( ( int )count ) );
+				}
+
+				public sealed override void AddUnpackedItem( MessagePackObject item )
+				{
+					if ( this._unpacked % 2 == 0 )
 					{
-						this._items[ this._unpacked ] = item;
+						this._key = item;
 					}
 					else
 					{
-						if ( this._key == null )
-						{
-							this._key = item;
-						}
-						else
-						{
-							try
-							{
-								this._dictionary.Add( this._key.Value, item );
-							}
-							catch ( ArgumentException )
-							{
-								throw new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Key '{0}' is duplicated.", this._key ) );
-							}
-
-							this._key = null;
-						}
+						this._dictionary.Add( this._key, item );
 					}
 
 					this._unpacked++;
-					return this;
+				}
+
+				public sealed override MessagePackObject GetCollection()
+				{
+#if DEBUG
+					Contract.Assert( this.IsFilled );
+#endif
+					return new MessagePackObject( this._dictionary );
 				}
 			}
 		}
