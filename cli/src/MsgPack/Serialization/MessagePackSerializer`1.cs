@@ -39,15 +39,15 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Serialize specified object to the <see cref="Stream"/>.
 		/// </summary>
-		/// <param name="objectTree">Object to be serialized.</param>
 		/// <param name="stream">Destination <see cref="Stream"/>.</param>
+		/// <param name="objectTree">Object to be serialized.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="stream"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="SerializationException">
 		///		<typeparamref name="T"/> is not serializable etc.
 		/// </exception>
-		public void Pack( T objectTree, Stream stream )
+		public void Pack( Stream stream, T objectTree )
 		{
 			this.PackTo( Packer.Create( stream ), objectTree );
 		}

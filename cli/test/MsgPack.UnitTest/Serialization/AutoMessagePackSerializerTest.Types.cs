@@ -1496,7 +1496,7 @@ namespace MsgPack.Serialization
 			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
-				target.Pack( value, buffer );
+				target.Pack( buffer, value );
 				buffer.Position = 0;
 				T unpacked = target.Unpack( buffer );
 				buffer.Position = 0;
@@ -1510,7 +1510,7 @@ namespace MsgPack.Serialization
 			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
-				target.Pack( value, buffer );
+				target.Pack( buffer, value );
 				buffer.Position = 0;
 				T unpacked = target.Unpack( buffer );
 				buffer.Position = 0;
@@ -1524,7 +1524,7 @@ namespace MsgPack.Serialization
 			var target = new AutoMessagePackSerializer<T[]>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
-				target.Pack( value, buffer );
+				target.Pack( buffer, value );
 				buffer.Position = 0;
 				T[] unpacked = target.Unpack( buffer );
 				buffer.Position = 0;

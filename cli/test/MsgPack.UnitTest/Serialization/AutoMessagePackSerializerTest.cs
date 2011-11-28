@@ -35,7 +35,7 @@ namespace MsgPack.Serialization
 	[Timeout( 3000 )]
 	public partial class AutoMessagePackSerializerTest
 	{
-		private static bool _traceOn = false;
+		private static bool _traceOn = true;
 		private static bool _reuseContext = true;
 
 		private static readonly SerializationContext _defaultContext = new SerializationContext();
@@ -50,9 +50,9 @@ namespace MsgPack.Serialization
 		{
 			if ( _traceOn )
 			{
-				//Tracer.Emit.Listeners.Clear();
-				//Tracer.Emit.Switch.Level = SourceLevels.All;
-				//Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+				Tracer.Emit.Listeners.Clear();
+				Tracer.Emit.Switch.Level = SourceLevels.All;
+				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
 
 			/*
@@ -177,7 +177,7 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<NameValueCollection>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( target, stream );
+				serializer.Pack( stream, target );
 				stream.Position = 0;
 				NameValueCollection result = serializer.Unpack( stream );
 				Assert.That( result.GetValues( String.Empty ), Is.EquivalentTo( new[] { "Empty-1", "Empty-2" } ) );
@@ -199,7 +199,7 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<NameValueCollection>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( target, stream );
+				serializer.Pack( stream, target );
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<byte[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( new byte[] { 1, 2, 3, 4 }, stream );
+				serializer.Pack( stream, new byte[] { 1, 2, 3, 4 } );
 				stream.Position = 0;
 				Assert.That( Unpacking.UnpackRaw( stream ).ToArray(), Is.EqualTo( new byte[] { 1, 2, 3, 4 } ) );
 			}
@@ -221,7 +221,7 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<char[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( new char[] { 'a', 'b', 'c', 'd' }, stream );
+				serializer.Pack( stream, new char[] { 'a', 'b', 'c', 'd' } );
 				stream.Position = 0;
 				Assert.That( Unpacking.UnpackString( stream ), Is.EqualTo( "abcd" ) );
 			}
@@ -233,7 +233,7 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<byte[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( new byte[ 0 ], stream );
+				serializer.Pack( stream, new byte[ 0 ] );
 				Assert.That( stream.Length, Is.EqualTo( 1 ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
@@ -246,7 +246,7 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<string>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( String.Empty, stream );
+				serializer.Pack( stream, String.Empty );
 				Assert.That( stream.Length, Is.EqualTo( 1 ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( String.Empty ) );
@@ -259,7 +259,7 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<int[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( new int[ 0 ], stream );
+				serializer.Pack( stream, new int[ 0 ] );
 				Assert.That( stream.Length, Is.EqualTo( 1 ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new int[ 0 ] ) );
@@ -272,7 +272,7 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<KeyValuePair<string, int>[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( new KeyValuePair<string, int>[ 0 ], stream );
+				serializer.Pack( stream, new KeyValuePair<string, int>[ 0 ] );
 				Assert.That( stream.Length, Is.EqualTo( 1 ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new KeyValuePair<string, int>[ 0 ] ) );
@@ -285,7 +285,7 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<Dictionary<string, int>>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( new Dictionary<string, int>(), stream );
+				serializer.Pack( stream, new Dictionary<string, int>() );
 				Assert.That( stream.Length, Is.EqualTo( 1 ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new Dictionary<string, int>() ) );
@@ -298,13 +298,13 @@ namespace MsgPack.Serialization
 			var serializer = new AutoMessagePackSerializer<int?>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( 1, stream );
+				serializer.Pack( stream, 1 );
 				Assert.That( stream.Length, Is.EqualTo( 1 ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( 1 ) );
 
 				stream.Position = 0;
-				serializer.Pack( null, stream );
+				serializer.Pack( stream, null );
 				Assert.That( stream.Length, Is.EqualTo( 1 ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( null ) );
@@ -317,7 +317,7 @@ namespace MsgPack.Serialization
 			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
-				new AutoMessagePackSerializer<T>( GetSerializationContext() ).Pack( value, buffer );
+				new AutoMessagePackSerializer<T>( GetSerializationContext() ).Pack( buffer, value );
 				buffer.Position = 0;
 				T intermediate = unpacking( buffer );
 				Assert.That( safeComparer( intermediate, value ), "Expected:{1}{0}Actual :{2}", Environment.NewLine, value, intermediate );
@@ -333,7 +333,7 @@ namespace MsgPack.Serialization
 			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
-				target.Pack( value, buffer );
+				target.Pack( buffer, value );
 				buffer.Position = 0;
 				T unpacked = target.Unpack( buffer );
 				buffer.Position = 0;
