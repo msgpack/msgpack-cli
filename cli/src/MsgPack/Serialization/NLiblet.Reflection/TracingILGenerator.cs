@@ -991,8 +991,9 @@ namespace NLiblet.Reflection
 			this._trace.Write( " " );
 
 			// TODO: NLiblet
+			var asFieldBuilder = field as FieldBuilder;
 #if !SILVERLIGHT
-			if ( !( field is FieldBuilder ) )
+			if ( asFieldBuilder == null )
 			{
 				var modreqs = field.GetRequiredCustomModifiers();
 				if ( 0 < modreqs.Length )
@@ -1022,7 +1023,7 @@ namespace NLiblet.Reflection
 			}
 #endif
 
-			if ( this._isInDynamicMethod || !( field is FieldBuilder ) ) // declaring type of the field should be omitted for same type.
+			if ( this._isInDynamicMethod || asFieldBuilder == null ) // declaring type of the field should be omitted for same type.
 			{
 				WriteType( this._trace, field.DeclaringType );
 			}

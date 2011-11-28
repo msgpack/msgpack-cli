@@ -548,7 +548,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Transit current stage to <see cref="Stage.UnpackRawBytes"/> with cleanuping states.
+		///		Transit current stage to unpackRawBytes stage with cleanuping states.
 		/// </summary>
 		/// <param name="source"><see cref="ISegmentLengthRecognizeable"/> to be notified.</param>
 		/// <param name="length">The known length of the source.</param>
@@ -562,7 +562,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Transit current stage to <see cref="Stage.UnpackContextCollection"/> with cleanuping states.
+		///		Transit current stage to unpackContextCollection stage with cleanuping states.
 		/// </summary>
 		private void TransitToUnpackContextCollection()
 		{
@@ -668,94 +668,6 @@ namespace MsgPack
 
 			this.TransitToUnpackContextCollection();
 			return current;
-		}
-
-		/// <summary>
-		///		Get variable portion of header for specified type.
-		/// </summary>
-		/// <param name="type">Type of message which retrieved from header.</param>
-		/// <returns>Size of variable type length. If type is collection or raw, this value indicates size of length portion.</returns>
-		private static uint GetLength( MessageType type )
-		{
-			switch ( type )
-			{
-				case MessageType.Int8:
-				case MessageType.UInt8:
-				{
-					return sizeof( byte );
-				}
-				case MessageType.Array16:
-				case MessageType.Int16:
-				case MessageType.Map16:
-				case MessageType.Raw16:
-				case MessageType.UInt16:
-				{
-					return sizeof( ushort );
-				}
-				case MessageType.Array32:
-				case MessageType.Int32:
-				case MessageType.Map32:
-				case MessageType.Raw32:
-				case MessageType.Single:
-				case MessageType.UInt32:
-				{
-					return sizeof( uint );
-				}
-				case MessageType.Double:
-				case MessageType.Int64:
-				case MessageType.UInt64:
-				{
-					return sizeof( ulong );
-				}
-				default:
-				{
-					Contract.Assert( false, "FAIL" );
-					return 0;
-				}
-			}
-		}
-
-		/// <summary>
-		///		Represents state machine stage (state) of <see cref="StreamingUnpacker"/>.
-		/// </summary>
-		private enum Stage
-		{
-			/// <summary>
-			///		State machine stays root unpacking.
-			///		<see cref="StreamingUnpacker"/> does not have any intermediate state.
-			///		This is initial state.
-			/// </summary>
-			Root = 0,
-
-			/// <summary>
-			///		State machine is unpacking some collection.
-			///		<see cref="StreamingUnpacker"/> will unpack next item of context collection.
-			/// </summary>
-			UnpackContextCollection,
-
-			/// <summary>
-			///		State machine is unpacking length of array or map.
-			///		<see cref="StreamingUnpacker"/> will unpack scalar as length of collection, 
-			///		then add new context collection to the stack and unpack items.
-			/// </summary>
-			UnpackCollectionLength,
-
-			/// <summary>
-			///		State machine is unpacking length of raw binaries.
-			///		<see cref="StreamingUnpacker"/> will unpack scalar as length of binaries, 
-			///		then get following bytes as value.
-			/// </summary>
-			UnpackRawLength,
-
-			/// <summary>
-			///		State machine is getting bytes as raw binaries.
-			/// </summary>
-			UnpackRawBytes,
-
-			/// <summary>
-			///		State machine is unpacking body of scalar value.
-			/// </summary>
-			UnpackScalar
 		}
 
 		/// <summary>
@@ -934,21 +846,6 @@ namespace MsgPack
 			public bool IsMap
 			{
 				get { return this._collectionContextStack.Peek().IsMap; }
-			}
-
-			public bool HasMoreEntries
-			{
-				get
-				{
-					if ( this._collectionContextStack.Count == 0 )
-					{
-						return false;
-					}
-					else
-					{
-						return !this._collectionContextStack.Peek().IsFilled;
-					}
-				}
 			}
 
 			public int Depth

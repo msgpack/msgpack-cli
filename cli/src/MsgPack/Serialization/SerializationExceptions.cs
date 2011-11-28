@@ -214,7 +214,7 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewNotSupportedBecauseCannotInstanciateAbstractType( Type type )
 		{
-			return new NotSupportedException( String.Format( "This operation is not supported because '{0}' cannot be instanciated.", type ) );
+			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported because '{0}' cannot be instanciated.", type ) );
 		}
 	}
 }

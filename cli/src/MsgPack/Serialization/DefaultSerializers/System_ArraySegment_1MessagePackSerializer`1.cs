@@ -24,19 +24,42 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal class System_ArraySegment_1MessagePackSerializer<T> : MessagePackSerializer<ArraySegment<T>>
 	{
-		private static readonly Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> _packing;
-		private static readonly Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> _unpacking;
+		private static readonly Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> _packing = InitializePacking();
+		private static readonly Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> _unpacking = InitializeUnacking();
 
-		static System_ArraySegment_1MessagePackSerializer()
+		private static Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> InitializePacking()
 		{
 			if ( typeof( T ) == typeof( byte ) )
 			{
-				_packing =
+				return
 					Delegate.CreateDelegate(
 						typeof( Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> ),
 						ArraySegmentMessageSerializer.PackByteArraySegmentToMethod
 					) as Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>;
-				_unpacking =
+			}
+			else if ( typeof( T ) == typeof( char ) )
+			{
+				return
+					Delegate.CreateDelegate(
+						typeof( Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> ),
+						ArraySegmentMessageSerializer.PackCharArraySegmentToMethod
+					) as Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>;
+			}
+			else
+			{
+				return
+					Delegate.CreateDelegate(
+						typeof( Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> ),
+						ArraySegmentMessageSerializer.PackGenericArraySegmentTo1Method.MakeGenericMethod( typeof( T ) )
+					) as Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>;
+			}
+		}
+
+		private static Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> InitializeUnacking()
+		{
+			if ( typeof( T ) == typeof( byte ) )
+			{
+				return
 					Delegate.CreateDelegate(
 						typeof( Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> ),
 						ArraySegmentMessageSerializer.UnpackByteArraySegmentFromMethod
@@ -44,23 +67,16 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else if ( typeof( T ) == typeof( char ) )
 			{
-				_packing = Delegate.CreateDelegate(
-					typeof( Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> ),
-					ArraySegmentMessageSerializer.PackCharArraySegmentToMethod
-				) as Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>;
-				_unpacking = Delegate.CreateDelegate(
-					typeof( Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> ),
-					ArraySegmentMessageSerializer.UnpackCharArraySegmentFromMethod
-				) as Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>;
+
+				return
+					Delegate.CreateDelegate(
+						typeof( Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> ),
+						ArraySegmentMessageSerializer.UnpackCharArraySegmentFromMethod
+					) as Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>;
 			}
 			else
 			{
-				_packing =
-					Delegate.CreateDelegate(
-						typeof( Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> ),
-						ArraySegmentMessageSerializer.PackGenericArraySegmentTo1Method.MakeGenericMethod( typeof( T ) )
-					) as Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>;
-				_unpacking =
+				return
 					Delegate.CreateDelegate(
 						typeof( Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> ),
 						ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom1Method.MakeGenericMethod( typeof( T ) )

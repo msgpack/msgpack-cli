@@ -44,7 +44,7 @@ namespace MsgPack.Serialization
 			}
 
 			if ( ( typeof( T ).Assembly == typeof( object ).Assembly || typeof( T ).Assembly == typeof( Enumerable ).Assembly )
-				&& typeof( T ).IsPublic && typeof( T ).Name.StartsWith( "Tuple`" ) )
+				&& typeof( T ).IsPublic && typeof( T ).Name.StartsWith( "Tuple`",StringComparison.Ordinal ) )
 			{
 				throw new NotImplementedException( "Tuple is not supported yet." );
 			}

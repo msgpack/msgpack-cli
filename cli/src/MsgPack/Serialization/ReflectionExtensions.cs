@@ -33,8 +33,6 @@ namespace MsgPack.Serialization
 	{
 		// TODO: Metadata
 		private static readonly PropertyInfo _icollectionCount = FromExpression.ToProperty( ( ICollection value ) => value.Count );
-		private static readonly Type[] _nonGenericListTypeArguments = new[] { typeof( object ) };
-		private static readonly Type[] _nonGenericDictionaryTypeArguments = new[] { typeof( object ), typeof( object ) };
 
 		public static Type GetMemberValueType( this MemberInfo source )
 		{

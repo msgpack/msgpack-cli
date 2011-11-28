@@ -30,7 +30,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Repository of known <see cref="MessagePackSerializer{T}"/>s.
 	/// </summary>
-	public sealed partial class SerializerRepository
+	public sealed partial class SerializerRepository : IDisposable
 	{
 		private readonly TypeKeyRepository _repository;
 
@@ -63,6 +63,14 @@ namespace MsgPack.Serialization
 		{
 			this._repository = new TypeKeyRepository( table );
 			this._repository.Freeze();
+		}
+
+		/// <summary>
+		///		Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		public void Dispose()
+		{
+			this._repository.Dispose();
 		}
 
 		/// <summary>

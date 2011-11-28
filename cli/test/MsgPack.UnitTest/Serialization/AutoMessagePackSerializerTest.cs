@@ -35,7 +35,7 @@ namespace MsgPack.Serialization
 	[Timeout( 3000 )]
 	public partial class AutoMessagePackSerializerTest
 	{
-		private static bool _traceOn = true;
+		private static bool _traceOn = false;
 		private static bool _reuseContext = true;
 
 		private static readonly SerializationContext _defaultContext = new SerializationContext();

@@ -28,8 +28,6 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationContext
 	{
-		private static readonly SerializationContext _default = new SerializationContext( SerializerRepository.Default );
-
 		private readonly SerializerRepository _serializers;
 
 		/// <summary>

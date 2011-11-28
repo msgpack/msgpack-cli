@@ -21,6 +21,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -39,6 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public static readonly MethodInfo UnpackGenericArraySegmentFrom1Method =
 			typeof( ArraySegmentMessageSerializer ).GetMethod( "UnpackGenericArraySegmentFrom" );
 
+		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static void PackByteArraySegmentTo( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer )
 		{
 			if ( objectTree.Array == null )
@@ -51,6 +53,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.PackRawBody( objectTree.Array.Skip( objectTree.Offset ).Take( objectTree.Count ) );
 		}
 
+		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static void PackCharArraySegmentTo( Packer packer, ArraySegment<char> objectTree, MessagePackSerializer<char> itemSerializer )
 		{
 			// TODO: More efficient
@@ -67,11 +70,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static ArraySegment<byte> UnpackByteArraySegmentFrom( Unpacker unpacker, MessagePackSerializer<byte> itemSerializer )
 		{
 			return new ArraySegment<byte>( unpacker.Data.Value.AsBinary() );
 		}
 
+		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static ArraySegment<char> UnpackCharArraySegmentFrom( Unpacker unpacker, MessagePackSerializer<char> itemSerializer )
 		{
 			// TODO: More efficient

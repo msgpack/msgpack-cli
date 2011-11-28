@@ -21,6 +21,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -32,9 +34,9 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Genereates serialization methods which can be save to file.
 	/// </summary>
+	[SuppressMessage( "Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "StringWriter actually is not have to dispose." )]
 	internal sealed class SerializerEmitter
 	{
-		private static readonly MethodInfo _serializationContextGet1Method = typeof( SerializationContext ).GetMethod( "Get" );
 		private static readonly Type[] _constructorParameterTypes = new[] { typeof( SerializationContext ) };
 		private static readonly Type[] _unpackFromCoreParameterTypes = new[] { typeof( Unpacker ) };
 
@@ -49,7 +51,7 @@ namespace MsgPack.Serialization
 			get { return ( Tracer.Emit.Switch.Level & SourceLevels.Verbose ) == SourceLevels.Verbose; }
 		}
 
-		private readonly TextWriter _trace = IsTraceEnabled ? new StringWriter() : TextWriter.Null;
+		private readonly TextWriter _trace = IsTraceEnabled ? new StringWriter( CultureInfo.InvariantCulture ) : TextWriter.Null;
 
 		/// <summary>
 		///		Gets the <see cref="TextWriter"/> for tracing.
@@ -230,7 +232,7 @@ namespace MsgPack.Serialization
 				// : base()
 				il.Emit( OpCodes.Ldarg_0 );
 				il.Emit( OpCodes.Call, this._typeBuilder.BaseType.GetConstructor( BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null ) );
-				
+
 				// this._serializerN = context.GetSerializer<T>();
 				foreach ( var entry in this._serializers )
 				{

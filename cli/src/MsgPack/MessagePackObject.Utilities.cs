@@ -342,7 +342,7 @@ namespace MsgPack
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
 		}
 
-		private bool IntegerIntegerEquals( ulong left, ValueTypeCode leftTypeCode, ulong right, ValueTypeCode rightTypeCode )
+		private static bool IntegerIntegerEquals( ulong left, ValueTypeCode leftTypeCode, ulong right, ValueTypeCode rightTypeCode )
 		{
 			if ( leftTypeCode.IsSigned )
 			{
@@ -380,12 +380,12 @@ namespace MsgPack
 			}
 		}
 
-		private bool IntegerSingleEquals( MessagePackObject integer, MessagePackObject real )
+		private static bool IntegerSingleEquals( MessagePackObject integer, MessagePackObject real )
 		{
 			return integer._value == ( float )real;
 		}
 
-		private bool IntegerDoubleEquals( MessagePackObject integer, MessagePackObject real )
+		private static bool IntegerDoubleEquals( MessagePackObject integer, MessagePackObject real )
 		{
 			return integer._value == ( double )real;
 		}

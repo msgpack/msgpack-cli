@@ -126,12 +126,12 @@ namespace MsgPack.Serialization
 		private static SerializerEmitter CreateArraySerializerCore( Type collectionType, MemberInfo memberOrNull )
 		{
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( collectionType );
-			CreatePackArrayProceduresCore( emitter, memberOrNull, collectionType );
+			CreatePackArrayProceduresCore( emitter, memberOrNull );
 			CreateUnpackArrayProceduresCore( emitter, memberOrNull, collectionType );
 			return emitter;
 		}
 
-		private static void CreatePackArrayProceduresCore( SerializerEmitter emitter, MemberInfo memberOrNull, Type memberType )
+		private static void CreatePackArrayProceduresCore( SerializerEmitter emitter, MemberInfo memberOrNull )
 		{
 			var traits = typeof( TObject ).GetCollectionTraits();
 			var il = emitter.GetPackToMethodILGenerator();

@@ -26,7 +26,7 @@ using System.Threading;
 
 namespace MsgPack.Serialization
 {
-	internal sealed class TypeKeyRepository
+	internal sealed class TypeKeyRepository : IDisposable
 	{
 		private volatile int _isFrozen;
 
@@ -59,6 +59,11 @@ namespace MsgPack.Serialization
 		{
 			this._lock = new ReaderWriterLockSlim( LockRecursionPolicy.NoRecursion );
 			this._table = table;
+		}
+
+		public void Dispose()
+		{
+			this._lock.Dispose();
 		}
 
 		private Dictionary<RuntimeTypeHandle, object> GetClonedTable()

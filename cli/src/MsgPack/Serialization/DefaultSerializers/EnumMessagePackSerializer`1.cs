@@ -25,13 +25,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class EnumMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
-		private static readonly Func<Unpacker, T> _unpacking;
+		private static readonly Func<Unpacker, T> _unpacking = InitializeUnpacking();
 
-		static EnumMessagePackSerializer()
+		private static Func<Unpacker, T> InitializeUnpacking()
 		{
 			if ( typeof( T ).IsValueType )
 			{
-				_unpacking =
+				return
 					Delegate.CreateDelegate(
 						typeof( Func<Unpacker, T> ),
 						EnumMessagePackSerializer.Unmarshal1Method.MakeGenericMethod( typeof( T ) )
@@ -39,7 +39,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
-				_unpacking = _ => { throw new NotSupportedException(); };
+				return _ => { throw new NotSupportedException(); };
 			}
 		}
 

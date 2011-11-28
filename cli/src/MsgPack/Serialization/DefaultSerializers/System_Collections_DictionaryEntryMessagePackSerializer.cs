@@ -36,7 +36,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.Pack( EnsureMessagePackObject( objectTree.Value ) );
 		}
 
-		private MessagePackObject EnsureMessagePackObject( object obj )
+		private static MessagePackObject EnsureMessagePackObject( object obj )
 		{
 			if ( obj == null )
 			{

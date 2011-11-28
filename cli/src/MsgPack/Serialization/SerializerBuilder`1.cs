@@ -114,33 +114,7 @@ namespace MsgPack.Serialization
 #endif
 		}
 		
-		/// <summary>
-		///		Creates serializer to serialize/deserialize specified member and returns its
-		/// </summary>
-		/// <param name="member">Metadata of target member.</param>
-		/// <param name="contract">Contract information of target member.</param>
-		/// <returns>
-		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
-		///		This value will not be <c>null</c>.
-		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
-		/// </returns>
-		protected ConstructorInfo CreateSerializer( MemberInfo member, DataMemberContract contract )
-		{
-			PropertyInfo property;
-			FieldInfo field;
-			if ( ( property = member as PropertyInfo ) != null )
-			{
-				return this.CreateSerializerCore( property, property.PropertyType, property.CanWrite, contract );
-			}
-			else
-			{
-				field = member as FieldInfo;
-				Contract.Assert( field != null );
-				return this.CreateSerializerCore( field, field.FieldType, !field.IsInitOnly, contract );
-			}
-		}
-
-		private ConstructorInfo CreateSerializerCore( MemberInfo member, Type memberType, bool canWrite, DataMemberContract contract )
+		private ConstructorInfo CreateSerializerCore( MemberInfo member, Type memberType, bool canWrite )
 		{
 			switch ( Type.GetTypeCode( memberType ) )
 			{
@@ -209,7 +183,6 @@ namespace MsgPack.Serialization
 		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
 		/// </returns>
 		protected abstract ConstructorInfo CreateMapSerializer( MemberInfo member, Type memberType );
-
 
 		/// <summary>
 		///		Creates serializer to serialize/deserialize specified object type member and returns its

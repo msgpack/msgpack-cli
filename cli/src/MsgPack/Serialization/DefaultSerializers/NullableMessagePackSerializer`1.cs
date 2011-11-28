@@ -28,17 +28,19 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		// TODO: -> Metadata
 		// TODO: comment
-		private static readonly PropertyInfo _nullableTHasValueProperty;
-		private static readonly PropertyInfo _nullableTValueProperty;
-		private static readonly MethodInfo _nullableTImplicitOperator;
+		private static readonly PropertyInfo _nullableTHasValueProperty = GetOnlyWhenNullable( typeof( Nullable<> ).MakeGenericType( Nullable.GetUnderlyingType( typeof( T ) ) ).GetProperty( "HasValue" ) );
+		private static readonly PropertyInfo _nullableTValueProperty = GetOnlyWhenNullable( typeof( Nullable<> ).MakeGenericType( Nullable.GetUnderlyingType( typeof( T ) ) ).GetProperty( "Value" ) );
+		private static readonly MethodInfo _nullableTImplicitOperator = GetOnlyWhenNullable( typeof( Nullable<> ).MakeGenericType( Nullable.GetUnderlyingType( typeof( T ) ) ).GetMethod( "op_Implicit", new Type[] { Nullable.GetUnderlyingType( typeof( T ) ) } ) );
 
-		static NullableMessagePackSerializer()
+		private static TValue GetOnlyWhenNullable<TValue>( TValue value )
 		{
 			if ( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
 			{
-				_nullableTHasValueProperty = typeof( Nullable<> ).MakeGenericType( Nullable.GetUnderlyingType( typeof( T ) ) ).GetProperty( "HasValue" );
-				_nullableTValueProperty = typeof( Nullable<> ).MakeGenericType( Nullable.GetUnderlyingType( typeof( T ) ) ).GetProperty( "Value" );
-				_nullableTImplicitOperator = typeof( Nullable<> ).MakeGenericType( Nullable.GetUnderlyingType( typeof( T ) ) ).GetMethod( "op_Implicit", new Type[] { Nullable.GetUnderlyingType( typeof( T ) ) } );
+				return value;
+			}
+			else
+			{
+				return default( TValue );
 			}
 		}
 
@@ -62,7 +64,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._underlying = emitter.CreateInstance<T>( context );
 		}
 
-		private void CreatePacking( SerializerEmitter emitter )
+		private static void CreatePacking( SerializerEmitter emitter )
 		{
 			var il = emitter.GetPackToMethodILGenerator();
 			try
@@ -109,7 +111,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		private void CreateUnpacking( SerializerEmitter emitter )
+		private static void CreateUnpacking( SerializerEmitter emitter )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
 			try
