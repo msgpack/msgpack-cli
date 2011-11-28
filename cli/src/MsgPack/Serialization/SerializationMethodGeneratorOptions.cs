@@ -25,7 +25,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Define options of <see cref="SerializationMethodGeneratorManager"/>
 	/// </summary>
-	internal enum SerializationMethodGeneratorOption
+	public enum SerializationMethodGeneratorOption
 	{
 #if !SILVERLIGHT
 		/// <summary>
