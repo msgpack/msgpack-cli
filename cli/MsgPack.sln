@@ -5,8 +5,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{60EC42
 	ProjectSection(SolutionItems) = preProject
 		src\CommonAssemblyInfo.cs = src\CommonAssemblyInfo.cs
 		src\CommonAssemblyInfo.Pack.cs = src\CommonAssemblyInfo.Pack.cs
-		src\CommonAssemblyInfo.Rpc.cs = src\CommonAssemblyInfo.Rpc.cs
-		src\Struct.tt = src\Struct.tt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1BD5D488-707E-4030-8AE8-80D93D04963F}"
