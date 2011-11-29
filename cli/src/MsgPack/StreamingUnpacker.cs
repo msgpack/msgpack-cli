@@ -390,14 +390,14 @@ namespace MsgPack
 			return true;
 		}
 
-		private static readonly uint[] _scalarLengthes = new uint[] { 1, 2, 4, 8 };
+		private static readonly BytesBuffer[] _scalarBuffers = new[] { new BytesBuffer( 1 ), new BytesBuffer( 2 ), new BytesBuffer( 4 ), new BytesBuffer( 8 ) };
 
 		private static bool UnpackScalarHeader( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			// Transit to UnpackScalar
 			@this._next = @this._unpackScalar;
 			@this._isInCollection = false;
-			@this._bytesBuffer = new BytesBuffer( _scalarLengthes[ b % 4 ] );
+			@this._bytesBuffer = _scalarBuffers[ b % 4 ];
 
 			// Try to get body.
 			if ( !@this.UnpackScalar( source, segmentatedSource, unpackingMode, out result ) )
@@ -413,7 +413,7 @@ namespace MsgPack
 		{
 			@this._next = @this._unpackRawLength;
 			@this._isInCollection = false;
-			@this._bytesBuffer = new BytesBuffer( unchecked( ( uint )( ( b % 2 + 1 ) * 2 ) ) );
+			@this._bytesBuffer = ( b % 2 ) == 0 ? BytesBuffer.TwoBytes : BytesBuffer.FourBytes;
 
 			// Try to get length.
 			return @this.UnpackRawLength( source, segmentatedSource, unpackingMode, out result );
@@ -424,7 +424,7 @@ namespace MsgPack
 			// Transit to UnpackCollectionLength
 			@this._next = @this._unpackCollectionLength;
 			@this._isInCollection = false;
-			@this._bytesBuffer = new BytesBuffer( unchecked( ( uint )( ( b % 2 + 1 ) * 2 ) ) );
+			@this._bytesBuffer = ( b % 2 ) == 0 ? BytesBuffer.TwoBytes : BytesBuffer.FourBytes;
 
 			if ( !@this.UnpackCollectionLength( source, segmentatedSource, unpackingMode, out result ) )
 			{
@@ -1133,6 +1133,9 @@ namespace MsgPack
 		/// </summary>
 		private struct BytesBuffer
 		{
+			public static readonly BytesBuffer TwoBytes = new BytesBuffer( 2 );
+			public static readonly BytesBuffer FourBytes = new BytesBuffer( 4 );
+
 			/// <summary>
 			///		Represents null buffer.
 			/// </summary>
