@@ -48,23 +48,23 @@ namespace MsgPack.Serialization
 		public static void EmitFor( TracingILGenerator il, LocalBuilder count, Action<TracingILGenerator, LocalBuilder> bodyEmitter )
 		{
 			var i = il.DeclareLocal( typeof( int ), "i" );
+			il.EmitLdc_I4_0();
+			il.EmitAnyStloc( i );
 			var forCond = il.DefineLabel( "FOR_COND" );
-			il.MarkLabel( forCond );
-
-			// cond
-			il.EmitAnyLdloc( i );
-			il.EmitAnyLdloc( count );
-			var endFor = il.DefineLabel( "END_FOR" );
-			il.EmitBeq( endFor );
-
+			il.EmitBr( forCond );
+			var body = il.DefineLabel( "BODY" );
+			il.MarkLabel( body );
 			bodyEmitter( il, i );
 			// increment
 			il.EmitAnyLdloc( i );
 			il.EmitLdc_I4_1();
 			il.EmitAdd();
 			il.EmitAnyStloc( i );
-			il.EmitBr( forCond );
-			il.MarkLabel( endFor );
+			// cond
+			il.MarkLabel( forCond );
+			il.EmitAnyLdloc( i );
+			il.EmitAnyLdloc( count );
+			il.EmitBlt( body );
 		}
 
 		/// <summary>
