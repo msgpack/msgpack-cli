@@ -27,16 +27,10 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2011" )]
 
 // TODO: use script. Major = Informational-Major, Minor = Informational-Minor, Build = Epoc days from 2010/1/1, Revision = Epoc minutes from 00:00:00
-[assembly: AssemblyFileVersion( "0.1.0.0" )]
-
-[assembly: InternalsVisibleTo( "MsgPack.Rpc.Silverlight" )]
-[assembly: InternalsVisibleTo( "MsgPack.Rpc.Silverlight.Client" )]
-//[assembly: InternalsVisibleTo( "MsgPack.Rpc.Server" )]
-[assembly: InternalsVisibleTo( "MsgPack.Rpc.Silverlight.TestUtilities" )]
+[assembly: AssemblyFileVersion( "0.2.0.0" )]
 
 #if DEBUG || PERFORMANCE_TEST
 [assembly: InternalsVisibleTo( "MsgPack.Silverlight.UnitTest" )]
-[assembly: InternalsVisibleTo( "MsgPack.Rpc.Silverlight.UnitTest" )]
 #endif
 
 
