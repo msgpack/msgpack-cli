@@ -25,7 +25,7 @@ using NUnit.Framework;
 namespace MsgPack.Serialization
 {
 	[TestFixture]
-	[Timeout( 1000 )]
+	[Timeout( 3000 )]
 	public class SerializationContextTest
 	{
 		[Test]
