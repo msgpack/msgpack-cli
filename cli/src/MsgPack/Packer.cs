@@ -84,7 +84,26 @@ namespace MsgPack
 		/// </remarks>
 		public static Packer Create( Stream stream )
 		{
-			return new StreamPacker( stream );
+			return Create( stream, true );
+		}
+
+		/// <summary>
+		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/>.
+		/// </summary>
+		/// <param name="stream"><see cref="Stream"/> object.</param>
+		/// <param name="ownsStream">
+		///		<c>true</c> to close <paramref name="stream"/> when this instance is disposed;
+		///		<c>false</c>, otherwise.
+		/// </param>
+		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
+		/// <remarks>
+		///		 You can specify any derived <see cref="Stream"/> class like <see cref="FileStream"/>, <see cref="MemoryStream"/>,
+		///		 <see cref="System.Net.Sockets.NetworkStream"/>, <see cref="UnmanagedMemoryStream"/>, or so.
+		/// </remarks>
+		public static Packer Create( Stream stream, bool ownsStream )
+		{
+			return new StreamPacker( stream, ownsStream );
 		}
 
 		/// <summary>
