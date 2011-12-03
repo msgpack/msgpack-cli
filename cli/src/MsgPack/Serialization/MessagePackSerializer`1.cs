@@ -31,7 +31,7 @@ namespace MsgPack.Serialization
 	///		Defines base contract for object serialization.
 	/// </summary>
 	/// <typeparam name="T">Target type.</typeparam>
-	public abstract class MessagePackSerializer<T>
+	public abstract class MessagePackSerializer<T> : IMessagePackSerializer
 	{
 		// TODO: Metadata
 		internal static MethodInfo UnpackToCoreMethod = FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
@@ -81,6 +81,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void PackTo( Packer packer, T objectTree )
 		{
+			// TODO: Hot-Path-Optimization
 			if ( packer == null )
 			{
 				throw new ArgumentNullException( "packer" );
@@ -121,6 +122,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public T UnpackFrom( Unpacker unpacker )
 		{
+			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -181,6 +183,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void UnpackTo( Unpacker unpacker, T collection )
 		{
+			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -221,6 +224,75 @@ namespace MsgPack.Serialization
 		protected virtual void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported by '{0}'.", this.GetType() ) );
+		}
+
+		void IMessagePackSerializer.PackTo( Packer packer, object objectTree )
+		{
+			// TODO: Hot-Path-Optimization
+			if ( packer == null )
+			{
+				throw new ArgumentNullException( "packer" );
+			}
+
+			if ( !( objectTree is T ) )
+			{
+				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree.GetType(), typeof( T ) ), "objectTree" );
+			}
+
+			if ( objectTree == null )
+			{
+				if ( typeof( T ).IsValueType )
+				{
+					if ( !( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
+					{
+						throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
+					}
+				}
+
+				packer.PackNull();
+				return;
+			}
+
+			this.PackToCore( packer, ( T )objectTree );
+		}
+
+		object IMessagePackSerializer.UnpackFrom( Unpacker unpacker )
+		{
+			return this.UnpackFrom( unpacker );
+		}
+
+		void IMessagePackSerializer.UnpackTo( Unpacker unpacker, object collection )
+		{
+			// TODO: Hot-Path-Optimization
+			if ( unpacker == null )
+			{
+				throw new ArgumentNullException( "unpacker" );
+			}
+
+			if ( collection == null )
+			{
+				throw new ArgumentNullException( "collection" );
+			}
+
+			if ( !( collection is T ) )
+			{
+				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "objectTree" );
+			}
+
+			if ( unpacker.IsInStart )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+			}
+
+			if ( unpacker.Data.Value.IsNil )
+			{
+				return;
+			}
+
+			this.UnpackToCore( unpacker, ( T )collection );
 		}
 	}
 }

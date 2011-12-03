@@ -19,6 +19,8 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace MsgPack.Serialization
 {
@@ -78,6 +80,72 @@ namespace MsgPack.Serialization
 			}
 
 			return serializer;
+		}
+
+		/// <summary>
+		///		Gets the serializer for the specified <see cref="Type"/>.
+		/// </summary>
+		/// <param name="targetType">Type of the serialization target.</param>
+		/// <returns>
+		///		<see cref="IMessagePackSerializer"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="targetType"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		Although <see cref="GetSerializer{T}"/> is preferred,
+		///		this method can be used from non-generic type or methods.
+		/// </remarks>
+		public IMessagePackSerializer GetSerializer( Type targetType )
+		{
+			if ( targetType == null )
+			{
+				throw new ArgumentNullException( "targetType" );
+			}
+
+			return SerializerGetter.Instance.Get( this, targetType );
+		}
+
+		private sealed class SerializerGetter
+		{
+			public static readonly SerializerGetter Instance = new SerializerGetter();
+
+			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, IMessagePackSerializer>> _cache =
+				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, IMessagePackSerializer>>();
+
+			private SerializerGetter() { }
+
+			public IMessagePackSerializer Get( SerializationContext context, Type targetType )
+			{
+				Func<SerializationContext, IMessagePackSerializer> func;
+				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
+				{
+					func =
+						Delegate.CreateDelegate(
+							typeof( Func<SerializationContext, IMessagePackSerializer> ),
+							typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
+						) as Func<SerializationContext, IMessagePackSerializer>;
+					this._cache[ targetType.TypeHandle ] = func;
+				}
+
+				return func( context );
+			}
+		}
+
+		private static class SerializerGetter<T>
+		{
+			private static readonly Func<SerializationContext, MessagePackSerializer<T>> _func =
+				Delegate.CreateDelegate(
+					typeof( Func<SerializationContext, MessagePackSerializer<T>> ),
+					Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( typeof( T ) )
+				) as Func<SerializationContext, MessagePackSerializer<T>>;
+
+			public static IMessagePackSerializer Get( SerializationContext context )
+			{
+				return _func( context );
+			}
 		}
 	}
 }

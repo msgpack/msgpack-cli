@@ -150,6 +150,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultSerializers.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\Metadata\_Enumerable.cs" />
     <Compile Include="Serialization\Metadata\_SerializationContext.cs" />
     <Compile Include="Serialization\Metadata\_String.cs" />

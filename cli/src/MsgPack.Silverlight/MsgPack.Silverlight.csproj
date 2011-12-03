@@ -286,6 +286,9 @@
     <Compile Include="..\MsgPack\Serialization\IdentifierUtility.cs">
       <Link>Serialization\IdentifierUtility.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\IMessagePackSerializer.cs">
+      <Link>Serialization\IMessagePackSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.cs">
       <Link>Serialization\MessagePackSerializer.cs</Link>
     </Compile>
