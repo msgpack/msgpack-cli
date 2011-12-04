@@ -109,14 +109,12 @@
     <Compile Include="DictionaryDebuggerProxy`2.cs" />
     <Compile Include="EnumerableStream.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IClippable.cs" />
     <Compile Include="Float32Bits.cs" />
     <Compile Include="Float64Bits.cs" />
     <Compile Include="InvalidMessagePackStreamException.cs" />
     <Compile Include="IPackable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ISegmentLengthRecognizeable.cs" />
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>

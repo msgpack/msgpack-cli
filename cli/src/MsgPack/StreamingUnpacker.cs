@@ -111,7 +111,7 @@ namespace MsgPack
 			}
 		}
 
-		private delegate bool Unpacking( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked );
+		private delegate bool Unpacking( Stream source, UnpackingMode unpackingMode, out MessagePackObject? unpacked );
 
 		private Unpacking _next;
 
@@ -168,10 +168,9 @@ namespace MsgPack
 			}
 
 			this._wasEmptyCollection = false;
-			var segmentatedSource = source as ISegmentLengthRecognizeable ?? NullSegmentLengthRecognizeable.Instance;
 
 			MessagePackObject? collectionItemOrRoot;
-			while ( this._next( source, segmentatedSource, unpackingMode, out collectionItemOrRoot ) )
+			while ( this._next( source, unpackingMode, out collectionItemOrRoot ) )
 			{
 				var oldCollectionItemOrRoot = collectionItemOrRoot;
 				if ( collectionItemOrRoot != null )
@@ -235,7 +234,7 @@ namespace MsgPack
 			return null;
 		}
 
-		private delegate bool HeaderUnpacking( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result );
+		private delegate bool HeaderUnpacking( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result );
 
 		private static readonly HeaderUnpacking[] _headerUnpackings = InitializeHeaderUnpackings();
 
@@ -303,7 +302,7 @@ namespace MsgPack
 		private static readonly MessagePackObject?[] _positveFixNums =
 			Enumerable.Range( 0, 0x80 ).Select( i => new MessagePackObject?( unchecked( ( byte )i ) ) ).ToArray();
 
-		private static bool UnpackPositiveFixNum( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackPositiveFixNum( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = _positveFixNums[ b & 0x7f ];
 			return true;
@@ -312,40 +311,38 @@ namespace MsgPack
 		private static readonly MessagePackObject?[] _negavieFixNums =
 			Enumerable.Range( 0xe0, 0x20 ).Select( i => new MessagePackObject?( unchecked( ( sbyte )( i - 0x100 ) ) ) ).ToArray();
 
-		private static bool UnpackNegativeFixNum( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackNegativeFixNum( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = _negavieFixNums[ b & 0x1f ];
 			return true;
 		}
 
-		private static bool UnpackEmptyMap( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackEmptyMap( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = new MessagePackObject( new MessagePackObjectDictionary( 0 ) );
 			@this._wasEmptyCollection = true;
 			return true;
 		}
 
-		private static bool UnpackFixMapLength( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackFixMapLength( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			var header = _headerArray[ b ];
-			segmentatedSource.NotifySegmentLength( header.ValueOrLength * _assumedCollectionItemSize * 2 );
 			@this._collectionState.NewContextCollection( header, header.ValueOrLength, unpackingMode );
 			result = null;
 			@this.TransitToUnpackContextCollection();
 			return true;
 		}
 
-		private static bool UnpackEmptyArray( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackEmptyArray( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = new MessagePackObject( new List<MessagePackObject>( 0 ) );
 			@this._wasEmptyCollection = true;
 			return true;
 		}
 
-		private static bool UnpackFixArrayLength( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackFixArrayLength( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			var header = _headerArray[ b ];
-			segmentatedSource.NotifySegmentLength( header.ValueOrLength * _assumedCollectionItemSize );
 			@this._collectionState.NewContextCollection( header, header.ValueOrLength, unpackingMode );
 			result = null;
 			@this.TransitToUnpackContextCollection();
@@ -354,21 +351,21 @@ namespace MsgPack
 
 		private static readonly MessagePackObject? _emptyBinary = Binary.Empty;
 
-		private static bool UnpackEmptyRaw( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackEmptyRaw( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = _emptyBinary;
 			return true;
 		}
 
-		private static bool UnpackFixRawLength( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackFixRawLength( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
-			@this.TransitToUnpackRawBytes( segmentatedSource, unchecked( ( uint )( b & 0x1f ) ) );
+			@this.TransitToUnpackRawBytes( unchecked( ( uint )( b & 0x1f ) ) );
 			// Try to get body.
-			return @this.UnpackRawBytes( source, segmentatedSource, unpackingMode, out result );
+			return @this.UnpackRawBytes( source, unpackingMode, out result );
 		}
 		private static readonly MessagePackObject? _nil = MessagePackObject.Nil;
 
-		private static bool UnpackNil( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackNil( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = _nil;
 			return true;
@@ -376,7 +373,7 @@ namespace MsgPack
 
 		private static readonly MessagePackObject? _false = false;
 
-		private static bool UnpackFalse( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackFalse( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = _false;
 			return true;
@@ -384,7 +381,7 @@ namespace MsgPack
 
 		private static readonly MessagePackObject? _true = true;
 
-		private static bool UnpackTrue( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackTrue( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = _true;
 			return true;
@@ -392,7 +389,7 @@ namespace MsgPack
 
 		private static readonly BytesBuffer[] _scalarBuffers = new[] { new BytesBuffer( 1 ), new BytesBuffer( 2 ), new BytesBuffer( 4 ), new BytesBuffer( 8 ) };
 
-		private static bool UnpackScalarHeader( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackScalarHeader( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			// Transit to UnpackScalar
 			@this._next = @this._unpackScalar;
@@ -400,7 +397,7 @@ namespace MsgPack
 			@this._bytesBuffer = _scalarBuffers[ b % 4 ];
 
 			// Try to get body.
-			if ( !@this.UnpackScalar( source, segmentatedSource, unpackingMode, out result ) )
+			if ( !@this.UnpackScalar( source, unpackingMode, out result ) )
 			{
 				// Need more data
 				return false;
@@ -409,24 +406,24 @@ namespace MsgPack
 			return true;
 		}
 
-		private static bool UnpackRawHeader( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackRawHeader( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			@this._next = @this._unpackRawLength;
 			@this._isInCollection = false;
 			@this._bytesBuffer = ( b % 2 ) == 0 ? BytesBuffer.TwoBytes : BytesBuffer.FourBytes;
 
 			// Try to get length.
-			return @this.UnpackRawLength( source, segmentatedSource, unpackingMode, out result );
+			return @this.UnpackRawLength( source, unpackingMode, out result );
 		}
 
-		private static bool UnpackArrayOrMapHeader( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool UnpackArrayOrMapHeader( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			// Transit to UnpackCollectionLength
 			@this._next = @this._unpackCollectionLength;
 			@this._isInCollection = false;
 			@this._bytesBuffer = ( b % 2 ) == 0 ? BytesBuffer.TwoBytes : BytesBuffer.FourBytes;
 
-			if ( !@this.UnpackCollectionLength( source, segmentatedSource, unpackingMode, out result ) )
+			if ( !@this.UnpackCollectionLength( source, unpackingMode, out result ) )
 			{
 				// Need to get more data
 				return false;
@@ -435,12 +432,12 @@ namespace MsgPack
 			return true;
 		}
 
-		private static bool ThrowInvalidHeaderException( StreamingUnpacker @this, int b, Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private static bool ThrowInvalidHeaderException( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Header '0x{0:x2}' is not available.", b ) );
 		}
 
-		private bool UnpackHeader( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? result )
+		private bool UnpackHeader( Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			var b = source.ReadByte();
 			if ( b < 0 )
@@ -450,10 +447,10 @@ namespace MsgPack
 			}
 
 			this._contextValueHeader = _headerArray[ b ];
-			return _headerUnpackings[ b ]( this, b, source, segmentatedSource, unpackingMode, out result );
+			return _headerUnpackings[ b ]( this, b, source, unpackingMode, out result );
 		}
 
-		private bool UnpackScalar( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
+		private bool UnpackScalar( Stream source, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
 #if DEBUG
 			Contract.Assert( ( this._contextValueHeader.Type & MessageType.IsVariable ) != 0, this._contextValueHeader.ToString() );
@@ -473,7 +470,7 @@ namespace MsgPack
 			return false;
 		}
 
-		private bool UnpackCollectionLength( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
+		private bool UnpackCollectionLength( Stream source, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 
@@ -491,7 +488,6 @@ namespace MsgPack
 				}
 
 				this._collectionState.NewContextCollection( this._contextValueHeader, length, unpackingMode );
-				segmentatedSource.NotifySegmentLength( length * _assumedCollectionItemSize * ( ( this._contextValueHeader.Type & MessageType.IsMap ) != 0 ? 2 : 1 ) );
 				this.TransitToUnpackContextCollection();
 
 				unpacked = null;
@@ -503,7 +499,7 @@ namespace MsgPack
 			return false;
 		}
 
-		private bool UnpackRawLength( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
+		private bool UnpackRawLength( Stream source, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
 			this._bytesBuffer = this._bytesBuffer.Feed( source );
 
@@ -518,10 +514,9 @@ namespace MsgPack
 					return true;
 				}
 
-				segmentatedSource.NotifySegmentLength( length );
-				this.TransitToUnpackRawBytes( segmentatedSource, length );
+				this.TransitToUnpackRawBytes( length );
 
-				return this.UnpackRawBytes( source, segmentatedSource, unpackingMode, out unpacked );
+				return this.UnpackRawBytes( source, unpackingMode, out unpacked );
 			}
 
 			// Need more info.
@@ -529,7 +524,7 @@ namespace MsgPack
 			return false;
 		}
 
-		private bool UnpackRawBytes( Stream source, ISegmentLengthRecognizeable segmentatedSource, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
+		private bool UnpackRawBytes( Stream source, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
 #if DEBUG
 			Contract.Assert( this._bytesBuffer.BackingStore != null, this._bytesBuffer.ToString() );
@@ -550,14 +545,12 @@ namespace MsgPack
 		/// <summary>
 		///		Transit current stage to unpackRawBytes stage with cleanuping states.
 		/// </summary>
-		/// <param name="source"><see cref="ISegmentLengthRecognizeable"/> to be notified.</param>
 		/// <param name="length">The known length of the source.</param>
-		private void TransitToUnpackRawBytes( ISegmentLengthRecognizeable source, uint length )
+		private void TransitToUnpackRawBytes( uint length )
 		{
 			this._next = this._unpackRawBytes;
 			this._isInCollection = false;
 			// Allocate buffer to store raw binaries.
-			source.NotifySegmentLength( length );
 			this._bytesBuffer = new BytesBuffer( length );
 		}
 
@@ -1305,23 +1298,5 @@ namespace MsgPack
 				}
 			}
 		}
-
-		/// <summary>
-		///		Null object for <see cref="ISegmentLengthRecognizeable"/>.
-		/// </summary>
-		private sealed class NullSegmentLengthRecognizeable : ISegmentLengthRecognizeable
-		{
-			public static readonly NullSegmentLengthRecognizeable Instance = new NullSegmentLengthRecognizeable();
-
-			private NullSegmentLengthRecognizeable()
-			{
-			}
-
-			public void NotifySegmentLength( long lengthFromCurrent )
-			{
-				// nop
-			}
-		}
-
 	}
 }
