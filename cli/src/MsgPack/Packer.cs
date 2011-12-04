@@ -75,7 +75,7 @@ namespace MsgPack
 		/// <summary>
 		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/>.
 		/// </summary>
-		/// <param name="stream"><see cref="Stream"/> object.</param>
+		/// <param name="stream"><see cref="Stream"/> object. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
 		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
 		/// <remarks>
