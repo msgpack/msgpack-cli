@@ -153,11 +153,25 @@ namespace MsgPack
 		/// <summary>
 		///		 Creates the new <see cref="Unpacker"/> from specified stream.
 		/// </summary>
-		/// <param name="stream">The stream to be unpacked.</param>
+		/// <param name="stream">The stream to be unpacked. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
 		/// <returns><see cref="Unpacker"/> instance.</returns>
 		public static Unpacker Create( Stream stream )
 		{
 			return new StreamUnpacker( stream );
+		}
+
+		/// <summary>
+		///		 Creates the new <see cref="Unpacker"/> from specified stream.
+		/// </summary>
+		/// <param name="stream">The stream to be unpacked.</param>
+		/// <param name="ownsStream">
+		///		<c>true</c> to close <paramref name="stream"/> when this instance is disposed;
+		///		<c>false</c>, otherwise.
+		/// </param>
+		/// <returns><see cref="Unpacker"/> instance.</returns>
+		public static Unpacker Create( Stream stream, bool ownsStream )
+		{
+			return new StreamUnpacker( stream, ownsStream );
 		}
 
 		#endregion -- Factories --
