@@ -275,28 +275,6 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack <see cref="SByte"/> value to current stream strictly.
-		///		This method will not compact packed binary and use redundant representation for int8 value.
-		/// </summary>
-		/// <param name="value"><see cref="SByte"/> value.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		[CLSCompliant( false )]
-		public Packer PackStrict( sbyte value )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-			this.PrivatePackStrictCore( value );
-			return this;
-		}
-
-		private void PrivatePackStrictCore( sbyte value )
-		{
-			var b = this.TryPackInt8( value );
-			Contract.Assume( b );
-		}
-
-		/// <summary>
 		///		Try pack <see cref="SByte"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="SByte"/> value.</param>
@@ -338,26 +316,6 @@ namespace MsgPack
 				return;
 			}
 
-			var b = this.TryPackUInt8( value );
-			Contract.Assume( b );
-		}
-
-		/// <summary>
-		///		Pack <see cref="Byte"/> value to current stream strictly.
-		///		This method will not compact packed binary and use redundant representation for uint8 value.
-		/// </summary>
-		/// <param name="value"><see cref="Byte"/> value.</param>
-		/// <returns>This instance.</returns>
-		public Packer PackStrict( byte value )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-			this.PrivatePackStrictCore( value );
-			return this;
-		}
-
-		private void PrivatePackStrictCore( byte value )
-		{
 			var b = this.TryPackUInt8( value );
 			Contract.Assume( b );
 		}
@@ -419,27 +377,6 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack <see cref="Int16"/> value to current stream strictly.
-		///		This method will not compact packed binary and use redundant representation for int8 value.
-		/// </summary>
-		/// <param name="value"><see cref="Int16"/> value.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public Packer PackStrict( short value )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-			this.PrivatePackStrictCore( value );
-			return this;
-		}
-
-		private void PrivatePackStrictCore( short value )
-		{
-			var b = this.TryPackInt16( value );
-			Contract.Assume( b );
-		}
-
-		/// <summary>
 		///		Try pack <see cref="Int16"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="Int16"/> value.</param>
@@ -491,28 +428,6 @@ namespace MsgPack
 				return;
 			}
 
-			var b = this.TryPackUInt16( value );
-			Contract.Assume( b );
-		}
-
-		/// <summary>
-		///		Pack <see cref="UInt16"/> value to current stream strictly.
-		///		This method will not compact packed binary and use redundant representation for uint16 value.
-		/// </summary>
-		/// <param name="value"><see cref="UInt16"/> value.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		[CLSCompliant( false )]
-		public Packer PackStrict( ushort value )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-			this.PrivatePackStrictCore( value );
-			return this;
-		}
-
-		private void PrivatePackStrictCore( ushort value )
-		{
 			var b = this.TryPackUInt16( value );
 			Contract.Assume( b );
 		}
@@ -584,27 +499,6 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack <see cref="Int32"/> value to current stream strictly.
-		///		This method will not compact packed binary and use redundant representation for int32 value.
-		/// </summary>
-		/// <param name="value"><see cref="Int32"/> value.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public Packer PackStrict( int value )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-			this.PrivatePackStrictCore( value );
-			return this;
-		}
-
-		private void PrivatePackStrictCore( int value )
-		{
-			var b = this.TryPackInt32( value );
-			Contract.Assume( b );
-		}
-
-		/// <summary>
 		///		Try pack <see cref="Int32"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="Int32"/> value.</param>
@@ -667,29 +561,7 @@ namespace MsgPack
 			var b = this.TryPackUInt32( value );
 			Contract.Assume( b );
 		}
-
-		/// <summary>
-		///		Pack <see cref="UInt32"/> value to current stream strictly.
-		///		This method will not compact packed binary and use redundant representation for uint32 value.
-		/// </summary>
-		/// <param name="value"><see cref="UInt32"/> value.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		[CLSCompliant( false )]
-		public Packer PackStrict( uint value )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-			this.PrivatePackStrictCore( value );
-			return this;
-		}
-
-		private void PrivatePackStrictCore( uint value )
-		{
-			var b = this.TryPackUInt32( value );
-			Contract.Assume( b );
-		}
-
+		
 		/// <summary>
 		///		Try pack <see cref="UInt32"/> value to current stream strictly.
 		/// </summary>
@@ -764,27 +636,6 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack <see cref="Int64"/> value to current stream strictly.
-		///		This method will not compact packed binary and use redundant representation for int64 value.
-		/// </summary>
-		/// <param name="value"><see cref="Int64"/> value.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public Packer PackStrict( long value )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-			this.PrivatePackStrictCore( value );
-			return this;
-		}
-
-		private void PrivatePackStrictCore( long value )
-		{
-			var b = this.TryPackInt64( value );
-			Contract.Assume( b );
-		}
-
-		/// <summary>
 		///		Try pack <see cref="Int64"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="Int64"/> value.</param>
@@ -850,29 +701,7 @@ namespace MsgPack
 			var b = this.TryPackUInt64( value );
 			Contract.Assume( b );
 		}
-
-		/// <summary>
-		///		Pack <see cref="UInt64"/> value to current stream strictly.
-		///		This method will not compact packed binary and use redundant representation for uint64 value.
-		/// </summary>
-		/// <param name="value"><see cref="UInt64"/> value.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		[CLSCompliant( false )]
-		public Packer PackStrict( ulong value )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-			this.PrivatePackStrictCore( value );
-			return this;
-		}
-
-		private void PrivatePackStrictCore( ulong value )
-		{
-			var b = this.TryPackUInt64( value );
-			Contract.Assume( b );
-		}
-
+		
 		/// <summary>
 		///		Try pack <see cref="UInt64"/> value to current stream strictly.
 		/// </summary>

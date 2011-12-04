@@ -29,242 +29,130 @@ namespace MsgPack
 {
 	partial class Packer
 	{
-		private static readonly Dictionary<RuntimeTypeHandle, Action< Packer, object, bool>> _packDispatchTable =
-			new Dictionary<RuntimeTypeHandle, Action< Packer, object, bool>>( 11 * 2 + 3 )
+		private static readonly Dictionary<RuntimeTypeHandle, Action< Packer, object>> _packDispatchTable =
+			new Dictionary<RuntimeTypeHandle, Action< Packer, object>>( 11 * 2 + 3 )
 			{
-				{ typeof( byte[] ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackRawCore( value as byte[], false ) },
-				{ typeof( string ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackStringCore( value as string, Encoding.UTF8 ) },
-				{ typeof( MessagePackString ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackRawCore( ( value as MessagePackString ).GetBytes(), true ) },
-				{ typeof( System.Boolean ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Boolean )value ) },
-				{ typeof( System.Boolean? ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Boolean )value ) },
+				{ typeof( byte[] ).TypeHandle, ( packer, value ) => packer.PrivatePackRawCore( value as byte[], false ) },
+				{ typeof( string ).TypeHandle, ( packer, value ) => packer.PrivatePackStringCore( value as string, Encoding.UTF8 ) },
+				{ typeof( MessagePackString ).TypeHandle, ( packer, value ) => packer.PrivatePackRawCore( ( value as MessagePackString ).GetBytes(), true ) },
+				{ typeof( System.Boolean ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Boolean )value ) },
+				{ typeof( System.Boolean? ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Boolean )value ) },
 				{ 
 					typeof( System.SByte ).TypeHandle, 
-					( packer, value, isStrict ) => 
+					( packer, value ) => 
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.SByte )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.SByte )value ); 
-						}
+						packer.PrivatePackCore( ( System.SByte )value );
 					}
 				},
 				{ 
 					typeof( System.SByte? ).TypeHandle, 
-					( packer, value, isStrict ) =>
+					( packer, value ) =>
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.SByte? )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.SByte? )value ); 
-						}
+						packer.PrivatePackCore( ( System.SByte? )value );
 					}
 				},
 				{ 
 					typeof( System.Int16 ).TypeHandle, 
-					( packer, value, isStrict ) => 
+					( packer, value ) => 
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.Int16 )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.Int16 )value ); 
-						}
+						packer.PrivatePackCore( ( System.Int16 )value );
 					}
 				},
 				{ 
 					typeof( System.Int16? ).TypeHandle, 
-					( packer, value, isStrict ) =>
+					( packer, value ) =>
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.Int16? )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.Int16? )value ); 
-						}
+						packer.PrivatePackCore( ( System.Int16? )value );
 					}
 				},
 				{ 
 					typeof( System.Int32 ).TypeHandle, 
-					( packer, value, isStrict ) => 
+					( packer, value ) => 
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.Int32 )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.Int32 )value ); 
-						}
+						packer.PrivatePackCore( ( System.Int32 )value );
 					}
 				},
 				{ 
 					typeof( System.Int32? ).TypeHandle, 
-					( packer, value, isStrict ) =>
+					( packer, value ) =>
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.Int32? )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.Int32? )value ); 
-						}
+						packer.PrivatePackCore( ( System.Int32? )value );
 					}
 				},
 				{ 
 					typeof( System.Int64 ).TypeHandle, 
-					( packer, value, isStrict ) => 
+					( packer, value ) => 
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.Int64 )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.Int64 )value ); 
-						}
+						packer.PrivatePackCore( ( System.Int64 )value );
 					}
 				},
 				{ 
 					typeof( System.Int64? ).TypeHandle, 
-					( packer, value, isStrict ) =>
+					( packer, value ) =>
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.Int64? )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.Int64? )value ); 
-						}
+						packer.PrivatePackCore( ( System.Int64? )value );
 					}
 				},
 				{ 
 					typeof( System.Byte ).TypeHandle, 
-					( packer, value, isStrict ) => 
+					( packer, value ) => 
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.Byte )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.Byte )value ); 
-						}
+						packer.PrivatePackCore( ( System.Byte )value );
 					}
 				},
 				{ 
 					typeof( System.Byte? ).TypeHandle, 
-					( packer, value, isStrict ) =>
+					( packer, value ) =>
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.Byte? )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.Byte? )value ); 
-						}
+						packer.PrivatePackCore( ( System.Byte? )value );
 					}
 				},
 				{ 
 					typeof( System.UInt16 ).TypeHandle, 
-					( packer, value, isStrict ) => 
+					( packer, value ) => 
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.UInt16 )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.UInt16 )value ); 
-						}
+						packer.PrivatePackCore( ( System.UInt16 )value );
 					}
 				},
 				{ 
 					typeof( System.UInt16? ).TypeHandle, 
-					( packer, value, isStrict ) =>
+					( packer, value ) =>
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.UInt16? )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.UInt16? )value ); 
-						}
+						packer.PrivatePackCore( ( System.UInt16? )value );
 					}
 				},
 				{ 
 					typeof( System.UInt32 ).TypeHandle, 
-					( packer, value, isStrict ) => 
+					( packer, value ) => 
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.UInt32 )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.UInt32 )value ); 
-						}
+						packer.PrivatePackCore( ( System.UInt32 )value );
 					}
 				},
 				{ 
 					typeof( System.UInt32? ).TypeHandle, 
-					( packer, value, isStrict ) =>
+					( packer, value ) =>
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.UInt32? )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.UInt32? )value ); 
-						}
+						packer.PrivatePackCore( ( System.UInt32? )value );
 					}
 				},
 				{ 
 					typeof( System.UInt64 ).TypeHandle, 
-					( packer, value, isStrict ) => 
+					( packer, value ) => 
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.UInt64 )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.UInt64 )value ); 
-						}
+						packer.PrivatePackCore( ( System.UInt64 )value );
 					}
 				},
 				{ 
 					typeof( System.UInt64? ).TypeHandle, 
-					( packer, value, isStrict ) =>
+					( packer, value ) =>
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( System.UInt64? )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( System.UInt64? )value ); 
-						}
+						packer.PrivatePackCore( ( System.UInt64? )value );
 					}
 				},
-				{ typeof( System.Single ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Single )value ) },
-				{ typeof( System.Single? ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Single )value ) },
-				{ typeof( System.Double ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Double )value ) },
-				{ typeof( System.Double? ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( System.Double )value ) },
+				{ typeof( System.Single ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Single )value ) },
+				{ typeof( System.Single? ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Single )value ) },
+				{ typeof( System.Double ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Double )value ) },
+				{ typeof( System.Double? ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Double )value ) },
 			};
 
 		/// <summary>
@@ -296,10 +184,10 @@ namespace MsgPack
 				return;
 			}
 			
-			Action< Packer, object, bool> pack;
+			Action< Packer, object> pack;
 			if( _packDispatchTable.TryGetValue( boxedValue.GetType().TypeHandle, out pack ) )
 			{
-				pack( this, boxedValue, options != null && options.IsStrict );
+				pack( this, boxedValue );
 				return;
 			}
 			

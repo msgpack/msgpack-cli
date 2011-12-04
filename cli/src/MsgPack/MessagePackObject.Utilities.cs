@@ -790,132 +790,52 @@ namespace MsgPack
 			{
 				case MessagePackValueTypeCode.Single:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( ( float )this );
-					}
-					else
-					{
-						packer.PackStrict( ( float )this );
-					}
-
+					packer.Pack( ( float )this );
 					return;
 				}
 				case MessagePackValueTypeCode.Double:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( ( double )this );
-					}
-					else
-					{
-						packer.PackStrict( ( double )this );
-					}
-
+					packer.Pack( ( double )this );
 					return;
 				}
 				case MessagePackValueTypeCode.Int8:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( ( sbyte )this );
-					}
-					else
-					{
-						packer.PackStrict( ( sbyte )this );
-					}
-
+					packer.Pack( ( sbyte )this );
 					return;
 				}
 				case MessagePackValueTypeCode.Int16:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( ( short )this );
-					}
-					else
-					{
-						packer.PackStrict( ( short )this );
-					}
-
+					packer.Pack( ( short )this );
 					return;
 				}
 				case MessagePackValueTypeCode.Int32:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( ( int )this );
-					}
-					else
-					{
-						packer.PackStrict( ( int )this );
-					}
-
+					packer.Pack( ( int )this );
 					return;
 				}
 				case MessagePackValueTypeCode.Int64:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( ( long )this );
-					}
-					else
-					{
-						packer.PackStrict( ( long )this );
-					}
-
+					packer.Pack( ( long )this );
 					return;
 				}
 				case MessagePackValueTypeCode.UInt8:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( ( byte )this );
-					}
-					else
-					{
-						packer.PackStrict( ( byte )this );
-					}
-
+					packer.Pack( ( byte )this );
 					return;
 				}
 				case MessagePackValueTypeCode.UInt16:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( ( ushort )this );
-					}
-					else
-					{
-						packer.PackStrict( ( ushort )this );
-					}
-
+					packer.Pack( ( ushort )this );
 					return;
 				}
 				case MessagePackValueTypeCode.UInt32:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( ( uint )this );
-					}
-					else
-					{
-						packer.PackStrict( ( uint )this );
-					}
-
+					packer.Pack( ( uint )this );
 					return;
 				}
 				case MessagePackValueTypeCode.UInt64:
 				{
-					if ( options == null || !options.IsStrict )
-					{
-						packer.Pack( this._value );
-					}
-					else
-					{
-						packer.PackStrict( this._value );
-					}
-
+					packer.Pack( this._value );
 					return;
 				}
 				case MessagePackValueTypeCode.Boolean:

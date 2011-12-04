@@ -49,28 +49,6 @@ namespace MsgPack
 			}
 		}
 		/// <summary>
-		///		Pack nullable <see cref="SByte"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		[CLSCompliant( false )]
-		public Packer PackStrict( SByte? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackStrictCore( SByte? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-		/// <summary>
 		///		Pack nullable <see cref="Byte"/> value.
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
@@ -91,27 +69,6 @@ namespace MsgPack
 			}
 		}
 		/// <summary>
-		///		Pack nullable <see cref="Byte"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		public Packer PackStrict( Byte? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackStrictCore( Byte? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-		/// <summary>
 		///		Pack nullable <see cref="Int16"/> value.
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
@@ -125,27 +82,6 @@ namespace MsgPack
 			if ( value.HasValue )
 			{
 				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-		/// <summary>
-		///		Pack nullable <see cref="Int16"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		public Packer PackStrict( Int16? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackStrictCore( Int16? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
 			}
 			else
 			{
@@ -174,28 +110,6 @@ namespace MsgPack
 			}
 		}
 		/// <summary>
-		///		Pack nullable <see cref="UInt16"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		[CLSCompliant( false )]
-		public Packer PackStrict( UInt16? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackStrictCore( UInt16? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-		/// <summary>
 		///		Pack nullable <see cref="Int32"/> value.
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
@@ -209,27 +123,6 @@ namespace MsgPack
 			if ( value.HasValue )
 			{
 				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-		/// <summary>
-		///		Pack nullable <see cref="Int32"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		public Packer PackStrict( Int32? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackStrictCore( Int32? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
 			}
 			else
 			{
@@ -258,28 +151,6 @@ namespace MsgPack
 			}
 		}
 		/// <summary>
-		///		Pack nullable <see cref="UInt32"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		[CLSCompliant( false )]
-		public Packer PackStrict( UInt32? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackStrictCore( UInt32? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-		/// <summary>
 		///		Pack nullable <see cref="Int64"/> value.
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
@@ -293,27 +164,6 @@ namespace MsgPack
 			if ( value.HasValue )
 			{
 				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-		/// <summary>
-		///		Pack nullable <see cref="Int64"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		public Packer PackStrict( Int64? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackStrictCore( Int64? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
 			}
 			else
 			{
@@ -342,28 +192,6 @@ namespace MsgPack
 			}
 		}
 		/// <summary>
-		///		Pack nullable <see cref="UInt64"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		[CLSCompliant( false )]
-		public Packer PackStrict( UInt64? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-		private void PrivatePackStrictCore( UInt64? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-		/// <summary>
 		///		Pack nullable <see cref="Single"/> value.
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
@@ -373,16 +201,6 @@ namespace MsgPack
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
 		/// <summary>
-		///		Pack nullable <see cref="Single"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		public Packer PackStrict( Single? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-		/// <summary>
 		///		Pack nullable <see cref="Double"/> value.
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
@@ -391,16 +209,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		/// <summary>
-		///		Pack nullable <see cref="Double"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-		public Packer PackStrict( Double? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
 		/// <summary>
 		///		Pack nullable <see cref="Boolean"/> value.
 		/// </summary>

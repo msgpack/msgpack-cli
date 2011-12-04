@@ -28,20 +28,6 @@ namespace MsgPack
 	/// </summary>
 	public sealed class PackingOptions
 	{
-		private bool _isStrict = false;
-
-		/// <summary>
-		///		Get whether prohibit packing tiny value as tiny type.
-		/// </summary>
-		/// <value>
-		///		If prohibit packing tiny value as tiny type then true. Default is true.
-		/// </value>
-		public bool IsStrict
-		{
-			get { return this._isStrict; }
-			set { this._isStrict = value; }
-		}
-
 		private Encoding _stringEncoding = MessagePackConvert.Utf8NonBom;
 
 		/// <summary>

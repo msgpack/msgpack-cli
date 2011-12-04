@@ -111,46 +111,6 @@ foreach( var __type in
 		}
 <#
 	}
-	
-	if( __type != typeof( bool ) )
-	{
-#>
-		/// <summary>
-		///		Pack nullable <see cref="<#= __type.Name #>"/> value without message size compression.
-		/// </summary>
-		/// <param name="value">Value to serialize.</param>
-		/// <returns>This packer instance.</returns>
-<#
-		if( __IsNotCLSCompliant( __type ) )
-		{
-#>
-		[CLSCompliant( false )]
-<#
-		}
-#>
-		public <#= __typeName #> PackStrict( <#= __type.Name #>? value )
-		{
-			return value.HasValue ? this.PackStrict( value.Value ) : this.PackNull();
-		}
-		
-<#
-		if( __type != typeof( bool ) && __type != typeof( float ) && __type != typeof( double ) )
-		{
-#>
-		private void PrivatePackStrictCore( <#= __type.Name #>? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackStrictCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-<#
-		}
-	}
 }
 #>
 	}

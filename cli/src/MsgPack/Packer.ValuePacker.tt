@@ -72,20 +72,20 @@ namespace MsgPack
 {
 	partial class <#= __typeName #>
 	{
-		private static readonly Dictionary<RuntimeTypeHandle, Action< <#= __typeName #>, object, bool>> _packDispatchTable =
-			new Dictionary<RuntimeTypeHandle, Action< <#= __typeName #>, object, bool>>( <#= __scalarTypes.Length #> * 2 + 3 )
+		private static readonly Dictionary<RuntimeTypeHandle, Action< <#= __typeName #>, object>> _packDispatchTable =
+			new Dictionary<RuntimeTypeHandle, Action< <#= __typeName #>, object>>( <#= __scalarTypes.Length #> * 2 + 3 )
 			{
-				{ typeof( byte[] ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackRawCore( value as byte[], false ) },
-				{ typeof( string ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackStringCore( value as string, Encoding.UTF8 ) },
-				{ typeof( MessagePackString ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackRawCore( ( value as MessagePackString ).GetBytes(), true ) },
+				{ typeof( byte[] ).TypeHandle, ( packer, value ) => packer.PrivatePackRawCore( value as byte[], false ) },
+				{ typeof( string ).TypeHandle, ( packer, value ) => packer.PrivatePackStringCore( value as string, Encoding.UTF8 ) },
+				{ typeof( MessagePackString ).TypeHandle, ( packer, value ) => packer.PrivatePackRawCore( ( value as MessagePackString ).GetBytes(), true ) },
 <#
 foreach( var __scalarType in __scalarTypes )
 {
 	if( __scalarType == typeof( bool ) || __scalarType == typeof( float ) || __scalarType == typeof( double ) )
 	{
 #>
-				{ typeof( <#= __scalarType #> ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( <#= __scalarType #> )value ) },
-				{ typeof( <#= __scalarType #>? ).TypeHandle, ( packer, value, _ ) => packer.PrivatePackCore( ( <#= __scalarType #> )value ) },
+				{ typeof( <#= __scalarType #> ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( <#= __scalarType #> )value ) },
+				{ typeof( <#= __scalarType #>? ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( <#= __scalarType #> )value ) },
 <#				
 	}
 	else
@@ -93,30 +93,16 @@ foreach( var __scalarType in __scalarTypes )
 #>
 				{ 
 					typeof( <#= __scalarType #> ).TypeHandle, 
-					( packer, value, isStrict ) => 
+					( packer, value ) => 
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( <#= __scalarType #> )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( <#= __scalarType #> )value ); 
-						}
+						packer.PrivatePackCore( ( <#= __scalarType #> )value );
 					}
 				},
 				{ 
 					typeof( <#= __scalarType #>? ).TypeHandle, 
-					( packer, value, isStrict ) =>
+					( packer, value ) =>
 					{
-						if( !isStrict ) 
-						{
-							packer.PrivatePackCore( ( <#= __scalarType #>? )value );
-						} 
-						else 
-						{ 
-							packer.PrivatePackStrictCore( ( <#= __scalarType #>? )value ); 
-						}
+						packer.PrivatePackCore( ( <#= __scalarType #>? )value );
 					}
 				},
 <#
@@ -154,10 +140,10 @@ foreach( var __scalarType in __scalarTypes )
 				return;
 			}
 			
-			Action< <#= __typeName #>, object, bool> pack;
+			Action< <#= __typeName #>, object> pack;
 			if( _packDispatchTable.TryGetValue( boxedValue.GetType().TypeHandle, out pack ) )
 			{
-				pack( this, boxedValue, options != null && options.IsStrict );
+				pack( this, boxedValue );
 				return;
 			}
 			
