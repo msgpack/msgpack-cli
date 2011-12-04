@@ -303,6 +303,11 @@ namespace MsgPack
 				return false;
 			}
 
+			if ( this._currentSource.Stream.CanSeek && this._currentSource.Stream.Position < this._currentSource.Stream.Length )
+			{
+				return false;
+			}
+
 			if ( this._successorSources.Count == 0 )
 			{
 				return true;
