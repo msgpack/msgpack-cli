@@ -97,7 +97,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		protected sealed override void PackToCore( Packer packer, System.Decimal value )
 		{
-			packer.Pack( value.ToString( "G", CultureInfo.InvariantCulture ) );
+			packer.PackString( value.ToString( "G", CultureInfo.InvariantCulture ) );
 		}
 
 		protected sealed override  System.Decimal UnpackFromCore( Unpacker unpacker )
@@ -123,7 +123,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		protected sealed override void PackToCore( Packer packer, System.Guid value )
 		{
-			packer.Pack( value.ToByteArray() );
+			packer.PackRaw( value.ToByteArray() );
 		}
 
 		protected sealed override  System.Guid UnpackFromCore( Unpacker unpacker )
@@ -268,7 +268,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		protected sealed override void PackToCore( Packer packer, System.Numerics.BigInteger value )
 		{
-			packer.Pack( value.ToByteArray() );
+			packer.PackRaw( value.ToByteArray() );
 		}
 
 		protected sealed override  System.Numerics.BigInteger UnpackFromCore( Unpacker unpacker )

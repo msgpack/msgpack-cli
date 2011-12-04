@@ -28,7 +28,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected sealed override void PackToCore( Packer packer, StringBuilder value )
 		{
 			// NOTE: More efficient?
-			packer.Pack( value.ToString() );
+			packer.PackString( value.ToString() );
 		}
 
 		protected sealed override StringBuilder UnpackFromCore( Unpacker unpacker )
