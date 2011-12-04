@@ -20,6 +20,7 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CodeAnalysis|Any CPU = CodeAnalysis|Any CPU
+		CoreProfile|Any CPU = CoreProfile|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Instrument|Any CPU = Instrument|Any CPU
 		PerformanceTest|Any CPU = PerformanceTest|Any CPU
@@ -28,6 +29,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.CoreProfile|Any CPU.ActiveCfg = CoreProfile|Any CPU
+		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.CoreProfile|Any CPU.Build.0 = CoreProfile|Any CPU
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Instrument|Any CPU.ActiveCfg = Instrument|Any CPU
@@ -37,6 +40,7 @@ Global
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BCEC32E-990E-4DE5-945F-BD27326A7418}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
+		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.CoreProfile|Any CPU.ActiveCfg = CoreProfile|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Instrument|Any CPU.ActiveCfg = Instrument|Any CPU
@@ -46,6 +50,8 @@ Global
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.CoreProfile|Any CPU.ActiveCfg = CoreProfile|Any CPU
+		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.CoreProfile|Any CPU.Build.0 = CoreProfile|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.Instrument|Any CPU.ActiveCfg = Instrument|Any CPU
