@@ -46,7 +46,7 @@ namespace MsgPack
 
 			Image dst = new Image();
 			buffer.Seek( 0L, SeekOrigin.Begin );
-			dst.UnpackFromMessage( Unpacker.Create( buffer ).TryUnpackObject().Value );
+			dst.UnpackFromMessage( Unpacking.UnpackObject( buffer ).Value );
 
 			Assert.AreEqual( src, dst );
 		}

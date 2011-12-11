@@ -118,10 +118,5 @@ namespace MsgPack
 			this._unpacked++;
 			return true;
 		}
-
-		protected sealed override void FeedCore( Stream stream, bool ownsStream )
-		{
-			throw new NotSupportedException();
-		}
 	}
 }

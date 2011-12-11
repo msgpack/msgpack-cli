@@ -48,8 +48,8 @@ namespace MsgPack
 				}
 				Console.WriteLine();
 			}
-			//return new Unpacker( output.GetBuffer() ).UnpackObject().Value;
-			return Unpacker.Create( output ).TryUnpackObject().Value;
+
+			return Unpacking.UnpackObject( output ).Value;
 		}
 
 		[Test]
