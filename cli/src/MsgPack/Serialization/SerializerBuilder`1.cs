@@ -161,7 +161,7 @@ namespace MsgPack.Serialization
 		}
 		
 		/// <summary>
-		///		Creates serializer to serialize/deserialize specified array type member and returns its
+		///		Creates serializer to serialize/deserialize specified array type member and returns its <see cref="ConstructorInfo"/>.
 		/// </summary>
 		/// <param name="member">Metadata of target member.</param>
 		/// <param name="memberType"><see cref="Type"/> of member value.</param>
@@ -173,7 +173,7 @@ namespace MsgPack.Serialization
 		protected abstract ConstructorInfo CreateArraySerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
-		///		Creates serializer to serialize/deserialize specified map type member and returns its
+		///		Creates serializer to serialize/deserialize specified map type member and returns its <see cref="ConstructorInfo"/>.
 		/// </summary>
 		/// <param name="member">Metadata of target member.</param>
 		/// <param name="memberType"><see cref="Type"/> of member value.</param>
@@ -185,7 +185,7 @@ namespace MsgPack.Serialization
 		protected abstract ConstructorInfo CreateMapSerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
-		///		Creates serializer to serialize/deserialize specified object type member and returns its
+		///		Creates serializer to serialize/deserialize specified object type member and returns its <see cref="ConstructorInfo"/>.
 		/// </summary>
 		/// <param name="member">Metadata of target member.</param>
 		/// <param name="memberType"><see cref="Type"/> of member value.</param>
