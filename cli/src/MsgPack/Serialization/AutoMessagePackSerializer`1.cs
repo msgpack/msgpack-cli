@@ -43,12 +43,6 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-			if ( ( typeof( T ).Assembly == typeof( object ).Assembly || typeof( T ).Assembly == typeof( Enumerable ).Assembly )
-				&& typeof( T ).IsPublic && typeof( T ).Name.StartsWith( "Tuple`",StringComparison.Ordinal ) )
-			{
-				throw new NotImplementedException( "Tuple is not supported yet." );
-			}
-
 			var serializer = context.Serializers.Get<T>( context );
 			if ( serializer != null )
 			{
@@ -71,7 +65,15 @@ namespace MsgPack.Serialization
 				}
 				case CollectionKind.NotCollection:
 				{
-					serializer = new EmittingSerializerBuilder<T>( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
+					if ( ( typeof( T ).Assembly == typeof( object ).Assembly || typeof( T ).Assembly == typeof( Enumerable ).Assembly )
+						&& typeof( T ).IsPublic && typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
+					{
+						serializer = new EmittingSerializerBuilder<T>( context ).CreateTupleSerializer();
+					}
+					else
+					{
+						serializer = new EmittingSerializerBuilder<T>( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
+					}
 					break;
 				}
 			}

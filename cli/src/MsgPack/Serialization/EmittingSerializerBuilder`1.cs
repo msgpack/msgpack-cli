@@ -853,5 +853,280 @@ namespace MsgPack.Serialization
 				il.FlushTrace();
 			}
 		}
+
+		public sealed override MessagePackSerializer<TObject> CreateTupleSerializer()
+		{
+			return CreateTupleSerializerCore( typeof( TObject ), null ).CreateInstance<TObject>( this.Context );
+		}
+
+		protected sealed override ConstructorInfo CreateTupleSerializer( MemberInfo member, Type memberType )
+		{
+			return CreateTupleSerializerCore( memberType, member ).Create();
+		}
+
+		private static SerializerEmitter CreateTupleSerializerCore( Type tupleType, MemberInfo memberOrNull )
+		{
+			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( tupleType );
+			var itemTypes = GetTupleItemTypes( tupleType );
+			CreateTuplePack(
+				emitter,
+				tupleType,
+				itemTypes,
+				( il, collection ) =>
+				{
+					il.EmitAnyLdarg( 2 );
+					if ( memberOrNull != null )
+					{
+						Emittion.EmitLoadValue( il, memberOrNull );
+					}
+
+					il.EmitAnyStloc( collection );
+				}
+			);
+			CreateTupleUnpack(
+				emitter,
+				memberOrNull,
+				tupleType,
+				itemTypes
+			);
+
+			return emitter;
+		}
+
+		private static IList<Type> GetTupleItemTypes( Type tupleType )
+		{
+			Contract.Assert( tupleType.Name.StartsWith( "Tuple`" ) && tupleType.Assembly == typeof( Tuple ).Assembly );
+			var arguments = tupleType.GetGenericArguments();
+			List<Type> itemTypes = new List<Type>( tupleType.GetGenericArguments().Length );
+			GetTupleItemTypes( arguments, itemTypes );
+			return itemTypes;
+		}
+
+		private static void GetTupleItemTypes( IList<Type> itemTypes, IList<Type> result )
+		{
+			int count = itemTypes.Count == 8 ? 7 : itemTypes.Count;
+			for ( int i = 0; i < count; i++ )
+			{
+				result.Add( itemTypes[ i ] );
+			}
+
+			if ( itemTypes.Count == 8 )
+			{
+				var trest = itemTypes[ 7 ];
+				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.Assembly == typeof( Tuple ).Assembly );
+				GetTupleItemTypes( trest.GetGenericArguments(), result );
+			}
+		}
+
+		private static void CreateTuplePack( SerializerEmitter emiter, Type tupleType, IList<Type> itemTypes, Action<TracingILGenerator, LocalBuilder> loadTupleEmitter )
+		{
+			var il = emiter.GetPackToMethodILGenerator();
+			try
+			{
+				/*
+				 * packer.PackArrayHeader( cardinarity );
+				 * _serializer0.PackTo( packer, tuple.Item1 );
+				 *	:
+				 * _serializer6.PackTo( packer, tuple.item7 );
+				 * _serializer7.PackTo( packer, tuple.Rest.Item1 );
+				 */
+
+				var tuple = il.DeclareLocal( tupleType, "tuple" );
+				loadTupleEmitter( il, tuple );
+				il.EmitAnyLdarg( 1 );
+				il.EmitAnyLdc_I4( itemTypes.Count );
+				il.EmitAnyCall( Metadata._Packer.PackArrayHeader );
+				il.EmitPop();
+
+				var tupleTypeList = CreateTupleTypeList( itemTypes );
+
+				int depth = -1;
+				for ( int i = 0; i < itemTypes.Count; i++ )
+				{
+					if ( i % 7 == 0 )
+					{
+						depth++;
+					}
+
+					Emittion.EmitMarshalValue(
+						emiter,
+						il,
+						1,
+						itemTypes[ i ],
+						il0 =>
+						{
+							il0.EmitAnyLdloc( tuple );
+
+							for ( int j = 0; j < depth; j++ )
+							{
+								// .TRest.TRest ...
+								var rest = tupleTypeList[ j ].GetProperty( "Rest" );
+								il0.EmitGetProperty( rest );
+							}
+
+							var itemn = tupleTypeList[ depth ].GetProperty( "Item" + ( ( i % 7 ) + 1 ) );
+#if DEBUG
+							Contract.Assert( itemn != null, tupleTypeList[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i );
+#endif
+							il0.EmitGetProperty( itemn );
+						}
+					);
+				}
+				il.EmitRet();
+			}
+			finally
+			{
+				il.FlushTrace();
+			}
+		}
+
+		private static void CreateTupleUnpack( SerializerEmitter emitter, MemberInfo memberOrNull, Type tupleType, IList<Type> itemTypes )
+		{
+			CreateTupleUnpackFrom( emitter, memberOrNull, tupleType, itemTypes );
+		}
+
+		private static void CreateTupleUnpackFrom( SerializerEmitter emitter, MemberInfo memberOrNull, Type tupleType, IList<Type> itemTypes )
+		{
+			var il = emitter.GetUnpackFromMethodILGenerator();
+			try
+			{
+				/*
+				 * 	checked
+				 * 	{
+				 * 		if (!unpacker.IsArrayHeader)
+				 * 		{
+				 * 			throw SerializationExceptions.NewIsNotArrayHeader();
+				 * 		}
+				 * 		
+				 * 		if ((int)unpacker.ItemsCount != n)
+				 * 		{
+				 * 			throw SerializationExceptions.NewTupleCardinarityIsNotMatch(n, (int)unpacker.ItemsCount);
+				 * 		}
+				 * 		
+				 *		if (!unpacker.Read())
+				 *		{
+				 *			throw SerializationExceptions.NewMissingItem(0);
+				 *		}
+				 *		
+				 *		T1 item1;
+				 *		if (!unpacker.IsArrayHeader && !unpacker.IsMapHeader)
+				 *		{
+				 *			item1 = this._serializer0.UnpackFrom(unpacker);
+				 *		}
+				 *		else
+				 *		{
+				 *			using (Unpacker subTreeUnpacker = unpacker.ReadSubtree())
+				 *			{
+				 *				item1 = this._serializer0.UnpackFrom(subTreeUnpacker);
+				 *			}
+				 *		}
+				 *		
+				 *		if (!unpacker.Read())
+				 *			:
+				 *		
+				 *		return new Tuple<...>( item1, ... , new Tuple<...>(...)...);
+				 *	}
+				 */
+
+				il.EmitAnyLdarg( 1 );
+				il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
+				var endIf = il.DefineLabel( "END_IF" );
+				il.EmitBrtrue_S( endIf );
+				il.EmitAnyCall( SerializationExceptions.NewIsNotArrayHeaderMethod );
+				il.EmitThrow();
+				il.MarkLabel( endIf );
+
+				il.EmitAnyLdarg( 1 );
+				il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
+				il.EmitConv_Ovf_I4();
+				il.EmitAnyLdc_I4( itemTypes.Count );
+				var endIf1 = il.DefineLabel( "END_IF1" );
+				il.EmitBeq_S( endIf1 );
+				il.EmitAnyLdc_I4( itemTypes.Count );
+				il.EmitAnyLdarg( 1 );
+				il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
+				il.EmitConv_Ovf_I4();
+				il.EmitAnyCall( SerializationExceptions.NewTupleCardinarityIsNotMatchMethod );
+				il.EmitThrow();
+				il.MarkLabel( endIf1 );
+
+				LocalBuilder[] itemLocals = new LocalBuilder[ itemTypes.Count ];
+				int i = 0;
+				Action<TracingILGenerator, int> unpackerReading =
+					( il1, unpacker ) =>
+					{
+						il1.EmitAnyLdarg( unpacker );
+						il1.EmitAnyCall( Metadata._Unpacker.Read );
+						var endIf0 = il1.DefineLabel( "END_IF0" );
+						il1.EmitBrtrue_S( endIf0 );
+						il1.EmitAnyLdc_I4( i );
+						il1.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
+						il1.EmitThrow();
+						il1.MarkLabel( endIf0 );
+					};
+
+				for ( ; i < itemTypes.Count; i++ )
+				{
+					itemLocals[ i ] = il.DeclareLocal( itemTypes[ i ], "item" + i );
+					Emittion.EmitUnmarshalValue( emitter, il, 1, itemLocals[ i ], unpackerReading );
+				}
+
+				foreach ( var item in itemLocals )
+				{
+					il.EmitAnyLdloc( item );
+				}
+
+				var tupleTypeList = CreateTupleTypeList( itemTypes );
+
+				for ( int depth = tupleTypeList.Count - 1; 0 <= depth; depth-- )
+				{
+					il.EmitNewobj( tupleTypeList[ depth ].GetConstructors().Single() );
+				}
+
+				il.EmitRet();
+			}
+			finally
+			{
+				il.FlushTrace();
+			}
+		}
+
+		/// <summary>
+		///		Create type list for nested tuples.
+		/// </summary>
+		/// <param name="itemTypes">The type list of tuple items, in order.</param>
+		/// <returns>
+		///		The type list for nested tuples.
+		///		The order is from outer to inner.
+		/// </returns>
+		private static List<Type> CreateTupleTypeList( IList<Type> itemTypes )
+		{
+			var itemTypesStack = new Stack<List<Type>>( itemTypes.Count / 7 + 1 );
+			for ( int i = 0; i < itemTypes.Count / 7; i++ )
+			{
+				itemTypesStack.Push( itemTypes.Skip( i * 7 ).Take( 7 ).ToList() );
+			}
+
+			if ( itemTypes.Count % 7 != 0 )
+			{
+				itemTypesStack.Push( itemTypes.Skip( ( itemTypes.Count / 7 ) * 7 ).Take( itemTypes.Count % 7 ).ToList() );
+			}
+
+			var result = new List<Type>( itemTypesStack.Count );
+			while ( 0 < itemTypesStack.Count )
+			{
+				var itemTypesStackEntry = itemTypesStack.Pop();
+				if ( 0 < result.Count )
+				{
+					itemTypesStackEntry.Add( result.Last() );
+				}
+
+				var tupleType = Type.GetType( "System.Tuple`" + itemTypesStackEntry.Count, true ).MakeGenericType( itemTypesStackEntry.ToArray() );
+				result.Add( tupleType );
+			}
+
+			result.Reverse();
+			return result;
+		}
 	}
 }

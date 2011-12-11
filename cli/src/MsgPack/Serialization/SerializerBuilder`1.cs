@@ -197,6 +197,18 @@ namespace MsgPack.Serialization
 		protected abstract ConstructorInfo CreateObjectSerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
+		///		Creates serializer to serialize/deserialize specified tuple type member and returns its <see cref="ConstructorInfo"/>.
+		/// </summary>
+		/// <param name="member">Metadata of target member.</param>
+		/// <param name="memberType"><see cref="Type"/> of member value.</param>
+		/// <returns>
+		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
+		/// </returns>
+		protected abstract ConstructorInfo CreateTupleSerializer( MemberInfo member, Type memberType );
+
+		/// <summary>
 		///		Creates serializer as <typeparamref name="TObject"/> is array type.
 		/// </summary>
 		/// <returns>
@@ -213,5 +225,14 @@ namespace MsgPack.Serialization
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		public abstract MessagePackSerializer<TObject> CreateMapSerializer();
+
+		/// <summary>
+		///		Creates serializer as <typeparamref name="TObject"/> is tuple type.
+		/// </summary>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public abstract MessagePackSerializer<TObject> CreateTupleSerializer();
 	}
 }

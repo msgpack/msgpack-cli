@@ -216,5 +216,19 @@ namespace MsgPack.Serialization
 		{
 			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported because '{0}' cannot be instanciated.", type ) );
 		}
+
+		internal static readonly MethodInfo NewTupleCardinarityIsNotMatchMethod = FromExpression.ToMethod( ( int expected, int actual ) => SerializationExceptions.NewTupleCardinarityIsNotMatch( expected, actual ) );
+
+		/// <summary>
+		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Returns new exception to notify that the array length does not match to expected tuple cardinality.
+		/// </summary>
+		/// <param name="expectedTupleCardinality">The expected cardinality of the tuple.</param>
+		/// <param name="actualArrayLength">The actual serialized array length.</param>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static Exception NewTupleCardinarityIsNotMatch( int expectedTupleCardinality, int actualArrayLength )
+		{
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The length of array ({0}) does not match to tuple cardinality ({1}).", actualArrayLength, expectedTupleCardinality ) );
+		}
 	}
 }

@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 #pragma warning disable 3003
-#warning LINE51--Tuple
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -502,6 +501,30 @@ namespace MsgPack.Serialization
 		{
 			TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), 2 ).ToArray() );
 		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectField()
+		{
+			TestCoreWithAutoVerify( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) )  );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldArray()
+		{
+			TestCoreWithAutoVerify( Enumerable.Repeat( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , 2 ).ToArray() );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldNull()
+		{
+			TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> ) );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldArrayNull()
+		{
+			TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object>[] ) );
+		}	
 		
 		[Test]
 		public void TestImage_Field()
@@ -1837,6 +1860,14 @@ namespace MsgPack.Serialization
 			set { this._ArraySegmentDecimalField = value; }
 		}
 
+		private System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> _Tuple_Int32_String_MessagePackObject_ObjectField;
+		
+		public System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> Tuple_Int32_String_MessagePackObject_ObjectField
+		{
+			get { return this._Tuple_Int32_String_MessagePackObject_ObjectField; }
+			set { this._Tuple_Int32_String_MessagePackObject_ObjectField = value; }
+		}
+
 		private MsgPack.Image _Image_Field;
 		
 		public MsgPack.Image Image_Field
@@ -2157,6 +2188,7 @@ namespace MsgPack.Serialization
 			this._ArraySegmentByteField = new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } );
 			this._ArraySegmentInt32Field = new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } );
 			this._ArraySegmentDecimalField = new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } );
+			this._Tuple_Int32_String_MessagePackObject_ObjectField = new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) ;
 			this._Image_Field = new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 };
 			this._ListDateTimeField = new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 			this._DictionaryStringDateTimeField = new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } };
@@ -2241,6 +2273,7 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._ArraySegmentByteField, this._ArraySegmentByteField );
 			AutoMessagePackSerializerTest.Verify( expected._ArraySegmentInt32Field, this._ArraySegmentInt32Field );
 			AutoMessagePackSerializerTest.Verify( expected._ArraySegmentDecimalField, this._ArraySegmentDecimalField );
+			AutoMessagePackSerializerTest.Verify( expected._Tuple_Int32_String_MessagePackObject_ObjectField, this._Tuple_Int32_String_MessagePackObject_ObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._Image_Field, this._Image_Field );
 			AutoMessagePackSerializerTest.Verify( expected._ListDateTimeField, this._ListDateTimeField );
 			AutoMessagePackSerializerTest.Verify( expected._DictionaryStringDateTimeField, this._DictionaryStringDateTimeField );

@@ -31,6 +31,7 @@ using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {
+	// FIXME: Composit structur e.g: Directory :{ Directory, File }
 	[TestFixture]
 	[Timeout( 3000 )]
 	public partial class AutoMessagePackSerializerTest
@@ -228,6 +229,81 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestTuple1()
+		{
+			TestTupleCore( new Tuple<int>( 1 ) );
+		}
+
+		[Test]
+		public void TestTuple7()
+		{
+			TestTupleCore( new Tuple<int, string, int, string, int, string, int>( 1, "2", 3, "4", 5, "6", 7 ) );
+		}
+
+		[Test]
+		public void TestTuple8()
+		{
+			TestTupleCore(
+				new Tuple<
+				int, string, int, string, int, string, int,
+				Tuple<string>>(
+					1, "2", 3, "4", 5, "6", 7,
+					new Tuple<string>( "8" )
+				)
+			);
+		}
+
+		[Test]
+		public void TestTuple14()
+		{
+			TestTupleCore(
+				new Tuple<
+				int, string, int, string, int, string, int,
+				Tuple<
+				string, int, string, int, string, int, string
+				>
+				>(
+					1, "2", 3, "4", 5, "6", 7,
+					new Tuple<string, int, string, int, string, int, string>(
+						"8", 9, "10", 11, "12", 13, "14"
+					)
+				)
+			);
+		}
+
+		[Test]
+		public void TestTuple15()
+		{
+			TestTupleCore(
+				new Tuple<
+				int, string, int, string, int, string, int,
+				Tuple<
+				string, int, string, int, string, int, string,
+				Tuple<int>
+				>
+				>(
+					1, "2", 3, "4", 5, "6", 7,
+					new Tuple<string, int, string, int, string, int, string, Tuple<int>>(
+						"8", 9, "10", 11, "12", 13, "14",
+						new Tuple<int>( 15 )
+					)
+				)
+			);
+		}
+
+		private static void TestTupleCore<T>( T expected )
+			where T : IStructuralEquatable
+		{
+			var serializer = new AutoMessagePackSerializer<T>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( stream, expected );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( expected ) );
+			}
+		}
+
+		[Test]
 		public void TestEmptyBytes()
 		{
 			var serializer = new AutoMessagePackSerializer<byte[]>( GetSerializationContext() );
@@ -410,7 +486,7 @@ namespace MsgPack.Serialization
 			if ( expected is IStructuralEquatable )
 			{
 				Assert.That(
-					( ( IStructuralEquatable )expected ).Equals( actual, EqualityComparer<T>.Default ),
+					( ( IStructuralEquatable )expected ).Equals( actual, EqualityComparer<object>.Default ),
 					"Expected:{1}({2}){0}Actual :{3}({4})",
 					Environment.NewLine,
 					expected,
@@ -441,8 +517,8 @@ namespace MsgPack.Serialization
 
 			if ( expected is DictionaryEntry )
 			{
-				var expectedEntry  =( DictionaryEntry )( object )expected ;
-				var actualEntry = ( DictionaryEntry )( object )actual ;
+				var expectedEntry = ( DictionaryEntry )( object )expected;
+				var actualEntry = ( DictionaryEntry )( object )actual;
 
 				if ( expectedEntry.Key == null )
 				{
@@ -462,7 +538,7 @@ namespace MsgPack.Serialization
 				{
 					Verify( ( MessagePackObject )expectedEntry.Value, ( MessagePackObject )actualEntry.Value );
 				}
-				
+
 				return;
 			}
 
