@@ -259,11 +259,6 @@
     <Compile Include="Validation.cs" />
     <Compile Include="UnpackingResult.cs" />
     <Compile Include="Unpacker.cs" />
-    <Compile Include="Unpacker.Direct.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Unpacker.Direct.tt</DependentUpon>
-    </Compile>
     <Compile Include="UnpackException.cs" />
     <Compile Include="StreamingUnpacker.cs" />
     <None Include="..\MsgPack.snk">
@@ -288,10 +283,6 @@
     <None Include="Serialization\SerializerRepository.defaults.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SerializerRepository.defaults.cs</LastGenOutput>
-    </None>
-    <None Include="Unpacker.Direct.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Unpacker.Direct.cs</LastGenOutput>
     </None>
     <None Include="Unpacking.Integers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

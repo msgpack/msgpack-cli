@@ -403,9 +403,6 @@
     <Compile Include="..\MsgPack\Unpacker.cs">
       <Link>Unpacker.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Unpacker.Direct.cs">
-      <Link>Unpacker.Direct.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\UnpackException.cs">
       <Link>UnpackException.cs</Link>
     </Compile>
