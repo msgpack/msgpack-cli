@@ -54,40 +54,6 @@ namespace NLiblet.Reflection
 			return target.IsAssignableFrom( source );
 		}
 
-		/// <summary>
-		///		Determines whether the specified same type other <see cref="Type"/> is equal to the instance.
-		/// </summary>
-		/// <param name="source">The <see cref="Type"/> to compare with <paramref name="other"/> instance.</param>
-		/// <param name="other">The <see cref="Type"/> to compare with <paramref name="source"/> instance.</param>
-		/// <returns>
-		///		<c>true</c> if <paramref name="other"/> is equal to <paramref name="source"/> instance; otherwise, <c>false</c>.
-		/// </returns>
-		/// <remarks>
-		///		This method compares <see cref="Type.TypeHandle"/> property.
-		/// </remarks>
-		[Pure]
-		public static bool Equals( this Type source, Type other )
-		{
-			Contract.Assert( source != null );
-
-			if ( Object.ReferenceEquals( other, null ) )
-			{
-				return false;
-			}
-
-			if ( Object.ReferenceEquals( source, other ) )
-			{
-				return true;
-			}
-
-			try
-			{
-				return source.TypeHandle.Equals( other.TypeHandle );
-			}
-			catch ( NotSupportedException )
-			{
-				return false;
-			}
-		}
+		// TODO: NLiblet
 	}
 }

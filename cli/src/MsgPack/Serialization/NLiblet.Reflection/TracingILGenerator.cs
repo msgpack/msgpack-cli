@@ -968,7 +968,8 @@ namespace NLiblet.Reflection
 			Contract.Assert( writer != null );
 			Contract.Assert( type != null );
 
-			if ( typeof( void ).TypeHandle.Equals( type.TypeHandle ) )
+			// TODO: NLiblet
+			if ( typeof( void ) == type )
 			{
 				writer.Write( "void" );
 			}

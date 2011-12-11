@@ -78,7 +78,7 @@ namespace MsgPack.Serialization
 			{
 				if ( source.Implements( typeof( IDictionary<,> ) ) )
 				{
-					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.IsGenericType && @interface.GetGenericTypeDefinition().TypeHandle.Equals( typeof( IEnumerator<> ).TypeHandle ) );
+					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof( IEnumerator<> ) );
 					if ( ienumetaorT != null )
 					{
 						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
@@ -107,7 +107,7 @@ namespace MsgPack.Serialization
 
 				// Block to limit variable scope
 				{
-					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.IsGenericType && @interface.GetGenericTypeDefinition().TypeHandle.Equals( typeof( IEnumerator<> ).TypeHandle ) );
+					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof( IEnumerator<> ) );
 					if ( ienumetaorT != null )
 					{
 						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
@@ -255,7 +255,7 @@ namespace MsgPack.Serialization
 			}
 
 			var property = targetType.GetProperty( "Count" );
-			if ( property != null && property.PropertyType.TypeHandle.Equals( typeof( int ).TypeHandle ) && property.GetIndexParameters().Length == 0 )
+			if ( property != null && property.PropertyType == typeof( int ).TypeHandle && property.GetIndexParameters().Length == 0 )
 			{
 				return property;
 			}
