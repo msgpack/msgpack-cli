@@ -29,7 +29,6 @@ using NLiblet.Reflection;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: Comment
 	// TODO: Move fully-non-generic members to non-generic helpers to reduce JIT
 	/// <summary>
 	///		<see cref="SerializerBuilder{T}"/> implementation using Reflection.Emit.
@@ -146,7 +145,7 @@ namespace MsgPack.Serialization
 					 *  packer.PackArrayHeader( length );
 					 * for( int i = 0; i < length; i++ )
 					 * {
-					 * 		Context.Serializers.Get<T>().Serialize( packer, collection[ i ] );
+					 * 		this._serializer.PackTo( packer, collection[ i ] );
 					 * }
 					 */
 					var length = il.DeclareLocal( typeof( int ), "length" );
@@ -192,7 +191,7 @@ namespace MsgPack.Serialization
 					 *  packer.PackArrayHeader( length );
 					 * for( int i = 0; i < length; i++ )
 					 * {
-					 * 		Context.Serializers.Get<T>().Serialize( packer, array[ i ] );
+					 * 		this._serializer.PackTo( packer, array[ i ] );
 					 * }
 					 */
 					var array = il.DeclareLocal( traits.ElementType.MakeArrayType(), "array" );
@@ -238,7 +237,7 @@ namespace MsgPack.Serialization
 					 *  packer.PackArrayHeader( collection.Count );
 					 * foreach( var item in list )
 					 * {
-					 * 		Context.MarshalTo( packer, array[ i ] );
+					 * 		this._serializer.PackTo( packer, array[ i ] );
 					 * }
 					 */
 					var collection = il.DeclareLocal( typeof( TObject ), "collection" );
@@ -305,11 +304,16 @@ namespace MsgPack.Serialization
 				}
 
 				/*
-				 *	if( !unpacker.IsArrayHeader )
+				 *	if (!unpacker.IsArrayHeader)
 				 *	{
-				 *		throw new InvalidOperationException();
+				 *		throw SerializationExceptions.NewIsNotArrayHeader();
 				 *	}
+				 *	
+				 *	TCollection collection = new ...;
+				 *	this.UnpackToCore(unpacker, array);
+				 *	return collection;
 				 */
+
 				unpackFromIL.EmitAnyLdarg( 1 );
 				unpackFromIL.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
 				var endIf = unpackFromIL.DefineLabel( "END_IF" );
@@ -318,6 +322,7 @@ namespace MsgPack.Serialization
 				unpackFromIL.EmitThrow();
 				unpackFromIL.MarkLabel( endIf );
 				var collection = unpackFromIL.DeclareLocal( collectionType, "collection" );
+				// Emit newobj, newarr, or call ValueType..ctor()
 				Emittion.EmitConstruction(
 					unpackFromIL,
 					collection,
@@ -345,84 +350,99 @@ namespace MsgPack.Serialization
 		private static void CreateArrayUnpackTo( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType, CollectionTraits traits )
 		{
 			/*
-					  * int itemCount = unpacker.ItemCount;
-					  * for( int i = 0; i < array.Length; i++ )
-					  * {
-					  *		if( !unpacker.MoveToNextEntry() )
-					  *		{
-					  *			throw new SerializationException();
-					  *		}
-					  *		collection.Add( Context.Serializers.Get<T>().Deserialize( unpacker ) )
-					  * }
-					  */
-			var unpackToIL = emitter.GetUnpackToMethodILGenerator();
+			 *	int count = checked((int)unpacker.ItemsCount);
+			 *	for (int i = 0; i < count; i++)
+			 *	{
+			 *		if (!unpacker.Read())
+			 *		{
+			 *			throw SerializationExceptions.NewMissingItem(i);
+			 *		}
+			 *		
+			 *		T item;
+			 *		if (!unpacker.IsArrayHeader && !unpacker.IsMapHeader)
+			 *		{
+			 *			item = this._serializer.UnpackFrom(unpacker);
+			 *		}
+			 *		else
+			 *		{
+			 *			using (Unpacker subTreeUnpacker = unpacker.ReadSubtree())
+			 *			{
+			 *				item = this._serializer.UnpackFrom(subTreeUnpacker);
+			 *			}
+			 *		}
+			 *		
+			 *		collection[i] = guid;
+			 *	}
+	}		 */
+
+			var il = emitter.GetUnpackToMethodILGenerator();
 			try
 			{
-				var itemsCount = unpackToIL.DeclareLocal( typeof( int ), "itemsCount" );
+				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 
-				unpackToIL.EmitAnyLdarg( 1 );
-				unpackToIL.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-				unpackToIL.EmitConv_Ovf_I4();
-				unpackToIL.EmitAnyStloc( itemsCount );
+				il.EmitAnyLdarg( 1 );
+				il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
+				il.EmitConv_Ovf_I4();
+				il.EmitAnyStloc( itemsCount );
 				Emittion.EmitFor(
-					unpackToIL,
+					il,
 					itemsCount,
-					( il, i ) =>
+					( il0, i ) =>
 					{
-						var value = il.DeclareLocal( traits.ElementType, "value" );
+						var value = il0.DeclareLocal( traits.ElementType, "value" );
 						Emittion.EmitUnmarshalValue(
 							emitter,
-							il,
+							il0,
 							1,
 							value,
-							( il0, unpacker ) =>
+							( il1, unpacker ) =>
 							{
-								il0.EmitAnyLdarg( unpacker );
-								il0.EmitAnyCall( Metadata._Unpacker.Read );
-								var endIf = il0.DefineLabel( "END_IF" );
-								il0.EmitBrtrue_S( endIf );
-								il0.EmitAnyLdloc( i );
-								il0.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
-								il0.EmitThrow();
-								il0.MarkLabel( endIf );
+								il1.EmitAnyLdarg( unpacker );
+								il1.EmitAnyCall( Metadata._Unpacker.Read );
+								var endIf = il1.DefineLabel( "END_IF" );
+								il1.EmitBrtrue_S( endIf );
+								il1.EmitAnyLdloc( i );
+								il1.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
+								il1.EmitThrow();
+								il1.MarkLabel( endIf );
 							}
 						);
 
 						if ( memberOrNull != null )
 						{
-							Emittion.EmitLoadValue( il, memberOrNull );
+							Emittion.EmitLoadValue( il0, memberOrNull );
 						}
 						else
 						{
-							il.EmitAnyLdarg( 2 );
+							il0.EmitAnyLdarg( 2 );
 						}
 
 						if ( collectionType.IsArray )
 						{
-							il.EmitAnyLdloc( i );
+							il0.EmitAnyLdloc( i );
 						}
 
-						il.EmitAnyLdloc( value );
+						il0.EmitAnyLdloc( value );
 
 						if ( collectionType.IsArray )
 						{
-							il.EmitStelem( traits.ElementType );
+							il0.EmitStelem( traits.ElementType );
 						}
 						else
 						{
-							il.EmitAnyCall( traits.AddMethod );
+							il0.EmitAnyCall( traits.AddMethod );
 							if ( traits.AddMethod.ReturnType != typeof( void ) )
 							{
-								il.EmitPop();
+								il0.EmitPop();
 							}
 						}
 					}
 				);
-				unpackToIL.EmitRet();
+				il.EmitRet();
 			}
 			finally
 			{
-				unpackToIL.FlushTrace();
+				il.FlushTrace();
 			}
 		}
 
@@ -472,13 +492,15 @@ namespace MsgPack.Serialization
 			{
 
 				/*
-				 * 
-				 * // Enumerable
-				 * foreach( var item in map )
-				 * {
-				 * 		Context.MarshalTo( packer, array[ i ] );
-				 * }
+				 * 	int count = ((ICollection<KeyValuePair<string, DateTime>>)dictionary).Count;
+				 * 	packer.PackMapHeader(count);
+				 * 	foreach (KeyValuePair<string, DateTime> current in dictionary)
+				 * 	{
+				 * 		this._serializer0.PackTo(packer, current.Key);
+				 * 		this._serializer1.PackTo(packer, current.Value);
+				 * 	}
 				 */
+
 				var collection = il.DeclareLocal( collectionType, "collection" );
 				var item = il.DeclareLocal( traits.ElementType, "item" );
 				var keyProperty = traits.ElementType.GetProperty( "Key" );
@@ -577,100 +599,147 @@ namespace MsgPack.Serialization
 
 		private static void CreateMapUnpackFrom( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType )
 		{
-			var unpackFromIL = emitter.GetUnpackFromMethodILGenerator();
+			var il = emitter.GetUnpackFromMethodILGenerator();
 			try
 			{
+				/*
+				 *	if (!unpacker.IsMapHeader)
+				 *	{
+				 *		throw SerializationExceptions.NewIsNotMapHeader();
+				 *	}
+				 *	
+				 *	TDictionary<TKey, TValue> dictionary = new ...;
+				 *	this.UnpackToCore(unpacker, dictionary);
+				 *	return dictionary;
+				 */
+
 				if ( collectionType.IsInterface || collectionType.IsAbstract )
 				{
-					unpackFromIL.EmitTypeOf( collectionType );
-					unpackFromIL.EmitAnyCall( SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod );
-					unpackFromIL.EmitThrow();
+					il.EmitTypeOf( collectionType );
+					il.EmitAnyCall( SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod );
+					il.EmitThrow();
 					return;
 				}
 
-				unpackFromIL.EmitAnyLdarg( 1 );
-				unpackFromIL.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
-				var endIf = unpackFromIL.DefineLabel( "END_IF" );
-				unpackFromIL.EmitBrtrue_S( endIf );
-				unpackFromIL.EmitAnyCall( SerializationExceptions.NewIsNotMapHeaderMethod );
-				unpackFromIL.EmitThrow();
-				unpackFromIL.MarkLabel( endIf );
+				il.EmitAnyLdarg( 1 );
+				il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
+				var endIf = il.DefineLabel( "END_IF" );
+				il.EmitBrtrue_S( endIf );
+				il.EmitAnyCall( SerializationExceptions.NewIsNotMapHeaderMethod );
+				il.EmitThrow();
+				il.MarkLabel( endIf );
 
-				var collection = unpackFromIL.DeclareLocal( collectionType, "collection" );
+				var collection = il.DeclareLocal( collectionType, "collection" );
 				if ( memberOrNull == null )
 				{
 					Emittion.EmitConstruction(
-						unpackFromIL,
+						il,
 						collection,
-						il =>
+						il0 =>
 						{
-							il.EmitAnyLdarg( 1 );
-							il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-							il.EmitConv_Ovf_I4();
+							il0.EmitAnyLdarg( 1 );
+							il0.EmitGetProperty( Metadata._Unpacker.ItemsCount );
+							il0.EmitConv_Ovf_I4();
 						}
 					);
 				}
 				else
 				{
-					unpackFromIL.EmitAnyLdarg( 2 );
-					Emittion.EmitLoadValue( unpackFromIL, memberOrNull );
-					unpackFromIL.EmitAnyStloc( collection );
+					il.EmitAnyLdarg( 2 );
+					Emittion.EmitLoadValue( il, memberOrNull );
+					il.EmitAnyStloc( collection );
 				}
 
-				unpackFromIL.EmitAnyLdarg( 0 );
-				unpackFromIL.EmitAnyLdarg( 1 );
-				unpackFromIL.EmitAnyLdloc( collection );
-				unpackFromIL.EmitAnyCall( MessagePackSerializer<TObject>.UnpackToCoreMethod );
-				unpackFromIL.EmitAnyLdloc( collection );
-				unpackFromIL.EmitRet();
+				il.EmitAnyLdarg( 0 );
+				il.EmitAnyLdarg( 1 );
+				il.EmitAnyLdloc( collection );
+				il.EmitAnyCall( MessagePackSerializer<TObject>.UnpackToCoreMethod );
+				il.EmitAnyLdloc( collection );
+				il.EmitRet();
 			}
 			finally
 			{
-				unpackFromIL.FlushTrace();
+				il.FlushTrace();
 			}
 		}
 
 		private static void CreateMapUnpackTo( SerializerEmitter emitter, CollectionTraits traits )
 		{
-			/*
-			 * int itemCount = unpacker.ItemCount;
-			 * var collection = target....;
-			 * for( int i = 0; i < array.Length; i++ )
-			 * {
-			 *		if( !unpacker.MoveToNextEntry() )
-			 *		{
-			 *			throw new SerializationException();
-			 *		}
-			 *		collection.Add( Context.Serializers.Get<T>().Deserialize( unpacker ) )
-			 * }
-			 */
-
-			var unpackToIL = emitter.GetUnpackToMethodILGenerator();
+			var il = emitter.GetUnpackToMethodILGenerator();
 			try
 			{
-				unpackToIL.EmitAnyLdarg( 1 );
-				unpackToIL.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
-				var endIf = unpackToIL.DefineLabel( "END_IF" );
-				unpackToIL.EmitBrtrue_S( endIf );
-				unpackToIL.EmitAnyCall( SerializationExceptions.NewIsNotMapHeaderMethod );
-				unpackToIL.EmitThrow();
-				unpackToIL.MarkLabel( endIf );
+				/*
+				 *	if (!unpacker.IsMapHeader)
+				 *	{
+				 *		throw SerializationExceptions.NewIsNotMapHeader();
+				 *	}
+				 *	
+				 *	int count = checked((int)unpacker.ItemsCount);
+				 *	for (int i = 0; i < count; i++)
+				 *	{
+				 *		if (!unpacker.Read())
+				 *		{
+				 *			throw SerializationExceptions.NewMissingItem(i);
+				 *		}
+				 *		
+				 *		TKey key;
+				 *		if (!unpacker.IsArrayHeader && !unpacker.IsMapHeader)
+				 *		{
+				 *			key = this._serializer0.UnpackFrom(unpacker);
+				 *		}
+				 *		else
+				 *		{
+				 *			using (Unpacker subTreeUnpacker = unpacker.ReadSubtree())
+				 *			{
+				 *				key = this._serializer0.UnpackFrom(subTreeUnpacker);
+				 *			}
+				 *		}
+				 *		
+				 *		if (!unpacker.Read())
+				 *		{
+				 *			throw SerializationExceptions.NewMissingItem(i);
+				 *		}
+				 *		
+				 *		TValue value;
+				 *		if (!unpacker.IsArrayHeader && !unpacker.IsMapHeader)
+				 *		{
+				 *			value = this._serializer1.UnpackFrom(unpacker);
+				 *		}
+				 *		else
+				 *		{
+				 *			using (Unpacker subTreeUnpacker = unpacker.ReadSubtree())
+				 *			{
+				 *				value = this._serializer1.UnpackFrom(subTreeUnpacker);
+				 *			}
+				 *		}
+				 *		
+				 *		dictionary.Add(key, value);
+				 *	}
+				 */
 
-				var itemsCount = unpackToIL.DeclareLocal( typeof( int ), "itemsCount" );
+				il.EmitAnyLdarg( 1 );
+				il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
+				var endIf = il.DefineLabel( "END_IF" );
+				il.EmitBrtrue_S( endIf );
+				il.EmitAnyCall( SerializationExceptions.NewIsNotMapHeaderMethod );
+				il.EmitThrow();
+				il.MarkLabel( endIf );
+
+				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 #if DEBUG
 				Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> )
 					|| traits.ElementType == typeof( DictionaryEntry ) );
 #endif
 
-				var key = unpackToIL.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject ), "key" );
-				var value = unpackToIL.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject ), "value" );
+				var key = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject ), "key" );
+				var value = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject ), "value" );
 
-				unpackToIL.EmitAnyLdarg( 1 );
-				unpackToIL.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-				unpackToIL.EmitConv_Ovf_I4();
-				unpackToIL.EmitAnyStloc( itemsCount );
+				il.EmitAnyLdarg( 1 );
+				il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
+				il.EmitConv_Ovf_I4();
+				il.EmitAnyStloc( itemsCount );
 				Emittion.EmitFor(
-					unpackToIL,
+					il,
 					itemsCount,
 					( il0, i ) =>
 					{
@@ -714,11 +783,11 @@ namespace MsgPack.Serialization
 						}
 					}
 				);
-				unpackToIL.EmitRet();
+				il.EmitRet();
 			}
 			finally
 			{
-				unpackToIL.FlushTrace();
+				il.FlushTrace();
 			}
 		}
 
