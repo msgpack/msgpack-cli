@@ -30,6 +30,7 @@ using NLiblet.Reflection;
 namespace MsgPack.Serialization
 {
 	// FIXME: Comment
+	// TODO: Move fully-non-generic members to non-generic helpers to reduce JIT
 	/// <summary>
 	///		<see cref="SerializerBuilder{T}"/> implementation using Reflection.Emit.
 	/// </summary>
@@ -591,7 +592,7 @@ namespace MsgPack.Serialization
 				unpackFromIL.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
 				var endIf = unpackFromIL.DefineLabel( "END_IF" );
 				unpackFromIL.EmitBrtrue_S( endIf );
-				unpackFromIL.EmitAnyCall( SerializationExceptions.NewIsNotArrayHeaderMethod );
+				unpackFromIL.EmitAnyCall( SerializationExceptions.NewIsNotMapHeaderMethod );
 				unpackFromIL.EmitThrow();
 				unpackFromIL.MarkLabel( endIf );
 
@@ -651,7 +652,7 @@ namespace MsgPack.Serialization
 				unpackToIL.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
 				var endIf = unpackToIL.DefineLabel( "END_IF" );
 				unpackToIL.EmitBrtrue_S( endIf );
-				unpackToIL.EmitAnyCall( SerializationExceptions.NewIsNotArrayHeaderMethod );
+				unpackToIL.EmitAnyCall( SerializationExceptions.NewIsNotMapHeaderMethod );
 				unpackToIL.EmitThrow();
 				unpackToIL.MarkLabel( endIf );
 
