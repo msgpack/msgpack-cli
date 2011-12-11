@@ -206,7 +206,7 @@ namespace MsgPack
 				else
 				{
 					this._position = _beforeHead;
-				}	
+				}
 			}
 		}
 
