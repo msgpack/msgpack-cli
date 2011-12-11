@@ -31,6 +31,7 @@ namespace MsgPack.Serialization
 	public sealed class SerializationContext
 	{
 		private readonly SerializerRepository _serializers;
+		private readonly HashSet<Type> _typeLock;
 
 		/// <summary>
 		///		Gets the current <see cref="SerializerRepository"/>.
@@ -52,6 +53,7 @@ namespace MsgPack.Serialization
 		internal SerializationContext( SerializerRepository serializers )
 		{
 			this._serializers = serializers;
+			this._typeLock = new HashSet<Type>();
 		}
 
 		/// <summary>
@@ -72,7 +74,12 @@ namespace MsgPack.Serialization
 			if ( serializer == null )
 			{
 				// TODO: Configurable
+				if ( !this._typeLock.Add( typeof( T ) ) )
+				{
+					throw new NotImplementedException( "Recursive creation is not implemented yet." );
+				}
 				serializer = new AutoMessagePackSerializer<T>( this );
+				this._typeLock.Remove( typeof( T ) );
 				if ( !this._serializers.Register<T>( serializer ) )
 				{
 					serializer = this._serializers.Get<T>( this );

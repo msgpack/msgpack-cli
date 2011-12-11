@@ -128,6 +128,7 @@
       <DependentUpon>AutoMessagePackSerializerTest.Types.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\ComplexType.cs" />
+    <Compile Include="Serialization\CompositeTest.cs" />
     <Compile Include="Serialization\FromExpressionTest.cs" />
     <Compile Include="Serialization\IVerifiable.cs" />
     <Compile Include="Serialization\IVerifiable`1.cs" />
