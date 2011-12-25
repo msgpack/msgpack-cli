@@ -938,7 +938,7 @@ namespace MsgPack.Serialization
 				il.EmitAnyCall( Metadata._Packer.PackArrayHeader );
 				il.EmitPop();
 
-				var tupleTypeList = CreateTupleTypeList( itemTypes );
+				var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
 
 				int depth = -1;
 				for ( int i = 0; i < itemTypes.Count; i++ )
@@ -1076,7 +1076,7 @@ namespace MsgPack.Serialization
 					il.EmitAnyLdloc( item );
 				}
 
-				var tupleTypeList = CreateTupleTypeList( itemTypes );
+				var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
 
 				for ( int depth = tupleTypeList.Count - 1; 0 <= depth; depth-- )
 				{
@@ -1089,44 +1089,6 @@ namespace MsgPack.Serialization
 			{
 				il.FlushTrace();
 			}
-		}
-
-		/// <summary>
-		///		Create type list for nested tuples.
-		/// </summary>
-		/// <param name="itemTypes">The type list of tuple items, in order.</param>
-		/// <returns>
-		///		The type list for nested tuples.
-		///		The order is from outer to inner.
-		/// </returns>
-		private static List<Type> CreateTupleTypeList( IList<Type> itemTypes )
-		{
-			var itemTypesStack = new Stack<List<Type>>( itemTypes.Count / 7 + 1 );
-			for ( int i = 0; i < itemTypes.Count / 7; i++ )
-			{
-				itemTypesStack.Push( itemTypes.Skip( i * 7 ).Take( 7 ).ToList() );
-			}
-
-			if ( itemTypes.Count % 7 != 0 )
-			{
-				itemTypesStack.Push( itemTypes.Skip( ( itemTypes.Count / 7 ) * 7 ).Take( itemTypes.Count % 7 ).ToList() );
-			}
-
-			var result = new List<Type>( itemTypesStack.Count );
-			while ( 0 < itemTypesStack.Count )
-			{
-				var itemTypesStackEntry = itemTypesStack.Pop();
-				if ( 0 < result.Count )
-				{
-					itemTypesStackEntry.Add( result.Last() );
-				}
-
-				var tupleType = Type.GetType( "System.Tuple`" + itemTypesStackEntry.Count, true ).MakeGenericType( itemTypesStackEntry.ToArray() );
-				result.Add( tupleType );
-			}
-
-			result.Reverse();
-			return result;
 		}
 	}
 }

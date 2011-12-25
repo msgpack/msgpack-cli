@@ -236,6 +236,7 @@
     <Compile Include="StreamPacker.cs" />
     <Compile Include="StreamUnpacker.cs" />
     <Compile Include="SubtreeUnpacker.cs" />
+    <Compile Include="TupleItems.cs" />
     <Compile Include="Unpacking.cs">
       <SubType>Code</SubType>
     </Compile>
