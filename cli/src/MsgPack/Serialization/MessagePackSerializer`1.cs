@@ -104,7 +104,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="SerializationException">
 		///		<typeparamref name="T"/> is not serializable etc.
 		/// </exception>
-		protected abstract void PackToCore( Packer packer, T objectTree );
+		protected internal abstract void PackToCore( Packer packer, T objectTree );
 
 		/// <summary>
 		///		Deserialize object with specified <see cref="Unpacker"/>.
@@ -164,7 +164,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is abstract type.
 		/// </exception>
-		protected abstract T UnpackFromCore( Unpacker unpacker );
+		protected internal abstract T UnpackFromCore( Unpacker unpacker );
 
 		/// <summary>
 		///		Deserialize collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
@@ -221,7 +221,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not collection.
 		/// </exception>
-		protected virtual void UnpackToCore( Unpacker unpacker, T collection )
+		protected internal virtual void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported by '{0}'.", this.GetType() ) );
 		}

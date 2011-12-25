@@ -28,7 +28,6 @@ namespace MsgPack.Serialization
 	public class CompositeTest
 	{
 		[Test]
-		//[Ignore] // This operation causes StackOverflowException
 		public void Test()
 		{
 			var root = new DirectoryItem() { Name = "/" };
@@ -53,14 +52,14 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( memoryStream );
 				Assert.That( result.Name, Is.EqualTo( "/" ) );
 				Assert.That( result.Files, Is.Not.Null.And.Empty );
-				Assert.That( result.Directories, Is.Not.Null.And.Count.EqualTo( 2 ) );
+				Assert.That( result.Directories, Is.Not.Null.And.Length.EqualTo( 2 ) );
 				Assert.That( result.Directories[ 0 ], Is.Not.Null );
 				Assert.That( result.Directories[ 0 ].Name, Is.EqualTo( "tmp/" ) );
-				Assert.That( result.Directories[ 0 ].Files, Is.Not.Null.And.Empty );
-				Assert.That( result.Directories[ 0 ].Directories, Is.Not.Null.And.Empty );
+				Assert.That( result.Directories[ 0 ].Files, Is.Null );
+				Assert.That( result.Directories[ 0 ].Directories, Is.Null );
 				Assert.That( result.Directories[ 1 ], Is.Not.Null );
-				Assert.That( result.Directories[ 1 ].Name, Is.EqualTo( "tmp/" ) );
-				Assert.That( result.Directories[ 1 ].Files, Is.Not.Null.And.Count.EqualTo( 1 ) );
+				Assert.That( result.Directories[ 1 ].Name, Is.EqualTo( "var/" ) );
+				Assert.That( result.Directories[ 1 ].Files, Is.Not.Null.And.Length.EqualTo( 1 ) );
 				Assert.That( result.Directories[ 1 ].Files[ 0 ], Is.Not.Null );
 				Assert.That( result.Directories[ 1 ].Files[ 0 ].Name, Is.EqualTo( "system.log" ) );
 				Assert.That( result.Directories[ 1 ].Directories, Is.Not.Null.And.Empty );

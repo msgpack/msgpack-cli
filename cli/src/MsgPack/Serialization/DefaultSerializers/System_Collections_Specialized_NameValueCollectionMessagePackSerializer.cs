@@ -20,18 +20,14 @@
 
 #if !SILVERLIGHT
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Collections.Specialized;
 using System.Runtime.Serialization;
-using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Collections_Specialized_NameValueCollectionMessagePackSerializer : MessagePackSerializer<NameValueCollection>
 	{
-		protected sealed override void PackToCore( Packer packer, NameValueCollection objectTree )
+		protected internal sealed override void PackToCore( Packer packer, NameValueCollection objectTree )
 		{
 			if ( objectTree == null )
 			{
@@ -63,7 +59,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		protected sealed override NameValueCollection UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override NameValueCollection UnpackFromCore( Unpacker unpacker )
 		{
 			var result = new NameValueCollection( checked( ( int )unpacker.ItemsCount ) );
 

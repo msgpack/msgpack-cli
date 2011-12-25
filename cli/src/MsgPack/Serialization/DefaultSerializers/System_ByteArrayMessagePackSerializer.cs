@@ -24,12 +24,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_ByteArrayMessagePackSerializer : MessagePackSerializer<byte[]>
 	{
-		protected sealed override void PackToCore( Packer packer, byte[] value )
+		protected internal sealed override void PackToCore( Packer packer, byte[] value )
 		{
 			packer.PackRaw( value );
 		}
 
-		protected sealed override byte[] UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override byte[] UnpackFromCore( Unpacker unpacker )
 		{
 			var result = unpacker.Data.Value;
 			return result.IsNil ? null : result.AsBinary();

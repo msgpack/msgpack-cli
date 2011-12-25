@@ -27,7 +27,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public System_VersionMessagePackSerializer() { }
 
-		protected sealed override void PackToCore( Packer packer, Version objectTree )
+		protected internal sealed override void PackToCore( Packer packer, Version objectTree )
 		{
 			packer.PackArrayHeader( 4 );
 			packer.Pack( objectTree.Major );
@@ -36,7 +36,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.Pack( objectTree.Revision );
 		}
 
-		protected sealed override Version UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override Version UnpackFromCore( Unpacker unpacker )
 		{
 			long length = unpacker.Data.Value.AsInt64();
 			int[] array = new int[ 4 ];

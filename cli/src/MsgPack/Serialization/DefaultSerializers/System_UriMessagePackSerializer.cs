@@ -26,12 +26,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public System_UriMessagePackSerializer() { }
 
-		protected sealed override void PackToCore( Packer packer, Uri objectTree )
+		protected internal sealed override void PackToCore( Packer packer, Uri objectTree )
 		{
 			packer.PackString( objectTree.ToString() );
 		}
 
-		protected sealed override Uri UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override Uri UnpackFromCore( Unpacker unpacker )
 		{
 			return new Uri( unpacker.Data.Value.AsString() );
 		}

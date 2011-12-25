@@ -76,7 +76,7 @@ namespace MsgPack.Serialization
 				// TODO: Configurable
 				if ( !this._typeLock.Add( typeof( T ) ) )
 				{
-					throw new NotImplementedException( "Recursive creation is not implemented yet." );
+					return new LazyDelegatingMessagePackSerializer<T>( this );
 				}
 				serializer = new AutoMessagePackSerializer<T>( this );
 				this._typeLock.Remove( typeof( T ) );

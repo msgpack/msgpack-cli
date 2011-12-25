@@ -51,12 +51,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		protected sealed override void PackToCore( Packer packer, T value )
+		protected internal sealed override void PackToCore( Packer packer, T value )
 		{
 			packer.PackString( value.ToString() );
 		}
 
-		protected sealed override T UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override T UnpackFromCore( Unpacker unpacker )
 		{
 			return _unpacking( unpacker );
 		}

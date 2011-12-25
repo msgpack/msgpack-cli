@@ -24,12 +24,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class MsgPack_MessagePackObjectMessagePackSerializer : MessagePackSerializer<MessagePackObject>
 	{
-		protected sealed override void PackToCore( Packer packer, MessagePackObject value )
+		protected internal sealed override void PackToCore( Packer packer, MessagePackObject value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override MessagePackObject UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override MessagePackObject UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value;
 		}

@@ -31,7 +31,6 @@ using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: Composit structur e.g: Directory :{ Directory, File }
 	[TestFixture]
 	[Timeout( 3000 )]
 	public partial class AutoMessagePackSerializerTest

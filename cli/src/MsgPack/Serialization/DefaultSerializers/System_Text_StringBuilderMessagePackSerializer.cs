@@ -25,13 +25,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Text_StringBuilderMessagePackSerializer : MessagePackSerializer<StringBuilder>
 	{
-		protected sealed override void PackToCore( Packer packer, StringBuilder value )
+		protected internal sealed override void PackToCore( Packer packer, StringBuilder value )
 		{
 			// NOTE: More efficient?
 			packer.PackString( value.ToString() );
 		}
 
-		protected sealed override StringBuilder UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override StringBuilder UnpackFromCore( Unpacker unpacker )
 		{
 			// NOTE: More efficient?
 			var result = unpacker.Data.Value;

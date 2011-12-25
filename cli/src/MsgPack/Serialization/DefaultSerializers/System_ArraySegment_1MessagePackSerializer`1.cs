@@ -96,12 +96,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._itemSerializer = context.GetSerializer<T>();
 		}
 
-		protected sealed override void PackToCore( Packer packer, ArraySegment<T> objectTree )
+		protected internal sealed override void PackToCore( Packer packer, ArraySegment<T> objectTree )
 		{
 			_packing( packer, objectTree, this._itemSerializer );
 		}
 
-		protected sealed override ArraySegment<T> UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override ArraySegment<T> UnpackFromCore( Unpacker unpacker )
 		{
 			return _unpacking( unpacker, this._itemSerializer );
 		}

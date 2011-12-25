@@ -198,7 +198,7 @@ foreach( Type __type in __types )
 #>
 	internal sealed class <#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
 	{
-		protected sealed override void PackToCore( Packer packer, <#= __type.FullName #> value )
+		protected internal sealed override void PackToCore( Packer packer, <#= __type.FullName #> value )
 		{
 <#
 	if ( __workArounds.ContainsKey( __type ) )
@@ -244,7 +244,7 @@ foreach( var ctor in ctors )
 #>
 		}
 
-		protected sealed override  <#= __type.FullName #> UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  <#= __type.FullName #> UnpackFromCore( Unpacker unpacker )
 		{
 <#
 	if ( __workArounds.ContainsKey( __type ) )

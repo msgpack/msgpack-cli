@@ -30,12 +30,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_DateTimeMessagePackSerializer : MessagePackSerializer< System.DateTime >
 	{
-		protected sealed override void PackToCore( Packer packer, System.DateTime value )
+		protected internal sealed override void PackToCore( Packer packer, System.DateTime value )
 		{
 			packer.Pack( MessagePackConvert.FromDateTime( value ) );
 		}
 
-		protected sealed override  System.DateTime UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.DateTime UnpackFromCore( Unpacker unpacker )
 		{
 			return MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ); 
 		}
@@ -43,12 +43,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_DateTimeOffsetMessagePackSerializer : MessagePackSerializer< System.DateTimeOffset >
 	{
-		protected sealed override void PackToCore( Packer packer, System.DateTimeOffset value )
+		protected internal sealed override void PackToCore( Packer packer, System.DateTimeOffset value )
 		{
 			packer.Pack( MessagePackConvert.FromDateTimeOffset( value ) );
 		}
 
-		protected sealed override  System.DateTimeOffset UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.DateTimeOffset UnpackFromCore( Unpacker unpacker )
 		{
 			return MessagePackConvert.ToDateTimeOffset( unpacker.Data.Value.AsInt64() ); 
 		}
@@ -56,12 +56,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_BooleanMessagePackSerializer : MessagePackSerializer< System.Boolean >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Boolean value )
+		protected internal sealed override void PackToCore( Packer packer, System.Boolean value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.Boolean UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Boolean UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsBoolean();
 		}
@@ -69,12 +69,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_ByteMessagePackSerializer : MessagePackSerializer< System.Byte >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Byte value )
+		protected internal sealed override void PackToCore( Packer packer, System.Byte value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.Byte UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Byte UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsByte();
 		}
@@ -82,12 +82,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_CharMessagePackSerializer : MessagePackSerializer< System.Char >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Char value )
+		protected internal sealed override void PackToCore( Packer packer, System.Char value )
 		{
 			packer.Pack( ( System.UInt16 )value );
 		}
 
-		protected sealed override  System.Char UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Char UnpackFromCore( Unpacker unpacker )
 		{
 			return ( System.Char ) unpacker.Data.Value.AsUInt16(); 
 		}
@@ -95,12 +95,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_DecimalMessagePackSerializer : MessagePackSerializer< System.Decimal >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Decimal value )
+		protected internal sealed override void PackToCore( Packer packer, System.Decimal value )
 		{
 			packer.PackString( value.ToString( "G", CultureInfo.InvariantCulture ) );
 		}
 
-		protected sealed override  System.Decimal UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Decimal UnpackFromCore( Unpacker unpacker )
 		{
 			return System.Decimal.Parse( unpacker.Data.Value.AsString(), CultureInfo.InvariantCulture ); 
 		}
@@ -108,12 +108,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_DoubleMessagePackSerializer : MessagePackSerializer< System.Double >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Double value )
+		protected internal sealed override void PackToCore( Packer packer, System.Double value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.Double UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Double UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsDouble();
 		}
@@ -121,12 +121,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_GuidMessagePackSerializer : MessagePackSerializer< System.Guid >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Guid value )
+		protected internal sealed override void PackToCore( Packer packer, System.Guid value )
 		{
 			packer.PackRaw( value.ToByteArray() );
 		}
 
-		protected sealed override  System.Guid UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Guid UnpackFromCore( Unpacker unpacker )
 		{
 			return new System.Guid( unpacker.Data.Value.AsBinary() ); 
 		}
@@ -134,12 +134,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_Int16MessagePackSerializer : MessagePackSerializer< System.Int16 >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Int16 value )
+		protected internal sealed override void PackToCore( Packer packer, System.Int16 value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.Int16 UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Int16 UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsInt16();
 		}
@@ -147,12 +147,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_Int32MessagePackSerializer : MessagePackSerializer< System.Int32 >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Int32 value )
+		protected internal sealed override void PackToCore( Packer packer, System.Int32 value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.Int32 UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Int32 UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsInt32();
 		}
@@ -160,12 +160,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_Int64MessagePackSerializer : MessagePackSerializer< System.Int64 >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Int64 value )
+		protected internal sealed override void PackToCore( Packer packer, System.Int64 value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.Int64 UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Int64 UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsInt64();
 		}
@@ -173,12 +173,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_SByteMessagePackSerializer : MessagePackSerializer< System.SByte >
 	{
-		protected sealed override void PackToCore( Packer packer, System.SByte value )
+		protected internal sealed override void PackToCore( Packer packer, System.SByte value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.SByte UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.SByte UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsSByte();
 		}
@@ -186,12 +186,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_SingleMessagePackSerializer : MessagePackSerializer< System.Single >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Single value )
+		protected internal sealed override void PackToCore( Packer packer, System.Single value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.Single UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Single UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsSingle();
 		}
@@ -199,12 +199,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_TimeSpanMessagePackSerializer : MessagePackSerializer< System.TimeSpan >
 	{
-		protected sealed override void PackToCore( Packer packer, System.TimeSpan value )
+		protected internal sealed override void PackToCore( Packer packer, System.TimeSpan value )
 		{
 			packer.Pack( value.Ticks );
 		}
 
-		protected sealed override  System.TimeSpan UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.TimeSpan UnpackFromCore( Unpacker unpacker )
 		{
 			return new System.TimeSpan( unpacker.Data.Value.AsInt64() );
 		}
@@ -212,12 +212,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_UInt16MessagePackSerializer : MessagePackSerializer< System.UInt16 >
 	{
-		protected sealed override void PackToCore( Packer packer, System.UInt16 value )
+		protected internal sealed override void PackToCore( Packer packer, System.UInt16 value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.UInt16 UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.UInt16 UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsUInt16();
 		}
@@ -225,12 +225,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_UInt32MessagePackSerializer : MessagePackSerializer< System.UInt32 >
 	{
-		protected sealed override void PackToCore( Packer packer, System.UInt32 value )
+		protected internal sealed override void PackToCore( Packer packer, System.UInt32 value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.UInt32 UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.UInt32 UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsUInt32();
 		}
@@ -238,12 +238,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_UInt64MessagePackSerializer : MessagePackSerializer< System.UInt64 >
 	{
-		protected sealed override void PackToCore( Packer packer, System.UInt64 value )
+		protected internal sealed override void PackToCore( Packer packer, System.UInt64 value )
 		{
 			packer.Pack( value );
 		}
 
-		protected sealed override  System.UInt64 UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.UInt64 UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.Data.Value.AsUInt64();
 		}
@@ -252,12 +252,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !SILVERLIGHT
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Collections.Specialized.BitVector32 value )
+		protected internal sealed override void PackToCore( Packer packer, System.Collections.Specialized.BitVector32 value )
 		{
 			packer.Pack( value.Data );
 		}
 
-		protected sealed override  System.Collections.Specialized.BitVector32 UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Collections.Specialized.BitVector32 UnpackFromCore( Unpacker unpacker )
 		{
 			return new System.Collections.Specialized.BitVector32( unpacker.Data.Value.AsInt32() );
 		}
@@ -266,12 +266,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
-		protected sealed override void PackToCore( Packer packer, System.Numerics.BigInteger value )
+		protected internal sealed override void PackToCore( Packer packer, System.Numerics.BigInteger value )
 		{
 			packer.PackRaw( value.ToByteArray() );
 		}
 
-		protected sealed override  System.Numerics.BigInteger UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override  System.Numerics.BigInteger UnpackFromCore( Unpacker unpacker )
 		{
 			return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); 
 		}

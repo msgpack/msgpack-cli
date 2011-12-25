@@ -98,7 +98,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
-		protected sealed override void PackToCore( Packer packer, T objectTree )
+		protected internal sealed override void PackToCore( Packer packer, T objectTree )
 		{
 			this._underlying.PackTo( packer, objectTree );
 		}
@@ -108,7 +108,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
 		/// <returns>Deserialized object.</returns>
-		protected sealed override T UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override T UnpackFromCore( Unpacker unpacker )
 		{
 			return this._underlying.UnpackFrom( unpacker );
 		}
@@ -124,7 +124,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not collection.
 		/// </exception>
-		protected sealed override void UnpackToCore( Unpacker unpacker, T collection )
+		protected internal sealed override void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			this._underlying.UnpackTo( unpacker, collection );
 		}

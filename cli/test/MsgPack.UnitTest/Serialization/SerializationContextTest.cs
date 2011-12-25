@@ -116,7 +116,7 @@ namespace MsgPack.Serialization
 				if ( value != null )
 				{
 					var old = Interlocked.Exchange( ref this._gotten, value );
-					Assert.That( old, Is.Null.Or.SameAs( value ) );
+					Assert.That( old, Is.Null.Or.SameAs( value ).Or.InstanceOf( typeof( LazyDelegatingMessagePackSerializer<> ).MakeGenericType( typeof( T ).GetGenericArguments()[ 0 ] ) ) );
 				}
 			}
 		}

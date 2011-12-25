@@ -28,7 +28,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public System_Numerics_ComplexMessagePackSerializer() { }
 
-		protected sealed override void PackToCore( Packer packer, Complex objectTree )
+		protected internal sealed override void PackToCore( Packer packer, Complex objectTree )
 		{
 			packer.PackMapHeader( 2 );
 			packer.PackString( "Real" );
@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.Pack( objectTree.Imaginary );
 		}
 
-		protected sealed override Complex UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override Complex UnpackFromCore( Unpacker unpacker )
 		{
 			double real = 0;
 			double imaginary = 0;

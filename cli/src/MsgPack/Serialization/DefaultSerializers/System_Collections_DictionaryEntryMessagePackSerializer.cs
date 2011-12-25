@@ -27,7 +27,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public System_Collections_DictionaryEntryMessagePackSerializer() { }
 
-		protected sealed override void PackToCore( Packer packer, DictionaryEntry objectTree )
+		protected internal sealed override void PackToCore( Packer packer, DictionaryEntry objectTree )
 		{
 			packer.PackMapHeader( 2 );
 			packer.PackString( "Key" );
@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return ( MessagePackObject )obj;
 		}
 
-		protected sealed override DictionaryEntry UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override DictionaryEntry UnpackFromCore( Unpacker unpacker )
 		{
 			object key = null;
 			object value = null;

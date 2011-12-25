@@ -97,12 +97,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		protected sealed override void PackToCore( Packer packer, KeyValuePair<TKey, TValue> objectTree )
+		protected internal sealed override void PackToCore( Packer packer, KeyValuePair<TKey, TValue> objectTree )
 		{
 			this._underlying.PackTo( packer, objectTree );
 		}
 
-		protected sealed override KeyValuePair<TKey, TValue> UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override KeyValuePair<TKey, TValue> UnpackFromCore( Unpacker unpacker )
 		{
 			return this._underlying.UnpackFrom( unpacker );
 		}
