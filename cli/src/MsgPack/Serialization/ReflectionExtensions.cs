@@ -255,7 +255,7 @@ namespace MsgPack.Serialization
 			}
 
 			var property = targetType.GetProperty( "Count" );
-			if ( property != null && property.PropertyType == typeof( int ).TypeHandle && property.GetIndexParameters().Length == 0 )
+			if ( property != null && property.PropertyType == typeof( int ) && property.GetIndexParameters().Length == 0 )
 			{
 				return property;
 			}
