@@ -143,7 +143,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="info"/> is null.
 		/// </exception>
-		public void GetObjectData( SerializationInfo info, StreamingContext context )
+		void ISerializable.GetObjectData( SerializationInfo info, StreamingContext context )
 		{
 			if ( info == null )
 			{
@@ -154,7 +154,7 @@ namespace MsgPack
 
 			if ( this.IsNil )
 			{
-				info.AddValue( "TypeCode", TypeCode.Empty );
+				info.AddValue( "TypeCode", MessagePackValueTypeCode.Nil );
 				return;
 			}
 
@@ -166,7 +166,7 @@ namespace MsgPack
 			}
 			else
 			{
-				info.AddValue( "TypeCode", TypeCode.Object );
+				info.AddValue( "TypeCode", MessagePackValueTypeCode.Object );
 				info.AddValue( "Value", this._handleOrTypeCode, this._handleOrTypeCode.GetType() );
 			}
 		}
@@ -1244,6 +1244,7 @@ namespace MsgPack
 				return new MessagePackObject( asDictionary );
 			}
 
+			// FIXME: Remove
 			/*
 			if ( options.Has( ObjectPackingOptions.Recursive ) )
 			{
@@ -1480,8 +1481,12 @@ namespace MsgPack
 
 		#endregion -- Conversion Operator Overloads --
 
+#if !SILVERLIGHT
+		[Serializable]
+#endif
 		private enum MessagePackValueTypeCode
 		{
+			Nil = 0,
 			Int8 = 1,
 			Int16 = 3,
 			Int32 = 5,

@@ -24,6 +24,7 @@ using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
 using System.Threading;
+using System.Runtime.Serialization;
 
 namespace MsgPack
 {
@@ -31,7 +32,13 @@ namespace MsgPack
 	/// <summary>
 	///		Encapselates <see cref="String"/> and its serialized UTF-8 bytes.
 	/// </summary>
+#if !SILVERLIGHT
+	[Serializable]
+#endif
 	internal sealed class MessagePackString
+#if !SILVERLIGHT
+ : ISerializable
+#endif
 	{
 		// TODO: CLOB support?
 		private byte[] _encoded;
@@ -48,6 +55,44 @@ namespace MsgPack
 		{
 			this._encoded = encoded;
 		}
+
+#if !SILVERLIGHT
+		private MessagePackString( SerializationInfo info, StreamingContext context )
+		{
+			if ( info == null )
+			{
+				throw new ArgumentNullException( "info" );
+			}
+
+			this._type = ( BinaryType )info.GetValue( "type", typeof( BinaryType ) );
+			if ( this._type == BinaryType.String )
+			{
+				this._decoded = info.GetString( "decoded" );
+			}
+			else
+			{
+				this._encoded = info.GetValue( "encoded", typeof( byte[] ) ) as byte[];
+			}
+		}
+
+		void ISerializable.GetObjectData( SerializationInfo info, StreamingContext context )
+		{
+			if ( info == null )
+			{
+				throw new ArgumentNullException( "info" );
+			}
+
+			info.AddValue( "type", this._type );
+			if ( this._type == BinaryType.String )
+			{
+				info.AddValue( "decoded", this._decoded );
+			}
+			else
+			{
+				info.AddValue( "encoded", this._encoded );
+			}
+		}
+#endif
 
 		private void EncodeIfNeeded()
 		{
@@ -265,6 +310,9 @@ namespace MsgPack
 			return result == 0;
 		}
 
+#if !SILVERLIGHT
+		[Serializable]
+#endif
 		private enum BinaryType : byte
 		{
 			Unknwon = 0,

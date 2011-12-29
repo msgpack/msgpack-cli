@@ -197,79 +197,79 @@ namespace MsgPack
 			Contract.EndContractBlock();
 
 			this = new MessagePackObject();
-			switch ( ( TypeCode )info.GetValue( "TypeCode", typeof( TypeCode ) ) )
+			switch ( ( MessagePackValueTypeCode )info.GetValue( "TypeCode", typeof( MessagePackValueTypeCode ) ) )
 			{
-				case TypeCode.Empty:
+				case MessagePackValueTypeCode.Nil:
 				{
 					this._handleOrTypeCode = null;
 					return;
 				}
-				case TypeCode.Object:
+				case MessagePackValueTypeCode.Object:
 				{
 					this._handleOrTypeCode = info.GetValue( "Value", typeof( object ) );
 					return;
 				}
-				case TypeCode.Boolean:
+				case MessagePackValueTypeCode.Boolean:
 				{
 					this._handleOrTypeCode = _booleanTypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.Byte:
+				case MessagePackValueTypeCode.UInt8:
 				{
 					this._handleOrTypeCode = _byteTypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.SByte:
+				case MessagePackValueTypeCode.Int8:
 				{
 					this._handleOrTypeCode = _sbyteTypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.Int16:
+				case MessagePackValueTypeCode.Int16:
 				{
 					this._handleOrTypeCode = _int16TypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.UInt16:
+				case MessagePackValueTypeCode.UInt16:
 				{
 					this._handleOrTypeCode = _uint16TypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.Int32:
+				case MessagePackValueTypeCode.Int32:
 				{
 					this._handleOrTypeCode = _int32TypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.UInt32:
+				case MessagePackValueTypeCode.UInt32:
 				{
 					this._handleOrTypeCode = _uint32TypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.Int64:
+				case MessagePackValueTypeCode.Int64:
 				{
 					this._handleOrTypeCode = _int64TypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.UInt64:
+				case MessagePackValueTypeCode.UInt64:
 				{
 					this._handleOrTypeCode = _uint64TypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.Single:
+				case MessagePackValueTypeCode.Single:
 				{
 					this._handleOrTypeCode = _singleTypeCode;
 					this._value = info.GetUInt64( "Value" );
 					return;
 				}
-				case TypeCode.Double:
+				case MessagePackValueTypeCode.Double:
 				{
 					this._handleOrTypeCode = _doubleTypeCode;
 					this._value = info.GetUInt64( "Value" );
