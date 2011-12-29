@@ -1108,6 +1108,10 @@ namespace MsgPack
 			{
 				return MessagePackObject.Nil;
 			}
+			else if ( boxedValue is MessagePackObject )
+			{
+				return ( MessagePackObject )boxedValue;
+			}
 			else if ( boxedValue is sbyte )
 			{
 				return ( sbyte )boxedValue;
