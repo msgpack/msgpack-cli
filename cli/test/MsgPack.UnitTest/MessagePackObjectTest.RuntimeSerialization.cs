@@ -41,6 +41,18 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestRuntimeSerialization_True_Success()
+		{
+			TestRuntimeSerializationCore( true );
+		}
+
+		[Test]
+		public void TestRuntimeSerialization_False_Success()
+		{
+			TestRuntimeSerializationCore( false );
+		}
+
+		[Test]
 		public void TestRuntimeSerialization_TinyPositiveInteger_Success()
 		{
 			TestRuntimeSerializationCore( 1 );
