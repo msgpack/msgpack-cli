@@ -825,7 +825,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Get underlying value as UTF8 string.
+		///		Gets underlying value as UTF8 string.
 		/// </summary>
 		/// <returns>Underlying raw binary.</returns>
 		public string AsString()
@@ -834,9 +834,12 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Get underlying value as UTF8 string.
+		///		Gets the underlying value as string encoded with specified <see cref="Encoding"/>.
 		/// </summary>
-		/// <returns>Underlying raw binary.</returns>
+		/// <returns>
+		///		The string.
+		///		Note that some <see cref="Encoding"/> returns <c>null</c> if the binary is not valid encoded string.
+		///	</returns>
 		public string AsString( Encoding encoding )
 		{
 			if ( encoding == null )
@@ -863,14 +866,14 @@ namespace MsgPack
 			try
 			{
 				var asBytes = this._handleOrTypeCode as MessagePackString;
-				if ( asBytes.UnsafeGetBuffer() == null )
+				if ( asBytes.UnsafeGetBuffer() == null && asBytes.UnsafeGetString() == null )
 				{
 					return null;
 				}
 
 				if ( encoding is UTF8Encoding )
 				{
-					return asBytes.TryGetString();
+					return asBytes.GetString();
 				}
 
 				return encoding.GetString( asBytes.UnsafeGetBuffer(), 0, asBytes.UnsafeGetBuffer().Length );
@@ -887,7 +890,7 @@ namespace MsgPack
 		/// <returns>Underlying raw binary.</returns>
 		public string AsStringUtf8()
 		{
-			return this.AsString( Encoding.UTF8 );
+			return this.AsString( MessagePackConvert.Utf8NonBomStrict );
 		}
 
 		/// <summary>
@@ -909,7 +912,31 @@ namespace MsgPack
 
 			try
 			{
-				var asBytes = this._handleOrTypeCode as byte[];
+				string asString;
+
+				if ( ( asString = this._handleOrTypeCode as string ) != null )
+				{
+					return asString;
+				}
+
+				byte[] asBytes;
+				MessagePackString asMessagePackString;
+
+				if ( ( asBytes = this._handleOrTypeCode as byte[] ) == null )
+				{
+					if ( ( asMessagePackString = this._handleOrTypeCode as MessagePackString ) == null )
+					{
+						ThrowInvalidTypeAs<string>( this );
+					}
+
+					if ( asMessagePackString.UnsafeGetString() != null )
+					{
+						return asMessagePackString.UnsafeGetString();
+					}
+
+					asBytes = asMessagePackString.UnsafeGetBuffer();
+				}
+
 				if ( asBytes.Length == 0 )
 				{
 					return String.Empty;
@@ -922,7 +949,11 @@ namespace MsgPack
 
 				if ( asBytes[ 0 ] == 0xff && asBytes[ 1 ] == 0xfe )
 				{
-					return Encoding.Unicode.GetString( asBytes, 0, asBytes.Length );
+					return Encoding.Unicode.GetString( asBytes, 2, asBytes.Length - 2 );
+				}
+				else if ( asBytes[ 0 ] == 0xfe && asBytes[ 1 ] == 0xff )
+				{
+					return Encoding.BigEndianUnicode.GetString( asBytes, 2, asBytes.Length - 2 );
 				}
 				else
 				{

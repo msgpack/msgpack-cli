@@ -41,6 +41,7 @@ namespace MsgPack
 		// TODO: CLOB support?
 		private byte[] _encoded;
 		private string _decoded;
+		private DecoderFallbackException _decodingError;
 		private BinaryType _type;
 
 		public MessagePackString( string decoded )
@@ -91,8 +92,9 @@ namespace MsgPack
 				this._decoded = MessagePackConvert.DecodeStringStrict( this._encoded );
 				this._type = BinaryType.String;
 			}
-			catch ( DecoderFallbackException )
+			catch ( DecoderFallbackException ex )
 			{
+				this._decodingError = ex;
 				this._type = BinaryType.Blob;
 			}
 		}
@@ -100,6 +102,17 @@ namespace MsgPack
 		public string TryGetString()
 		{
 			this.DecodeIfNeeded();
+			return this._decoded;
+		}
+
+		public string GetString()
+		{
+			this.DecodeIfNeeded();
+			if ( this._decodingError != null )
+			{
+				throw new InvalidOperationException( "This bytes is not UTF-8 string.", this._decodingError );
+			}
+
 			return this._decoded;
 		}
 
@@ -278,7 +291,7 @@ namespace MsgPack
 #if !SILVERLIGHT
 		[Serializable]
 #endif
-		private enum BinaryType : byte
+		private enum BinaryType : int
 		{
 			Unknwon = 0,
 			String,

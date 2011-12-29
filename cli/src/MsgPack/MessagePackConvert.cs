@@ -19,10 +19,8 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics.Contracts;
+using System.Text;
 
 namespace MsgPack
 {
@@ -31,12 +29,17 @@ namespace MsgPack
 	/// </summary>
 	public static class MessagePackConvert
 	{
-		private static readonly Encoding _utf8BobBomStrict = new UTF8Encoding( false, true );
+		private static readonly Encoding _utf8NonBomStrict = new UTF8Encoding( false, true );
 		private static readonly Encoding _utf8NonBom = new UTF8Encoding( false, false );
 
 		internal static Encoding Utf8NonBom
 		{
 			get { return MessagePackConvert._utf8NonBom; }
+		}
+
+		internal static Encoding Utf8NonBomStrict
+		{
+			get { return MessagePackConvert._utf8NonBomStrict; }
 		}
 
 		/// <summary>
@@ -79,7 +82,7 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			return _utf8BobBomStrict.GetString( value, 0, value.Length );
+			return _utf8NonBomStrict.GetString( value, 0, value.Length );
 		}
 
 		private static readonly DateTime _unixEpocUtc = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
