@@ -79,14 +79,8 @@ Func<Type, bool> __IsExplicitConversionRequired =
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace MsgPack
 {
@@ -180,52 +174,6 @@ if( __IsNotCLSCompliant( t ) )
 }
 #>
 
-#if !SILVERLIGHT
-
-		private MessagePackObject( SerializationInfo info, StreamingContext context )
-		{
-			if ( info == null )
-			{
-				throw new ArgumentNullException( "info" );
-			}
-
-			Contract.EndContractBlock();
-
-			this = new MessagePackObject();
-			switch ( ( TypeCode )info.GetValue( "TypeCode", typeof( TypeCode ) ) )
-			{
-				case TypeCode.Empty:
-				{
-					this._handleOrTypeCode = null;
-					return;
-				}
-				case TypeCode.Object:
-				{
-					this._handleOrTypeCode = info.GetValue( "Value", typeof( object ) );
-					return;
-				}
-<#
-foreach(var t in __types.Keys )
-{
-#>
-				case TypeCode.<#= t.Name #>:
-				{
-					this._handleOrTypeCode = _<#= t.Name.ToLowerInvariant() #>TypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-<#
-}
-#>
-				default:
-				{
-					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Unknown type code {0}",( TypeCode )info.GetValue( "TypeCode", typeof( TypeCode ) ) ) );
-				}
-			}
-		}
-		
-#endif
-
 		#endregion -- Constructors --
 
 		#region -- Primitive Type Conversion Methods --
@@ -255,32 +203,6 @@ if( __IsNotCLSCompliant( t ) )
 #>
 
 		#endregion -- Primitive Type Conversion Methods --
-
-#if !SILVERLIGHT
-
-		private static bool AddPrimitiveToSerializationInfo( SerializationInfo info, string name, MessagePackObject value )
-		{
-			if( value.IsNil )
-			{
-				info.AddValue( name, null );
-				return true;
-			}
-<#
-foreach(var t in __types.Keys )
-{
-#>	
-			else if( value._handleOrTypeCode == _<#= t.Name.ToLowerInvariant() #>TypeCode )
-			{
-				info.AddValue( name, value.As<#= t.Name #>() );
-				return true;
-			}
-<#
-}
-#>
-			return false;
-		}
-
-#endif
 
 		#region -- Conversion Operator Overloads --
 

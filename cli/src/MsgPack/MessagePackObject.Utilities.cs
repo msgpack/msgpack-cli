@@ -26,6 +26,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Permissions;
 using System.Text;
 
 namespace MsgPack
@@ -34,9 +35,6 @@ namespace MsgPack
 	[Serializable]
 #endif
 	partial struct MessagePackObject
-#if !SILVERLIGHT
- : ISerializable
-#endif
 	{
 		#region -- Type Code Constants --
 
@@ -130,50 +128,6 @@ namespace MsgPack
 		}
 
 		#endregion -- Constructors --
-
-#if !SILVERLIGHT
-
-		#region -- ISerializable support --
-
-		/// <summary>
-		///		Serialize this instance.
-		/// </summary>
-		/// <param name="info"><see cref="SerializationInfo"/> to store serialized data.</param>
-		/// <param name="context"><see cref="StreamingContext"/> which stores context information.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="info"/> is null.
-		/// </exception>
-		void ISerializable.GetObjectData( SerializationInfo info, StreamingContext context )
-		{
-			if ( info == null )
-			{
-				throw new ArgumentNullException( "info" );
-			}
-
-			Contract.EndContractBlock();
-
-			if ( this.IsNil )
-			{
-				info.AddValue( "TypeCode", MessagePackValueTypeCode.Nil );
-				return;
-			}
-
-			var typeCode = this._handleOrTypeCode as ValueTypeCode;
-			if ( typeCode != null )
-			{
-				info.AddValue( "TypeCode", typeCode.TypeCode );
-				info.AddValue( "Value", this._value );
-			}
-			else
-			{
-				info.AddValue( "TypeCode", MessagePackValueTypeCode.Object );
-				info.AddValue( "Value", this._handleOrTypeCode, this._handleOrTypeCode.GetType() );
-			}
-		}
-
-		#endregion -- ISerializable support --
-
-#endif
 
 		#region -- Structure Methods --
 
@@ -1453,6 +1407,9 @@ namespace MsgPack
 			Object = 16
 		}
 
+#if !SILVERLIGHT
+		[Serializable]
+#endif
 		private sealed class ValueTypeCode
 		{
 			private readonly MessagePackValueTypeCode _typeCode;

@@ -19,14 +19,8 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace MsgPack
 {
@@ -185,105 +179,6 @@ namespace MsgPack
 			this._handleOrTypeCode = _doubleTypeCode;
 		}
 
-#if !SILVERLIGHT
-
-		private MessagePackObject( SerializationInfo info, StreamingContext context )
-		{
-			if ( info == null )
-			{
-				throw new ArgumentNullException( "info" );
-			}
-
-			Contract.EndContractBlock();
-
-			this = new MessagePackObject();
-			switch ( ( MessagePackValueTypeCode )info.GetValue( "TypeCode", typeof( MessagePackValueTypeCode ) ) )
-			{
-				case MessagePackValueTypeCode.Nil:
-				{
-					this._handleOrTypeCode = null;
-					return;
-				}
-				case MessagePackValueTypeCode.Object:
-				{
-					this._handleOrTypeCode = info.GetValue( "Value", typeof( object ) );
-					return;
-				}
-				case MessagePackValueTypeCode.Boolean:
-				{
-					this._handleOrTypeCode = _booleanTypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.UInt8:
-				{
-					this._handleOrTypeCode = _byteTypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.Int8:
-				{
-					this._handleOrTypeCode = _sbyteTypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.Int16:
-				{
-					this._handleOrTypeCode = _int16TypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.UInt16:
-				{
-					this._handleOrTypeCode = _uint16TypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.Int32:
-				{
-					this._handleOrTypeCode = _int32TypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.UInt32:
-				{
-					this._handleOrTypeCode = _uint32TypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.Int64:
-				{
-					this._handleOrTypeCode = _int64TypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.UInt64:
-				{
-					this._handleOrTypeCode = _uint64TypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.Single:
-				{
-					this._handleOrTypeCode = _singleTypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				case MessagePackValueTypeCode.Double:
-				{
-					this._handleOrTypeCode = _doubleTypeCode;
-					this._value = info.GetUInt64( "Value" );
-					return;
-				}
-				default:
-				{
-					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Unknown type code {0}",( TypeCode )info.GetValue( "TypeCode", typeof( TypeCode ) ) ) );
-				}
-			}
-		}
-		
-#endif
-
 		#endregion -- Constructors --
 
 		#region -- Primitive Type Conversion Methods --
@@ -392,86 +287,6 @@ namespace MsgPack
 		}
 
 		#endregion -- Primitive Type Conversion Methods --
-
-#if !SILVERLIGHT
-
-		private static bool AddPrimitiveToSerializationInfo( SerializationInfo info, string name, MessagePackObject value )
-		{
-			if( value.IsNil )
-			{
-				info.AddValue( name, null );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _booleanTypeCode )
-			{
-				info.AddValue( name, value.AsBoolean() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _byteTypeCode )
-			{
-				info.AddValue( name, value.AsByte() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _sbyteTypeCode )
-			{
-				info.AddValue( name, value.AsSByte() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _int16TypeCode )
-			{
-				info.AddValue( name, value.AsInt16() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _uint16TypeCode )
-			{
-				info.AddValue( name, value.AsUInt16() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _int32TypeCode )
-			{
-				info.AddValue( name, value.AsInt32() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _uint32TypeCode )
-			{
-				info.AddValue( name, value.AsUInt32() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _int64TypeCode )
-			{
-				info.AddValue( name, value.AsInt64() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _uint64TypeCode )
-			{
-				info.AddValue( name, value.AsUInt64() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _singleTypeCode )
-			{
-				info.AddValue( name, value.AsSingle() );
-				return true;
-			}
-	
-			else if( value._handleOrTypeCode == _doubleTypeCode )
-			{
-				info.AddValue( name, value.AsDouble() );
-				return true;
-			}
-			return false;
-		}
-
-#endif
 
 		#region -- Conversion Operator Overloads --
 

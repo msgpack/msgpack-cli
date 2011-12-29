@@ -26,7 +26,7 @@ using NUnit.Framework;
 namespace MsgPack
 {
 	[TestFixture]
-	partial class MessagePackObjectTest
+	public class MessagePackObjectTest_Serialization
 	{
 		[Test]
 		public void TestRuntimeSerialization_Zero_Success()

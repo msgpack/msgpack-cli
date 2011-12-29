@@ -25,6 +25,7 @@ using System.Security;
 using System.Text;
 using System.Threading;
 using System.Runtime.Serialization;
+using System.Security.Permissions;
 
 namespace MsgPack
 {
@@ -36,9 +37,6 @@ namespace MsgPack
 	[Serializable]
 #endif
 	internal sealed class MessagePackString
-#if !SILVERLIGHT
- : ISerializable
-#endif
 	{
 		// TODO: CLOB support?
 		private byte[] _encoded;
@@ -55,44 +53,6 @@ namespace MsgPack
 		{
 			this._encoded = encoded;
 		}
-
-#if !SILVERLIGHT
-		private MessagePackString( SerializationInfo info, StreamingContext context )
-		{
-			if ( info == null )
-			{
-				throw new ArgumentNullException( "info" );
-			}
-
-			this._type = ( BinaryType )info.GetValue( "type", typeof( BinaryType ) );
-			if ( this._type == BinaryType.String )
-			{
-				this._decoded = info.GetString( "decoded" );
-			}
-			else
-			{
-				this._encoded = info.GetValue( "encoded", typeof( byte[] ) ) as byte[];
-			}
-		}
-
-		void ISerializable.GetObjectData( SerializationInfo info, StreamingContext context )
-		{
-			if ( info == null )
-			{
-				throw new ArgumentNullException( "info" );
-			}
-
-			info.AddValue( "type", this._type );
-			if ( this._type == BinaryType.String )
-			{
-				info.AddValue( "decoded", this._decoded );
-			}
-			else
-			{
-				info.AddValue( "encoded", this._encoded );
-			}
-		}
-#endif
 
 		private void EncodeIfNeeded()
 		{
@@ -146,6 +106,11 @@ namespace MsgPack
 		public byte[] UnsafeGetBuffer()
 		{
 			return this._encoded;
+		}
+
+		public string UnsafeGetString()
+		{
+			return this._decoded;
 		}
 
 		public byte[] GetBytes()
