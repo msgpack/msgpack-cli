@@ -1244,54 +1244,6 @@ namespace MsgPack
 				return new MessagePackObject( asDictionary );
 			}
 
-			// FIXME: Remove
-			/*
-			if ( options.Has( ObjectPackingOptions.Recursive ) )
-			{
-				var types = boxedValue.GetType().GetInterfaces();
-				var dictionaryType =
-					types
-					.Where( type => type.IsGenericType )
-					.Select( type => new KeyValuePair<Type, Type>( type, type.GetGenericTypeDefinition() ) )
-					.FirstOrDefault( tuple => tuple.Value == typeof( IDictionary<,> ) )
-					.Key;
-				if ( dictionaryType != null )
-				{
-					try
-					{
-						dynamic asDynamic = boxedValue;
-						// To dispatch Pack<TKey,TValue>(IDictionary<TKey,TValue>) effeciently, use dynamic infrastructure.
-						return new MessagePackObject( asDynamic );
-					}
-					catch ( RuntimeBinderException )
-					{
-						throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Dictionary (map) type '{0}' is not supported.", boxedValue.GetType() ) );
-					}
-				}
-
-				var listType =
-					types
-					.Where( type => type.IsGenericType )
-					.Select( type => new KeyValuePair<Type, Type>( type, type.GetGenericTypeDefinition() ) )
-					.FirstOrDefault( tuple => tuple.Value == typeof( IEnumerable<> ) )
-					.Key;
-
-				if ( listType != null )
-				{
-					try
-					{
-						dynamic asDynamic = boxedValue;
-						// To dispatch Pack<T>(IEnumerable<T>) effeciently, use dynamic infrastructure.
-						return new MessagePackObject( asDynamic );
-					}
-					catch ( RuntimeBinderException )
-					{
-						throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "List (array) type '{0}' is not supported.", boxedValue.GetType() ) );
-					}
-				}
-			}
-			 */
-
 			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not supported.", boxedValue.GetType() ) );
 		}
 

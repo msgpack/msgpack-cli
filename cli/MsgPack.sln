@@ -47,7 +47,6 @@ Global
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.PerformanceTest|Any CPU.ActiveCfg = PerformanceTest|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.PerformanceTest|Any CPU.Build.0 = PerformanceTest|Any CPU
 		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3889C9BE-0473-4B41-80E8-C4C923E837E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796}.CoreProfile|Any CPU.ActiveCfg = CoreProfile|Any CPU
