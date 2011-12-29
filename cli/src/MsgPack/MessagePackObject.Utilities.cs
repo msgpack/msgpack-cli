@@ -1287,7 +1287,7 @@ namespace MsgPack
 					}
 					case MessagePackValueTypeCode.Int8:
 					{
-						return this.AsByte();
+						return this.AsSByte();
 					}
 					case MessagePackValueTypeCode.Int16:
 					{
@@ -1303,7 +1303,7 @@ namespace MsgPack
 					}
 					case MessagePackValueTypeCode.UInt8:
 					{
-						return this.AsSByte();
+						return this.AsByte();
 					}
 					case MessagePackValueTypeCode.UInt16:
 					{
