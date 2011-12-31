@@ -632,7 +632,7 @@ namespace MsgPack
 
 			if ( this._handleOrTypeCode == null )
 			{
-				return null;
+				return ( type.IsValueType && Nullable.GetUnderlyingType( type ) == null ) ? false : default( bool? );
 			}
 
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
