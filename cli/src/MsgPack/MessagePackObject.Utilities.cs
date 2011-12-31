@@ -1100,6 +1100,11 @@ namespace MsgPack
 		{
 			if ( instance.IsNil )
 			{
+				if ( !typeof( T ).IsValueType || Nullable.GetUnderlyingType( typeof( T ) ) != null )
+				{
+					return;
+				}
+
 				// TODO: localize
 				if ( parameterName != null )
 				{
