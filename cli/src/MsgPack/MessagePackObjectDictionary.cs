@@ -21,19 +21,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Diagnostics.CodeAnalysis;
 
 namespace MsgPack
 {
+	// FIXME: Remove ISerializable
 	/// <summary>
 	///		Implements <see cref="IDictionary{TKey,TValue}"/> for <see cref="MessagePackObject"/>.
 	/// </summary>
+	/// <remarks>
+	///		This dictionary handles <see cref="MessagePackObject"/> type semantics for the key.
+	///		Additionally, this dictionary implements 'freezing' feature. 
+	///		For details, see <see cref="IsFrozen"/>, <see cref="Freeze"/>, and <see cref="AsFrozen"/>.
+	/// </remarks>
 #if !SILVERLIGHT
 	[Serializable]
 #endif
@@ -52,6 +57,22 @@ namespace MsgPack
 		private Dictionary<MessagePackObject, MessagePackObject> _dictionary;
 		private int _version;
 
+		private bool _isFrozen;
+
+		/// <summary>
+		///		Gets a value indicating whether this instance is frozen.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if this instance is frozen; otherwise, <c>false</c>.
+		/// </value>
+		/// <remarks>
+		///		This operation is an O(1) operation.
+		/// </remarks>
+		public bool IsFrozen
+		{
+			get { return this._isFrozen; }
+		}
+
 #if !SILVERLIGHT
 		private SerializationInfo _serializationInfo;
 #endif
@@ -62,6 +83,9 @@ namespace MsgPack
 		/// <returns>
 		///		The number of elements contained in the <see cref="MessagePackObjectDictionary"/>.
 		/// </returns>
+		/// <remarks>
+		///		This operation is an O(1) operation.
+		/// </remarks>
 		public int Count
 		{
 			get
@@ -91,9 +115,17 @@ namespace MsgPack
 		/// <exception cref="T:System.Collections.Generic.KeyNotFoundException">
 		///		The property is retrieved and <paramref name="key"/> is not found.
 		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		///		The property is set and this instance is frozen.
+		/// </exception>
 		///	<remarks>
-		///		Note that tiny integers are considered equal regardless of its CLI <see cref="Type"/>,
-		///		and UTF-8 encoded bytes are considered equals to <see cref="String"/>.
+		///		<para>
+		///			Note that tiny integers are considered equal regardless of its CLI <see cref="Type"/>,
+		///			and UTF-8 encoded bytes are considered equals to <see cref="String"/>.
+		///		</para>
+		///		<para>
+		///			This method approaches an O(1) operation.
+		///		</para>
 		///	</remarks>
 		public MessagePackObject this[ MessagePackObject key ]
 		{
@@ -121,6 +153,8 @@ namespace MsgPack
 					ThrowKeyNotNilException( "key" );
 				}
 
+				this.VerifyIsNotFrozen();
+
 				Contract.EndContractBlock();
 
 				this.AssertInvariant();
@@ -135,6 +169,9 @@ namespace MsgPack
 		///		An <see cref="KeySet"/> containing the keys of the object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
+		/// <remarks>
+		///		This operation is an O(1) operation.
+		/// </remarks>
 		public KeySet Keys
 		{
 			get
@@ -151,6 +188,9 @@ namespace MsgPack
 		///		An <see cref="ValueCollection"/> containing the values of the object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
+		/// <remarks>
+		///		This operation is an O(1) operation.
+		/// </remarks>
 		public ValueCollection Values
 		{
 			get
@@ -173,19 +213,19 @@ namespace MsgPack
 		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool ICollection<KeyValuePair<MessagePackObject, MessagePackObject>>.IsReadOnly
 		{
-			get { return false; }
+			get { return this.IsFrozen; }
 		}
 
 		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool IDictionary.IsFixedSize
 		{
-			get { return false; }
+			get { return this.IsFrozen; }
 		}
 		
 		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool IDictionary.IsReadOnly
 		{
-			get { return false; }
+			get { return this.IsFrozen; }
 		}
 
 		ICollection IDictionary.Keys
@@ -231,6 +271,8 @@ namespace MsgPack
 					throw new ArgumentNullException( "key" );
 				}
 
+				this.VerifyIsNotFrozen();
+
 				Contract.EndContractBlock();
 
 				var typedKey = ValidateObjectArgument( key, "key" );
@@ -258,6 +300,9 @@ namespace MsgPack
 		/// <summary>
 		/// Initializes an empty new instance of the <see cref="MessagePackObjectDictionary"/> class with default capacity.
 		/// </summary>
+		/// <remarks>
+		///		This operation is an O(1) operation.
+		/// </remarks>
 		public MessagePackObjectDictionary()
 		{
 			this._keys = new List<MessagePackObject>( _listInitialCapacity );
@@ -271,6 +316,9 @@ namespace MsgPack
 		/// <exception cref="ArgumentOutOfRangeException">
 		///		<paramref name="initialCapacity"/> is negative.
 		/// </exception>
+		/// <remarks>
+		///		This operation is an O(1) operation.
+		/// </remarks>
 		public MessagePackObjectDictionary( int initialCapacity )
 		{
 			if ( initialCapacity < 0 )
@@ -302,7 +350,7 @@ namespace MsgPack
 		///		Failed to copy from <paramref name="dictionary"/>.
 		/// </exception>
 		/// <remarks>
-		///		This constructor takes O(N) time, N is <see cref="P:ICollection{T}.Count"/> of <paramref name="dictionary"/>.
+		///		This constructor takes <em>O(N)</em> time, <em>N</em> is <see cref="P:ICollection{T}.Count"/> of <paramref name="dictionary"/>.
 		///		Initial capacity will be <see cref="P:ICollection{T}.Count"/> of <paramref name="dictionary"/>.
 		/// </remarks>
 		public MessagePackObjectDictionary( IDictionary<MessagePackObject, MessagePackObject> dictionary )
@@ -485,6 +533,14 @@ namespace MsgPack
 			throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "Key '{0}'({1} type) already exists in this dictionary.", key, key.UnderlyingType ), parameterName );
 		}
 
+		private void VerifyIsNotFrozen()
+		{
+			if ( this._isFrozen )
+			{
+				throw new InvalidOperationException( "This dictionary is frozen." );
+			}
+		}
+
 		[Conditional( "DEBUG" )]
 		private void AssertInvariant()
 		{
@@ -627,6 +683,9 @@ namespace MsgPack
 		/// <returns>
 		///		<c>true</c> if the <see cref="MessagePackObjectDictionary"/> contains an element with the key; otherwise, <c>false</c>.
 		/// </returns>
+		/// <remarks>
+		///		This method approaches an O(1) operation.
+		/// </remarks>
 		public bool ContainsKey( MessagePackObject key )
 		{
 			if ( key.IsNil )
@@ -654,6 +713,9 @@ namespace MsgPack
 		/// <returns>
 		///		<c>true</c> if the <see cref="MessagePackObjectDictionary"/> contains an element with the value; otherwise, <c>false</c>.
 		/// </returns>
+		/// <remarks>
+		///		This method approaches an O(<em>N</em>) operation where <em>N</em> is <see cref="Count"/>.
+		/// </remarks>
 		public bool ContainsValue( MessagePackObject value )
 		{
 			this.AssertInvariant();
@@ -716,8 +778,13 @@ namespace MsgPack
 		///		<paramref name="key"/> is <see cref="MessagePackObject.Nil"/>.
 		/// </exception>
 		///	<remarks>
-		///		Note that tiny integers are considered equal regardless of its CLI <see cref="Type"/>,
-		///		and UTF-8 encoded bytes are considered equals to <see cref="String"/>.
+		///		<para>
+		///			Note that tiny integers are considered equal regardless of its CLI <see cref="Type"/>,
+		///			and UTF-8 encoded bytes are considered equals to <see cref="String"/>.
+		///		</para>
+		///		<para>
+		///			This method approaches an O(1) operation.
+		///		</para>
 		///	</remarks>
 		public bool TryGetValue( MessagePackObject key, out MessagePackObject value )
 		{
@@ -771,12 +838,19 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="key"/> is <see cref="MessagePackObject.Nil"/>.
 		/// </exception>
+		/// <remarks>
+		///		If <see cref="Count"/> is less than the capacity, this method approaches an O(1) operation.
+		///		If the capacity must be increased to accommodate the new element, 
+		///		this method becomes an O(<em>N</em>) operation, where <em>N</em> is <see cref="Count"/>. 
+		/// </remarks>
 		public void Add( MessagePackObject key, MessagePackObject value )
 		{
 			if ( key.IsNil )
 			{
 				ThrowKeyNotNilException( "key" );
 			}
+
+			this.VerifyIsNotFrozen();
 
 			Contract.EndContractBlock();
 
@@ -869,6 +943,8 @@ namespace MsgPack
 				ThrowKeyNotNilException( "key" );
 			}
 
+			this.VerifyIsNotFrozen();
+
 			Contract.EndContractBlock();
 
 			this.AddCore( item.Key, item.Value, false );
@@ -881,6 +957,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "key" );
 			}
 
+			this.VerifyIsNotFrozen();
+			
 			Contract.EndContractBlock();
 
 			var typedKey = ValidateObjectArgument( key, "key" );
@@ -903,6 +981,9 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="key"/> is <see cref="MessagePackObject.Nil"/>.
 		/// </exception>
+		/// <remarks>
+		///		This method approaches an O(1) operation.
+		/// </remarks>
 		public bool Remove( MessagePackObject key )
 		{
 			if ( key.IsNil )
@@ -910,6 +991,8 @@ namespace MsgPack
 				ThrowKeyNotNilException( "key" );
 			}
 
+			this.VerifyIsNotFrozen();
+			
 			Contract.EndContractBlock();
 
 			return this.RemoveCore( key, default( MessagePackObject ), false );
@@ -969,6 +1052,8 @@ namespace MsgPack
 				ThrowKeyNotNilException( "key" );
 			}
 
+			this.VerifyIsNotFrozen();
+			
 			Contract.EndContractBlock();
 
 			return this.RemoveCore( item.Key, item.Value, true );
@@ -981,6 +1066,8 @@ namespace MsgPack
 				throw new ArgumentNullException( "key" );
 			}
 
+			this.VerifyIsNotFrozen();
+			
 			Contract.EndContractBlock();
 
 			var typedKey = ValidateObjectArgument( key, "key" );
@@ -995,8 +1082,13 @@ namespace MsgPack
 		/// <summary>
 		///		Removes all items from the <see cref="MessagePackObjectDictionary"/>.
 		/// </summary>
+		/// <remarks>
+		///		This method approaches an O(<em>N</em>) operation, where <em>N</em> is <see cref="Count"/>.
+		/// </remarks>
 		public void Clear()
 		{
+			this.VerifyIsNotFrozen();
+			
 			this.AssertInvariant();
 
 			if ( this._dictionary == null )
@@ -1040,6 +1132,9 @@ namespace MsgPack
 		/// <returns>
 		///		Returns an enumerator that iterates through the <see cref="MessagePackObjectDictionary"/>.
 		/// </returns>
+		/// <remarks>
+		///		This method is an O(1) operation.
+		/// </remarks>
 		public Enumerator GetEnumerator()
 		{
 			return new Enumerator( this );
@@ -1059,6 +1154,39 @@ namespace MsgPack
 		{
 			// Avoid tricky casting error.
 			return new DictionaryEnumerator( this );
+		}
+
+		/// <summary>
+		///		Freezes this instance.
+		/// </summary>
+		/// <returns>
+		///		This instance itself.
+		///		This value will not be <c>null</c> and its <see cref="IsFrozen"/> is <c>true</c>.
+		/// </returns>
+		/// <remarks>
+		///		This method freezes this instance itself.
+		///		This operation is an O(1) operation.
+		/// </remarks>
+		public MessagePackObjectDictionary Freeze()
+		{
+			this._isFrozen = true;
+			return this;
+		}
+
+		/// <summary>
+		///		Gets a copy of this instance as frozen instance.
+		/// </summary>
+		/// <returns>
+		///		New <see cref="MessagePackObjectDictionary"/> instance which contains same items as this instance.
+		///		This value will not be <c>null</c> and its <see cref="IsFrozen"/> is <c>true</c>.
+		/// </returns>
+		/// <remarks>
+		///		This method does not freeze this instance itself.
+		///		This operation is an O(<em>N</em>) operation where <em>O(N)</em> <see cref="Count"/> of items.
+		/// </remarks>
+		public MessagePackObjectDictionary AsFrozen()
+		{
+			return new MessagePackObjectDictionary( this ).Freeze();
 		}
 	}
 }
