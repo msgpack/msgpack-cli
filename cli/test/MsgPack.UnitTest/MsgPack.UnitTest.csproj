@@ -156,6 +156,22 @@
     <Compile Include="MessagePackObjectTest.Strings.cs" />
     <Compile Include="MessagePackStringTest.cs" />
     <Compile Include="MessageUnpackableTest.cs" />
+    <Compile Include="PackerTest.Pack.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackerTest.Pack.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PackerTest.PackObject.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackerTest.PackObject.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PackerTest.PackT.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackerTest.PackT.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PackerTest.Pack.Miscs.cs" />
     <Compile Include="PackUnpackTest.cs" />
     <Compile Include="PackUnpackTest.Scalar.cs">
       <AutoGen>True</AutoGen>
@@ -241,6 +257,18 @@
     <None Include="MessagePackObjectTest.IsTypeOf.Raw.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.IsTypeOf.Raw.cs</LastGenOutput>
+    </None>
+    <None Include="PackerTest.Pack.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PackerTest.Pack.cs</LastGenOutput>
+    </None>
+    <None Include="PackerTest.PackObject.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PackerTest.PackObject.cs</LastGenOutput>
+    </None>
+    <None Include="PackerTest.PackT.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PackerTest.PackT.cs</LastGenOutput>
     </None>
     <None Include="PackUnpackTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
