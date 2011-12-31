@@ -93,6 +93,15 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestToString_Binary_Hex()
+		{
+			Assert.AreEqual(
+				"0xFFEDCBA98765432100",
+				new MessagePackObject( new byte[] { 0xFF, 0xED, 0xCB, 0xA9, 0x87, 0x65, 0x43, 0x21, 0x00 } ).ToString()
+			);
+		}
+
+		[Test]
 		public void TestToString_AllPossibleTypes_Success()
 		{
 			TestToStringCore(
