@@ -46,12 +46,14 @@ namespace MsgPack
 
 		public MessagePackString( string decoded )
 		{
+			Contract.Assert( decoded != null );
 			this._decoded = decoded;
 			this._type = BinaryType.String;
 		}
 
 		public MessagePackString( byte[] encoded )
 		{
+			Contract.Assert( encoded != null );
 			this._encoded = encoded;
 		}
 

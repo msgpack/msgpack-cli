@@ -83,7 +83,14 @@ namespace MsgPack
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
-			this._handleOrTypeCode = new MessagePackString( value );
+			if ( value == null )
+			{
+				this._handleOrTypeCode = null;
+			}
+			else
+			{
+				this._handleOrTypeCode = new MessagePackString( value );
+			}
 		}
 
 		/// <summary>
@@ -113,7 +120,14 @@ namespace MsgPack
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
-			this._handleOrTypeCode = new MessagePackString( value );
+			if ( value == null )
+			{
+				this._handleOrTypeCode = null;
+			}
+			else
+			{
+				this._handleOrTypeCode = new MessagePackString( value );
+			}
 		}
 
 		/// <summary>
