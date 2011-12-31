@@ -166,7 +166,7 @@ namespace MsgPack
 				{
 					try
 					{
-						Assert.AreEqual( target.AsString(), result );
+						Assert.AreEqual( target.AsString(), result, indicator );
 						continue;
 					}
 					catch ( InvalidOperationException ) { }
