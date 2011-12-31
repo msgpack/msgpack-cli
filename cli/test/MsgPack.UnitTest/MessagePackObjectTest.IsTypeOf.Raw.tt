@@ -1,0 +1,149 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#
+
+var __cases =
+	new Dictionary<string, string>()
+	{
+		{ "ByteArrayNotNull", "new byte[] { ( byte )'A' }" },
+		{ "ByteArrayEmptyNotNull", "new byte[ 0 ]" },
+		{ "ByteArrayNull", "default( byte[] )" },
+		{ "StringNotNull", "\"A\"" },
+		{ "StringEmptyNotNull", "String.Empty" },
+		{ "StringNull", "default( string )" },
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using NUnit.Framework;
+
+namespace MsgPack
+{
+	partial class MessagePackObjectTest_IsTypeOf
+	{
+<#
+var __defined = new HashSet<string>();
+foreach( var __case in __cases )
+{
+#>
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfArrayOfNotByteType_<#= __case.Key.EndsWith( "NotNull" ) ? "False" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "false" : "null" #>, new MessagePackObject( <#= __case.Value #> ).IsTypeOf( typeof( bool[] ) ) );
+		}
+
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfArrayOfMessagePackObject_<#= __case.Key.EndsWith( "NotNull" ) ? "False" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "false" : "null" #>, new MessagePackObject( <#= __case.Value #> ).IsTypeOf( typeof( MessagePackObject[] ) ) );
+		}
+
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfByteArray_<#= __case.Key.EndsWith( "NotNull" ) ? "True" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "true" : "null" #>, new MessagePackObject(  <#= __case.Value #> ).IsTypeOf( typeof( byte[] ) ) );
+		}
+
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfString_<#= __case.Key.EndsWith( "NotNull" ) ? "True" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "true" : "null" #>, new MessagePackObject(  <#= __case.Value #> ).IsTypeOf( typeof( string ) ) );
+		}
+	
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfIEnumerableOfByte_<#= __case.Key.EndsWith( "NotNull" ) ? "True" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "true" : "null" #>, new MessagePackObject(  <#= __case.Value #> ).IsTypeOf( typeof( IEnumerable<byte> ) ) );
+		}
+
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfIListOfByte_<#= __case.Key.EndsWith( "NotNull" ) ? "True" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "true" : "null" #>, new MessagePackObject(  <#= __case.Value #> ).IsTypeOf( typeof( IList<byte> ) ) );
+		}
+		
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfListOfByte_<#= __case.Key.EndsWith( "NotNull" ) ? "False" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "false" : "null" #>, new MessagePackObject(  <#= __case.Value #> ).IsTypeOf( typeof( List<byte> ) ) );
+		}
+		
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfCharArray_<#= __case.Key.EndsWith( "NotNull" ) ? "False" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "false" : "null" #>, new MessagePackObject(  <#= __case.Value #> ).IsTypeOf( typeof( char[] ) ) );
+		}
+		
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfIEnumerableOfChar_<#= __case.Key.EndsWith( "NotNull" ) ? "True" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "true" : "null" #>, new MessagePackObject(  <#= __case.Value #> ).IsTypeOf( typeof( IEnumerable<char> ) ) );
+		}
+
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfIListOfChar_<#= __case.Key.EndsWith( "NotNull" ) ? "True" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "true" : "null" #>, new MessagePackObject(  <#= __case.Value #> ).IsTypeOf( typeof( IList<char> ) ) );
+		}
+		
+		[Test]
+		public void TestIsTypeOf_<#= __case.Key #>_IsTypeOfListOfChar_<#= __case.Key.EndsWith( "NotNull" ) ? "False" : "Null" #>()
+		{
+			Assert.AreEqual( <#= __case.Key.EndsWith( "NotNull" ) ? "false" : "null" #>, new MessagePackObject(  <#= __case.Value #> ).IsTypeOf( typeof( List<char> ) ) );
+		}
+
+		[Test]
+		public void TestIsRaw_<#= __case.Key #>_<#= __case.Key.EndsWith( "NotNull" ) #>()
+		{
+			Assert.Is<#= __case.Key.EndsWith( "NotNull" ) #>( new MessagePackObject(  <#= __case.Value #> ).IsRaw );
+		}
+<#
+}
+#>
+	}
+}

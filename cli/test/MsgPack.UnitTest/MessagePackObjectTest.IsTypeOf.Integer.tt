@@ -1,0 +1,128 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ assembly Name="System.Numerics" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Numerics" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#
+
+var __values =
+	new Dictionary<string, BigInteger>()
+	{
+		{ "Int64MinValue", Int64.MinValue },
+		{ "Int32MinValue", Int32.MinValue },
+		{ "Int16MinValue", Int16.MinValue },
+		{ "SByteMinValue", SByte.MinValue },
+		{ "MinusOne", -1  },
+		{ "Zero", 0 },
+		{ "PlusOne", 1 },
+		{ "ByteMaxValue", Byte.MaxValue },
+		{ "UInt16MaxValue", UInt16.MaxValue },
+		{ "UInt32MaxValue", UInt32.MaxValue },
+		{ "UInt64MaxValue", UInt64.MaxValue },
+	};
+	
+var __integerTypes =
+	new []
+	{
+		typeof( Byte ),
+		typeof( SByte ),
+		typeof( Int16 ),
+		typeof( UInt16 ),
+		typeof( Int32 ),
+		typeof( UInt32 ),
+		typeof( Int64 ),
+		typeof( UInt64 ),
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using NUnit.Framework;
+
+namespace MsgPack
+{
+	partial class MessagePackObjectTest_IsTypeOf
+	{
+<#
+var __defined = new HashSet<string>();
+foreach( var __leftType in __integerTypes )
+{
+	foreach( var __value in __values )
+	{
+		var __leftMinValue = BigInteger.Parse( String.Format( CultureInfo.InvariantCulture, "{0}", __leftType.GetField( "MinValue" ).GetValue( null ) ) );
+		var __leftMaxValue = BigInteger.Parse( String.Format( CultureInfo.InvariantCulture, "{0}", __leftType.GetField( "MaxValue" ).GetValue( null ) ) );
+		
+		if( !( __leftMinValue <= __value.Value && __value.Value <= __leftMaxValue ) )
+		{
+			continue;
+		}
+		
+		foreach( var __rightType in __integerTypes )
+		{
+			var __rightMinValue = BigInteger.Parse( String.Format( CultureInfo.InvariantCulture, "{0}", __rightType.GetField( "MinValue" ).GetValue( null ) ) );
+			var __rightMaxValue = BigInteger.Parse( String.Format( CultureInfo.InvariantCulture, "{0}", __rightType.GetField( "MaxValue" ).GetValue( null ) ) );
+			var __expected = __rightMinValue <= __value.Value && __value.Value <= __rightMaxValue;
+#>
+		[Test]
+		public void TestIsTypeOf_<#= __leftType.Name #><#= __value.Key #>_IsTypeOf<#= __rightType.Name #>_<#= __expected #>()
+		{
+			Assert.AreEqual( <#= __expected.ToString().ToLowerInvariant() #>, ( new MessagePackObject( ( <#= __leftType #> )( <#= __value.Value.ToString() #> ) ).IsTypeOf( typeof( <#= __rightType #> ) ) ) );
+		}
+		
+<#
+		}
+	}
+#>
+		[Test]
+		public void TestIsTypeOf_Nil_<#= __leftType.Name #>_False()
+		{
+			Assert.AreEqual( false, MessagePackObject.Nil.IsTypeOf( typeof( <#= __leftType #> ) ) );
+		}
+		
+<#
+}
+#>
+	}
+}
