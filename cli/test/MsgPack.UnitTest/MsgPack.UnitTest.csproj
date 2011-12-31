@@ -104,12 +104,56 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Image.cs" />
+    <Compile Include="MessagePackConvertTest.cs" />
     <Compile Include="MessagePackObjectDictionaryTest.cs" />
     <Compile Include="MessagePackObjectTest.Conversion.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackObjectTest.Conversion.tt</DependentUpon>
     </Compile>
+    <Compile Include="MessagePackObjectTest.Equals.cs" />
+    <Compile Include="MessagePackObjectTest.Equals.Integer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.Equals.Integer.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.Equals.Real.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.Equals.Real.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.Exceptionals.Conversion.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.Exceptionals.Conversion.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.Exceptionals.cs" />
+    <Compile Include="MessagePackObjectTest.IPackable.cs" />
+    <Compile Include="MessagePackObjectTest.IsTypeOf.Array.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.IsTypeOf.Array.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.IsTypeOf.cs" />
+    <Compile Include="MessagePackObjectTest.IsTypeOf.Integer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.IsTypeOf.Integer.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.IsTypeOf.Map.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.IsTypeOf.Map.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.IsTypeOf.Raw.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackObjectTest.IsTypeOf.Raw.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessagePackObjectTest.Miscs.cs" />
+    <Compile Include="MessagePackObjectTest.Objects.cs" />
+    <Compile Include="MessagePackObjectTest.RuntimeSerialization.cs" />
+    <Compile Include="MessagePackObjectTest.Strings.cs" />
     <Compile Include="MessagePackStringTest.cs" />
     <Compile Include="MessageUnpackableTest.cs" />
     <Compile Include="PackUnpackTest.cs" />
@@ -169,6 +213,34 @@
     <None Include="MessagePackObjectTest.Conversion.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.Conversion.cs</LastGenOutput>
+    </None>
+    <None Include="MessagePackObjectTest.Equals.Integer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackObjectTest.Equals.Integer.cs</LastGenOutput>
+    </None>
+    <None Include="MessagePackObjectTest.Equals.Real.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackObjectTest.Equals.Real.cs</LastGenOutput>
+    </None>
+    <None Include="MessagePackObjectTest.Exceptionals.Conversion.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackObjectTest.Exceptionals.Conversion.cs</LastGenOutput>
+    </None>
+    <None Include="MessagePackObjectTest.IsTypeOf.Array.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackObjectTest.IsTypeOf.Array.cs</LastGenOutput>
+    </None>
+    <None Include="MessagePackObjectTest.IsTypeOf.Integer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackObjectTest.IsTypeOf.Integer.cs</LastGenOutput>
+    </None>
+    <None Include="MessagePackObjectTest.IsTypeOf.Map.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackObjectTest.IsTypeOf.Map.cs</LastGenOutput>
+    </None>
+    <None Include="MessagePackObjectTest.IsTypeOf.Raw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackObjectTest.IsTypeOf.Raw.cs</LastGenOutput>
     </None>
     <None Include="PackUnpackTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
