@@ -712,7 +712,7 @@ namespace MsgPack
 		/// <value>This instance wraps raw binary (or string) then true.</value>
 		public bool IsRaw
 		{
-			get { return !this.IsNil && ( this._handleOrTypeCode is string || this._handleOrTypeCode is IEnumerable<byte> || this._handleOrTypeCode is MessagePackString ); }
+			get { return !this.IsNil && ( this._handleOrTypeCode is MessagePackString ); }
 		}
 
 		/// <summary>
@@ -923,13 +923,6 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			// Short path to return just return not-encoded string.
-			var asString = this._handleOrTypeCode as string;
-			if ( asString != null )
-			{
-				return asString;
-			}
-
 			if ( this.IsNil )
 			{
 				return null;
@@ -986,30 +979,19 @@ namespace MsgPack
 
 			try
 			{
-				string asString;
-
-				if ( ( asString = this._handleOrTypeCode as string ) != null )
-				{
-					return asString;
-				}
-
-				byte[] asBytes;
 				MessagePackString asMessagePackString;
 
-				if ( ( asBytes = this._handleOrTypeCode as byte[] ) == null )
+				if ( ( asMessagePackString = this._handleOrTypeCode as MessagePackString ) == null )
 				{
-					if ( ( asMessagePackString = this._handleOrTypeCode as MessagePackString ) == null )
-					{
-						ThrowInvalidTypeAs<string>( this );
-					}
-
-					if ( asMessagePackString.UnsafeGetString() != null )
-					{
-						return asMessagePackString.UnsafeGetString();
-					}
-
-					asBytes = asMessagePackString.UnsafeGetBuffer();
+					ThrowInvalidTypeAs<string>( this );
 				}
+
+				if ( asMessagePackString.UnsafeGetString() != null )
+				{
+					return asMessagePackString.UnsafeGetString();
+				}
+
+				byte[] asBytes = asMessagePackString.UnsafeGetBuffer();
 
 				if ( asBytes.Length == 0 )
 				{
