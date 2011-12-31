@@ -106,5 +106,26 @@ namespace MsgPack
 		{
 			new MessagePackObject( 0 ).PackToMessage( null, new PackingOptions() );
 		}
+
+
+		[Test]
+		public void TestOpExplicitSingle_Double_Success()
+		{
+			var target = new MessagePackObject( Double.MaxValue );
+			Assert.AreEqual(
+				( float )( Double.MaxValue ),
+				( float )target
+			);
+		}
+
+		[Test]
+		public void TestOpExplicitDouble_Single_Success()
+		{
+			var target = new MessagePackObject( Single.MaxValue );
+			Assert.AreEqual(
+				( double )( Single.MaxValue ),
+				( double )target
+			);
+		}
 	}
 }

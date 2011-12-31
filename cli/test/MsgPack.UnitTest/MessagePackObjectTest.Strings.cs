@@ -229,5 +229,13 @@ namespace MsgPack
 			var target = new MessagePackObject( 0 );
 			target.AsStringUtf16();
 		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestAsStringUtf16_NonStringBinary()
+		{
+			var target = new MessagePackObject( new byte[] { 0xFF } );
+			target.AsStringUtf16();
+		}
 	}
 }
