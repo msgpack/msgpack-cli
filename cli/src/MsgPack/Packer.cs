@@ -265,11 +265,6 @@ namespace MsgPack
 				return;
 			}
 
-			if ( value >= 0 && this.TryPackTinyUnsignedInteger( ( ulong )value ) )
-			{
-				return;
-			}
-
 			var b = this.TryPackInt8( value );
 			Contract.Assume( b );
 		}
@@ -358,11 +353,6 @@ namespace MsgPack
 		private void PrivatePackCore( short value )
 		{
 			if ( this.TryPackTinySignedInteger( value ) )
-			{
-				return;
-			}
-
-			if ( value >= 0 && this.TryPackTinyUnsignedInteger( ( ulong )value ) )
 			{
 				return;
 			}
@@ -475,11 +465,6 @@ namespace MsgPack
 		private void PrivatePackCore( int value )
 		{
 			if ( this.TryPackTinySignedInteger( value ) )
-			{
-				return;
-			}
-
-			if ( value >= 0 && this.TryPackTinyUnsignedInteger( ( ulong )value ) )
 			{
 				return;
 			}
@@ -607,11 +592,6 @@ namespace MsgPack
 		private void PrivatePackCore( long value )
 		{
 			if ( this.TryPackTinySignedInteger( value ) )
-			{
-				return;
-			}
-
-			if ( value >= 0 && this.TryPackTinyUnsignedInteger( ( ulong )value ) )
 			{
 				return;
 			}
