@@ -1044,15 +1044,9 @@ namespace MsgPack
 				return null;
 			}
 
-			VerifyUnderlyingType<IList<MessagePackObject>>( this, null );
+			VerifyUnderlyingType<IEnumerable<MessagePackObject>>( this, null );
 
-			var asList = this._handleOrTypeCode as IList<MessagePackObject>;
-			if ( asList != null )
-			{
-				return asList;
-			}
-
-			return ( this._handleOrTypeCode as MessagePackString ).GetBytes().Select( b => new MessagePackObject( b ) );
+			return this._handleOrTypeCode as IEnumerable<MessagePackObject>;
 		}
 
 		/// <summary>
@@ -1066,16 +1060,9 @@ namespace MsgPack
 				return null;
 			}
 
-			var asEnumerable = this.AsEnumerable();
-			IList<MessagePackObject> asList;
-			if ( ( asList = asEnumerable as IList<MessagePackObject> ) != null )
-			{
-				return asList;
-			}
-			else
-			{
-				return asEnumerable.ToList();
-			}
+			VerifyUnderlyingType<IList<MessagePackObject>>( this, null );
+
+			return this._handleOrTypeCode as IList<MessagePackObject>;
 		}
 
 		/// <summary>
