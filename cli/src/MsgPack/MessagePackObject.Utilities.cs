@@ -354,12 +354,26 @@ namespace MsgPack
 
 		private static bool IntegerSingleEquals( MessagePackObject integer, MessagePackObject real )
 		{
-			return integer._value == ( float )real;
+			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
+			{
+				return unchecked( ( long )integer._value ) == ( float )real;
+			}
+			else
+			{
+				return integer._value == ( float )real;
+			}
 		}
 
 		private static bool IntegerDoubleEquals( MessagePackObject integer, MessagePackObject real )
 		{
-			return integer._value == ( double )real;
+			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
+			{
+				return unchecked( ( long )integer._value ) == ( double )real;
+			}
+			else
+			{
+				return integer._value == ( double )real;
+			}
 		}
 
 		/// <summary>
