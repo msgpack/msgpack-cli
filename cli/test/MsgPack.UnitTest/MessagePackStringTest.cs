@@ -24,6 +24,7 @@ using System.Security;
 using System.Security.Permissions;
 using System.Security.Policy;
 using NUnit.Framework;
+using System.Globalization;
 
 namespace MsgPack
 {
@@ -66,33 +67,41 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestEquals_BinaryBinary_True()
+		public void TestToString_Binary()
 		{
-			Assert.IsTrue(
-				new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB } ).Equals(
-					new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB } )
-				)
-			);
+			var target = new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB } );
+			Assert.AreEqual( "0xFFEDCB", target.ToString() );
 		}
 
 		[Test]
-		public void TestEquals_BinaryString_True()
+		public void TestToString_String()
 		{
-			Assert.IsTrue(
-				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
-					new MessagePackString( "ABC" )
-				)
-			);
+			var target = new MessagePackString( "ABC" );
+			Assert.AreEqual( "ABC", target.ToString() );
 		}
 
 		[Test]
-		public void TestEquals_String_True()
+		public void TestToString_StringifiableBinary()
 		{
-			Assert.IsTrue(
-				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
-					new MessagePackString( "ABC" )
-				)
-			);
+			var target = new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } );
+			Assert.AreEqual( String.Format( CultureInfo.InvariantCulture, "0x{0:x}{1:x}{2:x}", ( byte )'A', ( byte )'B', ( byte )'C' ), target.ToString() );
+			// Encode
+			target.GetString();
+			Assert.AreEqual( "ABC", target.ToString() );
+		}
+
+		[Test]
+		public void TestToString_EmptyBinary()
+		{
+			var target = new MessagePackString( new byte[ 0 ] );
+			Assert.AreEqual( String.Empty, target.ToString() );
+		}
+
+		[Test]
+		public void TestToString_EmptyString()
+		{
+			var target = new MessagePackString( String.Empty );
+			Assert.AreEqual( String.Empty, target.ToString() );
 		}
 
 		[Test]
