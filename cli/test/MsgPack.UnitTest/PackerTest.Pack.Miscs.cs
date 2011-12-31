@@ -509,6 +509,96 @@ namespace MsgPack
 			TestCore( ( packer, value ) => packer.PackObject( value ), new Uri( "http://example.com" ), new byte[] { 0xC0 } );
 		}
 
+
+		[Test]
+		public void TestPack_SByte_0x7F_0x7F()
+		{
+			TestCore<SByte>( ( packer, value ) => packer.Pack( value ), 0x7F, new byte[] { 0x7F } );
+		}
+
+		[Test]
+		public void TestPack_Int16_0x7F_0x7F()
+		{
+			TestCore<Int16>( ( packer, value ) => packer.Pack( value ), 0x7F, new byte[] { 0x7F } );
+		}
+
+		[Test]
+		public void TestPack_Int32_0x7F_0x7F()
+		{
+			TestCore<Int32>( ( packer, value ) => packer.Pack( value ), 0x7F, new byte[] { 0x7F } );
+		}
+
+		[Test]
+		public void TestPack_Int64_0x7F_0x7F()
+		{
+			TestCore<Int64>( ( packer, value ) => packer.Pack( value ), 0x7F, new byte[] { 0x7F } );
+		}
+
+
+		[Test]
+		public void TestPack_Int32_Minus128_AsInt8()
+		{
+			TestCore<Int32>( ( packer, value ) => packer.Pack( value ), -128, new byte[] { 0xD0, 0x80 } );
+		}
+
+
+		[Test]
+		public void TestPack_UInt32_0x80_AsUInt8()
+		{
+			TestCore<UInt32>( ( packer, value ) => packer.Pack( value ), 0x80, new byte[] { 0xCC, 0x80 } );
+		}
+
+		[Test]
+		public void TestPack_UInt32_0x100_AsUInt16()
+		{
+			TestCore<UInt32>( ( packer, value ) => packer.Pack( value ), 0x100, new byte[] { 0xCD, 0x1, 0x00 } );
+		}
+
+
+		[Test]
+		public void TestPack_Int64_0x1_0x1()
+		{
+			TestCore<Int64>( ( packer, value ) => packer.Pack( value ), 1, new byte[] { 0x1 } );
+		}
+
+		[Test]
+		public void TestPack_Int64_Minus128_AsInt8()
+		{
+			TestCore<Int64>( ( packer, value ) => packer.Pack( value ), -128, new byte[] { 0xD0, 0x80 } );
+		}
+
+		[Test]
+		public void TestPack_Int64_0x100_AsInt16()
+		{
+			TestCore<Int64>( ( packer, value ) => packer.Pack( value ), 0x100, new byte[] { 0xD1, 0x1, 0x00 } );
+		}
+
+		[Test]
+		public void TestPack_Int64_0x10000_AsInt32()
+		{
+			TestCore<Int64>( ( packer, value ) => packer.Pack( value ), 0x10000, new byte[] { 0xD2, 0x0, 0x01, 0x00, 0x00 } );
+		}
+
+
+		[Test]
+		public void TestPack_UInt64_0x80_AsInt8()
+		{
+			TestCore<UInt64>( ( packer, value ) => packer.Pack( value ), 0x80, new byte[] { 0xCC, 0x80 } );
+		}
+
+		[Test]
+		public void TestPack_UInt64_0x100_AsInt16()
+		{
+			TestCore<UInt64>( ( packer, value ) => packer.Pack( value ), 0x100, new byte[] { 0xCD, 0x1, 0x00 } );
+		}
+
+		[Test]
+		public void TestPack_UInt64_0x10000_AsInt32()
+		{
+			TestCore<UInt64>( ( packer, value ) => packer.Pack( value ), 0x10000, new byte[] { 0xCE, 0x0, 0x01, 0x00, 0x00 } );
+		}
+
+
 		private sealed class Packable : IPackable
 		{
 			public void PackToMessage( Packer packer, PackingOptions options )
