@@ -141,7 +141,11 @@ namespace MsgPack
 		/// </returns>
 		public override bool Equals( Object obj )
 		{
-			if ( obj == null || !( obj is MessagePackObject ) )
+			if ( Object.ReferenceEquals( obj, null ) )
+			{
+				return this.IsNil;
+			}
+			else if ( !( obj is MessagePackObject ) )
 			{
 				return false;
 			}
