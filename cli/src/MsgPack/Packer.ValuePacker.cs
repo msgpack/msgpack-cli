@@ -36,19 +36,11 @@ namespace MsgPack
 				{ typeof( string ).TypeHandle, ( packer, value ) => packer.PrivatePackStringCore( value as string, Encoding.UTF8 ) },
 				{ typeof( MessagePackString ).TypeHandle, ( packer, value ) => packer.PrivatePackRawCore( ( value as MessagePackString ).GetBytes(), true ) },
 				{ typeof( System.Boolean ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Boolean )value ) },
-				{ typeof( System.Boolean? ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Boolean )value ) },
 				{ 
 					typeof( System.SByte ).TypeHandle, 
 					( packer, value ) => 
 					{
 						packer.PrivatePackCore( ( System.SByte )value );
-					}
-				},
-				{ 
-					typeof( System.SByte? ).TypeHandle, 
-					( packer, value ) =>
-					{
-						packer.PrivatePackCore( ( System.SByte? )value );
 					}
 				},
 				{ 
@@ -59,24 +51,10 @@ namespace MsgPack
 					}
 				},
 				{ 
-					typeof( System.Int16? ).TypeHandle, 
-					( packer, value ) =>
-					{
-						packer.PrivatePackCore( ( System.Int16? )value );
-					}
-				},
-				{ 
 					typeof( System.Int32 ).TypeHandle, 
 					( packer, value ) => 
 					{
 						packer.PrivatePackCore( ( System.Int32 )value );
-					}
-				},
-				{ 
-					typeof( System.Int32? ).TypeHandle, 
-					( packer, value ) =>
-					{
-						packer.PrivatePackCore( ( System.Int32? )value );
 					}
 				},
 				{ 
@@ -87,24 +65,10 @@ namespace MsgPack
 					}
 				},
 				{ 
-					typeof( System.Int64? ).TypeHandle, 
-					( packer, value ) =>
-					{
-						packer.PrivatePackCore( ( System.Int64? )value );
-					}
-				},
-				{ 
 					typeof( System.Byte ).TypeHandle, 
 					( packer, value ) => 
 					{
 						packer.PrivatePackCore( ( System.Byte )value );
-					}
-				},
-				{ 
-					typeof( System.Byte? ).TypeHandle, 
-					( packer, value ) =>
-					{
-						packer.PrivatePackCore( ( System.Byte? )value );
 					}
 				},
 				{ 
@@ -115,24 +79,10 @@ namespace MsgPack
 					}
 				},
 				{ 
-					typeof( System.UInt16? ).TypeHandle, 
-					( packer, value ) =>
-					{
-						packer.PrivatePackCore( ( System.UInt16? )value );
-					}
-				},
-				{ 
 					typeof( System.UInt32 ).TypeHandle, 
 					( packer, value ) => 
 					{
 						packer.PrivatePackCore( ( System.UInt32 )value );
-					}
-				},
-				{ 
-					typeof( System.UInt32? ).TypeHandle, 
-					( packer, value ) =>
-					{
-						packer.PrivatePackCore( ( System.UInt32? )value );
 					}
 				},
 				{ 
@@ -142,17 +92,8 @@ namespace MsgPack
 						packer.PrivatePackCore( ( System.UInt64 )value );
 					}
 				},
-				{ 
-					typeof( System.UInt64? ).TypeHandle, 
-					( packer, value ) =>
-					{
-						packer.PrivatePackCore( ( System.UInt64? )value );
-					}
-				},
 				{ typeof( System.Single ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Single )value ) },
-				{ typeof( System.Single? ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Single )value ) },
 				{ typeof( System.Double ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Double )value ) },
-				{ typeof( System.Double? ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( System.Double )value ) },
 			};
 
 		/// <summary>

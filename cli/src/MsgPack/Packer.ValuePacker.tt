@@ -85,7 +85,6 @@ foreach( var __scalarType in __scalarTypes )
 	{
 #>
 				{ typeof( <#= __scalarType #> ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( <#= __scalarType #> )value ) },
-				{ typeof( <#= __scalarType #>? ).TypeHandle, ( packer, value ) => packer.PrivatePackCore( ( <#= __scalarType #> )value ) },
 <#				
 	}
 	else
@@ -96,13 +95,6 @@ foreach( var __scalarType in __scalarTypes )
 					( packer, value ) => 
 					{
 						packer.PrivatePackCore( ( <#= __scalarType #> )value );
-					}
-				},
-				{ 
-					typeof( <#= __scalarType #>? ).TypeHandle, 
-					( packer, value ) =>
-					{
-						packer.PrivatePackCore( ( <#= __scalarType #>? )value );
 					}
 				},
 <#
