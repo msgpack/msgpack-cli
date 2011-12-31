@@ -28,7 +28,8 @@ using NUnit.Framework;
 
 namespace MsgPack
 {
-	partial class PackerTest_PackMiscs
+	[TestFixture]
+	public partial class PackerTest_PackMiscs
 	{
 		private static void TestPackTCore<T>( T value, byte[] expected )
 		{
@@ -265,6 +266,20 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestPackItems_NotNullEnumerable__AsArray()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				packer.PackItems( Enumerable.Range( 1, 3 ) );
+				Assert.AreEqual(
+					new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x3, 1, 2, 3 },
+					buffer.ToArray()
+				);
+			}
+		}
+
+		[Test]
 		public void TestPackItems_Null_AsNil()
 		{
 			using ( var buffer = new MemoryStream() )
@@ -390,9 +405,15 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestPackRawBody_NotNullIEnumerableOfByte_AsIs()
+		public void TestPackRawBody_ArrayAsNotNullIEnumerableOfByte_AsIs()
 		{
 			TestCore<IEnumerable<byte>>( ( packer, array ) => packer.PackRawBody( array ), new byte[] { 1, 2, 3 }, new byte[] { 0x1, 0x2, 0x3 } );
+		}
+
+		[Test]
+		public void TestPackRawBody_ListAsNotNullIEnumerableOfByte_AsIs()
+		{
+			TestCore<IEnumerable<byte>>( ( packer, array ) => packer.PackRawBody( array ), new List<byte>() { 1, 2, 3 }, new byte[] { 0x1, 0x2, 0x3 } );
 		}
 
 		[Test]
@@ -495,6 +516,18 @@ namespace MsgPack
 			TestCore( ( packer, str ) => packer.PackString( str, null ), default( char[] ), new byte[] { 0xC0 } );
 		}
 
+
+		[Test]
+		public void TestPackObject_StringNotNull_AsIs()
+		{
+			TestCore( ( packer, value ) => packer.PackObject( value ), "ABC", new byte[] { 0xA3, ( byte )'A', ( byte )'B', ( byte )'C' } );
+		}
+
+		[Test]
+		public void TestPackObject_ByteArrayNotNull_AsIs()
+		{
+			TestCore( ( packer, value ) => packer.PackObject( value ), new byte[] { 1, 2, 3 }, new byte[] { 0xA3, 1, 2, 3 } );
+		}
 
 		[Test]
 		public void TestPackObject_ObjectNull_AsNil()
