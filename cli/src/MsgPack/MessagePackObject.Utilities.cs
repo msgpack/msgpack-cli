@@ -1283,16 +1283,16 @@ namespace MsgPack
 				var asList = boxedValue as IList<MessagePackObject>;
 				if ( asList != null )
 				{
-					return new MessagePackObject( asList );
+					return new MessagePackObject( asList, false );
 				}
 				else
 				{
-					return new MessagePackObject( ( asEnumerable ).ToList() );
+					return new MessagePackObject( ( asEnumerable ).ToArray(), true );
 				}
 			}
 			else if ( ( asDictionary = boxedValue as MessagePackObjectDictionary ) != null )
 			{
-				return new MessagePackObject( asDictionary );
+				return new MessagePackObject( asDictionary, false );
 			}
 
 			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not supported.", boxedValue.GetType() ) );
@@ -1456,7 +1456,7 @@ namespace MsgPack
 		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
 		public static implicit operator MessagePackObject( MessagePackObject[] value )
 		{
-			return new MessagePackObject( value );
+			return new MessagePackObject( value, false );
 		}
 
 		/// <summary>
