@@ -1120,6 +1120,11 @@ namespace MsgPack
 		/// </remarks>
 		public Packer PackRawBody( byte[] value )
 		{
+			if ( value == null )
+			{
+				throw new ArgumentNullException( "value" );
+			}
+
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
@@ -1138,6 +1143,11 @@ namespace MsgPack
 		/// </remarks>
 		public Packer PackRawBody( IEnumerable<byte> value )
 		{
+			if ( value == null )
+			{
+				throw new ArgumentNullException( "value" );
+			}
+
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
