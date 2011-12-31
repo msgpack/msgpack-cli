@@ -735,12 +735,8 @@ namespace MsgPack
 			public sealed override void Pack( Packer packer, IList value, PackingOptions options )
 			{
 				Contract.Assert( !packer._isDisposed );
-
-				if ( value == null )
-				{
-					packer.PrivatePackNullCore();
-					return;
-				}
+				// Checked in enclosing CollectionValuePacker<T>
+				Contract.Assert( value != null );
 				
 				packer.PrivatePackArrayHeaderCore( value.Count );
 				foreach ( var item in value )
@@ -757,12 +753,8 @@ namespace MsgPack
 			public sealed override void Pack( Packer packer, IList<TItem> value, PackingOptions options )
 			{
 				Contract.Assert( !packer._isDisposed );
-
-				if ( value == null )
-				{
-					packer.PrivatePackNullCore();
-					return;
-				}
+				// Checked in enclosing CollectionValuePacker<T>
+				Contract.Assert( value != null );
 				
 				packer.PrivatePackArrayHeaderCore( value.Count );
 				foreach ( var item in value )
@@ -779,12 +771,8 @@ namespace MsgPack
 			public sealed override void Pack( Packer packer, IDictionary value, PackingOptions options )
 			{
 				Contract.Assert( !packer._isDisposed );
-
-				if ( value == null )
-				{
-					packer.PrivatePackNullCore();
-					return;
-				}
+				// Checked in enclosing CollectionValuePacker<T>
+				Contract.Assert( value != null );
 				
 				packer.PrivatePackMapHeaderCore( value.Count );
 				foreach ( DictionaryEntry item in value )
@@ -802,12 +790,8 @@ namespace MsgPack
 			public sealed override void Pack( Packer packer, IDictionary<TKey,TValue> value, PackingOptions options )
 			{
 				Contract.Assert( !packer._isDisposed );
-
-				if ( value == null )
-				{
-					packer.PackNull();
-					return;
-				}
+				// Checked in enclosing CollectionValuePacker<T>
+				Contract.Assert( value != null );
 				
 				packer.PrivatePackMapHeaderCore( value.Count );
 				foreach ( var item in value )
@@ -832,7 +816,7 @@ namespace MsgPack
 					return;
 				}
 				
-				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "Cannot pack '{0}'({1} type).", value, value.GetType() ) );
+				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "Cannot pack '{0}'({1} type) as {2}.", value, value.GetType(), typeof( T ) ) );
 			}
 		}
 	}
