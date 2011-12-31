@@ -295,9 +295,14 @@ if( __IsNotCLSCompliant( t ) )
 					return ( float )value._value;
 				}
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
 			else
 			{
-				return BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
 			}
 <#
 	}
@@ -321,9 +326,14 @@ if( __IsNotCLSCompliant( t ) )
 					return ( double )value._value;
 				}
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
 			else
-			{			
-				return BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
 			}
 <#
 	}

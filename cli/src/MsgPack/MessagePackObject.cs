@@ -849,9 +849,14 @@ namespace MsgPack
 					return ( float )value._value;
 				}
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( Single )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
 			else
 			{
-				return BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( Single )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
 			}
 		}
 
@@ -883,9 +888,14 @@ namespace MsgPack
 					return ( double )value._value;
 				}
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( Double )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			}
 			else
-			{			
-				return BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
+			{
+				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
+				return ( Double )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
 			}
 		}
 
