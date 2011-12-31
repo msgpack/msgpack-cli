@@ -1,0 +1,156 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#
+
+var __numerics =
+	new Tuple<string, Type, string, string>[]
+	{
+		Tuple.Create( "DoubleMinValue", typeof( double ), "Double.MinValue", "new byte[] { 0xCB }.Concat( BitConverter.GetBytes( Double.MinValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "SingleMinValue", typeof( float ), "Single.MinValue", "new byte[] { 0xCA }.Concat( BitConverter.GetBytes( Single.MinValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "Int64MinValue", typeof( long ), "Int64.MinValue", "new byte[] { 0xD3 }.Concat( BitConverter.GetBytes( Int64.MinValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "Int32MinValue", typeof( int ), "Int32.MinValue", "new byte[] { 0xD2 }.Concat( BitConverter.GetBytes( Int32.MinValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "Int16MinValue", typeof( short ), "Int16.MinValue", "new byte[] { 0xD1 }.Concat( BitConverter.GetBytes( Int16.MinValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "SByteMinValue", typeof( sbyte ), "SByte.MinValue", "new byte[] { 0xD0, 0x80 }" ),
+		Tuple.Create( "DoubleMaxValue", typeof( double ),"Double.MaxValue" , "new byte[] { 0xCB }.Concat( BitConverter.GetBytes( Double.MaxValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "SingleMaxValue", typeof( float ), "Single.MaxValue" , "new byte[] { 0xCA }.Concat( BitConverter.GetBytes( Single.MaxValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "UInt64MaxValue", typeof( ulong ), "UInt64.MaxValue" , "new byte[] { 0xCF }.Concat( BitConverter.GetBytes( UInt64.MaxValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "UInt32MaxValue", typeof( uint ), "UInt32.MaxValue" , "new byte[] { 0xCE }.Concat( BitConverter.GetBytes( UInt32.MaxValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "UInt16MaxValue", typeof( ushort ), "UInt16.MaxValue" , "new byte[] { 0xCD }.Concat( BitConverter.GetBytes( UInt16.MaxValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "ByteMaxValue", typeof( byte ), "Byte.MaxValue" , "new byte[] { 0xCC, 0xFF }" ),
+		Tuple.Create( "NegativeFixNumMinValueMinusOne", typeof( sbyte ), "( ( sbyte )-33 )" , "new byte[] { 0xD0, unchecked( ( byte )( sbyte )-33 ) }" ),
+		Tuple.Create( "NegativeFixNumMinValue", typeof( int ), "( -32 )" , "new byte[] { 0xE0 }" ),
+		Tuple.Create( "MinusOne", typeof( int ), "( -1 )" , "new byte[] { 0xFF }" ),
+		Tuple.Create( "Zero", typeof( int ), "0", "new byte[] { 0x00 }" ),
+		Tuple.Create( "PlusOne", typeof( int ), "( 1 )" , "new byte[] { 0x01 }" ),
+		Tuple.Create( "PositiveFixNumMaxValue", typeof( int ), "( 127 )" , "new byte[] { 0x7F }" ),
+		Tuple.Create( "PositiveFixNumMaxValuePlusOne", typeof( byte ), "( ( byte )128 )" , "new byte[] { 0xCC, 0x80 }" ),
+		Tuple.Create( "True", typeof( bool ), "true", "new byte[] { 0xC3 }" ),
+		Tuple.Create( "False", typeof( bool ), "false", "new byte[] { 0xC2 }" ),
+		Tuple.Create( "Nil", typeof( object ), "default( object )" , "new byte[] { 0xC0 }" ),
+		Tuple.Create( "SingleEpsilon", typeof( float ), "Single.Epsilon" , "new byte[] { 0xCA }.Concat( BitConverter.GetBytes( Single.Epsilon ).Reverse() ).ToArray()" ),
+		Tuple.Create( "DoubleEpsilon", typeof( double ), "Double.Epsilon" , "new byte[] { 0xCB }.Concat( BitConverter.GetBytes( Double.Epsilon ).Reverse() ).ToArray()" ),
+		Tuple.Create( "SinglePositiveInfinity", typeof( float ), "Single.PositiveInfinity" , "new byte[] { 0xCA }.Concat( BitConverter.GetBytes( Single.PositiveInfinity ).Reverse() ).ToArray()" ),
+		Tuple.Create( "DoublePositiveInfinity", typeof( double ), "Double.PositiveInfinity" , "new byte[] { 0xCB }.Concat( BitConverter.GetBytes( Double.PositiveInfinity ).Reverse() ).ToArray()" ),
+		Tuple.Create( "SingleNegativeInfinity", typeof( float ), "Single.NegativeInfinity" , "new byte[] { 0xCA }.Concat( BitConverter.GetBytes( Single.NegativeInfinity ).Reverse() ).ToArray()" ),
+		Tuple.Create( "DoubleNegativeInfinity", typeof( double ), "Double.NegativeInfinity" , "new byte[] { 0xCB }.Concat( BitConverter.GetBytes( Double.NegativeInfinity ).Reverse() ).ToArray()" ),
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using NUnit.Framework;
+
+namespace MsgPack
+{
+	[TestFixture]
+	public partial class PackerTest_PackObject
+	{
+<#
+foreach( var __numeric in __numerics )
+{
+#>
+		[Test]
+		public void TestPack_<#= __numeric.Item1 #>_AsValue()
+		{
+			using( var buffer = new MemoryStream() )
+			using( var packer = Packer.Create( buffer ) )
+			{
+				packer.PackObject( <#= __numeric.Item3 #> );
+				Assert.AreEqual(
+					<#= __numeric.Item4 #>,
+					buffer.ToArray()
+				);
+			}
+		}
+		
+<#
+}
+
+var __defined = new HashSet<string>();
+foreach( var __numeric in __numerics )
+{
+	if( __numeric.Item1 == "Nil" || !__defined.Add( __numeric.Item2.Name ) )
+	{
+		continue;
+	}
+#>
+		[Test]
+		public void TestPack_Nullable<#= __numeric.Item2.Name #>_NotNull_AsValue()
+		{
+			using( var buffer = new MemoryStream() )
+			using( var packer = Packer.Create( buffer ) )
+			{
+				packer.PackObject( <#= __numeric.Item3 #> );
+				Assert.AreEqual(
+					<#= __numeric.Item4 #>,
+					buffer.ToArray()
+				);
+			}
+		}
+
+		[Test]
+		public void TestPack_Nullable<#= __numeric.Item2.Name #>_Null_AsNil()
+		{
+			using( var buffer = new MemoryStream() )
+			using( var packer = Packer.Create( buffer ) )
+			{
+				packer.PackObject( default( <#= __numeric.Item2 #>?  ) );
+				Assert.AreEqual(
+					new byte[]{ 0xC0 },
+					buffer.ToArray()
+				);
+			}
+		}
+		
+<#
+}
+#>
+	}
+}
