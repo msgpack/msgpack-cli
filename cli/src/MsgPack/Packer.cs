@@ -1137,10 +1137,7 @@ namespace MsgPack
 
 		private int PrivatePackRawBodyCore( IEnumerable<byte> value )
 		{
-			if ( value == null )
-			{
-				return 0;
-			}
+			Contract.Assert( value != null );
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection != null )
@@ -1161,10 +1158,7 @@ namespace MsgPack
 
 		private int PrivatePackRawBodyCore( ICollection<byte> value, bool isImmutable )
 		{
-			if ( value == null )
-			{
-				return 0;
-			}
+			Contract.Assert( value != null );
 
 			var asArray = value as byte[];
 			if ( asArray != null )
