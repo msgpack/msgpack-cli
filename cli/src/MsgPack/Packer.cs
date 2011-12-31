@@ -156,7 +156,7 @@ namespace MsgPack
 		#region -- Bulk writing --
 
 		/// <summary>
-		///		Writse specified bytes to stream using implementation specific most efficient manner.
+		///		Writes specified bytes to stream using implementation specific most efficient manner.
 		/// </summary>
 		/// <param name="value">Collection of bytes to be written.</param>
 		protected virtual void WriteBytes( ICollection<byte> value )
@@ -175,7 +175,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Writse specified bytes to stream using implementation specific most efficient manner.
+		///		Writes specified bytes to stream using implementation specific most efficient manner.
 		/// </summary>
 		/// <param name="value">Bytes to be written.</param>
 		/// <param name="isImmutable">If the <paramref name="value"/> can be treat as immutable (that is, can be used safely without copying) then <c>true</c>.</param>
@@ -1071,7 +1071,7 @@ namespace MsgPack
 				return;
 			}
 
-			this.PrivatePackRowCore( value );
+			this.PrivatePackRawCore( value );
 		}
 
 		private void PrivatePackRowCore( IEnumerable<byte> value )
