@@ -638,12 +638,13 @@ namespace MsgPack
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
 			if ( typeCode == null )
 			{
-				if ( type == typeof( string ) )
+				if ( type == typeof( string ) || type == typeof( IList<char> ) || type == typeof( IEnumerable<char> ) )
 				{
-					return this._handleOrTypeCode is MessagePackString;
+					var asMessagePackString = this._handleOrTypeCode as MessagePackString;
+					return asMessagePackString != null && asMessagePackString.GetUnderlyingType() == typeof( string );
 				}
 
-				if ( type == typeof( byte[] ) )
+				if ( type == typeof( byte[] ) || type == typeof( IList<byte> ) || type == typeof( IEnumerable<byte> ) )
 				{
 					return this._handleOrTypeCode is MessagePackString;
 				}
