@@ -1155,6 +1155,8 @@ namespace MsgPack
 			IEnumerable<MessagePackObject> asEnumerable;
 			MessagePackObjectDictionary asDictionary;
 
+			// Nullable<T> is boxed as null or underlying value type, 
+			// so ( obj is Nullable<T> ) is always false.
 			if ( boxedValue == null )
 			{
 				return MessagePackObject.Nil;
@@ -1167,89 +1169,45 @@ namespace MsgPack
 			{
 				return ( sbyte )boxedValue;
 			}
-			else if ( boxedValue is sbyte? )
-			{
-				return ( sbyte? )boxedValue ?? MessagePackObject.Nil;
-			}
 			else if ( boxedValue is byte )
 			{
 				return ( byte )boxedValue;
-			}
-			else if ( boxedValue is byte? )
-			{
-				return ( byte? )boxedValue ?? MessagePackObject.Nil;
 			}
 			else if ( boxedValue is short )
 			{
 				return ( short )boxedValue;
 			}
-			else if ( boxedValue is short? )
-			{
-				return ( short? )boxedValue ?? MessagePackObject.Nil;
-			}
 			else if ( boxedValue is ushort )
 			{
 				return ( ushort )boxedValue;
-			}
-			else if ( boxedValue is ushort? )
-			{
-				return ( ushort? )boxedValue ?? MessagePackObject.Nil;
 			}
 			else if ( boxedValue is int )
 			{
 				return ( int )boxedValue;
 			}
-			else if ( boxedValue is int? )
-			{
-				return ( int? )boxedValue ?? MessagePackObject.Nil;
-			}
 			else if ( boxedValue is uint )
 			{
 				return ( uint )boxedValue;
-			}
-			else if ( boxedValue is uint? )
-			{
-				return ( uint? )boxedValue ?? MessagePackObject.Nil;
 			}
 			else if ( boxedValue is long )
 			{
 				return ( long )boxedValue;
 			}
-			else if ( boxedValue is long? )
-			{
-				return ( long? )boxedValue ?? MessagePackObject.Nil;
-			}
 			else if ( boxedValue is ulong )
 			{
 				return ( ulong )boxedValue;
-			}
-			else if ( boxedValue is ulong? )
-			{
-				return ( ulong? )boxedValue ?? MessagePackObject.Nil;
 			}
 			else if ( boxedValue is float )
 			{
 				return ( float )boxedValue;
 			}
-			else if ( boxedValue is float? )
-			{
-				return ( float? )boxedValue ?? MessagePackObject.Nil;
-			}
 			else if ( boxedValue is double )
 			{
 				return ( double )boxedValue;
 			}
-			else if ( boxedValue is double? )
-			{
-				return ( double? )boxedValue ?? MessagePackObject.Nil;
-			}
 			else if ( boxedValue is bool )
 			{
 				return ( bool )boxedValue;
-			}
-			else if ( boxedValue is bool? )
-			{
-				return ( bool? )boxedValue ?? MessagePackObject.Nil;
 			}
 			else if ( ( asByteArray = boxedValue as byte[] ) != null )
 			{
