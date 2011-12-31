@@ -1,0 +1,177 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#
+
+var __values =
+	new Dictionary<string, string>()
+	{
+		{ "DoubleMinValue", "Double.MinValue" },
+		{ "SingleMinValue", "Single.MinValue" },
+		{ "MinusSingleEpsilon", "-Single.Epsilon" },
+		{ "MinusDoubleEpsilon", "-Double.Epsilon" },
+		{ "DoubleZero", "0.0" },
+		{ "DoubleEpsilon", "Double.Epsilon" },
+		{ "SingleEpsilon", "Single.Epsilon" },
+		{ "SingleMaxValue", "Single.MaxValue" },
+		{ "DoubleMaxValue", "Double.MaxValue" },
+	};
+	
+var __integerTypes =
+	new []
+	{
+		typeof( Byte ),
+		typeof( SByte ),
+		typeof( Int16 ),
+		typeof( UInt16 ),
+		typeof( Int32 ),
+		typeof( UInt32 ),
+		typeof( Int64 ),
+		typeof( UInt64 ),
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using NUnit.Framework;
+
+namespace MsgPack
+{
+	partial class MessagePackObjectTest_Equals
+	{
+<#
+var __defined = new HashSet<string>();
+foreach( var __left in __values )
+{
+	foreach( var __right in __values )
+	{
+		var __methodName = "TestEquals_" + __left.Key + "_" + __right.Key + "_" + ( __left.Value.Equals( __right.Value ) );
+		if( !__defined.Add( __methodName ) )
+		{
+			continue;
+		}
+#>
+		[Test]
+		public void <#= __methodName #>()
+		{
+			Assert<#= ( !__left.Equals( __right ) ) ? "Not" : String.Empty #>Equals( ( <#= __left.Value #> ), ( <#= __right.Value #> ) );
+		}
+		
+<#
+	}
+	
+	var __nullMethodName = "TestEquals_" + __left.Key + "_Nil_False";
+	if( !__defined.Add( __nullMethodName ) )
+	{
+		continue;
+	}
+#>
+		[Test]
+		public void <#= __nullMethodName #>()
+		{
+			AssertNotEquals( ( <#= __left.Value #> ), MessagePackObject.Nil );
+		}
+<#
+}
+#>
+		[Test]
+		public void TestEquals_DoubleZero_SingleZero_True()
+		{
+			AssertEquals( 0.0, 0.0f );
+		}
+<#
+foreach( var __integerType in __integerTypes )
+{
+	switch( __integerType.Name )
+	{
+		case "SByte":
+		case "Int16":
+		case "Int32":
+		case "Int64":
+		{
+#>
+		[Test]
+		public void TestEquals_DoubleMinusOne_<#= __integerType.Name #>_True()
+		{
+			AssertEquals( -1.0, ( <#= __integerType #> )( -1 ) );
+		}
+
+		[Test]
+		public void TestEquals_SingleMinusOne_<#= __integerType.Name #>_True()
+		{
+			AssertEquals( -1.0f, ( <#= __integerType #> )( -1 ) );
+		}
+<#
+			break;
+		}
+	}
+#>
+		[Test]
+		public void TestEquals_DoubleZero_<#= __integerType.Name #>_True()
+		{
+			AssertEquals( 0.0, ( <#= __integerType #> )( 0 ) );
+		}
+		
+		[Test]
+		public void TestEquals_SingleZero_<#= __integerType.Name #>_True()
+		{
+			AssertEquals( 0.0f, ( <#= __integerType #> )( 0 ) );
+		}
+		
+		[Test]
+		public void TestEquals_SingleOne_<#= __integerType.Name #>_True()
+		{
+			AssertEquals( 1.0, ( <#= __integerType #> )( 1 ) );
+		}
+		
+		[Test]
+		public void TestEquals_DoubleOne_<#= __integerType.Name #>_True()
+		{
+			AssertEquals( 1.0f, ( <#= __integerType #> )( 1 ) );
+		}
+<#
+}
+#>
+	}
+}
