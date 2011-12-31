@@ -593,7 +593,15 @@ namespace MsgPack
 					var asBlob = asBinary.UnsafeGetBuffer();
 					if ( asBlob != null )
 					{
-						return BitConverter.ToString( asBlob );
+						var buffer = new StringBuilder( asBlob.Length * 2 + 2 );
+						buffer.Append( "0x" );
+						foreach ( var b in asBlob )
+						{
+							buffer.Append( ToHexChar( b >> 4 ) );
+							buffer.Append( ToHexChar( b & 0xF ) );
+						}
+
+						return buffer.ToString();
 					}
 
 					return String.Empty;
@@ -603,6 +611,18 @@ namespace MsgPack
 			// may be string
 			Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
 			return this._handleOrTypeCode.ToString();
+		}
+
+		private static char ToHexChar( int b )
+		{
+			if ( b < 10 )
+			{
+				return unchecked( ( char )( '0' + b ) );
+			}
+			else
+			{
+				return unchecked( ( char )( 'A' + ( b - 10 ) ) );
+			}
 		}
 
 		#endregion -- Structure Methods --
