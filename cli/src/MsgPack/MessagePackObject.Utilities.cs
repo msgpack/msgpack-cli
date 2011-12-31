@@ -957,15 +957,15 @@ namespace MsgPack
 
 			try
 			{
-				var asBytes = this._handleOrTypeCode as MessagePackString;
-				Contract.Assert( asBytes != null );
+				var asMessagePackString = this._handleOrTypeCode as MessagePackString;
+				Contract.Assert( asMessagePackString != null );
 
 				if ( encoding is UTF8Encoding )
 				{
-					return asBytes.GetString();
+					return asMessagePackString.GetString();
 				}
 
-				return encoding.GetString( asBytes.UnsafeGetBuffer(), 0, asBytes.UnsafeGetBuffer().Length );
+				return encoding.GetString( asMessagePackString.UnsafeGetBuffer(), 0, asMessagePackString.UnsafeGetBuffer().Length );
 			}
 			catch ( ArgumentException ex )
 			{
