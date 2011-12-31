@@ -670,7 +670,7 @@ namespace MsgPack
 		/// <value>This instance wraps raw binary (or string) then true.</value>
 		public bool IsRaw
 		{
-			get { return !this.IsNil && ( this._handleOrTypeCode is string || this._handleOrTypeCode is IEnumerable<byte> ); }
+			get { return !this.IsNil && ( this._handleOrTypeCode is string || this._handleOrTypeCode is IEnumerable<byte> || this._handleOrTypeCode is MessagePackString ); }
 		}
 
 		/// <summary>
