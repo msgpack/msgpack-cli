@@ -317,9 +317,11 @@ namespace MsgPack
 			return true;
 		}
 
+		private static readonly MessagePackObjectDictionary _emptyMap = new MessagePackObjectDictionary( 0 ).Freeze();
+
 		private static bool UnpackEmptyMap( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
-			result = new MessagePackObject( new MessagePackObjectDictionary( 0 ) );
+			result = new MessagePackObject( _emptyMap, true );
 			@this._wasEmptyCollection = true;
 			return true;
 		}
@@ -333,9 +335,11 @@ namespace MsgPack
 			return true;
 		}
 
+		private static readonly MessagePackObject[] _emptyArray = new MessagePackObject[ 0 ];
+
 		private static bool UnpackEmptyArray( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
-			result = new MessagePackObject( new List<MessagePackObject>( 0 ) );
+			result = new MessagePackObject( _emptyArray, true );
 			@this._wasEmptyCollection = true;
 			return true;
 		}
@@ -576,11 +580,11 @@ namespace MsgPack
 
 			if ( ( header.Type & MessageType.IsArray ) != 0 )
 			{
-				return new MessagePackObject( new List<MessagePackObject>( 0 ) );
+				return new MessagePackObject( _emptyArray, true );
 			}
 			else
 			{
-				return new MessagePackObject( new MessagePackObjectDictionary( 0 ) );
+				return new MessagePackObject( _emptyMap, true );
 			}
 		}
 
@@ -1054,7 +1058,7 @@ namespace MsgPack
 #if DEBUG
 					Contract.Assert( this.IsFilled );
 #endif
-					return new MessagePackObject( this._items );
+					return new MessagePackObject( this._items, false );
 				}
 			}
 
@@ -1116,7 +1120,7 @@ namespace MsgPack
 #if DEBUG
 					Contract.Assert( this.IsFilled );
 #endif
-					return new MessagePackObject( this._dictionary );
+					return new MessagePackObject( this._dictionary.Freeze(), true );
 				}
 			}
 		}

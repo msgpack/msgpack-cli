@@ -96,21 +96,101 @@ namespace MsgPack
 		/// <summary>
 		///		Initialize new instance wraps <see cref="IList&lt;MessagePackObject&gt;"/>.
 		/// </summary>
+		/// <param name="value">
+		///		The collection to be copied.
+		/// </param>
 		public MessagePackObject( IList<MessagePackObject> value )
+			: this( value, false ) { }
+
+		/// <summary>
+		///		Initialize new instance wraps <see cref="IList&lt;MessagePackObject&gt;"/>.
+		/// </summary>
+		/// <param name="value">
+		///		The collection to be copied or used.
+		/// </param>
+		/// <param name="isImmutable">
+		///		<c>true</c> if the <paramref name="value"/> is immutable collection;
+		///		othereise, <c>false</c>.
+		/// </param>
+		/// <remarks>
+		///		When the collection is truely immutable or dedicated, you can specify <c>true</c> to the <paramref name="isImmutable"/>.
+		///		When <paramref name="isImmutable"/> is <c>true</c>, this constructor does not copy its contents,
+		///		or copies its contents otherwise.
+		///		<note>
+		///			Note that both of IReadOnlyList and <see cref="System.Collections.ObjectModel.ReadOnlyCollection{T}"/> is NOT immutable
+		///			because the modification to the underlying collection will be reflected to the read-only collection.
+		///		</note>
+		/// </remarks>
+		public MessagePackObject( IList<MessagePackObject> value, bool isImmutable )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
-			this._handleOrTypeCode = value;
+			if ( isImmutable )
+			{
+				this._handleOrTypeCode = value;
+			}
+			else
+			{
+				if ( value == null )
+				{
+					this._handleOrTypeCode = null;
+				}
+				else
+				{
+					var copy = new MessagePackObject[ value.Count ];
+					value.CopyTo( copy, 0 );
+					this._handleOrTypeCode = copy;
+				}
+			}
 		}
 
 		/// <summary>
 		///		Initialize new instance wraps <see cref="MessagePackObjectDictionary"/>.
 		/// </summary>
+		/// <param name="value">
+		///		The dictitonary to be copied.
+		/// </param>
 		public MessagePackObject( MessagePackObjectDictionary value )
+			: this( value, false ) { }
+
+		/// <summary>
+		///		Initialize new instance wraps <see cref="MessagePackObjectDictionary"/>.
+		/// </summary>
+		/// <param name="value">
+		///		The dictitonary to be copied or used.
+		/// </param>
+		/// <param name="isImmutable">
+		///		<c>true</c> if the <paramref name="value"/> is immutable collection;
+		///		othereise, <c>false</c>.
+		/// </param>
+		/// <remarks>
+		///		When the collection is truely immutable or dedicated, you can specify <c>true</c> to the <paramref name="isImmutable"/>.
+		///		When <paramref name="isImmutable"/> is <c>true</c>, this constructor does not copy its contents,
+		///		or copies its contents otherwise.
+		///		<note>
+		///			Note that both of IReadOnlyDictionary and ReadOnlyDictionary is NOT immutable
+		///			because the modification to the underlying collection will be reflected to the read-only collection.
+		///		</note>
+		/// </remarks>
+		public MessagePackObject( MessagePackObjectDictionary value, bool isImmutable )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
-			this._handleOrTypeCode = value;
+			if ( isImmutable )
+			{
+				this._handleOrTypeCode = value;
+			}
+			else
+			{
+				if ( value == null )
+				{
+					this._handleOrTypeCode = null;
+				}
+				else
+				{
+					this._handleOrTypeCode = new MessagePackObjectDictionary( value );
+				}
+			}
 		}
 
 		/// <summary>
