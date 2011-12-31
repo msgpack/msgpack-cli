@@ -846,12 +846,12 @@ namespace MsgPack
 		/// <returns>Underlying raw binary.</returns>
 		public byte[] AsBinary()
 		{
-			VerifyUnderlyingType<byte[]>( this, null );
-
 			if ( this.IsNil )
 			{
 				return null;
 			}
+
+			VerifyUnderlyingType<byte[]>( this, null );
 
 			return ( this._handleOrTypeCode as MessagePackString ).GetBytes();
 		}
@@ -1018,11 +1018,12 @@ namespace MsgPack
 		/// <returns>Underlying <see cref="IEnumerable&lt;MessagePackObject&gt;"/>.</returns>
 		public IEnumerable<MessagePackObject> AsEnumerable()
 		{
-			VerifyUnderlyingType<IList<MessagePackObject>>( this, null );
 			if ( this.IsNil )
 			{
 				return null;
 			}
+
+			VerifyUnderlyingType<IList<MessagePackObject>>( this, null );
 
 			var asList = this._handleOrTypeCode as IList<MessagePackObject>;
 			if ( asList != null )
