@@ -603,8 +603,6 @@ namespace MsgPack
 
 						return buffer.ToString();
 					}
-
-					return String.Empty;
 				}
 			}
 
@@ -1001,12 +999,8 @@ namespace MsgPack
 
 			try
 			{
-				MessagePackString asMessagePackString;
-
-				if ( ( asMessagePackString = this._handleOrTypeCode as MessagePackString ) == null )
-				{
-					ThrowInvalidTypeAs<string>( this );
-				}
+				MessagePackString asMessagePackString = this._handleOrTypeCode as MessagePackString;
+				Contract.Assert( asMessagePackString != null );
 
 				if ( asMessagePackString.UnsafeGetString() != null )
 				{
