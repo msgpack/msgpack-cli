@@ -665,75 +665,35 @@ namespace MsgPack
 			{
 				case TypeCode.SByte:
 				{
-					return
-						typeCode.Type == typeof( sbyte )
-						|| ( typeCode.Type == typeof( byte ) && this._value < 0x80 );
+					return typeCode.IsInteger && ( this._value < 0x80 || ( 0xFFFFFFFFFFFFFF80 <= this._value && typeCode.IsSigned ) );
 				}
 				case TypeCode.Byte:
 				{
-					return
-						( typeCode.Type == typeof( sbyte ) && this._value < 0x80 )
-						|| typeCode.Type == typeof( byte );
+					return typeCode.IsInteger && this._value < 0x100;
 				}
 				case TypeCode.Int16:
 				{
-					return
-						typeCode.Type == typeof( sbyte )
-						|| ( typeCode.Type == typeof( byte ) && this._value < 0x80 )
-						|| typeCode.Type == typeof( short )
-						|| ( typeCode.Type == typeof( ushort ) && this._value < 0x8000 );
+					return typeCode.IsInteger && ( this._value < 0x8000 || ( 0xFFFFFFFFFFFF8000 <= this._value && typeCode.IsSigned ) );
 				}
 				case TypeCode.UInt16:
 				{
-					return
-						( typeCode.Type == typeof( sbyte ) && this._value < 0x80 )
-						|| typeCode.Type == typeof( byte )
-						|| ( typeCode.Type == typeof( short ) && this._value < 0x8000 )
-						|| typeCode.Type == typeof( ushort );
+					return typeCode.IsInteger && this._value < 0x10000;
 				}
 				case TypeCode.Int32:
 				{
-					return
-						typeCode.Type == typeof( sbyte )
-						|| ( typeCode.Type == typeof( byte ) && this._value < 0x80 )
-						|| typeCode.Type == typeof( short )
-						|| ( typeCode.Type == typeof( ushort ) && this._value < 0x8000 )
-						|| typeCode.Type == typeof( int )
-						|| ( typeCode.Type == typeof( uint ) && this._value < 0x80000000 );
+					return typeCode.IsInteger && ( this._value < 0x80000000 || ( 0xFFFFFFFF80000000 <= this._value && typeCode.IsSigned ) );
 				}
 				case TypeCode.UInt32:
 				{
-					return
-						( typeCode.Type == typeof( sbyte ) && this._value < 0x80 )
-						|| typeCode.Type == typeof( byte )
-						|| ( typeCode.Type == typeof( short ) && this._value < 0x8000 )
-						|| typeCode.Type == typeof( ushort )
-						|| ( typeCode.Type == typeof( int ) && this._value < 0x80000000 )
-						|| typeCode.Type == typeof( uint );
+					return typeCode.IsInteger && this._value < 0x100000000L;
 				}
 				case TypeCode.Int64:
 				{
-					return
-						typeCode.Type == typeof( sbyte )
-						|| ( typeCode.Type == typeof( byte ) && this._value < 0x80 )
-						|| typeCode.Type == typeof( short )
-						|| ( typeCode.Type == typeof( ushort ) && this._value < 0x8000 )
-						|| typeCode.Type == typeof( int )
-						|| ( typeCode.Type == typeof( uint ) && this._value < 0x80000000 )
-						|| typeCode.Type == typeof( long )
-						|| ( typeCode.Type == typeof( ulong ) && this._value < ( 0x80000000 << 32 ) );
+					return typeCode.IsInteger && ( this._value < 0x8000000000000000L || typeCode.IsSigned );
 				}
 				case TypeCode.UInt64:
 				{
-					return
-						( typeCode.Type == typeof( sbyte ) && this._value < 0x80 )
-						|| typeCode.Type == typeof( byte )
-						|| ( typeCode.Type == typeof( short ) && this._value < 0x8000 )
-						|| typeCode.Type == typeof( ushort )
-						|| ( typeCode.Type == typeof( int ) && this._value < 0x80000000 )
-						|| typeCode.Type == typeof( uint )
-						|| ( typeCode.Type == typeof( long ) && this._value < ( 0x80000000 << 32 ) )
-						|| typeCode.Type == typeof( ulong );
+					return typeCode.IsInteger && ( this._value < 0x8000000000000000L || !typeCode.IsSigned );
 				}
 				case TypeCode.Double:
 				{
