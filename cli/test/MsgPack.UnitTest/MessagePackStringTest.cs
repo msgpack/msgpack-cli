@@ -19,20 +19,82 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using System.Security;
-using System.Security.Policy;
-using System.Security.Permissions;
 using System.Diagnostics;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Policy;
+using NUnit.Framework;
 
 namespace MsgPack
 {
 	[TestFixture]
 	public class MessagePackStringTest
 	{
+		[Test]
+		public void TestGetHashCode_Binary()
+		{
+			var target = new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB } );
+			var valueIsImplementationDetail = target.GetHashCode();
+		}
+
+		[Test]
+		public void TestGetHashCode_String()
+		{
+			var target = new MessagePackString( "ABC" );
+			Assert.AreEqual( "ABC".GetHashCode(), target.GetHashCode() );
+		}
+
+		[Test]
+		public void TestGetHashCode_StringifiableBinary()
+		{
+			var target = new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } );
+			Assert.AreEqual( "ABC".GetHashCode(), target.GetHashCode() );
+		}
+
+		[Test]
+		public void TestGetHashCode_EmptyBinary()
+		{
+			var target = new MessagePackString( new byte[ 0 ] );
+			var valueIsImplementationDetail = target.GetHashCode();
+		}
+
+		[Test]
+		public void TestGetHashCode_EmptyString()
+		{
+			var target = new MessagePackString( String.Empty );
+			Assert.AreEqual( String.Empty.GetHashCode(), target.GetHashCode() );
+		}
+
+		[Test]
+		public void TestEquals_BinaryBinary_True()
+		{
+			Assert.IsTrue(
+				new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB } ).Equals(
+					new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB } )
+				)
+			);
+		}
+
+		[Test]
+		public void TestEquals_BinaryString_True()
+		{
+			Assert.IsTrue(
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
+					new MessagePackString( "ABC" )
+				)
+			);
+		}
+
+		[Test]
+		public void TestEquals_String_True()
+		{
+			Assert.IsTrue(
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
+					new MessagePackString( "ABC" )
+				)
+			);
+		}
+
 		[Test]
 		public void TestEqualsFullTrust()
 		{
@@ -87,6 +149,62 @@ namespace MsgPack
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{
+			Assert.IsTrue(
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
+					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } )
+				),
+				"Binary-Binary-True"
+			);
+
+			Assert.IsTrue(
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
+					new MessagePackString( "ABC" )
+				),
+				"Binary-String-True"
+			);
+
+			Assert.IsTrue(
+				new MessagePackString( "ABC" ).Equals(
+					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } )
+				),
+				"String-Binary-True"
+			);
+
+			Assert.IsTrue(
+				new MessagePackString( "ABC" ).Equals(
+					new MessagePackString( "ABC" )
+				),
+				"String-String-True"
+			);
+
+			Assert.IsFalse(
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
+					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'D' } )
+				),
+				"Binary-Binary-False"
+			);
+
+			Assert.IsFalse(
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
+					new MessagePackString( "ABD" )
+				),
+				"Binary-String-False"
+			);
+
+			Assert.IsFalse(
+				new MessagePackString( "ABD" ).Equals(
+					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } )
+				),
+				"String-Binary-False"
+			);
+
+			Assert.IsFalse(
+				new MessagePackString( "ABC" ).Equals(
+					new MessagePackString( "ABD" )
+				),
+				"String-String-False"
+			);
+
 			var values =
 				new[] 
 				{ 
