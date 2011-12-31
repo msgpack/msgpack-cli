@@ -1,0 +1,167 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#
+
+var __types =
+	new []
+	{
+		typeof( bool ),
+		typeof( sbyte ),
+		typeof( short ),
+		typeof( int ),
+		typeof( long ),
+		typeof( byte ),
+		typeof( ushort ),
+		typeof( uint ),
+		typeof( ulong ),
+		typeof( float ),
+		typeof( double )
+	};
+	
+var __integers =
+	new []
+	{
+		typeof( sbyte ),
+		typeof( short ),
+		typeof( int ),
+		typeof( long ),
+		typeof( byte ),
+		typeof( ushort ),
+		typeof( uint ),
+		typeof( ulong ),
+		typeof( float ),
+	};
+	
+var __reals =
+	new []
+	{
+		typeof( float ),
+		typeof( double )
+	};
+	
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using NUnit.Framework;
+
+namespace MsgPack
+{
+	partial class MessagePackObjectTest_Exceptionals
+	{
+<#
+foreach( var __type in __types )
+{
+#>
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestOpExplicit<#= __type.Name #>_Nil_Fail()
+		{
+			var result = ( <#= __type #> )( MessagePackObject.Nil );
+		}
+		
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestOpExplicit<#= __type.Name #>_NotNumerics_Fail()
+		{
+			var result = ( <#= __type #> )( new MessagePackObject( "A" ) );
+		}
+		
+<#
+}
+
+foreach( var __integer in __integers )
+{
+	foreach( var __real in __reals )
+	{
+#>
+		[Test]
+		public void TestOpExplicit<#= __integer.Name #>_<#= __real.Name #>PlusOne()
+		{
+			var result = ( <#= __integer #> )( new MessagePackObject( ( <#= __real #> )1 ) );
+			Assert.AreEqual( ( <#= __integer #> )( 1 ), result );
+		}
+		
+<#
+		if( !__integer.Name.StartsWith( "U" ) && __integer != typeof( byte ) )
+		{
+#>
+		[Test]
+		public void TestOpExplicit<#= __integer.Name #>_<#= __real.Name #>MinusOne()
+		{
+			var result = ( <#= __integer #> )( new MessagePackObject( ( <#= __real #> )( -1 ) ) );
+			Assert.AreEqual( ( <#= __integer #> )( -1 ), result );
+		}
+		
+<#
+		}
+	}
+}
+
+foreach( var __real in __reals )
+{
+#>
+		[Test]
+		public void TestOpExplicit<#= __real.Name #>_PlusOne()
+		{
+			var result = ( <#= __real #> )( new MessagePackObject( 1 ) );
+			Assert.AreEqual( ( <#= __real #> )( 1 ), result, ( <#= __real #> )0 );
+		}
+		
+		[Test]
+		public void TestOpExplicit<#= __real.Name #>_MinusOne()
+		{
+			var result = ( <#= __real #> )( new MessagePackObject( -1 ) );
+			Assert.AreEqual( ( <#= __real #> )( -1 ), result, ( <#= __real #> )0 );
+		}
+		
+<#
+}
+#>
+	}
+}

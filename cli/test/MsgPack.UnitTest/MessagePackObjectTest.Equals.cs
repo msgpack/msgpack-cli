@@ -149,5 +149,129 @@ namespace MsgPack
 		{
 			Assert.IsFalse( new MessagePackObject( 0 ).Equals( DateTimeKind.Unspecified ) );
 		}
+
+
+		[Test]
+		public void TestEquals_Array_EqualArray_True()
+		{
+			var target = new MessagePackObject( new MessagePackObject[] { 1, 2, 3 } );
+			var other = new MessagePackObject( new MessagePackObject[] { 1, 2, 3 } );
+			Assert.IsTrue( target.Equals( other ) );
+		}
+
+		[Test]
+		public void TestEquals_Array_SameLengthButDifferArray_False()
+		{
+			var target = new MessagePackObject( new MessagePackObject[] { 1, 2, 3 } );
+			var other = new MessagePackObject( new MessagePackObject[] { 1, 3, 2 } );
+			Assert.IsFalse( target.Equals( other ) );
+		}
+
+		[Test]
+		public void TestEquals_Array_SubArray_False()
+		{
+			var target = new MessagePackObject( new MessagePackObject[] { 1, 2, 3 } );
+			var other = new MessagePackObject( new MessagePackObject[] { 1, 2 } );
+			Assert.IsFalse( target.Equals( other ) );
+		}
+
+		[Test]
+		public void TestEquals_Array_Null_False()
+		{
+			var target = new MessagePackObject( new MessagePackObject[] { 1, 2, 3 } );
+			Assert.IsFalse( target.Equals( default( object ) ) );
+		}
+
+		[Test]
+		public void TestEquals_EmptyArray_Empty_True()
+		{
+			var target = new MessagePackObject( new MessagePackObject[ 0 ] );
+			Assert.IsTrue( target.Equals( new MessagePackObject[ 0 ] ) );
+		}
+
+		[Test]
+		public void TestEquals_EmptyArray_Null_False()
+		{
+			var target = new MessagePackObject( new MessagePackObject[ 0 ] );
+			Assert.IsFalse( target.Equals( default( object ) ) );
+		}
+
+		[Test]
+		public void TestEquals_Array_Raw_False()
+		{
+			var target = new MessagePackObject( new MessagePackObject[] { ( byte )'A', ( byte )'B', ( byte )'C' } );
+			var other = new MessagePackObject( "ABC" );
+			Assert.IsFalse( target.Equals( other ) );
+		}
+
+
+		[Test]
+		public void TestEquals_Map_EqualMap_True()
+		{
+			var target = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "B", 2 }, { "C", 3 } } );
+			var other = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "B", 2 }, { "C", 3 } } );
+			Assert.IsTrue( target.Equals( other ) );
+		}
+
+		[Test]
+		public void TestEquals_Map_SameLengthButDifferKeyMap_False()
+		{
+			var target = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "B", 2 }, { "C", 3 } } );
+			var other = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "D", 2 }, { "C", 3 } } );
+			Assert.IsFalse( target.Equals( other ) );
+		}
+
+		[Test]
+		public void TestEquals_Map_SameLengthButDifferValueMap_False()
+		{
+			var target = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "B", 2 }, { "C", 3 } } );
+			var other = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "B", 4 }, { "C", 3 } } );
+			Assert.IsFalse( target.Equals( other ) );
+		}
+
+		[Test]
+		public void TestEquals_Map_EquivalantMap_True()
+		{
+			var target = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "B", 2 }, { "C", 3 } } );
+			var other = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "C", 3 }, { "B", 2 } } );
+			Assert.IsTrue( target.Equals( other ) );
+		}
+
+		[Test]
+		public void TestEquals_Map_SubMap_False()
+		{
+			var target = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "B", 2 }, { "C", 3 } } );
+			var other = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "B", 2 } } );
+			Assert.IsFalse( target.Equals( other ) );
+		}
+
+		[Test]
+		public void TestEquals_Map_Null_False()
+		{
+			var target = new MessagePackObject( new MessagePackObjectDictionary() { { "A", 1 }, { "B", 2 }, { "C", 3 } } );
+			Assert.IsFalse( target.Equals( default( object ) ) );
+		}
+
+		[Test]
+		public void TestEquals_EmptyMap_Empty_True()
+		{
+			var target = new MessagePackObject( new MessagePackObjectDictionary( 0 ) );
+			Assert.IsTrue( target.Equals( new MessagePackObjectDictionary( 0 ) ) );
+		}
+
+		[Test]
+		public void TestEquals_EmptyMap_Null_False()
+		{
+			var target = new MessagePackObject( new MessagePackObjectDictionary( 0 ) );
+			Assert.IsFalse( target.Equals( default( object ) ) );
+		}
+
+		[Test]
+		public void TestEquals_Map_Raw_False()
+		{
+			var target = new MessagePackObject( new MessagePackObjectDictionary { { "A", "A" }, { "B", "B" }, { "C", "C" } } );
+			var other = new MessagePackObject( "ABC" );
+			Assert.IsFalse( target.Equals( other ) );
+		}
 	}
 }

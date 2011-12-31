@@ -20,6 +20,7 @@
 
 using System;
 using NUnit.Framework;
+using System.Linq;
 
 namespace MsgPack
 {
@@ -251,7 +252,7 @@ namespace MsgPack
 		[Test]
 		public void TestFromObject_NullableDoubleNull_Nil()
 		{
-			TestFromObjectCore( default(double?), MessagePackObject.Nil );
+			TestFromObjectCore( default( double? ), MessagePackObject.Nil );
 		}
 
 		[Test]
@@ -279,6 +280,31 @@ namespace MsgPack
 		{
 			var value = new MessagePackObjectDictionary() { { "1", 1 }, { "2", 2 } };
 			TestFromObjectCore( value, new MessagePackObject( value ) );
+		}
+
+		[Test]
+		public void TestFromObject_ByteSequence_Success()
+		{
+			TestFromObjectCore( Enumerable.Range( 1, 3 ).Select( i => ( byte )i ), new MessagePackObject( new byte[] { 1, 2, 3 } ) );
+		}
+
+		[Test]
+		public void TestFromObject_CharSequence_Success()
+		{
+			TestFromObjectCore( Enumerable.Range( 'A', 3 ).Select( i => ( char )i ), new MessagePackObject( "ABC" ) );
+		}
+
+		[Test]
+		public void TestFromObject_MessagePackObjectSequence_Success()
+		{
+			TestFromObjectCore( Enumerable.Range( 1, 3 ).Select( i => new MessagePackObject( i ) ), new MessagePackObject( new MessagePackObject[] { 1, 2, 3 } ) );
+		}
+
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestFromObject_NotSupported()
+		{
+			var dummy = MessagePackObject.FromObject( new Uri( "http://example.com" ) );
 		}
 
 		private static void TestFromObjectCore<T>( T value, MessagePackObject expected )
@@ -398,7 +424,7 @@ namespace MsgPack
 		[Test]
 		public void TestToObject_Bytes_Success()
 		{
-			var value = new byte[] { 1, 2 };
+			var value = new byte[] { 0xFF, 0xFF };
 			TestToObjectCore( value, value );
 		}
 
