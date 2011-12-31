@@ -149,8 +149,7 @@ namespace MsgPack
 
 			if ( this._encoded != null )
 			{
-				// FIXME: hex
-				return "<BLOB[" + this._encoded.Length + "]>";
+				return Binary.ToHexString( this._encoded );
 			}
 
 			return String.Empty;

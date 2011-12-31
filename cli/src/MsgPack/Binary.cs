@@ -20,6 +20,7 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Text;
 
 namespace MsgPack
 {
@@ -32,5 +33,35 @@ namespace MsgPack
 		///		Singleton empty <see cref="Byte"/>[].
 		/// </summary>
 		public static readonly byte[] Empty = new byte[ 0 ];
+
+		public static string ToHexString( byte[] blob )
+		{
+			if ( blob == null || blob.Length == 0 )
+			{
+				return String.Empty;
+			}
+
+			var buffer = new StringBuilder( blob.Length * 2 + 2 );
+			buffer.Append( "0x" );
+			foreach ( var b in blob )
+			{
+				buffer.Append( ToHexChar( b >> 4 ) );
+				buffer.Append( ToHexChar( b & 0xF ) );
+			}
+
+			return buffer.ToString();
+		}
+
+		private static char ToHexChar( int b )
+		{
+			if ( b < 10 )
+			{
+				return unchecked( ( char )( '0' + b ) );
+			}
+			else
+			{
+				return unchecked( ( char )( 'A' + ( b - 10 ) ) );
+			}
+		}
 	}
 }
