@@ -198,9 +198,9 @@ namespace MsgPack
 		{
 			if ( this.CanSeek )
 			{
-				var headerPosition = this.Position;
 				// Reserve length
 				this.SeekTo( 4L );
+				var headerPosition = this.Position;
 				// Write body
 				writeBody( value, options );
 				var bodyLength = this.Position - headerPosition;
@@ -1096,7 +1096,6 @@ namespace MsgPack
 
 		private void PrivatePackRowCore( IEnumerable<byte> value )
 		{
-
 			if ( !this.CanSeek )
 			{
 				// buffered
