@@ -95,22 +95,6 @@ foreach( var __type in
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
 <#
-	if( __type != typeof( bool ) && __type != typeof( float ) && __type != typeof( double ) )
-	{
-#>
-		private void PrivatePackCore( <#= __type.Name #>? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
-<#
-	}
 }
 #>
 	}

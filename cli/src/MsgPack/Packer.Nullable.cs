@@ -37,17 +37,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		private void PrivatePackCore( SByte? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
 		/// <summary>
 		///		Pack nullable <see cref="Byte"/> value.
 		/// </summary>
@@ -57,17 +46,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		private void PrivatePackCore( Byte? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
 		/// <summary>
 		///		Pack nullable <see cref="Int16"/> value.
 		/// </summary>
@@ -76,17 +54,6 @@ namespace MsgPack
 		public Packer Pack( Int16? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
-		}
-		private void PrivatePackCore( Int16? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
 		}
 		/// <summary>
 		///		Pack nullable <see cref="UInt16"/> value.
@@ -98,17 +65,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		private void PrivatePackCore( UInt16? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
 		/// <summary>
 		///		Pack nullable <see cref="Int32"/> value.
 		/// </summary>
@@ -117,17 +73,6 @@ namespace MsgPack
 		public Packer Pack( Int32? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
-		}
-		private void PrivatePackCore( Int32? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
 		}
 		/// <summary>
 		///		Pack nullable <see cref="UInt32"/> value.
@@ -139,17 +84,6 @@ namespace MsgPack
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
 		}
-		private void PrivatePackCore( UInt32? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
-		}
 		/// <summary>
 		///		Pack nullable <see cref="Int64"/> value.
 		/// </summary>
@@ -158,17 +92,6 @@ namespace MsgPack
 		public Packer Pack( Int64? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
-		}
-		private void PrivatePackCore( Int64? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
 		}
 		/// <summary>
 		///		Pack nullable <see cref="UInt64"/> value.
@@ -179,17 +102,6 @@ namespace MsgPack
 		public Packer Pack( UInt64? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
-		}
-		private void PrivatePackCore( UInt64? value )
-		{
-			if ( value.HasValue )
-			{
-				this.PrivatePackCore( value.Value );
-			}
-			else
-			{
-				this.PrivatePackNullCore();
-			}
 		}
 		/// <summary>
 		///		Pack nullable <see cref="Single"/> value.
