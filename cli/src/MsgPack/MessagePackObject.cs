@@ -746,16 +746,7 @@ namespace MsgPack
 			{
 				if( typeCode.IsSigned )
 				{
-					const long minValue = ( long )Int64.MinValue;
-					const long maxValue = ( long )Int64.MaxValue;
-					
-					long asInt64 = unchecked( ( long )value._value );
-					if( asInt64 < minValue || maxValue < asInt64 )
-					{
-						ThrowInvalidTypeAs<Int64>( value );
-					}
-
-					return unchecked( ( Int64 )asInt64 );
+					return unchecked( ( long )value._value );
 				}
 				else
 				{

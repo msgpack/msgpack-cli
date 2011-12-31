@@ -404,6 +404,16 @@ if( __IsNotCLSCompliant( t ) )
 			{
 				if( typeCode.IsSigned )
 				{
+<#
+		if ( t == typeof( Int64 ) )
+		{
+#>
+					return unchecked( ( long )value._value );
+<#
+		}
+		else
+		{
+#>
 					const long minValue = ( long )<#= t.Name #>.MinValue;
 					const long maxValue = ( long )<#= t.Name #>.MaxValue;
 					
@@ -414,6 +424,9 @@ if( __IsNotCLSCompliant( t ) )
 					}
 
 					return unchecked( ( <#= t.Name #> )asInt64 );
+<#
+		}
+#>
 				}
 				else
 				{
