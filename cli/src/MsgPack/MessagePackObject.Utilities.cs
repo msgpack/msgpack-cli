@@ -933,10 +933,7 @@ namespace MsgPack
 			try
 			{
 				var asBytes = this._handleOrTypeCode as MessagePackString;
-				if ( asBytes.UnsafeGetBuffer() == null && asBytes.UnsafeGetString() == null )
-				{
-					return null;
-				}
+				Contract.Assert( asBytes != null );
 
 				if ( encoding is UTF8Encoding )
 				{
