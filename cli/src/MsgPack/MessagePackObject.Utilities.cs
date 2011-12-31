@@ -235,9 +235,14 @@ namespace MsgPack
 		/// </returns>
 		public override bool Equals( Object obj )
 		{
+			MessagePackObjectDictionary asDictionary;
 			if ( Object.ReferenceEquals( obj, null ) )
 			{
 				return this.IsNil;
+			}
+			else if ( ( asDictionary = obj as MessagePackObjectDictionary ) != null )
+			{
+				return this.Equals( new MessagePackObject( asDictionary ) );
 			}
 			else if ( !( obj is MessagePackObject ) )
 			{
