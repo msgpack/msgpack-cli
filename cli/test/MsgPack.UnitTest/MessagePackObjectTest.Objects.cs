@@ -128,6 +128,132 @@ namespace MsgPack
 			TestFromObjectCore( Double.Epsilon, Double.Epsilon );
 		}
 
+		private static Nullable<T> AsNullable<T>( T value )
+			where T : struct
+		{
+			return new Nullable<T>( value );
+		}
+
+		[Test]
+		public void TestFromObject_NullableInt8NotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( SByte.MinValue ), SByte.MinValue );
+		}
+
+		[Test]
+		public void TestFromObject_NullableInt16NotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( Int16.MinValue ), Int16.MinValue );
+		}
+
+		[Test]
+		public void TestFromObject_NullableInt32NotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( Int32.MinValue ), Int32.MinValue );
+		}
+
+		[Test]
+		public void TestFromObject_NullableInt64NotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( Int64.MinValue ), Int64.MinValue );
+		}
+
+		[Test]
+		public void TestFromObject_NullableUInt8NotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( Byte.MaxValue ), Byte.MaxValue );
+		}
+
+		[Test]
+		public void TestFromObject_NullableUInt16NotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( UInt16.MaxValue ), UInt16.MaxValue );
+		}
+
+		[Test]
+		public void TestFromObject_NullableUInt32NotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( UInt32.MaxValue ), UInt32.MaxValue );
+		}
+
+		[Test]
+		public void TestFromObject_NullableUInt64NotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( UInt64.MinValue ), UInt64.MinValue );
+		}
+
+		[Test]
+		public void TestFromObject_NullableSingleNotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( Single.Epsilon ), Single.Epsilon );
+		}
+
+		[Test]
+		public void TestFromObject_NullableDoubleNotNull_Success()
+		{
+			TestFromObjectCore( AsNullable( Double.Epsilon ), Double.Epsilon );
+		}
+
+		[Test]
+		public void TestFromObject_NullableInt8Null_IsNil()
+		{
+			TestFromObjectCore( default( sbyte? ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestFromObject_NullableInt16Null_IsNil()
+		{
+			TestFromObjectCore( default( short? ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestFromObject_NullableInt32Null_IsNil()
+		{
+			TestFromObjectCore( default( int? ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestFromObject_NullableInt64Null_IsNil()
+		{
+			TestFromObjectCore( default( long? ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestFromObject_NullableUInt8Null_IsNil()
+		{
+			TestFromObjectCore( default( byte? ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestFromObject_NullableUInt16Null_IsNil()
+		{
+			TestFromObjectCore( default( ushort? ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestFromObject_NullableUInt32Null_IsNil()
+		{
+			TestFromObjectCore( default( uint? ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestFromObject_NullableUInt64Null_IsNil()
+		{
+			TestFromObjectCore( default( ulong? ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestFromObject_NullableSingleNull_IsNil()
+		{
+			TestFromObjectCore( default( float? ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestFromObject_NullableDoubleNull_Nil()
+		{
+			TestFromObjectCore( default(double?), MessagePackObject.Nil );
+		}
+
 		[Test]
 		public void TestFromObject_String_Success()
 		{

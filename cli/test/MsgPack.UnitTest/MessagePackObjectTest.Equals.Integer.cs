@@ -254,11 +254,6 @@ namespace MsgPack
 		}
 		
 		[Test]
-		public void TestEquals_Int640x8000000000000000_Nil_False()
-		{
-			AssertNotEquals( ( System.Int64 )( -9223372036854775808 ), MessagePackObject.Nil );
-		}
-		[Test]
 		public void TestEquals_Int320x80000000_Int640x8000000000000000_False()
 		{
 			AssertNotEquals( ( System.Int32 )( -2147483648 ), ( System.Int64 )( -9223372036854775808 ) );
@@ -486,11 +481,6 @@ namespace MsgPack
 			AssertNotEquals( ( System.Int32 )( -2147483648 ), ( System.UInt64 )( 18446744073709551615 ) );
 		}
 		
-		[Test]
-		public void TestEquals_Int320x80000000_Nil_False()
-		{
-			AssertNotEquals( ( System.Int32 )( -2147483648 ), MessagePackObject.Nil );
-		}
 		[Test]
 		public void TestEquals_Int160x8000_Int640x8000000000000000_False()
 		{
@@ -720,11 +710,6 @@ namespace MsgPack
 		}
 		
 		[Test]
-		public void TestEquals_Int160x8000_Nil_False()
-		{
-			AssertNotEquals( ( System.Int16 )( -32768 ), MessagePackObject.Nil );
-		}
-		[Test]
 		public void TestEquals_SByte0x80_Int640x8000000000000000_False()
 		{
 			AssertNotEquals( ( System.SByte )( -128 ), ( System.Int64 )( -9223372036854775808 ) );
@@ -952,11 +937,6 @@ namespace MsgPack
 			AssertNotEquals( ( System.SByte )( -128 ), ( System.UInt64 )( 18446744073709551615 ) );
 		}
 		
-		[Test]
-		public void TestEquals_SByte0x80_Nil_False()
-		{
-			AssertNotEquals( ( System.SByte )( -128 ), MessagePackObject.Nil );
-		}
 		[Test]
 		public void TestEquals_SByte0xf_Int640x8000000000000000_False()
 		{
@@ -1186,11 +1166,6 @@ namespace MsgPack
 		}
 		
 		[Test]
-		public void TestEquals_SByte0xf_Nil_False()
-		{
-			AssertNotEquals( ( System.SByte )( -1 ), MessagePackObject.Nil );
-		}
-		[Test]
 		public void TestEquals_Byte0x0_Int640x8000000000000000_False()
 		{
 			AssertNotEquals( ( System.Byte )( 0 ), ( System.Int64 )( -9223372036854775808 ) );
@@ -1418,11 +1393,6 @@ namespace MsgPack
 			AssertNotEquals( ( System.Byte )( 0 ), ( System.UInt64 )( 18446744073709551615 ) );
 		}
 		
-		[Test]
-		public void TestEquals_Byte0x0_Nil_False()
-		{
-			AssertNotEquals( ( System.Byte )( 0 ), MessagePackObject.Nil );
-		}
 		[Test]
 		public void TestEquals_Byte0x1_Int640x8000000000000000_False()
 		{
@@ -1652,11 +1622,6 @@ namespace MsgPack
 		}
 		
 		[Test]
-		public void TestEquals_Byte0x1_Nil_False()
-		{
-			AssertNotEquals( ( System.Byte )( 1 ), MessagePackObject.Nil );
-		}
-		[Test]
 		public void TestEquals_Byte0x0ff_Int640x8000000000000000_False()
 		{
 			AssertNotEquals( ( System.Byte )( 255 ), ( System.Int64 )( -9223372036854775808 ) );
@@ -1884,11 +1849,6 @@ namespace MsgPack
 			AssertNotEquals( ( System.Byte )( 255 ), ( System.UInt64 )( 18446744073709551615 ) );
 		}
 		
-		[Test]
-		public void TestEquals_Byte0x0ff_Nil_False()
-		{
-			AssertNotEquals( ( System.Byte )( 255 ), MessagePackObject.Nil );
-		}
 		[Test]
 		public void TestEquals_UInt160x0_Int640x8000000000000000_False()
 		{
@@ -2118,11 +2078,6 @@ namespace MsgPack
 		}
 		
 		[Test]
-		public void TestEquals_UInt160x0_Nil_False()
-		{
-			AssertNotEquals( ( System.UInt16 )( 0 ), MessagePackObject.Nil );
-		}
-		[Test]
 		public void TestEquals_UInt320x0_Int640x8000000000000000_False()
 		{
 			AssertNotEquals( ( System.UInt32 )( 0 ), ( System.Int64 )( -9223372036854775808 ) );
@@ -2350,11 +2305,6 @@ namespace MsgPack
 			AssertNotEquals( ( System.UInt32 )( 0 ), ( System.UInt64 )( 18446744073709551615 ) );
 		}
 		
-		[Test]
-		public void TestEquals_UInt320x0_Nil_False()
-		{
-			AssertNotEquals( ( System.UInt32 )( 0 ), MessagePackObject.Nil );
-		}
 		[Test]
 		public void TestEquals_UInt640x0ffffffffffffffff_Int640x8000000000000000_False()
 		{
@@ -2584,9 +2534,288 @@ namespace MsgPack
 		}
 		
 		[Test]
-		public void TestEquals_UInt640x0ffffffffffffffff_Nil_False()
+		public void TestEqualsInt64_Nil_False()
 		{
-			AssertNotEquals( ( System.UInt64 )( 18446744073709551615 ), MessagePackObject.Nil );
+			AssertNotEquals( ( System.Int64 )( 1 ), MessagePackObject.Nil );
 		}
+
+		[Test]
+		public void TestEqualsInt64MinusOne_Double_True()
+		{
+			AssertEquals( ( System.Int64 )( -1 ), -1.0 );
+		}
+
+		[Test]
+		public void TestEqualsInt64MinusOne_Single_True()
+		{
+			AssertEquals( ( System.Int64 )( -1 ), -1.0f );
+		}
+		[Test]
+		public void TestEqualsInt64Zero_Double_True()
+		{
+			AssertEquals( ( System.Int64 )( 0 ), -0.0 );
+		}
+
+		[Test]
+		public void TestEqualsInt64Zero_Single_True()
+		{
+			AssertEquals( ( System.Int64 )( 0 ), -0.0f );
+		}
+		
+		[Test]
+		public void TestEqualsInt64PlusOne_Double_True()
+		{
+			AssertEquals( ( System.Int64 )( 1 ), 1.0 );
+		}
+
+		[Test]
+		public void TestEqualsInt64PlusOne_Single_True()
+		{
+			AssertEquals( ( System.Int64 )( 1 ), 1.0f );
+		}
+		
+		[Test]
+		public void TestEqualsInt32_Nil_False()
+		{
+			AssertNotEquals( ( System.Int32 )( 1 ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestEqualsInt32MinusOne_Double_True()
+		{
+			AssertEquals( ( System.Int32 )( -1 ), -1.0 );
+		}
+
+		[Test]
+		public void TestEqualsInt32MinusOne_Single_True()
+		{
+			AssertEquals( ( System.Int32 )( -1 ), -1.0f );
+		}
+		[Test]
+		public void TestEqualsInt32Zero_Double_True()
+		{
+			AssertEquals( ( System.Int32 )( 0 ), -0.0 );
+		}
+
+		[Test]
+		public void TestEqualsInt32Zero_Single_True()
+		{
+			AssertEquals( ( System.Int32 )( 0 ), -0.0f );
+		}
+		
+		[Test]
+		public void TestEqualsInt32PlusOne_Double_True()
+		{
+			AssertEquals( ( System.Int32 )( 1 ), 1.0 );
+		}
+
+		[Test]
+		public void TestEqualsInt32PlusOne_Single_True()
+		{
+			AssertEquals( ( System.Int32 )( 1 ), 1.0f );
+		}
+		
+		[Test]
+		public void TestEqualsInt16_Nil_False()
+		{
+			AssertNotEquals( ( System.Int16 )( 1 ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestEqualsInt16MinusOne_Double_True()
+		{
+			AssertEquals( ( System.Int16 )( -1 ), -1.0 );
+		}
+
+		[Test]
+		public void TestEqualsInt16MinusOne_Single_True()
+		{
+			AssertEquals( ( System.Int16 )( -1 ), -1.0f );
+		}
+		[Test]
+		public void TestEqualsInt16Zero_Double_True()
+		{
+			AssertEquals( ( System.Int16 )( 0 ), -0.0 );
+		}
+
+		[Test]
+		public void TestEqualsInt16Zero_Single_True()
+		{
+			AssertEquals( ( System.Int16 )( 0 ), -0.0f );
+		}
+		
+		[Test]
+		public void TestEqualsInt16PlusOne_Double_True()
+		{
+			AssertEquals( ( System.Int16 )( 1 ), 1.0 );
+		}
+
+		[Test]
+		public void TestEqualsInt16PlusOne_Single_True()
+		{
+			AssertEquals( ( System.Int16 )( 1 ), 1.0f );
+		}
+		
+		[Test]
+		public void TestEqualsSByte_Nil_False()
+		{
+			AssertNotEquals( ( System.SByte )( 1 ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestEqualsSByteMinusOne_Double_True()
+		{
+			AssertEquals( ( System.SByte )( -1 ), -1.0 );
+		}
+
+		[Test]
+		public void TestEqualsSByteMinusOne_Single_True()
+		{
+			AssertEquals( ( System.SByte )( -1 ), -1.0f );
+		}
+		[Test]
+		public void TestEqualsSByteZero_Double_True()
+		{
+			AssertEquals( ( System.SByte )( 0 ), -0.0 );
+		}
+
+		[Test]
+		public void TestEqualsSByteZero_Single_True()
+		{
+			AssertEquals( ( System.SByte )( 0 ), -0.0f );
+		}
+		
+		[Test]
+		public void TestEqualsSBytePlusOne_Double_True()
+		{
+			AssertEquals( ( System.SByte )( 1 ), 1.0 );
+		}
+
+		[Test]
+		public void TestEqualsSBytePlusOne_Single_True()
+		{
+			AssertEquals( ( System.SByte )( 1 ), 1.0f );
+		}
+		
+		[Test]
+		public void TestEqualsByte_Nil_False()
+		{
+			AssertNotEquals( ( System.Byte )( 1 ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestEqualsByteZero_Double_True()
+		{
+			AssertEquals( ( System.Byte )( 0 ), -0.0 );
+		}
+
+		[Test]
+		public void TestEqualsByteZero_Single_True()
+		{
+			AssertEquals( ( System.Byte )( 0 ), -0.0f );
+		}
+		
+		[Test]
+		public void TestEqualsBytePlusOne_Double_True()
+		{
+			AssertEquals( ( System.Byte )( 1 ), 1.0 );
+		}
+
+		[Test]
+		public void TestEqualsBytePlusOne_Single_True()
+		{
+			AssertEquals( ( System.Byte )( 1 ), 1.0f );
+		}
+		
+		[Test]
+		public void TestEqualsUInt16_Nil_False()
+		{
+			AssertNotEquals( ( System.UInt16 )( 1 ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestEqualsUInt16Zero_Double_True()
+		{
+			AssertEquals( ( System.UInt16 )( 0 ), -0.0 );
+		}
+
+		[Test]
+		public void TestEqualsUInt16Zero_Single_True()
+		{
+			AssertEquals( ( System.UInt16 )( 0 ), -0.0f );
+		}
+		
+		[Test]
+		public void TestEqualsUInt16PlusOne_Double_True()
+		{
+			AssertEquals( ( System.UInt16 )( 1 ), 1.0 );
+		}
+
+		[Test]
+		public void TestEqualsUInt16PlusOne_Single_True()
+		{
+			AssertEquals( ( System.UInt16 )( 1 ), 1.0f );
+		}
+		
+		[Test]
+		public void TestEqualsUInt32_Nil_False()
+		{
+			AssertNotEquals( ( System.UInt32 )( 1 ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestEqualsUInt32Zero_Double_True()
+		{
+			AssertEquals( ( System.UInt32 )( 0 ), -0.0 );
+		}
+
+		[Test]
+		public void TestEqualsUInt32Zero_Single_True()
+		{
+			AssertEquals( ( System.UInt32 )( 0 ), -0.0f );
+		}
+		
+		[Test]
+		public void TestEqualsUInt32PlusOne_Double_True()
+		{
+			AssertEquals( ( System.UInt32 )( 1 ), 1.0 );
+		}
+
+		[Test]
+		public void TestEqualsUInt32PlusOne_Single_True()
+		{
+			AssertEquals( ( System.UInt32 )( 1 ), 1.0f );
+		}
+		
+		[Test]
+		public void TestEqualsUInt64_Nil_False()
+		{
+			AssertNotEquals( ( System.UInt64 )( 1 ), MessagePackObject.Nil );
+		}
+
+		[Test]
+		public void TestEqualsUInt64Zero_Double_True()
+		{
+			AssertEquals( ( System.UInt64 )( 0 ), -0.0 );
+		}
+
+		[Test]
+		public void TestEqualsUInt64Zero_Single_True()
+		{
+			AssertEquals( ( System.UInt64 )( 0 ), -0.0f );
+		}
+		
+		[Test]
+		public void TestEqualsUInt64PlusOne_Double_True()
+		{
+			AssertEquals( ( System.UInt64 )( 1 ), 1.0 );
+		}
+
+		[Test]
+		public void TestEqualsUInt64PlusOne_Single_True()
+		{
+			AssertEquals( ( System.UInt64 )( 1 ), 1.0f );
+		}
+		
 	}
 }

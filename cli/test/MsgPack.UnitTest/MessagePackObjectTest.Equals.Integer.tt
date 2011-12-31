@@ -24,6 +24,7 @@
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Numerics" #>
 <#@ import namespace="System.Runtime.InteropServices" #>
 <#
@@ -116,18 +117,66 @@ for( int __i = 0; __i < __values.Length; __i++ )
 <#
 		}
 	}
-	
-	var __nullMethodName = "TestEquals_" + __leftType.Name + "0x" + __left.ToString( "x" ) + "_Nil_False";
-	if( !__defined.Add( __nullMethodName ) )
+}
+
+foreach( var __leftType in __values.Select( x => x.GetType() ).Distinct() )
+{
+#>
+		[Test]
+		public void TestEquals<#= __leftType.Name #>_Nil_False()
+		{
+			AssertNotEquals( ( <#= __leftType #> )( 1 ), MessagePackObject.Nil );
+		}
+
+<#
+	switch( __leftType.Name )
 	{
-		continue;
+		case "Int64":
+		case "Int32":
+		case "Int16":
+		case "SByte":
+		{
+#>
+		[Test]
+		public void TestEquals<#= __leftType.Name #>MinusOne_Double_True()
+		{
+			AssertEquals( ( <#= __leftType #> )( -1 ), -1.0 );
+		}
+
+		[Test]
+		public void TestEquals<#= __leftType.Name #>MinusOne_Single_True()
+		{
+			AssertEquals( ( <#= __leftType #> )( -1 ), -1.0f );
+		}
+<#
+			break;
+		}
 	}
 #>
 		[Test]
-		public void <#= __nullMethodName #>()
+		public void TestEquals<#= __leftType.Name #>Zero_Double_True()
 		{
-			AssertNotEquals( ( <#= __leftType #> )( <#= __left #> ), MessagePackObject.Nil );
+			AssertEquals( ( <#= __leftType #> )( 0 ), -0.0 );
 		}
+
+		[Test]
+		public void TestEquals<#= __leftType.Name #>Zero_Single_True()
+		{
+			AssertEquals( ( <#= __leftType #> )( 0 ), -0.0f );
+		}
+		
+		[Test]
+		public void TestEquals<#= __leftType.Name #>PlusOne_Double_True()
+		{
+			AssertEquals( ( <#= __leftType #> )( 1 ), 1.0 );
+		}
+
+		[Test]
+		public void TestEquals<#= __leftType.Name #>PlusOne_Single_True()
+		{
+			AssertEquals( ( <#= __leftType #> )( 1 ), 1.0f );
+		}
+		
 <#
 }
 #>

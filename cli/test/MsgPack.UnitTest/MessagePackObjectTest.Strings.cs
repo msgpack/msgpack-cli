@@ -39,6 +39,21 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestAsString_Null_Success()
+		{
+			var target = new MessagePackObject( default( string ) );
+			Assert.IsNull( target.AsString() );
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestAsString_IsNotString()
+		{
+			var target = new MessagePackObject( 0 );
+			target.AsString();
+		}
+
+		[Test]
 		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString1_EncodingMissmatchAndThrowsDecoderFallbackException()
 		{
@@ -63,6 +78,37 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestAsString1_EncodingIsUtf32_Success()
+		{
+			var target = new MessagePackObject( Encoding.UTF32.GetBytes( _japanese ) );
+			var result = target.AsString( Encoding.UTF32 );
+			Assert.AreEqual( _japanese, result );
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestAsString1_EncodingIsUtf32_Fail()
+		{
+			var target = new MessagePackObject( Encoding.UTF32.GetBytes( _japanese ) );
+			var result = target.AsString( new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) );
+		}
+
+		[Test]
+		public void TestAsString1_Null_Success()
+		{
+			var target = new MessagePackObject( default( string ) );
+			Assert.IsNull( target.AsString( Encoding.UTF32 ) );
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestAsString1_IsNotString()
+		{
+			var target = new MessagePackObject( 0 );
+			target.AsString( Encoding.UTF32 );
+		}
+
+		[Test]
 		public void TestAsStringUtf8_Normal_Success()
 		{
 			var target = new MessagePackObject( Encoding.UTF8.GetBytes( _japanese ) );
@@ -74,6 +120,21 @@ namespace MsgPack
 		{
 			var target = new MessagePackObject( new byte[ 0 ] );
 			Assert.AreEqual( "", target.AsStringUtf8() );
+		}
+
+		[Test]
+		public void TestAsStringUtf8_Null_Success()
+		{
+			var target = new MessagePackObject( default( string ) );
+			Assert.IsNull( target.AsStringUtf8() );
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestAsStringUtf8_IsNotString()
+		{
+			var target = new MessagePackObject( 0 );
+			target.AsStringUtf8();
 		}
 
 		[Test]
@@ -137,6 +198,21 @@ namespace MsgPack
 		{
 			var target = new MessagePackObject( Encoding.UTF8.GetBytes( _japanese ) );
 			var result = target.AsStringUtf16();
+		}
+
+		[Test]
+		public void TestAsStringUtf16_Null_Success()
+		{
+			var target = new MessagePackObject( default( string ) );
+			Assert.IsNull( target.AsStringUtf16() );
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestAsStringUtf16_IsNotString()
+		{
+			var target = new MessagePackObject( 0 );
+			target.AsStringUtf16();
 		}
 	}
 }

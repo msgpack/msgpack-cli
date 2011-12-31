@@ -143,5 +143,11 @@ namespace MsgPack
 		{
 			AssertNotEquals( false, MessagePackObject.Nil );
 		}
+
+		[Test]
+		public void TestEquals_OtherIsNotMessagePackObject_False()
+		{
+			Assert.IsFalse( new MessagePackObject( 0 ).Equals( DateTimeKind.Unspecified ) );
+		}
 	}
 }
