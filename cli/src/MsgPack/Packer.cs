@@ -1074,7 +1074,7 @@ namespace MsgPack
 			this.PrivatePackRawCore( value );
 		}
 
-		private void PrivatePackRowCore( IEnumerable<byte> value )
+		private void PrivatePackRawCore( IEnumerable<byte> value )
 		{
 			if ( !this.CanSeek )
 			{
