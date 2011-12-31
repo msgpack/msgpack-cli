@@ -652,7 +652,8 @@ namespace MsgPack
 				if ( typeof( IEnumerable<MessagePackObject> ).IsAssignableFrom( type )
 					&& this._handleOrTypeCode is MessagePackString )
 				{
-					return true;
+					// Raw is NOT array.
+					return false;
 				}
 
 				return type.IsAssignableFrom( this._handleOrTypeCode.GetType() );
