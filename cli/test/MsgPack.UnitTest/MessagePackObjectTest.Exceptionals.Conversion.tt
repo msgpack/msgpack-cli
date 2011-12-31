@@ -54,8 +54,7 @@ var __integers =
 		typeof( byte ),
 		typeof( ushort ),
 		typeof( uint ),
-		typeof( ulong ),
-		typeof( float ),
+		typeof( ulong )
 	};
 	
 var __reals =

@@ -86,7 +86,6 @@ namespace MsgPack
 	partial class MessagePackObjectTest_IsTypeOf
 	{
 <#
-var __defined = new HashSet<string>();
 foreach( var __leftType in __integerTypes )
 {
 	foreach( var __value in __values )
