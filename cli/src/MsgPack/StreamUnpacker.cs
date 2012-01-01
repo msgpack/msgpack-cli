@@ -275,9 +275,9 @@ namespace MsgPack
 			while ( !this.IsInTailUltimately() )
 			{
 				var data = this._unpacker.Unpack( this._currentSource.Stream, unpackingMode );
-				this._data = data;
 				if ( data != null )
 				{
+					this._data = data;
 					return true;
 				}
 				else
