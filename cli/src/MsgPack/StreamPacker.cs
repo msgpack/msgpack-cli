@@ -41,8 +41,6 @@ namespace MsgPack
 			get { return this._stream.Position; }
 		}
 
-		public StreamPacker( Stream output ) : this( output, true ) { }
-
 		public StreamPacker( Stream output, bool ownsStream )
 		{
 			this._stream = output;
