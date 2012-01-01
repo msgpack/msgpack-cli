@@ -97,7 +97,7 @@ namespace MsgPack
 		{
 			if ( this._unpacked == 0 )
 			{
-				return this;
+				throw new InvalidOperationException( "This unpacker is located before of the head." );
 			}
 
 			return new SubtreeUnpacker( this._root, this );
