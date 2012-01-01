@@ -157,7 +157,7 @@ namespace MsgPack
 		/// <returns><see cref="Unpacker"/> instance.</returns>
 		public static Unpacker Create( Stream stream )
 		{
-			return new StreamUnpacker( stream );
+			return Create( stream, true );
 		}
 
 		/// <summary>

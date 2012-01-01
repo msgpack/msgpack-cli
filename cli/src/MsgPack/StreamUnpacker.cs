@@ -149,14 +149,6 @@ namespace MsgPack
 
 		/// <summary>
 		///		Initialize new instance using specified <see cref="Stream"/> as source.
-		///		This instance will have <see cref="Stream"/> ownership.
-		/// </summary>
-		/// <param name="source">Source <see cref="Stream"/>.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public StreamUnpacker( Stream source ) : this( source, true ) { }
-
-		/// <summary>
-		///		Initialize new instance using specified <see cref="Stream"/> as source.
 		/// </summary>
 		/// <param name="source">Source <see cref="Stream"/>.</param>
 		/// <param name="ownsStream">If you want to dispose stream when this instance is disposed, then true.</param>
@@ -170,43 +162,7 @@ namespace MsgPack
 
 			this._currentSource = new DataSource( source, ownsStream );
 		}
-
-		/// <summary>
-		///		Initialize new instance using specified <see cref="Byte"/>[] as source.
-		/// </summary>
-		/// <param name="initialData">Source <see cref="Byte"/>[].</param>
-		/// <exception cref="ArgumentNullException"><paramref name="initialData"/> is null.</exception>
-		public StreamUnpacker( byte[] initialData ) : this( initialData, 0, initialData == null ? 0 : initialData.Length ) { }
-
-		/// <summary>
-		///		Initialize new instance using specified <see cref="Byte"/>[] as source.
-		/// </summary>
-		/// <param name="initialData">Source <see cref="Byte"/>[].</param>
-		/// <param name="offset">Offset of <paramref name="initialData"/> to copy.</param>
-		/// <param name="count">Count of <paramref name="initialData"/> to copy.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="initialData"/> is null.</exception>
-		public StreamUnpacker( byte[] initialData, int offset, int count )
-		{
-			Validation.ValidateBuffer( initialData, offset, count, "initialData", "count", true );
-
-			this._currentSource = new DataSource( initialData );
-		}
-
-		/// <summary>
-		///		Initialize new instance using specified <see cref="IEnumerable&lt;T&gt;">IEnumerable</see>&lt;<see cref="Byte"/>&gt; as source.
-		/// </summary>
-		/// <param name="source">Source <see cref="IEnumerable&lt;T&gt;">IEnumerable</see>&lt;<see cref="Byte"/>&gt;.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		public StreamUnpacker( IEnumerable<byte> source )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException( "source" );
-			}
-
-			this._currentSource = new DataSource( source );
-		}
-
+		
 		/// <summary>
 		///		Clean up internal resources.
 		/// </summary>
