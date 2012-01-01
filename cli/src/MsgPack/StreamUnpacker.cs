@@ -228,6 +228,8 @@ namespace MsgPack
 			}
 
 			this._successorSources.Clear();
+
+			base.Dispose( disposing );
 		}
 
 		/// <summary>

@@ -91,6 +91,8 @@ namespace MsgPack
 					this._root.EndReadSubtree();
 				}
 			}
+
+			base.Dispose( disposing );
 		}
 
 		protected sealed override Unpacker ReadSubtreeCore()
