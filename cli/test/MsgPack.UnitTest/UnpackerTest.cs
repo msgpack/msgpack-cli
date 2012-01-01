@@ -120,6 +120,31 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestRead_ReadInSubTreeTail_NoEffect()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2, 0x3 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( rootUnpacker.Read(), "Top Level" );
+				Assert.That( rootUnpacker.IsArrayHeader );
+
+				using ( var subTreeReader = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( subTreeReader.Read(), "1st" );
+					Assert.That( subTreeReader.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeReader.Read(), "2nd" );
+					Assert.That( subTreeReader.Data.Value.Equals( 2 ) );
+					Assert.That( subTreeReader.Read(), Is.False, "Tail" );
+					// Data should be last read.
+					Assert.That( subTreeReader.Data.Value.Equals( 2 ) );
+				}
+
+				Assert.That( rootUnpacker.Read(), "3rd" );
+				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) );
+			}
+		}
+
+		[Test]
 		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestRead_InSubTreeMode_Fail()
 		{
@@ -215,5 +240,27 @@ namespace MsgPack
 				}
 			}
 		}
+
+
+		[Test]
+		[ExpectedException( typeof( ArgumentNullException ) )]
+		public void TestCreate_StreamIsNull()
+		{
+			using ( Unpacker.Create( null ) ) { }
+		}
+
+		[Test]
+		public void TestCreate_OwnsStreamisFalse_NotDisposeStream()
+		{
+			using ( var stream = new MemoryStream() )
+			{
+				using ( Unpacker.Create( stream, false ) ) { }
+
+				// Should not throw ObjectDisposedException.
+				stream.WriteByte( 1 );
+			}
+		}
+
+		// TODO: Consider remove Feeding API and Create()
 	}
 }
