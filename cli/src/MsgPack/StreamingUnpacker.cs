@@ -69,27 +69,36 @@ namespace MsgPack
 
 		public uint UnpackingItemsCount
 		{
-			get { return this._wasEmptyCollection ? 0 : this._collectionState.UnpackingItemsCount; }
+			get { return this._lastEmptyCollection != EmptyCollectionType.None ? 0 : this._collectionState.UnpackingItemsCount; }
 		}
 
-		private bool _wasEmptyCollection;
+		private EmptyCollectionType _lastEmptyCollection;
 		private bool _isInCollection;
 
 		public bool IsInArrayHeader
 		{
 			get
 			{
-				if ( this._wasEmptyCollection )
+				switch ( this._lastEmptyCollection )
 				{
-					return true;
+					case EmptyCollectionType.Array:
+					{
+						return true;
+					}
+					case EmptyCollectionType.Map:
+					case EmptyCollectionType.Raw:
+					{
+						return false;
+					}
+					default:
+					{
+						if ( this._isInCollection )
+						{
+							return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsArray );
+						}
+						return false;
+					}
 				}
-
-				if ( this._isInCollection )
-				{
-					return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsArray );
-				}
-
-				return false;
 			}
 		}
 
@@ -97,17 +106,27 @@ namespace MsgPack
 		{
 			get
 			{
-				if ( this._wasEmptyCollection )
+				switch ( this._lastEmptyCollection )
 				{
-					return true;
-				}
+					case EmptyCollectionType.Array:
+					case EmptyCollectionType.Raw:
+					{
+						return false;
+					}
+					case EmptyCollectionType.Map:
+					{
+						return true;
+					}
+					default:
+					{
+						if ( this._isInCollection )
+						{
+							return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsMap );
+						}
 
-				if ( this._isInCollection )
-				{
-					return this._collectionState.UnpackedItemsCount == 0 && ( this._collectionState.IsMap );
+						return false;
+					}
 				}
-
-				return false;
 			}
 		}
 
@@ -160,14 +179,14 @@ namespace MsgPack
 
 			if ( unpackingMode == UnpackingMode.SubTree )
 			{
-				if ( !this._hasMoreEntries || this._wasEmptyCollection )
+				if ( !this._hasMoreEntries || this._lastEmptyCollection != EmptyCollectionType.None )
 				{
 					// This subtree ends.
 					return null;
 				}
 			}
 
-			this._wasEmptyCollection = false;
+			this._lastEmptyCollection = EmptyCollectionType.None;
 
 			MessagePackObject? collectionItemOrRoot;
 			while ( this._next( source, unpackingMode, out collectionItemOrRoot ) )
@@ -197,8 +216,7 @@ namespace MsgPack
 						}
 						else
 						{
-							if ( ( oldCollectionItemOrRoot.Value.IsArray && oldCollectionItemOrRoot.Value.AsList().Count == 0 )
-								|| ( oldCollectionItemOrRoot.Value.IsMap && oldCollectionItemOrRoot.Value.AsDictionary().Count == 0 ) )
+							if ( this._lastEmptyCollection != EmptyCollectionType.None )
 							{
 								// It was empty collection.
 								return 0;
@@ -327,7 +345,7 @@ namespace MsgPack
 		private static bool UnpackEmptyMap( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = new MessagePackObject( _emptyMap, true );
-			@this._wasEmptyCollection = true;
+			@this._lastEmptyCollection = EmptyCollectionType.Map;
 			return true;
 		}
 
@@ -345,7 +363,7 @@ namespace MsgPack
 		private static bool UnpackEmptyArray( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = new MessagePackObject( _emptyArray, true );
-			@this._wasEmptyCollection = true;
+			@this._lastEmptyCollection = EmptyCollectionType.Array;
 			return true;
 		}
 
@@ -363,6 +381,7 @@ namespace MsgPack
 		private static bool UnpackEmptyRaw( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			result = _emptyBinary;
+			@this._lastEmptyCollection = EmptyCollectionType.Raw;
 			return true;
 		}
 
@@ -492,7 +511,7 @@ namespace MsgPack
 				{
 					// empty collection
 					unpacked = CreateEmptyCollection( this._contextValueHeader );
-					this._wasEmptyCollection = true;
+					this._lastEmptyCollection = ToEmptyCollectionType( this._contextValueHeader.Type );
 					return true;
 				}
 
@@ -506,6 +525,35 @@ namespace MsgPack
 			// Try next iteration.
 			unpacked = null;
 			return false;
+		}
+
+		private EmptyCollectionType ToEmptyCollectionType( MessageType messageType )
+		{
+			switch ( messageType )
+			{
+				case MessageType.Array16:
+				case MessageType.Array32:
+				case MessageType.FixArray:
+				{
+					return EmptyCollectionType.Array;
+				}
+				case MessageType.Map16:
+				case MessageType.Map32:
+				case MessageType.FixMap:
+				{
+					return EmptyCollectionType.Map;
+				}
+				case MessageType.Raw16:
+				case MessageType.Raw32:
+				case MessageType.FixRaw:
+				{
+					return EmptyCollectionType.Raw;
+				}
+				default:
+				{
+					return EmptyCollectionType.None;
+				}
+			}
 		}
 
 		private bool UnpackRawLength( Stream source, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
@@ -1310,6 +1358,14 @@ namespace MsgPack
 					}
 				}
 			}
+		}
+		
+		private enum EmptyCollectionType
+		{
+			None,
+			Array,
+			Map,
+			Raw
 		}
 	}
 }
