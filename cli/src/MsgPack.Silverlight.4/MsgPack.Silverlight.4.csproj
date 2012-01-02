@@ -415,11 +415,14 @@
     <Compile Include="..\MsgPack\Unpacking.cs">
       <Link>Unpacking.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Unpacking.Integers.cs">
-      <Link>Unpacking.Integers.cs</Link>
+    <Compile Include="..\MsgPack\Unpacking.Numerics.cs">
+      <Link>Unpacking.Numerics.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Unpacking.Others.cs">
       <Link>Unpacking.Others.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Unpacking.Streaming.cs">
+      <Link>Unpacking.Streaming.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Unpacking.String.cs">
       <Link>Unpacking.String.cs</Link>
@@ -429,6 +432,12 @@
     </Compile>
     <Compile Include="..\MsgPack\UnpackingResult.cs">
       <Link>UnpackingResult.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackingStream.cs">
+      <Link>UnpackingStream.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
+      <Link>UnpackingStreamReader.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
       <Link>UnsafeNativeMethods.cs</Link>
@@ -448,7 +457,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
