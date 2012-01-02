@@ -23,23 +23,27 @@
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.IO" #>
-<#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Runtime.InteropServices" #>
-<#@ import namespace="System.Text" #>
 <#
 // This file defines direct integer conversion API portion of Unpackaging
 var __typeName = "Unpacking";
-var __methods = new []
+var __numericTypes = new []
 {
-	Tuple.Create( "Array", "IList<MessagePackObject>", "the array" ),
-	Tuple.Create( "ArrayLength", "Int32", "length of the array" ),
-	Tuple.Create( "Dictionary", "MessagePackObjectDictionary", "the dictionary" ),
-	Tuple.Create( "DictionaryCount", "Int32", "count of the dictionary entries" ),
-	Tuple.Create( "Binary", "byte[]", "the raw binary" ),
-	Tuple.Create( "Boolean", "bool", "the boolean" ),
-	Tuple.Create( "Null", "object", "the nil" ),
-	Tuple.Create( "Object", "MessagePackObject", "the <see cref=\"MessagePackObject\" /> which represents the value which has MessagePack type semantics." ),
+	typeof( byte ),
+	typeof( sbyte ),
+	typeof( short ), 
+	typeof( ushort ),
+	typeof( int ), 
+	typeof( uint ), 
+	typeof( long ), 
+	typeof( ulong ),
+	typeof( float ),
+	typeof( double )
 };
+
+Func<Type,bool> __isClsCompliant = 
+   type => ( type != typeof( sbyte ) && type != typeof( ushort ) && type != typeof( uint ) && type != typeof( ulong ) );
+
 #>
 #region -- License Terms --
 //
@@ -62,8 +66,8 @@ var __methods = new []
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
 
 namespace MsgPack
@@ -74,15 +78,15 @@ namespace MsgPack
 	static partial class <#= __typeName #>
 	{
 <#
-foreach( var __method in __methods )
+foreach( var __type in __numericTypes )
 {
 #>
 		///	<summary>
-		///		Unpacks <#= __method.Item3 #> from the head of specified byte array.
+		///		Unpacks <see cref="<#= __type #>" /> value from the head of specified byte array.
 		///	</summary>
 		///	<param name="source">The byte array which contains Message Pack binary stream.</param>
 		///	<returns>
-		///		The <see cref="UnpackingResult{T}"/> of <#= ToSeeElement( __method.Item2 ) #> which contains unpacked <#= __method.Item3 #> and processed bytes count.
+		///		The <see cref="UnpackingResult{T}"/> of <see cref="<#= __type #>" /> which contains unpacked <see cref="<#= __type #>" /> value and processed bytes count.
 		///	</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
@@ -94,28 +98,36 @@ foreach( var __method in __methods )
 		///		<paramref name="source"/> is not valid MessagePack stream.
 		///	</exception>
 		/// <exception cref="MessageTypeException">
-		///		The unpacked result in the <paramref name="source"/> is not compatible to <#= ToSeeElement( __method.Item2 ) #>.
+		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="<#= __type #>" />.
 		///	</exception>
 		/// <remarks>
 		///		<para>
-		/// 		Invocation of this method is equivalant to call <see cref="Unpack<#= __method.Item1 #>(byte[], int)"/> with <c>offset</c> is <c>0</c>.
+		/// 		Invocation of this method is equivalant to call <see cref="Unpack<#= __type.Name #>(byte[], int)"/> with <c>offset</c> is <c>0</c>.
 		///		</para>
 		///		<para>
 		///			When the type of packed value is not known, use <see cref="UnpackObject(byte[])"/> instead.
 		///		</para>
 		///	</remarks>
-		public static UnpackingResult<#= "<" + __method.Item2 + ">" #> Unpack<#= __method.Item1 #>( byte[] source )
+<#
+	if( !__isClsCompliant( __type ) )
+	{
+#>
+		[CLSCompliant( false )]
+<#
+	}
+#>
+		public static UnpackingResult<#= "<" + __type.Name + ">" #> Unpack<#= __type.Name #>( byte[] source )
 		{
-			return Unpack<#= __method.Item1 #>( source, 0 );
+			return Unpack<#= __type.Name #>( source, 0 );
 		}
 
 		///	<summary>
-		///		Unpacks <#= __method.Item3 #> from the specified byte array.
+		///		Unpacks <see cref="<#= __type #>" /> value from the specified byte array.
 		///	</summary>
 		///	<param name="source">The byte array which contains Message Pack binary stream.</param>
 		///	<param name="offset">The offset to be unpacking start with.</param>
 		///	<returns>
-		///		The <see cref="UnpackingResult{T}"/> of <#= ToSeeElement( __method.Item2 ) #> which contains unpacked <#= __method.Item3 #> and processed bytes count.
+		///		The <see cref="UnpackingResult{T}"/> of <see cref="<#= __type #>" /> which contains unpacked <see cref="<#= __type #>" /> value and processed bytes count.
 		///	</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
@@ -131,12 +143,20 @@ foreach( var __method in __methods )
 		///		<paramref name="source"/> is not valid MessagePack stream.
 		///	</exception>
 		/// <exception cref="MessageTypeException">
-		///		The unpacked result in the <paramref name="source"/> is not compatible to <#= ToSeeElement( __method.Item2 ) #>.
+		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="<#= __type #>" />.
 		///	</exception>
 		/// <remarks>
 		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
 		///	</remarks>
-		public static UnpackingResult<#= "<" + __method.Item2 + ">" #> Unpack<#= __method.Item1 #>( byte[] source, int offset )
+<#
+	if( !__isClsCompliant( __type ) )
+	{
+#>
+		[CLSCompliant( false )]
+<#
+	}
+#>
+		public static UnpackingResult<#= "<" + __type.Name + ">" #> Unpack<#= __type.Name #>( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
 			Contract.EndContractBlock();
@@ -144,17 +164,17 @@ foreach( var __method in __methods )
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
-				var value = Unpack<#= __method.Item1 #>Core( stream );
-				return new UnpackingResult<#= "<" + __method.Item2 + ">" #>( value, unchecked( ( int )( stream.Position - offset ) ) );
+				var value = Unpack<#= __type.Name #>Core( stream );
+				return new UnpackingResult<#= "<" + __type.Name + ">" #>( value, unchecked( ( int )( stream.Position - offset ) ) );
 			}
 		}
-		
+
 		///	<summary>
-		///		Unpacks <#= __method.Item3 #> value from the specified <see cref="Stream"/>.
+		///		Unpacks <see cref="<#= __type #>" /> value from the specified <see cref="Stream"/>.
 		///	</summary>
 		///	<param name="source">The <see cref="Stream"/> which contains Message Pack binary stream.</param>
 		///	<returns>
-		///		The unpacked <#= __method.Item3 #> value.
+		///		The unpacked <see cref="<#= __type #>" /> value.
 		///	</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
@@ -167,7 +187,7 @@ foreach( var __method in __methods )
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
 		///	</exception>
 		/// <exception cref="MessageTypeException">
-		///		The unpacked result in the <paramref name="source"/> is not compatible to <#= ToSeeElement( __method.Item2 ) #>.
+		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="<#= __type #>" />.
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
 		///	</exception>
 		/// <remarks>
@@ -178,60 +198,41 @@ foreach( var __method in __methods )
 		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
 		///		</para>
 		///	</remarks>
-		public static <#= __method.Item2 #> Unpack<#= __method.Item1 #>( Stream source )
+<#
+	if( !__isClsCompliant( __type ) )
+	{
+#>
+		[CLSCompliant( false )]
+<#
+	}
+#>
+		
+		public static <#= __type.Name #> Unpack<#= __type.Name #>( Stream source )
 		{
 			ValidateStream( source );
 			Contract.EndContractBlock();
 
-			return Unpack<#= __method.Item1 #>Core( source );
+			return Unpack<#= __type.Name #>Core( source );
+		}
+		
+		private static <#= __type.Name #> Unpack<#= __type.Name #>Core( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				UnpackOne( unpacker );
+				VerifyIsScalar( unpacker );
+				try
+				{
+					return ( <#= __type.Name #> )unpacker.Data.Value;
+				}
+				catch( InvalidOperationException ex )
+				{
+					throw NewTypeMismatchException( typeof( <#= __type #> ), ex );
+				}
+			}
 		}
 <#
 }
 #>
 	}
 }
-<#+
-
-private static string ToSeeElement( string typeName )
-{
-	var lt = typeName.IndexOf( '<' );
-	var suffix = typeName.IndexOf( '[' );
-	if( lt < 0 )
-	{
-		if( suffix < 0 )
-		{
-			return "<see cref=\"" + typeName + "\" />";
-		}
-		else
-		{
-			return "<see cref=\"" + typeName.Remove( suffix, 2 ) + "\" />[]";
-		}
-	}
-	
-	var buffer = new StringBuilder();
-	buffer.Append( "<see cref=\"" ).Append( typeName, 0, lt );
-	int typeArgumentCount = typeName.Skip( lt ).Count( c => c == ',' ) + 1;
-	buffer.Append( '{' );
-	
-	if( typeArgumentCount == 1 )
-	{
-		buffer.Append( 'T' );
-	}
-	else
-	{
-		for( int i = 0; i < typeArgumentCount; i++ )
-		{
-			if( i > 0 )
-			{
-				buffer.Append( ',' );
-			}
-			
-			buffer.Append( 'T' ).Append( i );
-		}
-	}
-	
-	buffer.Append( "}\" />" );
-	
-	return buffer.ToString();
-}
-#>

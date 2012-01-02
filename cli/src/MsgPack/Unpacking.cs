@@ -20,9 +20,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
+using System.Globalization;
 
 namespace MsgPack
 {
@@ -36,130 +35,288 @@ namespace MsgPack
 	/// </summary>
 	public static partial class Unpacking
 	{
-		private static float ReadSingle( byte[] source, int offset )
-		{
-			if ( source.Length < offset + sizeof( float ) )
-			{
-				throw new UnpackException( "Insufficient array buffer length." );
-			}
-
-			return ReadSingleCore( source[ offset ], source[ offset + 1 ], source[ offset + 2 ], source[ offset + 3 ] );
-		}
-
-		private static float ReadSingle( Stream source )
-		{
-			if ( source.Length < source.Position + sizeof( float ) )
-			{
-				throw new UnpackException( "Insufficient stream length." );
-			}
-
-			return unchecked( ReadSingleCore( ( byte )source.ReadByte(), ( byte )source.ReadByte(), ( byte )source.ReadByte(), ( byte )source.ReadByte() ) );
-		}
-
-		private static float ReadSingleCore( byte b0, byte b1, byte b2, byte b3 )
-		{
-			// It might be faster by avoding byte array allocation.
-			var buffer = new byte[ sizeof( float ) ];
-			buffer[ 0 ] = b0;
-			buffer[ 1 ] = b1;
-			buffer[ 2 ] = b2;
-			buffer[ 3 ] = b3;
-
-			if ( BitConverter.IsLittleEndian )
-			{
-				Array.Reverse( buffer );
-			}
-
-			return BitConverter.ToSingle( buffer, 0 );
-		}
-
-		private static double ReadDouble( byte[] source, int offset )
-		{
-			if ( source.Length < offset + sizeof( double ) )
-			{
-				throw new UnpackException( "Insufficient array buffer length." );
-			}
-
-			return ReadDoubleCore( source[ offset ], source[ offset + 1 ], source[ offset + 2 ], source[ offset + 3 ], source[ offset + 4 ], source[ offset + 5 ], source[ offset + 6 ], source[ offset + 7 ] );
-		}
-
-		private static double ReadDouble( Stream source )
-		{
-			if ( source.Length < source.Position + sizeof( double ) )
-			{
-				throw new UnpackException( "Insufficient stream length." );
-			}
-
-			return unchecked( ReadDoubleCore( ( byte )source.ReadByte(), ( byte )source.ReadByte(), ( byte )source.ReadByte(), ( byte )source.ReadByte(), ( byte )source.ReadByte(), ( byte )source.ReadByte(), ( byte )source.ReadByte(), ( byte )source.ReadByte() ) );
-		}
-
-		private static double ReadDoubleCore( byte b0, byte b1, byte b2, byte b3, byte b4, byte b5, byte b6, byte b7 )
-		{
-			long buffer = 0;
-			unchecked
-			{
-				buffer |= ( long )( ( long )b0 << 56 );
-				buffer |= ( long )( ( long )b1 << 48 );
-				buffer |= ( long )( ( long )b2 << 40 );
-				buffer |= ( long )( ( long )b3 << 32 );
-				buffer |= ( long )( ( long )b4 << 24 );
-				buffer |= ( long )( ( long )b5 << 16 );
-				buffer |= ( long )( ( long )b6 << 8 );
-				buffer |= b7;
-			}
-
-			return BitConverter.Int64BitsToDouble( buffer );
-		}
-
-		/// <summary>
-		///		Unpack specified stream as <see cref="MessagePackObject"/>.
-		/// </summary>
-		/// <param name="source">Source <see cref="Stream"/>.</param>
-		/// <returns>
-		///		<see cref="MessagePackObject"/>.
-		///		If <paramref name="source"/> does not contain enough bytes, this value may be null.
-		///	</returns>
-		///	<exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		/// <remarks>
-		///		You can determine actual data type with <see cref="MessagePackObject"/>.
-		///		This method is useful when you don't have any knowledge about actual data type of input stream.
-		/// </remarks>
-		public static MessagePackObject? UnpackObject( Stream source )
+		private static void ValidateByteArray( byte[] source, int offset )
 		{
 			if ( source == null )
 			{
 				throw new ArgumentNullException( "source" );
 			}
 
-			Contract.EndContractBlock();
+			if ( source.Length == 0 )
+			{
+				throw new ArgumentException( "Source array is empty.", "source" );
+			}
 
-			return new StreamingUnpacker().Unpack( source, UnpackingMode.EntireTree );
+			if ( offset < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "offset", "The offset cannot be negative." );
+			}
+
+			if ( source.Length <= offset )
+			{
+				throw new ArgumentException( "Source array is too small to the offset.", "source" );
+			}
 		}
 
-		/// <summary>
-		///		Unpack specified bytes as <see cref="MessagePackObject"/>.
-		/// </summary>
-		/// <param name="source">Source <see cref="IEnumerable&lt;T&gt;">IEnumerable</see>&lt;<see cref="Byte"/>&gt;.</param>
-		/// <returns>
-		///		<see cref="MessagePackObject"/>.
-		///		If <paramref name="source"/> does not contain enough bytes, this value may be null.
-		///	</returns>
-		///	<exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-		/// <remarks>
-		///		You can determine actual data type with <see cref="MessagePackObject"/>.
-		///		This method is useful when you don't have any knowledge about actual data type of input stream.
-		/// </remarks>
-		public static MessagePackObject? UnpackObject( IEnumerable<byte> source )
+		private static void ValidateStream( Stream source )
 		{
 			if ( source == null )
 			{
 				throw new ArgumentNullException( "source" );
 			}
 
-			Contract.EndContractBlock();
+			if ( !source.CanRead )
+			{
+				throw new ArgumentException( "Stream is not readable.", "source" );
+			}
+		}
 
-			// TODO: Use more efficient custom stream?
-			return new StreamingUnpacker().Unpack( new MemoryStream( source.ToArray() ), UnpackingMode.EntireTree );
+		private static void UnpackOne( Unpacker unpacker )
+		{
+			if ( !unpacker.Read() || !unpacker.Data.HasValue )
+			{
+				throw new UnpackException( "Cannot unpack MesssagePack object from the stream." );
+			}
+		}
+
+		private static void VerifyIsScalar( Unpacker unpacker )
+		{
+			if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+			{
+				throw new MessageTypeException( "The underlying stream is not scalar type." );
+			}
+		}
+
+
+		private static bool UnpackBooleanCore( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				UnpackOne( unpacker );
+				VerifyIsScalar( unpacker );
+				try
+				{
+					return ( bool )unpacker.Data.Value;
+				}
+				catch ( InvalidOperationException ex )
+				{
+					throw NewTypeMismatchException( typeof( bool ), ex );
+				}
+			}
+		}
+
+
+		private static object UnpackNullCore( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				UnpackOne( unpacker );
+				VerifyIsScalar( unpacker );
+
+				if ( !unpacker.Data.Value.IsNil )
+				{
+					throw new MessageTypeException( "The underlying stream is not nil." );
+				}
+
+				return null;
+			}
+		}
+
+
+		private static int UnpackArrayLengthCore( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				UnpackOne( unpacker );
+				if ( !unpacker.IsArrayHeader )
+				{
+					throw new MessageTypeException( "The underlying stream is not array type." );
+				}
+
+				return ( int )unpacker.Data.Value;
+			}
+		}
+
+		private static IList<MessagePackObject> UnpackArrayCore( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				UnpackOne( unpacker );
+				if ( !unpacker.IsArrayHeader )
+				{
+					throw new MessageTypeException( "The underlying stream is not array type." );
+				}
+
+				return UnpackArrayCore( unpacker );
+			}
+		}
+
+		private static IList<MessagePackObject> UnpackArrayCore( Unpacker unpacker )
+		{
+			var result = new MessagePackObject[ ( int )unpacker.Data.Value ];
+			for ( int i = 0; i < result.Length; i++ )
+			{
+				result[ i ] = UnpackObjectCore( unpacker );
+			}
+
+			return result;
+		}
+
+
+		private static int UnpackDictionaryCountCore( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				UnpackOne( unpacker );
+				if ( !unpacker.IsMapHeader )
+				{
+					throw new MessageTypeException( "The underlying stream is not map type." );
+				}
+
+				return ( int )unpacker.Data.Value;
+			}
+		}
+
+		private static MessagePackObjectDictionary UnpackDictionaryCore( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				UnpackOne( unpacker );
+				if ( !unpacker.IsMapHeader )
+				{
+					throw new MessageTypeException( "The underlying stream is not map type." );
+				}
+
+				return UnpackDictionaryCore( unpacker );
+			}
+		}
+
+		private static MessagePackObjectDictionary UnpackDictionaryCore( Unpacker unpacker )
+		{
+			int count = ( int )unpacker.Data.Value;
+			var result = new MessagePackObjectDictionary( count );
+			for ( int i = 0; i < count; i++ )
+			{
+				var key = UnpackObjectCore( unpacker );
+				var value = UnpackObjectCore( unpacker );
+				try
+				{
+					result.Add( key, value );
+				}
+				catch ( ArgumentException ex )
+				{
+					throw new InvalidMessagePackStreamException( "The dicationry key is duplicated in the stream.", ex );
+				}
+			}
+
+			return result;
+		}
+
+
+		private static int UnpackRawLengthCore( Stream source )
+		{
+			int header = source.ReadByte();
+			if ( header < 0 )
+			{
+				throw new UnpackException( "Stream is end." );
+			}
+
+			if ( MessagePackCode.MinimumFixedRaw <= header && header <= MessagePackCode.MaximumFixedRaw )
+			{
+				return header - MessagePackCode.MinimumFixedRaw;
+			}
+			else if ( header == MessagePackCode.Raw16 )
+			{
+				var bytes = ReadBytes( source, sizeof( short ) );
+				unchecked
+				{
+					ushort buffer = bytes[ 1 ];
+					buffer |= ( ushort )( bytes[ 0 ] << 8 );
+					return ( short )buffer;
+				}
+			}
+			else if ( header == MessagePackCode.Raw16 )
+			{
+				var bytes = ReadBytes( source, sizeof( int ) );
+				unchecked
+				{
+					uint buffer = bytes[ 3 ];
+					buffer |= ( uint )( bytes[ 2 ] << 8 );
+					buffer |= ( uint )( bytes[ 1 ] << 16 );
+					buffer |= ( uint )( bytes[ 0 ] << 24 );
+					return ( int )buffer;
+				}
+			}
+			else
+			{
+				throw new MessageTypeException( "The underlying stream is not raw type." );
+			}
+		}
+
+		private static byte[] UnpackRawBodyCore( Stream source, int length )
+		{
+			return ReadBytes( source, length );
+		}
+
+		private static byte[] ReadBytes( Stream source, int length )
+		{
+			byte[] result = new byte[ length ];
+			int bytes = source.Read( result, 0, length );
+			if ( bytes < length )
+			{
+				throw new UnpackException( "The underlying stream unepectedly ends." );
+			}
+
+			return result;
+		}
+
+
+		private static byte[] UnpackBinaryCore( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				UnpackOne( unpacker );
+				try
+				{
+					return unpacker.Data.Value.AsBinary();
+				}
+				catch ( InvalidOperationException ex )
+				{
+					throw NewTypeMismatchException( typeof( byte[] ), ex );
+				}
+			}
+		}
+
+
+		private static MessagePackObject UnpackObjectCore( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				return UnpackObjectCore( unpacker );
+			}
+		}
+
+		private static MessagePackObject UnpackObjectCore( Unpacker unpacker )
+		{
+			UnpackOne( unpacker );
+
+			if ( unpacker.IsArrayHeader )
+			{
+				return new MessagePackObject( UnpackArrayCore( unpacker ), true );
+			}
+			else if ( unpacker.IsMapHeader )
+			{
+				return new MessagePackObject( UnpackDictionaryCore( unpacker ), true );
+			}
+			else
+			{
+				return unpacker.Data.Value;
+			}
+		}
+
+		private static Exception NewTypeMismatchException( Type requestedType, InvalidOperationException innerException )
+		{
+			return new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Message type is not compatible to {0}.", requestedType ), innerException );
 		}
 	}
 }
