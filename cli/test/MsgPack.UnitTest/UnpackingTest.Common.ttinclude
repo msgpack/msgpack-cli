@@ -1,0 +1,513 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ assembly Name="System.Numerics" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Numerics" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#+
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#+
+public static class TestData
+{
+	public static readonly Dictionary<string, TestCase> IntegerValues =
+		new Dictionary<string, TestCase>()
+		{
+			{ "Int64MinValue", new TestCase(){ Value = new BigInteger( Int64.MinValue ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }"
+			 } } },
+			{ "Int32MinValueMinusOne", new TestCase(){ Value = new BigInteger( Int32.MinValue -1L), Expressions = new [] { 
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF }"
+			 } } },
+			{ "Int32MinValue", new TestCase(){ Value = new BigInteger( Int32.MinValue ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x00, 0x00, 0x00 }",
+				"new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 }"
+			 } } },
+			{ "Int16MinValueMinusOne", new TestCase(){ Value = new BigInteger( Int16.MinValue - 1  ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF }",
+				"new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF }"
+			 } } },
+			{ "Int16MinValue", new TestCase(){ Value = new BigInteger( Int16.MinValue ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x00 }",
+				"new byte[] { 0xD2, 0xFF, 0xFF, 0x80, 0x00 }",
+				"new byte[] { 0xD1, 0x80, 0x00 }"
+			 } } },
+			{ "SByteMinValueMinusOne", new TestCase(){ Value = new BigInteger( SByte.MinValue - 1 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F }",
+				"new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0x7F }",
+				"new byte[] { 0xD1, 0xFF, 0x7F }"
+			 } } },
+			{ "SByteMinValue", new TestCase(){ Value = new BigInteger( SByte.MinValue ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F }",
+				"new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0x7F }",
+				"new byte[] { 0xD1, 0xFF, 0x7F }",
+				"new byte[] { 0xD0, 0x7F }"
+			 } } },
+			{ "NegativeFixNumMinValueMinusOne", new TestCase(){ Value = new BigInteger( -33 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xDF }",
+				"new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0xDF }",
+				"new byte[] { 0xD1, 0xFF, 0xDF }",
+				"new byte[] { 0xD0, 0xDF }"
+			 } } },
+			{ "NegativeFixNumMinValue", new TestCase(){ Value = new BigInteger( -32 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xE0 }",
+				"new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0xE0 }",
+				"new byte[] { 0xD1, 0xFF, 0xE0 }",
+				"new byte[] { 0xD0, 0xE0 }",
+				"new byte[] { 0xE0 }"
+			 } } },
+			{ "MinusOne", new TestCase(){ Value = new BigInteger( -1 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }",
+				"new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0xFF }",
+				"new byte[] { 0xD1, 0xFF, 0xFF }",
+				"new byte[] { 0xD0, 0xFF }",
+				"new byte[] { 0xFF }"
+			 } } },
+			{ "Zero", new TestCase(){ Value = new BigInteger( 0 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }",
+				"new byte[] { 0xD2, 0x00, 0x00, 0x00, 0x00 }",
+				"new byte[] { 0xCE, 0x00, 0x00, 0x00, 0x00 }",
+				"new byte[] { 0xD1, 0x00, 0x00 }",
+				"new byte[] { 0xCD, 0x00, 0x00 }",
+				"new byte[] { 0xD0, 0x00 }",
+				"new byte[] { 0xCC, 0x00 }",
+				"new byte[] { 0x00 }"
+			 } } },
+			{ "PlusOne", new TestCase(){ Value = new BigInteger( 1 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }",
+				"new byte[] { 0xD2, 0x00, 0x00, 0x00, 0x01 }",
+				"new byte[] { 0xCE, 0x00, 0x00, 0x00, 0x01 }",
+				"new byte[] { 0xD1, 0x00, 0x01 }",
+				"new byte[] { 0xCD, 0x00, 0x01 }",
+				"new byte[] { 0xD0, 0x01 }",
+				"new byte[] { 0xCC, 0x01 }",
+				"new byte[] { 0x01 }"
+			 } } },
+			{ "PositiveFixNumMaxValue", new TestCase(){ Value = new BigInteger( 127 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7F }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7F }",
+				"new byte[] { 0xD2, 0x00, 0x00, 0x00, 0x7F }",
+				"new byte[] { 0xCE, 0x00, 0x00, 0x00, 0x7F }",
+				"new byte[] { 0xD1, 0x00, 0x7F }",
+				"new byte[] { 0xCD, 0x00, 0x7F }",
+				"new byte[] { 0xD0, 0x7F }",
+				"new byte[] { 0xCC, 0x7F }",
+				"new byte[] { 0x00 }"
+			 } } },
+			{ "PositiveFixNumMaxValuePlusOne", new TestCase(){ Value = new BigInteger( 0x80 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 }",
+				"new byte[] { 0xD2, 0x00, 0x00, 0x00, 0x80 }",
+				"new byte[] { 0xCE, 0x00, 0x00, 0x00, 0x80 }",
+				"new byte[] { 0xD1, 0x00, 0x80 }",
+				"new byte[] { 0xCD, 0x00, 0x80 }",
+				"new byte[] { 0xCC, 0x80 }",
+			 } } },
+			{ "ByteMaxValue", new TestCase(){ Value = new BigInteger( Byte.MaxValue ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF }",
+				"new byte[] { 0xD2, 0x00, 0x00, 0x00, 0xFF }",
+				"new byte[] { 0xCE, 0x00, 0x00, 0x00, 0xFF }",
+				"new byte[] { 0xD1, 0x00, 0xFF }",
+				"new byte[] { 0xCD, 0x00, 0xFF }",
+				"new byte[] { 0xCC, 0xFF }",
+			 } } },
+			{ "ByteMaxValuePlusOne", new TestCase(){ Value = new BigInteger( Byte.MaxValue + 1 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 }",
+				"new byte[] { 0xD2, 0x00, 0x00, 0x01, 0x00 }",
+				"new byte[] { 0xCE, 0x00, 0x00, 0x01, 0x00 }",
+				"new byte[] { 0xD1, 0x01, 0x00 }",
+				"new byte[] { 0xCD, 0x01, 0x00 }",
+			 } } },
+			{ "UInt16MaxValue", new TestCase(){ Value = new BigInteger( UInt16.MaxValue ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF }",
+				"new byte[] { 0xD2, 0x00, 0x00, 0xFF, 0xFF }",
+				"new byte[] { 0xCE, 0x00, 0x00, 0xFF, 0xFF }",
+				"new byte[] { 0xCD, 0xFF, 0xFF }",
+			 } } },
+			{ "UInt16MaxValuePlusOne", new TestCase(){ Value = new BigInteger( UInt16.MaxValue + 1 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00 }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00 }",
+				"new byte[] { 0xD2, 0x00, 0x01, 0x00, 0x00 }",
+				"new byte[] { 0xCE, 0x00, 0x01, 0x00, 0x00 }",
+			 } } },
+			{ "UInt32MaxValue", new TestCase(){ Value = new BigInteger( UInt32.MaxValue ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF }",
+				"new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF }",
+			 } } },
+			{ "UInt32MaxValuePlusOne", new TestCase(){ Value = new BigInteger( ( ulong )UInt32.MaxValue + 1 ), Expressions = new [] { 
+				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 }",
+				"new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 }",
+			 } } },
+			{ "UInt64MaxValue", new TestCase(){ Value = new BigInteger( UInt64.MaxValue ), Expressions = new [] { 
+				"new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }",
+			 } } },
+		};
+
+	public static readonly Tuple<string, string, Type, string>[] RealValues =
+		new Tuple<string, string, Type, string>[]
+		{
+			Tuple.Create( "SingleMinValue", "new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MinValue.Equals(" ),
+			Tuple.Create( "SingleMaxValue", "new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MaxValue.Equals(" ),
+			Tuple.Create( "SingleEpsilon", "new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 }", typeof( float ), "Single.Epsilon.Equals(" ),
+			Tuple.Create( "SinglePositiveZero", "new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 }", typeof( float ), "( 0.0f ).Equals(" ),
+			Tuple.Create( "SingleNegativeZero", "new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 }", typeof( float ), "( -0.0f ).Equals(" ),
+			Tuple.Create( "SingleNaNPositiveMinValue", "new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 }", typeof( float ), "Single.IsNaN(" ),
+			Tuple.Create( "SingleNaNPositiveMaxValue", "new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF }", typeof( float ), "Single.IsNaN(" ),
+			Tuple.Create( "SingleNaNNegativeMinValue", "new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 }", typeof( float ), "Single.IsNaN(" ),
+			Tuple.Create( "SingleNaNNegativeMaxValue", "new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( float ), "Single.IsNaN(" ),
+			Tuple.Create( "SingleNegativeInfinity", "new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 }", typeof( float ), "Single.IsNegativeInfinity(" ),
+			Tuple.Create( "SinglePositiveInfinity", "new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 }", typeof( float ), "Single.IsPositiveInfinity(" ),
+			Tuple.Create( "DoubleMinValue", "new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.MinValue.Equals(" ),
+			Tuple.Create( "DoubleMaxValue", "new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.MaxValue.Equals("  ),
+			Tuple.Create( "DoubleEpsilon", "new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }", typeof( double ), "Double.Epsilon.Equals("  ),
+			Tuple.Create( "DoublePositiveZero", "new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "( 0.0 ).Equals(" ),
+			Tuple.Create( "DoubleNegativeZero", "new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "( -0.0 ).Equals(" ),
+			Tuple.Create( "DoubleNaNPositiveMinValue", "new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }", typeof( double ), "Double.IsNaN(" ),
+			Tuple.Create( "DoubleNaNPositiveMaxValue", "new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.IsNaN(" ),
+			Tuple.Create( "DoubleNaNNegativeMinValue", "new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }", typeof( double ), "Double.IsNaN(" ),
+			Tuple.Create( "DoubleNaNNegativeMaxValue", "new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.IsNaN(" ),
+			Tuple.Create( "DoubleNegativeInfinity", "new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "Double.IsNegativeInfinity(" ),
+			Tuple.Create( "DoublePositiveInfinity", "new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "Double.IsPositiveInfinity(" ),
+		};
+	
+	public static Tuple<string, string, string[]>[] ArrayValues =
+		new Tuple<string, string, string[]>[]
+		{
+			Tuple.Create( "FixArray0Value", "0", new [] { 
+				"new byte[] { 0x90 }",
+				"new byte[] { 0xDC, 0x00, 0x00 }",
+				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x00 }",
+			} ),
+			Tuple.Create( "FixArray1Value", "1", new [] { 
+				"new byte[] { 0x91, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
+				"new byte[] { 0xDC, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
+				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
+			} ),
+			Tuple.Create( "FixArrayMaxValue", "0xF", new [] { 
+				"new byte[] { 0x9F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF ) ) + " }",
+				"new byte[] { 0xDC, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF ) ) + " }",
+				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF ) ) + " }",
+			} ),
+			Tuple.Create( "Array16MinValue", "0x10", new [] { 
+				"new byte[] { 0xDC, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10 ) ) + " }",
+				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10 ) ) + " }",
+			} ),
+			Tuple.Create( "Array16MaxValue", "0xFFFF", new [] { 
+				"new byte[] { 0xDC, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF ) ) + " }",
+				"new byte[] { 0xDD, 0x00, 0x00, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF ) ) + " }",
+			} ),
+			Tuple.Create( "Array32MinValue", "0x100000", new [] { 
+				"new byte[] { 0xDD, 0x00, 0x10, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10000 ) ) + " }",
+			} ),
+		};
+
+	public static Tuple<string, string, string[]>[] MapValues =
+		new Tuple<string, string, string[]>[]
+		{
+			Tuple.Create( "FixMap0Value", "0", new [] { 
+				"new byte[] { 0x80 }",
+				"new byte[] { 0xDC, 0x00, 0x00 }",
+				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x00 }",
+			} ),
+			Tuple.Create( "FixMap1Value", "0x1", new [] { 
+				"new byte[] { 0x81, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 * 2 ) ) + " }",
+				"new byte[] { 0xDE, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 * 2 ) ) + " }",
+				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 * 2 ) ) + " }",
+			} ),
+			Tuple.Create( "FixMapMaxValue", "0xF", new [] { 
+				"new byte[] { 0x8F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF * 2 ) ) + " }",
+				"new byte[] { 0xDE, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF * 2 ) ) + " }",
+				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF * 2 ) ) + " }",
+			} ),
+			Tuple.Create( "Map16MinValue", "0x10", new [] { 
+				"new byte[] { 0xDE, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10 * 2 ) ) + " }",
+				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10  * 2) ) + " }",
+			} ),
+			Tuple.Create( "Map16MaxValue", "0xFFFF", new [] { 
+				"new byte[] { 0xDE, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF * 2 ) ) + " }",
+				"new byte[] { 0xDF, 0x00, 0x00, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF * 2 ) ) + " }",
+			} ),
+			Tuple.Create( "Map32MinValue", "0x10000", new [] { 
+				"new byte[] { 0xDF, 0x00, 0x10, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10000 * 2 ) ) + " }",
+			} ),
+		};
+
+	public static Tuple<string, string, string[]>[] BinaryValues =
+		new Tuple<string, string, string[]>[]
+		{
+			Tuple.Create( "FixBinary0Value", "0", new [] { 
+				"new byte[] { 0xA0 }",
+				"new byte[] { 0xDA, 0x00, 0x00 }",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x00 }",
+			} ),
+			Tuple.Create( "FixBinary1Value", "0x1", new [] { 
+				"new byte[] { 0xA1, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 1 ) ) + " }",
+				"new byte[] { 0xDA, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 1 ) ) + " }",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 1 ) ) + " }",
+			} ),
+			Tuple.Create( "FixBinaryMaxValue", "0x1F", new [] { 
+				"new byte[] { 0xBF, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x1F ) ) + " }",
+				"new byte[] { 0xDA, 0x00, 0x1F, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x1F ) ) + " }",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x1F, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x1F ) ) + " }",
+			} ),
+			Tuple.Create( "Binary16MinValue", "0x20", new [] { 
+				"new byte[] { 0xDA, 0x00, 0x20, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x20 ) ) + " }",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x20, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x20 ) ) + " }",
+			} ),
+			Tuple.Create( "Binary16MaxValue", "0xFFFF", new [] { 
+				"new byte[] { 0xDA, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0xFFFF ) ) + " }",
+				"new byte[] { 0xDB, 0x00, 0x00, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0xFFFF ) ) + " }",
+			} ),
+			Tuple.Create( "Binary32MinValue", "0x10000", new [] { 
+				"new byte[] { 0xDB, 0x00, 0x10, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x10000 ) ) + " }",
+			} ),
+		};
+
+	public static Dictionary<string, string> MiscValues =
+		new Dictionary<string, string>()
+		{
+			{ "Nil",  "new byte[] { 0xC0 }" },
+			{ "True", "new byte[] { 0xC3 }" },
+			{ "False", "new byte[] { 0xC2 }" },
+		};
+
+	public const string ErrorTemplate =
+		@"[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void Test{0}_ByteArray_{1}_Fail()
+		{{
+			Unpacking.{0}( {2} );
+		}}
+
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void Test{0}_Stream_{1}_Fail()
+		{{
+			using( var buffer = new MemoryStream( {2} ) )
+			{{
+				Unpacking.{0}( buffer );
+			}}
+		}}
+
+";
+	
+	public const string ArgumentErrorTemplate =
+		@"[Test]
+		[ExpectedException( typeof( ArgumentException ) )]
+		public void TestUnpack{0}_ByteArray_Empty()
+		{{
+			Unpacking.Unpack{0}( new byte[ 0 ] );
+		}}
+
+		[Test]
+		[ExpectedException( typeof( ArgumentNullException ) )]
+		public void TestUnpack{0}_ByteArray_Null()
+		{{
+			Unpacking.Unpack{0}( default( byte[] ) );
+		}}
+
+		[Test]
+		[ExpectedException( typeof( ArgumentNullException ) )]
+		public void TestUnpack{0}_ByteArray_Offset_Null()
+		{{
+			Unpacking.Unpack{0}( default( byte[] ), 0 );
+		}}
+
+		[Test]
+		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
+		public void TestUnpack{0}_ByteArray_Offset_OffsetIsNegative()
+		{{
+			Unpacking.Unpack{0}( new byte[]{{ 0x1 }}, -1 );
+		}}
+
+		[Test]
+		[ExpectedException( typeof( ArgumentException ) )]
+		public void TestUnpack{0}_ByteArray_Offset_OffsetIsTooBig()
+		{{
+			Unpacking.Unpack{0}( new byte[]{{ 0x1 }}, 1 );
+		}}
+
+		[Test]
+		[ExpectedException( typeof( ArgumentException ) )]
+		public void TestUnpack{0}_ByteArray_Offset_Empty()
+		{{
+			Unpacking.Unpack{0}( new byte[ 0 ], 0 );
+		}}
+
+		[Test]
+		[ExpectedException( typeof( ArgumentNullException ) )]
+		public void TestUnpack{0}_Stream_Null()
+		{{
+			Unpacking.Unpack{0}( default( Stream ) );
+		}}";
+
+	public static readonly string[] ArrayErrorCases = 
+		ArrayValues.SelectMany( tuple =>
+			tuple.Item3.Select( expression =>
+				String.Format( CultureInfo.InvariantCulture, EscapeIndirectFormatString( ErrorTemplate ), "{0}", tuple.Item1 + ToValueId( expression ), EscapeFormatString( expression ) )
+			)
+		).ToArray();
+
+	public static readonly string[] MapErrorCases = 
+		MapValues.SelectMany( tuple =>
+			tuple.Item3.Select( expression =>
+				String.Format( CultureInfo.InvariantCulture, EscapeIndirectFormatString( ErrorTemplate ), "{0}", tuple.Item1 + ToValueId( expression ), EscapeFormatString( expression ) )
+			)
+		).ToArray();
+	
+	public static readonly string[] BinaryErrorCases = 
+		BinaryValues.SelectMany( tuple =>
+			tuple.Item3.Select( expression =>
+				String.Format( CultureInfo.InvariantCulture, EscapeIndirectFormatString( ErrorTemplate ), "{0}", tuple.Item1 + ToValueId( expression ), EscapeFormatString( expression ) )
+			)
+		).ToArray();
+
+	public static readonly string[] CollectionErrorCases =
+		ArrayErrorCases.Concat( MapErrorCases ).Concat( BinaryErrorCases ).ToArray();
+}
+
+private static readonly Regex __typeCodePattern =
+	new Regex( 
+		@"^new\s+byte\s*\[\s*\]\s*\{\s*0x(?<Code>[0-9A-Fa-f]{1,2})",
+		RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture
+	);
+
+public static string MakeErrorCases( string template, string targetMethod, string currentCase, string expression )
+{
+	return String.Format( CultureInfo.InvariantCulture, template, targetMethod, currentCase, expression );
+}
+
+public static string ToValueId( string expression )
+{
+	var code =  __typeCodePattern.Match( expression ).Groups[ "Code" ];
+	if( !code.Success )
+	{
+		throw new FormatException( "Unexpected expression :" + expression );
+	}
+	
+	int codeValue;
+	if(!Int32.TryParse( code.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out codeValue ) )
+	{
+		throw new FormatException( "Unexpected value :" + code.Value );
+	}
+	
+	if( codeValue < 0x80 )
+	{
+		return "PositiveFixNum" + codeValue;
+	}
+	else if( 0xe0 <= codeValue )
+	{
+		return "NegativeFixNumMinus" + Math.Abs( ( sbyte )codeValue );
+	}
+	else if( 0xCC <= codeValue && codeValue <= 0xCF )
+	{
+		return "UInt" + ( 8 * ( codeValue - 0xCB ) );
+	}
+	else if( 0xD0 <= codeValue && codeValue <= 0xD3 )
+	{
+		return "Int" + ( 8 * ( codeValue - 0xCF ) );
+	}
+	else if( codeValue < 0x90 )
+	{
+		return "FixMap" + ( codeValue -0x80 );
+	}
+	else if( codeValue < 0xA0 )
+	{
+		return "FixArray" + ( codeValue -0x90 );
+	}
+	else if( codeValue < 0xB0 )
+	{
+		return "FixRaw" + ( codeValue -0xA0 );
+	}
+	else
+	{
+		switch( codeValue )
+		{
+			case 0xDA:
+			{
+				return "Raw16";
+			}
+			case 0xDB:
+			{
+				return "Raw32";
+			}
+			case 0xDC:
+			{
+				return "Array16";
+			}
+			case 0xDD:
+			{
+				return "Array32";
+			}
+			case 0xDE:
+			{
+				return "Map16";
+			}
+			case 0xDF:
+			{
+				return "Map32";
+			}
+			default:
+			{
+				return "UNNOWN_CODE_" + code.Value;
+			}
+		}
+	}
+}
+
+private static readonly Regex _formatSpecifierPattern =
+	new Regex(
+		@"[\{\}]",
+		RegexOptions.Compiled | RegexOptions.CultureInvariant
+	);
+
+public static string EscapeFormatString( string format )
+{
+	return _formatSpecifierPattern.Replace( format, "$&$&" );
+}
+
+private static readonly Regex _indirectFormatSpecifierPattern =
+	new Regex(
+		@"\{{2}|\}{2}",
+		RegexOptions.Compiled | RegexOptions.CultureInvariant
+	);
+
+public static string EscapeIndirectFormatString( string format )
+{
+	return _indirectFormatSpecifierPattern.Replace( format, "$&$&" );
+}
+
+public sealed class TestCase
+{
+	public string[] Expressions;
+	public BigInteger Value;
+}
+#>
