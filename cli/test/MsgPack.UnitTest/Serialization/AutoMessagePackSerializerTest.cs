@@ -211,7 +211,7 @@ namespace MsgPack.Serialization
 			{
 				serializer.Pack( stream, new byte[] { 1, 2, 3, 4 } );
 				stream.Position = 0;
-				Assert.That( Unpacking.UnpackRaw( stream ).ToArray(), Is.EqualTo( new byte[] { 1, 2, 3, 4 } ) );
+				Assert.That( Unpacking.UnpackBinary( stream ).ToArray(), Is.EqualTo( new byte[] { 1, 2, 3, 4 } ) );
 			}
 		}
 

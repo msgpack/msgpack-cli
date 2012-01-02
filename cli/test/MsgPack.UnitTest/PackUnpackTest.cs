@@ -49,7 +49,7 @@ namespace MsgPack
 				Console.WriteLine();
 			}
 
-			return Unpacking.UnpackObject( output ).Value;
+			return Unpacking.UnpackObject( output );
 		}
 
 		[Test]
@@ -521,14 +521,14 @@ namespace MsgPack
 				stream.Position = 0;
 				var item = Unpacking.UnpackObject( stream );
 				Assert.That( item, Is.Not.Null );
-				Assert.That( item.Value.IsTypeOf<int>().Value );
-				Assert.That( item.Value.UnderlyingType.IsPrimitive, Is.True );
-				Assert.That( item.Value.AsInt32(), Is.EqualTo( 1 ) );
+				Assert.That( item.IsTypeOf<int>().Value );
+				Assert.That( item.UnderlyingType.IsPrimitive, Is.True );
+				Assert.That( item.AsInt32(), Is.EqualTo( 1 ) );
 				item = Unpacking.UnpackObject( stream );
 				Assert.That( item, Is.Not.Null );
-				Assert.That( item.Value.UnderlyingType, Is.EqualTo( typeof( String ) ) );
-				Assert.That( item.Value.IsTypeOf<string>().Value );
-				Assert.That( item.Value.AsString(), Is.EqualTo( "1" ) );
+				Assert.That( item.UnderlyingType, Is.EqualTo( typeof( String ) ) );
+				Assert.That( item.IsTypeOf<string>().Value );
+				Assert.That( item.AsString(), Is.EqualTo( "1" ) );
 			}
 		}
 	}

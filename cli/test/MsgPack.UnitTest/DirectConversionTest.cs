@@ -317,13 +317,13 @@ namespace MsgPack
 				int offset = arrayLength.ReadCount;
 				for ( int j = 0; j < len; j++ )
 				{
-					var length = Unpacking.UnpackRawLength( byteArrayInput, offset );
-					Assert.AreNotEqual( 0, length.ReadCount );
+					var usr = Unpacking.UnpackString( byteArrayInput, offset );
+					Assert.AreNotEqual( 0, usr.ReadCount );
 					int value;
-					Assert.IsTrue( m.TryGetValue( Unpacking.UnpackString( byteArrayInput, offset ), out value ) );
-					var uar = Unpacking.UnpackInt32( byteArrayInput, offset + length.ReadCount + ( int )length.Value );
+					Assert.IsTrue( m.TryGetValue( usr.Value, out value ) );
+					var uar = Unpacking.UnpackInt32( byteArrayInput, offset + usr.ReadCount );
 					Assert.AreEqual( value, uar.Value );
-					offset += length.ReadCount + uar.ReadCount + ( int )length.Value;
+					offset += usr.ReadCount + uar.ReadCount;
 				}
 			}
 		}

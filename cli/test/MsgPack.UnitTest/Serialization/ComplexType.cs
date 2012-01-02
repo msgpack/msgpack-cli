@@ -43,7 +43,7 @@ namespace MsgPack.Serialization
 			stream.Position = 0;
 			var data = Unpacking.UnpackObject( stream );
 			NUnit.Framework.Assert.That( data, Is.Not.Null );
-			var map = data.Value.AsDictionary();
+			var map = data.AsDictionary();
 			NUnit.Framework.Assert.That( map.ContainsKey( "Source" ) );
 			NUnit.Framework.Assert.That( this.Source, Is.Not.Null );
 			NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
