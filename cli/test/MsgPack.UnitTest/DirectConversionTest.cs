@@ -66,22 +66,6 @@ namespace MsgPack
 			TestString( "\ud9c9\udd31" );
 			TestString( "\u30e1\u30c3\u30bb\u30fc\u30b8\u30d1\u30c3\u30af" );
 
-			// continuation
-			{
-				var ms = new MemoryStream();
-				var encoded = Encoding.UTF8.GetBytes( "\u30e1\u30c3\u30bb\u30fc\u30b8\u30d1\u30c3\u30af" );
-				Packer.Create( ms ).PackRawHeader( encoded.Length );
-				ms.Write( encoded, 0, encoded.Length - 1 );
-				ms.Seek( 0, SeekOrigin.Begin );
-				Assert.AreEqual( "\u30e1\u30c3\u30bb\u30fc\u30b8\u30d1\u30c3", Unpacking.UnpackString( ms ) );
-				var pos = ms.Position;
-				var remain = ms.Length - ms.Position;
-				ms.Seek( 0, SeekOrigin.End );
-				ms.WriteByte( encoded[ encoded.Length - 1 ] );
-				ms.Position = pos;
-				Assert.AreEqual( "\u30af", Unpacking.UnpackStringBody( ms, 1 + remain ) );
-			}
-
 			var sw = Stopwatch.StartNew();
 			var avg = 0.0;
 			Random random = new Random();
