@@ -290,6 +290,10 @@ namespace MsgPack
 
 					return ( bool )this == ( bool )other;
 				}
+				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Boolean )
+				{
+					return false;
+				}
 
 				if ( valueTypeCode.IsInteger )
 				{
