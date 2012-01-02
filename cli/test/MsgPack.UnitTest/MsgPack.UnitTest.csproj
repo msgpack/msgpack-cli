@@ -207,6 +207,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Scalar.tt</DependentUpon>
     </Compile>
+    <Compile Include="UnpackingTest.Combinations.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Launcher.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Launcher.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.cs" />
     <Compile Include="_SetUpFixture.cs" />
     <Compile Include="TestRandom.cs">
       <AutoGen>True</AutoGen>
@@ -295,6 +306,15 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Scalar.cs</LastGenOutput>
     </None>
+    <None Include="UnpackingTest.Combinations.Launcher.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Launcher.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Common.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

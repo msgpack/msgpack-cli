@@ -241,11 +241,10 @@
     <Compile Include="Unpacking.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Unpacking.Integers.cs">
-      <DependentUpon>Unpacking.Integers.tt</DependentUpon>
-      <SubType>Code</SubType>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Unpacking.Numerics.cs">
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Unpacking.Numerics.tt</DependentUpon>
     </Compile>
     <Compile Include="Unpacking.Others.cs">
       <DependentUpon>Unpacking.Others.tt</DependentUpon>
@@ -253,10 +252,13 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Unpacking.Streaming.cs" />
     <Compile Include="Unpacking.String.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnpackingMode.cs" />
+    <Compile Include="UnpackingStream.cs" />
+    <Compile Include="UnpackingStreamReader.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="UnpackingResult.cs" />
@@ -286,9 +288,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SerializerRepository.defaults.cs</LastGenOutput>
     </None>
-    <None Include="Unpacking.Integers.tt">
+    <None Include="Unpacking.Numerics.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Unpacking.Integers.cs</LastGenOutput>
+      <LastGenOutput>Unpacking.Numerics.cs</LastGenOutput>
     </None>
     <None Include="Unpacking.Others.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -307,6 +309,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Test\MsgPack\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
