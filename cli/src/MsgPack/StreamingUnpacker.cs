@@ -587,9 +587,13 @@ namespace MsgPack
 			{
 				return new MessagePackObject( _emptyArray, true );
 			}
-			else
+			else if ( ( header.Type & MessageType.IsMap ) != 0 )
 			{
 				return new MessagePackObject( _emptyMap, true );
+			}
+			else
+			{
+				return _emptyBinary.Value;
 			}
 		}
 
