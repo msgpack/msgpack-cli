@@ -223,6 +223,11 @@ namespace MsgPack
 						// Count
 						return this._collectionState.UnpackingItemsCount;
 					}
+					else if ( this._lastEmptyCollection != EmptyCollectionType.None )
+					{
+						// Empty nested collection.
+						return 0;
+					}
 					else
 					{
 						Contract.Assert( oldCollectionItemOrRoot.HasValue );
