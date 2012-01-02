@@ -28,7 +28,7 @@ using NUnit.Framework;
 namespace MsgPack
 {
 	[TestFixture]
-	[Timeout( 1000 )]
+	[Timeout( 5000 )]
 	public partial class DirectConversionTest
 	{
 		[Test]
@@ -226,7 +226,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		[Timeout( 3000 )]
+		[Timeout( 10000 )]
 		public void TestMap()
 		{
 			var emptyMap = new Dictionary<int, int>();
