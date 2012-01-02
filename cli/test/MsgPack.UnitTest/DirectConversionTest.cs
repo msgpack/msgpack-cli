@@ -147,7 +147,7 @@ namespace MsgPack
 			var output = new MemoryStream();
 			Packer.Create( output ).PackString( value );
 			Assert.AreEqual( value, Unpacking.UnpackString( new MemoryStream( output.ToArray() ) ) );
-			Assert.AreEqual( value, Unpacking.UnpackString( output.ToArray() ) );
+			Assert.AreEqual( value, Unpacking.UnpackString( output.ToArray() ).Value );
 		}
 
 		[Test]
@@ -218,9 +218,9 @@ namespace MsgPack
 				int offset = arrayLength.ReadCount;
 				for ( int j = 0; j < len; j++ )
 				{
-					var uar = Unpacking.UnpackRawLength( byteArrayInput, offset );
-					Assert.AreEqual( l[ j ], Unpacking.UnpackString( byteArrayInput, offset ) );
-					offset += uar.ReadCount + ( int )uar.Value;
+					var usr = Unpacking.UnpackString( byteArrayInput, offset );
+					Assert.AreEqual( l[ j ], usr.Value );
+					offset += usr.ReadCount;
 				}
 			}
 		}
