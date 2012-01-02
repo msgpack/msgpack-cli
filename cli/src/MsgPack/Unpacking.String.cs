@@ -184,7 +184,7 @@ namespace MsgPack
 			try
 			{
 				var result = UnpackBinary( source, offset );
-				return new UnpackingResult<string>( encoding.GetString( result.Value ), result.ReadCount );
+				return new UnpackingResult<string>( encoding.GetString( result.Value, 0, result.Value.Length ), result.ReadCount );
 			}
 			catch ( DecoderFallbackException ex )
 			{
@@ -271,7 +271,8 @@ namespace MsgPack
 
 			try
 			{
-				return encoding.GetString( UnpackBinary( source ) );
+				var result = UnpackBinary( source );
+				return encoding.GetString( result, 0, result.Length );
 			}
 			catch ( DecoderFallbackException ex )
 			{
@@ -283,7 +284,7 @@ namespace MsgPack
 
 		private static Exception NewInvalidEncodingException( Encoding encoding, Exception innerException )
 		{
-			return new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "The stream cannot be decoded as {0} string.", encoding.EncodingName ), innerException );
+			return new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "The stream cannot be decoded as {0} string.", encoding.WebName ), innerException );
 		}
 	}
 }
