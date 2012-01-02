@@ -96,7 +96,7 @@ namespace MsgPack
 		}
 		
 		[Test]
-		public void TestUnpackInt8MinValueMinusOne()
+		public void TestUnpackSByteMinValueMinusOne()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -109,7 +109,7 @@ namespace MsgPack
 		}
 		
 		[Test]
-		public void TestUnpackInt8MinValue()
+		public void TestUnpackSByteMinValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xD0, 0x80 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -291,7 +291,7 @@ namespace MsgPack
 		}
 		
 		[Test]
-		public void TestUnpackUInt64MaxValuePlusOne()
+		public void TestUnpackUInt64MaxValue()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )

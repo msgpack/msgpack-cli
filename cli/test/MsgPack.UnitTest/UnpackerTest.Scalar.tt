@@ -36,8 +36,8 @@ var __integers =
 		Tuple.Create( "Int32MinValue", new BigInteger( Int32.MinValue ), "new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 }", typeof( long ) ),
 		Tuple.Create( "Int16MinValueMinusOne", new BigInteger( ( int )Int16.MinValue - 1 ), "new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF }", typeof( long ) ),
 		Tuple.Create( "Int16MinValue", new BigInteger( Int16.MinValue ), "new byte[] { 0xD1, 0x80, 0x00 }", typeof( long ) ),
-		Tuple.Create( "Int8MinValueMinusOne", new BigInteger( ( short )SByte.MinValue - 1 ), "new byte[] { 0xD1, 0xFF, 0x7F }", typeof( long ) ),
-		Tuple.Create( "Int8MinValue", new BigInteger( SByte.MinValue ), "new byte[] { 0xD0, 0x80 }", typeof( long ) ),
+		Tuple.Create( "SByteMinValueMinusOne", new BigInteger( ( short )SByte.MinValue - 1 ), "new byte[] { 0xD1, 0xFF, 0x7F }", typeof( long ) ),
+		Tuple.Create( "SByteMinValue", new BigInteger( SByte.MinValue ), "new byte[] { 0xD0, 0x80 }", typeof( long ) ),
 		Tuple.Create( "NegativeFixNumMinValueMinusOne", new BigInteger( -33 ), "new byte[] { 0xD0, 0xDF }", typeof( long ) ),
 		Tuple.Create( "NegativeFixNumMinValue", new BigInteger( -32 ), "new byte[] { 0xE0 }", typeof( long ) ),
 		Tuple.Create( "MinusOne", new BigInteger( -1 ), "new byte[] { 0xFF }", typeof( long ) ),
@@ -51,7 +51,7 @@ var __integers =
 		Tuple.Create( "UInt16MaxValuePlusOne", new BigInteger( ( uint )UInt16.MaxValue + 1 ), "new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 }", typeof( ulong ) ),
 		Tuple.Create( "UInt32MaxValue", new BigInteger( UInt32.MaxValue ), "new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( ulong ) ),
 		Tuple.Create( "UInt32MaxValuePlusOne", new BigInteger( ( ulong )UInt32.MaxValue + 1 ), "new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 }", typeof( ulong ) ),
-		Tuple.Create( "UInt64MaxValuePlusOne", new BigInteger( UInt64.MaxValue ), "new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( ulong ) ),
+		Tuple.Create( "UInt64MaxValue", new BigInteger( UInt64.MaxValue ), "new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( ulong ) ),
 	};
 
 var __reals =
