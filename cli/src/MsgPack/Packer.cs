@@ -836,7 +836,7 @@ namespace MsgPack
 			Contract.Assert( 0 <= count );
 			if ( count < 16 )
 			{
-				this.WriteByte( unchecked( ( byte )( MessagePackCode.FixedArray | count ) ) );
+				this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedArray | count ) ) );
 			}
 			else if ( count <= UInt16.MaxValue )
 			{
@@ -893,7 +893,7 @@ namespace MsgPack
 
 			if ( count < 16 )
 			{
-				this.WriteByte( unchecked( ( byte )( MessagePackCode.FixedMap | count ) ) );
+				this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedMap | count ) ) );
 			}
 			else if ( count <= UInt16.MaxValue )
 			{
@@ -953,7 +953,7 @@ namespace MsgPack
 
 			if ( length < 32 )
 			{
-				this.WriteByte( unchecked( ( byte )( MessagePackCode.FixedRaw | length ) ) );
+				this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) ) );
 			}
 			else if ( length <= UInt16.MaxValue )
 			{

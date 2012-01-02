@@ -128,40 +128,40 @@ namespace MsgPack
 		[Test]
 		public void TestPackToMessage_StringEmpty_Success()
 		{
-			TestPackToMessageCore( String.Empty, MessagePackCode.FixedRaw );
+			TestPackToMessageCore( String.Empty, MessagePackCode.MinimumFixedRaw );
 		}
 
 		[Test]
 		public void TestPackToMessage_BytesEmpty_Success()
 		{
-			TestPackToMessageCore( new byte[ 0 ], MessagePackCode.FixedRaw );
+			TestPackToMessageCore( new byte[ 0 ], MessagePackCode.MinimumFixedRaw );
 		}
 
 		[Test]
 		public void TestPackToMessage_String1Length_Success()
 		{
-			TestPackToMessageCore( "A", MessagePackCode.FixedRaw | 0x1, ( byte )'A' );
+			TestPackToMessageCore( "A", MessagePackCode.MinimumFixedRaw | 0x1, ( byte )'A' );
 		}
 
 		[Test]
 		public void TestPackToMessage_Bytes1Length_Success()
 		{
 			var value = new byte[] { 1, 2 };
-			TestPackToMessageCore( value, new byte[] { MessagePackCode.FixedRaw | 0x2 }.Concat( value ).ToArray() );
+			TestPackToMessageCore( value, new byte[] { MessagePackCode.MinimumFixedRaw | 0x2 }.Concat( value ).ToArray() );
 		}
 
 		[Test]
 		public void TestPackToMessage_String31Length_Success()
 		{
 			var value = new String( 'A', 31 );
-			TestPackToMessageCore( value, new byte[] { MessagePackCode.FixedRaw | 31 }.Concat( Enumerable.Repeat( ( byte )'A', 31 ) ).ToArray() );
+			TestPackToMessageCore( value, new byte[] { MessagePackCode.MinimumFixedRaw | 31 }.Concat( Enumerable.Repeat( ( byte )'A', 31 ) ).ToArray() );
 		}
 
 		[Test]
 		public void TestPackToMessage_Bytes31Length_Success()
 		{
 			var value = Enumerable.Repeat( ( byte )123, 31 ).ToArray();
-			TestPackToMessageCore( value, new byte[] { MessagePackCode.FixedRaw | 31 }.Concat( value ).ToArray() );
+			TestPackToMessageCore( value, new byte[] { MessagePackCode.MinimumFixedRaw | 31 }.Concat( value ).ToArray() );
 		}
 
 		[Test]
@@ -209,13 +209,13 @@ namespace MsgPack
 		[Test]
 		public void TestPackToMessage_ArrayEmpty_Success()
 		{
-			TestPackToMessageCore( new MessagePackObject[ 0 ], new byte[] { MessagePackCode.FixedArray } );
+			TestPackToMessageCore( new MessagePackObject[ 0 ], new byte[] { MessagePackCode.MinimumFixedArray } );
 		}
 
 		[Test]
 		public void TestPackToMessage_Array1Length_Success()
 		{
-			TestPackToMessageCore( new MessagePackObject[] { 1 }, new byte[] { MessagePackCode.FixedArray | 1, 0x1 } );
+			TestPackToMessageCore( new MessagePackObject[] { 1 }, new byte[] { MessagePackCode.MinimumFixedArray | 1, 0x1 } );
 		}
 
 		[Test]
@@ -223,7 +223,7 @@ namespace MsgPack
 		{
 			TestPackToMessageCore(
 				Enumerable.Repeat( ( byte )1, 15 ).Select( b => new MessagePackObject( b ) ).ToArray(),
-				new byte[] { MessagePackCode.FixedArray | 15 }.Concat( Enumerable.Repeat( ( byte )1, 15 ) ).ToArray()
+				new byte[] { MessagePackCode.MinimumFixedArray | 15 }.Concat( Enumerable.Repeat( ( byte )1, 15 ) ).ToArray()
 			);
 		}
 
@@ -258,7 +258,7 @@ namespace MsgPack
 		[Test]
 		public void TestPackToMessage_DictionaryEmpty_Success()
 		{
-			TestPackToMessageCore( new MessagePackObject( new MessagePackObjectDictionary() ), new byte[] { MessagePackCode.FixedMap } );
+			TestPackToMessageCore( new MessagePackObject( new MessagePackObjectDictionary() ), new byte[] { MessagePackCode.MinimumFixedMap } );
 		}
 
 		[Test]
@@ -266,7 +266,7 @@ namespace MsgPack
 		{
 			TestPackToMessageCore(
 				new MessagePackObject( new MessagePackObjectDictionary() { { 1, 1 } } ),
-				new byte[] { MessagePackCode.FixedMap | 1, 0x1, 0x1 }
+				new byte[] { MessagePackCode.MinimumFixedMap | 1, 0x1, 0x1 }
 			);
 		}
 
@@ -275,7 +275,7 @@ namespace MsgPack
 		{
 			TestPackToMessageCore(
 				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 15 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
-				new byte[] { MessagePackCode.FixedMap | 15 }.Concat( GetMessagePackMapBytes( 1, 15 ) ).ToArray()
+				new byte[] { MessagePackCode.MinimumFixedMap | 15 }.Concat( GetMessagePackMapBytes( 1, 15 ) ).ToArray()
 			);
 		}
 

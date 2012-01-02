@@ -37,13 +37,16 @@ namespace MsgPack
 		public const int UnsignedInt64 = 0xcf;
 		public const int Real32 = 0xca;
 		public const int Real64 = 0xcb;
-		public const int FixedArray = 0x90;
+		public const int MinimumFixedArray = 0x90;
+		public const int MaximumFixedArray = 0x9f;
 		public const int Array16 = 0xdc;
 		public const int Array32 = 0xdd;
-		public const int FixedMap = 0x80;
+		public const int MinimumFixedMap = 0x80;
+		public const int MaximumFixedMap = 0x8f;
 		public const int Map16 = 0xde;
 		public const int Map32 = 0xdf;
-		public const int FixedRaw = 0xa0;
+		public const int MinimumFixedRaw = 0xa0;
+		public const int MaximumFixedRaw = 0xbf;
 		public const int Raw16 = 0xda;
 		public const int Raw32 = 0xdb;
 	}
