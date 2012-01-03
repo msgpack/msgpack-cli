@@ -142,7 +142,8 @@ namespace MsgPack
 			using ( var unpacker = Unpacker.Create( source, false ) )
 			{
 				UnpackOne( unpacker );
-				if ( !unpacker.IsArrayHeader )
+
+				if ( !IsNil( unpacker ) && !unpacker.IsArrayHeader )
 				{
 					throw new MessageTypeException( "The underlying stream is not array type." );
 				}
@@ -153,6 +154,11 @@ namespace MsgPack
 
 		private static IList<MessagePackObject> UnpackArrayCore( Unpacker unpacker )
 		{
+			if ( IsNil( unpacker ) )
+			{
+				return null;
+			}
+
 			var result = new MessagePackObject[ ( int )unpacker.Data.Value ];
 			for ( int i = 0; i < result.Length; i++ )
 			{
@@ -182,7 +188,7 @@ namespace MsgPack
 			using ( var unpacker = Unpacker.Create( source, false ) )
 			{
 				UnpackOne( unpacker );
-				if ( !unpacker.IsMapHeader )
+				if ( !IsNil( unpacker ) && !unpacker.IsMapHeader )
 				{
 					throw new MessageTypeException( "The underlying stream is not map type." );
 				}
@@ -193,6 +199,11 @@ namespace MsgPack
 
 		private static MessagePackObjectDictionary UnpackDictionaryCore( Unpacker unpacker )
 		{
+			if ( IsNil( unpacker ) )
+			{
+				return null;
+			}
+
 			int count = ( int )unpacker.Data.Value;
 			var result = new MessagePackObjectDictionary( count );
 			for ( int i = 0; i < count; i++ )
@@ -312,6 +323,11 @@ namespace MsgPack
 			{
 				return unpacker.Data.Value;
 			}
+		}
+
+		private static bool IsNil( Unpacker unpacker )
+		{
+			return unpacker.Data.HasValue && unpacker.Data.Value.IsNil;
 		}
 
 		private static Exception NewTypeMismatchException( Type requestedType, InvalidOperationException innerException )
