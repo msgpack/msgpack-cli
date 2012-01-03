@@ -299,10 +299,14 @@ if( __IsNotCLSCompliant( t ) )
 			{
 				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<float>( value );
+				return default( float ); // never reached
 			}
 <#
 	}
@@ -330,10 +334,14 @@ if( __IsNotCLSCompliant( t ) )
 			{
 				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<double>( value );
+				return default( double ); // never reached
 			}
 <#
 	}
@@ -384,10 +392,14 @@ if( __IsNotCLSCompliant( t ) )
 			{
 				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
+				return default( <#= t.Name #> ); // never reached
 			}
 <#
 	}
@@ -443,10 +455,14 @@ if( __IsNotCLSCompliant( t ) )
 			{
 				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
+				return default( <#= t.Name #> ); // never reached
 			}
 <#
 	}

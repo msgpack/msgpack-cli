@@ -473,10 +473,14 @@ namespace MsgPack
 			{
 				return ( Byte )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( Byte )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( Byte )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<Byte>( value );
+				return default( Byte ); // never reached
 			}
 		}
 
@@ -528,10 +532,14 @@ namespace MsgPack
 			{
 				return ( SByte )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( SByte )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( SByte )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<SByte>( value );
+				return default( SByte ); // never reached
 			}
 		}
 
@@ -582,10 +590,14 @@ namespace MsgPack
 			{
 				return ( Int16 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( Int16 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( Int16 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<Int16>( value );
+				return default( Int16 ); // never reached
 			}
 		}
 
@@ -623,10 +635,14 @@ namespace MsgPack
 			{
 				return ( UInt16 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( UInt16 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( UInt16 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<UInt16>( value );
+				return default( UInt16 ); // never reached
 			}
 		}
 
@@ -677,10 +693,14 @@ namespace MsgPack
 			{
 				return ( Int32 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( Int32 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( Int32 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<Int32>( value );
+				return default( Int32 ); // never reached
 			}
 		}
 
@@ -718,10 +738,14 @@ namespace MsgPack
 			{
 				return ( UInt32 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( UInt32 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( UInt32 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<UInt32>( value );
+				return default( UInt32 ); // never reached
 			}
 		}
 
@@ -763,10 +787,14 @@ namespace MsgPack
 			{
 				return ( Int64 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( Int64 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( Int64 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<Int64>( value );
+				return default( Int64 ); // never reached
 			}
 		}
 
@@ -805,10 +833,14 @@ namespace MsgPack
 			{
 				return ( UInt64 )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( UInt64 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( UInt64 )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<UInt64>( value );
+				return default( UInt64 ); // never reached
 			}
 		}
 
@@ -844,10 +876,14 @@ namespace MsgPack
 			{
 				return ( Single )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( Single )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( Single )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<float>( value );
+				return default( float ); // never reached
 			}
 		}
 
@@ -883,10 +919,14 @@ namespace MsgPack
 			{
 				return ( Double )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
 			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( Double )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+			}
 			else
 			{
-				Contract.Assert( typeCode.TypeCode == MessagePackValueTypeCode.Single );
-				return ( Double )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
+				ThrowInvalidTypeAs<double>( value );
+				return default( double ); // never reached
 			}
 		}
 
