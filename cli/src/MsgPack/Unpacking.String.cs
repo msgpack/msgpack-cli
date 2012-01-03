@@ -225,7 +225,7 @@ namespace MsgPack
 		///	</remarks>
 		public static string UnpackString( Stream source )
 		{
-			return UnpackString( source, Encoding.UTF8 );
+			return UnpackString( source, MessagePackConvert.Utf8NonBomStrict );
 		}
 
 		///	<summary>
