@@ -207,15 +207,80 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Scalar.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.cs">
+    <Compile Include="UnpackingTest.Combinations.Array.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UnpackingTest.Combinations.tt</DependentUpon>
+      <DependentUpon>UnpackingTest.Combinations.Array.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Launcher.cs">
+    <Compile Include="UnpackingTest.Combinations.Boolean.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UnpackingTest.Combinations.Launcher.tt</DependentUpon>
+      <DependentUpon>UnpackingTest.Combinations.Boolean.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Byte.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Byte.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Double.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Double.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Int16.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Int16.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Int32.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Int32.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Int64.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Int64.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Map.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Map.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Nil.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Nil.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Raw.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Raw.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.SByte.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.SByte.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.Single.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.Single.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.UInt16.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.UInt16.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.UInt32.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.UInt32.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnpackingTest.Combinations.UInt64.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackingTest.Combinations.UInt64.tt</DependentUpon>
     </Compile>
     <Compile Include="UnpackingTest.cs" />
     <Compile Include="_SetUpFixture.cs" />
@@ -306,13 +371,65 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Scalar.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Launcher.tt">
+    <None Include="UnpackingTest.Combinations.Array.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>UnpackingTest.Combinations.Launcher.cs</LastGenOutput>
+      <LastGenOutput>UnpackingTest.Combinations.Array.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.tt">
+    <None Include="UnpackingTest.Combinations.Boolean.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>UnpackingTest.Combinations.cs</LastGenOutput>
+      <LastGenOutput>UnpackingTest.Combinations.Boolean.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.Byte.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Byte.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.Double.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Double.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.Int16.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Int16.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.Int32.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Int32.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.Int64.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Int64.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.Map.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Map.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.Nil.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Nil.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.Raw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Raw.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.SByte.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.SByte.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.Single.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.Single.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.UInt16.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.UInt16.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.UInt32.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.UInt32.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Combinations.UInt64.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Combinations.UInt64.cs</LastGenOutput>
     </None>
     <None Include="UnpackingTest.Common.ttinclude" />
   </ItemGroup>

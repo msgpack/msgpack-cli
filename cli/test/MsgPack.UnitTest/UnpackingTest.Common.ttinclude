@@ -60,10 +60,10 @@ public static class TestData
 				"new byte[] { 0xD1, 0xFF, 0x7F }"
 			 } } },
 			{ "SByteMinValue", new TestCase(){ Value = new BigInteger( SByte.MinValue ), Expressions = new [] { 
-				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F }",
-				"new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0x7F }",
-				"new byte[] { 0xD1, 0xFF, 0x7F }",
-				"new byte[] { 0xD0, 0x7F }"
+				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x80 }",
+				"new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0x80 }",
+				"new byte[] { 0xD1, 0xFF, 0x80 }",
+				"new byte[] { 0xD0, 0x80 }"
 			 } } },
 			{ "NegativeFixNumMinValueMinusOne", new TestCase(){ Value = new BigInteger( -33 ), Expressions = new [] { 
 				"new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xDF }",
@@ -116,7 +116,7 @@ public static class TestData
 				"new byte[] { 0xCD, 0x00, 0x7F }",
 				"new byte[] { 0xD0, 0x7F }",
 				"new byte[] { 0xCC, 0x7F }",
-				"new byte[] { 0x00 }"
+				"new byte[] { 0x7F }"
 			 } } },
 			{ "PositiveFixNumMaxValuePlusOne", new TestCase(){ Value = new BigInteger( 0x80 ), Expressions = new [] { 
 				"new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 }",
@@ -168,127 +168,127 @@ public static class TestData
 			 } } },
 			{ "UInt64MaxValue", new TestCase(){ Value = new BigInteger( UInt64.MaxValue ), Expressions = new [] { 
 				"new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }",
-			 } } },
+			 } } },	
 		};
 
-	public static readonly Tuple<string, string, Type, string>[] RealValues =
-		new Tuple<string, string, Type, string>[]
+	public static readonly Tuple<string, string, Type, string, string>[] RealValues =
+		new Tuple<string, string, Type, string, string>[]
 		{
-			Tuple.Create( "SingleMinValue", "new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MinValue.Equals(" ),
-			Tuple.Create( "SingleMaxValue", "new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MaxValue.Equals(" ),
-			Tuple.Create( "SingleEpsilon", "new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 }", typeof( float ), "Single.Epsilon.Equals(" ),
-			Tuple.Create( "SinglePositiveZero", "new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 }", typeof( float ), "( 0.0f ).Equals(" ),
-			Tuple.Create( "SingleNegativeZero", "new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 }", typeof( float ), "( -0.0f ).Equals(" ),
-			Tuple.Create( "SingleNaNPositiveMinValue", "new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 }", typeof( float ), "Single.IsNaN(" ),
-			Tuple.Create( "SingleNaNPositiveMaxValue", "new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF }", typeof( float ), "Single.IsNaN(" ),
-			Tuple.Create( "SingleNaNNegativeMinValue", "new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 }", typeof( float ), "Single.IsNaN(" ),
-			Tuple.Create( "SingleNaNNegativeMaxValue", "new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( float ), "Single.IsNaN(" ),
-			Tuple.Create( "SingleNegativeInfinity", "new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 }", typeof( float ), "Single.IsNegativeInfinity(" ),
-			Tuple.Create( "SinglePositiveInfinity", "new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 }", typeof( float ), "Single.IsPositiveInfinity(" ),
-			Tuple.Create( "DoubleMinValue", "new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.MinValue.Equals(" ),
-			Tuple.Create( "DoubleMaxValue", "new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.MaxValue.Equals("  ),
-			Tuple.Create( "DoubleEpsilon", "new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }", typeof( double ), "Double.Epsilon.Equals("  ),
-			Tuple.Create( "DoublePositiveZero", "new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "( 0.0 ).Equals(" ),
-			Tuple.Create( "DoubleNegativeZero", "new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "( -0.0 ).Equals(" ),
-			Tuple.Create( "DoubleNaNPositiveMinValue", "new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }", typeof( double ), "Double.IsNaN(" ),
-			Tuple.Create( "DoubleNaNPositiveMaxValue", "new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.IsNaN(" ),
-			Tuple.Create( "DoubleNaNNegativeMinValue", "new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }", typeof( double ), "Double.IsNaN(" ),
-			Tuple.Create( "DoubleNaNNegativeMaxValue", "new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.IsNaN(" ),
-			Tuple.Create( "DoubleNegativeInfinity", "new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "Double.IsNegativeInfinity(" ),
-			Tuple.Create( "DoublePositiveInfinity", "new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "Double.IsPositiveInfinity(" ),
+			Tuple.Create( "SingleMinValue", "new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MinValue.Equals(", "( ( double )Single.MinValue ).Equals(" ),
+			Tuple.Create( "SingleMaxValue", "new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MaxValue.Equals(", "( ( double )Single.MaxValue ).Equals(" ),
+			Tuple.Create( "SingleZero", "new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 }", typeof( float ), "( 0.0f ).Equals(", "( 0.0 ).Equals(" ),
+			Tuple.Create( "DoubleMinValue", "new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.MinValue.Equals(", "( ( float )Double.MinValue ).Equals(" ),
+			Tuple.Create( "DoubleMaxValue", "new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.MaxValue.Equals(", "( ( float )Double.MaxValue ).Equals(" ),
+			Tuple.Create( "DoubleZero", "new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "( 0.0 ).Equals(", "( 0.0f ).Equals("  ),
 		};
 	
-	public static Tuple<string, string, string[]>[] ArrayValues =
-		new Tuple<string, string, string[]>[]
+	// Label, ItemCount, Expressions, ByteLengthes
+	public static Tuple<string, string, string[], int[]>[] ArrayValues =
+		new Tuple<string, string, string[], int[]>[]
 		{
 			Tuple.Create( "FixArray0Value", "0", new [] { 
 				"new byte[] { 0x90 }",
 				"new byte[] { 0xDC, 0x00, 0x00 }",
 				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x00 }",
-			} ),
+			}, new[] { 1, 3, 5 } ),
 			Tuple.Create( "FixArray1Value", "1", new [] { 
-				"new byte[] { 0x91, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
-				"new byte[] { 0xDC, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
-				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
-			} ),
+				"new byte[] { 0x91 }.Concat( Enumerable.Repeat( ( byte )0x57, 1 ) ).ToArray()",
+				"new byte[] { 0xDC, 0x00, 0x01 }.Concat( Enumerable.Repeat( ( byte )0x57, 1 ) ).ToArray()",
+				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x01 }.Concat( Enumerable.Repeat( ( byte )0x57, 1 ) ).ToArray()",
+			}, new[] { 1 + 1, 3 + 1, 5 + 1 } ),
 			Tuple.Create( "FixArrayMaxValue", "0xF", new [] { 
-				"new byte[] { 0x9F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF ) ) + " }",
-				"new byte[] { 0xDC, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF ) ) + " }",
-				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF ) ) + " }",
-			} ),
+				"new byte[] { 0x9F }.Concat( Enumerable.Repeat( ( byte )0x57, 0xF ) ).ToArray()",
+				"new byte[] { 0xDC, 0x00, 0x0F }.Concat( Enumerable.Repeat( ( byte )0x57, 0xF ) ).ToArray()",
+				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x0F }.Concat( Enumerable.Repeat( ( byte )0x57, 0xF ) ).ToArray()",
+			}, new[] { 1 + 0xF, 3 + 0xF, 5 + 0xF } ),
 			Tuple.Create( "Array16MinValue", "0x10", new [] { 
-				"new byte[] { 0xDC, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10 ) ) + " }",
-				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10 ) ) + " }",
-			} ),
+				"new byte[] { 0xDC, 0x00, 0x10 }.Concat( Enumerable.Repeat( ( byte )0x57, 0x10 ) ).ToArray()",
+				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x10 }.Concat( Enumerable.Repeat( ( byte )0x57, 0x10 ) ).ToArray()",
+			}, new[] { 3 + 0x10, 5 + 0x10 } ),
 			Tuple.Create( "Array16MaxValue", "0xFFFF", new [] { 
-				"new byte[] { 0xDC, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF ) ) + " }",
-				"new byte[] { 0xDD, 0x00, 0x00, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF ) ) + " }",
-			} ),
-			Tuple.Create( "Array32MinValue", "0x100000", new [] { 
-				"new byte[] { 0xDD, 0x00, 0x10, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10000 ) ) + " }",
-			} ),
+				"new byte[] { 0xDC, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )0x57, 0xFFFF ) ).ToArray()",
+				"new byte[] { 0xDD, 0x00, 0x00, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )0x57, 0xFFFF ) ).ToArray()",
+			}, new[] { 3 + 0xFFFF, 5 + 0xFFFF } ),
+			Tuple.Create( "Array32MinValue", "0x10000", new [] { 
+				"new byte[] { 0xDD, 0x00, 0x01, 0x00, 0x00 }.Concat( Enumerable.Repeat( ( byte )0x57, 0x10000 ) ).ToArray()",
+			}, new[] { 5 + 0x10000 } ),
 		};
 
-	public static Tuple<string, string, string[]>[] MapValues =
-		new Tuple<string, string, string[]>[]
+	// Label, ItemCount, Expressions, ByteLengthes
+	public static Tuple<string, string, string[], int[]>[] MapValues =
+		new Tuple<string, string, string[], int[]>[]
 		{
 			Tuple.Create( "FixMap0Value", "0", new [] { 
 				"new byte[] { 0x80 }",
-				"new byte[] { 0xDC, 0x00, 0x00 }",
-				"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x00 }",
-			} ),
+				"new byte[] { 0xDE, 0x00, 0x00 }",
+				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x00 }",
+			}, new[] { 1, 3, 5 } ),
 			Tuple.Create( "FixMap1Value", "0x1", new [] { 
-				"new byte[] { 0x81, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 * 2 ) ) + " }",
-				"new byte[] { 0xDE, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 * 2 ) ) + " }",
-				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 * 2 ) ) + " }",
-			} ),
+				"new byte[] { 0x81 }.Concat( CreateDictionaryBodyBinary( 1 ) ).ToArray()",
+				"new byte[] { 0xDE, 0x00, 0x01 }.Concat( CreateDictionaryBodyBinary( 1 ) ).ToArray()",
+				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x01 }.Concat( CreateDictionaryBodyBinary( 1 ) ).ToArray()",
+			}, new[] { 1 + 1 * 6, 3 + 1 * 6, 5 + 1 * 6 } ),
 			Tuple.Create( "FixMapMaxValue", "0xF", new [] { 
-				"new byte[] { 0x8F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF * 2 ) ) + " }",
-				"new byte[] { 0xDE, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF * 2 ) ) + " }",
-				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF * 2 ) ) + " }",
-			} ),
+				"new byte[] { 0x8F }.Concat( CreateDictionaryBodyBinary( 0xF ) ).ToArray()",
+				"new byte[] { 0xDE, 0x00, 0x0F }.Concat( CreateDictionaryBodyBinary( 0xF ) ).ToArray()",
+				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x0F }.Concat( CreateDictionaryBodyBinary( 0xF ) ).ToArray()",
+			}, new[] { 1 + 0xF * 6, 3 + 0xF * 6, 5 + 0xF * 6 } ),
 			Tuple.Create( "Map16MinValue", "0x10", new [] { 
-				"new byte[] { 0xDE, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10 * 2 ) ) + " }",
-				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10  * 2) ) + " }",
-			} ),
+				"new byte[] { 0xDE, 0x00, 0x10 }.Concat( CreateDictionaryBodyBinary( 0x10 ) ).ToArray()",
+				"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x10 }.Concat( CreateDictionaryBodyBinary( 0x10 ) ).ToArray()",
+			}, new[] { 3 + 0x10 * 6, 5 + 0x10 * 6 } ),
 			Tuple.Create( "Map16MaxValue", "0xFFFF", new [] { 
-				"new byte[] { 0xDE, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF * 2 ) ) + " }",
-				"new byte[] { 0xDF, 0x00, 0x00, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF * 2 ) ) + " }",
-			} ),
+				"new byte[] { 0xDE, 0xFF, 0xFF }.Concat( CreateDictionaryBodyBinary( 0xFFFF ) ).ToArray()",
+				"new byte[] { 0xDF, 0x00, 0x00, 0xFF, 0xFF }.Concat( CreateDictionaryBodyBinary( 0xFFFF ) ).ToArray()",
+			}, new[] { 3 + 0xFFFF * 6, 5 + 0xFFFF * 6 } ),
 			Tuple.Create( "Map32MinValue", "0x10000", new [] { 
-				"new byte[] { 0xDF, 0x00, 0x10, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10000 * 2 ) ) + " }",
-			} ),
+				"new byte[] { 0xDF, 0x00, 0x01, 0x00, 0x00 }.Concat( CreateDictionaryBodyBinary( 0x10000 ) ).ToArray()",
+			}, new[] { 5 + 0x10000 * 6 } ),
 		};
 
-	public static Tuple<string, string, string[]>[] BinaryValues =
-		new Tuple<string, string, string[]>[]
+	public const string CreateDictionaryBodyBinaryCode =
+		@"private static IEnumerable<byte> CreateDictionaryBodyBinary( int count )
 		{
-			Tuple.Create( "FixBinary0Value", "0", new [] { 
+			return 
+				Enumerable.Range( 1, count )
+				.SelectMany( i => 
+					new byte[]{ 0xD2 } // Int32 header for key
+					.Concat( BitConverter.GetBytes( i ).Reverse() ) // Key : i (Big-Endean)
+					.Concat( new byte[] { 0x57 } ) // Value = 0x57
+				);
+		}
+";
+
+	// Label, ItemCount, Expressions, ByteLengthes
+	public static Tuple<string, string, string[], int[]>[] BinaryValues =
+		new Tuple<string, string, string[], int[]>[]
+		{
+			Tuple.Create( "FixRaw0Value", "0", new [] { 
 				"new byte[] { 0xA0 }",
 				"new byte[] { 0xDA, 0x00, 0x00 }",
 				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x00 }",
-			} ),
-			Tuple.Create( "FixBinary1Value", "0x1", new [] { 
-				"new byte[] { 0xA1, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 1 ) ) + " }",
-				"new byte[] { 0xDA, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 1 ) ) + " }",
-				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 1 ) ) + " }",
-			} ),
-			Tuple.Create( "FixBinaryMaxValue", "0x1F", new [] { 
-				"new byte[] { 0xBF, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x1F ) ) + " }",
-				"new byte[] { 0xDA, 0x00, 0x1F, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x1F ) ) + " }",
-				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x1F, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x1F ) ) + " }",
-			} ),
-			Tuple.Create( "Binary16MinValue", "0x20", new [] { 
-				"new byte[] { 0xDA, 0x00, 0x20, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x20 ) ) + " }",
-				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x20, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x20 ) ) + " }",
-			} ),
-			Tuple.Create( "Binary16MaxValue", "0xFFFF", new [] { 
-				"new byte[] { 0xDA, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0xFFFF ) ) + " }",
-				"new byte[] { 0xDB, 0x00, 0x00, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0xFFFF ) ) + " }",
-			} ),
-			Tuple.Create( "Binary32MinValue", "0x10000", new [] { 
-				"new byte[] { 0xDB, 0x00, 0x10, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0xFF", 0x10000 ) ) + " }",
-			} ),
+			}, new [] { 1, 3, 5 } ),
+			Tuple.Create( "FixRaw1Value", "0x1", new [] { 
+				"new byte[] { 0xA1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()",
+				"new byte[] { 0xDA, 0x00, 0x01 }.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x01 }.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()",
+			}, new [] { 1 + 1, 3 + 1, 5 + 1 } ),
+			Tuple.Create( "FixRawMaxValue", "0x1F", new [] { 
+				"new byte[] { 0xBF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x1F ) ).ToArray()",
+				"new byte[] { 0xDA, 0x00, 0x1F }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x1F ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x1F }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x1F ) ).ToArray()",
+			}, new [] { 1 + 0x1F , 3 + 0x1F , 5 + 0x1F } ),
+			Tuple.Create( "Raw16MinValue", "0x20", new [] { 
+				"new byte[] { 0xDA, 0x00, 0x20 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x20 ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x20 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x20 ) ).ToArray()",
+			}, new [] { 3 + 0x20 , 5 + 0x20 } ),
+			Tuple.Create( "Raw16MaxValue", "0xFFFF", new [] { 
+				"new byte[] { 0xDA, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0xFFFF ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0xFFFF ) ).ToArray()",
+			}, new [] { 3 + 0xFFFF, 5 + 0xFFFF } ),
+			Tuple.Create( "Raw32MinValue", "0x10000", new [] { 
+				"new byte[] { 0xDB, 0x00, 0x01, 0x00, 0x00 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x10000 ) ).ToArray()",
+			}, new [] { 5 + 0x10000 } ),
 		};
 
 	public static Dictionary<string, string> MiscValues =
@@ -303,19 +303,19 @@ public static class TestData
 		@"[Test]
 		[ExpectedException( typeof( MessageTypeException ) )]
 		public void Test{0}_ByteArray_{1}_Fail()
-		{{
+		{{{{
 			Unpacking.{0}( {2} );
-		}}
+		}}}}
 
 		[Test]
 		[ExpectedException( typeof( MessageTypeException ) )]
 		public void Test{0}_Stream_{1}_Fail()
-		{{
+		{{{{
 			using( var buffer = new MemoryStream( {2} ) )
-			{{
+			{{{{
 				Unpacking.{0}( buffer );
-			}}
-		}}
+			}}}}
+		}}}}
 
 ";
 	
@@ -372,21 +372,21 @@ public static class TestData
 	public static readonly string[] ArrayErrorCases = 
 		ArrayValues.SelectMany( tuple =>
 			tuple.Item3.Select( expression =>
-				String.Format( CultureInfo.InvariantCulture, EscapeIndirectFormatString( ErrorTemplate ), "{0}", tuple.Item1 + ToValueId( expression ), EscapeFormatString( expression ) )
+				String.Format( CultureInfo.InvariantCulture, ErrorTemplate, "{0}", tuple.Item1, EscapeFormatString( expression ) )
 			)
 		).ToArray();
 
 	public static readonly string[] MapErrorCases = 
 		MapValues.SelectMany( tuple =>
 			tuple.Item3.Select( expression =>
-				String.Format( CultureInfo.InvariantCulture, EscapeIndirectFormatString( ErrorTemplate ), "{0}", tuple.Item1 + ToValueId( expression ), EscapeFormatString( expression ) )
+				String.Format( CultureInfo.InvariantCulture, ErrorTemplate, "{0}", tuple.Item1, EscapeFormatString( expression ) )
 			)
 		).ToArray();
 	
 	public static readonly string[] BinaryErrorCases = 
 		BinaryValues.SelectMany( tuple =>
 			tuple.Item3.Select( expression =>
-				String.Format( CultureInfo.InvariantCulture, EscapeIndirectFormatString( ErrorTemplate ), "{0}", tuple.Item1 + ToValueId( expression ), EscapeFormatString( expression ) )
+				String.Format( CultureInfo.InvariantCulture, ErrorTemplate, "{0}", tuple.Item1, EscapeFormatString( expression ) )
 			)
 		).ToArray();
 
@@ -429,11 +429,11 @@ public static string ToValueId( string expression )
 	}
 	else if( 0xCC <= codeValue && codeValue <= 0xCF )
 	{
-		return "UInt" + ( 8 * ( codeValue - 0xCB ) );
+		return "UInt" + ( 8 * Math.Pow( 2, ( codeValue - 0xCC ) ) );
 	}
 	else if( 0xD0 <= codeValue && codeValue <= 0xD3 )
 	{
-		return "Int" + ( 8 * ( codeValue - 0xCF ) );
+		return "Int" + ( 8 * Math.Pow( 2, ( codeValue - 0xD0 ) ) );
 	}
 	else if( codeValue < 0x90 )
 	{
@@ -443,7 +443,7 @@ public static string ToValueId( string expression )
 	{
 		return "FixArray" + ( codeValue -0x90 );
 	}
-	else if( codeValue < 0xB0 )
+	else if( codeValue < 0xC0 )
 	{
 		return "FixRaw" + ( codeValue -0xA0 );
 	}
@@ -483,6 +483,64 @@ public static string ToValueId( string expression )
 	}
 }
 
+public static int GetHeaderLength( string expression )
+{
+	var code =  __typeCodePattern.Match( expression ).Groups[ "Code" ];
+	if( !code.Success )
+	{
+		throw new FormatException( "Unexpected expression :" + expression );
+	}
+	
+	int codeValue;
+	if(!Int32.TryParse( code.Value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out codeValue ) )
+	{
+		throw new FormatException( "Unexpected value :" + code.Value );
+	}
+	
+	if( codeValue < 0x80 )
+	{
+		return 1;
+	}
+	else if( 0xe0 <= codeValue )
+	{
+		return 1;
+	}
+	else if( 0xCC <= codeValue && codeValue <= 0xCF )
+	{
+		return 1 + ( codeValue - 0xCB );
+	}
+	else if( 0xD0 <= codeValue && codeValue <= 0xD3 )
+	{
+		return 1 + ( codeValue - 0xCF );
+	}
+	else if( codeValue < 0xB0 )
+	{
+		return 1;
+	}
+	else
+	{
+		switch( codeValue )
+		{
+			case 0xDA:
+			case 0xDC:
+			case 0xDE:
+			{
+				return 1 + 2;
+			}
+			case 0xDB:
+			case 0xDD:
+			case 0xDF:
+			{
+				return 1 + 4;
+			}
+			default:
+			{
+				return 1;
+			}
+		}
+	}
+}
+
 private static readonly Regex _formatSpecifierPattern =
 	new Regex(
 		@"[\{\}]",
@@ -492,17 +550,6 @@ private static readonly Regex _formatSpecifierPattern =
 public static string EscapeFormatString( string format )
 {
 	return _formatSpecifierPattern.Replace( format, "$&$&" );
-}
-
-private static readonly Regex _indirectFormatSpecifierPattern =
-	new Regex(
-		@"\{{2}|\}{2}",
-		RegexOptions.Compiled | RegexOptions.CultureInvariant
-	);
-
-public static string EscapeIndirectFormatString( string format )
-{
-	return _indirectFormatSpecifierPattern.Replace( format, "$&$&" );
 }
 
 public sealed class TestCase

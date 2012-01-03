@@ -1,0 +1,159 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="UnpackingTest.Common.ttinclude" #>
+<#@ assembly Name="System.Core" #>
+<#@ assembly Name="System.Numerics" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Numerics" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using NUnit.Framework;
+
+namespace MsgPack
+{
+	[TestFixture]
+	public 	partial class UnpackingTest_Combinations_Array
+	{
+<#
+foreach( var __testCase in TestData.ArrayValues )
+{
+	for( int __i = 0; __i < __testCase.Item3.Length; __i++ )
+	{
+		var __expression = __testCase.Item3[ __i ];
+		var __byteLength = __testCase.Item4[ __i ];
+#>
+		[Test]
+		public void TestUnpackArrayLength_ByteArray_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			var result = Unpacking.UnpackArrayLength( <#= __expression #> );
+			Assert.AreEqual( <#= GetHeaderLength( __expression ) #>, result.ReadCount );
+			Assert.That( result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
+		}
+
+		[Test]
+		public void TestUnpackArrayLength_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
+			{
+				var result = Unpacking.UnpackArrayLength( buffer );
+				Assert.AreEqual( <#= GetHeaderLength( __expression ) #>, buffer.Position );
+				Assert.That( result, Is.EqualTo( <#= __testCase.Item2 #> ) );
+			}
+		}
+		
+
+		[Test]
+		public void TestUnpackArray_ByteArray_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			var result = Unpacking.UnpackArray( <#= __expression #> );
+			Assert.AreEqual( <#= __byteLength #>, result.ReadCount );
+			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( new MessagePackObject( 0x57 ), <#= __testCase.Item2 #> ).ToArray() ) );
+		}
+
+		[Test]
+		public void TestUnpackArray_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
+			{
+				var result = Unpacking.UnpackArray( buffer );
+				Assert.AreEqual( <#= __byteLength #>, buffer.Position );
+				Assert.That( result, Is.EqualTo( Enumerable.Repeat( new MessagePackObject( 0x57 ), <#= __testCase.Item2 #> ).ToArray() ) );
+			}
+		}
+
+<#
+	}
+}
+#>
+		<#= String.Format( CultureInfo.InvariantCulture, TestData.ArgumentErrorTemplate, "ArrayLength" ) #>
+
+		[Test]
+		public void TestUnpackArrayLength_ByteArray_Offset_OffsetIsValid_OffsetIsRespected()
+		{
+			var result = Unpacking.UnpackArrayLength( new byte[] { 0xFF, 0x90, 0xFF }, 1 );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.AreEqual( 0, result.Value );
+		}
+
+		[Test]
+		public void TestUnpackArrayLength_ByteArray_Null_Nil()
+		{
+			var result = Unpacking.UnpackArrayLength( new byte[] { 0xC0 } );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
+		}
+
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackArrayLength_ByteArray_NotArray()
+		{
+			var dummy = Unpacking.UnpackArrayLength( new byte[] { 0x1 } );
+		}
+
+		[Test]
+		public void TestUnpackArray_ByteArray_Null_Nil()
+		{
+			var result = Unpacking.UnpackArray( new byte[] { 0xC0 } );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
+		}
+
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackArray_ByteArray_NotArray()
+		{
+			var result = Unpacking.UnpackArray( new byte[] { 0x1 } );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
+		}
+	}
+}

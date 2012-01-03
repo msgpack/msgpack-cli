@@ -1,0 +1,129 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="UnpackingTest.Common.ttinclude" #>
+<#@ assembly Name="System.Core" #>
+<#@ assembly Name="System.Numerics" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Numerics" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using NUnit.Framework;
+
+namespace MsgPack
+{
+	[TestFixture]
+	public 	partial class UnpackingTest_Combinations_Nil
+	{
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackNull_ByteArray_True()
+		{
+			var result = Unpacking.UnpackNull( <#= TestData.MiscValues[ "True" ] #> );
+		}
+		
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackNull_Stream_True()
+		{
+			using ( var buffer = new MemoryStream( <#= TestData.MiscValues[ "True" ] #> ) )
+			{
+				var result = Unpacking.UnpackNull( buffer );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackNull_ByteArray_False()
+		{
+			var result = Unpacking.UnpackNull( <#= TestData.MiscValues[ "False" ] #> );
+		}
+		
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackNull_Stream_False()
+		{
+			using ( var buffer = new MemoryStream( <#= TestData.MiscValues[ "False" ] #> ) )
+			{
+				var result = Unpacking.UnpackNull( buffer );
+			}
+		}
+		
+		[Test]
+		public void TestUnpackNull_ByteArray_AsIs()
+		{
+			var result = Unpacking.UnpackNull( <#= TestData.MiscValues[ "Nil" ] #> );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
+		}
+		
+		[Test]
+		public void TestUnpackNull_Stream_Nil_AsIs()
+		{
+			using ( var buffer = new MemoryStream( <#= TestData.MiscValues[ "Nil" ] #> ) )
+			{
+				var result = Unpacking.UnpackNull( buffer );
+				Assert.AreEqual( 1, buffer.Position );
+				Assert.IsNull( result );
+			}
+		}
+
+		<#= String.Format( CultureInfo.InvariantCulture, TestData.ArgumentErrorTemplate, "Null" ) #>
+
+		[Test]
+		public void TestUnpackNull_ByteArray_Offset_OffsetIsValid_OffsetIsRespected()
+		{
+			var result = Unpacking.UnpackNull( new byte[] { 0xFF, 0xC0, 0xFF }, 1 );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
+		}
+	}
+}

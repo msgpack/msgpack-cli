@@ -309,6 +309,35 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestUnpackByteStream_Stream_0x100Byte_AsIsAndBounded()
+		{
+			using ( var stream = new MemoryStream( new byte[] { 0xDA, 0x01, 0x00 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x100 ) ).Concat( Enumerable.Repeat( ( byte )0x57, 1 ) ).ToArray() ) )
+			{
+				using ( var result = Unpacking.UnpackByteStream( stream ) )
+				{
+					AssertRawStream( result, 0x100 );
+				}
+
+				// Assert is valid position on unerlying stream.
+				Assert.That( Unpacking.UnpackInt32( stream ), Is.EqualTo( 0x57 ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpackByteStream_Stream_0x10000Byte_AsIsAndBounded()
+		{
+			using ( var stream = new MemoryStream( new byte[] { 0xDB, 0x00, 0x01, 0x00, 0x00 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x10000 ) ).Concat( Enumerable.Repeat( ( byte )0x57, 1 ) ).ToArray() ) )
+			{
+				using ( var result = Unpacking.UnpackByteStream( stream ) )
+				{
+					AssertRawStream( result, 0x10000 );
+				}
+
+				// Assert is valid position on unerlying stream.
+				Assert.That( Unpacking.UnpackInt32( stream ), Is.EqualTo( 0x57 ) );
+			}
+		}
+		[Test]
 		public void TestUnpackByteStream_Stream_SeekableStream_CanSeekIsTrue()
 		{
 			using ( var stream = new WrapperStream( new MemoryStream( new byte[] { 0xA0, 0x57 } ), canRead: true, canSeek: true ) )
@@ -671,6 +700,8 @@ namespace MsgPack
 		{
 			Unpacking.UnpackObject( default( Stream ) );
 		}
+
+		// FIXME: Seek test of UnpackByteStream return value
 
 		private sealed class WrapperStream : Stream
 		{
