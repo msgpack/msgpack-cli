@@ -190,8 +190,8 @@ var __arrayValues=
 		} ),
 		Tuple.Create( "FixArray1Value", "1", new [] { 
 			"new byte[] { 0x91, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
-			"new byte[] { 0xDC, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
-			"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
+			"new byte[] { 0xDC, 0x00, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
+			"new byte[] { 0xDD, 0x00, 0x00, 0x00, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 ) ) + " }",
 		} ),
 		Tuple.Create( "FixArrayMaxValue", "0xF", new [] { 
 			"new byte[] { 0x9F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF ) ) + " }",
