@@ -220,25 +220,25 @@ var __mapValues=
 			"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x00 }",
 		} ),
 		Tuple.Create( "FixMap1Value", "0x1", new [] { 
-			"new byte[] { 0x81, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 * 2 ) ) + " }",
-			"new byte[] { 0xDE, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 * 2 ) ) + " }",
-			"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x01, 0x01, " + String.Join( ", ", Enumerable.Repeat( "0x57", 1 * 2 ) ) + " }",
+			"new byte[] { 0x81, " + CreateDictionaryBinary( 1 ) + " }",
+			"new byte[] { 0xDE, 0x00, 0x01, " + CreateDictionaryBinary( 1 ) + " }",
+			"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x01, " + CreateDictionaryBinary( 1 ) + " }",
 		} ),
 		Tuple.Create( "FixMapMaxValue", "0xF", new [] { 
-			"new byte[] { 0x8F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF * 2 ) ) + " }",
-			"new byte[] { 0xDE, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF * 2 ) ) + " }",
-			"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x0F, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xF * 2 ) ) + " }",
+			"new byte[] { 0x8F, " + CreateDictionaryBinary( 0xF ) + " }",
+			"new byte[] { 0xDE, 0x00, 0x0F, " + CreateDictionaryBinary( 0xF ) + " }",
+			"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x0F, " + CreateDictionaryBinary( 0xF ) + " }",
 		} ),
 		Tuple.Create( "Map16MinValue", "0x10", new [] { 
-			"new byte[] { 0xDE, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10 * 2 ) ) + " }",
-			"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x10, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10  * 2) ) + " }",
+			"new byte[] { 0xDE, 0x00, 0x10, " + CreateDictionaryBinary( 0x10 ) + " }",
+			"new byte[] { 0xDF, 0x00, 0x00, 0x00, 0x10, " + CreateDictionaryBinary( 0x10 ) + " }",
 		} ),
 		Tuple.Create( "Map16MaxValue", "0xFFFF", new [] { 
-			"new byte[] { 0xDE, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF * 2 ) ) + " }",
-			"new byte[] { 0xDF, 0x00, 0x00, 0xFF, 0xFF, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0xFFFF * 2 ) ) + " }",
+			"new byte[] { 0xDE, 0xFF, 0xFF, " + CreateDictionaryBinary( 0xFFFF ) + " }",
+			"new byte[] { 0xDF, 0x00, 0x00, 0xFF, 0xFF, " + CreateDictionaryBinary( 0xFFFF ) + " }",
 		} ),
 		Tuple.Create( "Map32MinValue", "0x10000", new [] { 
-			"new byte[] { 0xDF, 0x00, 0x01, 0x00, 0x00, " + String.Join( ", ", Enumerable.Repeat( "0x57", 0x10000 * 2 ) ) + " }",
+			"new byte[] { 0xDF, 0x00, 0x01, 0x00, 0x00, " + CreateDictionaryBinary( 0x10000 ) + " }",
 		} ),
 	};
 
@@ -841,6 +841,12 @@ foreach( var __testCase in __binaryValues )
 <#+
 		
 /******************************** HELPERS ********************************/
+
+private static string CreateDictionaryBinary( int count )
+{
+	return String.Join( ", ", Enumerable.Range( 1, count ).SelectMany( i => new byte[]{ 0xD2 }.Concat( BitConverter.GetBytes( i ).Reverse() ).Concat( new byte[] { 0x57 } ) ).Select( b => "0x" + b.ToString( "x" ) ) );
+}
+
 private static readonly Regex __typeCodePattern =
 	new Regex( 
 		@"^new\s+byte\s*\[\s*\]\s*\{\s*0x(?<Code>[0-9A-Fa-f]{1,2})",
