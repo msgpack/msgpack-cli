@@ -123,11 +123,16 @@ namespace MsgPack
 		}
 
 
-		private static int UnpackArrayLengthCore( Stream source )
+		private static int? UnpackArrayLengthCore( Stream source )
 		{
 			using ( var unpacker = Unpacker.Create( source, false ) )
 			{
 				UnpackOne( unpacker );
+				if ( IsNil( unpacker ) )
+				{
+					return null;
+				}
+
 				if ( !unpacker.IsArrayHeader )
 				{
 					throw new MessageTypeException( "The underlying stream is not array type." );
@@ -169,11 +174,16 @@ namespace MsgPack
 		}
 
 
-		private static int UnpackDictionaryCountCore( Stream source )
+		private static int? UnpackDictionaryCountCore( Stream source )
 		{
 			using ( var unpacker = Unpacker.Create( source, false ) )
 			{
 				UnpackOne( unpacker );
+				if ( IsNil( unpacker ) )
+				{
+					return null;
+				}
+
 				if ( !unpacker.IsMapHeader )
 				{
 					throw new MessageTypeException( "The underlying stream is not map type." );
@@ -246,7 +256,7 @@ namespace MsgPack
 					return ( short )buffer;
 				}
 			}
-			else if ( header == MessagePackCode.Raw16 )
+			else if ( header == MessagePackCode.Raw32 )
 			{
 				var bytes = ReadBytes( source, sizeof( int ) );
 				unchecked
@@ -262,11 +272,6 @@ namespace MsgPack
 			{
 				throw new MessageTypeException( "The underlying stream is not raw type." );
 			}
-		}
-
-		private static byte[] UnpackRawBodyCore( Stream source, int length )
-		{
-			return ReadBytes( source, length );
 		}
 
 		private static byte[] ReadBytes( Stream source, int length )
