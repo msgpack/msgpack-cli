@@ -419,6 +419,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
@@ -477,7 +478,7 @@ foreach( var __integerType in __integerTypes )
 #>
 		public void TestUnpack<#= __integerType.Name #>_Stream_<#= __integerValue.Key #>As<#= ToValueId( __expression ) #>_<#= __isNotCompatible ? "AsIs" : "Fail" #>()
 		{
-			using( var buffer = new MemoryStream( <#= __expression #> ) )
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
 			{
 				var result = Unpacking.Unpack<#= __integerType.Name #>( buffer );
 <#
@@ -502,7 +503,7 @@ foreach( var __integerType in __integerTypes )
 		public void TestUnpack<#= __integerType.Name #>_ByteArray_Offset_OffsetIsValid_OffsetIsRespected()
 		{
 			// Offset 1 is positive fix num 1.
-			var result = Unpacking.Unpack<#= __integerType.Name #>( new byte[]{ 0xFF, 0x57, 0xFF }, 1 );
+			var result = Unpacking.Unpack<#= __integerType.Name #>( new byte[] { 0xFF, 0x57, 0xFF }, 1 );
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.AreEqual( 0x57, result.Value );
 		}
@@ -547,7 +548,7 @@ foreach( var __realType in __realTypes )
 		[Test]
 		public void TestUnpack<#= __realType.Name #>_Stream_<#= __realValue.Item1 #>_AsIs()
 		{
-			using( var buffer = new MemoryStream( <#= __realValue.Item2 #> ) )
+			using ( var buffer = new MemoryStream( <#= __realValue.Item2 #> ) )
 			{
 				var result = Unpacking.Unpack<#= __realType.Name #>( buffer );
 				Assert.AreEqual( sizeof( <#= __realValue.Item3 #> ) + 1, buffer.Position );
@@ -564,7 +565,7 @@ foreach( var __realType in __realTypes )
 		public void TestUnpack<#= __realType.Name #>_ByteArray_Offset_OffsetIsValid_OffsetIsRespected()
 		{
 			// Offset 1 is <#= __realType.Name #> 0.
-			var result = Unpacking.Unpack<#= __realType.Name #>( new byte[]{ 0xFF, <#= __realType == typeof( float ) ? "0xCA" : "0xCB" #>, <#= String.Join( ", ", Enumerable.Repeat( "0x00", __realType == typeof( float ) ? 4 : 8 ) ) #>, 0xFF }, 1 );
+			var result = Unpacking.Unpack<#= __realType.Name #>( new byte[] { 0xFF, <#= __realType == typeof( float ) ? "0xCA" : "0xCB" #>, <#= String.Join( ", ", Enumerable.Repeat( "0x00", __realType == typeof( float ) ? 4 : 8 ) ) #>, 0xFF }, 1 );
 			Assert.AreEqual( sizeof( <#= __realType #> ) + 1, result.ReadCount );
 			Assert.AreEqual( 0.0, result.Value );
 		}
@@ -602,7 +603,7 @@ foreach( var __realType in __realTypes )
 		[Test]
 		public void TestUnpackBoolean_Stream_True_AsIs()
 		{
-			using( var buffer = new MemoryStream( <#= __miscValues[ "True" ] #> ) )
+			using ( var buffer = new MemoryStream( <#= __miscValues[ "True" ] #> ) )
 			{
 				var result = Unpacking.UnpackBoolean( buffer );
 				Assert.AreEqual( 1, buffer.Position );
@@ -621,7 +622,7 @@ foreach( var __realType in __realTypes )
 		[Test]
 		public void TestUnpackBoolean_Stream_False_AsIs()
 		{
-			using( var buffer = new MemoryStream( <#= __miscValues[ "False" ] #> ) )
+			using ( var buffer = new MemoryStream( <#= __miscValues[ "False" ] #> ) )
 			{
 				var result = Unpacking.UnpackBoolean( buffer );
 				Assert.AreEqual( 1, buffer.Position );
@@ -640,7 +641,7 @@ foreach( var __realType in __realTypes )
 		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackBoolean_Stream_Nil()
 		{
-			using( var buffer = new MemoryStream( <#= __miscValues[ "Nil" ] #> ) )
+			using ( var buffer = new MemoryStream( <#= __miscValues[ "Nil" ] #> ) )
 			{
 				var result = Unpacking.UnpackBoolean( buffer );
 			}
@@ -652,7 +653,7 @@ foreach( var __realType in __realTypes )
 		public void TestUnpackBoolean_ByteArray_Offset_OffsetIsValid_OffsetIsRespected()
 		{
 			// Offset 1 is true
-			var result = Unpacking.UnpackBoolean( new byte[]{ 0xFF, 0xC3, 0xFF }, 1 );
+			var result = Unpacking.UnpackBoolean( new byte[] { 0xFF, 0xC3, 0xFF }, 1 );
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.AreEqual( true, result.Value );
 		}
@@ -674,7 +675,7 @@ foreach( var __realType in __realTypes )
 		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackNull_Stream_True()
 		{
-			using( var buffer = new MemoryStream( <#= __miscValues[ "True" ] #> ) )
+			using ( var buffer = new MemoryStream( <#= __miscValues[ "True" ] #> ) )
 			{
 				var result = Unpacking.UnpackNull( buffer );
 			}
@@ -691,7 +692,7 @@ foreach( var __realType in __realTypes )
 		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackNull_Stream_False()
 		{
-			using( var buffer = new MemoryStream( <#= __miscValues[ "False" ] #> ) )
+			using ( var buffer = new MemoryStream( <#= __miscValues[ "False" ] #> ) )
 			{
 				var result = Unpacking.UnpackNull( buffer );
 			}
@@ -708,7 +709,7 @@ foreach( var __realType in __realTypes )
 		[Test]
 		public void TestUnpackNull_Stream_Nil_AsIs()
 		{
-			using( var buffer = new MemoryStream( <#= __miscValues[ "Nil" ] #> ) )
+			using ( var buffer = new MemoryStream( <#= __miscValues[ "Nil" ] #> ) )
 			{
 				var result = Unpacking.UnpackNull( buffer );
 				Assert.AreEqual( 1, buffer.Position );
@@ -721,7 +722,7 @@ foreach( var __realType in __realTypes )
 		[Test]
 		public void TestUnpackNull_ByteArray_Offset_OffsetIsValid_OffsetIsRespected()
 		{
-			var result = Unpacking.UnpackNull( new byte[]{ 0xFF, 0xC0, 0xFF }, 1 );
+			var result = Unpacking.UnpackNull( new byte[] { 0xFF, 0xC0, 0xFF }, 1 );
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.IsNull( result.Value );
 		}
@@ -743,17 +744,17 @@ foreach( var __testCase in __arrayValues )
 		{
 			var result = Unpacking.UnpackArrayLength( <#= __expression #> );
 			Assert.AreEqual( <#= GetHeaderLength( __expression ) #>, result.ReadCount );
-			Assert.AreEqual( <#= __testCase.Item2 #>, result.Value );
+			Assert.That( result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
 		}
 
 		[Test]
 		public void TestUnpackArrayLength_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
 		{
-			using( var buffer = new MemoryStream( <#= __expression #> ) )
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
 			{
 				var result = Unpacking.UnpackArrayLength( buffer );
 				Assert.AreEqual( <#= GetHeaderLength( __expression ) #>, buffer.Position );
-				Assert.AreEqual( <#= __testCase.Item2 #>, result );
+				Assert.That( result, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
 		}
 		
@@ -786,7 +787,7 @@ foreach( var __testCase in __arrayValues )
 		[Test]
 		public void TestUnpackArrayLength_ByteArray_Offset_OffsetIsValid_OffsetIsRespected()
 		{
-			var result = Unpacking.UnpackArrayLength( new byte[]{ 0xFF, 0x90, 0xFF }, 1 );
+			var result = Unpacking.UnpackArrayLength( new byte[] { 0xFF, 0x90, 0xFF }, 1 );
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.AreEqual( 0, result.Value );
 		}
@@ -832,7 +833,7 @@ foreach( var __testCase in __mapValues )
 		[Test]
 		public void TestUnpackDictionaryCount_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
 		{
-			using( var buffer = new MemoryStream( <#= __expression #> ) )
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
 			{
 				var result = Unpacking.UnpackDictionaryCount( buffer );
 				Assert.AreEqual( <#= GetHeaderLength( __expression ) #>, buffer.Position );
@@ -881,7 +882,7 @@ foreach( var __testCase in __mapValues )
 		[Test]
 		public void TestUnpackDictionaryCount_ByteArray_Offset_OffsetIsValid_OffsetIsRespected()
 		{
-			var result = Unpacking.UnpackDictionaryCount( new byte[]{ 0xFF, 0x80, 0xFF }, 1 );
+			var result = Unpacking.UnpackDictionaryCount( new byte[] { 0xFF, 0x80, 0xFF }, 1 );
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.AreEqual( 0, result.Value );
 		}
@@ -928,7 +929,7 @@ foreach( var __testCase in __binaryValues )
 		[Test]
 		public void TestUnpackBinary_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
 		{
-			using( var buffer = new MemoryStream( <#= __expression #> ) )
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.AreEqual( <#= __expression.Count( c => c == ',' ) + 1 #>, buffer.Position );
@@ -946,7 +947,7 @@ foreach( var __testCase in __binaryValues )
 		[Test]
 		public void TestUnpackBinary_ByteArray_Offset_OffsetIsValid_OffsetIsRespected()
 		{
-			var result = Unpacking.UnpackBinary( new byte[]{ 0xFF, 0xA0, 0xFF }, 1 );
+			var result = Unpacking.UnpackBinary( new byte[] { 0xFF, 0xA0, 0xFF }, 1 );
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.AreEqual( 0, result.Value.Length );
 		}
