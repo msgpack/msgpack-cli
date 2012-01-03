@@ -506,8 +506,22 @@ foreach( var __integerType in __integerTypes )
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.AreEqual( 0x57, result.Value );
 		}
-	}
+
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpack<#= __integerType.Name #>_ByteArray_Null_Nil()
+		{
+			Unpacking.Unpack<#= __integerType.Name #>( new byte[] { 0xC0 } );
+		}
 	
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpack<#= __integerType.Name #>_ByteArray_Not<#= __integerType.Name #>()
+		{
+			Unpacking.Unpack<#= __integerType.Name #>( new byte[] { 0xA0 } );
+		}
+	}
+
 <#
 }
 
@@ -554,8 +568,22 @@ foreach( var __realType in __realTypes )
 			Assert.AreEqual( sizeof( <#= __realType #> ) + 1, result.ReadCount );
 			Assert.AreEqual( 0.0, result.Value );
 		}
-	}
+
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpack<#= __realType.Name #>_ByteArray_Null_Nil()
+		{
+			Unpacking.Unpack<#= __realType.Name #>( new byte[] { 0xC0 } );
+		}
 	
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpack<#= __realType.Name #>_ByteArray_Not<#= __realType.Name #>()
+		{
+			Unpacking.Unpack<#= __realType.Name #>( new byte[] { 0xC3 } );
+		}
+	}
+
 <#
 }
 
@@ -729,6 +757,26 @@ foreach( var __testCase in __arrayValues )
 			}
 		}
 		
+
+		[Test]
+		public void TestUnpackArray_ByteArray_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			var result = Unpacking.UnpackArray( <#= __expression #> );
+			Assert.AreEqual( <#= __expression.Count( c => c == ',' ) + 1 #>, result.ReadCount );
+			Assert.That( result.Value, Is.EqualTo( Enumerable.Repeat( new MessagePackObject( 0x57 ), <#= __testCase.Item2 #> ).ToArray() ) );
+		}
+
+		[Test]
+		public void TestUnpackArray_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
+			{
+				var result = Unpacking.UnpackArray( buffer );
+				Assert.AreEqual( <#= __expression.Count( c => c == ',' ) + 1 #>, buffer.Position );
+				Assert.That( result, Is.EqualTo( Enumerable.Repeat( new MessagePackObject( 0x57 ), <#= __testCase.Item2 #> ).ToArray() ) );
+			}
+		}
+
 <#
 	}
 }
@@ -741,6 +789,23 @@ foreach( var __testCase in __arrayValues )
 			var result = Unpacking.UnpackArrayLength( new byte[]{ 0xFF, 0x90, 0xFF }, 1 );
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.AreEqual( 0, result.Value );
+		}
+
+		[Test]
+		public void TestUnpackArray_ByteArray_Null_Nil()
+		{
+			var result = Unpacking.UnpackArray( new byte[] { 0xC0 } );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
+		}
+	
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackArray_ByteArray_NotArray()
+		{
+			var result = Unpacking.UnpackArray( new byte[] { 0x1 } );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
 		}
 	}
 
@@ -774,6 +839,38 @@ foreach( var __testCase in __mapValues )
 				Assert.AreEqual( <#= __testCase.Item2 #>, result );
 			}
 		}
+
+		[Test]
+		public void TestUnpackDictionary_ByteArray_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			var result = Unpacking.UnpackDictionary( <#= __expression #> );
+			Assert.AreEqual( <#= __expression.Count( c => c == ',' ) + 1 #>, result.ReadCount );
+			Assert.AreEqual( <#= __testCase.Item2 #>, result.Value.Count );
+			for ( int i = 0; i < result.Value.Count; i++ )
+			{
+				MessagePackObject value;
+				Assert.IsTrue( result.Value.TryGetValue( i + 1, out value ) );
+				Assert.IsTrue( value.Equals( 0x57 ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpackDictionary_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
+			{
+				var result = Unpacking.UnpackDictionary( buffer );
+				Assert.AreEqual( <#= __expression.Count( c => c == ',' ) + 1 #>, buffer.Position );
+				Assert.AreEqual( <#= __testCase.Item2 #>, result.Count );
+				for ( int i = 0; i < result.Count; i++ )
+				{
+					MessagePackObject value;
+					Assert.IsTrue( result.TryGetValue( i + 1, out value ) );
+					Assert.IsTrue( value.Equals( 0x57 ) );
+				}
+			}
+		}
+
 <#
 	}
 }
@@ -787,6 +884,23 @@ foreach( var __testCase in __mapValues )
 			var result = Unpacking.UnpackDictionaryCount( new byte[]{ 0xFF, 0x80, 0xFF }, 1 );
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.AreEqual( 0, result.Value );
+		}
+
+		[Test]
+		public void TestUnpackDictionary_ByteArray_Null_Nil()
+		{
+			var result = Unpacking.UnpackDictionary( new byte[] { 0xC0 } );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
+		}
+	
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackDictionary_ByteArray_NotMap()
+		{
+			var result = Unpacking.UnpackDictionary( new byte[] { 0x1 } );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
 		}
 	}
 
@@ -835,6 +949,23 @@ foreach( var __testCase in __binaryValues )
 			var result = Unpacking.UnpackBinary( new byte[]{ 0xFF, 0xA0, 0xFF }, 1 );
 			Assert.AreEqual( 1, result.ReadCount );
 			Assert.AreEqual( 0, result.Value.Length );
+		}
+
+		[Test]
+		public void TestUnpackBinary_ByteArray_Null_Nil()
+		{
+			var result = Unpacking.UnpackBinary( new byte[] { 0xC0 } );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
+		}
+	
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackBinary_ByteArray_NotBinary()
+		{
+			var result = Unpacking.UnpackBinary( new byte[] { 0x1 } );
+			Assert.AreEqual( 1, result.ReadCount );
+			Assert.IsNull( result.Value );
 		}
 	}
 }
