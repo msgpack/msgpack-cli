@@ -103,6 +103,8 @@
     <Compile Include="EqualsTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExceptionTest.cs" />
+    <Compile Include="GenericExceptionTester.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="MessagePackConvertTest.cs" />
     <Compile Include="MessagePackObjectDictionaryTest.cs" />
