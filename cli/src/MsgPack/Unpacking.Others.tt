@@ -32,9 +32,9 @@ var __typeName = "Unpacking";
 var __methods = new []
 {
 	Tuple.Create( "Array", "IList<MessagePackObject>", "the array" ),
-	Tuple.Create( "ArrayLength", "Int32?", "length of the array" ),
+	Tuple.Create( "ArrayLength", "Int64?", "length of the array" ),
 	Tuple.Create( "Dictionary", "MessagePackObjectDictionary", "the dictionary" ),
-	Tuple.Create( "DictionaryCount", "Int32?", "count of the dictionary entries" ),
+	Tuple.Create( "DictionaryCount", "Int64?", "count of the dictionary entries" ),
 	Tuple.Create( "Binary", "byte[]", "the raw binary" ),
 	Tuple.Create( "Boolean", "bool", "the boolean" ),
 	Tuple.Create( "Null", "object", "the nil" ),

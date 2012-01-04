@@ -29,7 +29,7 @@ namespace MsgPack
 	/// </summary>
 	public abstract class UnpackingStreamReader : StreamReader
 	{
-		private readonly int _byteLength;
+		private readonly long _byteLength;
 
 		/// <summary>
 		///		Gets the length of the underlying raw binary length.
@@ -38,12 +38,12 @@ namespace MsgPack
 		///		The length of the underlying raw binary length.
 		///		This value will not be negative.
 		/// </value>
-		public int ByteLength
+		public long ByteLength
 		{
 			get { return this._byteLength; }
 		}
 
-		internal UnpackingStreamReader( Stream stream, Encoding encoding, int byteLength )
+		internal UnpackingStreamReader( Stream stream, Encoding encoding, long byteLength )
 			: base( stream, encoding, true )
 		{
 			this._byteLength = byteLength;

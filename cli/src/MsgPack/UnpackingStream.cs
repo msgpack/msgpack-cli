@@ -39,8 +39,8 @@ namespace MsgPack
 	public abstract class UnpackingStream : Stream
 	{
 		internal readonly Stream Underlying;
-		internal readonly int RawLength;
-		internal int CurrentOffset;
+		internal readonly long RawLength;
+		internal long CurrentOffset;
 
 		/// <summary>
 		///		Gets a value indicating whether the current stream supports reading.
@@ -92,7 +92,7 @@ namespace MsgPack
 			get { return this.Underlying.CanTimeout; }
 		}
 
-		internal UnpackingStream( Stream underlying, int rawLength )
+		internal UnpackingStream( Stream underlying, long rawLength )
 		{
 			this.Underlying = underlying;
 			this.RawLength = rawLength;

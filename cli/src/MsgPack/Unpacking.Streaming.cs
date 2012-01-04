@@ -66,7 +66,7 @@ namespace MsgPack
 
 		private static UnpackingStream UnpackByteStreamCore( Stream source )
 		{
-			int length = UnpackRawLengthCore( source );
+			uint length = UnpackRawLengthCore( source );
 
 			if ( source.CanSeek )
 			{
@@ -183,7 +183,7 @@ namespace MsgPack
 				set { this.SeekTo( value ); }
 			}
 
-			public SeekableUnpackingStream( Stream underlying, int rawLength )
+			public SeekableUnpackingStream( Stream underlying, long rawLength )
 				: base( underlying, rawLength )
 			{
 				Contract.Assert( underlying.CanSeek );
@@ -227,8 +227,7 @@ namespace MsgPack
 					this.SetLength( position );
 				}
 
-				Contract.Assert( position <= Int32.MaxValue );
-				this.CurrentOffset = unchecked( ( int )position );
+				this.CurrentOffset = position;
 				this.Underlying.Position = position + this._initialPosition;
 			}
 		}
@@ -246,7 +245,7 @@ namespace MsgPack
 				set { throw new NotSupportedException(); }
 			}
 
-			public UnseekableUnpackingStream( Stream underlying, int rawLength ) : base( underlying, rawLength ) { }
+			public UnseekableUnpackingStream( Stream underlying, long rawLength ) : base( underlying, rawLength ) { }
 
 			public sealed override long Seek( long offset, SeekOrigin origin )
 			{
@@ -256,7 +255,7 @@ namespace MsgPack
 
 		private sealed class DefaultUnpackingStreamReader : UnpackingStreamReader
 		{
-			public DefaultUnpackingStreamReader( Stream stream, Encoding encoding, int byteLength ) : base( stream, encoding, byteLength ) { }
+			public DefaultUnpackingStreamReader( Stream stream, Encoding encoding, long byteLength ) : base( stream, encoding, byteLength ) { }
 		}
 	}
 }

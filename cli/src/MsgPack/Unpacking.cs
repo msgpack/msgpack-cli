@@ -123,7 +123,7 @@ namespace MsgPack
 		}
 
 
-		private static int? UnpackArrayLengthCore( Stream source )
+		private static uint? UnpackArrayLengthCore( Stream source )
 		{
 			using ( var unpacker = Unpacker.Create( source, false ) )
 			{
@@ -138,7 +138,7 @@ namespace MsgPack
 					throw new MessageTypeException( "The underlying stream is not array type." );
 				}
 
-				return ( int )unpacker.Data.Value;
+				return ( uint )unpacker.Data.Value;
 			}
 		}
 
@@ -164,7 +164,13 @@ namespace MsgPack
 				return null;
 			}
 
-			var result = new MessagePackObject[ ( int )unpacker.Data.Value ];
+			uint length = ( uint )unpacker.Data.Value;
+			if ( length > Int32.MaxValue )
+			{
+				throw new MessageNotSupportedException( "The array which length is greater than Int32.MaxValue is not supported." );
+			}
+
+			var result = new MessagePackObject[ unchecked( ( int )length ) ];
 			for ( int i = 0; i < result.Length; i++ )
 			{
 				result[ i ] = UnpackObjectCore( unpacker );
@@ -174,7 +180,7 @@ namespace MsgPack
 		}
 
 
-		private static int? UnpackDictionaryCountCore( Stream source )
+		private static uint? UnpackDictionaryCountCore( Stream source )
 		{
 			using ( var unpacker = Unpacker.Create( source, false ) )
 			{
@@ -189,7 +195,7 @@ namespace MsgPack
 					throw new MessageTypeException( "The underlying stream is not map type." );
 				}
 
-				return ( int )unpacker.Data.Value;
+				return ( uint )unpacker.Data.Value;
 			}
 		}
 
@@ -214,8 +220,14 @@ namespace MsgPack
 				return null;
 			}
 
-			int count = ( int )unpacker.Data.Value;
-			var result = new MessagePackObjectDictionary( count );
+
+			uint count = ( uint )unpacker.Data.Value;
+			if ( count > Int32.MaxValue )
+			{
+				throw new MessageNotSupportedException( "The map which count is greater than Int32.MaxValue is not supported." );
+			}
+
+			var result = new MessagePackObjectDictionary( unchecked( ( int )count ) );
 			for ( int i = 0; i < count; i++ )
 			{
 				var key = UnpackObjectCore( unpacker );
@@ -234,7 +246,7 @@ namespace MsgPack
 		}
 
 
-		private static int UnpackRawLengthCore( Stream source )
+		private static uint UnpackRawLengthCore( Stream source )
 		{
 			int header = source.ReadByte();
 			if ( header < 0 )
@@ -249,7 +261,7 @@ namespace MsgPack
 			}
 			else if ( MessagePackCode.MinimumFixedRaw <= header && header <= MessagePackCode.MaximumFixedRaw )
 			{
-				return header - MessagePackCode.MinimumFixedRaw;
+				return unchecked( ( uint )( header - MessagePackCode.MinimumFixedRaw ) );
 			}
 			else if ( header == MessagePackCode.Raw16 )
 			{
@@ -258,7 +270,7 @@ namespace MsgPack
 				{
 					ushort buffer = bytes[ 1 ];
 					buffer |= ( ushort )( bytes[ 0 ] << 8 );
-					return ( short )buffer;
+					return buffer;
 				}
 			}
 			else if ( header == MessagePackCode.Raw32 )
@@ -270,7 +282,7 @@ namespace MsgPack
 					buffer |= ( uint )( bytes[ 2 ] << 8 );
 					buffer |= ( uint )( bytes[ 1 ] << 16 );
 					buffer |= ( uint )( bytes[ 0 ] << 24 );
-					return ( int )buffer;
+					return buffer;
 				}
 			}
 			else

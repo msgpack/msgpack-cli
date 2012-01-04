@@ -1224,6 +1224,11 @@ namespace MsgPack
 			/// <param name="length">Length of bytes.</param>
 			public BytesBuffer( uint length )
 			{
+				if ( length > Int32.MaxValue )
+				{
+					throw new MessageNotSupportedException( "The raw binary which length is greater than Int32.MaxValue is not supported." );
+				}
+
 				this._backingStore = new byte[ length ];
 				this._position = 0;
 			}
