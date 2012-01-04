@@ -218,7 +218,7 @@ namespace MsgPack
 			{
 				if ( position < 0 )
 				{
-					throw new NotSupportedException( "Stream cannot be positioned before head." );
+					throw new IOException( "An attempt was made to move the position before the beginning of the stream." );
 				}
 
 				if ( position > this.RawLength )
