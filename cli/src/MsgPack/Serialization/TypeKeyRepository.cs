@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Security;
 
 namespace MsgPack.Serialization
 {
@@ -66,6 +67,9 @@ namespace MsgPack.Serialization
 			this._lock.Dispose();
 		}
 
+#if !PARTIAL_TRUST && !SILVERLIGHT
+		[SecuritySafeCritical]
+#endif
 		private Dictionary<RuntimeTypeHandle, object> GetClonedTable()
 		{
 			bool holdsReadLock = false;
@@ -121,6 +125,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !PARTIAL_TRUST && !SILVERLIGHT
+		[SecuritySafeCritical]
+#endif
 		private bool Get<T>( out object matched, out object genericDefinitionMatched )
 		{
 			bool holdsReadLock = false;
@@ -199,6 +206,9 @@ namespace MsgPack.Serialization
 			return this.Register( type, type );
 		}
 
+#if !PARTIAL_TRUST && !SILVERLIGHT
+		[SecuritySafeCritical]
+#endif
 		private bool Register( Type key, object value )
 		{
 			if ( !this._table.ContainsKey( key.TypeHandle ) )
