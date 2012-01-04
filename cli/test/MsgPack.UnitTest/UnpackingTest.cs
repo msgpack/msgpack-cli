@@ -701,7 +701,340 @@ namespace MsgPack
 			Unpacking.UnpackObject( default( Stream ) );
 		}
 
-		// FIXME: Seek test of UnpackByteStream return value
+
+		// Edge cases
+
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackInt32_NotNumeric()
+		{
+			Unpacking.UnpackInt32( new byte[] { 0x80 } );
+		}
+
+		[Test]
+		[ExpectedException( typeof( UnpackException ) )]
+		public void TestUnpackInt32_Eof()
+		{
+			Unpacking.UnpackInt32( new byte[] { 0xD0 } );
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidMessagePackStreamException ) )]
+		public void TestUnpackDictionary_KeyDuplicated()
+		{
+			Unpacking.UnpackDictionary( new byte[] { 0x82, 0x1, 0x0, 0x1, 0x0 } );
+		}
+
+		[Test]
+		[ExpectedException( typeof( UnpackException ) )]
+		public void TestUnpackArray_Eof()
+		{
+			Unpacking.UnpackArray( new byte[] { 0x91 } );
+		}
+
+		[Test]
+		[ExpectedException( typeof( UnpackException ) )]
+		public void TestUnpackBinary_EofInHeader()
+		{
+			Unpacking.UnpackBinary( new byte[] { 0xDA, 0x1 } );
+		}
+
+		[Test]
+		[ExpectedException( typeof( UnpackException ) )]
+		public void TestUnpackBinary_EofInBody()
+		{
+			Unpacking.UnpackBinary( new byte[] { 0xA1 } );
+		}
+
+		[Test]
+		[ExpectedException( typeof( UnpackException ) )]
+		public void TestUnpackByteStream_EofInHeader()
+		{
+			using ( var underlying = new MemoryStream( new byte[] { 0xDA, 0x1 } ) )
+			{
+				var dummy = Unpacking.UnpackByteStream( underlying );
+			}
+		}
+
+		[Test]
+		public void TestUnpackByteStream_EofInBody_CanFeed()
+		{
+			using ( var underlying = new MemoryStream() )
+			{
+				underlying.WriteByte( 0xA1 );
+				underlying.Position = 0;
+				var target = Unpacking.UnpackByteStream( underlying );
+				Assert.That( target.Length, Is.EqualTo( 1 ) );
+				// Check precondition
+				var b = target.ReadByte();
+				Assert.That( b, Is.EqualTo( -1 ) );
+
+				// Feed
+				// Assume that underlying supports Feed (appends bytes to tail, and does not move Position).
+				underlying.WriteByte( 0x57 );
+				underlying.Position -= 1;
+				b = target.ReadByte();
+				Assert.That( b, Is.EqualTo( 0x57 ) );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( MessageTypeException ) )]
+		public void TestUnpackByteStream_NotRaw()
+		{
+			Unpacking.UnpackByteStream( new MemoryStream( new byte[] { 0x80 } ) );
+		}
+
+		[Test]
+		public void TestUnpackByteStream_Nil_AsEmpty()
+		{
+			var target = Unpacking.UnpackByteStream( new MemoryStream( new byte[] { 0xC0 } ) );
+			Assert.That( target, Is.Not.Null );
+			Assert.That( target.Length, Is.EqualTo( 0 ) );
+		}
+
+
+		private static Stream CreateStreamForByteStreamTest()
+		{
+			// Positin == Value
+			return Unpacking.UnpackByteStream( new MemoryStream( new byte[] { 0xA3, 0x0, 0x1, 0x2 } ) );
+		}
+
+		[Test]
+		public void TestUnpackBinaryResultStreamIsNotWriteable_CanWrite_False()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				Assert.IsFalse( target.CanWrite );
+			}
+		}
+
+		[Test]
+		public void TestUnpackBinaryResultStreamIsNotWriteable_Flush_Nop()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				target.Flush();
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestUnpackBinaryResultStreamIsNotWriteable_Write_Fail()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				target.Write( new byte[] { 0x0 }, 0, 1 );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestUnpackBinaryResultStreamIsNotWriteable_WriteByte_Fail()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				target.WriteByte( 0 );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestUnpackBinaryResultStreamIsNotWriteable_SetLength_Fail()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				target.SetLength( 1 );
+			}
+		}
+
+
+		private static void AssertStreamPosition( Stream target, int position )
+		{
+			// ReadByte() should return the value which equals to Position except tail.
+			AssertStreamPosition( target, position, position );
+		}
+
+		private static void AssertStreamPosition( Stream target, int position, int expectedValue )
+		{
+			Assert.That( target.Position, Is.EqualTo( position ) );
+			Assert.That( target.ReadByte(), Is.EqualTo( expectedValue ) );
+		}
+
+		[Test]
+		public void TestSeekableByteStream_Seek_0_Begin_Head()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Seek( 0, SeekOrigin.Begin );
+				AssertStreamPosition( target, 0 );
+			}
+		}
+
+		[Test]
+		public void TestSeekableByteStream_Seek_1_Begin_HeadPlus1()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Seek( 1, SeekOrigin.Begin );
+				AssertStreamPosition( target, 1 );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( IOException ) )]
+		public void TestSeekableByteStream_Seek_Minus1_Begin_Fail()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Seek( -1, SeekOrigin.Begin );
+			}
+		}
+
+		[Test]
+		public void TestSeekableByteStream_setPosition_0_Head()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Position = 0;
+				AssertStreamPosition( target, 0 );
+			}
+		}
+
+		[Test]
+		public void TestSeekableByteStream_setPosition_1_HeadPlus1()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Position = 1;
+				AssertStreamPosition( target, 1 );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( IOException ) )]
+		public void TestSeekableByteStream_setPosition_Minus1_Fail()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Position = -1;
+			}
+		}
+
+		[Test]
+		public void TestSeekableByteStream_Seek_0_Current_DoesNotMove()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Seek( 0, SeekOrigin.Current );
+				AssertStreamPosition( target, 1 );
+			}
+		}
+
+		[Test]
+		public void TestSeekableByteStream_Seek_1_Current_Plus1()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Seek( 1, SeekOrigin.Current );
+				AssertStreamPosition( target, 2 );
+			}
+		}
+
+		[Test]
+		public void TestSeekableByteStream_Seek_Minus1_Current_Minus1()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Seek( -1, SeekOrigin.Current );
+				AssertStreamPosition( target, 0 );
+			}
+		}
+
+		[Test]
+		public void TestSeekableByteStream_Seek_0_End_Tail()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Seek( 0, SeekOrigin.End );
+				AssertStreamPosition( target, 3, -1 );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestSeekableByteStream_Seek_1_End_Fail()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Seek( 1, SeekOrigin.End );
+			}
+		}
+
+		[Test]
+		public void TestSeekableByteStream_Seek_Minus1_End_TailMinus1()
+		{
+			using ( var target = CreateStreamForByteStreamTest() )
+			{
+				// Forward.
+				target.ReadByte();
+				target.Seek( -1, SeekOrigin.End );
+				AssertStreamPosition( target, 2 );
+			}
+		}
+
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestUnseekableByteStream_Seek()
+		{
+			using ( var target = Unpacking.UnpackByteStream( new WrapperStream( new MemoryStream( new byte[] { 0xA1, 0xFF } ), canSeek: false ) ) )
+			{
+				target.Seek( 0, SeekOrigin.Current );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestUnseekableByteStream_getPosition()
+		{
+			using ( var target = Unpacking.UnpackByteStream( new WrapperStream( new MemoryStream( new byte[] { 0xA1, 0xFF } ), canSeek: false ) ) )
+			{
+				var dummy = target.Position;
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestUnseekableByteStream_setPosition()
+		{
+			using ( var target = Unpacking.UnpackByteStream( new WrapperStream( new MemoryStream( new byte[] { 0xA1, 0xFF } ), canSeek: false ) ) )
+			{
+				target.Position = 0;
+			}
+		}
 
 		private sealed class WrapperStream : Stream
 		{
