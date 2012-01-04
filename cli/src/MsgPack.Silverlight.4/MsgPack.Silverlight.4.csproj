@@ -205,9 +205,6 @@
     <Compile Include="..\MsgPack\Serialization\CollectionTraits.cs">
       <Link>Serialization\CollectionTraits.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DataContractMessagePackSerializer`1.cs">
-      <Link>Serialization\DataContractMessagePackSerializer`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DataMemberContract.cs">
       <Link>Serialization\DataMemberContract.cs</Link>
     </Compile>
