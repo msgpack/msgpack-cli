@@ -285,7 +285,7 @@ namespace MsgPack
 			int bytes = source.Read( result, 0, length );
 			if ( bytes < length )
 			{
-				throw new UnpackException( "The underlying stream unepectedly ends." );
+				throw new UnpackException( "The underlying stream unexpectedly ends." );
 			}
 
 			return result;
