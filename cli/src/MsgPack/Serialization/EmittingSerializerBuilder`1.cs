@@ -885,8 +885,6 @@ namespace MsgPack.Serialization
 			);
 			CreateTupleUnpack(
 				emitter,
-				memberOrNull,
-				tupleType,
 				itemTypes
 			);
 
@@ -980,12 +978,12 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void CreateTupleUnpack( SerializerEmitter emitter, MemberInfo memberOrNull, Type tupleType, IList<Type> itemTypes )
+		private static void CreateTupleUnpack( SerializerEmitter emitter, IList<Type> itemTypes )
 		{
-			CreateTupleUnpackFrom( emitter, memberOrNull, tupleType, itemTypes );
+			CreateTupleUnpackFrom( emitter, itemTypes );
 		}
 
-		private static void CreateTupleUnpackFrom( SerializerEmitter emitter, MemberInfo memberOrNull, Type tupleType, IList<Type> itemTypes )
+		private static void CreateTupleUnpackFrom( SerializerEmitter emitter, IList<Type> itemTypes )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
 			try
