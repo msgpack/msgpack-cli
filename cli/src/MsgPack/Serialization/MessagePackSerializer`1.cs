@@ -276,7 +276,7 @@ namespace MsgPack.Serialization
 
 			if ( !( collection is T ) )
 			{
-				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "objectTree" );
+				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
 			}
 
 			if ( unpacker.IsInStart )
