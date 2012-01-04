@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
 
 namespace MsgPack.Serialization
 {
@@ -58,6 +59,7 @@ namespace MsgPack.Serialization
 				{
 					throw new InvalidOperationException(
 						String.Format(
+							CultureInfo.CurrentCulture,
 							"MessagePack serializer for the type '{0}' is not constructed yet.",
 							typeof( T )
 						)
