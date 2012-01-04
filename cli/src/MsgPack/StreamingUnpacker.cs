@@ -527,7 +527,7 @@ namespace MsgPack
 			return false;
 		}
 
-		private EmptyCollectionType ToEmptyCollectionType( MessageType messageType )
+		private static EmptyCollectionType ToEmptyCollectionType( MessageType messageType )
 		{
 			switch ( messageType )
 			{
