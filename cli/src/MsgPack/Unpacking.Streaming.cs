@@ -172,11 +172,6 @@ namespace MsgPack
 		{
 			private readonly long _initialPosition;
 
-			private long End
-			{
-				get { return this.RawLength + this._initialPosition; }
-			}
-
 			public sealed override bool CanSeek
 			{
 				get { return true; }
