@@ -63,6 +63,7 @@ var __methods = new []
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 
@@ -104,6 +105,20 @@ foreach( var __method in __methods )
 		///			When the type of packed value is not known, use <see cref="UnpackObject(byte[])"/> instead.
 		///		</para>
 		///	</remarks>
+<#
+	if ( __method.Item2.EndsWith( "?", StringComparison.Ordinal ) )
+	{
+#>
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullable<T> as type argument is acceptable." )]
+<#
+	} 
+	else if( __method.Item2.EndsWith( ">", StringComparison.Ordinal ) )
+	{
+#>
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Generic collection as type argument is acceptable." )]
+<#
+	}
+#>
 		public static UnpackingResult<#= "<" + __method.Item2 + ">" #> Unpack<#= __method.Item1 #>( byte[] source )
 		{
 			return Unpack<#= __method.Item1 #>( source, 0 );
@@ -136,6 +151,20 @@ foreach( var __method in __methods )
 		/// <remarks>
 		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
 		///	</remarks>
+<#
+	if ( __method.Item2.EndsWith( "?", StringComparison.Ordinal ) )
+	{
+#>
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullable<T> as type argument is acceptable." )]
+<#
+	} 
+	else if( __method.Item2.EndsWith( ">", StringComparison.Ordinal ) )
+	{
+#>
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Generic collection as type argument is acceptable." )]
+<#
+	}
+#>
 		public static UnpackingResult<#= "<" + __method.Item2 + ">" #> Unpack<#= __method.Item1 #>( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );

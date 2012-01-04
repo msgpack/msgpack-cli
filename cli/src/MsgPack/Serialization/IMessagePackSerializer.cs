@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MsgPack.Serialization
 {
@@ -41,6 +42,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		The type of <paramref name="objectTree"/> is not serializable etc.
 		/// </exception>
+		[SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification="'objectTree' does not mean System.Object." )]
 		void PackTo( Packer packer, object objectTree );
 
 		/// <summary>

@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 
@@ -57,6 +58,7 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(byte[])"/> instead.
 		///		</para>
 		///	</remarks>
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Generic collection as type argument is acceptable." )]
 		public static UnpackingResult<IList<MessagePackObject>> UnpackArray( byte[] source )
 		{
 			return UnpackArray( source, 0 );
@@ -89,6 +91,7 @@ namespace MsgPack
 		/// <remarks>
 		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
 		///	</remarks>
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Generic collection as type argument is acceptable." )]
 		public static UnpackingResult<IList<MessagePackObject>> UnpackArray( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
@@ -138,12 +141,13 @@ namespace MsgPack
 
 			return UnpackArrayCore( source );
 		}
+
 		///	<summary>
 		///		Unpacks length of the array from the head of specified byte array.
 		///	</summary>
 		///	<param name="source">The byte array which contains Message Pack binary stream.</param>
 		///	<returns>
-		///		The <see cref="UnpackingResult{T}"/> of <see cref="Int32" /> which contains unpacked length of the array and processed bytes count.
+		///		The <see cref="UnpackingResult{T}"/> of nullable <see cref="Int32" /> which contains unpacked length of the array and processed bytes count.
 		///	</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
@@ -155,7 +159,7 @@ namespace MsgPack
 		///		<paramref name="source"/> is not valid MessagePack stream.
 		///	</exception>
 		/// <exception cref="MessageTypeException">
-		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="Int32" />.
+		///		The unpacked result in the <paramref name="source"/> is not compatible to nullable <see cref="Int32" />.
 		///	</exception>
 		/// <remarks>
 		///		<para>
@@ -165,7 +169,8 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(byte[])"/> instead.
 		///		</para>
 		///	</remarks>
-		public static UnpackingResult<Int32> UnpackArrayLength( byte[] source )
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullable<T> as type argument is acceptable." )]
+		public static UnpackingResult<Int32?> UnpackArrayLength( byte[] source )
 		{
 			return UnpackArrayLength( source, 0 );
 		}
@@ -176,7 +181,7 @@ namespace MsgPack
 		///	<param name="source">The byte array which contains Message Pack binary stream.</param>
 		///	<param name="offset">The offset to be unpacking start with.</param>
 		///	<returns>
-		///		The <see cref="UnpackingResult{T}"/> of <see cref="Int32" /> which contains unpacked length of the array and processed bytes count.
+		///		The <see cref="UnpackingResult{T}"/> of nullable <see cref="Int32" /> which contains unpacked length of the array and processed bytes count.
 		///	</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
@@ -192,12 +197,13 @@ namespace MsgPack
 		///		<paramref name="source"/> is not valid MessagePack stream.
 		///	</exception>
 		/// <exception cref="MessageTypeException">
-		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="Int32" />.
+		///		The unpacked result in the <paramref name="source"/> is not compatible to nullable <see cref="Int32" />.
 		///	</exception>
 		/// <remarks>
 		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
 		///	</remarks>
-		public static UnpackingResult<Int32> UnpackArrayLength( byte[] source, int offset )
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullable<T> as type argument is acceptable." )]
+		public static UnpackingResult<Int32?> UnpackArrayLength( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
 			Contract.EndContractBlock();
@@ -206,7 +212,7 @@ namespace MsgPack
 			{
 				stream.Position = offset;
 				var value = UnpackArrayLengthCore( stream );
-				return new UnpackingResult<Int32>( value, unchecked( ( int )( stream.Position - offset ) ) );
+				return new UnpackingResult<Int32?>( value, unchecked( ( int )( stream.Position - offset ) ) );
 			}
 		}
 		
@@ -228,7 +234,7 @@ namespace MsgPack
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
 		///	</exception>
 		/// <exception cref="MessageTypeException">
-		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="Int32" />.
+		///		The unpacked result in the <paramref name="source"/> is not compatible to nullable <see cref="Int32" />.
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
 		///	</exception>
 		/// <remarks>
@@ -239,13 +245,14 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
 		///		</para>
 		///	</remarks>
-		public static Int32 UnpackArrayLength( Stream source )
+		public static Int32? UnpackArrayLength( Stream source )
 		{
 			ValidateStream( source );
 			Contract.EndContractBlock();
 
 			return UnpackArrayLengthCore( source );
 		}
+
 		///	<summary>
 		///		Unpacks the dictionary from the head of specified byte array.
 		///	</summary>
@@ -354,12 +361,13 @@ namespace MsgPack
 
 			return UnpackDictionaryCore( source );
 		}
+
 		///	<summary>
 		///		Unpacks count of the dictionary entries from the head of specified byte array.
 		///	</summary>
 		///	<param name="source">The byte array which contains Message Pack binary stream.</param>
 		///	<returns>
-		///		The <see cref="UnpackingResult{T}"/> of <see cref="Int32" /> which contains unpacked count of the dictionary entries and processed bytes count.
+		///		The <see cref="UnpackingResult{T}"/> of nullable <see cref="Int32" /> which contains unpacked count of the dictionary entries and processed bytes count.
 		///	</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
@@ -371,7 +379,7 @@ namespace MsgPack
 		///		<paramref name="source"/> is not valid MessagePack stream.
 		///	</exception>
 		/// <exception cref="MessageTypeException">
-		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="Int32" />.
+		///		The unpacked result in the <paramref name="source"/> is not compatible to nullable <see cref="Int32" />.
 		///	</exception>
 		/// <remarks>
 		///		<para>
@@ -381,7 +389,8 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(byte[])"/> instead.
 		///		</para>
 		///	</remarks>
-		public static UnpackingResult<Int32> UnpackDictionaryCount( byte[] source )
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullable<T> as type argument is acceptable." )]
+		public static UnpackingResult<Int32?> UnpackDictionaryCount( byte[] source )
 		{
 			return UnpackDictionaryCount( source, 0 );
 		}
@@ -392,7 +401,7 @@ namespace MsgPack
 		///	<param name="source">The byte array which contains Message Pack binary stream.</param>
 		///	<param name="offset">The offset to be unpacking start with.</param>
 		///	<returns>
-		///		The <see cref="UnpackingResult{T}"/> of <see cref="Int32" /> which contains unpacked count of the dictionary entries and processed bytes count.
+		///		The <see cref="UnpackingResult{T}"/> of nullable <see cref="Int32" /> which contains unpacked count of the dictionary entries and processed bytes count.
 		///	</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
@@ -408,12 +417,13 @@ namespace MsgPack
 		///		<paramref name="source"/> is not valid MessagePack stream.
 		///	</exception>
 		/// <exception cref="MessageTypeException">
-		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="Int32" />.
+		///		The unpacked result in the <paramref name="source"/> is not compatible to nullable <see cref="Int32" />.
 		///	</exception>
 		/// <remarks>
 		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
 		///	</remarks>
-		public static UnpackingResult<Int32> UnpackDictionaryCount( byte[] source, int offset )
+		[SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullable<T> as type argument is acceptable." )]
+		public static UnpackingResult<Int32?> UnpackDictionaryCount( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
 			Contract.EndContractBlock();
@@ -422,7 +432,7 @@ namespace MsgPack
 			{
 				stream.Position = offset;
 				var value = UnpackDictionaryCountCore( stream );
-				return new UnpackingResult<Int32>( value, unchecked( ( int )( stream.Position - offset ) ) );
+				return new UnpackingResult<Int32?>( value, unchecked( ( int )( stream.Position - offset ) ) );
 			}
 		}
 		
@@ -444,7 +454,7 @@ namespace MsgPack
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
 		///	</exception>
 		/// <exception cref="MessageTypeException">
-		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="Int32" />.
+		///		The unpacked result in the <paramref name="source"/> is not compatible to nullable <see cref="Int32" />.
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
 		///	</exception>
 		/// <remarks>
@@ -455,13 +465,14 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
 		///		</para>
 		///	</remarks>
-		public static Int32 UnpackDictionaryCount( Stream source )
+		public static Int32? UnpackDictionaryCount( Stream source )
 		{
 			ValidateStream( source );
 			Contract.EndContractBlock();
 
 			return UnpackDictionaryCountCore( source );
 		}
+
 		///	<summary>
 		///		Unpacks the raw binary from the head of specified byte array.
 		///	</summary>
@@ -570,6 +581,7 @@ namespace MsgPack
 
 			return UnpackBinaryCore( source );
 		}
+
 		///	<summary>
 		///		Unpacks the boolean from the head of specified byte array.
 		///	</summary>
@@ -678,6 +690,7 @@ namespace MsgPack
 
 			return UnpackBooleanCore( source );
 		}
+
 		///	<summary>
 		///		Unpacks the nil from the head of specified byte array.
 		///	</summary>
@@ -786,6 +799,7 @@ namespace MsgPack
 
 			return UnpackNullCore( source );
 		}
+
 		///	<summary>
 		///		Unpacks the <see cref="MessagePackObject" /> which represents the value which has MessagePack type semantics. from the head of specified byte array.
 		///	</summary>
@@ -894,5 +908,6 @@ namespace MsgPack
 
 			return UnpackObjectCore( source );
 		}
+
 	}
 }
