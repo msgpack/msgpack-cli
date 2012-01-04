@@ -34,8 +34,7 @@ namespace MsgPack
 		/// <summary>
 		///		Initialize new instance with default message.
 		/// </summary>
-		public InvalidMessagePackStreamException()
-			: this( "Stream is not valid as serialized Message Pack object." ) { }
+		public InvalidMessagePackStreamException() : this( null ) { }
 
 		/// <summary>
 		///		Initialize new instance with specified message.
@@ -43,7 +42,7 @@ namespace MsgPack
 		/// <param name="message">
 		///		Message to desribe this error.
 		/// </param>
-		public InvalidMessagePackStreamException( string message ) : base( message ) { }
+		public InvalidMessagePackStreamException( string message ) : this( message, null ) { }
 
 		/// <summary>
 		///		Initialize new instance with specified message and inner exception which caused this exception.
@@ -54,7 +53,7 @@ namespace MsgPack
 		/// <param name="inner">
 		///		Exception which caused this exception.
 		/// </param>
-		public InvalidMessagePackStreamException( string message, Exception inner ) : base( message, inner ) { }
+		public InvalidMessagePackStreamException( string message, Exception inner ) : base( message ?? "Stream is not valid as serialized Message Pack object.", inner ) { }
 
 #if !SILVERLIGHT
 		private InvalidMessagePackStreamException( SerializationInfo info, StreamingContext context )

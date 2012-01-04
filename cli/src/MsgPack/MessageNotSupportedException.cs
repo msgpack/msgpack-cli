@@ -34,7 +34,7 @@ namespace MsgPack
 		/// <summary>
 		///		Initialize new instance with default message.
 		/// </summary>
-		public MessageNotSupportedException() : this( "Specified object is not supported." ) { }
+		public MessageNotSupportedException() : this( null ) { }
 
 		/// <summary>
 		///		Initialize new instance with specified message.
@@ -42,7 +42,7 @@ namespace MsgPack
 		/// <param name="message">
 		///		Message to desribe this error.
 		/// </param>
-		public MessageNotSupportedException( string message ) : base( message ) { }
+		public MessageNotSupportedException( string message ) : this( message, null ) { }
 
 		/// <summary>
 		///		Initialize new instance with specified message and inner exception which caused this exception.
@@ -53,7 +53,7 @@ namespace MsgPack
 		/// <param name="inner">
 		///		Exception which caused this exception.
 		/// </param>
-		public MessageNotSupportedException( string message, Exception inner ) : base( message, inner ) { }
+		public MessageNotSupportedException( string message, Exception inner ) : base( message ?? "Specified object is not supported.", inner ) { }
 
 #if !SILVERLIGHT
 		private MessageNotSupportedException( SerializationInfo info, StreamingContext context )

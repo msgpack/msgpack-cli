@@ -34,20 +34,20 @@ namespace MsgPack
 		/// <summary>
 		///		Initialize new instance with default message.
 		/// </summary>
-		public UnpackException() : this( "Failed to unpacking." ) { }
+		public UnpackException() : this( null ) { }
 
 		/// <summary>
 		///		Initialize new instance with specified message.
 		/// </summary>
 		/// <param name="message">Develiper friendly message to describe detail information.</param>
-		public UnpackException( string message ) : base( message ) { }
+		public UnpackException( string message ) : this( message, null ) { }
 
 		/// <summary>
 		///		Initialize new instance with specified message and underlying error.
 		/// </summary>
 		/// <param name="message">Develiper friendly message to describe detail information.</param>
 		/// <param name="inner">Underlying error.</param>
-		public UnpackException( string message, Exception inner ) : base( message, inner ) { }
+		public UnpackException( string message, Exception inner ) : base( message ?? "Failed to unpacking.", inner ) { }
 
 #if !SILVERLIGHT
 		private UnpackException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }

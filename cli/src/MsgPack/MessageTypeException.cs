@@ -34,20 +34,20 @@ namespace MsgPack
 		/// <summary>
 		///		Initialize new instance with default message.
 		/// </summary>
-		public MessageTypeException() : this( "Invalid message type." ) { }
+		public MessageTypeException() : this( null ) { }
 
 		/// <summary>
 		///		Initialize new instance with specified message.
 		/// </summary>
 		/// <param name="message">Develiper friendly message to describe detail information.</param>
-		public MessageTypeException( string message ) : base( message ) { }
+		public MessageTypeException( string message ) : this( message, null ) { }
 
 		/// <summary>
 		///		Initialize new instance with specified message and underlying error.
 		/// </summary>
 		/// <param name="message">Develiper friendly message to describe detail information.</param>
 		/// <param name="inner">Underlying error.</param>
-		public MessageTypeException( string message, Exception inner ) : base( message, inner ) { }
+		public MessageTypeException( string message, Exception inner ) : base( message ?? "Invalid message type.", inner ) { }
 
 #if !SILVERLIGHT
 		private MessageTypeException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
