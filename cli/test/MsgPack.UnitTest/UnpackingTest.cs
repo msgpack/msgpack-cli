@@ -31,6 +31,43 @@ namespace MsgPack
 	public partial class UnpackingTest_Misc
 	{
 		[Test]
+		public void TestUnpackArrayLength_ArrayLengthIsGreaterThanInt32MaxValue()
+		{
+			var result = Unpacking.UnpackArrayLength( new byte[] { 0xDD, 0x80, 0x00, 0x00, 0x00, 0xFF } );
+			Assert.That( result.ReadCount, Is.EqualTo( 5 ) );
+			Assert.That( result.Value, Is.EqualTo( Int32.MaxValue + 1L ) );
+		}
+
+		[Test]
+		[ExpectedException( typeof( MessageNotSupportedException ) )]
+		public void TestUnpackArray_ArrayLengthIsGreaterThanInt32MaxValue()
+		{
+			Unpacking.UnpackArray( new byte[] { 0xDD, 0x80, 0x00, 0x00, 0x00, 0xFF } );
+		}
+
+		[Test]
+		public void TestUnpackDictionaryCount_DictionaryCountIsGreaterThanInt32MaxValue()
+		{
+			var result = Unpacking.UnpackDictionaryCount( new byte[] { 0xDF, 0x80, 0x00, 0x00, 0x00, 0xFF } );
+			Assert.That( result.ReadCount, Is.EqualTo( 5 ) );
+			Assert.That( result.Value, Is.EqualTo( Int32.MaxValue + 1L ) );
+		}
+
+		[Test]
+		[ExpectedException( typeof( MessageNotSupportedException ) )]
+		public void TestUnpackDictionary_DictionaryCountIsGreaterThanInt32MaxValue()
+		{
+			Unpacking.UnpackDictionary( new byte[] { 0xDF, 0x80, 0x00, 0x00, 0x00, 0xFF } );
+		}
+
+		[Test]
+		[ExpectedException( typeof( MessageNotSupportedException ) )]
+		public void TestUnpackBinary_BinaryLengthIsGreaterThanInt32MaxValue()
+		{
+			Unpacking.UnpackBinary( new byte[] { 0xDB, 0x80, 0x00, 0x00, 0x00, 0xFF } );
+		}
+
+		[Test]
 		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackBinary_Stream_ReadOnlyStream()
 		{
@@ -276,6 +313,46 @@ namespace MsgPack
 
 			int readCountExtra = target.Read( buffer, 0, length );
 			Assert.That( readCountExtra, Is.EqualTo( 0 ) );
+		}
+
+		[Test]
+		[Explicit]
+		public void TestUnpackByteStream_Stream_LengthIsGreaterThanInt32MaxValue_CanReadToEnd()
+		{
+			// Header + Body Length ( Int32.MaxValue + 1 )
+			var bodyLength = Int32.MaxValue + 1L;
+			var length = 1L + 4L + bodyLength;
+			string filePath = Path.GetTempFileName();
+			try
+			{
+				File.SetAttributes( filePath, FileAttributes.SparseFile );
+				using ( var fileStream = new FileStream( filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 64 * 1024 ) )
+				{
+					fileStream.SetLength( length );
+					fileStream.Position = 0;
+					fileStream.Write( new byte[] { 0xDB, 0x80, 0x00, 0x00, 0x00 }, 0, 5 );
+					fileStream.Flush();
+
+					fileStream.Position = 0;
+
+					using ( var target = Unpacking.UnpackByteStream( fileStream ) )
+					{
+						Assert.That( target.Length, Is.EqualTo( length ) );
+						byte[] buffer = new byte[ 64 * 1024 ];
+						long totalLength = 0;
+						for ( int read = target.Read( buffer, 0, buffer.Length ); read > 0; read = target.Read( buffer, 0, buffer.Length ) )
+						{
+							totalLength += read;
+						}
+
+						Assert.That( totalLength, Is.EqualTo( bodyLength ) );
+					}
+				}
+			}
+			finally
+			{
+				File.Delete( filePath );
+			}
 		}
 
 		[Test]
