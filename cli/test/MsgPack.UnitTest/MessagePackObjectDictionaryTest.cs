@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using System.Text;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MsgPack
 {
@@ -1316,6 +1318,20 @@ namespace MsgPack
 			Assert.That( array[ 2 ], Is.EqualTo( new MessagePackObject( 3 ) ) );
 			Assert.That( array[ 3 ], Is.EqualTo( MessagePackObject.Nil ) );
 			Assert.That( array[ 4 ], Is.EqualTo( MessagePackObject.Nil ) );
+		}
+
+		[Test]
+		public void TestRuntimeSerialization_NotEmpty_RoundTripped()
+		{
+			var target = new MessagePackObjectDictionary() { { "Double", 1.0 }, { "Integer", 1 }, { "Boolean", true }, { "Array", new MessagePackObject[] { 1, 2 } } };
+			using ( var buffer = new MemoryStream() )
+			{
+				var serializer = new BinaryFormatter();
+				serializer.Serialize( buffer, target );
+				buffer.Position = 0;
+				var deserialized = (MessagePackObjectDictionary) serializer.Deserialize( buffer );
+				Assert.AreEqual( target, deserialized );
+			}
 		}
 
 		private sealed class MyClass { }
