@@ -301,13 +301,6 @@ namespace MsgPack
 			/// </summary>
 			public readonly Stream Stream;
 
-			public DataSource( IEnumerable<byte> source )
-			{
-				// TODO: more efficient custom stream?
-				this.Stream = new MemoryStream( source.ToArray() );
-				this.OwnsStream = false;
-			}
-
 			public DataSource( Stream stream, bool ownsStream )
 			{
 				this.Stream = stream;
