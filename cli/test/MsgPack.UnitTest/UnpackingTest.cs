@@ -825,6 +825,13 @@ namespace MsgPack
 
 		[Test]
 		[ExpectedException( typeof( UnpackException ) )]
+		public void TestUnpackByteStream_Empty()
+		{
+			Unpacking.UnpackByteStream( new MemoryStream() );
+		}
+
+		[Test]
+		[ExpectedException( typeof( UnpackException ) )]
 		public void TestUnpackByteStream_EofInHeader()
 		{
 			using ( var underlying = new MemoryStream( new byte[] { 0xDA, 0x1 } ) )
