@@ -30,7 +30,6 @@ using System.Runtime.Serialization;
 
 namespace MsgPack
 {
-	// FIXME: Remove ISerializable
 	/// <summary>
 	///		Implements <see cref="IDictionary{TKey,TValue}"/> for <see cref="MessagePackObject"/>.
 	/// </summary>
@@ -44,9 +43,6 @@ namespace MsgPack
 #endif
 	public partial class MessagePackObjectDictionary :
 		IDictionary<MessagePackObject, MessagePackObject>, IDictionary
-#if !SILVERLIGHT
-, ISerializable, IDeserializationCallback
-#endif
 	{
 		private const int _threashold = 10;
 		private const int _listInitialCapacity = _threashold;
@@ -72,10 +68,6 @@ namespace MsgPack
 		{
 			get { return this._isFrozen; }
 		}
-
-#if !SILVERLIGHT
-		private SerializationInfo _serializationInfo;
-#endif
 
 		/// <summary>
 		///		Gets the number of elements contained in the <see cref="MessagePackObjectDictionary"/>.
@@ -388,140 +380,6 @@ namespace MsgPack
 #endif
 			}
 		}
-
-#if !SILVERLIGHT
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MessagePackObjectDictionary"/> class with serialized data. .
-		/// </summary>
-		/// <param name="info">
-		///		A <see cref="SerializationInfo"/> object that contains the information 
-		///		required to serialize the <see cref="MessagePackObjectDictionary"/> instance. 
-		/// </param>
-		/// <param name="context">
-		///		A <see cref="StreamingContext"/> structure 
-		///		that contains the source and destination of the serialized stream associated with the <see cref="MessagePackObjectDictionary"/> instance.
-		/// </param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="info"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="info"/> is invalid.
-		/// </exception>
-		protected MessagePackObjectDictionary( SerializationInfo info, StreamingContext context )
-		{
-			if ( info == null )
-			{
-				throw new ArgumentNullException( "info" );
-			}
-
-			Contract.EndContractBlock();
-
-			this._serializationInfo = info;
-		}
-
-		/// <summary>
-		///		Implements the <see cref="ISerializable"/> interface 
-		///		and returns the data needed to serialize the <see cref="MessagePackObjectDictionary"/> instance. 
-		/// </summary>
-		/// <param name="info">
-		///		A <see cref="SerializationInfo"/> object that contains the information 
-		///		required to serialize the <see cref="MessagePackObjectDictionary"/> instance. 
-		/// </param>
-		/// <param name="context">
-		///		A <see cref="StreamingContext"/> structure 
-		///		that contains the source and destination of the serialized stream associated with the <see cref="MessagePackObjectDictionary"/> instance.
-		/// </param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="info"/> is <c>null</c>.
-		/// </exception>
-		public virtual void GetObjectData( SerializationInfo info, StreamingContext context )
-		{
-			if ( info == null )
-			{
-				throw new ArgumentNullException( "info" );
-			}
-
-			Contract.EndContractBlock();
-
-			info.AddValue( _SerializationKey_Keys, this._keys );
-			info.AddValue( _SerializationKey_Values, this._values );
-			info.AddValue( _SerializationKey_Dictionary, this._dictionary );
-		}
-
-		private const string _SerializationKey_Keys = "Keys";
-		private const string _SerializationKey_Values = "Values";
-		private const string _SerializationKey_Dictionary = "Dictionary";
-
-		/// <summary>
-		///		Implements the <see cref="ISerializable"/> interface 
-		///		and raises the deserialization event when the deserialization is complete. 
-		/// </summary>
-		/// <param name="sender">The source of the deserialization event.</param>
-		/// <exception cref="SerializationException">
-		///		The <see cref="SerializationInfo"/> object associated with the current <see cref="MessagePackObjectDictionary"/> instance is invalid. 
-		/// </exception>
-		public virtual void OnDeserialization( object sender )
-		{
-			if ( this._serializationInfo == null )
-			{
-				return;
-			}
-
-			var enumereator = this._serializationInfo.GetEnumerator();
-			List<MessagePackObject> keys = null;
-			List<MessagePackObject> values = null;
-			Dictionary<MessagePackObject, MessagePackObject> dictionary = null;
-			while ( enumereator.MoveNext() )
-			{
-				switch ( enumereator.Current.Name )
-				{
-					case _SerializationKey_Keys:
-					{
-						keys = enumereator.Value as List<MessagePackObject>;
-						break;
-					}
-					case _SerializationKey_Values:
-					{
-						values = enumereator.Value as List<MessagePackObject>;
-						break;
-					}
-					case _SerializationKey_Dictionary:
-					{
-						dictionary = enumereator.Value as Dictionary<MessagePackObject, MessagePackObject>;
-						break;
-					}
-				}
-			}
-
-			if ( keys == null )
-			{
-				if ( dictionary == null )
-				{
-					ThrowCannotDeserializeException();
-				}
-
-				dictionary.OnDeserialization( sender );
-				this._dictionary = dictionary;
-			}
-			else
-			{
-				if ( values == null )
-				{
-					ThrowCannotDeserializeException();
-				}
-
-				this._keys = keys;
-				this._values = values;
-			}
-
-			this._serializationInfo = null;
-		}
-
-		private static void ThrowCannotDeserializeException()
-		{
-			throw new SerializationException( "Cannot deserialize MessagePackObjectDictionary due to invalid SerializationInfo." );
-		}
-#endif
 
 		private static void ThrowKeyNotNilException( string parameterName )
 		{
