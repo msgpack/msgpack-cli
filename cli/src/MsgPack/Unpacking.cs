@@ -242,7 +242,12 @@ namespace MsgPack
 				throw new UnpackException( "Stream is end." );
 			}
 
-			if ( MessagePackCode.MinimumFixedRaw <= header && header <= MessagePackCode.MaximumFixedRaw )
+			if ( header == MessagePackCode.NilValue )
+			{
+				// Nil should be as empty stream because returning byte stream should not be null.
+				return 0;
+			}
+			else if ( MessagePackCode.MinimumFixedRaw <= header && header <= MessagePackCode.MaximumFixedRaw )
 			{
 				return header - MessagePackCode.MinimumFixedRaw;
 			}
