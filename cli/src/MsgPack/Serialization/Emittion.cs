@@ -433,8 +433,11 @@ namespace MsgPack.Serialization
 				if ( target.LocalType.IsValueType )
 				{
 					// Same as general method call
-					il.EmitAnyLdloca( target );
+					var capacity = il.DeclareLocal( typeof( int ), "capacity" );
 					initialCountLoadingEmitter( il );
+					il.EmitAnyStloc( capacity );
+					il.EmitAnyLdloca( target );
+					il.EmitAnyLdloc( capacity );
 					il.EmitCallConstructor( ctor );
 				}
 				else
