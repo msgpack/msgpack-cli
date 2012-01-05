@@ -234,11 +234,6 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "packer" );
 			}
 
-			if ( !( objectTree is T ) )
-			{
-				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree.GetType(), typeof( T ) ), "objectTree" );
-			}
-
 			if ( objectTree == null )
 			{
 				if ( typeof( T ).IsValueType )
@@ -251,6 +246,13 @@ namespace MsgPack.Serialization
 
 				packer.PackNull();
 				return;
+			}
+			else
+			{
+				if ( !( objectTree is T ) )
+				{
+					throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree.GetType(), typeof( T ) ), "objectTree" );
+				}
 			}
 
 			this.PackToCore( packer, ( T )objectTree );
