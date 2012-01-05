@@ -121,40 +121,6 @@ namespace MsgPack.Serialization
 			return this._repository.Register<T>( serializer );
 		}
 
-		/// <summary>
-		///		Register <see cref="MessagePackSerializer{T}"/> type for generic type definition.
-		/// </summary>
-		/// <param name="serializerType"><see cref="MessagePackSerializer{T}"/> type.</param>
-		/// <returns>
-		///		<c>true</c> if success to register; otherwise, <c>false</c>.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="serializerType"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="ArgumentException">
-		///		<paramref name="serializerType"/> is not generic type definition.
-		/// </exception>
-		/// <remarks>
-		///		Registering type is must be following:
-		///		<list type="bullet">
-		///			<item>It has public constructor which has an argument typed <see cref="SerializationContext"/>.</item>
-		///		</list>
-		/// </remarks>
-		public bool RegisterSerializerType( Type serializerType )
-		{
-			if ( serializerType == null )
-			{
-				throw new ArgumentNullException( "serializerType" );
-			}
-
-			if ( !serializerType.IsGenericTypeDefinition )
-			{
-				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not generic type definition.", serializerType ), "serializerType" );
-			}
-
-			return this._repository.RegisterType( serializerType );
-		}
-
 		private static readonly SerializerRepository _default = new SerializerRepository( InitializeDefaultTable() );
 
 		/// <summary>

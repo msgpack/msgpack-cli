@@ -193,19 +193,6 @@ namespace MsgPack.Serialization
 			return this.Register( typeof( T ), entry );
 		}
 
-		public bool RegisterType( Type type )
-		{
-			Contract.Assert( type != null );
-			Contract.Assert( type.IsGenericTypeDefinition );
-
-			if ( this.IsFrozen )
-			{
-				throw new InvalidOperationException( "This repository is frozen." );
-			}
-
-			return this.Register( type, type );
-		}
-
 #if !PARTIAL_TRUST && !SILVERLIGHT
 		[SecuritySafeCritical]
 #endif
