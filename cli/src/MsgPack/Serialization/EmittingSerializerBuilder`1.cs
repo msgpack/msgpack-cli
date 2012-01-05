@@ -320,12 +320,7 @@ namespace MsgPack.Serialization
 				Emittion.EmitConstruction(
 					unpackFromIL,
 					collection,
-					il =>
-					{
-						il.EmitAnyLdarg( 1 );
-						il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-						il.EmitConv_Ovf_I4();
-					}
+					il => Emittion.EmitGetUnpackerItemsCountAsInt32( il, 1 )
 				);
 
 				unpackFromIL.EmitAnyLdarg( 0 );
@@ -374,9 +369,7 @@ namespace MsgPack.Serialization
 			{
 				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
 
-				il.EmitAnyLdarg( 1 );
-				il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-				il.EmitConv_Ovf_I4();
+				Emittion.EmitGetUnpackerItemsCountAsInt32( il, 1 );
 				il.EmitAnyStloc( itemsCount );
 				Emittion.EmitFor(
 					il,
@@ -606,12 +599,7 @@ namespace MsgPack.Serialization
 				Emittion.EmitConstruction(
 					il,
 					collection,
-					il0 =>
-					{
-						il0.EmitAnyLdarg( 1 );
-						il0.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-						il0.EmitConv_Ovf_I4();
-					}
+					il0 => Emittion.EmitGetUnpackerItemsCountAsInt32( il0, 1 )
 				);
 
 				il.EmitAnyLdarg( 0 );
@@ -698,9 +686,7 @@ namespace MsgPack.Serialization
 				var key = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject ), "key" );
 				var value = il.DeclareLocal( traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject ), "value" );
 
-				il.EmitAnyLdarg( 1 );
-				il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-				il.EmitConv_Ovf_I4();
+				Emittion.EmitGetUnpackerItemsCountAsInt32( il, 1 );
 				il.EmitAnyStloc( itemsCount );
 				Emittion.EmitFor(
 					il,
@@ -925,16 +911,15 @@ namespace MsgPack.Serialization
 				il.EmitThrow();
 				il.MarkLabel( endIf );
 
-				il.EmitAnyLdarg( 1 );
-				il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-				il.EmitConv_Ovf_I4();
+				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
+				Emittion.EmitGetUnpackerItemsCountAsInt32( il, 1 );
 				il.EmitAnyLdc_I4( itemTypes.Count );
+				il.EmitAnyStloc( itemsCount );
+				il.EmitAnyLdloc( itemsCount );
 				var endIf1 = il.DefineLabel( "END_IF1" );
 				il.EmitBeq_S( endIf1 );
 				il.EmitAnyLdc_I4( itemTypes.Count );
-				il.EmitAnyLdarg( 1 );
-				il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-				il.EmitConv_Ovf_I4();
+				il.EmitAnyLdloc( itemsCount );
 				il.EmitAnyCall( SerializationExceptions.NewTupleCardinarityIsNotMatchMethod );
 				il.EmitThrow();
 				il.MarkLabel( endIf1 );

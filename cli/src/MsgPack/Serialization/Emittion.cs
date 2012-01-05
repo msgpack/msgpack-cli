@@ -244,6 +244,55 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		/// Emits gets <see cref="Unpacker.ItemsCount"/> with exception handling.
+		/// Note that final state is the value is pushed top of the evaluation stack.
+		/// </summary>
+		/// <param name="il">IL generator.</param>
+		/// <param name="unpackerArgumentIndex">Argument index of the unpacker.</param>
+		public static void EmitGetUnpackerItemsCountAsInt32( TracingILGenerator il, int unpackerArgumentIndex )
+		{
+			/*
+			 *	long rawItemsCount;
+			 *	try
+			 *	{
+			 *		rawItemsCount = unpacker.ItemsCount;
+			 *	}
+			 *	catch ( InvalidOperationException ex )
+			 *	{
+			 *		throw SerializationExceptions.NewIsIncorrectStream( ex );
+			 *	}
+			 * 
+			 *	if( rawItemsCount > Int32.MaxValue )
+			 *	{
+			 *		throw SerializationException.NewIsTooLargeCollection(); 
+			 *	}
+			 * 
+			 *	... unchecked( ( int )rawItemsCount );
+			 */
+			var rawItemsCount = il.DeclareLocal( typeof( long ), "rawItemsCount" );
+
+			il.BeginExceptionBlock();
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
+			il.EmitAnyStloc( rawItemsCount );
+			il.BeginCatchBlock( typeof( InvalidOperationException ) );
+			var ex = il.DeclareLocal( typeof( InvalidOperationException ), "ex" );
+			il.EmitAnyCall( SerializationExceptions.NewIsIncorrectStreamMethod );
+			il.EmitThrow();
+			il.EndExceptionBlock();
+
+			il.EmitAnyLdloc( rawItemsCount );
+			il.EmitLdc_I8( Int32.MaxValue );
+			var endIf = il.DefineLabel();
+			il.EmitBle_S( endIf );
+			il.EmitAnyCall( SerializationExceptions.NewIsTooLargeCollectionMethod );
+			il.EmitThrow();
+			il.MarkLabel( endIf );
+			il.EmitAnyLdloc( rawItemsCount );
+			il.EmitConv_I4();
+		}
+
 		public static void EmitMarshalValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, Action<TracingILGenerator> loadValueEmitter )
 		{
 			var serializerField = emitter.RegisterSerializer( valueType );
