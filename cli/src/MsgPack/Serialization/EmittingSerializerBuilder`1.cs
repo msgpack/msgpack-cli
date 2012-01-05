@@ -66,7 +66,7 @@ namespace MsgPack.Serialization
 				// TODO: Array for ordered.
 				// TODO: For big struct, use Dictionary<String,SM>
 				// TODO: Required
-				var locals = entries.Select( item => item.Member.CanSetValue() ? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name ) : null ).ToArray();
+				var locals = entries.Select( item => !IsReadOnlyAppendableCollectionMember( item.Member ) ? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name ) : null ).ToArray();
 
 				var result = unpackerIL.DeclareLocal( typeof( TObject ), "result" );
 				Emittion.EmitConstruction( unpackerIL, result, null );
@@ -113,7 +113,23 @@ namespace MsgPack.Serialization
 			return emitter.CreateInstance<TObject>( this.Context );
 		}
 
+		private bool IsReadOnlyAppendableCollectionMember( MemberInfo memberInfo )
 		{
+			if ( memberInfo.CanSetValue() )
+			{
+				// Not read only
+				return false;
+			}
+
+			Type memberValueType = memberInfo.GetMemberValueType();
+			if ( memberValueType.IsArray )
+			{
+				// Not appendable
+				return false;
+			}
+
+			CollectionTraits traits = memberValueType.GetCollectionTraits();
+			return traits.CollectionType != CollectionKind.NotCollection && traits.AddMethod != null;
 		}
 
 		public sealed override MessagePackSerializer<TObject> CreateArraySerializer()
