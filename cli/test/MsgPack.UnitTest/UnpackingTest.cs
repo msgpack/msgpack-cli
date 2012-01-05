@@ -316,7 +316,6 @@ namespace MsgPack
 		}
 
 		[Test]
-		[Explicit]
 		public void TestUnpackByteStream_Stream_LengthIsGreaterThanInt32MaxValue_CanReadToEnd()
 		{
 			// Header + Body Length ( Int32.MaxValue + 1 )
@@ -337,7 +336,7 @@ namespace MsgPack
 
 					using ( var target = Unpacking.UnpackByteStream( fileStream ) )
 					{
-						Assert.That( target.Length, Is.EqualTo( length ) );
+						Assert.That( target.Length, Is.EqualTo( bodyLength ) );
 						byte[] buffer = new byte[ 64 * 1024 ];
 						long totalLength = 0;
 						for ( int read = target.Read( buffer, 0, buffer.Length ); read > 0; read = target.Read( buffer, 0, buffer.Length ) )
