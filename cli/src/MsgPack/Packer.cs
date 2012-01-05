@@ -103,6 +103,11 @@ namespace MsgPack
 		/// </remarks>
 		public static Packer Create( Stream stream, bool ownsStream )
 		{
+			if ( stream == null )
+			{
+				throw new ArgumentNullException( "stream" );
+			}
+
 			return new StreamPacker( stream, ownsStream );
 		}
 
