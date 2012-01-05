@@ -79,7 +79,15 @@ namespace MsgPack.Serialization
 			var enumerator = il.DeclareLocal( traits.GetEnumeratorMethod.ReturnType, "enumerator" );
 
 			// gets enumerator
-			il.EmitAnyLdloc( collection );
+			if ( collection.LocalType.IsValueType )
+			{
+				il.EmitAnyLdloca( collection );
+			}
+			else
+			{
+				il.EmitAnyLdloc( collection );
+			}
+
 			il.EmitAnyCall( traits.GetEnumeratorMethod );
 			il.EmitAnyStloc( enumerator );
 
@@ -425,14 +433,14 @@ namespace MsgPack.Serialization
 			}
 
 			ConstructorInfo ctor = target.LocalType.GetConstructor( _ctor_Int32_ParameterTypes );
-			if ( ctor != null && initialCountLoadingEmitter != null )
+			if ( ctor != null && initialCountLoadingEmitter != null && typeof( IEnumerable ).IsAssignableFrom( target.LocalType ) )
 			{
 				if ( target.LocalType.IsValueType )
 				{
+					// Same as general method call
 					il.EmitAnyLdloca( target );
 					initialCountLoadingEmitter( il );
 					il.EmitCallConstructor( ctor );
-					il.EmitAnyStloc( target );
 				}
 				else
 				{
