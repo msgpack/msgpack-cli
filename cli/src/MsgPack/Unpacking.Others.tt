@@ -31,14 +31,14 @@
 var __typeName = "Unpacking";
 var __methods = new []
 {
-	Tuple.Create( "Array", "IList<MessagePackObject>", "the array" ),
-	Tuple.Create( "ArrayLength", "Int64?", "length of the array" ),
-	Tuple.Create( "Dictionary", "MessagePackObjectDictionary", "the dictionary" ),
-	Tuple.Create( "DictionaryCount", "Int64?", "count of the dictionary entries" ),
-	Tuple.Create( "Binary", "byte[]", "the raw binary" ),
-	Tuple.Create( "Boolean", "bool", "the boolean" ),
-	Tuple.Create( "Null", "object", "the nil" ),
-	Tuple.Create( "Object", "MessagePackObject", "the <see cref=\"MessagePackObject\" /> which represents the value which has MessagePack type semantics." ),
+	Tuple.Create( "Array", "IList<MessagePackObject>", "the array", true ),
+	Tuple.Create( "ArrayLength", "Int64?", "length of the array", false  ),
+	Tuple.Create( "Dictionary", "MessagePackObjectDictionary", "the dictionary", true  ),
+	Tuple.Create( "DictionaryCount", "Int64?", "count of the dictionary entries", false  ),
+	Tuple.Create( "Binary", "byte[]", "the raw binary", true  ),
+	Tuple.Create( "Boolean", "bool", "the boolean", false  ),
+	Tuple.Create( "Null", "object", "the nil", false  ),
+	Tuple.Create( "Object", "MessagePackObject", "the <see cref=\"MessagePackObject\" /> which represents the value which has MessagePack type semantics.", false  ),
 };
 #>
 #region -- License Terms --
@@ -77,6 +77,7 @@ namespace MsgPack
 <#
 foreach( var __method in __methods )
 {
+	var __mayThrowMessageNotSupportedException = __method.Item4;
 #>
 		///	<summary>
 		///		Unpacks <#= __method.Item3 #> from the head of specified byte array.
@@ -97,6 +98,16 @@ foreach( var __method in __methods )
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <#= ToSeeElement( __method.Item2 ) #>.
 		///	</exception>
+<#
+	if( __mayThrowMessageNotSupportedException )
+	{
+#>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
+<#
+	}
+#>
 		/// <remarks>
 		///		<para>
 		/// 		Invocation of this method is equivalant to call <see cref="Unpack<#= __method.Item1 #>(byte[], int)"/> with <c>offset</c> is <c>0</c>.
@@ -148,6 +159,16 @@ foreach( var __method in __methods )
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <#= ToSeeElement( __method.Item2 ) #>.
 		///	</exception>
+<#
+	if( __mayThrowMessageNotSupportedException )
+	{
+#>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
+<#
+	}
+#>
 		/// <remarks>
 		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
 		///	</remarks>
@@ -199,6 +220,16 @@ foreach( var __method in __methods )
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <#= ToSeeElement( __method.Item2 ) #>.
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
 		///	</exception>
+<#
+	if( __mayThrowMessageNotSupportedException )
+	{
+#>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
+<#
+	}
+#>
 		/// <remarks>
 		///		<para>
 		/// 		The processed bytes count can be calculated via <see cref="P:Stream.Position"/> of <paramref name="source"/> when the <see cref="P:Stream.CanSeek" /> is <c>true</c>.

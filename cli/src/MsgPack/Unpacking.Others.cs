@@ -50,6 +50,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="IList{T}" />.
 		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
 		/// <remarks>
 		///		<para>
 		/// 		Invocation of this method is equivalant to call <see cref="UnpackArray(byte[], int)"/> with <c>offset</c> is <c>0</c>.
@@ -88,6 +91,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="IList{T}" />.
 		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
 		/// <remarks>
 		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
 		///	</remarks>
@@ -125,6 +131,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="IList{T}" />.
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
+		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
 		///	</exception>
 		/// <remarks>
 		///		<para>
@@ -272,6 +281,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="MessagePackObjectDictionary" />.
 		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
 		/// <remarks>
 		///		<para>
 		/// 		Invocation of this method is equivalant to call <see cref="UnpackDictionary(byte[], int)"/> with <c>offset</c> is <c>0</c>.
@@ -309,6 +321,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="MessagePackObjectDictionary" />.
 		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
 		/// <remarks>
 		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
 		///	</remarks>
@@ -345,6 +360,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="MessagePackObjectDictionary" />.
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
+		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
 		///	</exception>
 		/// <remarks>
 		///		<para>
@@ -492,6 +510,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="byte" />[].
 		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
 		/// <remarks>
 		///		<para>
 		/// 		Invocation of this method is equivalant to call <see cref="UnpackBinary(byte[], int)"/> with <c>offset</c> is <c>0</c>.
@@ -529,6 +550,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="byte" />[].
 		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
 		/// <remarks>
 		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
 		///	</remarks>
@@ -565,6 +589,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="byte" />[].
 		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
+		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
 		///	</exception>
 		/// <remarks>
 		///		<para>
