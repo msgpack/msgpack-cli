@@ -304,13 +304,8 @@ namespace MsgPack.Serialization
 			il.MarkLabel( endIf );
 		}
 
-		public static void EmitUnmarshalCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType, Action<TracingILGenerator, int> unpackerReading )
+		public static void EmitUnmarshalCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType )
 		{
-			if ( unpackerReading != null )
-			{
-				unpackerReading( il, unpackerArgumentIndex );
-			}
-
 			/*
 			 * if( unpacker.IsArrayHeader || unpacker.IsMapHeader )
 			 * {
@@ -533,7 +528,7 @@ namespace MsgPack.Serialization
 
 				if ( members[ i ].Item3 == null )
 				{
-					Emittion.EmitUnmarshalCollectionValue( emitter, il, unpackerArgumentIndex, target, members[ i ].Item1, members[ i ].Item1.GetMemberValueType(), null );
+					Emittion.EmitUnmarshalCollectionValue( emitter, il, unpackerArgumentIndex, target, members[ i ].Item1, members[ i ].Item1.GetMemberValueType() );
 				}
 				else
 				{
