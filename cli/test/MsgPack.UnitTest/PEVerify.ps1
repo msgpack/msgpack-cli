@@ -5,6 +5,6 @@ foreach( $file in dir MsgPack.Serialization.GeneratedSerealizers*.dll )
 	if( !$result.EndsWith( "ƒpƒX" ) )
 	{
 		$result = ( PEVerify.exe $file /verbose )
-		Write-Warn $result
+		Write-Warning ( [String]::Join( [Environment]::NewLine, $result ) )
 	}
 }
