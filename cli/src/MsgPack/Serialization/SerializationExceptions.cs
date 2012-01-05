@@ -166,7 +166,7 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewUnexpectedEndOfStream()
 		{
-			return new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+			return new SerializationException( "Stream unexpectedly ends." );
 		}
 
 		/// <summary>
@@ -189,7 +189,7 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewIsNotArrayHeader()
 		{
-			return new InvalidOperationException( "Unpacker is not in the array header" );
+			return new SerializationException( "Unpacker is not in the array header. The stream may not be array." );
 		}
 
 		internal static readonly MethodInfo NewIsNotMapHeaderMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsNotMapHeader() );
@@ -201,7 +201,7 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewIsNotMapHeader()
 		{
-			return new InvalidOperationException( "Unpacker is not in the map header" );
+			return new SerializationException( "Unpacker is not in the map header. The stream may not be map." );
 		}
 
 		internal static readonly MethodInfo NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod = FromExpression.ToMethod( ( Type type ) => SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( type ) );
