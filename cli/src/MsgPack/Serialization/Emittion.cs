@@ -192,7 +192,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Emits applopriate loading member instructions.
+		///		Emits appropriate loading member instructions.
 		/// </summary>
 		/// <param name="il">IL generator to be emitted to.</param>
 		/// <param name="member"><see cref="MemberInfo"/> to be loaded.</param>
@@ -213,7 +213,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Emits applopriate storing member instructions.
+		///		Emits appropriate storing member instructions.
 		/// </summary>
 		/// <param name="il">IL generator to be emitted to.</param>
 		/// <param name="member"><see cref="MemberInfo"/> to be stored.</param>
