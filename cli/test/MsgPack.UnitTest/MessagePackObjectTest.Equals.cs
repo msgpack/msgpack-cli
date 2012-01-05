@@ -29,8 +29,6 @@ namespace MsgPack
 	[TestFixture]
 	public partial class MessagePackObjectTest_Equals
 	{
-		// FIXME: Reals, Arrays, Maps, Strings/Bytes
-
 		private static void TestEqualsCore( MessagePackObject left, MessagePackObject right, bool expected )
 		{
 			Assert.AreEqual( expected, left.Equals( right ), "{0}=={1}", left, right );
