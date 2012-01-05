@@ -201,11 +201,7 @@ namespace MsgPack.Serialization
 					 * }
 					 */
 					var array = il.DeclareLocal( traits.ElementType.MakeArrayType(), "array" );
-					il.EmitAnyLdarg( 2 );
-					if ( memberOrNull != null )
-					{
-						Emittion.EmitLoadValue( il, memberOrNull );
-					}
+					EmitLoadTarget( il, 2 );
 					il.EmitAnyCall( Metadata._Enumerable.ToArray1Method.MakeGenericMethod( traits.ElementType ) );
 					il.EmitAnyStloc( array );
 					var length = il.DeclareLocal( typeof( int ), "length" );
@@ -251,11 +247,7 @@ namespace MsgPack.Serialization
 					il.EmitAnyLdarg( 2 );
 					il.EmitAnyStloc( collection );
 					var count = il.DeclareLocal( typeof( int ), "count" );
-					il.EmitAnyLdarg( 2 );
-					if ( memberOrNull != null )
-					{
-						Emittion.EmitLoadValue( il, memberOrNull );
-					}
+					EmitLoadTarget( il, 2 );
 					il.EmitGetProperty( traits.CountProperty );
 					il.EmitAnyStloc( count );
 					il.EmitAnyLdarg( 1 );
@@ -410,9 +402,7 @@ namespace MsgPack.Serialization
 							}
 						);
 
-						{
-							il0.EmitAnyLdarg( 2 );
-						}
+						EmitLoadTarget( il0, 2 );
 
 						if ( collectionType.IsArray )
 						{
@@ -490,7 +480,7 @@ namespace MsgPack.Serialization
 				il.EmitAnyLdarg( 2 );
 				il.EmitAnyStloc( collection );
 				var count = il.DeclareLocal( typeof( int ), "count" );
-				il.EmitAnyLdloc( collection );
+				EmitLoadTarget( il, collection );
 				il.EmitGetProperty( traits.CountProperty );
 				il.EmitAnyStloc( count );
 				il.EmitAnyLdarg( 1 );
@@ -736,7 +726,7 @@ namespace MsgPack.Serialization
 						// Value
 						Emittion.EmitUnmarshalValue( emitter, il0, 1, value, unpackerReading );
 
-						il0.EmitAnyLdarg( 2 );
+						EmitLoadTarget( il0, 2 );
 
 						il0.EmitAnyLdloc( key );
 						if ( !traits.ElementType.IsGenericType )
@@ -987,6 +977,30 @@ namespace MsgPack.Serialization
 			finally
 			{
 				il.FlushTrace();
+			}
+		}
+
+		private static void EmitLoadTarget( TracingILGenerator il, int parameterIndex )
+		{
+			if ( typeof( TObject ).IsValueType )
+			{
+				il.EmitAnyLdarga( parameterIndex );
+			}
+			else
+			{
+				il.EmitAnyLdarg( parameterIndex );
+			}
+		}
+
+		private static void EmitLoadTarget( TracingILGenerator il, LocalBuilder local )
+		{
+			if ( typeof( TObject ).IsValueType )
+			{
+				il.EmitAnyLdloca( local );
+			}
+			else
+			{
+				il.EmitAnyLdloc( local );
 			}
 		}
 	}
