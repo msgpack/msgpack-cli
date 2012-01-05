@@ -19,9 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
@@ -30,6 +30,8 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal struct DataMemberContract
 	{
+		internal const int UnspecifiedOrder = -1;
+
 		private readonly MemberInfo _member;
 		private readonly DataMemberAttribute _attribute;
 		
@@ -54,7 +56,7 @@ namespace MsgPack.Serialization
 		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
 		public int Order
 		{
-			get { return this._attribute == null ? -1 : this._attribute.Order; }
+			get { return this._attribute == null ? UnspecifiedOrder : this._attribute.Order; }
 		}
 
 		// TODO: IsRequired
