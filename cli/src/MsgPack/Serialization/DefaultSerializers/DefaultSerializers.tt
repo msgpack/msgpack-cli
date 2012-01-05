@@ -164,6 +164,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -256,7 +257,14 @@ foreach( var ctor in ctors )
 	else if ( __type.IsPrimitive )
 	{
 #>
-			return unpacker.Data.Value.As<#= __type.Name #>();
+			try
+			{
+				return unpacker.Data.Value.As<#= __type.Name #>();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( <#= __type #> ), ex.Message ) );
+			}
 <#
 	}
 	else if ( ctors.Length != 1 )
@@ -277,8 +285,19 @@ foreach( var ctor in ctors )
 	}
 	else if ( IsMessagePackPrimitive( ctors[ 0 ].GetParameters()[ 0 ].ParameterType ) )
 	{
+		var __ctorParameterType = ctors[ 0 ].GetParameters()[ 0 ].ParameterType;
 #>
-			return new <#= __type.FullName #>( unpacker.Data.Value.As<#= ctors[ 0 ].GetParameters()[ 0 ].ParameterType.Name #>() );
+			<#= __ctorParameterType #> ctorArgument;
+			try
+			{
+				ctorArgument = unpacker.Data.Value.As<#= __ctorParameterType.Name #>();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( <#= __ctorParameterType #> ), ex.Message ) );
+			}
+
+			return new <#= __type.FullName #>( ctorArgument );
 <#
 	}
 	else

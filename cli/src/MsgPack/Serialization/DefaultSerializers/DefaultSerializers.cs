@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -63,7 +64,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Boolean UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsBoolean();
+			try
+			{
+				return unpacker.Data.Value.AsBoolean();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Boolean ), ex.Message ) );
+			}
 		}
 	}
 
@@ -76,7 +84,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Byte UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsByte();
+			try
+			{
+				return unpacker.Data.Value.AsByte();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Byte ), ex.Message ) );
+			}
 		}
 	}
 
@@ -115,7 +130,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Double UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsDouble();
+			try
+			{
+				return unpacker.Data.Value.AsDouble();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Double ), ex.Message ) );
+			}
 		}
 	}
 
@@ -141,7 +163,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Int16 UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsInt16();
+			try
+			{
+				return unpacker.Data.Value.AsInt16();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Int16 ), ex.Message ) );
+			}
 		}
 	}
 
@@ -154,7 +183,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Int32 UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsInt32();
+			try
+			{
+				return unpacker.Data.Value.AsInt32();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Int32 ), ex.Message ) );
+			}
 		}
 	}
 
@@ -167,7 +203,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Int64 UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsInt64();
+			try
+			{
+				return unpacker.Data.Value.AsInt64();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Int64 ), ex.Message ) );
+			}
 		}
 	}
 
@@ -180,7 +223,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.SByte UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsSByte();
+			try
+			{
+				return unpacker.Data.Value.AsSByte();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.SByte ), ex.Message ) );
+			}
 		}
 	}
 
@@ -193,7 +243,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Single UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsSingle();
+			try
+			{
+				return unpacker.Data.Value.AsSingle();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Single ), ex.Message ) );
+			}
 		}
 	}
 
@@ -206,7 +263,17 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.TimeSpan UnpackFromCore( Unpacker unpacker )
 		{
-			return new System.TimeSpan( unpacker.Data.Value.AsInt64() );
+			System.Int64 ctorArgument;
+			try
+			{
+				ctorArgument = unpacker.Data.Value.AsInt64();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Int64 ), ex.Message ) );
+			}
+
+			return new System.TimeSpan( ctorArgument );
 		}
 	}
 
@@ -219,7 +286,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.UInt16 UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsUInt16();
+			try
+			{
+				return unpacker.Data.Value.AsUInt16();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.UInt16 ), ex.Message ) );
+			}
 		}
 	}
 
@@ -232,7 +306,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.UInt32 UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsUInt32();
+			try
+			{
+				return unpacker.Data.Value.AsUInt32();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.UInt32 ), ex.Message ) );
+			}
 		}
 	}
 
@@ -245,7 +326,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.UInt64 UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsUInt64();
+			try
+			{
+				return unpacker.Data.Value.AsUInt64();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.UInt64 ), ex.Message ) );
+			}
 		}
 	}
 
@@ -259,7 +347,17 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Collections.Specialized.BitVector32 UnpackFromCore( Unpacker unpacker )
 		{
-			return new System.Collections.Specialized.BitVector32( unpacker.Data.Value.AsInt32() );
+			System.Int32 ctorArgument;
+			try
+			{
+				ctorArgument = unpacker.Data.Value.AsInt32();
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Int32 ), ex.Message ) );
+			}
+
+			return new System.Collections.Specialized.BitVector32( ctorArgument );
 		}
 	}
 #endif
