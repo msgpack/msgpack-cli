@@ -78,7 +78,7 @@ namespace MsgPack.Serialization
 				{
 					return new LazyDelegatingMessagePackSerializer<T>( this );
 				}
-				serializer = new AutoMessagePackSerializer<T>( this );
+				serializer = MessagePackSerializer.Create<T>( this );
 				this._typeLock.Remove( typeof( T ) );
 				if ( !this._serializers.Register<T>( serializer ) )
 				{
