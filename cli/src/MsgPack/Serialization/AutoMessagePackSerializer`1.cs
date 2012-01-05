@@ -38,10 +38,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		public AutoMessagePackSerializer( SerializationContext context )
 		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
+			Contract.Assert( context != null );
 
 			var serializer = context.Serializers.Get<T>( context );
 			if ( serializer != null )
