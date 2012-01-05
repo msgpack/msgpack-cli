@@ -89,7 +89,7 @@ namespace MsgPack.Serialization
 				}
 				case SerializationMemberOption.OptOut:
 				{
-					return FilterAllBuNotNonSerialized;
+					return FilterAllButNotNonSerialized;
 				}
 				default:
 				{
@@ -103,7 +103,7 @@ namespace MsgPack.Serialization
 			return Attribute.IsDefined( member, typeof( DataMemberAttribute ) );
 		}
 
-		private static bool FilterAllBuNotNonSerialized( MemberInfo member, object filterCriteria )
+		private static bool FilterAllButNotNonSerialized( MemberInfo member, object filterCriteria )
 		{
 #if SILVERLIGHT
 			return true;
