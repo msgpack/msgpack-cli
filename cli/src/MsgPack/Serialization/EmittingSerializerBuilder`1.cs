@@ -113,12 +113,10 @@ namespace MsgPack.Serialization
 			return emitter.CreateInstance<TObject>( this.Context );
 		}
 
-		public sealed override MessagePackSerializer<TObject> CreateArraySerializer()
 		{
-			return CreateArraySerializerCore( typeof( TObject ), null ).CreateInstance<TObject>( this.Context );
 		}
 
-		protected sealed override ConstructorInfo CreateArraySerializer( MemberInfo member, Type memberType )
+		public sealed override MessagePackSerializer<TObject> CreateArraySerializer()
 		{
 			return CreateArraySerializerCore( typeof( TObject ) ).CreateInstance<TObject>( this.Context );
 		}
@@ -432,11 +430,6 @@ namespace MsgPack.Serialization
 		public sealed override MessagePackSerializer<TObject> CreateMapSerializer()
 		{
 			return CreateMapSerializerCore( typeof( TObject ) ).CreateInstance<TObject>( this.Context );
-		}
-
-		protected sealed override ConstructorInfo CreateMapSerializer( MemberInfo member, Type memberType )
-		{
-			return CreateMapSerializerCore( memberType, member ).Create();
 		}
 
 		private static SerializerEmitter CreateMapSerializerCore( Type collectionType )
@@ -756,76 +749,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		protected sealed override ConstructorInfo CreateObjectSerializer( MemberInfo member, Type memberType )
-		{
-			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( memberType );
-			CreateObjectPack( emitter, member, memberType );
-			CreateObjectUnpack( emitter, member, memberType );
-			return emitter.Create();
-		}
-
-		private static void CreateObjectPack( SerializerEmitter emitter, MemberInfo member, Type memberType )
-		{
-			/*
-			 * Context.Serializers.Get<T>().Serialize( packer, value.... );
-			 */
-			var il = emitter.GetPackToMethodILGenerator();
-			try
-			{
-				Emittion.EmitMarshalValue(
-					emitter,
-					il,
-					1,
-					memberType,
-					il0 =>
-					{
-						il0.EmitAnyLdarg( 2 );
-						Emittion.EmitLoadValue( il0, member );
-					}
-				);
-				il.EmitRet();
-			}
-			finally
-			{
-				il.FlushTrace();
-			}
-		}
-
-		private static void CreateObjectUnpack( SerializerEmitter emitter, MemberInfo member, Type memberType )
-		{
-			/*
-			 * Context.Serializers.Get<T>().Deserialize( packer, value.... );
-			 */
-			var il = emitter.GetUnpackFromMethodILGenerator();
-			try
-			{
-				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
-				var collection = il.DeclareLocal( memberType, "collection" );
-				Emittion.EmitUnmarshalValue(
-					emitter,
-					il,
-					1,
-					collection,
-					null // Dispatching closure shall adjust position.
-				);
-				il.EmitAnyLdarg( 1 );
-				il.EmitAnyLdloc( collection );
-				Emittion.EmitStoreValue( il, member );
-				il.EmitRet();
-			}
-			finally
-			{
-				il.FlushTrace();
-			}
-		}
-
 		public sealed override MessagePackSerializer<TObject> CreateTupleSerializer()
 		{
 			return CreateTupleSerializerCore( typeof( TObject ) ).CreateInstance<TObject>( this.Context );
-
-		protected sealed override ConstructorInfo CreateTupleSerializer( MemberInfo member, Type memberType )
-		{
-			return CreateTupleSerializerCore( memberType, member ).Create();
 		}
 
 		private static SerializerEmitter CreateTupleSerializerCore( Type tupleType )

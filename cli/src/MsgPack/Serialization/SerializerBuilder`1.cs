@@ -39,8 +39,6 @@ namespace MsgPack.Serialization
 			get { return this._context; }
 		}
 
-		protected SerializerBuilder() : this( new SerializationContext() ) { }
-
 		protected SerializerBuilder( SerializationContext context )
 		{
 			this._context = context;
@@ -113,100 +111,6 @@ namespace MsgPack.Serialization
 			return !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) );
 #endif
 		}
-		
-		private ConstructorInfo CreateSerializerCore( MemberInfo member, Type memberType, bool canWrite )
-		{
-			switch ( Type.GetTypeCode( memberType ) )
-			{
-				case TypeCode.DBNull:
-				case TypeCode.Empty:
-				{
-					Tracer.Emit.TraceEvent( Tracer.EventType.UnsupportedType, Tracer.EventId.UnsupportedType, "Field type '{0}' does not supported.", memberType );
-					return null;
-				}
-			}
-
-			if ( canWrite )
-			{
-				return this.CreateObjectSerializer( member, memberType );
-			}
-
-			if ( memberType.IsValueType )
-			{
-				Tracer.Emit.TraceEvent( Tracer.EventType.ReadOnlyValueTypeMember, Tracer.EventId.ReadOnlyValueTypeMember, "Field {0} is read only and its type '{1}' is value type.", member.Name, member.ReflectedType );
-				return null;
-			}
-
-			var collectionTrait = memberType.GetCollectionTraits();
-			switch ( collectionTrait.CollectionType )
-			{
-				case CollectionKind.NotCollection:
-				{
-					return this.CreateObjectSerializer( member, memberType );
-				}
-				case CollectionKind.Map:
-				{
-					return this.CreateMapSerializer( member, memberType );
-				}
-				case CollectionKind.Array:
-				{
-					return this.CreateArraySerializer( member, memberType );
-				}
-				default:
-				{
-					// error
-					return null;
-				}
-			}
-		}
-		
-		/// <summary>
-		///		Creates serializer to serialize/deserialize specified array type member and returns its <see cref="ConstructorInfo"/>.
-		/// </summary>
-		/// <param name="member">Metadata of target member.</param>
-		/// <param name="memberType"><see cref="Type"/> of member value.</param>
-		/// <returns>
-		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
-		///		This value will not be <c>null</c>.
-		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
-		/// </returns>
-		protected abstract ConstructorInfo CreateArraySerializer( MemberInfo member, Type memberType );
-
-		/// <summary>
-		///		Creates serializer to serialize/deserialize specified map type member and returns its <see cref="ConstructorInfo"/>.
-		/// </summary>
-		/// <param name="member">Metadata of target member.</param>
-		/// <param name="memberType"><see cref="Type"/> of member value.</param>
-		/// <returns>
-		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
-		///		This value will not be <c>null</c>.
-		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
-		/// </returns>
-		protected abstract ConstructorInfo CreateMapSerializer( MemberInfo member, Type memberType );
-
-		/// <summary>
-		///		Creates serializer to serialize/deserialize specified object type member and returns its <see cref="ConstructorInfo"/>.
-		/// </summary>
-		/// <param name="member">Metadata of target member.</param>
-		/// <param name="memberType"><see cref="Type"/> of member value.</param>
-		/// <returns>
-		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
-		///		This value will not be <c>null</c>.
-		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
-		/// </returns>
-		protected abstract ConstructorInfo CreateObjectSerializer( MemberInfo member, Type memberType );
-
-		/// <summary>
-		///		Creates serializer to serialize/deserialize specified tuple type member and returns its <see cref="ConstructorInfo"/>.
-		/// </summary>
-		/// <param name="member">Metadata of target member.</param>
-		/// <param name="memberType"><see cref="Type"/> of member value.</param>
-		/// <returns>
-		///		<see cref="ConstructorInfo"/> to instanciate <see cref="MessagePackSerializer{T}"/>. 
-		///		This value will not be <c>null</c>.
-		///		The signature is <c>T(<see cref="SerializationContext"/>)</c>.
-		/// </returns>
-		protected abstract ConstructorInfo CreateTupleSerializer( MemberInfo member, Type memberType );
 
 		/// <summary>
 		///		Creates serializer as <typeparamref name="TObject"/> is array type.
