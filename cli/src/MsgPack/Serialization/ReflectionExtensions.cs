@@ -269,7 +269,11 @@ namespace MsgPack.Serialization
 
 			var map = targetType.GetInterfaceMap( interfaceType );
 			int index =
+#if !SILVERLIGHT
 				Array.FindIndex( map.InterfaceMethods, method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
+#else
+				map.InterfaceMethods.FindIndex( method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
+#endif
 			if ( index < 0 )
 			{
 #if DEBUG

@@ -28,7 +28,7 @@ namespace MsgPack
 #if SILVERLIGHT
 	internal static class SilverlightExtensions
 	{
-		public static int FindIndex<T>( this List<T> source, Predicate<T> predicate )
+		public static int FindIndex<T>( this IList<T> source, Predicate<T> predicate )
 		{
 			for ( int i = 0; i < source.Count; i++ )
 			{
