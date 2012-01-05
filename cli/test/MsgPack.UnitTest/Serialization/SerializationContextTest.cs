@@ -38,6 +38,14 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		[ExpectedException( typeof( ArgumentNullException ) )]
+		public void TestGetSerializer_Null()
+		{
+			var target = new SerializationContext();
+			target.GetSerializer( null );
+		}
+
+		[Test]
 		public void TestGetSerializer_Concurrent()
 		{
 			var target = new SerializationContext();

@@ -191,11 +191,15 @@
     </Compile>
     <Compile Include="Serialization\ComplexType.cs" />
     <Compile Include="Serialization\CompositeTest.cs" />
+    <Compile Include="Serialization\DataMemberContractTest.cs" />
+    <Compile Include="Serialization\EmittingSerializerBuilderTest.cs" />
     <Compile Include="Serialization\FromExpressionTest.cs" />
     <Compile Include="Serialization\IVerifiable.cs" />
     <Compile Include="Serialization\IVerifiable`1.cs" />
+    <Compile Include="Serialization\MessagePackSerializerTTest.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeComparer.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeOffsetComparer.cs" />
+    <Compile Include="Serialization\PackerTest.cs" />
     <Compile Include="Serialization\SerializationContextTest.cs" />
     <Compile Include="Serialization\SimpleCollection`1.cs" />
     <Compile Include="Serialization\StringKeyedCollection.cs" />

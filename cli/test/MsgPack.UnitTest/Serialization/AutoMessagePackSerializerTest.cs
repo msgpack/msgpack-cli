@@ -21,12 +21,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.Serialization;
 using NUnit.Framework;
 
 namespace MsgPack.Serialization
@@ -77,6 +79,24 @@ namespace MsgPack.Serialization
 				finally
 				{
 					DefaultSerializationMethodGeneratorManager.Refresh();
+				}
+			}
+		}
+
+
+		[Test]
+		public void TestUnpackTo()
+		{
+			var target = new AutoMessagePackSerializer<Int32[]>( GetSerializationContext() );
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, new[] { 1, 2 } );
+				buffer.Position = 0;
+				int[] result = new int[ 2 ];
+				using ( var unpacker = Unpacker.Create( buffer, false ) )
+				{
+					target.UnpackTo( unpacker, result );
+					Assert.That( result, Is.EqualTo( new[] { 1, 2 } ) );
 				}
 			}
 		}
@@ -386,6 +406,96 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Test]
+		public void TestValueType_Success()
+		{
+			var serializer = new AutoMessagePackSerializer<TestValueType>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new TestValueType() { StringField = "ABC", Int32ArrayField = new int[] { 1, 2, 3 }, DictionaryField = new Dictionary<int, int>() { { 1, 1 } } };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.StringField, Is.EqualTo( value.StringField ) );
+				Assert.That( result.Int32ArrayField, Is.EqualTo( value.Int32ArrayField ) );
+				Assert.That( result.DictionaryField, Is.EqualTo( value.DictionaryField ) );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestAbstractList_Fail()
+		{
+			var serializer = new AutoMessagePackSerializer<IList<int>>( GetSerializationContext() );
+			serializer.Unpack( new MemoryStream( new byte[] { 0x90 } ) );
+		}
+
+		[Test]
+		[ExpectedException( typeof( NotSupportedException ) )]
+		public void TestAbstractDictionary_Fail()
+		{
+			var serializer = new AutoMessagePackSerializer<IDictionary<int, int>>( GetSerializationContext() );
+			serializer.Unpack( new MemoryStream( new byte[] { 0x90 } ) );
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestHasInitOnlyField_Fail()
+		{
+			new AutoMessagePackSerializer<HasInitOnlyField>( GetSerializationContext() );
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestHasGetOnlyProperty_Fail()
+		{
+			new AutoMessagePackSerializer<HasGetOnlyProperty>( GetSerializationContext() );
+		}
+
+		[Test]
+		public void TestCollection_Success()
+		{
+			var serializer = new AutoMessagePackSerializer<Collection<int>>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new Collection<int>() { 1, 2, 3 };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.ToArray(), Is.EqualTo( new int[] { 1, 2, 3 } ) );
+			}
+		}
+
+		[Test]
+		public void TestIListValueType_Success()
+		{
+			var serializer = new AutoMessagePackSerializer<ListValueType<int>>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new ListValueType<int>( 3 ) { 1, 2, 3 };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.ToArray(), Is.EqualTo( new int[] { 1, 2, 3 } ) );
+			}
+		}
+
+		[Test]
+		public void TestIDictionaryValueType_Success()
+		{
+			var serializer = new AutoMessagePackSerializer<DictionaryValueType<int, int>>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new DictionaryValueType<int, int>( 3 ) { { 1, 1 }, { 2, 2 }, { 3, 3 } };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.ToArray(), Is.EquivalentTo( Enumerable.Range( 1, 3 ).Select( i => new KeyValuePair<int, int>( i, i ) ).ToArray() ) );
+			}
+		}
+
+		// FIXME: init-only field, get-only property, Value type which implements IList<T> and has .ctor(int), Enumerator class which explicitly implements IEnumerator
+
 		private static void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
 			var safeComparer = comparer ?? EqualityComparer<T>.Default.Equals;
@@ -562,6 +672,249 @@ namespace MsgPack.Serialization
 				x,
 				y
 			);
+		}
+
+		public struct TestValueType
+		{
+			public string StringField;
+			public int[] Int32ArrayField;
+			public Dictionary<int, int> DictionaryField;
+		}
+
+		public class HasInitOnlyField
+		{
+			public readonly string Field = "ABC";
+		}
+
+		public class HasGetOnlyProperty
+		{
+			public string Property { get { return "ABC"; } }
+		}
+
+		public struct ListValueType<T> : IList<T>
+		{
+			private readonly List<T> _underlying;
+
+			public T this[ int index ]
+			{
+				get
+				{
+					if ( this._underlying == null )
+					{
+						throw new ArgumentOutOfRangeException( "index" );
+					}
+
+					return this._underlying[ index ];
+				}
+				set
+				{
+					if ( this._underlying == null )
+					{
+						throw new ArgumentOutOfRangeException( "index" );
+					}
+
+					this._underlying[ index ] = value;
+				}
+			}
+
+			public int Count
+			{
+				get { return this._underlying == null ? 0 : this._underlying.Count; }
+			}
+
+			public ListValueType( int capacity )
+			{
+				this._underlying = new List<T>( capacity );
+			}
+
+			public void Add( T item )
+			{
+				this._underlying.Add( item );
+			}
+
+			public void CopyTo( T[] array, int arrayIndex )
+			{
+				this._underlying.CopyTo( array, arrayIndex );
+			}
+
+			public IEnumerator<T> GetEnumerator()
+			{
+				if ( this._underlying == null )
+				{
+					yield break;
+				}
+
+				foreach ( var item in this._underlying )
+				{
+					yield return item;
+				}
+			}
+
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return this.GetEnumerator();
+			}
+
+			public int IndexOf( T item )
+			{
+				throw new NotImplementedException();
+			}
+
+			public void Insert( int index, T item )
+			{
+				throw new NotImplementedException();
+			}
+
+			public void RemoveAt( int index )
+			{
+				throw new NotImplementedException();
+			}
+
+			public void Clear()
+			{
+				throw new NotImplementedException();
+			}
+
+			public bool Contains( T item )
+			{
+				throw new NotImplementedException();
+			}
+
+			public bool IsReadOnly
+			{
+				get { throw new NotImplementedException(); }
+			}
+
+			public bool Remove( T item )
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public struct DictionaryValueType<TKey, TValue> : IDictionary<TKey, TValue>
+		{
+			private readonly Dictionary<TKey, TValue> _underlying;
+
+			public int Count
+			{
+				get { return this._underlying == null ? 0 : this._underlying.Count; }
+			}
+
+			public TValue this[ TKey key ]
+			{
+				get
+				{
+					if ( this._underlying == null )
+					{
+						throw new NotSupportedException();
+					}
+
+					return this._underlying[ key ];
+				}
+				set
+				{
+					if ( this._underlying == null )
+					{
+						throw new NotSupportedException();
+					}
+
+					this._underlying[ key ] = value;
+				}
+			}
+
+			public DictionaryValueType( int capacity )
+			{
+				this._underlying = new Dictionary<TKey, TValue>( capacity );
+			}
+
+			public void Add( TKey key, TValue value )
+			{
+				if ( this._underlying == null )
+				{
+					throw new NotSupportedException();
+				}
+
+				this._underlying.Add( key, value );
+			}
+
+			public void CopyTo( KeyValuePair<TKey, TValue>[] array, int arrayIndex )
+			{
+				if ( this._underlying == null )
+				{
+					return;
+				}
+
+				( this._underlying as ICollection<KeyValuePair<TKey, TValue>> ).CopyTo( array, arrayIndex );
+			}
+
+			public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+			{
+				if ( this._underlying == null )
+				{
+					yield break;
+				}
+
+				foreach ( var entry in this._underlying )
+				{
+					yield return entry;
+				}
+			}
+
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return this.GetEnumerator();
+			}
+
+			public bool ContainsKey( TKey key )
+			{
+				throw new NotImplementedException();
+			}
+
+			public ICollection<TKey> Keys
+			{
+				get { throw new NotImplementedException(); }
+			}
+
+			public bool Remove( TKey key )
+			{
+				throw new NotImplementedException();
+			}
+
+			public bool TryGetValue( TKey key, out TValue value )
+			{
+				throw new NotImplementedException();
+			}
+
+			public ICollection<TValue> Values
+			{
+				get { throw new NotImplementedException(); }
+			}
+
+			public void Add( KeyValuePair<TKey, TValue> item )
+			{
+				throw new NotImplementedException();
+			}
+
+			public void Clear()
+			{
+				throw new NotImplementedException();
+			}
+
+			public bool Contains( KeyValuePair<TKey, TValue> item )
+			{
+				throw new NotImplementedException();
+			}
+
+
+			public bool IsReadOnly
+			{
+				get { throw new NotImplementedException(); }
+			}
+
+			public bool Remove( KeyValuePair<TKey, TValue> item )
+			{
+				throw new NotImplementedException();
+			}
 		}
 
 		// TODO: RPC
