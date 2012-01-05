@@ -230,5 +230,30 @@ namespace MsgPack.Serialization
 		{
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The length of array ({0}) does not match to tuple cardinality ({1}).", actualArrayLength, expectedTupleCardinality ) );
 		}
+
+		internal static readonly MethodInfo NewIsIncorrectStreamMethod = FromExpression.ToMethod( ( Exception innerException ) => SerializationExceptions.NewIsIncorrectStream( innerException ) );
+
+		/// <summary>
+		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Returns new exception to notify that the underlying stream is not correct semantically because failed to unpack items count of array/map.
+		/// </summary>
+		/// <param name="innerException">The inner exception for the debug. The value is implementation specific.</param>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static Exception NewIsIncorrectStream( Exception innerException )
+		{
+			return new SerializationException( "Failed to unpack items count of the collection.", innerException );
+		}
+
+		internal static readonly MethodInfo NewIsTooLargeCollectionMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsTooLargeCollection() );
+
+		/// <summary>
+		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Returns new exception to notify that the unpacking collection is too large to represents in the current runtime environment.
+		/// </summary>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static Exception NewIsTooLargeCollection()
+		{
+			return new MessageNotSupportedException( "The collection which has more than Int32.MaxValue items is not supported." );
+		}
 	}
 }
