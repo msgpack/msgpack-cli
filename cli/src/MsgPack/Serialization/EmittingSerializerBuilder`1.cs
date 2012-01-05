@@ -120,20 +120,20 @@ namespace MsgPack.Serialization
 
 		protected sealed override ConstructorInfo CreateArraySerializer( MemberInfo member, Type memberType )
 		{
-			return CreateArraySerializerCore( memberType, member ).Create();
+			return CreateArraySerializerCore( typeof( TObject ) ).CreateInstance<TObject>( this.Context );
 		}
 
-		private static SerializerEmitter CreateArraySerializerCore( Type collectionType, MemberInfo memberOrNull )
+		private static SerializerEmitter CreateArraySerializerCore( Type collectionType )
 		{
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( collectionType );
-			CreatePackArrayProceduresCore( emitter, memberOrNull );
-			CreateUnpackArrayProceduresCore( emitter, memberOrNull, collectionType );
+			var traits = collectionType.GetCollectionTraits();
+			CreatePackArrayProceduresCore( emitter, collectionType, traits );
+			CreateUnpackArrayProceduresCore( emitter, collectionType, traits );
 			return emitter;
 		}
 
-		private static void CreatePackArrayProceduresCore( SerializerEmitter emitter, MemberInfo memberOrNull )
+		private static void CreatePackArrayProceduresCore( SerializerEmitter emitter, Type collectionType, CollectionTraits traits )
 		{
-			var traits = typeof( TObject ).GetCollectionTraits();
 			var il = emitter.GetPackToMethodILGenerator();
 			try
 			{
@@ -150,10 +150,6 @@ namespace MsgPack.Serialization
 					 */
 					var length = il.DeclareLocal( typeof( int ), "length" );
 					il.EmitAnyLdarg( 2 );
-					if ( memberOrNull != null )
-					{
-						Emittion.EmitLoadValue( il, memberOrNull );
-					}
 					il.EmitLdlen();
 					il.EmitAnyStloc( length );
 					il.EmitAnyLdarg( 1 );
@@ -173,10 +169,6 @@ namespace MsgPack.Serialization
 								il1 =>
 								{
 									il1.EmitAnyLdarg( 2 );
-									if ( memberOrNull != null )
-									{
-										Emittion.EmitLoadValue( il1, memberOrNull );
-									}
 									il1.EmitAnyLdloc( i );
 									il1.EmitLdelem( traits.ElementType );
 								}
@@ -240,12 +232,9 @@ namespace MsgPack.Serialization
 					 * 		this._serializer.PackTo( packer, array[ i ] );
 					 * }
 					 */
-					var collection = il.DeclareLocal( typeof( TObject ), "collection" );
+					var collection = il.DeclareLocal( collectionType, "collection" );
+					// This instruction always ldarg, not to be ldarga
 					il.EmitAnyLdarg( 2 );
-					if ( memberOrNull != null )
-					{
-						Emittion.EmitLoadValue( il, memberOrNull );
-					}
 					il.EmitAnyStloc( collection );
 					var count = il.DeclareLocal( typeof( int ), "count" );
 					il.EmitAnyLdarg( 2 );
@@ -283,11 +272,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void CreateUnpackArrayProceduresCore( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType )
+		private static void CreateUnpackArrayProceduresCore( SerializerEmitter emitter, Type collectionType, CollectionTraits traits )
 		{
-			var traits = collectionType.GetCollectionTraits();
 			CreateArrayUnpackFrom( emitter, collectionType );
-			CreateArrayUnpackTo( emitter, memberOrNull, collectionType, traits );
+			CreateArrayUnpackTo( emitter, collectionType, traits );
 		}
 
 		private static void CreateArrayUnpackFrom( SerializerEmitter emitter, Type collectionType )
@@ -347,7 +335,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void CreateArrayUnpackTo( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType, CollectionTraits traits )
+		private static void CreateArrayUnpackTo( SerializerEmitter emitter, Type collectionType, CollectionTraits traits )
 		{
 			/*
 			 *	int count = checked((int)unpacker.ItemsCount);
@@ -408,11 +396,6 @@ namespace MsgPack.Serialization
 							}
 						);
 
-						if ( memberOrNull != null )
-						{
-							Emittion.EmitLoadValue( il0, memberOrNull );
-						}
-						else
 						{
 							il0.EmitAnyLdarg( 2 );
 						}
@@ -448,7 +431,7 @@ namespace MsgPack.Serialization
 
 		public sealed override MessagePackSerializer<TObject> CreateMapSerializer()
 		{
-			return CreateMapSerializerCore( typeof( TObject ), null ).CreateInstance<TObject>( this.Context );
+			return CreateMapSerializerCore( typeof( TObject ) ).CreateInstance<TObject>( this.Context );
 		}
 
 		protected sealed override ConstructorInfo CreateMapSerializer( MemberInfo member, Type memberType )
@@ -456,28 +439,17 @@ namespace MsgPack.Serialization
 			return CreateMapSerializerCore( memberType, member ).Create();
 		}
 
-		private static SerializerEmitter CreateMapSerializerCore( Type collectionType, MemberInfo memberOrNull )
+		private static SerializerEmitter CreateMapSerializerCore( Type collectionType )
 		{
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( collectionType );
 			var traits = collectionType.GetCollectionTraits();
 			CreateMapPack(
 				emitter,
 				collectionType,
-				traits,
-				( il, collection ) =>
-				{
-					il.EmitAnyLdarg( 2 );
-					if ( memberOrNull != null )
-					{
-						Emittion.EmitLoadValue( il, memberOrNull );
-					}
-
-					il.EmitAnyStloc( collection );
-				}
+				traits
 			);
 			CreateMapUnpack(
 				emitter,
-				memberOrNull,
 				collectionType,
 				traits
 			);
@@ -485,7 +457,7 @@ namespace MsgPack.Serialization
 			return emitter;
 		}
 
-		private static void CreateMapPack( SerializerEmitter emiter, Type collectionType, CollectionTraits traits, Action<TracingILGenerator, LocalBuilder> loadCollectionEmitter )
+		private static void CreateMapPack( SerializerEmitter emiter, Type collectionType, CollectionTraits traits )
 		{
 			var il = emiter.GetPackToMethodILGenerator();
 			try
@@ -505,7 +477,9 @@ namespace MsgPack.Serialization
 				var item = il.DeclareLocal( traits.ElementType, "item" );
 				var keyProperty = traits.ElementType.GetProperty( "Key" );
 				var valueProperty = traits.ElementType.GetProperty( "Value" );
-				loadCollectionEmitter( il, collection );
+				// This instruction is always ldarg, not to be ldarga.
+				il.EmitAnyLdarg( 2 );
+				il.EmitAnyStloc( collection );
 				var count = il.DeclareLocal( typeof( int ), "count" );
 				il.EmitAnyLdloc( collection );
 				il.EmitGetProperty( traits.CountProperty );
@@ -591,13 +565,13 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void CreateMapUnpack( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType, CollectionTraits traits )
+		private static void CreateMapUnpack( SerializerEmitter emitter, Type collectionType, CollectionTraits traits )
 		{
-			CreateMapUnpackFrom( emitter, memberOrNull, collectionType );
+			CreateMapUnpackFrom( emitter, collectionType );
 			CreateMapUnpackTo( emitter, traits );
 		}
 
-		private static void CreateMapUnpackFrom( SerializerEmitter emitter, MemberInfo memberOrNull, Type collectionType )
+		private static void CreateMapUnpackFrom( SerializerEmitter emitter, Type collectionType )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
 			try
@@ -630,25 +604,16 @@ namespace MsgPack.Serialization
 				il.MarkLabel( endIf );
 
 				var collection = il.DeclareLocal( collectionType, "collection" );
-				if ( memberOrNull == null )
-				{
-					Emittion.EmitConstruction(
-						il,
-						collection,
-						il0 =>
-						{
-							il0.EmitAnyLdarg( 1 );
-							il0.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-							il0.EmitConv_Ovf_I4();
-						}
-					);
-				}
-				else
-				{
-					il.EmitAnyLdarg( 2 );
-					Emittion.EmitLoadValue( il, memberOrNull );
-					il.EmitAnyStloc( collection );
-				}
+				Emittion.EmitConstruction(
+					il,
+					collection,
+					il0 =>
+					{
+						il0.EmitAnyLdarg( 1 );
+						il0.EmitGetProperty( Metadata._Unpacker.ItemsCount );
+						il0.EmitConv_Ovf_I4();
+					}
+				);
 
 				il.EmitAnyLdarg( 0 );
 				il.EmitAnyLdarg( 1 );
@@ -856,15 +821,14 @@ namespace MsgPack.Serialization
 
 		public sealed override MessagePackSerializer<TObject> CreateTupleSerializer()
 		{
-			return CreateTupleSerializerCore( typeof( TObject ), null ).CreateInstance<TObject>( this.Context );
-		}
+			return CreateTupleSerializerCore( typeof( TObject ) ).CreateInstance<TObject>( this.Context );
 
 		protected sealed override ConstructorInfo CreateTupleSerializer( MemberInfo member, Type memberType )
 		{
 			return CreateTupleSerializerCore( memberType, member ).Create();
 		}
 
-		private static SerializerEmitter CreateTupleSerializerCore( Type tupleType, MemberInfo memberOrNull )
+		private static SerializerEmitter CreateTupleSerializerCore( Type tupleType )
 		{
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( tupleType );
 			var itemTypes = GetTupleItemTypes( tupleType );
@@ -875,11 +839,6 @@ namespace MsgPack.Serialization
 				( il, collection ) =>
 				{
 					il.EmitAnyLdarg( 2 );
-					if ( memberOrNull != null )
-					{
-						Emittion.EmitLoadValue( il, memberOrNull );
-					}
-
 					il.EmitAnyStloc( collection );
 				}
 			);
