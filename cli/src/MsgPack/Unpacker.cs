@@ -276,7 +276,19 @@ namespace MsgPack
 				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
 			}
 
-			return this.ReadCore();
+			bool result = this.ReadCore();
+			if ( result && !this.IsArrayHeader && !this.IsMapHeader )
+			{
+				this.SetStable();
+			}
+
+			return result;
+		}
+
+		private void SetStable()
+		{
+			// Now, this instance can transit another mode.
+			this._mode = UnpackerMode.Unknown;
 		}
 
 		/// <summary>
@@ -296,15 +308,18 @@ namespace MsgPack
 		/// <returns><see cref="IEnumerator&lt;T&gt;"/> to enumerate <see cref="MessagePackObject"/> from source stream.</returns>
 		public IEnumerator<MessagePackObject> GetEnumerator()
 		{
-			this.VerifyMode( UnpackerMode.Streaming );
-			while ( this.Read() )
+			this.VerifyMode( UnpackerMode.Enumerating );
+			while ( this.ReadCore() )
 			{
 				if ( this.Data != null )
 				{
 					yield return this.Data.Value;
 				}
-				this.VerifyMode( UnpackerMode.Streaming );
+
+				this.VerifyMode( UnpackerMode.Enumerating );
 			}
+
+			this.SetStable();
 		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -368,10 +383,10 @@ namespace MsgPack
 		private enum UnpackerMode
 		{
 			Unknown = 0,
-			Direct,
+			Skipping,
 			Streaming,
-			Disposed,
-			Subtree
+			Enumerating,
+			Disposed
 		}
 	}
 }

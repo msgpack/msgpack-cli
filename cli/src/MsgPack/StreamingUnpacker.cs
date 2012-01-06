@@ -177,15 +177,6 @@ namespace MsgPack
 			// FIXME:BULK LOAD
 			Contract.Assert( source != null );
 
-			if ( unpackingMode == UnpackingMode.SubTree )
-			{
-				if ( !this._hasMoreEntries || this._lastEmptyCollection != EmptyCollectionType.None )
-				{
-					// This subtree ends.
-					return null;
-				}
-			}
-
 			this._lastEmptyCollection = EmptyCollectionType.None;
 
 			MessagePackObject? collectionItemOrRoot;
@@ -209,23 +200,15 @@ namespace MsgPack
 						Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
 						Contract.Assert( this._bytesBuffer.BackingStore == null, this._bytesBuffer.ToString() ); // null
 #endif
-						if ( unpackingMode == UnpackingMode.EntireTree )
+						if ( this._lastEmptyCollection != EmptyCollectionType.None )
 						{
-							// Entire collection
-							return collectionItemOrRoot;
+							// It was empty collection.
+							return 0;
 						}
 						else
 						{
-							if ( this._lastEmptyCollection != EmptyCollectionType.None )
-							{
-								// It was empty collection.
-								return 0;
-							}
-							else
-							{
-								// Last item
-								return oldCollectionItemOrRoot.Value;
-							}
+							// Last item
+							return oldCollectionItemOrRoot.Value;
 						}
 					}
 				}
@@ -234,7 +217,7 @@ namespace MsgPack
 					this._hasMoreEntries = true;
 				}
 
-				if ( unpackingMode != UnpackingMode.EntireTree && this._isInCollection )
+				if ( this._isInCollection )
 				{
 					if ( this._collectionState.UnpackedItemsCount == 0 )
 					{
@@ -960,35 +943,17 @@ namespace MsgPack
 
 				public static CollectionContextState Create( MessagePackHeader header, uint count, UnpackingMode mode )
 				{
-					if ( mode != UnpackingMode.EntireTree )
+					if ( ( header.Type & MessageType.IsArray ) != 0 )
 					{
-						if ( ( header.Type & MessageType.IsArray ) != 0 )
-						{
-							return new ArrayForgettingCollectionContextState( count );
-						}
-						else if ( ( header.Type & MessageType.IsMap ) != 0 )
-						{
-							return new MapForgettingCollectionContextState( count );
-						}
-						else
-						{
-							throw new InvalidMessagePackStreamException();
-						}
+						return new ArrayForgettingCollectionContextState( count );
+					}
+					else if ( ( header.Type & MessageType.IsMap ) != 0 )
+					{
+						return new MapForgettingCollectionContextState( count );
 					}
 					else
 					{
-						if ( ( header.Type & MessageType.IsArray ) != 0 )
-						{
-							return new ArrayCollectionContextState( count );
-						}
-						else if ( ( header.Type & MessageType.IsMap ) != 0 )
-						{
-							return new MapCollectionContextState( count );
-						}
-						else
-						{
-							throw new InvalidMessagePackStreamException();
-						}
+						throw new InvalidMessagePackStreamException();
 					}
 				}
 			}
@@ -1364,7 +1329,7 @@ namespace MsgPack
 				}
 			}
 		}
-		
+
 		private enum EmptyCollectionType
 		{
 			None,
