@@ -47,7 +47,7 @@ namespace MsgPack
 		///		If current position MAY be in tail of source then true, otherwise false.
 		/// </summary>
 		/// <remarks>
-		///		This value should be refered via <see cref="IsInTailUltimately"/>.
+		///		This value should be refered via <see cref="IsInStreamTail"/>.
 		/// </remarks>
 		private bool _mayInTail;
 
@@ -230,7 +230,7 @@ namespace MsgPack
 		private bool Read( UnpackingMode unpackingMode )
 		{
 			this._isInStart = false;
-			while ( !this.IsInTailUltimately() )
+			while ( !this.IsInStreamTail() )
 			{
 				var data = this._unpacker.Unpack( this._currentSource.Stream, unpackingMode );
 				if ( data != null )
@@ -254,7 +254,7 @@ namespace MsgPack
 		///		This method deque successors when needed.
 		/// </summary>
 		/// <returns>If this instance is in tail of all data sources then true, otherwise false.</returns>
-		private bool IsInTailUltimately()
+		private bool IsInStreamTail()
 		{
 			if ( !this._mayInTail )
 			{
