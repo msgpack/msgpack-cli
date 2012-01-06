@@ -227,6 +227,11 @@ namespace MsgPack
 		///	</remarks>
 		public Unpacker ReadSubtree()
 		{
+			if ( this.IsInStart )
+			{
+				throw new InvalidOperationException( "Unpacker is positioned before head." );
+			}
+
 			if ( !this.IsArrayHeader && !this.IsMapHeader )
 			{
 				throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
@@ -253,7 +258,7 @@ namespace MsgPack
 		///		This method only be called from subtree unpacker.
 		///		Custom subtree unpacker implementation must call this method from its <see cref="Dispose(bool)"/> method.
 		/// </remarks>
-		protected internal void EndReadSubtree()
+		protected internal virtual void EndReadSubtree()
 		{
 			this._isSubtreeReading = false;
 		}

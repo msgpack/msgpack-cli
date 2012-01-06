@@ -19,11 +19,13 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 
 namespace MsgPack
 {
+	// FIXME: ReadSubtree life cycle test.
 	// TODO: Expose base subtree unpacker as API
 	/// <summary>
 	///		Defines subtree unpacking unpacker.
@@ -32,13 +34,13 @@ namespace MsgPack
 	{
 		private readonly StreamUnpacker _root;
 		private readonly SubtreeUnpacker _parent;
-		private readonly bool _isMap;
-		private long _unpacked;
-		private readonly long _itemsCount;
+		private readonly Stack<bool> _isMap;
+		private readonly Stack<long> _unpacked;
+		private readonly Stack<long> _itemsCount;
 
 		public sealed override long ItemsCount
 		{
-			get { return this._itemsCount; }
+			get { return this._itemsCount.Count == 0 ? 0 : this._itemsCount.Peek() / ( this._isMap.Peek() ? 2 : 1 ); }
 		}
 
 		public sealed override bool IsArrayHeader
@@ -69,8 +71,15 @@ namespace MsgPack
 			Contract.Assert( root.IsArrayHeader || root.IsMapHeader );
 			this._root = root;
 			this._parent = parent;
-			this._itemsCount = root.ItemsCount;
-			this._isMap = root.IsMapHeader;
+			this._unpacked = new Stack<long>( 2 );
+			this._itemsCount = new Stack<long>( 2 );
+			this._isMap = new Stack<bool>( 2 );
+			if ( root.ItemsCount > 0 )
+			{
+				this._itemsCount.Push( root.ItemsCount * ( root.IsMapHeader ? 2 : 1 ) );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( root.IsMapHeader );
+			}
 		}
 
 		protected sealed override void Dispose( bool disposing )
@@ -95,11 +104,26 @@ namespace MsgPack
 			base.Dispose( disposing );
 		}
 
+		protected internal sealed override void EndReadSubtree()
+		{
+			base.EndReadSubtree();
+
+			// Ends current collection.
+			this._unpacked.Pop();
+			this._unpacked.Push( this._itemsCount.Peek() );
+			this.DicardCompletedStacks();
+		}
+
 		protected sealed override Unpacker ReadSubtreeCore()
 		{
-			if ( this._unpacked == 0 )
+			if ( this._unpacked.Count == 0 )
 			{
-				throw new InvalidOperationException( "This unpacker is located before of the head." );
+				throw new InvalidOperationException( "This unpacker is located in the tail." );
+			}
+
+			if ( !this._root.IsArrayHeader && !this._root.IsMapHeader )
+			{
+				throw new InvalidOperationException( "This unpacker is not located in the head of collection." );
 			}
 
 			return new SubtreeUnpacker( this._root, this );
@@ -107,7 +131,9 @@ namespace MsgPack
 
 		protected sealed override bool ReadCore()
 		{
-			if ( this._unpacked == this._itemsCount * ( this._isMap ? 2 : 1 ) )
+			this.DicardCompletedStacks();
+
+			if ( this._itemsCount.Count == 0 )
 			{
 				return false;
 			}
@@ -117,8 +143,66 @@ namespace MsgPack
 				return false;
 			}
 
-			this._unpacked++;
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+
 			return true;
+		}
+
+		protected sealed override long? SkipCore()
+		{
+			this.DicardCompletedStacks();
+
+			if ( this._itemsCount.Count == 0 )
+			{
+				return 0;
+			}
+
+			var result = this._root.SkipSubtreeItem();
+			if ( result != null )
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+
+			return result;
+		}
+
+		private void DicardCompletedStacks()
+		{
+			if ( this._itemsCount.Count == 0 )
+			{
+				Contract.Assert( this._unpacked.Count == 0 );
+				return;
+			}
+
+			while ( this._unpacked.Peek() == this._itemsCount.Peek() )
+			{
+				this._itemsCount.Pop();
+				this._unpacked.Pop();
+				this._isMap.Pop();
+
+				if ( this._itemsCount.Count == 0 )
+				{
+					Contract.Assert( this._unpacked.Count == 0 );
+					break;
+				}
+
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
 		}
 	}
 }

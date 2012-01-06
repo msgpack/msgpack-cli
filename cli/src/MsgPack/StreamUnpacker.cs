@@ -76,7 +76,7 @@ namespace MsgPack
 		{
 			get { return this._data; }
 		}
-		
+
 		/// <summary>
 		///		Gets a value indicating whether this instance is positioned to array header.
 		/// </summary>
@@ -162,7 +162,7 @@ namespace MsgPack
 
 			this._currentSource = new DataSource( source, ownsStream );
 		}
-		
+
 		/// <summary>
 		///		Clean up internal resources.
 		/// </summary>

@@ -19,11 +19,8 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using System.IO;
+using NUnit.Framework;
 
 namespace MsgPack
 {
@@ -180,43 +177,157 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadSubTree_Nested_Success()
+		public void TestReadSubTree_NestedArray_Success()
 		{
-			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x91, 0x1 } ) )
+			using ( var buffer = new MemoryStream( new byte[] { 0x94, 0x91, 0x1, 0x90, 0xC0, 0x92, 0x1, 0x2, 0x91, 0x1 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.That( rootUnpacker.Read(), "Failed to first read" );
+				Assert.That( rootUnpacker.Read(), Is.True );
 
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
-					Assert.That( subTreeUnpacker.Read(), "Failed to second read" );
+					Assert.That( subTreeUnpacker.Read(), Is.True );
 
 					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
-						Assert.That( subSubTreeUnpacker.Read(), "1st" );
+						Assert.That( subSubTreeUnpacker.Read(), Is.True );
 						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubTreeUnpacker.Read(), Is.False );
 					}
+
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+
+					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+					}
+
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.IsNil );
+
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+
+					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( subSubTreeUnpacker.Read(), Is.True );
+						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubTreeUnpacker.Read(), Is.True );
+						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 2 ) );
+						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+					}
+
+					Assert.That( subTreeUnpacker.Read(), Is.False );
 				}
+
+				Assert.That( rootUnpacker.Read(), Is.True );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeUnpacker.Read(), Is.False );
+				}
+
+				Assert.That( rootUnpacker.Read(), Is.False );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
-		public void TestReadSubTree_InLeafHead_Fail()
+		public void TestReadSubTree_NestedMap_Success()
 		{
-			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x91, 0x1 } ) )
+			using ( var buffer = new MemoryStream( new byte[] { 0x84, 0x1, 0x81, 0x1, 0x1, 0x2, 0x80, 0x3, 0xC0, 0x4, 0x82, 0x1, 0x1, 0x2, 0x2, 0x81, 0x1, 0x1 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.That( rootUnpacker.Read(), "Failed to first read" );
+				Assert.That( rootUnpacker.Read(), Is.True );
 
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
-					// To be failed
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+
 					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
-						Assert.Fail();
+						Assert.That( subSubTreeUnpacker.Read(), Is.True );
+						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubTreeUnpacker.Read(), Is.True );
+						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubTreeUnpacker.Read(), Is.False );
 					}
+
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 2 ) );
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+
+					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+					}
+
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 3 ) );
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.IsNil );
+
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 4 ) );
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+
+					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					{
+						Assert.That( subSubTreeUnpacker.Read(), Is.True );
+						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubTreeUnpacker.Read(), Is.True );
+						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubTreeUnpacker.Read(), Is.True );
+						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 2 ) );
+						Assert.That( subSubTreeUnpacker.Read(), Is.True );
+						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 2 ) );
+						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+					}
+
+					Assert.That( subTreeUnpacker.Read(), Is.False );
 				}
+
+				Assert.That( rootUnpacker.Read(), Is.True );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeUnpacker.Read(), Is.False );
+				}
+
+				Assert.That( rootUnpacker.Read(), Is.False );
+			}
+		}
+
+		[Test]
+		public void TestReadSubTree_Nested_ReadGrandchildren_Success()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x92, 0x1, 0x91, 0x1, 0x2 } ) )
+			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( rootUnpacker.Read(), Is.True );
+
+				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+				{
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 2 ) ); // Array Length
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) ); // Value in grand children
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) ); // Array Length
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) ); // Value in grand children
+					Assert.That( subTreeUnpacker.Read(), Is.True );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 2 ) ); // Value in children
+					Assert.That( subTreeUnpacker.Read(), Is.False );
+				}
+
+				Assert.That( rootUnpacker.Read(), Is.False );
 			}
 		}
 
