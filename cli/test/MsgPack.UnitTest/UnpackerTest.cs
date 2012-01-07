@@ -372,6 +372,169 @@ namespace MsgPack
 			}
 		}
 
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestRead_UnderSkipping()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Skip(), Is.Null, "Precondition" );
+				target.Read();
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestGetEnumerator_UnderSkipping()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Skip(), Is.Null, "Precondition" );
+				foreach ( var item in target )
+				{
+
+				}
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestReadSubtree_UnderSkipping()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Skip(), Is.Null, "Precondition" );
+				target.ReadSubtree();
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestSkip_UnderReading()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Read(), Is.False, "Precondition" );
+				target.Skip();
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestGetEnumerator_UnderReading()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Read(), Is.False, "Precondition" );
+				foreach ( var item in target )
+				{
+
+				}
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestReadSubtree_UnderReading()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Read(), Is.False, "Precondition" );
+				target.ReadSubtree();
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestRead_UnderEnumerating()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				foreach ( var item in target )
+				{
+					target.Read();
+				}
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestSkip_UnderEnumerating()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				foreach ( var item in target )
+				{
+					target.Skip();
+				}
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestReadSubtree_UnderEnumerating()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				foreach ( var item in target )
+				{
+					target.ReadSubtree();
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadSubtree_InRootHead_Success()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Read() );
+				Assert.That( target.IsArrayHeader );
+
+				using ( var subTreeUnpacker = target.ReadSubtree() )
+				{
+					Assert.That( subTreeUnpacker.Read() );
+					Assert.That( subTreeUnpacker.Data.Value.Equals( 0x1 ) );
+				}
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestReadSubtree_InScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xD0, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				target.ReadSubtree();
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( InvalidOperationException ) )]
+		public void TestReadSubtree_InNestedScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x81, 0x1, 0x91, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Read() );
+				Assert.That( target.IsMapHeader, Is.True );
+				Assert.That( target.Read() );
+				Assert.That( target.IsMapHeader, Is.False );
+				target.ReadSubtree();
+			}
+		}	
+		
 		// TODO: Consider remove Feeding API and Create()
 	}
 }

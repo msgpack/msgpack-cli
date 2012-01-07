@@ -109,10 +109,7 @@ namespace MsgPack
 		/// </exception>
 		private void VerifyMode( UnpackerMode mode )
 		{
-			if ( this._mode == UnpackerMode.Disposed )
-			{
-				throw new ObjectDisposedException( this.GetType().FullName );
-			}
+			this.VerifyIsNotDisposed();
 
 			if ( this._mode == UnpackerMode.Unknown )
 			{
@@ -122,8 +119,28 @@ namespace MsgPack
 
 			if ( this._mode != mode )
 			{
-				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Reader is in '{0}' mode.", this._mode ) );
+				throw this.NewInvalidModeException();
 			}
+		}
+
+		/// <summary>
+		///		Verifies this instance is not disposed.
+		/// </summary>
+		private void VerifyIsNotDisposed()
+		{
+			if ( this._mode == UnpackerMode.Disposed )
+			{
+				throw new ObjectDisposedException( this.GetType().FullName );
+			}
+		}
+
+		/// <summary>
+		///		Returns new exception instance to notify invalid mode transition.
+		/// </summary>
+		/// <returns>New exception instance to notify invalid mode transition.</returns>
+		private Exception NewInvalidModeException()
+		{
+			return new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Reader is in '{0}' mode.", this._mode ) );
 		}
 
 		/// <summary>
@@ -227,19 +244,14 @@ namespace MsgPack
 		///	</remarks>
 		public Unpacker ReadSubtree()
 		{
-			if ( this.IsInStart )
-			{
-				throw new InvalidOperationException( "Unpacker is positioned before head." );
-			}
-
 			if ( !this.IsArrayHeader && !this.IsMapHeader )
 			{
 				throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
 			}
 
-			var subTreeReader = this.ReadSubtreeCore();
-			this._isSubtreeReading = !Object.ReferenceEquals( subTreeReader, this );
-			return subTreeReader;
+			var subtreeReader = this.ReadSubtreeCore();
+			this._isSubtreeReading = !Object.ReferenceEquals( subtreeReader, this );
+			return subtreeReader;
 		}
 
 		/// <summary>
@@ -261,6 +273,7 @@ namespace MsgPack
 		protected internal virtual void EndReadSubtree()
 		{
 			this._isSubtreeReading = false;
+			this.SetStable();
 		}
 
 		/// <summary>
@@ -331,6 +344,60 @@ namespace MsgPack
 		{
 			return this.GetEnumerator();
 		}
+
+		/// <summary>
+		///		Skips the subtree where the root is the current entry, and returns skipped byte length.
+		/// </summary>
+		/// <returns>
+		///		Skipped byte length.
+		///		If the subtree is not completed, then <c>null</c>.
+		/// </returns>
+		public long? Skip()
+		{
+			this.VerifyIsNotDisposed();
+
+			switch ( this._mode )
+			{
+				case UnpackerMode.Enumerating:
+				{
+					throw this.NewInvalidModeException();
+				}
+				case UnpackerMode.Streaming:
+				{
+					if ( !this.Data.HasValue )
+					{
+						throw this.NewInvalidModeException();
+					}
+
+					// If the value exists, safe to transit skipping.
+					break;
+				}
+			}
+
+			this._mode = UnpackerMode.Skipping;
+
+			if ( this._isSubtreeReading )
+			{
+				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
+			}
+
+			var result = this.SkipCore();
+			if ( result != null )
+			{
+				this.SetStable();
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		///		Skips the subtree where the root is the current entry, and returns skipped byte length.
+		/// </summary>
+		/// <returns>
+		///		Skipped byte length.
+		///		If the subtree is not completed, then <c>null</c>.
+		/// </returns>
+		protected abstract long? SkipCore();
 
 		#endregion -- Streaming API --
 

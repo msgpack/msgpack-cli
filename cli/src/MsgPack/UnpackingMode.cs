@@ -25,5 +25,6 @@ namespace MsgPack
 	internal enum UnpackingMode
 	{
 		PerEntry,
+		SkipSubtree
 	}
 }

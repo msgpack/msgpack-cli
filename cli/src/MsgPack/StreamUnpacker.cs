@@ -209,7 +209,7 @@ namespace MsgPack
 		/// </returns>
 		protected sealed override bool ReadCore()
 		{
-			return this.Read( UnpackingMode.PerEntry );
+			return this.Read( this._unpacker, UnpackingMode.PerEntry );
 		}
 
 		/// <summary>
@@ -226,13 +226,38 @@ namespace MsgPack
 		{
 			return this.ReadCore();
 		}
-		
-		private bool Read( UnpackingMode unpackingMode )
+
+		private StreamingUnpacker _skipper;
+
+		protected sealed override long? SkipCore()
+		{
+			if ( this._skipper == null )
+			{
+				this._skipper = new StreamingUnpacker();
+			}
+
+			if ( this.Read( this._skipper, UnpackingMode.SkipSubtree ) )
+			{
+				this._skipper = null;
+				return this._data.Value.AsInt64();
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		internal long? SkipSubtreeItem()
+		{
+			return this.SkipCore();
+		}
+
+		private bool Read( StreamingUnpacker unpacker, UnpackingMode unpackingMode )
 		{
 			this._isInStart = false;
 			while ( !this.IsInStreamTail() )
 			{
-				var data = this._unpacker.Unpack( this._currentSource.Stream, unpackingMode );
+				var data = unpacker.Unpack( this._currentSource.Stream, unpackingMode );
 				if ( data != null )
 				{
 					this._data = data;

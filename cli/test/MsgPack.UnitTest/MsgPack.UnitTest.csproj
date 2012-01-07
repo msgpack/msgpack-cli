@@ -213,6 +213,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Scalar.tt</DependentUpon>
     </Compile>
+    <Compile Include="UnpackerTest.Skip.cs" />
     <Compile Include="UnpackingTest.Combinations.Array.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

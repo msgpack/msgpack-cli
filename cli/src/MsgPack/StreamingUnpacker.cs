@@ -134,11 +134,14 @@ namespace MsgPack
 
 		private Unpacking _next;
 
+		// TODO: Instrument that caching is truely effective.
 		private readonly Unpacking _unpackHeader;
 		private readonly Unpacking _unpackCollectionLength;
 		private readonly Unpacking _unpackRawLength;
 		private readonly Unpacking _unpackRawBytes;
 		private readonly Unpacking _unpackScalar;
+
+		private long _readByteLength;
 
 		/// <summary>
 		///		Initialize new instance.
@@ -182,14 +185,13 @@ namespace MsgPack
 			MessagePackObject? collectionItemOrRoot;
 			while ( this._next( source, unpackingMode, out collectionItemOrRoot ) )
 			{
-				var oldCollectionItemOrRoot = collectionItemOrRoot;
 				if ( collectionItemOrRoot != null )
 				{
 					int depth = this._collectionState.Depth;
-					collectionItemOrRoot = this.AddToContextCollection( collectionItemOrRoot.Value );
+					var root = this.AddToContextCollection( collectionItemOrRoot.Value );
 					this._hasMoreEntries = depth <= this._collectionState.Depth;
 
-					if ( collectionItemOrRoot != null )
+					if ( root != null )
 					{
 #if DEBUG
 						Contract.Assert( this._collectionState.IsEmpty );
@@ -200,15 +202,25 @@ namespace MsgPack
 						Contract.Assert( this._contextValueHeader.Type == MessageType.Unknown, this._contextValueHeader.ToString() );// null
 						Contract.Assert( this._bytesBuffer.BackingStore == null, this._bytesBuffer.ToString() ); // null
 #endif
-						if ( this._lastEmptyCollection != EmptyCollectionType.None )
+						if ( unpackingMode == UnpackingMode.PerEntry )
 						{
-							// It was empty collection.
-							return 0;
+							if ( this._lastEmptyCollection != EmptyCollectionType.None )
+							{
+								// It was empty collection.
+								return 0;
+							}
+							else
+							{
+								// Last item
+								return collectionItemOrRoot.Value;
+							}
 						}
 						else
 						{
-							// Last item
-							return oldCollectionItemOrRoot.Value;
+							// Length
+							var readByteLength = this._readByteLength;
+							this._readByteLength = 0L;
+							return readByteLength;
 						}
 					}
 				}
@@ -217,22 +229,27 @@ namespace MsgPack
 					this._hasMoreEntries = true;
 				}
 
-				if ( this._isInCollection )
+				// There are more entries in the tree.
+				if ( unpackingMode == UnpackingMode.PerEntry )
 				{
-					if ( this._collectionState.UnpackedItemsCount == 0 )
+					// The unpacker may return unpacked collection item.
+					if ( this._isInCollection )
 					{
-						// Count
-						return this._collectionState.UnpackingItemsCount;
-					}
-					else if ( this._lastEmptyCollection != EmptyCollectionType.None )
-					{
-						// Empty nested collection.
-						return 0;
-					}
-					else
-					{
-						Contract.Assert( oldCollectionItemOrRoot.HasValue );
-						return oldCollectionItemOrRoot.Value;
+						if ( this._collectionState.UnpackedItemsCount == 0 )
+						{
+							// Count
+							return this._collectionState.UnpackingItemsCount;
+						}
+						else if ( this._lastEmptyCollection != EmptyCollectionType.None )
+						{
+							// Empty nested collection.
+							return 0;
+						}
+						else
+						{
+							Contract.Assert( collectionItemOrRoot.HasValue );
+							return collectionItemOrRoot.Value;
+						}
 					}
 				}
 			}
@@ -457,6 +474,7 @@ namespace MsgPack
 				return false;
 			}
 
+			this._readByteLength++;
 			this._contextValueHeader = _headerArray[ b ];
 			return _headerUnpackings[ b ]( this, b, source, unpackingMode, out result );
 		}
@@ -469,7 +487,10 @@ namespace MsgPack
 			Contract.Assert( this._bytesBuffer.BackingStore != null, this._bytesBuffer.ToString() );
 #endif
 
-			this._bytesBuffer = this._bytesBuffer.Feed( source );
+			int feeded;
+			this._bytesBuffer = this._bytesBuffer.Feed( source, out feeded );
+			this._readByteLength += feeded;
+
 			if ( this._bytesBuffer.IsFilled )
 			{
 				unpacked = this._bytesBuffer.AsMessagePackObject( this._contextValueHeader.Type );
@@ -483,7 +504,9 @@ namespace MsgPack
 
 		private bool UnpackCollectionLength( Stream source, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
-			this._bytesBuffer = this._bytesBuffer.Feed( source );
+			int feeded;
+			this._bytesBuffer = this._bytesBuffer.Feed( source, out feeded );
+			this._readByteLength += feeded;
 
 			if ( this._bytesBuffer.IsFilled )
 			{
@@ -541,7 +564,9 @@ namespace MsgPack
 
 		private bool UnpackRawLength( Stream source, UnpackingMode unpackingMode, out MessagePackObject? unpacked )
 		{
-			this._bytesBuffer = this._bytesBuffer.Feed( source );
+			int feeded;
+			this._bytesBuffer = this._bytesBuffer.Feed( source, out feeded );
+			this._readByteLength += feeded;
 
 			if ( this._bytesBuffer.IsFilled )
 			{
@@ -570,7 +595,9 @@ namespace MsgPack
 			Contract.Assert( this._bytesBuffer.BackingStore != null, this._bytesBuffer.ToString() );
 #endif
 
-			this._bytesBuffer = this._bytesBuffer.Feed( source );
+			int feeded;
+			this._bytesBuffer = this._bytesBuffer.Feed( source, out feeded );
+			this._readByteLength += feeded;
 			if ( this._bytesBuffer.IsFilled )
 			{
 				unpacked = this._bytesBuffer.AsMessagePackObject( this._contextValueHeader.Type );
@@ -1162,6 +1189,11 @@ namespace MsgPack
 
 			private readonly byte[] _backingStore;
 
+			public int Length
+			{
+				get { return this._backingStore.Length; }
+			}
+
 #if DEBUG
 			internal byte[] BackingStore
 			{
@@ -1231,11 +1263,14 @@ namespace MsgPack
 			///		Feed specified <see cref="Stream"/> to this buffer, and increment position.
 			/// </summary>
 			/// <param name="stream"><see cref="Stream"/> to be feeded.</param>
+			/// <param name="feededLength">The actual read length is stored.</param>
 			/// <returns>New buffer to replace this object.</returns>
-			public BytesBuffer Feed( Stream stream )
+			public BytesBuffer Feed( Stream stream, out int feededLength )
 			{
 				int reading = this._backingStore.Length - this._position;
-				return new BytesBuffer( this._backingStore, this._position + stream.Read( this._backingStore, this._position, reading ) );
+				int actualRead = stream.Read( this._backingStore, this._position, reading );
+				feededLength = actualRead;
+				return new BytesBuffer( this._backingStore, this._position + actualRead );
 			}
 
 			/// <summary>
