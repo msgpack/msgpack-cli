@@ -493,7 +493,16 @@ namespace MsgPack
 
 			if ( this._bytesBuffer.IsFilled )
 			{
-				unpacked = this._bytesBuffer.AsMessagePackObject( this._contextValueHeader.Type );
+				if ( unpackingMode == UnpackingMode.SkipSubtree )
+				{
+					// Set dummy
+					unpacked = MessagePackObject.Nil;
+				}
+				else
+				{
+					unpacked = this._bytesBuffer.AsMessagePackObject( this._contextValueHeader.Type );
+				}
+
 				return true;
 			}
 
@@ -516,7 +525,16 @@ namespace MsgPack
 				if ( length == 0 )
 				{
 					// empty collection
-					unpacked = CreateEmptyCollection( this._contextValueHeader );
+					if ( unpackingMode == UnpackingMode.SkipSubtree )
+					{
+						// Set dummy
+						unpacked = MessagePackObject.Nil;
+					}
+					else
+					{
+						unpacked = CreateEmptyCollection( this._contextValueHeader );
+					}
+
 					this._lastEmptyCollection = ToEmptyCollectionType( this._contextValueHeader.Type );
 					return true;
 				}
@@ -574,7 +592,16 @@ namespace MsgPack
 				if ( length == 0 )
 				{
 					// empty collection
-					unpacked = CreateEmptyCollection( this._contextValueHeader );
+					if ( unpackingMode == UnpackingMode.SkipSubtree )
+					{
+						// Set dummy
+						unpacked = MessagePackObject.Nil;
+					}
+					else
+					{
+						unpacked = CreateEmptyCollection( this._contextValueHeader );
+					}
+
 					// Empty raw is not considered as EmptyCollection.
 					return true;
 				}
@@ -600,7 +627,16 @@ namespace MsgPack
 			this._readByteLength += feeded;
 			if ( this._bytesBuffer.IsFilled )
 			{
-				unpacked = this._bytesBuffer.AsMessagePackObject( this._contextValueHeader.Type );
+				if ( unpackingMode == UnpackingMode.SkipSubtree )
+				{
+					// Set dummy
+					unpacked = MessagePackObject.Nil;
+				}
+				else
+				{
+					unpacked = this._bytesBuffer.AsMessagePackObject( this._contextValueHeader.Type );
+				}
+
 				return true;
 			}
 
