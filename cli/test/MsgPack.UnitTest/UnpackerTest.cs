@@ -281,6 +281,9 @@ namespace MsgPack
 						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
 						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 2 ) );
+						Assert.That( subSubtreeUnpacker.Read(), Is.True );
+						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 2 ) );
+						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.False );
