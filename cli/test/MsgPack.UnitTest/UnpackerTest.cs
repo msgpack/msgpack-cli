@@ -117,7 +117,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_ReadInSubTreeTail_NoEffect()
+		public void TestRead_ReadInSubtreeTail_NoEffect()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2, 0x3 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
@@ -143,7 +143,7 @@ namespace MsgPack
 
 		[Test]
 		[ExpectedException( typeof( InvalidOperationException ) )]
-		public void TestRead_InSubTreeMode_Fail()
+		public void TestRead_InSubtreeMode_Fail()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
@@ -161,7 +161,7 @@ namespace MsgPack
 
 		[Test]
 		[ExpectedException( typeof( InvalidOperationException ) )]
-		public void TestReadSubTree_IsScalar_Fail()
+		public void TestReadSubtree_IsScalar_Fail()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
@@ -177,7 +177,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadSubTree_NestedArray_Success()
+		public void TestReadSubtree_NestedArray_Success()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x94, 0x91, 0x1, 0x90, 0xC0, 0x92, 0x1, 0x2, 0x91, 0x1 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
@@ -188,18 +188,18 @@ namespace MsgPack
 				{
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
-					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
-						Assert.That( subSubTreeUnpacker.Read(), Is.True );
-						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
-						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+						Assert.That( subSubtreeUnpacker.Read(), Is.True );
+						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
-					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
-						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
@@ -207,13 +207,13 @@ namespace MsgPack
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
-					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
-						Assert.That( subSubTreeUnpacker.Read(), Is.True );
-						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
-						Assert.That( subSubTreeUnpacker.Read(), Is.True );
-						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 2 ) );
-						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+						Assert.That( subSubtreeUnpacker.Read(), Is.True );
+						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.Read(), Is.True );
+						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 2 ) );
+						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.False );
@@ -233,7 +233,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadSubTree_NestedMap_Success()
+		public void TestReadSubtree_NestedMap_Success()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x84, 0x1, 0x81, 0x1, 0x1, 0x2, 0x80, 0x3, 0xC0, 0x4, 0x82, 0x1, 0x1, 0x2, 0x2, 0x81, 0x1, 0x1 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
@@ -246,22 +246,22 @@ namespace MsgPack
 					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
-					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
-						Assert.That( subSubTreeUnpacker.Read(), Is.True );
-						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
-						Assert.That( subSubTreeUnpacker.Read(), Is.True );
-						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
-						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+						Assert.That( subSubtreeUnpacker.Read(), Is.True );
+						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.Read(), Is.True );
+						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 					Assert.That( subTreeUnpacker.Data.Value.Equals( 2 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
-					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
-						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
@@ -273,17 +273,14 @@ namespace MsgPack
 					Assert.That( subTreeUnpacker.Data.Value.Equals( 4 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
-					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
-						Assert.That( subSubTreeUnpacker.Read(), Is.True );
-						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
-						Assert.That( subSubTreeUnpacker.Read(), Is.True );
-						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 1 ) );
-						Assert.That( subSubTreeUnpacker.Read(), Is.True );
-						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 2 ) );
-						Assert.That( subSubTreeUnpacker.Read(), Is.True );
-						Assert.That( subSubTreeUnpacker.Data.Value.Equals( 2 ) );
-						Assert.That( subSubTreeUnpacker.Read(), Is.False );
+						Assert.That( subSubtreeUnpacker.Read(), Is.True );
+						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.Read(), Is.True );
+						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.Read(), Is.True );
+						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 2 ) );
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.False );
@@ -305,7 +302,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadSubTree_Nested_ReadGrandchildren_Success()
+		public void TestReadSubtree_Nested_ReadGrandchildren_Success()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x92, 0x1, 0x91, 0x1, 0x2 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
@@ -333,7 +330,7 @@ namespace MsgPack
 
 		[Test]
 		[ExpectedException( typeof( InvalidOperationException ) )]
-		public void TestReadSubTree_InLeafBody_Fail()
+		public void TestReadSubtree_InLeafBody_Fail()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
@@ -344,7 +341,7 @@ namespace MsgPack
 				{
 					Assert.That( rootUnpacker.Read(), "Failed to second read" );
 					// To be failed
-					using ( var subSubTreeUnpacker = subTreeUnpacker.ReadSubtree() )
+					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
 						Assert.Fail();
 					}

@@ -341,15 +341,15 @@ namespace MsgPack.Serialization
 			il.EmitAnyStloc( value );
 			il.EmitBr_S( endIf );
 			// then
-			var subTreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subTreeUnpacker" );
+			var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
 			il.MarkLabel( then );
-			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subTreeUnpacker );
+			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
 			il.EmitLdarg_0();
 			il.EmitLdfld( serializerField );
-			il.EmitAnyLdloc( subTreeUnpacker );
+			il.EmitAnyLdloc( subtreeUnpacker );
 			il.EmitAnyCall( serializerField.FieldType.GetMethod( "UnpackFrom" ) );
 			il.EmitAnyStloc( value );
-			EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
+			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
 			il.MarkLabel( endIf );
 		}
 
@@ -382,36 +382,36 @@ namespace MsgPack.Serialization
 			il.EmitAnyCall( SerializationExceptions.NewTypeCannotDeserializeMethod );
 			il.EmitThrow();
 			// then
-			var subTreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subTreeUnpacker" );
+			var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
 			il.MarkLabel( then );
-			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subTreeUnpacker );
+			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
 			il.EmitLdarg_0();
 			il.EmitLdfld( serializerField );
-			il.EmitAnyLdloc( subTreeUnpacker );
+			il.EmitAnyLdloc( subtreeUnpacker );
 			il.EmitAnyLdloc( target );
 			Emittion.EmitLoadValue( il, member );
 			var unpackTo = serializerField.FieldType.GetMethod( "UnpackTo", new[] { typeof( Unpacker ), memberType } );
 			Contract.Assert( unpackTo != null, serializerField.FieldType + " does not declare UnpackTo(Unpacker," + memberType + ")" );
 			il.EmitAnyCall( unpackTo );
-			EmitUnpackerEndReadSubtree( il, subTreeUnpacker );
+			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
 			il.MarkLabel( endIf );
 		}
 
-		public static void EmitUnpackerBeginReadSubtree( TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder subTreeUnpacker )
+		public static void EmitUnpackerBeginReadSubtree( TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder subtreeUnpacker )
 		{
 			il.EmitAnyLdarg( unpackerArgumentIndex );
 			il.EmitAnyCall( Metadata._Unpacker.ReadSubtree );
-			il.EmitAnyStloc( subTreeUnpacker );
+			il.EmitAnyStloc( subtreeUnpacker );
 			il.BeginExceptionBlock();
 		}
 
-		public static void EmitUnpackerEndReadSubtree( TracingILGenerator il, LocalBuilder subTreeUnpacker )
+		public static void EmitUnpackerEndReadSubtree( TracingILGenerator il, LocalBuilder subtreeUnpacker )
 		{
 			il.BeginFinallyBlock();
-			il.EmitAnyLdloc( subTreeUnpacker );
+			il.EmitAnyLdloc( subtreeUnpacker );
 			var endIf = il.DefineLabel( "END_IF" );
 			il.EmitBrfalse_S( endIf );
-			il.EmitAnyLdloc( subTreeUnpacker );
+			il.EmitAnyLdloc( subtreeUnpacker );
 			il.EmitAnyCall( Metadata._IDisposable.Dispose );
 			il.MarkLabel( endIf );
 			il.EndExceptionBlock();

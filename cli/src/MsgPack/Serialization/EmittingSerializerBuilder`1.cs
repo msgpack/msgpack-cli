@@ -354,9 +354,9 @@ namespace MsgPack.Serialization
 			 *		}
 			 *		else
 			 *		{
-			 *			using (Unpacker subTreeUnpacker = unpacker.ReadSubtree())
+			 *			using (Unpacker subtreeUnpacker = unpacker.ReadSubtree())
 			 *			{
-			 *				item = this._serializer.UnpackFrom(subTreeUnpacker);
+			 *				item = this._serializer.UnpackFrom(subtreeUnpacker);
 			 *			}
 			 *		}
 			 *		
@@ -641,9 +641,9 @@ namespace MsgPack.Serialization
 				 *		}
 				 *		else
 				 *		{
-				 *			using (Unpacker subTreeUnpacker = unpacker.ReadSubtree())
+				 *			using (Unpacker subtreeUnpacker = unpacker.ReadSubtree())
 				 *			{
-				 *				key = this._serializer0.UnpackFrom(subTreeUnpacker);
+				 *				key = this._serializer0.UnpackFrom(subtreeUnpacker);
 				 *			}
 				 *		}
 				 *		
@@ -659,9 +659,9 @@ namespace MsgPack.Serialization
 				 *		}
 				 *		else
 				 *		{
-				 *			using (Unpacker subTreeUnpacker = unpacker.ReadSubtree())
+				 *			using (Unpacker subtreeUnpacker = unpacker.ReadSubtree())
 				 *			{
-				 *				value = this._serializer1.UnpackFrom(subTreeUnpacker);
+				 *				value = this._serializer1.UnpackFrom(subtreeUnpacker);
 				 *			}
 				 *		}
 				 *		
@@ -890,9 +890,9 @@ namespace MsgPack.Serialization
 				 *		}
 				 *		else
 				 *		{
-				 *			using (Unpacker subTreeUnpacker = unpacker.ReadSubtree())
+				 *			using (Unpacker subtreeUnpacker = unpacker.ReadSubtree())
 				 *			{
-				 *				item1 = this._serializer0.UnpackFrom(subTreeUnpacker);
+				 *				item1 = this._serializer0.UnpackFrom(subtreeUnpacker);
 				 *			}
 				 *		}
 				 *		
