@@ -30,6 +30,9 @@ namespace MsgPack
 	/// <summary>
 	///		Implements deserializing feature of MsgPack.
 	/// </summary>
+	/// <include file='remarks.xml' path='/doc/remarks[@name="MsgPack.Unpacker"]'/>
+	/// <seealso cref="Unpacking"/>
+	/// <seealso cref="MsgPack.Serialization.MessagePackSerializer{T}"/>
 	public abstract partial class Unpacker : IEnumerable<MessagePackObject>, IDisposable
 	{
 		#region -- Properties --

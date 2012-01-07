@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <remarks name="MsgPack.Unpacker">
+    <see cref="Unpacker"/> implements three mode, that is 'Streaming', 'Enumerating', 'Skipping', and 'Subtree'.
+    <list type="bullet">
+      <item>
+        <para>
+          <strong>Streaming</strong>
+        </para>
+        <para>
+          When the <see cref="Read"/> is called, unpacker go into 'Streaming' mode.
+          In this mode, unpacker unpacks individual entries as <see cref="MessagePackObject"/> via <see cref="Data"/> property.
+          If the underlying stream is ended unexpectedly, then <see cref="Read"/> returns <c>false</c>, and <see cref="Data"/> will be <c>null</c>.
+          Note that if the underlying stream is feeded, that is the <see cref="P:Stream.Length"/> is expanded and its <see cref="P:Stream.Position"/> is not forwarded,
+          subsequent <see cref="Read"/> invocation will success, and <see cref="Data"/> is set as complete entry which reflects feeded binary.
+        </para>
+        <para>
+          If the reading of the entry is completed, that is the <see cref="Data"/> is not <c>null</c>, unpacker can transit other mode.
+        </para>
+      </item>
+      <item>
+        <para>
+          <strong>Enumerating</strong>
+        </para>
+        <para>
+          When the <see cref="GetEnumerator"/> is called and the enumeration is started, unpacker go into 'Enumerating' mode.
+          In this mode, unpacker unpacks individual entries as <see cref="MessagePackObject"/> via <see cref="P:IEnumerator{T}.Current"/> property.
+          If the underlying stream is ended unexpectedly, enumeration is interrupted.
+          The interrupted unpacker cannot be resume.
+        </para>
+        <para>
+          Once the enumeration is completed gracefully, unpacker can transit other mode.
+        </para>
+      </item>
+      <item>
+        <para>
+          <strong>Skipping</strong>
+        </para>
+        <para>
+          When the <see cref="Skip"/> is called, unpacker go into 'Skipping' mode.
+          In this mode, unpacker scans the subtree where the root is current item, then returns skipped byte length.
+          If the underlying stream is ended unexpectedly, it returns <c>null</c>.
+          Note that if the underlying stream is feeded, that is the <see cref="P:Stream.Length"/> is expanded and its <see cref="P:Stream.Position"/> is not forwarded,
+          subsequent <see cref="Skip"/> invocation will success, and returns length as complete entry which reflects feeded binary.
+          <note>
+            If the underlying <see cref="Stream"/> is cannot be seeked (that is, <see cref="P:Stream.CanSeek"/> is <c>false</c>),
+            DO NOT use this method.
+            You can buffering the content via <see cref="MemoryStream"/> instead, for example.
+          </note>
+        </para>
+        <para>
+          If the skipping of the subtree is completed, that is the return value is not <c>null</c>, unpacker can transit other mode.
+        </para>
+      </item>
+      <item>
+        <para>
+          <strong>Subtree</strong>
+        </para>
+        <para>
+          When the <see cref="ReadSubtree"/> is called, unpacker go into 'Subtree' mode.
+          In this mode, any operation for this unpacker instance is invalid.
+          Instead of use this instance itself, you can use subtree unpacker returned from <see cref="ReadSubtree"/>.
+          The subtree unpacker is the instance which scope is limited to the subtree where the root is the current entry when <see cref="ReadSubtree"/> is called.
+          The subtree unpacker also have its own mode and state.
+          <note>
+            <see cref="Dispose()"/> of the subtree unpacker must be called to indicate subtree unpacking is gracefully completed.
+            When the extra entries are remained in the subtree, these will be skipped on the disposal process.
+          </note>
+        </para>
+        <para>
+          Once the subtree unpacking is completed gracefully, that is, <see cref="Dispose()"/> on the subtree unpacker called, the parant unpacker can transit other mode.
+        </para>
+      </item>
+    </list>
+  </remarks>
+</doc>

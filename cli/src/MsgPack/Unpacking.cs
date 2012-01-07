@@ -33,6 +33,12 @@ namespace MsgPack
 	/// <summary>
 	///		Defines direct conversion value from/to Message Pack binary stream without intermediate <see cref="MessagePackObject"/>.
 	/// </summary>
+	/// <remarks>
+	///		This class provides convinient way to unpack objects from wellknown seekable stream.
+	///		This class does not support stream feeding.
+	/// </remarks>
+	/// <seealso cref="Unpacker"/>
+	/// <seealso cref="MsgPack.Serialization.MessagePackSerializer{T}"/>
 	public static partial class Unpacking
 	{
 		private static void ValidateByteArray( byte[] source, int offset )

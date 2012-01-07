@@ -31,6 +31,17 @@ namespace MsgPack.Serialization
 	///		Defines base contract for object serialization.
 	/// </summary>
 	/// <typeparam name="T">Target type.</typeparam>
+	/// <remarks>
+	///		<para>
+	///			This class implements strongly typed serialization and deserialization.
+	///		</para>
+	///		<para>
+	///			When the underlying stream does not contain strongly typed or contains dynamically typed objects,
+	///			you should use <see cref="Unpacker"/> directly and take advantage of <see cref="MessagePackObject"/>.
+	///		</para>
+	/// </remarks>
+	/// <seealso cref="Unpacker"/>
+	/// <seealso cref="Unpacking"/>
 	public abstract class MessagePackSerializer<T> : IMessagePackSerializer
 	{
 		// TODO: Metadata
