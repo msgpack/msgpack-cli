@@ -196,6 +196,7 @@
     <Compile Include="Serialization\FromExpressionTest.cs" />
     <Compile Include="Serialization\IVerifiable.cs" />
     <Compile Include="Serialization\IVerifiable`1.cs" />
+    <Compile Include="Serialization\MessagePackSerializerTest.cs" />
     <Compile Include="Serialization\MessagePackSerializerTTest.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeComparer.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeOffsetComparer.cs" />

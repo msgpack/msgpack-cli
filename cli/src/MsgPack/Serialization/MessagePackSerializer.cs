@@ -58,6 +58,11 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
 		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
 			// TODO: Configurable
 			return new AutoMessagePackSerializer<T>( context );
 		}
