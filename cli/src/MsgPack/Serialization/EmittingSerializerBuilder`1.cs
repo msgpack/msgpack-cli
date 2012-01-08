@@ -113,7 +113,7 @@ namespace MsgPack.Serialization
 			return emitter.CreateInstance<TObject>( this.Context );
 		}
 
-		private bool IsReadOnlyAppendableCollectionMember( MemberInfo memberInfo )
+		private static bool IsReadOnlyAppendableCollectionMember( MemberInfo memberInfo )
 		{
 			if ( memberInfo.CanSetValue() )
 			{
