@@ -80,7 +80,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
 		/// <remarks>
 		///		 You can specify any derived <see cref="Stream"/> class like <see cref="FileStream"/>, <see cref="MemoryStream"/>,
-		///		 <see cref="System.Net.Sockets.NetworkStream"/>, <see cref="UnmanagedMemoryStream"/>, or so.
+		///		 NetworkStream, <see cref="UnmanagedMemoryStream"/>, or so.
 		/// </remarks>
 		public static Packer Create( Stream stream )
 		{
@@ -99,7 +99,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
 		/// <remarks>
 		///		 You can specify any derived <see cref="Stream"/> class like <see cref="FileStream"/>, <see cref="MemoryStream"/>,
-		///		 <see cref="System.Net.Sockets.NetworkStream"/>, <see cref="UnmanagedMemoryStream"/>, or so.
+		///		 NetworkStream, <see cref="UnmanagedMemoryStream"/>, or so.
 		/// </remarks>
 		public static Packer Create( Stream stream, bool ownsStream )
 		{

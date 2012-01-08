@@ -18,19 +18,32 @@
 //
 #endregion -- License Terms --
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-[assembly: AssemblyTitle( "MessagePack for Mini CLI(Silverlight/Moonlight)" )]
-[assembly: AssemblyDescription( "MessagePack for CLI(Silverlight/Moonlight) packing/unpacking core library." )]
-[assembly: AssemblyConfiguration( "Experimental" )]
-[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2011" )]
+namespace MsgPack
+{
+#if SILVERLIGHT
+	internal static class SilverlightExtensions
+	{
+		public static int FindIndex<T>( this IList<T> source, Predicate<T> predicate )
+		{
+			for ( int i = 0; i < source.Count; i++ )
+			{
+				if ( predicate( source[ i ] ) )
+				{
+					return i;
+				}
+			}
 
-// TODO: use script. Major = Informational-Major, Minor = Informational-Minor, Build = Epoc days from 2010/1/1, Revision = Epoc minutes from 00:00:00
-[assembly: AssemblyFileVersion( "0.2.0.0" )]
+			return -1;
+		}
 
-#if DEBUG || PERFORMANCE_TEST
-[assembly: InternalsVisibleTo( "MsgPack.Silverlight.UnitTest" )]
+		public static IEnumerable<Type> FindInterfaces( this Type source, Func<Type,object,bool> filter, object filterCriteria )
+		{
+			return source.GetInterfaces().Where( type => filter( type, filterCriteria ) );
+		}
+	}
 #endif
-
-
+}

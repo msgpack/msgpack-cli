@@ -25,9 +25,11 @@ using System.Threading;
 
 namespace MsgPack
 {
+
 #if !SILVERLIGHT
 	[SuppressUnmanagedCodeSecurity]
 #endif
+#if !WINDOWS_PHONE
 	[SecurityCritical]
 	internal static class UnsafeNativeMethods
 	{
@@ -81,4 +83,5 @@ namespace MsgPack
 			return false;
 		}
 	}
+#endif
 }

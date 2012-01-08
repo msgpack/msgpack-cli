@@ -19,25 +19,41 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 
-namespace MsgPack
+namespace System.Diagnostics.Contracts
 {
-#if SILVERLIGHT
-	internal static class SilverlightExtensions
+	/// <summary>
+	///		Compatibility Mock.
+	/// </summary>
+	internal static class Contract
 	{
-		public static int FindIndex<T>( this IList<T> source, Predicate<T> predicate )
+		[Conditional( "DEBUG" )]
+		public static void Assert( bool condition )
 		{
-			for ( int i = 0; i < source.Count; i++ )
-			{
-				if ( predicate( source[ i ] ) )
-				{
-					return i;
-				}
-			}
-
-			return -1;
+			Debug.Assert( condition );
 		}
+
+		[Conditional( "DEBUG" )]
+		public static void Assert( bool condition, string message )
+		{
+			Debug.Assert( condition, message );
+		}
+
+		[Conditional( "DEBUG" )]
+		public static void Assume( bool condition )
+		{
+			Debug.Assert( condition );
+		}
+
+		[Conditional( "DEBUG" )]
+		public static void Assume( bool condition, string message )
+		{
+			Debug.Assert( condition, message );
+		}
+
+		[Conditional( "DEBUG" )]
+		public static void EndContractBlock() { }
 	}
-#endif
+
+	internal sealed class PureAttribute : Attribute { }
 }

@@ -154,6 +154,7 @@ namespace MsgPack
 			}
 		}
 
+#if !WINDOWS_PHONE
 		/// <summary>
 		///		Gets an <see cref="KeySet"/> containing the keys of the <see cref="MessagePackObjectDictionary"/>.
 		/// </summary>
@@ -172,6 +173,26 @@ namespace MsgPack
 				return new KeySet( this );
 			}
 		}
+#else
+		/// <summary>
+		///		Gets an <see cref="KeyCollection"/> containing the keys of the <see cref="MessagePackObjectDictionary"/>.
+		/// </summary>
+		/// <returns>
+		///		An <see cref="KeyCollection"/> containing the keys of the object.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		/// <remarks>
+		///		This operation is an O(1) operation.
+		/// </remarks>
+		public KeyCollection Keys
+		{
+			get
+			{
+				this.AssertInvariant();
+				return new KeyCollection( this );
+			}
+		}
+#endif
 
 		/// <summary>
 		///		Gets an <see cref="ValueCollection"/> containing the values of the <see cref="MessagePackObjectDictionary"/>.

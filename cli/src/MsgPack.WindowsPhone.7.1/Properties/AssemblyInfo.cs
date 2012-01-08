@@ -21,8 +21,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle( "MessagePack for Mini CLI(Silverlight/Moonlight)" )]
-[assembly: AssemblyDescription( "MessagePack for CLI(Silverlight/Moonlight) packing/unpacking core library." )]
+[assembly: AssemblyTitle( "MessagePack for Windows Phone 7.1" )]
+[assembly: AssemblyDescription( "MessagePack for Windows Phone 7.1 packing/unpacking core library." )]
 [assembly: AssemblyConfiguration( "Experimental" )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2011" )]
 

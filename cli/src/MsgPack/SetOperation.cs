@@ -23,8 +23,10 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
+
 namespace MsgPack
 {
+#if !WINDOWS_PHONE
 	/// <summary>
 	///		Implements basic (maybe naive) implementation for common <see cref="ISet{T}"/> operation.
 	/// </summary>
@@ -267,4 +269,5 @@ namespace MsgPack
 			return matchCount == set.Count;
 		}
 	}
+#endif
 }

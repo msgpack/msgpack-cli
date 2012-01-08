@@ -224,6 +224,7 @@ namespace MsgPack
 				return false;
 			}
 
+#if !WINDOWS_PHONE
 			if ( _isFastEqualsDisabled == 0 )
 			{
 				try
@@ -235,6 +236,7 @@ namespace MsgPack
 					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
 				}
 			}
+#endif
 
 			return SlowEquals( left._encoded, right._encoded );
 		}
@@ -252,6 +254,7 @@ namespace MsgPack
 			return true;
 		}
 
+#if !WINDOWS_PHONE
 		private static int _isFastEqualsDisabled = 0;
 
 		internal static bool IsFastEqualsDisabled
@@ -288,6 +291,7 @@ namespace MsgPack
 
 			return result == 0;
 		}
+#endif
 
 #if !SILVERLIGHT
 		[Serializable]

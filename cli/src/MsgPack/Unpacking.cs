@@ -38,7 +38,6 @@ namespace MsgPack
 	///		This class does not support stream feeding.
 	/// </remarks>
 	/// <seealso cref="Unpacker"/>
-	/// <seealso cref="MsgPack.Serialization.MessagePackSerializer{T}"/>
 	public static partial class Unpacking
 	{
 		private static void ValidateByteArray( byte[] source, int offset )

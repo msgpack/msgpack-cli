@@ -38,8 +38,12 @@ namespace MsgPack
 		[DebuggerDisplay( "Count={Count}" )]
 		[DebuggerTypeProxy( typeof( CollectionDebuggerProxy<> ) )]
 		[SuppressMessage( "Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "ICollection implementing dictionary should return ICollection implementing values." )]
+#if !WINDOWS_PHONE
 		public sealed partial class KeySet :
 			ISet<MessagePackObject>,
+#else
+		public sealed partial class KeyCollection :
+#endif
 			ICollection<MessagePackObject>, ICollection
 		{
 			private readonly MessagePackObjectDictionary _dictionary;
@@ -70,7 +74,11 @@ namespace MsgPack
 				get { return this; }
 			}
 
+#if !WINDOWS_PHONE
 			internal KeySet( MessagePackObjectDictionary dictionary )
+#else
+			internal KeyCollection( MessagePackObjectDictionary dictionary )
+#endif
 			{
 				Contract.Assert( dictionary != null );
 
@@ -199,6 +207,7 @@ namespace MsgPack
 				throw new NotSupportedException();
 			}
 
+#if !WINDOWS_PHONE
 			bool ISet<MessagePackObject>.Add( MessagePackObject item )
 			{
 				throw new NotSupportedException();
@@ -325,6 +334,7 @@ namespace MsgPack
 			{
 				throw new NotSupportedException();
 			}
+#endif
 
 			/// <summary>
 			///		Returns an enumerator that iterates through this collction.
