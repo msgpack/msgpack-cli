@@ -184,11 +184,11 @@ namespace MsgPack
 				}
 				else if ( target.IsArray )
 				{
-					Assert.That( result, Is.StringMatching( "^\\[([0-9]+(,\\s*[0-9]+)*)?\\]$" ), indicator );
+					Assert.That( result, Is.StringMatching( @"^\[\s*([0-9]+(,\s*[0-9]+)*)?\s*\]$" ), indicator );
 				}
 				else if ( target.IsDictionary )
 				{
-					Assert.That( result, Is.StringMatching( "^\\{([0-9]+\\s*:\\s*[0-9]+(,\\s*[0-9]+\\s*:\\s*[0-9]+)*)?\\}$" ), indicator );
+					Assert.That( result, Is.StringMatching( @"^\{\s*([0-9]+\s*:\s*[0-9]+(,\s*[0-9]+\s*:\s*[0-9]+)*)?\s*\}$" ), indicator );
 				}
 				else if ( target.IsTypeOf<float>().GetValueOrDefault() || target.IsTypeOf<double>().GetValueOrDefault() )
 				{

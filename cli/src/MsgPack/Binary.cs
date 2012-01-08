@@ -42,14 +42,28 @@ namespace MsgPack
 			}
 
 			var buffer = new StringBuilder( blob.Length * 2 + 2 );
+			ToHexStringCore( blob, buffer );
+			return buffer.ToString();
+		}
+
+		public static void ToHexString( byte[] blob, StringBuilder buffer )
+		{
+			if ( blob == null || blob.Length == 0 )
+			{
+				return;
+			}
+
+			ToHexStringCore( blob, buffer );
+		}
+
+		private static void ToHexStringCore( byte[] blob, StringBuilder buffer )
+		{
 			buffer.Append( "0x" );
 			foreach ( var b in blob )
 			{
 				buffer.Append( ToHexChar( b >> 4 ) );
 				buffer.Append( ToHexChar( b & 0xF ) );
 			}
-
-			return buffer.ToString();
 		}
 
 		private static char ToHexChar( int b )

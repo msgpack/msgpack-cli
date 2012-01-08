@@ -512,9 +512,11 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Get string representation of this object.
+		/// 	Returns a string that represents the current object.
 		/// </summary>
-		/// <returns>String representation of this object.</returns>
+		/// <returns>
+		/// 	A string that represents the current object.
+		/// </returns>
 		/// <remarks>
 		///		<note>
 		///			DO NOT use this value programmically. 
@@ -523,9 +525,21 @@ namespace MsgPack
 		/// </remarks>
 		public override string ToString()
 		{
+			var buffer = new StringBuilder();
+			ToString( buffer, false );
+			return buffer.ToString();
+		}
+
+		private void ToString( StringBuilder buffer, bool isJson )
+		{
 			if ( this._handleOrTypeCode == null )
 			{
-				return String.Empty;
+				if ( isJson )
+				{
+					buffer.Append( "null" );
+				}
+
+				return;
 			}
 
 			ValueTypeCode valueTypeCode;
@@ -535,21 +549,43 @@ namespace MsgPack
 				{
 					case MessagePackValueTypeCode.Boolean:
 					{
-						return this.AsBoolean().ToString();
+						if ( isJson )
+						{
+							buffer.Append( this.AsBoolean() ? "true" : "false" );
+						}
+						else
+						{
+							buffer.Append( this.AsBoolean() );
+						}
+
+						break;
 					}
 					case MessagePackValueTypeCode.Double:
 					{
-						return this.AsDouble().ToString( CultureInfo.InvariantCulture );
+						buffer.Append( this.AsDouble().ToString( CultureInfo.InvariantCulture ) );
+						break;
 					}
 					case MessagePackValueTypeCode.Single:
 					{
-						return this.AsSingle().ToString( CultureInfo.InvariantCulture );
+						buffer.Append( this.AsSingle().ToString( CultureInfo.InvariantCulture ) );
+						break;
 					}
 					default:
 					{
-						return this._value.ToString( CultureInfo.InvariantCulture );
+						if ( valueTypeCode.IsSigned )
+						{
+							buffer.Append( unchecked( ( long )( this._value ) ).ToString( CultureInfo.InvariantCulture ) );
+						}
+						else
+						{
+							buffer.Append( this._value.ToString( CultureInfo.InvariantCulture ) );
+						}
+
+						break;
 					}
 				}
+
+				return;
 			}
 
 			{
@@ -557,13 +593,25 @@ namespace MsgPack
 				if ( asArray != null )
 				{
 					// TODO: big array support...
-					if ( asArray.Count == 0 )
+					buffer.Append( '[' );
+					if ( asArray.Count > 0 )
 					{
-						return "[]";
+						for ( int i = 0; i < asArray.Count; i++ )
+						{
+							if ( i > 0 )
+							{
+								buffer.Append( ',' );
+							}
+
+							buffer.Append( ' ' );
+							asArray[ i ].ToString( buffer, true );
+						}
+
+						buffer.Append( ' ' );
 					}
 
-					var sb = new StringBuilder( "[" ).Append( asArray[ 0 ] );
-					return asArray.Skip( 1 ).Aggregate( sb, ( buffer, item ) => buffer.Append( ", " ).Append( item.ToString() ) ).Append( "]" ).ToString();
+					buffer.Append( ']' );
+					return;
 				}
 			}
 
@@ -572,14 +620,32 @@ namespace MsgPack
 				if ( asMap != null )
 				{
 					// TODO: big map support...
-					if ( asMap.Count == 0 )
+					buffer.Append( '{' );
+					if ( asMap.Count > 0 )
 					{
-						return "{}";
+						bool isFirst = true;
+						foreach( var entry in asMap )
+						{
+							if ( isFirst )
+							{
+								isFirst = false;
+							}
+							else
+							{
+								buffer.Append( ',' );
+							}
+
+							buffer.Append( ' ' );
+							entry.Key.ToString( buffer, true );
+							buffer.Append( ' ' ).Append( ':' ).Append( ' ' );
+							entry.Value.ToString( buffer, true );
+						}
+
+						buffer.Append( ' ' );
 					}
 
-					var first = asMap.First();
-					var sb = new StringBuilder( "{" ).Append( first.Key.ToString() ).Append( " : " ).Append( first.Value.ToString() );
-					return asMap.Skip( 1 ).Aggregate( sb, ( buffer, item ) => buffer.Append( ", " ).Append( item.Key.ToString() ).Append( " : " ).Append( item.Value.ToString() ) ).Append( "}" ).ToString();
+					buffer.Append( '}' );
+					return;
 				}
 			}
 
@@ -591,20 +657,125 @@ namespace MsgPack
 					var asString = asBinary.TryGetString();
 					if ( asString != null )
 					{
-						return asString;
+						if ( isJson )
+						{
+							buffer.Append( '"' );
+							foreach ( var c in asString )
+							{
+								switch ( c )
+								{
+									case '"':
+									{
+										buffer.Append( '\\' ).Append( '"' );
+										break;
+									}
+									case '\\':
+									{
+										buffer.Append( '\\' ).Append( '\\' );
+										break;
+									}
+									case '/':
+									{
+										buffer.Append( '\\' ).Append( '/' );
+										break;
+									}
+									case '\b':
+									{
+										buffer.Append( '\\' ).Append( 'b' );
+										break;
+									}
+									case '\f':
+									{
+										buffer.Append( '\\' ).Append( 'f' );
+										break;
+									}
+									case '\n':
+									{
+										buffer.Append( '\\' ).Append( 'n' );
+										break;
+									}
+									case '\r':
+									{
+										buffer.Append( '\\' ).Append( 'r' );
+										break;
+									}
+									case '\t':
+									{
+										buffer.Append( '\\' ).Append( 't' );
+										break;
+									}
+									case ' ':
+									{
+										buffer.Append( ' ' );
+										break;
+									}
+									default:
+									{
+										switch ( CharUnicodeInfo.GetUnicodeCategory( c ) )
+										{
+											case UnicodeCategory.Control:
+											case UnicodeCategory.OtherNotAssigned:
+											case UnicodeCategory.Format:
+											case UnicodeCategory.LineSeparator:
+											case UnicodeCategory.ParagraphSeparator:
+											case UnicodeCategory.SpaceSeparator:
+											case UnicodeCategory.PrivateUse:
+											case UnicodeCategory.Surrogate:
+											{
+												buffer.Append( '\\' ).Append( 'u' ).Append( ( ( ushort )c ).ToString( "X", CultureInfo.InvariantCulture ) );
+												break;
+											}
+											default:
+											{
+												buffer.Append( c );
+												break;
+											}
+										}
+
+										break;
+									}
+								}
+							}
+
+							buffer.Append( '"' );
+						}
+						else
+						{
+							buffer.Append( asString );
+						}
+
+						return;
 					}
 
 					var asBlob = asBinary.UnsafeGetBuffer();
 					if ( asBlob != null )
 					{
-						return Binary.ToHexString( asBlob );
+						if ( isJson )
+						{
+							buffer.Append( '"' );
+							Binary.ToHexString( asBlob, buffer );
+							buffer.Append( '"' );
+						}
+						else
+						{
+							Binary.ToHexString( asBlob, buffer );
+						}
+
+						return;
 					}
 				}
 			}
 
 			// may be string
 			Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
-			return this._handleOrTypeCode.ToString();
+			if ( isJson )
+			{
+				buffer.Append( '"' ).Append( this._handleOrTypeCode ).Append( '"' );
+			}
+			else
+			{
+				buffer.Append( this._handleOrTypeCode );
+			}
 		}
 
 		#endregion -- Structure Methods --
