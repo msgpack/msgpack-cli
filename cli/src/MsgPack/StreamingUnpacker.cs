@@ -352,7 +352,7 @@ namespace MsgPack
 		private static bool UnpackFixMapLength( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			var header = _headerArray[ b ];
-			@this._collectionState.NewContextCollection( header, header.ValueOrLength, unpackingMode );
+			@this._collectionState.NewContextCollection( header, header.ValueOrLength );
 			result = null;
 			@this.TransitToUnpackContextCollection();
 			return true;
@@ -370,7 +370,7 @@ namespace MsgPack
 		private static bool UnpackFixArrayLength( StreamingUnpacker @this, int b, Stream source, UnpackingMode unpackingMode, out MessagePackObject? result )
 		{
 			var header = _headerArray[ b ];
-			@this._collectionState.NewContextCollection( header, header.ValueOrLength, unpackingMode );
+			@this._collectionState.NewContextCollection( header, header.ValueOrLength );
 			result = null;
 			@this.TransitToUnpackContextCollection();
 			return true;
@@ -539,7 +539,7 @@ namespace MsgPack
 					return true;
 				}
 
-				this._collectionState.NewContextCollection( this._contextValueHeader, length, unpackingMode );
+				this._collectionState.NewContextCollection( this._contextValueHeader, length );
 				this.TransitToUnpackContextCollection();
 
 				unpacked = null;
@@ -963,14 +963,13 @@ namespace MsgPack
 			/// </summary>
 			/// <param name="header">Header of collection object.</param>
 			/// <param name="count">Items count of collection object. If collection is map, this value indicates count of entries.</param>
-			/// <param name="mode">Unpacking mode.</param>
-			public void NewContextCollection( MessagePackHeader header, uint count, UnpackingMode mode )
+			public void NewContextCollection( MessagePackHeader header, uint count )
 			{
 #if DEBUG
 				Contract.Assert( ( header.Type & MessageType.IsRawBinary ) == 0, header.Type.ToString() );
 #endif
 
-				this._collectionContextStack.Push( CollectionContextState.Create( header, count, mode ) );
+				this._collectionContextStack.Push( CollectionContextState.Create( header, count ) );
 			}
 
 			/// <summary>
@@ -1004,7 +1003,7 @@ namespace MsgPack
 				public abstract void AddUnpackedItem( MessagePackObject item );
 				public abstract MessagePackObject GetCollection();
 
-				public static CollectionContextState Create( MessagePackHeader header, uint count, UnpackingMode mode )
+				public static CollectionContextState Create( MessagePackHeader header, uint count )
 				{
 					if ( ( header.Type & MessageType.IsArray ) != 0 )
 					{
@@ -1095,119 +1094,6 @@ namespace MsgPack
 
 				public MapForgettingCollectionContextState( uint count ) : base( count ) { }
 			}
-
-			public sealed class ArrayCollectionContextState : CollectionContextState
-			{
-				private readonly MessagePackObject[] _items;
-
-				public sealed override uint Capacity
-				{
-					get { return unchecked( ( uint )( this._items.Length ) ); }
-				}
-
-				private uint _unpacked;
-
-				public sealed override uint Unpacked
-				{
-					get { return this._unpacked; }
-				}
-
-				public sealed override bool IsFilled
-				{
-					get { return this._unpacked == this._items.Length; }
-				}
-
-				public sealed override bool IsArray
-				{
-					get { return true; }
-				}
-
-				public sealed override bool IsMap
-				{
-					get { return false; }
-				}
-
-				public ArrayCollectionContextState( uint count )
-				{
-					this._items = new MessagePackObject[ count ];
-				}
-
-				public sealed override void AddUnpackedItem( MessagePackObject item )
-				{
-					this._items[ this._unpacked ] = item;
-					this._unpacked++;
-				}
-
-				public sealed override MessagePackObject GetCollection()
-				{
-#if DEBUG
-					Contract.Assert( this.IsFilled );
-#endif
-					return new MessagePackObject( this._items, false );
-				}
-			}
-
-			public sealed class MapCollectionContextState : CollectionContextState
-			{
-				private MessagePackObject _key;
-				private readonly MessagePackObjectDictionary _dictionary;
-				private readonly uint _capacity;
-
-				public sealed override uint Capacity
-				{
-					get { return this._capacity; }
-				}
-
-				private uint _unpacked;
-
-				public sealed override uint Unpacked
-				{
-					get { return this._unpacked; }
-				}
-
-				public sealed override bool IsFilled
-				{
-					get { return this._dictionary.Count == this._capacity; }
-				}
-
-				public sealed override bool IsArray
-				{
-					get { return false; }
-				}
-
-				public sealed override bool IsMap
-				{
-					get { return true; }
-				}
-
-				public MapCollectionContextState( uint count )
-				{
-					this._capacity = count;
-					this._dictionary = new MessagePackObjectDictionary( unchecked( ( int )count ) );
-				}
-
-				public sealed override void AddUnpackedItem( MessagePackObject item )
-				{
-					if ( this._unpacked % 2 == 0 )
-					{
-						this._key = item;
-					}
-					else
-					{
-						this._dictionary.Add( this._key, item );
-					}
-
-					this._unpacked++;
-				}
-
-				public sealed override MessagePackObject GetCollection()
-				{
-#if DEBUG
-					Contract.Assert( this.IsFilled );
-#endif
-					return new MessagePackObject( this._dictionary.Freeze(), true );
-				}
-			}
 		}
 
 		/// <summary>
@@ -1224,11 +1110,6 @@ namespace MsgPack
 			public static readonly BytesBuffer Null = new BytesBuffer();
 
 			private readonly byte[] _backingStore;
-
-			public int Length
-			{
-				get { return this._backingStore.Length; }
-			}
 
 #if DEBUG
 			internal byte[] BackingStore
