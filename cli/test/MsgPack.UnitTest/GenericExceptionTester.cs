@@ -22,6 +22,9 @@ using System;
 using System.IO;
 using System.Linq.Expressions;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Policy;
 using NUnit.Framework;
 
 namespace MsgPack
@@ -30,7 +33,7 @@ namespace MsgPack
 	///		Test suite for standard exception constructors, properties, and serialization.
 	/// </summary>
 	/// <typeparam name="T">Target exception type.</typeparam>
-	public sealed class GenericExceptionTester<T>
+	public sealed class GenericExceptionTester<T> : MarshalByRefObject
 		where T : Exception
 	{
 		private static readonly Type[] _messageConstructorParameterTypes = new[] { typeof( string ) };
@@ -40,6 +43,11 @@ namespace MsgPack
 		private readonly Func<string, T> _messageConstructor;
 		private readonly Func<string, Exception, T> _innerExceptionConstructor;
 		private readonly Exception _constructorException;
+
+		public T CreateTargetInstance( string message, Exception inner )
+		{
+			return this._innerExceptionConstructor( message, inner );
+		}
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="GenericExceptionTester&lt;T&gt;"/> class.
@@ -173,6 +181,53 @@ namespace MsgPack
 				Assert.That( deserialized.InnerException, Is.Not.Null.And.TypeOf( typeof( Exception ) ) );
 				Assert.That( deserialized.InnerException.Message, Is.EqualTo( target.InnerException.Message ) );
 			}
+		}
+
+		private void TestSerializationOnPartialTrust()
+		{
+			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
+			var evidence = new Evidence();
+			evidence.AddHostEvidence( new Zone( SecurityZone.Internet ) );
+			var permisions = SecurityManager.GetStandardSandbox( evidence );
+			AppDomain workerDomain = AppDomain.CreateDomain( "PartialTrust", evidence, appDomainSetUp, permisions, GetStrongName( this.GetType() ) );
+			try
+			{
+				var innerMessage = Guid.NewGuid().ToString();
+				var message = Guid.NewGuid().ToString();
+				workerDomain.SetData( "MsgPack.GenericExceptionTester.InnerMessage", innerMessage );
+				workerDomain.SetData( "MsgPack.GenericExceptionTester.Message", message );
+				workerDomain.SetData( "MsgPack.GenericExceptionTester.Proxy", this );
+				workerDomain.DoCallBack( TestSerializationOnPartialTrustCore );
+
+				var target = workerDomain.GetData( "MsgPack.GenericExceptionTester.Target" ) as T;
+				Assert.That( target, Is.Not.Null );
+				Assert.That( target.Message, Is.EqualTo( target.Message ) );
+				Assert.That( target.InnerException, Is.Not.Null.And.TypeOf( typeof( Exception ) ) );
+				Assert.That( target.InnerException.Message, Is.EqualTo( target.InnerException.Message ) );
+			}
+			finally
+			{
+				AppDomain.Unload( workerDomain );
+			}
+		}
+
+		public static void TestSerializationOnPartialTrustCore()
+		{
+			var innerMessage = AppDomain.CurrentDomain.GetData( "MsgPack.GenericExceptionTester.InnerMessage" ) as string;
+			var message = AppDomain.CurrentDomain.GetData( "MsgPack.GenericExceptionTester.Message" ) as string;
+			var instance = AppDomain.CurrentDomain.GetData( "MsgPack.GenericExceptionTester.Proxy" ) as GenericExceptionTester<T>;
+			var target = instance.CreateTargetInstance( message, new Exception( innerMessage ) );
+			Assert.That( target, Is.Not.Null );
+			Assert.That( target.Message, Is.EqualTo( target.Message ) );
+			Assert.That( target.InnerException, Is.Not.Null.And.TypeOf( typeof( Exception ) ) );
+			Assert.That( target.InnerException.Message, Is.EqualTo( target.InnerException.Message ) );
+			AppDomain.CurrentDomain.SetData( "MsgPack.GenericExceptionTester.Target", target );
+		}
+
+		private static StrongName GetStrongName( Type type )
+		{
+			var assemblyName = type.Assembly.GetName();
+			return new StrongName( new StrongNamePublicKeyBlob( assemblyName.GetPublicKey() ), assemblyName.Name, assemblyName.Version );
 		}
 	}
 }
