@@ -36,7 +36,7 @@ namespace MsgPack
 		#region -- Constructors --
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="Boolean"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Boolean"/> instance.
 		/// </summary>
 		public MessagePackObject( Boolean value )
 		{
@@ -47,7 +47,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="Byte"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Byte"/> instance.
 		/// </summary>
 		public MessagePackObject( Byte value )
 		{
@@ -58,7 +58,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="SByte"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="SByte"/> instance.
 		/// </summary>
 		[CLSCompliant( false )]
 		public MessagePackObject( SByte value )
@@ -70,7 +70,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="Int16"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Int16"/> instance.
 		/// </summary>
 		public MessagePackObject( Int16 value )
 		{
@@ -81,7 +81,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="UInt16"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt16"/> instance.
 		/// </summary>
 		[CLSCompliant( false )]
 		public MessagePackObject( UInt16 value )
@@ -93,7 +93,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="Int32"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Int32"/> instance.
 		/// </summary>
 		public MessagePackObject( Int32 value )
 		{
@@ -104,7 +104,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="UInt32"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt32"/> instance.
 		/// </summary>
 		[CLSCompliant( false )]
 		public MessagePackObject( UInt32 value )
@@ -116,7 +116,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="Int64"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Int64"/> instance.
 		/// </summary>
 		public MessagePackObject( Int64 value )
 		{
@@ -127,7 +127,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="UInt64"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt64"/> instance.
 		/// </summary>
 		[CLSCompliant( false )]
 		public MessagePackObject( UInt64 value )
@@ -139,7 +139,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="Single"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Single"/> instance.
 		/// </summary>
 		public MessagePackObject( Single value )
 		{
@@ -169,7 +169,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="Double"/> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Double"/> instance.
 		/// </summary>
 		public MessagePackObject( Double value )
 		{

@@ -143,12 +143,12 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance with default sized on memory buffer.
+		///		Initializes a new instance with default sized on memory buffer.
 		/// </summary>
 		public StreamUnpacker() : this( new MemoryStream( DefaultBufferSize ), true ) { }
 
 		/// <summary>
-		///		Initialize new instance using specified <see cref="Stream"/> as source.
+		///		Initializes a new instance using specified <see cref="Stream"/> as source.
 		/// </summary>
 		/// <param name="source">Source <see cref="Stream"/>.</param>
 		/// <param name="ownsStream">If you want to dispose stream when this instance is disposed, then true.</param>

@@ -32,30 +32,40 @@ namespace MsgPack
 	public sealed class MessageNotSupportedException : Exception
 	{
 		/// <summary>
-		///		Initialize new instance with default message.
+		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with the default error message.
 		/// </summary>
 		public MessageNotSupportedException() : this( null ) { }
 
 		/// <summary>
-		///		Initialize new instance with specified message.
+		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with a specified error message.
 		/// </summary>
-		/// <param name="message">
-		///		Message to desribe this error.
-		/// </param>
+		/// <param name="message">The message that describes the error. </param>
 		public MessageNotSupportedException( string message ) : this( message, null ) { }
 
 		/// <summary>
-		///		Initialize new instance with specified message and inner exception which caused this exception.
+		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception. 
 		/// </summary>
-		/// <param name="message">
-		///		Message to desribe this error.
-		/// </param>
+		/// <param name="message">The error message that explains the reason for the exception. </param>
 		/// <param name="inner">
-		///		Exception which caused this exception.
+		///		The exception that is the cause of the current exception, or a <c>null</c> if no inner exception is specified.
 		/// </param>
 		public MessageNotSupportedException( string message, Exception inner ) : base( message ?? "Specified object is not supported.", inner ) { }
 
 #if !SILVERLIGHT
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with serialized data.
+		/// </summary>
+		/// <param name="info">
+		///		The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.
+		///	</param>
+		/// <param name="context">
+		///		The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
+		/// <exception cref="ArgumentNullException">
+		///		The <paramref name="info"/> parameter is <c>null</c>.
+		/// </exception>
+		/// <exception cref="SerializationException">
+		///		The class name is <c>null</c> or <see cref="HResult"/> is zero (0).
+		///	</exception>
 		private MessageNotSupportedException( SerializationInfo info, StreamingContext context )
 			: base( info, context ) { }
 #endif

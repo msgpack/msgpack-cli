@@ -63,7 +63,7 @@ namespace MsgPack
 		public readonly Byte Byte3;
 
 		/// <summary>
-		///		Initialize new instance from specified <see cref="Single"/>.
+		///		Initializes a new instance of the <see cref="Float32Bits"/> type from specified <see cref="Single"/>.
 		/// </summary>
 		/// <param name="value">Value of <see cref="Single"/>.</param>
 		public Float32Bits( float value )
@@ -73,7 +73,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance from specified <see cref="Byte"/>[] which is big endian.
+		///		Initializes a new instance of the <see cref="Float32Bits"/> type from specified <see cref="Byte"/>[] which is big endian.
 		/// </summary>
 		/// <param name="bigEndianBytes">Array of <see cref="Byte"/> which contains bytes in big endian.</param>
 		/// <param name="offset">Offset to read.</param>

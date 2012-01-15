@@ -32,24 +32,40 @@ namespace MsgPack
 	public sealed class MessageTypeException : Exception
 	{
 		/// <summary>
-		///		Initialize new instance with default message.
+		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with the default error message.
 		/// </summary>
 		public MessageTypeException() : this( null ) { }
 
 		/// <summary>
-		///		Initialize new instance with specified message.
+		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with a specified error message.
 		/// </summary>
-		/// <param name="message">Develiper friendly message to describe detail information.</param>
+		/// <param name="message">The message that describes the error. </param>
 		public MessageTypeException( string message ) : this( message, null ) { }
 
 		/// <summary>
-		///		Initialize new instance with specified message and underlying error.
+		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception. 
 		/// </summary>
-		/// <param name="message">Develiper friendly message to describe detail information.</param>
-		/// <param name="inner">Underlying error.</param>
+		/// <param name="message">The error message that explains the reason for the exception. </param>
+		/// <param name="inner">
+		///		The exception that is the cause of the current exception, or a <c>null</c> if no inner exception is specified.
+		/// </param>
 		public MessageTypeException( string message, Exception inner ) : base( message ?? "Invalid message type.", inner ) { }
 
 #if !SILVERLIGHT
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with serialized data.
+		/// </summary>
+		/// <param name="info">
+		///		The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.
+		///	</param>
+		/// <param name="context">
+		///		The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
+		/// <exception cref="ArgumentNullException">
+		///		The <paramref name="info"/> parameter is <c>null</c>.
+		/// </exception>
+		/// <exception cref="SerializationException">
+		///		The class name is <c>null</c> or <see cref="HResult"/> is zero (0).
+		///	</exception>
 		private MessageTypeException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
 #endif
 	}

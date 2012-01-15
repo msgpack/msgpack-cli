@@ -100,7 +100,7 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="<#= t.Name #>"/> instance.
+		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <see cref="<#= t.Name #>"/> instance.
 		/// </summary>
 <#
 if( __IsNotCLSCompliant( t ) )

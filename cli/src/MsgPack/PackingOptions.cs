@@ -43,7 +43,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance.
+		///		Initializes a new instance of the <see cref="PackingOptions"/> class.
 		/// </summary>
 		public PackingOptions() { }
 	}

@@ -144,7 +144,7 @@ namespace MsgPack
 		private long _readByteLength;
 
 		/// <summary>
-		///		Initialize new instance.
+		///		Initializes a new instance of the <see cref="StreamingUnpacker"/> class.
 		/// </summary>
 		public StreamingUnpacker()
 		{
@@ -954,7 +954,7 @@ namespace MsgPack
 			}
 
 			/// <summary>
-			///		Initialize new instance.
+			///		Initializes a new instance.
 			/// </summary>
 			public CollectionUnpackagingState() { }
 
@@ -1133,7 +1133,7 @@ namespace MsgPack
 			}
 
 			/// <summary>
-			///		Initialize new instance.
+			///		Initializes a new instance.
 			/// </summary>
 			/// <param name="length">Length of bytes.</param>
 			public BytesBuffer( uint length )
@@ -1148,7 +1148,7 @@ namespace MsgPack
 			}
 
 			/// <summary>
-			///		Initialize new instance.
+			///		Initializes a new instance.
 			/// </summary>
 			/// <param name="backingStore">Existent backing store.</param>
 			/// <param name="newPosition">Position where this buffer is filled.</param>

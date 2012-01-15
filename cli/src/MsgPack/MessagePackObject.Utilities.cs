@@ -77,7 +77,7 @@ namespace MsgPack
 		#region -- Constructors --
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="String"/>.
+		///		Initializes a new instance wraps <see cref="String"/>.
 		/// </summary>
 		public MessagePackObject( string value )
 		{
@@ -94,7 +94,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="IList&lt;MessagePackObject&gt;"/>.
+		///		Initializes a new instance wraps <see cref="IList&lt;MessagePackObject&gt;"/>.
 		/// </summary>
 		/// <param name="value">
 		///		The collection to be copied.
@@ -103,7 +103,7 @@ namespace MsgPack
 			: this( value, false ) { }
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="IList&lt;MessagePackObject&gt;"/>.
+		///		Initializes a new instance wraps <see cref="IList&lt;MessagePackObject&gt;"/>.
 		/// </summary>
 		/// <param name="value">
 		///		The collection to be copied or used.
@@ -145,7 +145,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="MessagePackObjectDictionary"/>.
+		///		Initializes a new instance wraps <see cref="MessagePackObjectDictionary"/>.
 		/// </summary>
 		/// <param name="value">
 		///		The dictitonary to be copied.
@@ -154,7 +154,7 @@ namespace MsgPack
 			: this( value, false ) { }
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="MessagePackObjectDictionary"/>.
+		///		Initializes a new instance wraps <see cref="MessagePackObjectDictionary"/>.
 		/// </summary>
 		/// <param name="value">
 		///		The dictitonary to be copied or used.
@@ -194,7 +194,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps raw byte array.
+		///		Initializes a new instance wraps raw byte array.
 		/// </summary>
 		public MessagePackObject( byte[] value )
 		{
@@ -211,7 +211,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Initialize new instance wraps <see cref="MessagePackString"/>.
+		///		Initializes a new instance wraps <see cref="MessagePackString"/>.
 		/// </summary>
 		/// <param name="messagePackString"><see cref="MessagePackString"/> which represents byte array or UTF-8 encoded string.</param>
 		internal MessagePackObject( MessagePackString messagePackString )
