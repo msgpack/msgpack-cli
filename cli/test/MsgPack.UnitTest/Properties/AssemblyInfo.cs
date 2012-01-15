@@ -25,7 +25,7 @@ using System.Resources;
 
 [assembly: AssemblyTitle( "Unit test of MessagePack for C#" )]
 [assembly: AssemblyDescription( "Unit test of MessagePack C# binding" )]
-[assembly: AssemblyConfiguration( "Devlop" )]
+[assembly: AssemblyConfiguration( "Develop" )]
 [assembly: AssemblyProduct( "MessagePack" )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010" )]
 
