@@ -20,12 +20,10 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+using System.Reflection;
 using System.Security;
 using System.Text;
 using System.Threading;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 
 namespace MsgPack
 {
@@ -37,7 +35,7 @@ namespace MsgPack
 	[Serializable]
 #endif
 	internal sealed class MessagePackString
-	{
+	{		
 		// TODO: CLOB support?
 		private byte[] _encoded;
 		private string _decoded;
@@ -229,9 +227,13 @@ namespace MsgPack
 			{
 				try
 				{
-					return FastEqualsShim( left._encoded, right._encoded );
+					return UnsafeFastEquals( left._encoded, right._encoded );
 				}
 				catch ( SecurityException )
+				{
+					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
+				}
+				catch ( MemberAccessException )
 				{
 					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
 				}
@@ -255,33 +257,22 @@ namespace MsgPack
 		}
 
 #if !WINDOWS_PHONE
-		private static int _isFastEqualsDisabled = 0;
+		private static int _isFastEqualsDisabled = typeof( MessagePackString ).GetMethod( "UnsafeFastEquals", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic ).IsSecuritySafeCritical ? 0 : 1;
 
 		internal static bool IsFastEqualsDisabled
 		{
 			get { return _isFastEqualsDisabled != 0; }
 		}
 
-		[MethodImpl( MethodImplOptions.NoInlining )]
-		private static bool FastEqualsShim( byte[] x, byte[] y )
-		{
-			if ( _isFastEqualsDisabled != 0 )
-			{
-				return SlowEquals( x, y );
-			}
-
-			return UnsafeFastEquals( x, y );
-		}
-
-		[MethodImpl( MethodImplOptions.NoInlining )]
 		[SecuritySafeCritical]
 		private static bool UnsafeFastEquals( byte[] x, byte[] y )
 		{
+#if DEBUG
 			Contract.Assert( x != null );
 			Contract.Assert( y != null );
 			Contract.Assert( 0 < x.Length );
 			Contract.Assert( x.Length == y.Length );
-
+#endif
 			int result;
 			if ( !UnsafeNativeMethods.TryMemCmp( x, y, new UIntPtr( unchecked( ( uint )x.Length ) ), out result ) )
 			{
