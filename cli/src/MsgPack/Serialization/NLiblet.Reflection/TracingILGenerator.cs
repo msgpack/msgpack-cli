@@ -1090,6 +1090,8 @@ namespace NLiblet.Reflection
 		{
 			Contract.Assert( method != null );
 
+			bool isMethodBuilder = method is MethodBuilder;
+
 			/*
 			 *	<instr_method> <callConv> <type> [ <typeSpec> :: ] <methodName> ( <parameters> ) 
 			 */
@@ -1101,11 +1103,15 @@ namespace NLiblet.Reflection
 			}
 
 			var unamanagedCallingConvention = default( CallingConvention? );
-			// TODO: C++/CLI etc...
-			var dllImport = Attribute.GetCustomAttribute( method, typeof( DllImportAttribute ) ) as DllImportAttribute;
-			if ( dllImport != null )
+			// TODO: Back to NLiblet
+			if ( !isMethodBuilder )
 			{
-				unamanagedCallingConvention = dllImport.CallingConvention;
+				// TODO: C++/CLI etc...
+				var dllImport = Attribute.GetCustomAttribute( method, typeof( DllImportAttribute ) ) as DllImportAttribute;
+				if ( dllImport != null )
+				{
+					unamanagedCallingConvention = dllImport.CallingConvention;
+				}
 			}
 
 			WriteCallingConventions( this._trace, method.CallingConvention, unamanagedCallingConvention );
@@ -1124,7 +1130,7 @@ namespace NLiblet.Reflection
 				this._trace.Write( asMethodInfo.Module.Name );
 				this._trace.Write( "]::" );
 			}
-			else if ( this._isInDynamicMethod || !( method is MethodBuilder ) ) // declaring type of the method should be omitted for same type.
+			else if ( this._isInDynamicMethod || !isMethodBuilder ) // declaring type of the method should be omitted for same type.
 			{
 				WriteType( this._trace, method.DeclaringType );
 				this._trace.Write( "::" );
@@ -1132,35 +1138,38 @@ namespace NLiblet.Reflection
 
 			this._trace.Write( method.Name );
 			this._trace.Write( "(" );
-			var parameters = method.GetParameters();
-			for ( int i = 0; i < parameters.Length; i++ )
+			if ( !isMethodBuilder )
 			{
-				if ( i == 0 )
+				var parameters = method.GetParameters();
+				for ( int i = 0; i < parameters.Length; i++ )
+				{
+					if ( i == 0 )
+					{
+						this._trace.Write( " " );
+					}
+					else
+					{
+						this._trace.Write( ", " );
+					}
+
+					if ( parameters[ i ].IsOut )
+					{
+						this._trace.Write( "out " );
+					}
+					else if ( parameters[ i ].ParameterType.IsByRef )
+					{
+						this._trace.Write( "ref " );
+					}
+
+					WriteType( this._trace, parameters[ i ].ParameterType.IsByRef ? parameters[ i ].ParameterType.GetElementType() : parameters[ i ].ParameterType );
+					this._trace.Write( " " );
+					this._trace.Write( parameters[ i ].Name );
+				}
+
+				if ( 0 < parameters.Length )
 				{
 					this._trace.Write( " " );
 				}
-				else
-				{
-					this._trace.Write( ", " );
-				}
-
-				if ( parameters[ i ].IsOut )
-				{
-					this._trace.Write( "out " );
-				}
-				else if ( parameters[ i ].ParameterType.IsByRef )
-				{
-					this._trace.Write( "ref " );
-				}
-
-				WriteType( this._trace, parameters[ i ].ParameterType.IsByRef ? parameters[ i ].ParameterType.GetElementType() : parameters[ i ].ParameterType );
-				this._trace.Write( " " );
-				this._trace.Write( parameters[ i ].Name );
-			}
-
-			if ( 0 < parameters.Length )
-			{
-				this._trace.Write( " " );
 			}
 
 			this._trace.Write( ")" );
