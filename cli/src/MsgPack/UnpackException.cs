@@ -64,7 +64,7 @@ namespace MsgPack
 		///		The <paramref name="info"/> parameter is <c>null</c>.
 		/// </exception>
 		/// <exception cref="SerializationException">
-		///		The class name is <c>null</c> or <see cref="HResult"/> is zero (0).
+		///		The class name is <c>null</c> or <see cref="P:HResult"/> is zero (0).
 		///	</exception>
 		private UnpackException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
 #endif
