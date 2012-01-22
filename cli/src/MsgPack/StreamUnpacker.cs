@@ -120,20 +120,7 @@ namespace MsgPack
 				return this._unpacker.UnpackingItemsCount;
 			}
 		}
-
-		private bool _isInStart = true;
-
-		/// <summary>
-		///		Gets a value indicating whether this instance is in start position.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is in start; otherwise, <c>false</c>.
-		/// </value>
-		public sealed override bool IsInStart
-		{
-			get { return this._isInStart; }
-		}
-
+		
 		/// <summary>
 		///		Gets the underlying stream to handle direct API.
 		/// </summary>
@@ -254,7 +241,6 @@ namespace MsgPack
 
 		private bool Read( StreamingUnpacker unpacker, UnpackingMode unpackingMode )
 		{
-			this._isInStart = false;
 			while ( !this.IsInStreamTail() )
 			{
 				var data = unpacker.Unpack( this._currentSource.Stream, unpackingMode );
@@ -297,7 +283,6 @@ namespace MsgPack
 			}
 
 			this._currentSource = this._successorSources.Dequeue();
-			this._isInStart = true;
 			return false;
 		}
 

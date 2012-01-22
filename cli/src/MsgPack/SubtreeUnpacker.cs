@@ -53,12 +53,6 @@ namespace MsgPack
 			get { return this._root.IsMapHeader; }
 		}
 
-		public sealed override bool IsInStart
-		{
-			// Always returns false because 
-			get { return false; }
-		}
-
 		public sealed override MessagePackObject? Data
 		{
 			get { return this._root.Data; }

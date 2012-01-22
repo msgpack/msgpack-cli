@@ -47,11 +47,9 @@ namespace MsgPack
 				);
 				stream.Position = 0;
 				var unpacker = Unpacker.Create( stream );
-				Assert.That( unpacker.IsInStart );
 				Assert.That( unpacker.Read() );
 				using ( Unpacker subtreeReader1 = unpacker.ReadSubtree() )
 				{
-					Assert.That( !subtreeReader1.IsInStart );
 					Assert.That( subtreeReader1.IsArrayHeader );
 					Assert.That( subtreeReader1.ItemsCount, Is.EqualTo( 3 ) );
 
@@ -59,7 +57,6 @@ namespace MsgPack
 					{
 						using ( Unpacker subtreeReader2 = subtreeReader1.ReadSubtree() )
 						{
-							Assert.That( !subtreeReader2.IsInStart );
 							Assert.That( subtreeReader2.IsArrayHeader );
 							Assert.That( subtreeReader2.ItemsCount, Is.EqualTo( 3 ) );
 							for ( int j = 1; subtreeReader2.Read(); j++ )
@@ -127,11 +124,9 @@ namespace MsgPack
 				);
 				stream.Position = 0;
 				var unpacker = Unpacker.Create( stream );
-				Assert.That( unpacker.IsInStart );
 				Assert.That( unpacker.Read() );
 				using ( Unpacker subtreeReader1 = unpacker.ReadSubtree() )
 				{
-					Assert.That( !subtreeReader1.IsInStart );
 					Assert.That( subtreeReader1.IsArrayHeader );
 					Assert.That( subtreeReader1.ItemsCount, Is.EqualTo( 3 ) );
 
@@ -139,14 +134,12 @@ namespace MsgPack
 					{
 						using ( Unpacker subtreeReader2 = subtreeReader1.ReadSubtree() )
 						{
-							Assert.That( !subtreeReader2.IsInStart );
 							Assert.That( subtreeReader2.IsArrayHeader );
 							Assert.That( subtreeReader2.ItemsCount, Is.EqualTo( 3 ) );
 							for ( int j = 1; subtreeReader2.Read(); j++ )
 							{
 								using ( Unpacker subtreeReader3 = subtreeReader2.ReadSubtree() )
 								{
-									Assert.That( !subtreeReader3.IsInStart );
 									Assert.That( subtreeReader3.IsArrayHeader );
 									Assert.That( subtreeReader3.ItemsCount, Is.EqualTo( 3 ) );
 									for ( int k = 1; subtreeReader3.Read(); k++ )

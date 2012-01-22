@@ -23,6 +23,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
@@ -76,7 +77,9 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public T Unpack( Stream stream )
 		{
-			return this.UnpackFrom( Unpacker.Create( stream ) );
+			var unpacker = Unpacker.Create( stream );
+			unpacker.Read();
+			return this.UnpackFrom( unpacker );
 		}
 
 		/// <summary>
@@ -139,12 +142,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
-			if ( unpacker.IsInStart )
+			if ( !unpacker.Data.HasValue )
 			{
-				if ( !unpacker.Read() )
-				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
+				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
 			}
 
 			if ( typeof( T ) != typeof( MessagePackObject ) && unpacker.Data.Value.IsNil )
@@ -205,12 +205,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
-			if ( unpacker.IsInStart )
+			if ( !unpacker.Data.HasValue )
 			{
-				if ( !unpacker.Read() )
-				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
+				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
 			}
 
 			if ( unpacker.Data.Value.IsNil )
@@ -292,12 +289,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
 			}
 
-			if ( unpacker.IsInStart )
+			if ( !unpacker.Data.HasValue )
 			{
-				if ( !unpacker.Read() )
-				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
+				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
 			}
 
 			if ( unpacker.Data.Value.IsNil )

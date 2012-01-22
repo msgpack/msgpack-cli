@@ -95,6 +95,7 @@ namespace MsgPack.Serialization
 				int[] result = new int[ 2 ];
 				using ( var unpacker = Unpacker.Create( buffer, false ) )
 				{
+					unpacker.Read();
 					target.UnpackTo( unpacker, result );
 					Assert.That( result, Is.EqualTo( new[] { 1, 2 } ) );
 				}

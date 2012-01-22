@@ -172,6 +172,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				var result = target.UnpackFrom( unpacker );
 				Assert.That( result, Is.EqualTo( 1 ) );
 			}
@@ -185,6 +186,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				var result = target.UnpackFrom( unpacker );
 			}
 		}
@@ -206,6 +208,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				target.UnpackTo( unpacker, null );
 			}
 		}
@@ -218,6 +221,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				target.UnpackTo( unpacker, 0 );
 			}
 		}
@@ -230,6 +234,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				var collection = new int[ 1 ];
 				target.UnpackTo( unpacker, collection );
 			}
@@ -242,6 +247,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				var collection = new int[ 0 ];
 				target.UnpackTo( unpacker, collection );
 			}
@@ -264,6 +270,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				target.UnpackTo( unpacker, null );
 			}
 		}
@@ -275,6 +282,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				var collection = new int[ 2 ];
 				target.UnpackTo( unpacker, collection );
 				// colection[1] is still 0.
@@ -303,6 +311,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				var collection = new int[ 1 ];
 				target.UnpackTo( unpacker, collection );
 			}
@@ -316,6 +325,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				var collection = new int[ 1 ];
 				target.UnpackTo( unpacker, collection );
 			}
@@ -328,6 +338,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
+				unpacker.Read();
 				var collection = new int[ 0 ];
 				target.UnpackTo( unpacker, collection );
 			}

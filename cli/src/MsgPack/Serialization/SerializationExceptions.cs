@@ -255,5 +255,10 @@ namespace MsgPack.Serialization
 		{
 			return new MessageNotSupportedException( "The collection which has more than Int32.MaxValue items is not supported." );
 		}
+
+		internal static Exception NewEmptyOrUnstartedUnpacker()
+		{
+			return new SerializationException( "The unpacker did not read any data yet. The unpacker might never read or underlying stream is empty." );
+		}
 	}
 }

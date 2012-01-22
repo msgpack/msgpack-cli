@@ -85,17 +85,6 @@ namespace MsgPack
 			get;
 		}
 
-		/// <summary>
-		///	 Gets a value indicating whether this instance is in start position.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is in start; otherwise, <c>false</c>.
-		/// </value>
-		public abstract bool IsInStart
-		{
-			get;
-		}
-
 		private UnpackerMode _mode = UnpackerMode.Unknown;
 		private bool _isSubtreeReading = false;
 
