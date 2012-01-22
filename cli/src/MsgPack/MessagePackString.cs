@@ -35,7 +35,7 @@ namespace MsgPack
 	[Serializable]
 #endif
 	internal sealed class MessagePackString
-	{		
+	{
 		// TODO: CLOB support?
 		private byte[] _encoded;
 		private string _decoded;
@@ -257,7 +257,13 @@ namespace MsgPack
 		}
 
 #if !WINDOWS_PHONE
-		private static int _isFastEqualsDisabled = typeof( MessagePackString ).GetMethod( "UnsafeFastEquals", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic ).IsSecuritySafeCritical ? 0 : 1;
+#if !SILVERLIGHT
+		private static int _isFastEqualsDisabled =
+			typeof( MessagePackString ).GetMethod( "UnsafeFastEquals", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic ).IsSecuritySafeCritical ? 0 : 1;
+#else
+		private static int _isFastEqualsDisabled =
+			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
+#endif
 
 		internal static bool IsFastEqualsDisabled
 		{
