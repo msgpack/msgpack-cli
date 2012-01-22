@@ -969,7 +969,7 @@ namespace NLiblet.Reflection
 			Contract.Assert( type != null );
 
 			// TODO: NLiblet
-			if ( typeof( void ) == type )
+			if ( type == null || type == typeof( void ) )
 			{
 				writer.Write( "void" );
 			}
