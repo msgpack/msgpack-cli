@@ -53,11 +53,10 @@ namespace MsgPack
 			get { return this._root.IsMapHeader; }
 		}
 
-		private bool _isInStart;
-		
 		public sealed override bool IsInStart
 		{
-			get { return this._isInStart; }
+			// Always returns false because 
+			get { return false; }
 		}
 
 		public sealed override MessagePackObject? Data
@@ -73,7 +72,6 @@ namespace MsgPack
 			Contract.Assert( root.IsArrayHeader || root.IsMapHeader );
 			this._root = root;
 			this._parent = parent;
-			this._isInStart = true;
 			this._unpacked = new Stack<long>( 2 );
 
 			this._itemsCount = new Stack<long>( 2 );
@@ -136,7 +134,6 @@ namespace MsgPack
 
 		protected sealed override bool ReadCore()
 		{
-			this._isInStart = false;
 			this.DicardCompletedStacks();
 
 			if ( this._itemsCount.Count == 0 )
