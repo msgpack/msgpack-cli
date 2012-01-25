@@ -30,7 +30,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyFileVersion( "0.2.0.0" )]
 
 #if DEBUG || PERFORMANCE_TEST
-[assembly: InternalsVisibleTo( "MsgPack.Silverlight.UnitTest" )]
+[assembly: InternalsVisibleTo( "MsgPack.WindowsPhone.UnitTest" )]
 #endif
 
 
