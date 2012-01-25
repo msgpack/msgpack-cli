@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
@@ -73,16 +74,14 @@ namespace MsgPack.Serialization
 #endif
 		}
 
-		public SerializerEmitter CreateEmitter( Type targetType )
+		public SerializerEmitter CreateEmitter( Type targetType, EmitterFlavor emitterFlavor )
 		{
-			if ( targetType == null )
-			{
-				throw new ArgumentNullException( "targetType" );
-			}
+			Contract.Requires( targetType != null );
+			Contract.Requires( emitterFlavor == EmitterFlavor.FieldBased || emitterFlavor == EmitterFlavor.ContextBased );
 
-			return this.CreateEmitterCore( targetType );
+			return this.CreateEmitterCore( targetType , emitterFlavor);
 		}
 
-		protected abstract SerializerEmitter CreateEmitterCore( Type targetType );
+		protected abstract SerializerEmitter CreateEmitterCore( Type targetType, EmitterFlavor emitterFlavor );
 	}
 }

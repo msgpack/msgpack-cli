@@ -34,11 +34,9 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Genereates serialization methods which can be save to file.
 	/// </summary>
-	[SuppressMessage( "Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "StringWriter actually is not have to dispose." )]
-	internal sealed class SerializerEmitter
+	internal abstract class SerializerEmitter : IDisposable
 	{
-		private static readonly Type[] _constructorParameterTypes = new[] { typeof( SerializationContext ) };
-		private static readonly Type[] _unpackFromCoreParameterTypes = new[] { typeof( Unpacker ) };
+		protected static readonly Type[] UnpackFromCoreParameterTypes = new[] { typeof( Unpacker ) };
 
 		/// <summary>
 		///		 Gets a value indicating whether this instance is trace enabled.
@@ -46,7 +44,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		/// 	<c>true</c> if the trace enabled; otherwise, <c>false</c>.
 		/// </value>
-		private static bool IsTraceEnabled
+		protected static bool IsTraceEnabled
 		{
 			get { return ( Tracer.Emit.Switch.Level & SourceLevels.Verbose ) == SourceLevels.Verbose; }
 		}
@@ -60,7 +58,7 @@ namespace MsgPack.Serialization
 		///		The <see cref="TextWriter"/> for tracing.
 		///		This value will not be <c>null</c>.
 		/// </value>
-		private TextWriter Trace { get { return this._trace; } }
+		protected TextWriter Trace { get { return this._trace; } }
 
 		/// <summary>
 		///		Flushes the trace.
@@ -81,22 +79,109 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SerializerEmitter"/> class.
+		/// </summary>
+		protected SerializerEmitter()
+		{
+		}
+
+		/// <summary>
+		///		Releases all managed resources.
+		/// </summary>
+		public void Dispose()
+		{
+			this.Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		/// <summary>
+		///		Releases unmanaged and optionally managed resources.
+		/// </summary>
+		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+		protected virtual void Dispose( bool disposing )
+		{
+			if ( disposing )
+			{
+				this._trace.Dispose();
+			}
+		}
+
+		/// <summary>
+		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		/// </summary>
+		/// <returns>
+		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public abstract TracingILGenerator GetPackToMethodILGenerator();
+
+		/// <summary>
+		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		/// </summary>
+		/// <returns>
+		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public abstract TracingILGenerator GetUnpackFromMethodILGenerator();
+
+		/// <summary>
+		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		/// </summary>
+		/// <returns>
+		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		/// </returns>
+		/// <remarks>
+		///		When this method is called, <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> will be overridden.
+		///		This value will not be <c>null</c>.
+		/// </remarks>
+		public abstract TracingILGenerator GetUnpackToMethodILGenerator();
+
+		/// <summary>
+		///		Creates the serializer type built now and returns its new instance.
+		/// </summary>
+		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
+		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
+		/// <returns>
+		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
+		///		This value will not be <c>null</c>.
+		///	</returns>
+		public abstract MessagePackSerializer<T> CreateInstance<T>( SerializationContext context );
+
+		/// <summary>
+		///		Regisgter using <see cref="MessagePackSerializer{T}"/> target type to the current emitting session.
+		/// </summary>
+		/// <param name="targetType">Type to be serialized/deserialized.</param>
+		/// <returns>
+		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
+		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
+		///		The 2nd argument should be argument index of the serializer holder.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public abstract Action<TracingILGenerator, int> RegisterSerializer( Type targetType );
+	}
+
+	internal sealed class FieldBasedSerializerEmitter : SerializerEmitter
+	{
+		private static readonly Type[] _constructorParameterTypes = new[] { typeof( SerializationContext ) };
+
+		private readonly Dictionary<RuntimeTypeHandle, FieldBuilder> _serializers;
 		private readonly ConstructorBuilder _constructorBuilder;
 		private readonly TypeBuilder _typeBuilder;
 		private readonly MethodBuilder _packMethodBuilder;
 		private readonly MethodBuilder _unpackFromMethodBuilder;
 		private MethodBuilder _unpackToMethodBuilder;
-		private readonly Dictionary<RuntimeTypeHandle, FieldBuilder> _serializers;
 		private readonly bool _isDebuggable;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SerializerEmitter"/> class.
+		/// Initializes a new instance of the <see cref="FieldBasedSerializerEmitter"/> class.
 		/// </summary>
 		/// <param name="host">The host <see cref="ModuleBuilder"/>.</param>
 		/// <param name="sequence">The sequence number to name new type..</param>
 		/// <param name="targetType">Type of the serialization target.</param>
 		/// <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
-		public SerializerEmitter( ModuleBuilder host, int sequence, Type targetType, bool isDebuggable )
+		public FieldBasedSerializerEmitter( ModuleBuilder host, int sequence, Type targetType, bool isDebuggable )
+			: base()
 		{
 			string typeName =
 				String.Join(
@@ -130,24 +215,16 @@ namespace MsgPack.Serialization
 					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final,
 					CallingConventions.HasThis,
 					targetType,
-					_unpackFromCoreParameterTypes
+					UnpackFromCoreParameterTypes
 				);
 
 			this._typeBuilder.DefineMethodOverride( this._packMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._packMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
 			this._typeBuilder.DefineMethodOverride( this._unpackFromMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._unpackFromMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-
 			this._serializers = new Dictionary<RuntimeTypeHandle, FieldBuilder>();
 			this._isDebuggable = isDebuggable;
 		}
 
-		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
-		/// </summary>
-		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
-		///		This value will not be <c>null</c>.
-		/// </returns>
-		public TracingILGenerator GetPackToMethodILGenerator()
+		public sealed override TracingILGenerator GetPackToMethodILGenerator()
 		{
 			if ( IsTraceEnabled )
 			{
@@ -157,14 +234,7 @@ namespace MsgPack.Serialization
 			return new TracingILGenerator( this._packMethodBuilder, this.Trace, this._isDebuggable );
 		}
 
-		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
-		/// </summary>
-		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
-		///		This value will not be <c>null</c>.
-		/// </returns>
-		public TracingILGenerator GetUnpackFromMethodILGenerator()
+		public sealed override TracingILGenerator GetUnpackFromMethodILGenerator()
 		{
 			if ( IsTraceEnabled )
 			{
@@ -174,17 +244,7 @@ namespace MsgPack.Serialization
 			return new TracingILGenerator( this._unpackFromMethodBuilder, this.Trace, this._isDebuggable );
 		}
 
-		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
-		/// </summary>
-		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
-		/// </returns>
-		/// <remarks>
-		///		When this method is called, <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> will be overridden.
-		///		This value will not be <c>null</c>.
-		/// </remarks>
-		public TracingILGenerator GetUnpackToMethodILGenerator()
+		public sealed override TracingILGenerator GetUnpackToMethodILGenerator()
 		{
 			if ( IsTraceEnabled )
 			{
@@ -208,6 +268,20 @@ namespace MsgPack.Serialization
 			return new TracingILGenerator( this._unpackToMethodBuilder, this.Trace, this._isDebuggable );
 		}
 
+		public sealed override MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
+		{
+			var contextParameter = Expression.Parameter( typeof( SerializationContext ) );
+			return
+				Expression.Lambda<Func<SerializationContext, MessagePackSerializer<T>>>(
+					Expression.New(
+						this.Create(),
+						contextParameter
+					),
+					contextParameter
+				).Compile()( context );
+		}
+
+
 		/// <summary>
 		///		Creates the serializer type built now and returns its constructor.
 		/// </summary>
@@ -215,7 +289,7 @@ namespace MsgPack.Serialization
 		///		Newly built <see cref="MessagePackSerializer{T}"/> type constructor.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public ConstructorInfo Create()
+		private ConstructorInfo Create()
 		{
 			if ( !this._typeBuilder.IsCreated() )
 			{
@@ -250,37 +324,7 @@ namespace MsgPack.Serialization
 			return this._typeBuilder.CreateType().GetConstructor( _constructorParameterTypes );
 		}
 
-		/// <summary>
-		///		Creates the serializer type built now and returns its new instance.
-		/// </summary>
-		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
-		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
-		/// <returns>
-		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
-		///		This value will not be <c>null</c>.
-		///	</returns>
-		public MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
-		{
-			var contextParameter = Expression.Parameter( typeof( SerializationContext ) );
-			return
-				Expression.Lambda<Func<SerializationContext, MessagePackSerializer<T>>>(
-					Expression.New(
-						this.Create(),
-						contextParameter
-					),
-					contextParameter
-				).Compile()( context );
-		}
-
-		/// <summary>
-		///		Regisgter using <see cref="MessagePackSerializer{T}"/> target type to the current emitting session.
-		/// </summary>
-		/// <param name="targetType">Type to be serialized/deserialized.</param>
-		/// <returns>
-		///		<see cref="FieldInfo"/> to refer the serializer in current building type.
-		///		This value will not be <c>null</c>.
-		/// </returns>
-		public FieldInfo RegisterSerializer( Type targetType )
+		public sealed override Action<TracingILGenerator, int> RegisterSerializer( Type targetType )
 		{
 			if ( this._typeBuilder.IsCreated() )
 			{
@@ -294,7 +338,130 @@ namespace MsgPack.Serialization
 				this._serializers.Add( targetType.TypeHandle, result );
 			}
 
-			return result;
+			return
+				( il, thisIndex ) =>
+				{
+					il.EmitAnyLdarg( thisIndex );
+					il.EmitLdfld( result );
+				};
 		}
 	}
+
+	internal sealed class CallbackMessagePackSerializer<T> : MessagePackSerializer<T>
+	{
+		private readonly SerializationContext _context;
+		private readonly Action<SerializationContext, Packer, T> _packToCore;
+		private readonly Func<SerializationContext, Unpacker, T> _unpackFromCore;
+		private readonly Action<SerializationContext, Unpacker, T> _unpackToCore;
+
+		public CallbackMessagePackSerializer(
+			SerializationContext context,
+			Action<SerializationContext, Packer, T> packToCore,
+			Func<SerializationContext, Unpacker, T> unpackFromCore,
+			Action<SerializationContext, Unpacker, T> unpackToCore
+		)
+		{
+			this._context = context;
+			this._packToCore = packToCore;
+			this._unpackFromCore = unpackFromCore;
+			this._unpackToCore = unpackToCore;
+		}
+
+		protected internal override void PackToCore( Packer packer, T objectTree )
+		{
+			this._packToCore( this._context, packer, objectTree );
+		}
+
+		protected internal override T UnpackFromCore( Unpacker unpacker )
+		{
+			return this._unpackFromCore( this._context, unpacker );
+		}
+
+		protected internal sealed override void UnpackToCore( Unpacker unpacker, T collection )
+		{
+			if ( this._unpackToCore != null )
+			{
+				this._unpackToCore( this._context, unpacker, collection );
+			}
+			else
+			{
+				base.UnpackToCore( unpacker, collection );
+			}
+		}
+	}
+
+	internal sealed class ContextBasedSerializerEmitter : SerializerEmitter
+	{
+		private readonly Type _targetType;
+		private readonly DynamicMethod _packToMethod;
+		private readonly DynamicMethod _unpackFromMethod;
+		private DynamicMethod _unpackToMethod;
+
+		public ContextBasedSerializerEmitter( Type targetType )
+		{
+			this._targetType = targetType;
+
+			this._packToMethod = new DynamicMethod( "PackToCore", null, new[] { typeof( SerializationContext ), typeof( Packer ), targetType } );
+			this._unpackFromMethod = new DynamicMethod( "UnpackFromCore", targetType, new[] { typeof( SerializationContext ), typeof( Unpacker ) } );
+		}
+
+		public override TracingILGenerator GetPackToMethodILGenerator()
+		{
+			if ( IsTraceEnabled )
+			{
+				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethod );
+			}
+
+			return new TracingILGenerator( this._packToMethod, this.Trace );
+		}
+
+		public override TracingILGenerator GetUnpackFromMethodILGenerator()
+		{
+			if ( IsTraceEnabled )
+			{
+				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethod );
+			}
+
+			return new TracingILGenerator( this._unpackFromMethod, this.Trace );
+		}
+
+		public override TracingILGenerator GetUnpackToMethodILGenerator()
+		{
+			if ( this._unpackToMethod == null )
+			{
+				this._unpackToMethod = new DynamicMethod( "UnpackToCore", null, new[] { typeof( SerializationContext ), typeof( Unpacker ), this._targetType } );
+			}
+
+			if ( IsTraceEnabled )
+			{
+				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackToMethod );
+			}
+
+			return new TracingILGenerator( this._unpackToMethod, this.Trace );
+		}
+
+		public override MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
+		{
+			var packTo = this._packToMethod.CreateDelegate( typeof( Action<SerializationContext, Packer, T> ) ) as Action<SerializationContext, Packer, T>;
+			var unpackFrom = this._unpackFromMethod.CreateDelegate( typeof( Func<SerializationContext, Unpacker, T> ) ) as Func<SerializationContext, Unpacker, T>;
+			var unpackTo = default( Action<SerializationContext, Unpacker, T> );
+			if ( this._unpackToMethod != null )
+			{
+				unpackTo = this._unpackToMethod.CreateDelegate( typeof( Action<SerializationContext, Unpacker, T> ) ) as Action<SerializationContext, Unpacker, T>;
+			}
+
+			return new CallbackMessagePackSerializer<T>( context, packTo, unpackFrom, unpackTo );
+		}
+
+		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType )
+		{
+			return
+				( il, contextIndex ) =>
+				{
+					il.EmitAnyLdarg( contextIndex );
+					il.EmitAnyCall( Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType ) );
+				};
+		}
+	}
+
 }

@@ -156,8 +156,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultSerializers.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\EmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\MapEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\Metadata\_Enumerable.cs" />
     <Compile Include="Serialization\Metadata\_SerializationContext.cs" />
     <Compile Include="Serialization\Metadata\_String.cs" />
@@ -196,7 +198,7 @@
     <Compile Include="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializationMethodGeneratorManager.cs" />
-    <Compile Include="Serialization\EmittingSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\EmittingSerializerBuilderLogics.cs" />
     <Compile Include="Serialization\Emittion.cs" />
     <Compile Include="Serialization\FromExpression.cs" />
     <Compile Include="Serialization\FromExpression.ToMethod.cs">
@@ -204,6 +206,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FromExpression.ToMethod.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\Metadata\_UnpackHelpers.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\GenericTypeExtensions.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\ReflectionExtensions.cs">
       <SubType>Code</SubType>
@@ -212,7 +215,7 @@
     <Compile Include="Serialization\NLiblet.Reflection\TracingILGenerator.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\TracingILGenerator.emits.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorManager.cs" />
-    <Compile Include="Serialization\SerializationMethodGeneratorOptions.cs" />
+    <Compile Include="Serialization\SerializationMethodGeneratorOption.cs" />
     <Compile Include="Serialization\SerializerEmitter.cs" />
     <Compile Include="Serialization\SerializerRepository.defaults.cs">
       <AutoGen>True</AutoGen>
@@ -232,6 +235,7 @@
     <Compile Include="Serialization\Tracer.cs" />
     <Compile Include="Serialization\TypeKeyRepository.cs" />
     <Compile Include="Serialization\MessagePackSerializer.cs" />
+    <Compile Include="Serialization\UnpackHelpers.cs" />
     <Compile Include="SetOperation.cs" />
     <Compile Include="StreamPacker.cs" />
     <Compile Include="StreamUnpacker.cs" />

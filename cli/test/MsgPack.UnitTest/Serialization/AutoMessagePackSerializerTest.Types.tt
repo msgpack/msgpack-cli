@@ -112,7 +112,6 @@ var __fields =
 #endregion -- License Terms --
 
 #pragma warning disable 3003
-#warning LINE51--Tuple
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -146,13 +145,13 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>()
 		{
-			TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #> );
+			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #> );
 		}
 		
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>Array()
 		{
-			TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray() );
 		}
 		
 <#
@@ -162,13 +161,13 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>Null()
 		{
-			TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ) );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ) );
 		}
 		
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>ArrayNull()
 		{
-			TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ) );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ) );
 		}	
 		
 <#
@@ -181,13 +180,13 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		{
 			var target = new ComplexTypeGeneratedEnclosure();
 			target.Initialize();
-			TestCoreWithVerifiable1( target );
+			this.TestCoreWithVerifiable( target );
 		}
 		
 		[Test]
 		public void TestComplexTypeGeneratedEnclosureArray()
 		{
-			TestCoreWithVerifiable1( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray() );
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray() );
 		}
 		
 <#
@@ -198,18 +197,18 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 		{
 			var target = new ComplexTypeGenerated();
 			target.Initialize();
-			TestCoreWithVerifiable1( target );
+			this.TestCoreWithVerifiable( target );
 		}
 		
 		[Test]
 		public void TestComplexTypeGeneratedArray()
 		{
-			TestCoreWithVerifiable1( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray() );
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray() );
 		}
 
-		private static void TestCoreWithAutoVerify<T>( T value )
+		private void TestCoreWithAutoVerify<T>( T value )
 		{
-			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
+			var target = this.CreateTarget<T>( this.GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );
@@ -220,10 +219,10 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 			}
 		}
 		
-		private static void TestCoreWithVerifiable1<T>( T value )
+		private void TestCoreWithVerifiable<T>( T value )
 			where T : IVerifiable<T>
 		{
-			var target = new AutoMessagePackSerializer<T>( GetSerializationContext() );
+			var target = this.CreateTarget<T>( this.GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );
@@ -234,10 +233,10 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 			}
 		}	
 		
-		private static void TestCoreWithVerifiable1<T>( T[] value )
+		private void TestCoreWithVerifiable<T>( T[] value )
 			where T : IVerifiable<T>
 		{
-			var target = new AutoMessagePackSerializer<T[]>( GetSerializationContext() );
+			var target = this.CreateTarget<T[]>( this.GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );

@@ -174,9 +174,20 @@ namespace MsgPack.Serialization
 		}
 #endif
 
-		protected sealed override SerializerEmitter CreateEmitterCore( Type targetType )
+		protected sealed override SerializerEmitter CreateEmitterCore( Type targetType, EmitterFlavor emitterFlavor )
 		{
-			return new SerializerEmitter( this._module, Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
+			switch ( emitterFlavor )
+			{
+				case EmitterFlavor.FieldBased:
+				{
+					return new FieldBasedSerializerEmitter( this._module, Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
+				}
+				case EmitterFlavor.ContextBased:
+				default:
+				{
+					return new ContextBasedSerializerEmitter( targetType );
+				}
+			}
 		}
 	}
 }

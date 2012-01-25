@@ -1,0 +1,46 @@
+﻿#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Collections;
+
+namespace MsgPack.Serialization.Metadata
+{
+	internal static class _UnpackHelpers
+	{
+		public static readonly MethodInfo UnpackArrayTo_1Method =
+			typeof( UnpackHelpers ).GetMethod( "UnpackArrayTo" );
+		public static readonly MethodInfo UnpackCollectionTo_1_Method =
+			typeof( UnpackHelpers ).GetMethods().Single( item => item.Name == "UnpackCollectionTo" && item.GetParameters().Length == 4 && item.GetGenericArguments().Length == 1 );
+		public static readonly MethodInfo UnpackCollectionTo_2_Method =
+			typeof( UnpackHelpers ).GetMethods().Single( item => item.Name == "UnpackCollectionTo" && item.GetParameters().Length == 4 && item.GetGenericArguments().Length == 2 );
+		public static readonly MethodInfo UnpackMapTo_2Method =
+			typeof( UnpackHelpers ).GetMethods().Single( item => item.Name == "UnpackMapTo" && item.GetGenericArguments().Length == 2 );
+		public static readonly MethodInfo UnpackNonGenericCollectionToMethod =
+			FromExpression.ToMethod( ( Unpacker unpacker, IList collection, Action<object> addition ) => UnpackHelpers.UnpackCollectionTo( unpacker, collection, addition ) );
+		public static readonly MethodInfo UnpackNonGenericCollectionTo_1_Method =
+			typeof( UnpackHelpers ).GetMethods().Single( item => item.Name == "UnpackCollectionTo" && item.GetParameters().Length == 3 && item.GetGenericArguments().Length == 1 );
+		public static readonly MethodInfo UnpackNonGenericMapToMethod =
+			FromExpression.ToMethod( ( Unpacker unpacker, IDictionary dictionary ) => UnpackHelpers.UnpackMapTo( unpacker, dictionary ) );
+	}
+}

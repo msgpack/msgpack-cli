@@ -295,13 +295,12 @@ namespace MsgPack.Serialization
 
 		public static void EmitMarshalValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, Action<TracingILGenerator> loadValueEmitter )
 		{
-			var serializerField = emitter.RegisterSerializer( valueType );
+			var serializerGetter = emitter.RegisterSerializer( valueType );
 			//  context.MarshalTo( packer, ... ) )
-			il.EmitLdarg_0();
-			il.EmitLdfld( serializerField );
+			serializerGetter( il, 0 );
 			il.EmitAnyLdarg( packerArgumentIndex );
 			loadValueEmitter( il );
-			il.EmitAnyCall( serializerField.FieldType.GetMethod( "PackTo" ) );
+			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( valueType ).GetMethod( "PackTo" ) );
 		}
 
 		public static void EmitUnmarshalValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Action<TracingILGenerator, int> unpackerReading )
@@ -325,7 +324,7 @@ namespace MsgPack.Serialization
 
 			var then = il.DefineLabel( "THEN" );
 			var endIf = il.DefineLabel( "END_IF" );
-			var serializerField = emitter.RegisterSerializer( value.LocalType );
+			var serializerGetter = emitter.RegisterSerializer( value.LocalType );
 
 			il.EmitAnyLdarg( unpackerArgumentIndex );
 			il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
@@ -334,20 +333,18 @@ namespace MsgPack.Serialization
 			il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
 			il.EmitBrtrue_S( then );
 			// else
-			il.EmitLdarg_0();
-			il.EmitLdfld( serializerField );
+			serializerGetter( il, 0 );
 			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitAnyCall( serializerField.FieldType.GetMethod( "UnpackFrom" ) );
+			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( value.LocalType ).GetMethod( "UnpackFrom" ) );
 			il.EmitAnyStloc( value );
 			il.EmitBr_S( endIf );
 			// then
 			var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
 			il.MarkLabel( then );
 			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
-			il.EmitLdarg_0();
-			il.EmitLdfld( serializerField );
+			serializerGetter( il, 0 );
 			il.EmitAnyLdloc( subtreeUnpacker );
-			il.EmitAnyCall( serializerField.FieldType.GetMethod( "UnpackFrom" ) );
+			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( value.LocalType ).GetMethod( "UnpackFrom" ) );
 			il.EmitAnyStloc( value );
 			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
 			il.MarkLabel( endIf );
@@ -369,7 +366,7 @@ namespace MsgPack.Serialization
 
 			var then = il.DefineLabel( "THEN" );
 			var endIf = il.DefineLabel( "END_IF" );
-			var serializerField = emitter.RegisterSerializer( memberType );
+			var serializerGetter = emitter.RegisterSerializer( memberType );
 
 			il.EmitAnyLdarg( unpackerArgumentIndex );
 			il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
@@ -385,14 +382,11 @@ namespace MsgPack.Serialization
 			var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
 			il.MarkLabel( then );
 			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
-			il.EmitLdarg_0();
-			il.EmitLdfld( serializerField );
+			serializerGetter( il, 0 );
 			il.EmitAnyLdloc( subtreeUnpacker );
 			il.EmitAnyLdloc( target );
 			Emittion.EmitLoadValue( il, member );
-			var unpackTo = serializerField.FieldType.GetMethod( "UnpackTo", new[] { typeof( Unpacker ), memberType } );
-			Contract.Assert( unpackTo != null, serializerField.FieldType + " does not declare UnpackTo(Unpacker," + memberType + ")" );
-			il.EmitAnyCall( unpackTo );
+			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( memberType ).GetMethod( "UnpackTo", new[] { typeof( Unpacker ), memberType } ) );
 			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
 			il.MarkLabel( endIf );
 		}

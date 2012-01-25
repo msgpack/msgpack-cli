@@ -30,13 +30,21 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<KeyValuePair<TKey, TValue>> _underlying;
 
 		public System_Collections_Generic_KeyValuePair_2MessagePackSerializer( SerializationContext context )
+#if !WINDOWS_PHONE
+			: this( context, EmitterFlavor.FieldBased )
+#else
+			: this( context, EmitterFlavor.ContextBased )
+#endif
+		{ }
+
+		public System_Collections_Generic_KeyValuePair_2MessagePackSerializer( SerializationContext context, EmitterFlavor emitterFlavor )
 		{
 			if ( context == null )
 			{
 				throw new ArgumentNullException( "context" );
 			}
 
-			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( KeyValuePair<TKey, TValue> ) );
+			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( KeyValuePair<TKey, TValue> ), emitterFlavor );
 			CreatePacker( emitter );
 			CreateUnpacker( emitter );
 			this._underlying = emitter.CreateInstance<KeyValuePair<TKey, TValue>>( context );

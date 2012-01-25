@@ -28,7 +28,30 @@ namespace MsgPack.Serialization
 	public class CompositeTest
 	{
 		[Test]
-		public void Test()
+		public void TestArrayFieldBased()
+		{
+			TestCore( EmitterFlavor.FieldBased, c => new ArrayEmittingSerializerBuilder<DirectoryItem>( c ) );
+		}
+
+		[Test]
+		public void TestMapFieldBased()
+		{
+			TestCore( EmitterFlavor.FieldBased, c => new MapEmittingSerializerBuilder<DirectoryItem>( c ) );
+		}
+
+		[Test]
+		public void TestArrayContextBased()
+		{
+			TestCore( EmitterFlavor.ContextBased, c => new ArrayEmittingSerializerBuilder<DirectoryItem>( c ) );
+		}
+
+		[Test]
+		public void TestMapContextBased()
+		{
+			TestCore( EmitterFlavor.ContextBased, c => new MapEmittingSerializerBuilder<DirectoryItem>( c ) );
+		}
+
+		private static void TestCore( EmitterFlavor emittingFlavor, Func<SerializationContext, SerializerBuilder<DirectoryItem>> builderProvider )
 		{
 			var root = new DirectoryItem() { Name = "/" };
 			root.Directories =
@@ -44,7 +67,7 @@ namespace MsgPack.Serialization
 				};
 			root.Files = new FileItem[ 0 ];
 
-			var serializer = new AutoMessagePackSerializer<DirectoryItem>( new SerializationContext() );
+			var serializer = new AutoMessagePackSerializer<DirectoryItem>( new SerializationContext() { EmitterFlavor = emittingFlavor }, builderProvider );
 			using ( var memoryStream = new MemoryStream() )
 			{
 				serializer.Pack( memoryStream, root );

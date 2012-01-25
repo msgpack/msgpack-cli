@@ -44,6 +44,30 @@ namespace MsgPack.Serialization
 			get { return this._serializers; }
 		}
 
+		private EmitterFlavor _emitterFlavor = EmitterFlavor.FieldBased;
+
+		internal EmitterFlavor EmitterFlavor
+		{
+			get { return this._emitterFlavor; }
+			set { this._emitterFlavor = value; }
+		}
+
+		private SerializationMethod _serializationMethod;
+
+		public SerializationMethod SerializationMethod
+		{
+			get { return this._serializationMethod; }
+			set { this._serializationMethod = value; }
+		}
+
+		private SerializationMethodGeneratorOption _generatorOption;
+
+		public SerializationMethodGeneratorOption GeneratorOption
+		{
+			get { return this._generatorOption; }
+			set { this._generatorOption = value; }
+		}
+		
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.Default"/>.
 		/// </summary>

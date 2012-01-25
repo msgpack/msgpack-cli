@@ -45,9 +45,6 @@ namespace MsgPack.Serialization
 	/// <seealso cref="Unpacking"/>
 	public abstract class MessagePackSerializer<T> : IMessagePackSerializer
 	{
-		// TODO: Metadata
-		internal static MethodInfo UnpackToCoreMethod = FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
-
 		/// <summary>
 		///		Serialize specified object to the <see cref="Stream"/>.
 		/// </summary>

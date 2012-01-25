@@ -21,6 +21,7 @@
 using System;
 using System.Globalization;
 using System.Reflection;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -46,19 +47,29 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private readonly MessagePackSerializer<T> _underlying;
 
-		public NullableMessagePackSerializer( SerializationContext context )
-		{
-			if ( _nullableTImplicitOperator == null )
-			{
-				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not nullable type.", typeof( T ) ) );
-			}
+		public NullableMessagePackSerializer( SerializationContext context ) 
+#if !WINDOWS_PHONE
+			: this( context, EmitterFlavor.FieldBased )
+#else
+			: this( context, EmitterFlavor.ContextBased )
+#endif
+		{}
 
+		internal NullableMessagePackSerializer( SerializationContext context, EmitterFlavor emitterFlavor )
+		{
 			if ( context == null )
 			{
 				throw new ArgumentNullException( "context" );
 			}
 
-			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( T ) );
+			Contract.EndContractBlock();
+
+			if ( _nullableTImplicitOperator == null )
+			{
+				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not nullable type.", typeof( T ) ) );
+			}
+
+			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( T ), emitterFlavor );
 			CreatePacking( emitter );
 			CreateUnpacking( emitter );
 			this._underlying = emitter.CreateInstance<T>( context );

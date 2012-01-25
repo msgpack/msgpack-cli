@@ -36,7 +36,7 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Initializes a new instance of the <see cref="AutoMessagePackSerializer&lt;T&gt;"/> class.
 		/// </summary>
-		public AutoMessagePackSerializer( SerializationContext context )
+		public AutoMessagePackSerializer( SerializationContext context, Func<SerializationContext, SerializerBuilder<T>> builderProvider )
 		{
 			Contract.Assert( context != null );
 
@@ -52,12 +52,12 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					serializer = new EmittingSerializerBuilder<T>( context ).CreateArraySerializer();
+					serializer = builderProvider( context ).CreateArraySerializer();
 					break;
 				}
 				case CollectionKind.Map:
 				{
-					serializer = new EmittingSerializerBuilder<T>( context ).CreateMapSerializer();
+					serializer = builderProvider( context ).CreateMapSerializer();
 					break;
 				}
 				case CollectionKind.NotCollection:
@@ -65,11 +65,11 @@ namespace MsgPack.Serialization
 					if ( ( typeof( T ).Assembly == typeof( object ).Assembly || typeof( T ).Assembly == typeof( Enumerable ).Assembly )
 						&& typeof( T ).IsPublic && typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
 					{
-						serializer = new EmittingSerializerBuilder<T>( context ).CreateTupleSerializer();
+						serializer = builderProvider( context ).CreateTupleSerializer();
 					}
 					else
 					{
-						serializer = new EmittingSerializerBuilder<T>( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
+						serializer = builderProvider( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
 					}
 					break;
 				}

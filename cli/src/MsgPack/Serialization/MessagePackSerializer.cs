@@ -23,6 +23,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
@@ -63,8 +64,19 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-			// TODO: Configurable
-			return new AutoMessagePackSerializer<T>( context );
+			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+
+			Func<SerializationContext, SerializerBuilder<T>> builderProvider;
+			if ( context.SerializationMethod == SerializationMethod.Map )
+			{
+				builderProvider = c => new MapEmittingSerializerBuilder<T>( c );
+			}
+			else
+			{
+				builderProvider = c => new ArrayEmittingSerializerBuilder<T>( c );
+			}
+
+			return new AutoMessagePackSerializer<T>( context, builderProvider );
 		}
 
 #if !SILVERLIGHT

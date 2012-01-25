@@ -31,7 +31,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestCreateSerializer_NonMemberType()
 		{
-			var target = new EmittingSerializerBuilder<EmptyType>( new SerializationContext() );
+			var target = new MapEmittingSerializerBuilder<EmptyType>( new SerializationContext() );
 			target.CreateSerializer( SerializationMemberOption.OptOut );
 		}
 
@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestCreateSerializer_InvalidSerializationMemberOption()
 		{
-			var target = new EmittingSerializerBuilder<string>( new SerializationContext() );
+			var target = new MapEmittingSerializerBuilder<string>( new SerializationContext() );
 			target.CreateSerializer( ( SerializationMemberOption )( -1 ) );
 		}
 

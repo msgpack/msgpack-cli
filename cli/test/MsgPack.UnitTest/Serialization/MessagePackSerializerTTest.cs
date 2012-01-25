@@ -28,11 +28,16 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class MessagePackSerializerTTest
 	{
+		private static MessagePackSerializer<T> CreateTarget<T>()
+		{
+			return new AutoMessagePackSerializer<T>( new SerializationContext(), c => new MapEmittingSerializerBuilder<T>( c ) );
+		}
+
 		[Test]
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestPack_StreamIsNull()
 		{
-			var target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			var target = CreateTarget<int>();
 			target.Pack( null, 0 );
 		}
 
@@ -41,7 +46,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestPackTo_PackerIsNull()
 		{
-			var target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			var target = CreateTarget<int>();
 			target.PackTo( null, 0 );
 		}
 
@@ -50,14 +55,14 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIMessagePackSerializerPackTo_PackerIsNull()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int>();
 			target.PackTo( null, 0 );
 		}
 
 		[Test]
 		public void TestIMessagePackSerializerPackTo_Valid_Success()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
@@ -70,7 +75,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestIMessagePackSerializerPackTo_ObjectTreeIsNull_ValueType_AsNil()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
@@ -81,7 +86,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIMessagePackSerializerPackTo_ObjectTreeIsNull_NullableValueType_AsNil()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int?>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
@@ -93,7 +98,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIMessagePackSerializerPackTo_ObjectTreeIsNull_ReferenceType_AsNil()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<string>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<string>();
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
@@ -106,7 +111,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestIMessagePackSerializerPackTo_ObjectTreeIsOtherType()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<string>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<string>();
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
@@ -119,7 +124,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpack_StreamIsNull()
 		{
-			var target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			var target = CreateTarget<int>();
 			target.Unpack( null );
 		}
 
@@ -128,7 +133,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackFrom_UnpackerIsNull()
 		{
-			var target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			var target = CreateTarget<int>();
 			target.UnpackFrom( null );
 		}
 
@@ -136,7 +141,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestUnpackFrom_StreamIsEmpty()
 		{
-			var target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			var target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -148,7 +153,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestUnpackFrom_StreamIsNullButTypeIsValueType()
 		{
-			var target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			var target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -161,14 +166,14 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIMessagePackSerializerUnpackFrom_UnpackerIsNull()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int>();
 			target.UnpackFrom( null );
 		}
 
 		[Test]
 		public void TestIMessagePackSerializerUnpackFrom_Valid_Success()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -182,7 +187,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestIMessagePackSerializerUnpackFrom_Invalid()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -196,7 +201,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackTo_UnpackerIsNull()
 		{
-			var target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			var target = CreateTarget<int[]>();
 			target.UnpackTo( null, new int[ 1 ] );
 		}
 
@@ -204,7 +209,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackTo_CollectionIsNull()
 		{
-			var target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			var target = CreateTarget<int[]>();
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -217,7 +222,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestUnpackTo_IsNotCollectionType()
 		{
-			var target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			var target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -230,7 +235,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestUnpackTo_StreamContentIsEmpty()
 		{
-			var target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			var target = CreateTarget<int[]>();
 			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -243,7 +248,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestUnpackTo_StreamContainsNull()
 		{
-			var target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			var target = CreateTarget<int[]>();
 			using ( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -258,7 +263,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIMessagePackSerializerUnpackTo_UnpackerIsNull()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int[]>();
 			target.UnpackTo( null, new int[ 1 ] );
 		}
 
@@ -266,7 +271,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIMessagePackSerializerUnpackTo_CollectionIsNull()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int[]>();
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -278,7 +283,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIMessagePackSerializerUnpackTo_Valid_Success()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int[]>();
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -294,7 +299,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestIMessagePackSerializerUnpackTo_CollectionTypeIsInvalid()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int[]>();
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -307,7 +312,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestIMessagePackSerializerUnpackTo_StreamContentIsInvalid()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int[]>();
 			using ( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -321,7 +326,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestIMessagePackSerializerUnpackTo_StreamContentIsEmpty()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int[]>();
 			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
@@ -334,7 +339,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIMessagePackSerializerUnpackTo_StreamContainsNull()
 		{
-			IMessagePackSerializer target = new AutoMessagePackSerializer<int[]>( new SerializationContext() );
+			IMessagePackSerializer target = CreateTarget<int[]>();
 			using ( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
