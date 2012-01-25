@@ -147,6 +147,9 @@
     <Compile Include="..\msgpack\serialization\defaultserializers\System_VersionMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializerBuilderLogics.cs">
+      <Link>Serialization\EmittingSerializerBuilderLogics.cs</Link>
+    </Compile>
     <Compile Include="..\msgpack\serialization\EmittingSerializerBuilder`1.cs">
       <Link>Serialization\EmittingSerializerBuilder`1.cs</Link>
     </Compile>
@@ -170,6 +173,9 @@
     </Compile>
     <Compile Include="..\msgpack\serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MapEmittingSerializerBuilder`1.cs">
+      <Link>Serialization\MapEmittingSerializerBuilder`1.cs</Link>
     </Compile>
     <Compile Include="..\msgpack\serialization\MessagePackSerializer.cs">
       <Link>Serialization\MessagePackSerializer.cs</Link>
@@ -207,6 +213,9 @@
     <Compile Include="..\msgpack\serialization\metadata\_Unpacker.cs">
       <Link>Serialization\Metadata\_Unpacker.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_UnpackHelpers.cs">
+      <Link>Serialization\Metadata\_UnpackHelpers.cs</Link>
+    </Compile>
     <Compile Include="..\msgpack\serialization\nliblet.reflection\GenericTypeExtensions.cs">
       <Link>Serialization\NLiblet.Reflection\GenericTypeExtensions.cs</Link>
     </Compile>
@@ -237,8 +246,8 @@
     <Compile Include="..\msgpack\serialization\SerializationMethodGeneratorManager.cs">
       <Link>Serialization\SerializationMethodGeneratorManager.cs</Link>
     </Compile>
-    <Compile Include="..\msgpack\serialization\SerializationMethodGeneratorOptions.cs">
-      <Link>Serialization\SerializationMethodGeneratorOptions.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\SerializationMethodGeneratorOption.cs">
+      <Link>Serialization\SerializationMethodGeneratorOption.cs</Link>
     </Compile>
     <Compile Include="..\msgpack\serialization\SerializerBuilder`1.cs">
       <Link>Serialization\SerializerBuilder`1.cs</Link>
@@ -260,6 +269,9 @@
     </Compile>
     <Compile Include="..\msgpack\serialization\TypeKeyRepository.cs">
       <Link>Serialization\TypeKeyRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\UnpackHelpers.cs">
+      <Link>Serialization\UnpackHelpers.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\TupleItems.cs">
       <Link>TupleItems.cs</Link>
