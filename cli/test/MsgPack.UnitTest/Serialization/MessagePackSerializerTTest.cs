@@ -86,7 +86,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIMessagePackSerializerPackTo_ObjectTreeIsNull_NullableValueType_AsNil()
 		{
-			IMessagePackSerializer target = CreateTarget<int>();
+			IMessagePackSerializer target = CreateTarget<int?>();
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
