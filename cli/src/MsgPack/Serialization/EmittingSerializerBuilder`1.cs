@@ -94,26 +94,170 @@ namespace MsgPack.Serialization
 
 		private void EmitUnpackMembers( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
 		{
-			var locals =
+			/*
+			 *	if( unpacker.IsArrayHeader )
+			 *	{
+			 *		...
+			 *	}
+			 *	else
+			 *	{
+			 *		...
+			 *	}
+			 */
+			unpackerIL.EmitAnyLdarg( 1 );
+			unpackerIL.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
+			var @else = unpackerIL.DefineLabel( "ELSE" );
+			var endif = unpackerIL.DefineLabel( "END_IF" );
+			unpackerIL.EmitBrfalse( @else );
+			EmitUnpackMembersFromArray( emitter, unpackerIL, entries, result );
+			unpackerIL.EmitBr( endif );
+			unpackerIL.MarkLabel( @else );
+			EmitUnpackMembersFromMap( emitter, unpackerIL, entries, result );
+			unpackerIL.MarkLabel( endif );
+		}
+
+		private static void EmitUnpackMembersFromArray( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
+		{
+			/*
+			 *	if( !unpacker.Read() )
+			 *	{
+			 *		throw SerializationExceptions.NewUnexpectedEndOfStreamMethod();
+			 *	}
+			 * 
+			 *	local1 = this._serializer1.Unpack
+			 */
+			var items =
+				entries.Select(
+					item =>
+						!EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
+						? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
+						: null
+				).Zip( entries, ( Local, Entry ) => new { Entry, Local } )
+				.ToArray();
+
+			for ( int i = 0; i < items.Length; i++ )
+			{
+				unpackerIL.EmitAnyLdarg( 1 );
+				unpackerIL.EmitAnyCall( Metadata._Unpacker.Read );
+				var endIf = unpackerIL.DefineLabel( "END_IF" );
+				unpackerIL.EmitBrtrue_S( endIf );
+				unpackerIL.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
+				unpackerIL.EmitThrow();
+				unpackerIL.MarkLabel( endIf );
+				if ( items[ i ].Local == null )
+				{
+					Emittion.EmitDeserializeCollectionValue( emitter, unpackerIL, 1, result, items[ i ].Entry.Member, items[ i ].Entry.Member.GetMemberValueType() );
+				}
+				else
+				{
+					Emittion.EmitDeserializeValue( emitter, unpackerIL, 1, items[ i ].Local, null );
+				}
+			}
+
+			foreach ( var item in items )
+			{
+				if ( item.Local == null )
+				{
+					continue;
+				}
+
+				if ( result.LocalType.IsValueType )
+				{
+					unpackerIL.EmitAnyLdloca( result );
+				}
+				else
+				{
+					unpackerIL.EmitAnyLdloc( result );
+				}
+
+				unpackerIL.EmitAnyLdloc( item.Local );
+				Emittion.EmitStoreValue( unpackerIL, item.Entry.Member );
+			}
+		}
+
+		private static void EmitUnpackMembersFromMap( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
+		{
+			var items =
 				entries.Select(
 					item =>
 					!EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
 					? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
 					: null
-				).ToArray();
+				).Zip( entries, ( Local, Entry ) => new { Entry, Local } ).ToArray();
 
-			Emittion.EmitUnpackMembers(
-				emitter,
-				unpackerIL,
-				1,
-				result,
-				entries.Zip(
-					locals,
-					( entry, local ) => new Tuple<MemberInfo, string, LocalBuilder, LocalBuilder>( entry.Member, entry.Contract.Name, local, default( LocalBuilder ) )
-				).ToArray()
-			);
+			/*
+			 *	// Assume subtree unpacker
+			 *	while( unpacker.Read() )
+			 *	{
+			 *		var memberName = unpacker.Data.AsString();
+			 *		if( memberName == "A" )
+			 *		{
+			 *			if( !unpacker.Read() )
+			 *			{
+			 *				throw SerializationExceptions.NewUnexpectedStreamEndsException();
+			 *			}
+			 *			
+			 *			isAFound = true;
+			 *		}
+			 *		:
+			 *	}
+			 */
 
-			foreach ( var item in entries.Zip( locals, ( Entry, Local ) => new { Entry, Local } ) )
+			var whileCond = unpackerIL.DefineLabel( "WHILE_COND" );
+			var endWhile = unpackerIL.DefineLabel( "END_WHILE" );
+			unpackerIL.MarkLabel( whileCond );
+			unpackerIL.EmitAnyLdarg( 1 );
+			unpackerIL.EmitAnyCall( Metadata._Unpacker.Read );
+			unpackerIL.EmitBrfalse( endWhile );
+
+			var data = unpackerIL.DeclareLocal( typeof( MessagePackObject? ), "data" );
+			var dataValue = unpackerIL.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+			var memberName = unpackerIL.DeclareLocal( typeof( string ), "memberName" );
+			unpackerIL.EmitAnyLdarg( 1 );
+			unpackerIL.EmitGetProperty( Metadata._Unpacker.Data );
+			unpackerIL.EmitAnyStloc( data );
+			unpackerIL.EmitAnyLdloca( data );
+			unpackerIL.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
+			unpackerIL.EmitAnyStloc( dataValue );
+			unpackerIL.EmitAnyLdloca( dataValue );
+			unpackerIL.EmitAnyCall( Metadata._MessagePackObject.AsString );
+			unpackerIL.EmitAnyStloc( memberName );
+			for ( int i = 0; i < items.Length; i++ )
+			{
+				// TODO: binary comparison
+				unpackerIL.EmitAnyLdloc( memberName );
+				unpackerIL.EmitLdstr( items[ i ].Entry.Member.Name );
+				unpackerIL.EmitAnyCall( Metadata._String.op_Inequality );
+				var endIf0 = unpackerIL.DefineLabel( "END_IF_0_" + i );
+				unpackerIL.EmitBrtrue_S( endIf0 );
+				unpackerIL.EmitAnyLdarg( 1 );
+				unpackerIL.EmitAnyCall( Metadata._Unpacker.Read );
+				var endIf1 = unpackerIL.DefineLabel( "END_IF_1_" + i );
+				unpackerIL.EmitBrtrue_S( endIf1 );
+				unpackerIL.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
+				unpackerIL.EmitThrow();
+				unpackerIL.MarkLabel( endIf1 );
+
+				if ( items[ i ].Local == null )
+				{
+					Emittion.EmitDeserializeCollectionValue( emitter, unpackerIL, 1, result, items[ i ].Entry.Member, items[ i ].Entry.Member.GetMemberValueType() );
+				}
+				else
+				{
+					Emittion.EmitDeserializeValue( emitter, unpackerIL, 1, items[ i ].Local, null );
+				}
+
+				// TOOD: Record for missing check
+
+				unpackerIL.EmitBr( whileCond );
+				unpackerIL.MarkLabel( endIf0 );
+			}
+
+			unpackerIL.MarkLabel( endWhile );
+			
+			// TOOD: Check missing
+
+			foreach ( var item in items )
 			{
 				if ( item.Local == null )
 				{

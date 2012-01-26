@@ -48,20 +48,34 @@ namespace MsgPack.Serialization
 
 		public object NonSerialized { get; set; }
 
+		// FIXME: MsgPackMemberAttribute test
+		// FIXME: with Number test
 		public void Verify( Stream stream )
 		{
 			stream.Position = 0;
 			var data = Unpacking.UnpackObject( stream );
 			NUnit.Framework.Assert.That( data, Is.Not.Null );
-			var map = data.AsDictionary();
-			NUnit.Framework.Assert.That( map.ContainsKey( "Source" ) );
-			NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
-			NUnit.Framework.Assert.That( map.ContainsKey( "TimeStamp" ) );
-			NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
-			NUnit.Framework.Assert.That( map.ContainsKey( "Data" ) );
-			NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
-			NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
-			NUnit.Framework.Assert.That( map[ "History" ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
+			if ( data.IsDictionary )
+			{
+				var map = data.AsDictionary();
+				NUnit.Framework.Assert.That( map.ContainsKey( "Source" ) );
+				NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
+				NUnit.Framework.Assert.That( map.ContainsKey( "TimeStamp" ) );
+				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( map.ContainsKey( "Data" ) );
+				NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
+				NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
+				NUnit.Framework.Assert.That( map[ "History" ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
+			}
+			else
+			{
+				// FIXME: Alphabetical order
+				var array = data.AsList();
+				NUnit.Framework.Assert.That( array[ 0 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
+				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 1 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( array[ 2 ].AsBinary(), Is.EqualTo( this.Data ) );
+				NUnit.Framework.Assert.That( array[ 3 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
+			}
 		}
 	}
 }
