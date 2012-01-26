@@ -55,14 +55,31 @@ namespace MsgPack.Serialization.DefaultSerializers
 			var il = emitter.GetPackToMethodILGenerator();
 			try
 			{
-				Emittion.EmitPackMambers(
+				il.EmitAnyLdarg( 1 );
+				il.EmitAnyLdc_I4( 2 );
+				il.EmitAnyCall( Metadata._Packer.PackArrayHeader );
+				il.EmitPop();
+				Emittion.EmitSerializeValue(
 					emitter,
 					il,
 					1,
-					typeof( KeyValuePair<TKey, TValue> ),
-					2,
-					new Tuple<MemberInfo, Type>( Metadata._KeyValuePair<TKey, TValue>.Key, typeof( TKey ) ),
-					new Tuple<MemberInfo, Type>( Metadata._KeyValuePair<TKey, TValue>.Value, typeof( TValue ) )
+					typeof( TKey ),
+					il0 =>
+					{
+						il0.EmitAnyLdarga( 2 );
+						il0.EmitGetProperty( Metadata._KeyValuePair<TKey, TValue>.Key );
+					}
+				);
+				Emittion.EmitSerializeValue(
+					emitter,
+					il,
+					1,
+					typeof( TValue ),
+					il0 =>
+					{
+						il0.EmitAnyLdarga( 2 );
+						il0.EmitGetProperty( Metadata._KeyValuePair<TKey, TValue>.Value );
+					}
 				);
 				il.EmitRet();
 			}
@@ -79,17 +96,22 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				var key = il.DeclareLocal( typeof( TKey ), "key" );
 				var value = il.DeclareLocal( typeof( TValue ), "value" );
-				var isKeyFound = il.DeclareLocal( typeof( bool ), "isKeyFound" );
-				var isValueFound = il.DeclareLocal( typeof( bool ), "isValueFound" );
-				// while
-				Emittion.EmitUnpackMembers(
-					emitter,
-					il,
-					1,
-					null,
-					new Tuple<MemberInfo, string, LocalBuilder, LocalBuilder>( Metadata._KeyValuePair<TKey, TValue>.Key, "Key", key, isKeyFound ),
-					new Tuple<MemberInfo, string, LocalBuilder, LocalBuilder>( Metadata._KeyValuePair<TKey, TValue>.Value, "Value", value, isValueFound )
-				);
+				il.EmitAnyLdarg( 1 );
+				il.EmitAnyCall( Metadata._Unpacker.Read );
+				var endIf0 = il.DefineLabel( "END_IF" );
+				il.EmitBrtrue_S( endIf0 );
+				il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
+				il.EmitThrow();
+				il.MarkLabel( endIf0 );
+				Emittion.EmitDeserializeValue( emitter, il, 1, key, null );
+				il.EmitAnyLdarg( 1 );
+				il.EmitAnyCall( Metadata._Unpacker.Read );
+				var endIf1 = il.DefineLabel( "END_IF" );
+				il.EmitBrtrue_S( endIf1 );
+				il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
+				il.EmitThrow();
+				il.MarkLabel( endIf1 );
+				Emittion.EmitDeserializeValue( emitter, il, 1, value, null );
 
 				var result = il.DeclareLocal( typeof( KeyValuePair<TKey, TValue> ), "result" );
 				il.EmitAnyLdloca( result );

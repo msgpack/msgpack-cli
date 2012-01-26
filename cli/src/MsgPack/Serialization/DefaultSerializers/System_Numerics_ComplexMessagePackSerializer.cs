@@ -30,63 +30,26 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, Complex objectTree )
 		{
-			packer.PackMapHeader( 2 );
-			packer.PackString( "Real" );
+			packer.PackArrayHeader( 2 );
 			packer.Pack( objectTree.Real );
-			packer.PackString( "Imaginary" );
 			packer.Pack( objectTree.Imaginary );
 		}
 
 		protected internal sealed override Complex UnpackFromCore( Unpacker unpacker )
 		{
-			double real = 0;
-			double imaginary = 0;
-			bool isRealFound = false;
-			bool isImaginaryFound = false;
-
-			while ( unpacker.Read() )
+			if ( !unpacker.Read() )
 			{
-				if ( !unpacker.Data.HasValue )
-				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
-
-				switch ( unpacker.Data.Value.AsString() )
-				{
-					case "Real":
-					{
-						if ( !unpacker.Read() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
-
-						isRealFound = true;
-						real = unpacker.Data.Value.AsDouble();
-						break;
-					}
-					case "Imaginary":
-					{
-						if ( !unpacker.Read() )
-						{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
-						}
-
-						isImaginaryFound = true;
-						imaginary = unpacker.Data.Value.AsDouble();
-						break;
-					}
-				}
+				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
-			if ( !isRealFound )
+			var real = unpacker.Data.Value.AsDouble();
+
+			if ( !unpacker.Read() )
 			{
-				throw SerializationExceptions.NewMissingProperty( "Real" );
+				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
-			if ( !isImaginaryFound )
-			{
-				throw SerializationExceptions.NewMissingProperty( "Imaginary" );
-			}
+			var imaginary = unpacker.Data.Value.AsDouble();
 
 			return new Complex( real, imaginary );
 		}
