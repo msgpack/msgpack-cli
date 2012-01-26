@@ -100,7 +100,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.EmitBr_S( endMethod );
 
 				il.MarkLabel( endIf );
-				Emittion.EmitMarshalValue(
+				Emittion.EmitSerializeValue(
 					emitter,
 					il,
 					1,
@@ -155,7 +155,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.EmitBr_S( endMethod );
 
 				il.MarkLabel( endIf );
-				Emittion.EmitUnmarshalValue( emitter, il, 1, value, null );
+				Emittion.EmitDeserializeValue( emitter, il, 1, value, null );
 				il.EmitAnyLdloc( value );
 				il.EmitAnyCall( _nullableTImplicitOperator );
 				il.EmitAnyStloc( result );

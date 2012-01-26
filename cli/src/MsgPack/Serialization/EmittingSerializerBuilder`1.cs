@@ -34,7 +34,7 @@ namespace MsgPack.Serialization
 
 	internal enum EmitterFlavor
 	{
-		ContextBased ,
+		ContextBased,
 		FieldBased,
 	}
 

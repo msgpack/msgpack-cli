@@ -42,14 +42,38 @@ namespace MsgPack.Serialization
 
 		protected sealed override void EmitPackMembers( SerializerEmitter emitter, TracingILGenerator packerIL, SerializingMember[] entries )
 		{
-			Emittion.EmitPackMambers(
-				emitter,
-				packerIL,
-				1,
-				typeof( TObject ),
-				2,
-				entries.Select( item => Tuple.Create( item.Member, item.Member.GetMemberValueType() ) ).ToArray()
-			);
+			packerIL.EmitAnyLdarg( 1 );
+			packerIL.EmitAnyLdc_I4( entries.Length );
+			packerIL.EmitAnyCall( Metadata._Packer.PackMapHeader );
+			packerIL.EmitPop();
+
+			foreach ( var entry in entries )
+			{
+				packerIL.EmitAnyLdarg( 1 );
+				packerIL.EmitLdstr( entry.Member.Name );
+				packerIL.EmitAnyCall( Metadata._Packer.PackString );
+				packerIL.EmitPop();
+				Emittion.EmitSerializeValue(
+					emitter,
+					packerIL,
+					1,
+					entry.Member.GetMemberValueType(),
+					il0 =>
+					{
+						if ( typeof( TObject ).IsValueType )
+						{
+							il0.EmitAnyLdarga( 2 );
+						}
+						else
+						{
+							il0.EmitAnyLdarg( 2 );
+						}
+
+						Emittion.EmitLoadValue( il0, entry.Member );
+					}
+				);
+			}
+
 			packerIL.EmitRet();
 		}
 	}
@@ -62,7 +86,35 @@ namespace MsgPack.Serialization
 
 		protected override void EmitPackMembers( SerializerEmitter emitter, TracingILGenerator packerIL, SerializingMember[] entries )
 		{
-			throw new NotImplementedException();
+			packerIL.EmitAnyLdarg( 1 );
+			packerIL.EmitAnyLdc_I4( entries.Length );
+			packerIL.EmitAnyCall( Metadata._Packer.PackArrayHeader );
+			packerIL.EmitPop();
+
+			foreach ( var member in entries )
+			{
+				Emittion.EmitSerializeValue(
+					emitter,
+					packerIL,
+					1,
+					member.Member.GetMemberValueType(),
+					il =>
+					{
+						if ( typeof( TObject ).IsValueType )
+						{
+							il.EmitAnyLdarga( 2 );
+						}
+						else
+						{
+							il.EmitAnyLdarg( 2 );
+						}
+
+						Emittion.EmitLoadValue( il, member.Member );
+					}
+				);
+			}
+
+			packerIL.EmitRet();
 		}
 	}
 }

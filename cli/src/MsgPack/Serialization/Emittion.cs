@@ -293,7 +293,7 @@ namespace MsgPack.Serialization
 			il.EmitConv_I4();
 		}
 
-		public static void EmitMarshalValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, Action<TracingILGenerator> loadValueEmitter )
+		public static void EmitSerializeValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, Action<TracingILGenerator> loadValueEmitter )
 		{
 			var serializerGetter = emitter.RegisterSerializer( valueType );
 			//  context.MarshalTo( packer, ... ) )
@@ -303,11 +303,11 @@ namespace MsgPack.Serialization
 			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( valueType ).GetMethod( "PackTo" ) );
 		}
 
-		public static void EmitUnmarshalValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Action<TracingILGenerator, int> unpackerReading )
+		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Action<TracingILGenerator, int> customUnpackerReading )
 		{
-			if ( unpackerReading != null )
+			if ( customUnpackerReading != null )
 			{
-				unpackerReading( il, unpackerArgumentIndex );
+				customUnpackerReading( il, unpackerArgumentIndex );
 			}
 
 			/*
@@ -350,7 +350,7 @@ namespace MsgPack.Serialization
 			il.MarkLabel( endIf );
 		}
 
-		public static void EmitUnmarshalCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType )
+		public static void EmitDeserializeCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType )
 		{
 			/*
 			 * if( unpacker.IsArrayHeader || unpacker.IsMapHeader )
@@ -410,51 +410,7 @@ namespace MsgPack.Serialization
 			il.MarkLabel( endIf );
 			il.EndExceptionBlock();
 		}
-
-		/// <summary>
-		///		Emit member unpacking boiler plates.
-		/// </summary>
-		/// <param name="emitter"><see cref="SerializerEmitter"/> to register the filed which holds descendant serializers.</param>
-		/// <param name="il"><see cref="TracingILGenerator"/> to emit instructions.</param>
-		/// <param name="packerArgumentIndex">Packer argyument index. Note that the index of the first argument of instance method is 1, not 0.</param>
-		/// <param name="targetType">Type of packing target.</param>
-		/// <param name="targetArgumentIndex">Packing target argument index. Note that the index of the first argument of instance method is 1, not 0.</param>
-		/// <param name="members">Member informations of the target. The 1st item is metadata of the member, and the 2nd item is type of the member value.</param>
-		public static void EmitPackMambers( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type targetType, int targetArgumentIndex, params Tuple<MemberInfo, Type>[] members )
-		{
-			il.EmitAnyLdarg( packerArgumentIndex );
-			il.EmitAnyLdc_I4( members.Length );
-			il.EmitAnyCall( Metadata._Packer.PackMapHeader );
-			il.EmitPop();
-
-			foreach ( var member in members )
-			{
-				il.EmitAnyLdarg( packerArgumentIndex );
-				il.EmitLdstr( member.Item1.Name );
-				il.EmitAnyCall( Metadata._Packer.PackString );
-				il.EmitPop();
-				Emittion.EmitMarshalValue(
-					emitter,
-					il,
-					packerArgumentIndex,
-					member.Item2,
-					il0 =>
-					{
-						if ( targetType.IsValueType )
-						{
-							il0.EmitAnyLdarga( targetArgumentIndex );
-						}
-						else
-						{
-							il0.EmitAnyLdarg( targetArgumentIndex );
-						}
-
-						Emittion.EmitLoadValue( il0, member.Item1 );
-					}
-				);
-			}
-		}
-
+		
 		public static void EmitConstruction( TracingILGenerator il, LocalBuilder target, Action<TracingILGenerator> initialCountLoadingEmitter )
 		{
 			Contract.Assert( il != null );
@@ -506,106 +462,6 @@ namespace MsgPack.Serialization
 
 			il.EmitNewobj( ctor );
 			il.EmitAnyStloc( target );
-		}
-
-		/// <summary>
-		///		Emit member unpacking boiler plates.
-		/// </summary>
-		/// <param name="emitter"><see cref="SerializerEmitter"/> to register the filed which holds descendant serializers.</param>
-		/// <param name="il"><see cref="TracingILGenerator"/> to emit instructions.</param>
-		/// <param name="target">Local variable which holds deserializing target instance.</param>
-		/// <param name="unpackerArgumentIndex">Index of unpacker argument. Note that the index of the first argument of instance method is 1, not 0.</param>
-		/// <param name="members">Tuple of member information that to be unpacked. The 1st item is metadata of the member, the 2nd the name of the member, the 3rd item is the local to be stored, and the 4th item is optional 'found' marker local.</param>
-		public static void EmitUnpackMembers( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, params Tuple<MemberInfo, string, LocalBuilder, LocalBuilder>[] members )
-		{
-			// TODO: Compare mmember name as Byte[], not string to avoid string decoding (and its allocation).
-			/*
-			 *	// Assume subtree unpacker
-			 *	while( unpacker.Read() )
-			 *	{
-			 *		var memberName = unpacker.Data.AsString();
-			 *		if( memberName == "A" )
-			 *		{
-			 *			if( !unpacker.Read() )
-			 *			{
-			 *				throw SerializationExceptions.NewUnexpectedStreamEndsException();
-			 *			}
-			 *			
-			 *			isAFound = true;
-			 *		}
-			 *		:
-			 *	}
-			 */
-
-			var whileCond = il.DefineLabel( "WHILE_COND" );
-			var endWhile = il.DefineLabel( "END_WHILE" );
-			il.MarkLabel( whileCond );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitAnyCall( Metadata._Unpacker.Read );
-			il.EmitBrfalse( endWhile );
-
-			var data = il.DeclareLocal( typeof( MessagePackObject? ), "data" );
-			var dataValue = il.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
-			var memberName = il.DeclareLocal( typeof( string ), "memberName" );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( Metadata._Unpacker.Data );
-			il.EmitAnyStloc( data );
-			il.EmitAnyLdloca( data );
-			il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-			il.EmitAnyStloc( dataValue );
-			il.EmitAnyLdloca( dataValue );
-			il.EmitAnyCall( Metadata._MessagePackObject.AsString );
-			il.EmitAnyStloc( memberName );
-			for ( int i = 0; i < members.Length; i++ )
-			{
-				// TODO: binary comparison
-				il.EmitAnyLdloc( memberName );
-				il.EmitLdstr( members[ i ].Item2 );
-				il.EmitAnyCall( Metadata._String.op_Inequality );
-				var endIf0 = il.DefineLabel( "END_IF_0_" + i );
-				il.EmitBrtrue_S( endIf0 );
-				il.EmitAnyLdarg( unpackerArgumentIndex );
-				il.EmitAnyCall( Metadata._Unpacker.Read );
-				var endIf1 = il.DefineLabel( "END_IF_1_" + i );
-				il.EmitBrtrue_S( endIf1 );
-				il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
-				il.EmitThrow();
-				il.MarkLabel( endIf1 );
-
-				if ( members[ i ].Item3 == null )
-				{
-					Emittion.EmitUnmarshalCollectionValue( emitter, il, unpackerArgumentIndex, target, members[ i ].Item1, members[ i ].Item1.GetMemberValueType() );
-				}
-				else
-				{
-					Emittion.EmitUnmarshalValue( emitter, il, unpackerArgumentIndex, members[ i ].Item3, null );
-				}
-
-				if ( members[ i ].Item4 != null )
-				{
-					il.EmitLdc_I4_1();
-					il.EmitAnyStloc( members[ i ].Item4 );
-				}
-
-				il.EmitBr( whileCond );
-				il.MarkLabel( endIf0 );
-			}
-
-			il.MarkLabel( endWhile );
-
-			for ( int i = 0; i < members.Length; i++ )
-			{
-				if ( members[ i ].Item4 != null )
-				{
-					var endIf = il.DefineLabel( "END_IF_2_" + i );
-					il.EmitAnyLdloc( members[ i ].Item4 );
-					il.EmitBrtrue_S( endIf );
-					il.EmitLdstr( members[ i ].Item2 );
-					il.EmitAnyCall( SerializationExceptions.NewMissingPropertyMethod );
-					il.EmitThrow();
-					il.MarkLabel( endIf );
-				}
-			}
 		}
 	}
 }

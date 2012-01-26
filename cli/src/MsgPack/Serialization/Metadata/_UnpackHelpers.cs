@@ -19,28 +19,27 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
-using System.Collections;
 
 namespace MsgPack.Serialization.Metadata
 {
 	internal static class _UnpackHelpers
 	{
-		public static readonly MethodInfo UnpackArrayTo_1Method =
+		public static readonly MethodInfo UnpackArrayTo_1 =
 			typeof( UnpackHelpers ).GetMethod( "UnpackArrayTo" );
-		public static readonly MethodInfo UnpackCollectionTo_1_Method =
+		public static readonly MethodInfo UnpackCollectionTo_1 =
 			typeof( UnpackHelpers ).GetMethods().Single( item => item.Name == "UnpackCollectionTo" && item.GetParameters().Length == 4 && item.GetGenericArguments().Length == 1 );
-		public static readonly MethodInfo UnpackCollectionTo_2_Method =
+		public static readonly MethodInfo UnpackCollectionTo_2 =
 			typeof( UnpackHelpers ).GetMethods().Single( item => item.Name == "UnpackCollectionTo" && item.GetParameters().Length == 4 && item.GetGenericArguments().Length == 2 );
-		public static readonly MethodInfo UnpackMapTo_2Method =
+		public static readonly MethodInfo UnpackMapTo_2 =
 			typeof( UnpackHelpers ).GetMethods().Single( item => item.Name == "UnpackMapTo" && item.GetGenericArguments().Length == 2 );
-		public static readonly MethodInfo UnpackNonGenericCollectionToMethod =
+		public static readonly MethodInfo UnpackNonGenericCollectionTo =
 			FromExpression.ToMethod( ( Unpacker unpacker, IList collection, Action<object> addition ) => UnpackHelpers.UnpackCollectionTo( unpacker, collection, addition ) );
-		public static readonly MethodInfo UnpackNonGenericCollectionTo_1_Method =
+		public static readonly MethodInfo UnpackNonGenericCollectionTo_1 =
 			typeof( UnpackHelpers ).GetMethods().Single( item => item.Name == "UnpackCollectionTo" && item.GetParameters().Length == 3 && item.GetGenericArguments().Length == 1 );
-		public static readonly MethodInfo UnpackNonGenericMapToMethod =
+		public static readonly MethodInfo UnpackNonGenericMapTo =
 			FromExpression.ToMethod( ( Unpacker unpacker, IDictionary dictionary ) => UnpackHelpers.UnpackMapTo( unpacker, dictionary ) );
 	}
 }

@@ -80,7 +80,7 @@ namespace MsgPack.Serialization
 						length,
 						( il0, i ) =>
 						{
-							Emittion.EmitMarshalValue(
+							Emittion.EmitSerializeValue(
 								emitter,
 								il0,
 								1,
@@ -122,7 +122,7 @@ namespace MsgPack.Serialization
 						length,
 						( il0, i ) =>
 						{
-							Emittion.EmitMarshalValue(
+							Emittion.EmitSerializeValue(
 								emitter,
 								il0,
 								1,
@@ -165,7 +165,7 @@ namespace MsgPack.Serialization
 						collection,
 						( il0, getCurrentEmitter ) =>
 						{
-							Emittion.EmitMarshalValue(
+							Emittion.EmitSerializeValue(
 								emitter,
 								il0,
 								1,
@@ -266,7 +266,7 @@ namespace MsgPack.Serialization
 				 */
 				serializerGetting( il, 0 );
 				loadCollectionEmitting( il );
-				il.EmitAnyCall( Metadata._UnpackHelpers.UnpackArrayTo_1Method.MakeGenericMethod( traits.ElementType ) );
+				il.EmitAnyCall( Metadata._UnpackHelpers.UnpackArrayTo_1.MakeGenericMethod( traits.ElementType ) );
 			}
 			else if ( targetType.IsGenericType )
 			{
@@ -286,7 +286,7 @@ namespace MsgPack.Serialization
 					 */
 					var itemType = traits.AddMethod.GetParameters()[ 0 ].ParameterType;
 					EmitNewDelegate( il, targetType, traits.AddMethod, loadCollectionEmitting, typeof( Action<> ).MakeGenericType( itemType ) );
-					il.EmitAnyCall( Metadata._UnpackHelpers.UnpackCollectionTo_1_Method.MakeGenericMethod( itemType ) );
+					il.EmitAnyCall( Metadata._UnpackHelpers.UnpackCollectionTo_1.MakeGenericMethod( itemType ) );
 				}
 				else
 				{
@@ -298,7 +298,7 @@ namespace MsgPack.Serialization
 					var itemType = traits.AddMethod.GetParameters()[ 0 ].ParameterType;
 					var discardingType = traits.AddMethod.ReturnType;
 					EmitNewDelegate( il, targetType, traits.AddMethod, loadCollectionEmitting, typeof( Func<,> ).MakeGenericType( itemType, discardingType ) );
-					il.EmitAnyCall( Metadata._UnpackHelpers.UnpackCollectionTo_2_Method.MakeGenericMethod( itemType, discardingType ) );
+					il.EmitAnyCall( Metadata._UnpackHelpers.UnpackCollectionTo_2.MakeGenericMethod( itemType, discardingType ) );
 				}
 			}
 			else
@@ -317,7 +317,7 @@ namespace MsgPack.Serialization
 					 * UnpackHelpers.UnpackCollectionTo( unpacker, collection, addition );
 					 */
 					EmitNewDelegate( il, targetType, traits.AddMethod, loadCollectionEmitting, typeof( Action<object> ) );
-					il.EmitAnyCall( Metadata._UnpackHelpers.UnpackNonGenericCollectionToMethod );
+					il.EmitAnyCall( Metadata._UnpackHelpers.UnpackNonGenericCollectionTo );
 				}
 				else
 				{
@@ -328,7 +328,7 @@ namespace MsgPack.Serialization
 					 */
 					var discardingType = traits.AddMethod.ReturnType;
 					EmitNewDelegate( il, targetType, traits.AddMethod, loadCollectionEmitting, typeof( Func<,> ).MakeGenericType( typeof( object ), discardingType ) );
-					il.EmitAnyCall( Metadata._UnpackHelpers.UnpackNonGenericCollectionTo_1_Method.MakeGenericMethod( discardingType ) );
+					il.EmitAnyCall( Metadata._UnpackHelpers.UnpackNonGenericCollectionTo_1.MakeGenericMethod( discardingType ) );
 				}
 			}
 		}
@@ -421,7 +421,7 @@ namespace MsgPack.Serialization
 							Contract.Assert( traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) );
 							getCurrentEmitter();
 							il0.EmitAnyStloc( item );
-							Emittion.EmitMarshalValue(
+							Emittion.EmitSerializeValue(
 								emiter,
 								il0,
 								1,
@@ -433,7 +433,7 @@ namespace MsgPack.Serialization
 								}
 							);
 
-							Emittion.EmitMarshalValue(
+							Emittion.EmitSerializeValue(
 								emiter,
 								il0,
 								1,
@@ -450,7 +450,7 @@ namespace MsgPack.Serialization
 							Contract.Assert( traits.ElementType == typeof( DictionaryEntry ) );
 							getCurrentEmitter();
 							il0.EmitAnyStloc( item );
-							Emittion.EmitMarshalValue(
+							Emittion.EmitSerializeValue(
 								emiter,
 								il0,
 								1,
@@ -463,7 +463,7 @@ namespace MsgPack.Serialization
 								}
 							);
 
-							Emittion.EmitMarshalValue(
+							Emittion.EmitSerializeValue(
 								emiter,
 								il0,
 								1,
@@ -576,7 +576,7 @@ namespace MsgPack.Serialization
 					il.EmitBox( targetType );
 				}
 
-				il.EmitAnyCall( Metadata._UnpackHelpers.UnpackMapTo_2Method.MakeGenericMethod( keyType, valueType ) );
+				il.EmitAnyCall( Metadata._UnpackHelpers.UnpackMapTo_2.MakeGenericMethod( keyType, valueType ) );
 			}
 			else
 			{
@@ -587,7 +587,7 @@ namespace MsgPack.Serialization
 					il.EmitBox( targetType );
 				}
 
-				il.EmitAnyCall( Metadata._UnpackHelpers.UnpackNonGenericMapToMethod );
+				il.EmitAnyCall( Metadata._UnpackHelpers.UnpackNonGenericMapTo );
 			}
 		}
 
@@ -674,7 +674,7 @@ namespace MsgPack.Serialization
 						depth++;
 					}
 
-					Emittion.EmitMarshalValue(
+					Emittion.EmitSerializeValue(
 						emiter,
 						il,
 						1,
@@ -793,7 +793,7 @@ namespace MsgPack.Serialization
 				for ( ; i < itemTypes.Count; i++ )
 				{
 					itemLocals[ i ] = il.DeclareLocal( itemTypes[ i ], "item" + i );
-					Emittion.EmitUnmarshalValue( emitter, il, 1, itemLocals[ i ], unpackerReading );
+					Emittion.EmitDeserializeValue( emitter, il, 1, itemLocals[ i ], unpackerReading );
 				}
 
 				foreach ( var item in itemLocals )
