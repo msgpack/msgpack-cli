@@ -160,6 +160,7 @@
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\MapEmittingSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\MessagePackMemberAttribute.cs" />
     <Compile Include="Serialization\Metadata\_Enumerable.cs" />
     <Compile Include="Serialization\Metadata\_SerializationContext.cs" />
     <Compile Include="Serialization\Metadata\_String.cs" />
@@ -207,6 +208,7 @@
       <DependentUpon>FromExpression.ToMethod.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\Metadata\_UnpackHelpers.cs" />
+    <Compile Include="Serialization\NilImplication.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\GenericTypeExtensions.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\ReflectionExtensions.cs">
       <SubType>Code</SubType>
@@ -227,7 +229,6 @@
     <Compile Include="Serialization\ReflectionExtensions.cs" />
     <Compile Include="Serialization\SerializationContext.cs" />
     <Compile Include="Serialization\SerializationExceptions.cs" />
-    <Compile Include="Serialization\SerializationMemberOption.cs" />
     <Compile Include="Serialization\SerializerBuilder`1.cs" />
     <Compile Include="Serialization\SerializerRepository.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer.cs" />
