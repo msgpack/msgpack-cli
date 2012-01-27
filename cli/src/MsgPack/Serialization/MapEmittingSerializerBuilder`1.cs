@@ -42,7 +42,7 @@ namespace MsgPack.Serialization
 			foreach ( var entry in entries )
 			{
 				packerIL.EmitAnyLdarg( 1 );
-				packerIL.EmitLdstr( entry.Member.Name );
+				packerIL.EmitLdstr( entry.Contract.Name );
 				packerIL.EmitAnyCall( Metadata._Packer.PackString );
 				packerIL.EmitPop();
 				Emittion.EmitSerializeValue(

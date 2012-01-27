@@ -226,7 +226,7 @@ namespace MsgPack.Serialization
 			{
 				// TODO: binary comparison
 				unpackerIL.EmitAnyLdloc( memberName );
-				unpackerIL.EmitLdstr( items[ i ].Entry.Member.Name );
+				unpackerIL.EmitLdstr( items[ i ].Entry.Contract.Name );
 				unpackerIL.EmitAnyCall( Metadata._String.op_Inequality );
 				var endIf0 = unpackerIL.DefineLabel( "END_IF_0_" + i );
 				unpackerIL.EmitBrtrue_S( endIf0 );
