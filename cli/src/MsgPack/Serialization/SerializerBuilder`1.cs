@@ -47,11 +47,10 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Creates serializer for <typeparamref name="TObject"/>.
 		/// </summary>
-		/// <param name="option">Option to control members binding.</param>
 		/// <returns>
 		///		<see cref="MessagePackSerializer{T}"/>. This value will not be <c>null</c>.
 		/// </returns>
-		public MessagePackSerializer<TObject> CreateSerializer( SerializationMemberOption option )
+		public MessagePackSerializer<TObject> CreateSerializer()
 		{
 			var entries =
 				typeof( TObject ).FindMembers(

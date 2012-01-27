@@ -69,7 +69,7 @@ namespace MsgPack.Serialization
 					}
 					else
 					{
-						serializer = builderProvider( context ).CreateSerializer( Attribute.IsDefined( typeof( T ), typeof( DataContractAttribute ) ) ? SerializationMemberOption.OptIn : SerializationMemberOption.OptOut );
+						serializer = builderProvider( context ).CreateSerializer();
 					}
 					break;
 				}
