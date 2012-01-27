@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 		private static bool _traceOn = false;
 		protected static bool ReuseContext = true;
 
-		protected abstract  SerializationContext GetSerializationContext();
+		protected abstract SerializationContext GetSerializationContext();
 
 		[SetUp]
 		public void SetUp()
@@ -155,9 +155,47 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestComplexTypeWithoutAnyAttribute()
+		{
+			var target = new ComplexTypeWithoutAnyAttribute() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
+			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
+			TestCoreWithVerify( target );
+		}
+
+		[Test]
+		public void TestTypeWithMissingMessagePackMemberAttributeMember()
+		{
+			var target = new TypeWithMissingMessagePackMemberAttributeMember();
+			TestCoreWithVerify( target );
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestTypeWithInvalidMessagePackMemberAttributeMember()
+		{
+			var target = this.CreateTarget<TypeWithInvalidMessagePackMemberAttributeMember>( GetSerializationContext() );
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestTypeWithDuplicatedMessagePackMemberAttributeMember()
+		{
+			var target = this.CreateTarget<TypeWithDuplicatedMessagePackMemberAttributeMember>( GetSerializationContext() );
+		}
+		
+		[Test]
 		public void TestComplexObjectTypeWithDataContract()
 		{
 			var target = new ComplexTypeWithDataContract() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
+			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
+			target.NonSerialized = new DefaultTraceListener();
+			TestCoreWithVerify( target );
+		}
+
+		[Test]
+		public void TestComplexTypeWithDataContractWithOrder()
+		{
+			var target = new ComplexTypeWithDataContractWithOrder() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
 			target.NonSerialized = new DefaultTraceListener();
 			TestCoreWithVerify( target );
@@ -170,6 +208,33 @@ namespace MsgPack.Serialization
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
 			target.NonSerialized = new DefaultTraceListener();
 			TestCoreWithVerify( target );
+		}
+
+		[Test]
+		public void TestDataMemberAttributeNamedProperties()
+		{
+			var context = GetSerializationContext();
+			if ( context.SerializationMethod == SerializationMethod.Array )
+			{
+				// Nothing to test.
+				return;
+			}
+
+			var value = new DataMemberAttributeNamedPropertyTestTarget() { Member = "A Member" };
+			var target = this.CreateTarget<DataMemberAttributeNamedPropertyTestTarget>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, value );
+				buffer.Position = 0;
+				var asDictionary = Unpacking.UnpackDictionary( buffer );
+
+				Assert.That( asDictionary[ "Alias" ] == value.Member );
+
+				buffer.Position = 0;
+
+				var unpacked = target.Unpack( buffer );
+				Assert.That( unpacked.Member, Is.EqualTo( value.Member ) );
+			}
 		}
 
 		[Test]

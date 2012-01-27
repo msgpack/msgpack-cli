@@ -27,12 +27,16 @@ namespace MsgPack.Serialization
 {
 	public class ComplexType : IVerifiable
 	{
+		[MessagePackMember( 0 )]
 		public Uri Source { get; set; }
+		[MessagePackMember( 2 )]
 		public DateTime TimeStamp { get; set; }
+		[MessagePackMember( 1 )]
 		public byte[] Data { get; set; }
 
 		private readonly Dictionary<DateTime, string> _history = new Dictionary<DateTime, string>();
 
+		[MessagePackMember( 3 )]
 		public Dictionary<DateTime, string> History
 		{
 			get { return this._history; }
@@ -58,12 +62,11 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-				// FIXME: Alphabetical order
 				var array = data.AsList();
 				NUnit.Framework.Assert.That( this.Source, Is.Not.Null );
 				NUnit.Framework.Assert.That( array[ 0 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
-				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 1 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
-				NUnit.Framework.Assert.That( array[ 2 ].AsBinary(), Is.EqualTo( this.Data ) );
+				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 2 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( array[ 1 ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( array[ 3 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
 			}
 		}

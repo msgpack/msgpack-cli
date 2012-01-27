@@ -20,8 +20,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.IO;
+using System.Runtime.Serialization;
 using NUnit.Framework;
 
 namespace MsgPack.Serialization
@@ -48,7 +48,6 @@ namespace MsgPack.Serialization
 
 		public object NonSerialized { get; set; }
 
-		// FIXME: MsgPackMemberAttribute test
 		// FIXME: with Number test
 		public void Verify( Stream stream )
 		{
@@ -66,15 +65,17 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
 				NUnit.Framework.Assert.That( map[ "History" ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
+				NUnit.Framework.Assert.That( !map.ContainsKey( "NonSerialized" ) );
 			}
 			else
 			{
-				// FIXME: Alphabetical order
+				// Alphabetical order
 				var array = data.AsList();
-				NUnit.Framework.Assert.That( array[ 0 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
-				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 1 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
-				NUnit.Framework.Assert.That( array[ 2 ].AsBinary(), Is.EqualTo( this.Data ) );
-				NUnit.Framework.Assert.That( array[ 3 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
+				NUnit.Framework.Assert.That( array.Count, Is.EqualTo( 4 ) );
+				NUnit.Framework.Assert.That( array[ 0 ].AsBinary(), Is.EqualTo( this.Data ) );
+				NUnit.Framework.Assert.That( array[ 1 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
+				NUnit.Framework.Assert.That( array[ 2 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
+				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 3 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
 			}
 		}
 	}

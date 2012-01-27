@@ -190,21 +190,30 @@
       <DependentUpon>AutoMessagePackSerializerTest.Types.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\ComplexType.cs" />
+    <Compile Include="Serialization\ComplexTypeWithDataContractWithOrder.cs" />
+    <Compile Include="Serialization\ComplexTypeWithoutAnyAttribute.cs" />
     <Compile Include="Serialization\CompositeTest.cs" />
-    <Compile Include="Serialization\DataMemberContractTest.cs" />
-    <Compile Include="Serialization\EmittingSerializerBuilderTest.cs" />
+    <Compile Include="Serialization\DataContractAndNonSerializedMixedTarget.cs" />
+    <Compile Include="Serialization\DataMemberAttributeNamedPropertyTestTarget.cs" />
     <Compile Include="Serialization\FromExpressionTest.cs" />
     <Compile Include="Serialization\IVerifiable.cs" />
     <Compile Include="Serialization\IVerifiable`1.cs" />
     <Compile Include="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs" />
+    <Compile Include="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
+    <Compile Include="Serialization\MessagePackMemberAttributeTest.cs" />
     <Compile Include="Serialization\MessagePackSerializerTest.cs" />
     <Compile Include="Serialization\MessagePackSerializerTTest.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeComparer.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeOffsetComparer.cs" />
+    <Compile Include="Serialization\NilImplicationTest.cs" />
+    <Compile Include="Serialization\NilImplicationTestTarget.cs" />
     <Compile Include="Serialization\PackerTest.cs" />
     <Compile Include="Serialization\SerializationContextTest.cs" />
     <Compile Include="Serialization\SimpleCollection`1.cs" />
     <Compile Include="Serialization\StringKeyedCollection.cs" />
+    <Compile Include="Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs" />
+    <Compile Include="Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs" />
+    <Compile Include="Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs" />
     <Compile Include="Serialization\_SetUpFixture.cs" />
     <Compile Include="Serialization\ComplexTypeWithNonSerialized.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContract.cs" />

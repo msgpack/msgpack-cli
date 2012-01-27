@@ -43,7 +43,8 @@ namespace MsgPack.Serialization
 			return new AutoMessagePackSerializer<T>( context, c => new MapEmittingSerializerBuilder<T>( c ) );
 		}
 	}
-
+#warning TODO
+	// FIXME: Member ordering, Missing Number, Missing Attributes, No Attributes
 	[TestFixture]
 	public class ArrayFieldBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{

@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -25,7 +25,7 @@ using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {
-	public class ComplexTypeWithNonSerialized : IVerifiable
+	public class ComplexTypeWithoutAnyAttribute : IVerifiable
 	{
 		public Uri Source { get; set; }
 		public DateTime TimeStamp { get; set; }
@@ -38,9 +38,6 @@ namespace MsgPack.Serialization
 			get { return this._history; }
 		}
 
-		[NonSerialized]
-		public object NonSerialized;
-
 		public void Verify( Stream stream )
 		{
 			stream.Position = 0;
@@ -50,6 +47,7 @@ namespace MsgPack.Serialization
 			{
 				var map = data.AsDictionary();
 				NUnit.Framework.Assert.That( map.ContainsKey( "Source" ) );
+				NUnit.Framework.Assert.That( this.Source, Is.Not.Null );
 				NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "TimeStamp" ) );
 				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
@@ -57,14 +55,12 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
 				NUnit.Framework.Assert.That( map[ "History" ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
-				NUnit.Framework.Assert.That( map.ContainsKey( "NonSerialized" ), Is.False );
 			}
 			else
 			{
 				// Alphabetical order
 				var array = data.AsList();
 				NUnit.Framework.Assert.That( this.Source, Is.Not.Null );
-				NUnit.Framework.Assert.That( array.Count, Is.EqualTo( 4 ) );
 				NUnit.Framework.Assert.That( array[ 0 ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( array[ 1 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
 				NUnit.Framework.Assert.That( array[ 2 ].AsString(), Is.EqualTo( this.Source.ToString() ) );

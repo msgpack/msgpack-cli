@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -21,25 +21,30 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {
-	public class ComplexTypeWithNonSerialized : IVerifiable
+	[DataContract]
+	public class ComplexTypeWithDataContractWithOrder : IVerifiable
 	{
+		[DataMember( Order = 0 )]
 		public Uri Source { get; set; }
+		[DataMember( Order = 2 )]
 		public DateTime TimeStamp { get; set; }
+		[DataMember( Order = 1 )]
 		public byte[] Data { get; set; }
 
 		private readonly Dictionary<DateTime, string> _history = new Dictionary<DateTime, string>();
 
+		[DataMember( Order = 3 )]
 		public Dictionary<DateTime, string> History
 		{
 			get { return this._history; }
 		}
 
-		[NonSerialized]
-		public object NonSerialized;
+		public object NonSerialized { get; set; }
 
 		public void Verify( Stream stream )
 		{
@@ -57,18 +62,16 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
 				NUnit.Framework.Assert.That( map[ "History" ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
-				NUnit.Framework.Assert.That( map.ContainsKey( "NonSerialized" ), Is.False );
+				NUnit.Framework.Assert.That( !map.ContainsKey( "NonSerialized" ) );
 			}
 			else
 			{
-				// Alphabetical order
 				var array = data.AsList();
-				NUnit.Framework.Assert.That( this.Source, Is.Not.Null );
 				NUnit.Framework.Assert.That( array.Count, Is.EqualTo( 4 ) );
-				NUnit.Framework.Assert.That( array[ 0 ].AsBinary(), Is.EqualTo( this.Data ) );
-				NUnit.Framework.Assert.That( array[ 1 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
-				NUnit.Framework.Assert.That( array[ 2 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
-				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 3 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( array[ 0 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
+				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 2 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( array[ 1 ].AsBinary(), Is.EqualTo( this.Data ) );
+				NUnit.Framework.Assert.That( array[ 3 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
 			}
 		}
 	}
