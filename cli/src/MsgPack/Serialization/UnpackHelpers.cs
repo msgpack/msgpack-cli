@@ -19,10 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
-using System.Collections.Generic;
-using System.Collections;
 using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization
