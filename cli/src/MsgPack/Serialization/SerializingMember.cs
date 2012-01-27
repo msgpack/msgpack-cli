@@ -32,10 +32,10 @@ namespace MsgPack.Serialization
 		public readonly MemberInfo Member;
 		public readonly DataMemberContract Contract;
 
-		public SerializingMember( MemberInfo member )
+		public SerializingMember( MemberInfo member, DataMemberContract contract )
 		{
 			this.Member = member;
-			this.Contract = new DataMemberContract( member, Attribute.GetCustomAttribute( member, typeof( DataMemberAttribute ) ) as DataMemberAttribute );
+			this.Contract = contract;
 		}
 	}
 }

@@ -20,6 +20,7 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 
@@ -30,11 +31,10 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal struct DataMemberContract
 	{
-		internal const int UnspecifiedOrder = -1;
+		internal const int UnspecifiedId = -1;
 
-		private readonly MemberInfo _member;
-		private readonly DataMemberAttribute _attribute;
-		
+		private readonly string _name;
+
 		/// <summary>
 		///		Gets the name of the member.
 		/// </summary>
@@ -44,58 +44,91 @@ namespace MsgPack.Serialization
 		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
 		public string Name
 		{
-			get { return this._attribute == null ? this._member.Name : ( this._attribute.Name ?? this._member.Name ); }
+			get
+			{
+				Contract.Ensures( !String.IsNullOrEmpty( Contract.Result<string>() ) );
+
+				return this._name;
+			}
 		}
 
+		private readonly int _id;
+
 		/// <summary>
-		///		Gets the order of the member.
+		///		Gets the ID of the member.
 		/// </summary>
 		/// <value>
-		///		The order of the member. Default is <c>-1</c>.
+		///		The ID of the member. Default is <c>-1</c>.
 		/// </value>
-		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
-		public int Order
+		public int Id
 		{
-			get { return this._attribute == null ? UnspecifiedOrder : this._attribute.Order; }
+			get
+			{
+				Contract.Ensures( Contract.Result<int>() >= -1 );
+
+				return this._id;
+			}
 		}
 
-		// TODO: IsRequired
-		/// <summary>
-		///		Gets a value indicating whether this instance is required.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is required; otherwise, <c>false</c>.
-		/// </value>
-		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
-		public bool IsRequired
-		{
-			get { return this._attribute == null ? false : this._attribute.IsRequired; }
-		}
+		private readonly NilImplication _nilImplication;
 
-		// TODO: EmitDefaultValue
 		/// <summary>
-		///		Gets a value indicating whether emits default value or not.
+		///		Gets the nil implication.
 		/// </summary>
 		/// <value>
-		///		<c>true</c> if emits default value; otherwise, <c>false</c>.
+		///		The nil implication.
 		/// </value>
-		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
-		public bool EmitDefaultValue
+		public NilImplication NilImplication
 		{
-			get { return this._attribute == null ? true : this._attribute.EmitDefaultValue; }
+			get { return this._nilImplication; }
 		}
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="DataMemberContract"/> struct.
 		/// </summary>
 		/// <param name="member">The target member.</param>
+		public DataMemberContract( MemberInfo member )
+		{
+			Contract.Requires( member != null );
+
+			this._name = member.Name;
+			this._nilImplication = Serialization.NilImplication.MemberDefault;
+			this._id = UnspecifiedId;
+		}
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="DataMemberContract"/> struct from <see cref="DataMemberAttribute"/>.
+		/// </summary>
+		/// <param name="member">The target member.</param>
 		/// <param name="attribute">The data contract member attribute. This value can be <c>null</c>.</param>
 		public DataMemberContract( MemberInfo member, DataMemberAttribute attribute )
 		{
-			Contract.Assert( member != null );
+			Contract.Requires( member != null );
+			Contract.Requires( attribute != null );
 
-			this._member = member;
-			this._attribute = attribute;
+			this._name = String.IsNullOrEmpty( attribute.Name ) ? member.Name : attribute.Name;
+			this._nilImplication = Serialization.NilImplication.MemberDefault;
+			this._id = attribute.Order;
+		}
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="DataMemberContract"/> struct from <see cref="MessagePackMemberAttribute"/>.
+		/// </summary>
+		/// <param name="member">The target member.</param>
+		/// <param name="attribute">The MessagePack member attribute. This value can be <c>null</c>.</param>
+		public DataMemberContract( MemberInfo member, MessagePackMemberAttribute attribute )
+		{
+			Contract.Requires( member != null );
+			Contract.Requires( attribute != null );
+
+			if ( attribute.Id < 0 )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID cannot be negative. The member is '{0}' in the '{1}' type.", member.Name, member.DeclaringType ) );
+			}
+
+			this._name = member.Name;
+			this._nilImplication = attribute.NilImplication;
+			this._id = attribute.Id;
 		}
 	}
 }

@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -52,21 +54,82 @@ namespace MsgPack.Serialization
 		/// </returns>
 		public MessagePackSerializer<TObject> CreateSerializer()
 		{
-			var entries =
-				typeof( TObject ).FindMembers(
-					MemberTypes.Field | MemberTypes.Property,
-					BindingFlags.Public | BindingFlags.Instance,
-					GetMemberFilter( option ), null
-				).Select( member => new SerializingMember( member ) )
-				.OrderBy( member => member.Contract.Order )
-				.ToArray();
+			var entries = GetTargetMembers().OrderBy( item => item.Contract.Id ).ToArray();
 
 			if ( entries.Length == 0 )
 			{
 				throw SerializationExceptions.NewNoSerializableFieldsException( typeof( TObject ) );
 			}
 
-			return this.CreateSerializer( entries );
+			if ( entries.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )
+			{
+				// Alphabetical order.
+				return this.CreateSerializer( entries.OrderBy( item => item.Contract.Name ).ToArray() );
+			}
+			else
+			{
+				// ID order.
+				var maxId = entries.Max( item => item.Contract.Id );
+				var result = new List<SerializingMember>( maxId + 1 );
+				for ( int source = 0, destination = 0; source < entries.Length; source++, destination++ )
+				{
+					Contract.Assert( entries[ source ].Contract.Id >= 0 );
+
+					if ( entries[ source ].Contract.Id < destination )
+					{
+						throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID '{0}' is duplicated in the '{1}' type.", entries[ source ].Contract.Id, typeof( TObject ) ) );
+					}
+
+					while ( entries[ source ].Contract.Id > destination )
+					{
+						result.Add( new SerializingMember() );
+						destination++;
+					}
+
+					result.Add( entries[ source ] );
+				}
+
+				return this.CreateSerializer( result.ToArray() );
+			}
+		}
+
+		private IEnumerable<SerializingMember> GetTargetMembers()
+		{
+			var members =
+				typeof( TObject ).FindMembers(
+					MemberTypes.Field | MemberTypes.Property,
+					BindingFlags.Public | BindingFlags.Instance,
+					( member, criteria ) => true,
+					null
+				);
+
+			var filtered = members.Where( item => Attribute.IsDefined( item, typeof( MessagePackMemberAttribute ) ) ).ToArray();
+			if ( filtered.Length > 0 )
+			{
+				return
+					filtered.Select( member =>
+						new SerializingMember(
+							member,
+							new DataMemberContract( member, Attribute.GetCustomAttribute( member, typeof( MessagePackMemberAttribute ) ) as MessagePackMemberAttribute )
+						)
+					);
+			}
+
+			if ( Attribute.IsDefined( typeof( TObject ), typeof( DataContractAttribute ) ) )
+			{
+				return
+					members.Where( item => Attribute.IsDefined( item, typeof( DataMemberAttribute ) ) )
+					.Select( member =>
+						new SerializingMember(
+							member,
+							new DataMemberContract( member, Attribute.GetCustomAttribute( member, typeof( DataMemberAttribute ) ) as DataMemberAttribute )
+						)
+					);
+			}
+
+			return
+				members.Where( item => !Attribute.IsDefined( item, typeof( NonSerializedAttribute ) ) )
+				.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 		}
 
 		/// <summary>
@@ -78,38 +141,6 @@ namespace MsgPack.Serialization
 		/// </returns>
 		protected abstract MessagePackSerializer<TObject> CreateSerializer( SerializingMember[] entries );
 
-		private static MemberFilter GetMemberFilter( SerializationMemberOption option )
-		{
-			switch ( option )
-			{
-				case SerializationMemberOption.OptIn:
-				{
-					return FilterOnlyDataMember;
-				}
-				case SerializationMemberOption.OptOut:
-				{
-					return FilterAllButNotNonSerialized;
-				}
-				default:
-				{
-					throw new ArgumentOutOfRangeException( "option" );
-				}
-			}
-		}
-
-		private static bool FilterOnlyDataMember( MemberInfo member, object filterCriteria )
-		{
-			return Attribute.IsDefined( member, typeof( DataMemberAttribute ) );
-		}
-
-		private static bool FilterAllButNotNonSerialized( MemberInfo member, object filterCriteria )
-		{
-#if SILVERLIGHT
-			return true;
-#else
-			return !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) );
-#endif
-		}
 
 		/// <summary>
 		///		Creates serializer as <typeparamref name="TObject"/> is array type.
