@@ -24,44 +24,40 @@ using NLiblet.Reflection;
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		<see cref="EmittingSerializerBuilder{T}"/> implementation which emits as map.
+	///		<see cref="EmittingSerializerBuilder{T}"/> implementation which emits as array (default).
 	/// </summary>
 	/// <typeparam name="TObject">The type of the target object.</typeparam>
-	internal sealed class MapEmittingSerializerBuilder<TObject> : EmittingSerializerBuilder<TObject>
+	internal sealed class ArrayEmittingSerializerBuilder<TObject> : EmittingSerializerBuilder<TObject>
 	{
-		public MapEmittingSerializerBuilder( SerializationContext context )
+		public ArrayEmittingSerializerBuilder( SerializationContext context )
 			: base( context ) { }
 
-		protected sealed override void EmitPackMembers( SerializerEmitter emitter, TracingILGenerator packerIL, SerializingMember[] entries )
+		protected override void EmitPackMembers( SerializerEmitter emitter, TracingILGenerator packerIL, SerializingMember[] entries )
 		{
 			packerIL.EmitAnyLdarg( 1 );
 			packerIL.EmitAnyLdc_I4( entries.Length );
-			packerIL.EmitAnyCall( Metadata._Packer.PackMapHeader );
+			packerIL.EmitAnyCall( Metadata._Packer.PackArrayHeader );
 			packerIL.EmitPop();
 
-			foreach ( var entry in entries )
+			foreach ( var member in entries )
 			{
-				packerIL.EmitAnyLdarg( 1 );
-				packerIL.EmitLdstr( entry.Member.Name );
-				packerIL.EmitAnyCall( Metadata._Packer.PackString );
-				packerIL.EmitPop();
 				Emittion.EmitSerializeValue(
 					emitter,
 					packerIL,
 					1,
-					entry.Member.GetMemberValueType(),
-					il0 =>
+					member.Member.GetMemberValueType(),
+					il =>
 					{
 						if ( typeof( TObject ).IsValueType )
 						{
-							il0.EmitAnyLdarga( 2 );
+							il.EmitAnyLdarga( 2 );
 						}
 						else
 						{
-							il0.EmitAnyLdarg( 2 );
+							il.EmitAnyLdarg( 2 );
 						}
 
-						Emittion.EmitLoadValue( il0, entry.Member );
+						Emittion.EmitLoadValue( il, member.Member );
 					}
 				);
 			}
@@ -69,4 +65,5 @@ namespace MsgPack.Serialization
 			packerIL.EmitRet();
 		}
 	}
+
 }
