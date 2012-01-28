@@ -56,38 +56,44 @@ namespace MsgPack.Serialization
 
 		protected sealed override MessagePackSerializer<TObject> CreateSerializer( SerializingMember[] entries )
 		{
-			var emitter = SerializationMethodGeneratorManager.Get( this._generatorOption ).CreateEmitter( typeof( TObject ), this._emitterFlavor );
-
-			var packerIL = emitter.GetPackToMethodILGenerator();
-			try
+			using ( var emitter = SerializationMethodGeneratorManager.Get( this._generatorOption ).CreateEmitter( typeof( TObject ), this._emitterFlavor ) )
 			{
-				this.EmitPackMembers( emitter, packerIL, entries );
-			}
-			finally
-			{
-				packerIL.FlushTrace();
-			}
+				try
+				{
+					var packerIL = emitter.GetPackToMethodILGenerator();
+					try
+					{
+						this.EmitPackMembers( emitter, packerIL, entries );
+					}
+					finally
+					{
+						packerIL.FlushTrace();
+					}
 
-			var unpackerIL = emitter.GetUnpackFromMethodILGenerator();
-			try
-			{
-				// TODO: Array for ordered.
-				// TODO: For big struct, use Dictionary<String,SM>
-				// TODO: Required
-				var result = unpackerIL.DeclareLocal( typeof( TObject ), "result" );
-				Emittion.EmitConstruction( unpackerIL, result, null );
+					var unpackerIL = emitter.GetUnpackFromMethodILGenerator();
+					try
+					{
+						// TODO: For big struct, use Dictionary<String,SM>
+						var result = unpackerIL.DeclareLocal( typeof( TObject ), "result" );
+						Emittion.EmitConstruction( unpackerIL, result, null );
 
-				this.EmitUnpackMembers( emitter, unpackerIL, entries, result );
+						this.EmitUnpackMembers( emitter, unpackerIL, entries, result );
 
-				unpackerIL.EmitAnyLdloc( result );
-				unpackerIL.EmitRet();
+						unpackerIL.EmitAnyLdloc( result );
+						unpackerIL.EmitRet();
+					}
+					finally
+					{
+						unpackerIL.FlushTrace();
+					}
+
+					return emitter.CreateInstance<TObject>( this.Context );
+				}
+				finally
+				{
+					emitter.FlushTrace();
+				}
 			}
-			finally
-			{
-				unpackerIL.FlushTrace();
-			}
-
-			return emitter.CreateInstance<TObject>( this.Context );
 		}
 
 		protected abstract void EmitPackMembers( SerializerEmitter emitter, TracingILGenerator packerIL, SerializingMember[] entries );
@@ -280,17 +286,47 @@ namespace MsgPack.Serialization
 
 		public sealed override MessagePackSerializer<TObject> CreateArraySerializer()
 		{
-			return EmittingSerializerBuilderLogics.CreateArraySerializerCore( typeof( TObject ), this._emitterFlavor ).CreateInstance<TObject>( this.Context );
+			using ( var emitter = EmittingSerializerBuilderLogics.CreateArraySerializerCore( typeof( TObject ), this._emitterFlavor ) )
+			{
+				try
+				{
+					return emitter.CreateInstance<TObject>( this.Context );
+				}
+				finally
+				{
+					emitter.FlushTrace();
+				}
+			}
 		}
 
 		public sealed override MessagePackSerializer<TObject> CreateMapSerializer()
 		{
-			return EmittingSerializerBuilderLogics.CreateMapSerializerCore( typeof( TObject ), this._emitterFlavor ).CreateInstance<TObject>( this.Context );
+			using ( var emitter = EmittingSerializerBuilderLogics.CreateMapSerializerCore( typeof( TObject ), this._emitterFlavor ) )
+			{
+				try
+				{
+					return emitter.CreateInstance<TObject>( this.Context );
+				}
+				finally
+				{
+					emitter.FlushTrace();
+				}
+			}
 		}
 
 		public sealed override MessagePackSerializer<TObject> CreateTupleSerializer()
 		{
-			return EmittingSerializerBuilderLogics.CreateTupleSerializerCore( typeof( TObject ), this._emitterFlavor ).CreateInstance<TObject>( this.Context );
+			using ( var emitter = EmittingSerializerBuilderLogics.CreateTupleSerializerCore( typeof( TObject ), this._emitterFlavor ) )
+			{
+				try
+				{
+					return emitter.CreateInstance<TObject>( this.Context );
+				}
+				finally
+				{
+					emitter.FlushTrace();
+				}
+			}
 		}
 	}
 
