@@ -75,7 +75,7 @@ namespace MsgPack.Serialization
 						var result = unpackerIL.DeclareLocal( typeof( TObject ), "result" );
 						Emittion.EmitConstruction( unpackerIL, result, null );
 
-						this.EmitUnpackMembers( emitter, unpackerIL, entries, result );
+						EmitUnpackMembers( emitter, unpackerIL, entries, result );
 
 						unpackerIL.EmitAnyLdloc( result );
 						unpackerIL.EmitRet();
@@ -102,7 +102,7 @@ namespace MsgPack.Serialization
 		/// <param name="entries">The array of <see cref="SerializingMember"/>s where each represents the member to be (de)serialized.</param>
 		protected abstract void EmitPackMembers( SerializerEmitter emitter, TracingILGenerator packerIL, SerializingMember[] entries );
 
-		private void EmitUnpackMembers( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
+		private static void EmitUnpackMembers( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
 		{
 			/*
 			 *	if( unpacker.IsArrayHeader )

@@ -63,7 +63,7 @@ namespace MsgPack.Serialization
 
 			if ( array == null )
 			{
-				throw new ArgumentNullException( "collection" );
+				throw new ArgumentNullException( "array" );
 			}
 
 			if ( !unpacker.IsArrayHeader )
@@ -375,7 +375,7 @@ namespace MsgPack.Serialization
 
 			if ( dictionary == null )
 			{
-				throw new ArgumentNullException( "collection" );
+				throw new ArgumentNullException( "dictionary" );
 			}
 
 			if ( !unpacker.IsMapHeader )
@@ -452,7 +452,7 @@ namespace MsgPack.Serialization
 
 			if ( dictionary == null )
 			{
-				throw new ArgumentNullException( "collection" );
+				throw new ArgumentNullException( "dictionary" );
 			}
 
 			if ( !unpacker.IsMapHeader )

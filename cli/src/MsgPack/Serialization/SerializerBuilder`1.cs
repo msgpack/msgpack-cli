@@ -113,7 +113,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private IEnumerable<SerializingMember> GetTargetMembers()
+		private static IEnumerable<SerializingMember> GetTargetMembers()
 		{
 			var members =
 				typeof( TObject ).FindMembers(
