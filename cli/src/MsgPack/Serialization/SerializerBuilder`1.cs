@@ -32,17 +32,35 @@ namespace MsgPack.Serialization
 	///		Build serializer for <typeparamref name="TObject"/>.
 	/// </summary>
 	/// <typeparam name="TObject">Object to be serialized/deserialized.</typeparam>
+	[ContractClass(typeof(SerializerBuilderContract<>))]
 	internal abstract class SerializerBuilder<TObject>
 	{
 		private readonly SerializationContext _context;
 
+		/// <summary>
+		///		Gets the <see cref="SerializationContext"/>.
+		/// </summary>
+		/// <value>
+		///		The <see cref="SerializationContext"/>.
+		/// </value>
 		public SerializationContext Context
 		{
-			get { return this._context; }
+			get
+			{
+				Contract.Ensures( Contract.Result<SerializationContext>() != null );
+
+				return this._context;
+			}
 		}
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="SerializerBuilder&lt;TObject&gt;"/> class.
+		/// </summary>
+		/// <param name="context">The <see cref="SerializationContext"/>.</param>
 		protected SerializerBuilder( SerializationContext context )
 		{
+			Contract.Requires( context != null );
+
 			this._context = context;
 		}
 
@@ -54,6 +72,8 @@ namespace MsgPack.Serialization
 		/// </returns>
 		public MessagePackSerializer<TObject> CreateSerializer()
 		{
+			Contract.Ensures( Contract.Result<MessagePackSerializer<TObject>>() != null );
+
 			var entries = GetTargetMembers().OrderBy( item => item.Contract.Id ).ToArray();
 
 			if ( entries.Length == 0 )
@@ -169,4 +189,36 @@ namespace MsgPack.Serialization
 		/// </returns>
 		public abstract MessagePackSerializer<TObject> CreateTupleSerializer();
 	}
+
+	[ContractClassFor(typeof(SerializerBuilder<>))]
+	internal abstract class SerializerBuilderContract<T> : SerializerBuilder<T>
+	{
+		protected SerializerBuilderContract() : base( null ) { }
+
+		protected override MessagePackSerializer<T> CreateSerializer( SerializingMember[] entries )
+		{
+			Contract.Requires( entries != null );
+			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+			return null;
+		}
+
+		public override MessagePackSerializer<T> CreateArraySerializer()
+		{
+			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+			return null;
+		}
+
+		public override MessagePackSerializer<T> CreateMapSerializer()
+		{
+			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+			return null;
+		}
+
+		public override MessagePackSerializer<T> CreateTupleSerializer()
+		{
+			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+			return null;
+		}
+	}
+
 }

@@ -20,7 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization
 {
@@ -41,11 +41,25 @@ namespace MsgPack.Serialization
 		/// </value>
 		public SerializerRepository Serializers
 		{
-			get { return this._serializers; }
+			get
+			{
+				Contract.Ensures( Contract.Result<SerializerRepository>() != null );
+
+				return this._serializers;
+			}
 		}
 
 		private EmitterFlavor _emitterFlavor = EmitterFlavor.FieldBased;
 
+		/// <summary>
+		///		Gets or sets the <see cref="EmitterFlavor"/>.
+		/// </summary>
+		/// <value>
+		///		The <see cref="EmitterFlavor"/>
+		/// </value>
+		/// <remarks>
+		///		For testing purposes.
+		/// </remarks>
 		internal EmitterFlavor EmitterFlavor
 		{
 			get { return this._emitterFlavor; }
@@ -54,20 +68,81 @@ namespace MsgPack.Serialization
 
 		private SerializationMethod _serializationMethod;
 
+		/// <summary>
+		///		Gets or sets the <see cref="SerializationMethod"/> to determine serialization strategy.
+		/// </summary>
+		/// <value>
+		///		The <see cref="SerializationMethod"/> to determine serialization strategy.
+		/// </value>
 		public SerializationMethod SerializationMethod
 		{
-			get { return this._serializationMethod; }
-			set { this._serializationMethod = value; }
+			get
+			{
+				Contract.Ensures( Enum.IsDefined( typeof( SerializationMethod ), Contract.Result<SerializationMethod>() ) );
+
+				return this._serializationMethod;
+			}
+			set
+			{
+				switch ( value )
+				{
+					case Serialization.SerializationMethod.Array:
+					case Serialization.SerializationMethod.Map:
+					{
+						break;
+					}
+					default:
+					{
+						throw new ArgumentOutOfRangeException( "value" );
+					}
+				}
+
+				Contract.EndContractBlock();
+
+				this._serializationMethod = value;
+			}
 		}
 
 		private SerializationMethodGeneratorOption _generatorOption;
 
+		/// <summary>
+		///		Gets or sets the <see cref="SerializationMethodGeneratorOption"/> to control code generation.
+		/// </summary>
+		/// <value>
+		///		The <see cref="SerializationMethodGeneratorOption"/>.
+		/// </value>
 		public SerializationMethodGeneratorOption GeneratorOption
 		{
-			get { return this._generatorOption; }
-			set { this._generatorOption = value; }
+			get
+			{
+				Contract.Ensures( Enum.IsDefined( typeof( SerializationMethod ), Contract.Result<SerializationMethodGeneratorOption>() ) );
+
+				return this._generatorOption;
+			}
+			set
+			{
+				switch ( value )
+				{
+					case SerializationMethodGeneratorOption.Fast:
+#if !SILVERLIGHT
+					case SerializationMethodGeneratorOption.CanCollect:
+					case SerializationMethodGeneratorOption.CanDump:
+#endif
+					{
+						break;
+					}
+					default:
+					{
+						throw new ArgumentOutOfRangeException( "value" );
+					}
+				}
+
+				Contract.EndContractBlock();
+
+				this._generatorOption = value;
+			}
 		}
-		
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.Default"/>.
 		/// </summary>
@@ -76,6 +151,8 @@ namespace MsgPack.Serialization
 
 		internal SerializationContext( SerializerRepository serializers )
 		{
+			Contract.Requires( serializers != null );
+
 			this._serializers = serializers;
 			this._typeLock = new HashSet<Type>();
 		}
@@ -94,14 +171,16 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>()
 		{
+			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+
 			var serializer = this._serializers.Get<T>( this );
 			if ( serializer == null )
 			{
-				// TODO: Configurable
 				if ( !this._typeLock.Add( typeof( T ) ) )
 				{
 					return new LazyDelegatingMessagePackSerializer<T>( this );
 				}
+
 				serializer = MessagePackSerializer.Create<T>( this );
 				this._typeLock.Remove( typeof( T ) );
 				if ( !this._serializers.Register<T>( serializer ) )
@@ -135,6 +214,8 @@ namespace MsgPack.Serialization
 			{
 				throw new ArgumentNullException( "targetType" );
 			}
+
+			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
 
 			return SerializerGetter.Instance.Get( this, targetType );
 		}

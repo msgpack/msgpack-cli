@@ -33,10 +33,6 @@ namespace MsgPack.Serialization
 	// FIXME : comment
 	internal static class Emittion
 	{
-		// TODO: -> Metadata
-		private static readonly MethodInfo _ienumeratorMoveNextMethod = FromExpression.ToMethod( ( IEnumerator enumerator ) => enumerator.MoveNext() );
-		private static readonly PropertyInfo _ienumeratorCurrentProperty = FromExpression.ToProperty( ( IEnumerator enumerator ) => enumerator.Current );
-		private static readonly PropertyInfo _idictionaryEnumeratorCurrentProperty = FromExpression.ToProperty( ( IDictionaryEnumerator enumerator ) => enumerator.Entry );
 		private static readonly Type[] _ctor_Int32_ParameterTypes = new[] { typeof( int ) };
 
 		/// <summary>
@@ -47,6 +43,10 @@ namespace MsgPack.Serialization
 		/// <param name="bodyEmitter">Delegate to emit for statement body.</param>
 		public static void EmitFor( TracingILGenerator il, LocalBuilder count, Action<TracingILGenerator, LocalBuilder> bodyEmitter )
 		{
+			Contract.Requires( il != null );
+			Contract.Requires( count != null );
+			Contract.Requires( bodyEmitter != null );
+
 			var i = il.DeclareLocal( typeof( int ), "i" );
 			il.EmitLdc_I4_0();
 			il.EmitAnyStloc( i );
@@ -76,6 +76,10 @@ namespace MsgPack.Serialization
 		/// <param name="bodyEmitter">Delegate to emit body statement.</param>
 		public static void EmitForEach( TracingILGenerator il, CollectionTraits traits, LocalBuilder collection, Action<TracingILGenerator, Action> bodyEmitter )
 		{
+			Contract.Requires( il != null );
+			Contract.Requires( collection != null );
+			Contract.Requires( bodyEmitter != null );
+
 			var enumerator = il.DeclareLocal( traits.GetEnumeratorMethod.ReturnType, "enumerator" );
 
 			// gets enumerator
@@ -106,14 +110,14 @@ namespace MsgPack.Serialization
 
 			if ( moveNextMethod == null )
 			{
-				moveNextMethod = _ienumeratorMoveNextMethod;
+				moveNextMethod = Metadata._IEnumerator.MoveNext;
 			}
 
 			if ( currentProperty == null )
 			{
 				if ( enumeratorType == typeof( IDictionaryEnumerator ) )
 				{
-					currentProperty = _idictionaryEnumeratorCurrentProperty;
+					currentProperty = Metadata._IDictionaryEnumerator.Current;
 				}
 				else if ( enumeratorType.IsInterface )
 				{
@@ -123,7 +127,7 @@ namespace MsgPack.Serialization
 					}
 					else
 					{
-						currentProperty = _ienumeratorCurrentProperty;
+						currentProperty = Metadata._IEnumerator.Current;
 					}
 				}
 			}
@@ -162,6 +166,7 @@ namespace MsgPack.Serialization
 			il.EmitBr( startLoop );
 			il.MarkLabel( endLoop );
 
+			// Dispose
 			if ( typeof( IDisposable ).IsAssignableFrom( traits.GetEnumeratorMethod.ReturnType ) )
 			{
 				il.BeginFinallyBlock();
@@ -198,7 +203,8 @@ namespace MsgPack.Serialization
 		/// <param name="member"><see cref="MemberInfo"/> to be loaded.</param>
 		public static void EmitLoadValue( TracingILGenerator il, MemberInfo member )
 		{
-			Contract.Assert( member != null );
+			Contract.Requires( il != null );
+			Contract.Requires( member != null );
 
 			var asProperty = member as PropertyInfo;
 			if ( asProperty != null )
@@ -219,7 +225,8 @@ namespace MsgPack.Serialization
 		/// <param name="member"><see cref="MemberInfo"/> to be stored.</param>
 		public static void EmitStoreValue( TracingILGenerator il, MemberInfo member )
 		{
-			Contract.Assert( member != null );
+			Contract.Requires( il != null );
+			Contract.Requires( member != null );
 
 			var asProperty = member as PropertyInfo;
 			if ( asProperty != null )
@@ -252,6 +259,9 @@ namespace MsgPack.Serialization
 		/// <param name="unpackerArgumentIndex">Argument index of the unpacker.</param>
 		public static void EmitGetUnpackerItemsCountAsInt32( TracingILGenerator il, int unpackerArgumentIndex )
 		{
+			Contract.Requires( il != null );
+			Contract.Requires( unpackerArgumentIndex >= 0 );
+
 			/*
 			 *	long rawItemsCount;
 			 *	try
@@ -295,11 +305,29 @@ namespace MsgPack.Serialization
 
 		public static void EmitSerializeValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, string memberName, NilImplication nilImplication, Action<TracingILGenerator> loadValueEmitter )
 		{
+			Contract.Requires( emitter != null );
+			Contract.Requires( il != null );
+			Contract.Requires( packerArgumentIndex >= 0 );
+			Contract.Requires( valueType != null );
+			Contract.Requires( loadValueEmitter != null );
+
+			/*
+			 * var serializingValue = LOAD_VALUE;
+			 * NULL_PROHIBIT_HANDLING
+			 * GET_SERIALIZER.PackTo( packer, serializingValue );
+			 */
 			var value = il.DeclareLocal( valueType, "serializingValue" );
 			loadValueEmitter( il );
 			il.EmitAnyStloc( value );
 			if ( memberName != null && nilImplication == NilImplication.Prohibit )
 			{
+				/*
+				 *	if( serializingValue == null )(
+				 *	{
+				 *		throw SerializationExceptions.NewNullIsProhibited();
+				 *	}
+				 */
+
 				if ( !valueType.IsValueType )
 				{
 					il.EmitAnyLdloc( value );
@@ -324,7 +352,6 @@ namespace MsgPack.Serialization
 			}
 
 			var serializerGetter = emitter.RegisterSerializer( valueType );
-			//  context.MarshalTo( packer, ... ) )
 			serializerGetter( il, 0 );
 			il.EmitAnyLdarg( packerArgumentIndex );
 			il.EmitAnyLdloc( value );
@@ -333,6 +360,11 @@ namespace MsgPack.Serialization
 
 		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, LocalBuilder isUnpacked, string memberName, NilImplication nilImplication, Action<TracingILGenerator, int> customUnpackerReading )
 		{
+			Contract.Requires( emitter != null );
+			Contract.Requires( il != null );
+			Contract.Requires( unpackerArgumentIndex >= 0 );
+			Contract.Requires( value != null );
+
 			if ( customUnpackerReading != null )
 			{
 				customUnpackerReading( il, unpackerArgumentIndex );
@@ -452,6 +484,12 @@ namespace MsgPack.Serialization
 
 		public static void EmitDeserializeCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType, NilImplication nilImplication )
 		{
+			Contract.Requires( emitter != null );
+			Contract.Requires( il != null );
+			Contract.Requires( unpackerArgumentIndex >= 0 );
+			Contract.Requires( target != null );
+			Contract.Requires( member != null );
+			Contract.Requires( memberType != null );
 
 			var endOfDeserialization = il.DefineLabel( "END_OF_DESERIALIZATION" );
 			switch ( nilImplication )
@@ -540,7 +578,6 @@ namespace MsgPack.Serialization
 			il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
 			il.EmitBrtrue_S( endIf );
 			// else
-			il.EmitTypeOf( memberType );
 			il.EmitLdstr( member.Name );
 			il.EmitAnyCall( SerializationExceptions.NewStreamDoesNotContainCollectionForMemberMethod );
 			il.EmitThrow();
@@ -559,6 +596,14 @@ namespace MsgPack.Serialization
 
 		public static void EmitUnpackerBeginReadSubtree( TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder subtreeUnpacker )
 		{
+			Contract.Requires( il != null );
+			Contract.Requires( unpackerArgumentIndex >= 0 );
+			Contract.Requires( subtreeUnpacker != null );
+
+			/*
+			 * subtreeUnpacker = unpacker.ReadSubtree()
+			 */
+
 			il.EmitAnyLdarg( unpackerArgumentIndex );
 			il.EmitAnyCall( Metadata._Unpacker.ReadSubtree );
 			il.EmitAnyStloc( subtreeUnpacker );
@@ -567,6 +612,19 @@ namespace MsgPack.Serialization
 
 		public static void EmitUnpackerEndReadSubtree( TracingILGenerator il, LocalBuilder subtreeUnpacker )
 		{
+			Contract.Requires( il != null );
+			Contract.Requires( subtreeUnpacker != null );
+
+			/*
+			 *	finally
+			 *	{
+			 *		if( subtreeUnpacker != null )
+			 *		{
+			 *			subtreeUnpacker.Dispose();
+			 *		}
+			 *	}
+			 */
+
 			il.BeginFinallyBlock();
 			il.EmitAnyLdloc( subtreeUnpacker );
 			var endIf = il.DefineLabel( "END_IF" );
@@ -579,9 +637,10 @@ namespace MsgPack.Serialization
 
 		public static void EmitConstruction( TracingILGenerator il, LocalBuilder target, Action<TracingILGenerator> initialCountLoadingEmitter )
 		{
-			Contract.Assert( il != null );
-			Contract.Assert( target != null );
-
+			Contract.Requires( il != null );
+			Contract.Requires( target != null );
+			Contract.Requires( initialCountLoadingEmitter != null );
+			
 			// TODO: For collection, supports .ctor(IEnumerable<> other)
 
 			if ( target.LocalType.IsArray )

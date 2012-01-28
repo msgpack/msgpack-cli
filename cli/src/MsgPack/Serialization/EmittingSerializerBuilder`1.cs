@@ -20,24 +20,11 @@
 
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Reflection.Emit;
 using NLiblet.Reflection;
 
 namespace MsgPack.Serialization
 {
-	public enum SerializationMethod
-	{
-		Array = 0,
-		Map
-	}
-
-	internal enum EmitterFlavor
-	{
-		ContextBased,
-		FieldBased,
-	}
-
 	/// <summary>
 	///		Implements common features code generation based serializer builders.
 	/// </summary>
@@ -47,6 +34,10 @@ namespace MsgPack.Serialization
 		private readonly SerializationMethodGeneratorOption _generatorOption;
 		private readonly EmitterFlavor _emitterFlavor;
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="EmittingSerializerBuilder&lt;TObject&gt;"/> class.
+		/// </summary>
+		/// <param name="context">The <see cref="SerializationContext"/>.</param>
 		protected EmittingSerializerBuilder( SerializationContext context )
 			: base( context )
 		{
@@ -54,6 +45,13 @@ namespace MsgPack.Serialization
 			this._emitterFlavor = context.EmitterFlavor;
 		}
 
+		/// <summary>
+		///		Creates serializer for <typeparamref name="TObject"/>.
+		/// </summary>
+		/// <param name="entries">Serialization target members. This will not be <c>null</c> nor empty.</param>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. This value will not be <c>null</c>.
+		/// </returns>
 		protected sealed override MessagePackSerializer<TObject> CreateSerializer( SerializingMember[] entries )
 		{
 			using ( var emitter = SerializationMethodGeneratorManager.Get( this._generatorOption ).CreateEmitter( typeof( TObject ), this._emitterFlavor ) )
@@ -96,6 +94,12 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Emits the ILs to pack the members of the current type.
+		/// </summary>
+		/// <param name="emitter"><see cref="SerializerEmitter"/> holding emittion context information.</param>
+		/// <param name="packerIL"><see cref="TracingILGenerator"/> to emit IL.</param>
+		/// <param name="entries">The array of <see cref="SerializingMember"/>s where each represents the member to be (de)serialized.</param>
 		protected abstract void EmitPackMembers( SerializerEmitter emitter, TracingILGenerator packerIL, SerializingMember[] entries );
 
 		private void EmitUnpackMembers( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
@@ -329,6 +333,13 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Creates serializer as <typeparamref name="TObject"/> is array type.
+		/// </summary>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		/// </returns>
 		public sealed override MessagePackSerializer<TObject> CreateArraySerializer()
 		{
 			using ( var emitter = EmittingSerializerBuilderLogics.CreateArraySerializerCore( typeof( TObject ), this._emitterFlavor ) )
@@ -344,6 +355,13 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Creates serializer as <typeparamref name="TObject"/> is map type.
+		/// </summary>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		/// </returns>
 		public sealed override MessagePackSerializer<TObject> CreateMapSerializer()
 		{
 			using ( var emitter = EmittingSerializerBuilderLogics.CreateMapSerializerCore( typeof( TObject ), this._emitterFlavor ) )
@@ -359,6 +377,13 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Creates serializer as <typeparamref name="TObject"/> is tuple type.
+		/// </summary>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. 
+		///		This value will not be <c>null</c>.
+		/// </returns>
 		public sealed override MessagePackSerializer<TObject> CreateTupleSerializer()
 		{
 			using ( var emitter = EmittingSerializerBuilderLogics.CreateTupleSerializerCore( typeof( TObject ), this._emitterFlavor ) )

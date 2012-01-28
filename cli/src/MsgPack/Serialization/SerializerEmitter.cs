@@ -19,14 +19,10 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.Emit;
 using NLiblet.Reflection;
 
 namespace MsgPack.Serialization
@@ -34,6 +30,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Genereates serialization methods which can be save to file.
 	/// </summary>
+	[ContractClass( typeof( SerializerEmitterContract ) )]
 	internal abstract class SerializerEmitter : IDisposable
 	{
 		protected static readonly Type[] UnpackFromCoreParameterTypes = new[] { typeof( Unpacker ) };
@@ -160,4 +157,41 @@ namespace MsgPack.Serialization
 		/// </returns>
 		public abstract Action<TracingILGenerator, int> RegisterSerializer( Type targetType );
 	}
+
+	[ContractClassFor( typeof( SerializerEmitter ) )]
+	internal abstract class SerializerEmitterContract : SerializerEmitter
+	{
+		public override TracingILGenerator GetPackToMethodILGenerator()
+		{
+			Contract.Ensures( Contract.Result<TracingILGenerator>() != null );
+			return null;
+		}
+
+		public override TracingILGenerator GetUnpackFromMethodILGenerator()
+		{
+			Contract.Ensures( Contract.Result<TracingILGenerator>() != null );
+			return null;
+		}
+
+		public override TracingILGenerator GetUnpackToMethodILGenerator()
+		{
+			Contract.Ensures( Contract.Result<TracingILGenerator>() != null );
+			return null;
+		}
+
+		public override MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+			return null;
+		}
+
+		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType )
+		{
+			Contract.Requires( targetType != null );
+			Contract.Ensures( Contract.Result<Action<TracingILGenerator, int>>() != null );
+			throw new NotImplementedException();
+		}
+	}
+
 }

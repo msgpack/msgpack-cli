@@ -174,6 +174,14 @@ namespace MsgPack.Serialization
 		}
 #endif
 
+		/// <summary>
+		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
+		/// </summary>
+		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
+		/// <returns>
+		///		New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
+		/// </returns>
 		protected sealed override SerializerEmitter CreateEmitterCore( Type targetType, EmitterFlavor emitterFlavor )
 		{
 			switch ( emitterFlavor )

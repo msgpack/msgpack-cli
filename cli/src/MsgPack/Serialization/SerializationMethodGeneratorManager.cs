@@ -74,14 +74,27 @@ namespace MsgPack.Serialization
 #endif
 		}
 
+		/// <summary>
+		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
+		/// </summary>
+		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
+		/// <returns>New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
 		public SerializerEmitter CreateEmitter( Type targetType, EmitterFlavor emitterFlavor )
 		{
 			Contract.Requires( targetType != null );
 			Contract.Requires( emitterFlavor == EmitterFlavor.FieldBased || emitterFlavor == EmitterFlavor.ContextBased );
+			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
 
 			return this.CreateEmitterCore( targetType , emitterFlavor);
 		}
 
+		/// <summary>
+		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
+		/// </summary>
+		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="emitterFlavor"><see cref="EmitterFlavor"/>.</param>
+		/// <returns>New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.</returns>
 		protected abstract SerializerEmitter CreateEmitterCore( Type targetType, EmitterFlavor emitterFlavor );
 	}
 }

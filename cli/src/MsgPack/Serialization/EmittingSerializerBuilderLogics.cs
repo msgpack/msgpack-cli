@@ -29,7 +29,6 @@ using NLiblet.Reflection;
 
 namespace MsgPack.Serialization
 {
-
 	// Reduce JIT
 	/// <summary>
 	///		Defines non-generic functions of <see cref="EmittingSerializerBuilder{T}"/>.
@@ -43,6 +42,7 @@ namespace MsgPack.Serialization
 		public static SerializerEmitter CreateArraySerializerCore( Type targetType, EmitterFlavor emitterFlavor )
 		{
 			Contract.Requires( targetType != null );
+			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
 
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( targetType, emitterFlavor );
 			var traits = targetType.GetCollectionTraits();
@@ -367,6 +367,8 @@ namespace MsgPack.Serialization
 		public static SerializerEmitter CreateMapSerializerCore( Type targetType, EmitterFlavor emitterFlavor )
 		{
 			Contract.Requires( targetType != null );
+			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
+
 
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( targetType, emitterFlavor );
 			var traits = targetType.GetCollectionTraits();
@@ -612,6 +614,7 @@ namespace MsgPack.Serialization
 		public static SerializerEmitter CreateTupleSerializerCore( Type tupleType, EmitterFlavor emitterFlavor )
 		{
 			Contract.Requires( tupleType != null );
+			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
 
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( tupleType, emitterFlavor );
 			var itemTypes = GetTupleItemTypes( tupleType );

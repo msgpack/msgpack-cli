@@ -37,6 +37,22 @@ namespace MsgPack.Serialization
 		private static readonly MessagePackSerializer<MessagePackObject> _messagePackObjectSerializer =
 			new MsgPack_MessagePackObjectMessagePackSerializer();
 
+		/// <summary>
+		///		Unpacks the array to the specified array.
+		/// </summary>
+		/// <typeparam name="T">The type of the array element.</typeparam>
+		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
+		/// <param name="serializer">The serializer to deserialize array.</param>
+		/// <param name="array">The array instance to be filled.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or <paramref name="serializer"/> is <c>null</c>.
+		///		Or <paramref name="array"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		<paramref name="unpacker"/> is not in the array header.
+		///		Or failed to deserialization.
+		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackArrayTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, T[] array )
 		{
@@ -82,6 +98,21 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Unpacks the collection with the specified method as colletion of <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
+		/// <param name="collection">The non-generic collection instance to be added unpacked elements.</param>
+		/// <param name="addition">The delegate which contains the instance method of the <paramref name="collection"/>. The parameter is unpacked object.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or <paramref name="collection"/> is <c>null</c>.
+		///		Or <paramref name="addition"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		<paramref name="unpacker"/> is not in the array header.
+		///		Or failed to deserialization.
+		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackCollectionTo( Unpacker unpacker, IEnumerable collection, Action<object> addition )
 		{
@@ -127,6 +158,24 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Unpacks the dictionary with the specified method as colletion of <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements.</typeparam>
+		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
+		/// <param name="serializer">The serializer to deserialize elements.</param>
+		/// <param name="collection">The generic collection instance to be added unpacked elements.</param>
+		/// <param name="addition">The delegate which contains the instance method of the <paramref name="collection"/>. The parameter is unpacked object.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or <paramref name="serializer"/> is <c>null</c>.
+		///		Or <paramref name="collection"/> is <c>null</c>.
+		///		Or <paramref name="addition"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		<paramref name="unpacker"/> is not in the array header.
+		///		Or failed to deserialization.
+		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackCollectionTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Action<T> addition )
 		{
@@ -172,6 +221,22 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Unpacks the collection with the specified method as colletion of <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <typeparam name="TDiscarded">The return type of Add method.</typeparam>
+		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
+		/// <param name="collection">The non-generic collection instance to be added unpacked elements.</param>
+		/// <param name="addition">The delegate which contains the instance method of the <paramref name="collection"/>. The parameter is unpacked object.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or <paramref name="collection"/> is <c>null</c>.
+		///		Or <paramref name="addition"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		<paramref name="unpacker"/> is not in the array header.
+		///		Or failed to deserialization.
+		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackCollectionTo<TDiscarded>( Unpacker unpacker, IEnumerable collection, Func<object, TDiscarded> addition )
 		{
@@ -217,6 +282,25 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Unpacks the dictionary with the specified method as colletion of <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements.</typeparam>
+		/// <typeparam name="TDiscarded">The return type of Add method.</typeparam>
+		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
+		/// <param name="serializer">The serializer to deserialize elements.</param>
+		/// <param name="collection">The generic collection instance to be added unpacked elements.</param>
+		/// <param name="addition">The delegate which contains the instance method of the <paramref name="collection"/>. The parameter is unpacked object.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or <paramref name="serializer"/> is <c>null</c>.
+		///		Or <paramref name="collection"/> is <c>null</c>.
+		///		Or <paramref name="addition"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		<paramref name="unpacker"/> is not in the array header.
+		///		Or failed to deserialization.
+		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackCollectionTo<T, TDiscarded>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Func<T, TDiscarded> addition )
 		{
@@ -262,6 +346,25 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Unpacks the dictionary with the specified method as colletion of <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <typeparam name="TKey">The type of keys.</typeparam>
+		/// <typeparam name="TValue">The type of values.</typeparam>
+		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
+		/// <param name="keySerializer">The serializer to deserialize key elements.</param>
+		/// <param name="valueSerializer">The serializer to deserialize value elements.</param>
+		/// <param name="dictionary">The generic dictionary instance to be added unpacked elements.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or <paramref name="keySerializer"/> is <c>null</c>.
+		///		Or <paramref name="valueSerializer"/> is <c>null</c>.
+		///		Or <paramref name="dictionary"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		<paramref name="unpacker"/> is not in the map header.
+		///		Or failed to deserialization.
+		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackMapTo<TKey, TValue>( Unpacker unpacker, MessagePackSerializer<TKey> keySerializer, MessagePackSerializer<TValue> valueSerializer, IDictionary<TKey, TValue> dictionary )
 		{
@@ -326,6 +429,19 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Unpacks the dictionary with the specified method as colletion of <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
+		/// <param name="dictionary">The non-generic dictionary instance to be added unpacked elements.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="unpacker"/> is <c>null</c>.
+		///		Or <paramref name="dictionary"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		<paramref name="unpacker"/> is not in the map header.
+		///		Or failed to deserialization.
+		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackMapTo( Unpacker unpacker, IDictionary dictionary )
 		{

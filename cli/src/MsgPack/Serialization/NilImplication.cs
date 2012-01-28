@@ -55,7 +55,7 @@ namespace MsgPack.Serialization
 		///		</para>
 		///		<para>
 		///			If the unpacking value is nil, the serializer will set <c>null</c> to the member.
-		///			If the member is non-nullable value type and the packed value is nil, then <see cref="SerializationException"/> will be thrown.
+		///			If the member is non-nullable value type and the packed value is nil, then <see cref="System.Runtime.Serialization.SerializationException"/> will be thrown.
 		///		</para>
 		///		<para>
 		///			This value corresponds to <c>nullable required</c> on the IDL.

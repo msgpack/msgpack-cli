@@ -159,6 +159,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultSerializers.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\EmitterFlavor.cs" />
     <Compile Include="Serialization\EmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\FieldBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
@@ -166,6 +167,8 @@
     <Compile Include="Serialization\MapEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\MessagePackMemberAttribute.cs" />
     <Compile Include="Serialization\Metadata\_Enumerable.cs" />
+    <Compile Include="Serialization\Metadata\_IDictionaryEnumerator.cs" />
+    <Compile Include="Serialization\Metadata\_IEnumreator.cs" />
     <Compile Include="Serialization\Metadata\_SerializationContext.cs" />
     <Compile Include="Serialization\Metadata\_String.cs" />
     <Compile Include="Serialization\Metadata\_MessagePackObject.cs" />
@@ -220,6 +223,7 @@
     <Compile Include="Serialization\NLiblet.Reflection\TracingILGenerator.conveniences.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\TracingILGenerator.cs" />
     <Compile Include="Serialization\NLiblet.Reflection\TracingILGenerator.emits.cs" />
+    <Compile Include="Serialization\SerializationMethod.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorOption.cs" />
     <Compile Include="Serialization\SerializerEmitter.cs" />
