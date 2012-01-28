@@ -187,20 +187,11 @@
     <Compile Include="..\MsgPack\MessageTypeException.cs">
       <Link>MessageTypeException.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\ObjectPackingOptions.cs">
-      <Link>ObjectPackingOptions.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Packer.cs">
       <Link>Packer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Packer.Nullable.cs">
       <Link>Packer.Nullable.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Packer.Utilities.cs">
-      <Link>Packer.Utilities.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Packer.ValuePacker.cs">
-      <Link>Packer.ValuePacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\PackingOptions.cs">
       <Link>PackingOptions.cs</Link>
