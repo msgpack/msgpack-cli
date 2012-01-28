@@ -1051,9 +1051,7 @@ namespace MsgPack
 				}
 				default:
 				{
-					Contract.Assume( false, "Unexpected type code :" + typeCode.TypeCode );
-					packer.Pack( this._value, options );
-					return;
+					throw new SerializationException( "Failed to pack this object." );
 				}
 			}
 		}

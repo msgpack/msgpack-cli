@@ -1464,50 +1464,6 @@ namespace MsgPack
 		#endregion -- IDictionary --
 
 		/// <summary>
-		///		Pack specified object with appropriate manner.
-		/// </summary>
-		/// <typeparam name="T">Type of value.</typeparam>
-		/// <param name="value">Value to pack.</param>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		/// <returns>This instance.</returns>
-		public Packer Pack<T>( T value )
-		{
-			return this.Pack( value, null );
-		}
-
-		/// <summary>
-		///		Pack specified object with appropriate manner.
-		/// </summary>
-		/// <typeparam name="T">Type of value.</typeparam>
-		/// <param name="value">Value to pack.</param>
-		/// <param name="options">Packing options. This value can be null.</param>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		/// <returns>This instance.</returns>
-		public Packer Pack<T>( T value, PackingOptions options )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-			this.PrivatePackCore<T>( value, options );
-			return this;
-		}
-
-		private void PrivatePackCore<T>( T value, PackingOptions options )
-		{
-			ValuePacker<T>.Instance.Pack( this, value, options );
-		}
-
-		/// <summary>
-		///		Pack specified <see cref="Object"/> as apporipriate value.
-		/// </summary>
-		/// <param name="boxedValue">Boxed value.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="MessageTypeException">There is no approptiate MessagePack type to represent specified object.</exception>
-		public Packer PackObject( object boxedValue )
-		{
-			return this.PackObject( boxedValue, null );
-		}
-
-		/// <summary>
 		///		Try pack <see cref="SByte"/> value to current stream as tiny fix num.
 		/// </summary>
 		/// <param name="value">Maybe tiny <see cref="SByte"/> value.</param>

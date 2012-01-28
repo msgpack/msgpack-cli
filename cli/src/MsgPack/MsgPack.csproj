@@ -136,6 +136,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Packer.ValuePacker.tt</DependentUpon>
     </Compile>
+    <Compile Include="PackerUnpackerExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PackingOptions.cs" />
     <Compile Include="MessagePackObject.cs">
       <AutoGen>True</AutoGen>

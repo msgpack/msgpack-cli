@@ -130,14 +130,6 @@ namespace MsgPack
 		}
 
 
-		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
-		public void TestPackT_NotSupported_Fail()
-		{
-			TestPackTCore<Uri>( new Uri( "http://example.com" ), new byte[] { 0xC0 } );
-		}
-
-
 		private static void TestCore<T>( Action<Packer, T> method, T arg, byte[] expected )
 		{
 			using ( var buffer = new MemoryStream() )
@@ -534,14 +526,6 @@ namespace MsgPack
 		{
 			TestCore( ( packer, value ) => packer.PackObject( value ), default( object ), new byte[] { 0xC0 } );
 		}
-
-		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
-		public void TestPackObject_NotSupported_Fail()
-		{
-			TestCore( ( packer, value ) => packer.PackObject( value ), new Uri( "http://example.com" ), new byte[] { 0xC0 } );
-		}
-
 
 		[Test]
 		public void TestPack_SByte_0x7F_0x7F()
