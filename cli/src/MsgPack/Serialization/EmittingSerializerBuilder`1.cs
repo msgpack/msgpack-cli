@@ -125,21 +125,46 @@ namespace MsgPack.Serialization
 		private static void EmitUnpackMembersFromArray( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
 		{
 			/*
+			 *	if( unpacker.ItemsCount != N )
+			 *	{
+			 *		throw SerializationExceptions.NewUnexpectedArrayLength( N, unpacker.ItemsCount );
+			 *	}
+			 *	
 			 *	if( !unpacker.Read() )
 			 *	{
 			 *		throw SerializationExceptions.NewUnexpectedEndOfStreamMethod();
 			 *	}
 			 * 
 			 *	local1 = this._serializer1.Unpack
+			 *	:
 			 */
+
+			Emittion.EmitGetUnpackerItemsCountAsInt32( unpackerIL, 1 );
+			unpackerIL.EmitAnyLdc_I4( entries.Length );
+			var endIf0 = unpackerIL.DefineLabel( "END_IF" );
+			unpackerIL.EmitCeq();
+			unpackerIL.EmitBrtrue_S( endIf0 );
+			unpackerIL.EmitAnyLdc_I4( entries.Length );
+			unpackerIL.EmitAnyLdarg( 1 );
+			unpackerIL.EmitGetProperty( Metadata._Unpacker.ItemsCount );
+			unpackerIL.EmitConv_I4();
+			unpackerIL.EmitAnyCall( SerializationExceptions.NewUnexpectedArrayLengthMethod );
+			unpackerIL.EmitThrow();
+			unpackerIL.MarkLabel( endIf0 );
+
 			var items =
 				entries.Select(
 					item =>
-						!EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
-						? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
-						: null
-				).Zip( entries, ( Local, Entry ) => new { Entry, Local } )
-				.ToArray();
+						new
+						{
+							Entry = item,
+							UnpackedLocal =
+								!EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
+								? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
+								: null,
+							IsUnpackedLocal = unpackerIL.DeclareLocal( typeof( bool ), "is" + item.Contract.Name + "Unpacked" )
+						}
+				).ToArray();
 
 			for ( int i = 0; i < items.Length; i++ )
 			{
@@ -150,22 +175,27 @@ namespace MsgPack.Serialization
 				unpackerIL.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
 				unpackerIL.EmitThrow();
 				unpackerIL.MarkLabel( endIf );
-				if ( items[ i ].Local == null )
+				if ( items[ i ].UnpackedLocal == null )
 				{
-					Emittion.EmitDeserializeCollectionValue( emitter, unpackerIL, 1, result, items[ i ].Entry.Member, items[ i ].Entry.Member.GetMemberValueType() );
+					Emittion.EmitDeserializeCollectionValue( emitter, unpackerIL, 1, result, items[ i ].Entry.Member, items[ i ].Entry.Member.GetMemberValueType(), items[ i ].Entry.Contract.NilImplication );
 				}
 				else
 				{
-					Emittion.EmitDeserializeValue( emitter, unpackerIL, 1, items[ i ].Local, null );
+					Emittion.EmitDeserializeValue( emitter, unpackerIL, 1, items[ i ].UnpackedLocal, items[ i ].IsUnpackedLocal, items[ i ].Entry.Member.Name, items[ i ].Entry.Contract.NilImplication, null );
 				}
 			}
 
 			foreach ( var item in items )
 			{
-				if ( item.Local == null )
+				if ( item.UnpackedLocal == null )
 				{
 					continue;
 				}
+
+				// TODO: Mandatory -> Exception?
+				var endIf = unpackerIL.DefineLabel( "END_IF" );
+				unpackerIL.EmitAnyLdloc( item.IsUnpackedLocal );
+				unpackerIL.EmitBrfalse_S( endIf );
 
 				if ( result.LocalType.IsValueType )
 				{
@@ -176,8 +206,9 @@ namespace MsgPack.Serialization
 					unpackerIL.EmitAnyLdloc( result );
 				}
 
-				unpackerIL.EmitAnyLdloc( item.Local );
+				unpackerIL.EmitAnyLdloc( item.UnpackedLocal );
 				Emittion.EmitStoreValue( unpackerIL, item.Entry.Member );
+				unpackerIL.MarkLabel( endIf );
 			}
 		}
 
@@ -186,10 +217,16 @@ namespace MsgPack.Serialization
 			var items =
 				entries.Select(
 					item =>
-					!EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
-					? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
-					: null
-				).Zip( entries, ( Local, Entry ) => new { Entry, Local } ).ToArray();
+						new
+						{
+							Entry = item,
+							UnpackedLocal =
+								!EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
+								? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
+								: null,
+							IsUnpackedLocal = unpackerIL.DeclareLocal( typeof( bool ), "is" + item.Contract.Name + "Unpacked" )
+						}
+				).ToArray();
 
 			/*
 			 *	// Assume subtree unpacker
@@ -235,7 +272,7 @@ namespace MsgPack.Serialization
 				unpackerIL.EmitLdstr( items[ i ].Entry.Contract.Name );
 				unpackerIL.EmitAnyCall( Metadata._String.op_Inequality );
 				var endIf0 = unpackerIL.DefineLabel( "END_IF_0_" + i );
-				unpackerIL.EmitBrtrue_S( endIf0 );
+				unpackerIL.EmitBrtrue( endIf0 );
 				unpackerIL.EmitAnyLdarg( 1 );
 				unpackerIL.EmitAnyCall( Metadata._Unpacker.Read );
 				var endIf1 = unpackerIL.DefineLabel( "END_IF_1_" + i );
@@ -244,13 +281,13 @@ namespace MsgPack.Serialization
 				unpackerIL.EmitThrow();
 				unpackerIL.MarkLabel( endIf1 );
 
-				if ( items[ i ].Local == null )
+				if ( items[ i ].UnpackedLocal == null )
 				{
-					Emittion.EmitDeserializeCollectionValue( emitter, unpackerIL, 1, result, items[ i ].Entry.Member, items[ i ].Entry.Member.GetMemberValueType() );
+					Emittion.EmitDeserializeCollectionValue( emitter, unpackerIL, 1, result, items[ i ].Entry.Member, items[ i ].Entry.Member.GetMemberValueType(), items[ i ].Entry.Contract.NilImplication );
 				}
 				else
 				{
-					Emittion.EmitDeserializeValue( emitter, unpackerIL, 1, items[ i ].Local, null );
+					Emittion.EmitDeserializeValue( emitter, unpackerIL, 1, items[ i ].UnpackedLocal, items[ i ].IsUnpackedLocal, items[ i ].Entry.Member.Name, items[ i ].Entry.Contract.NilImplication, null );
 				}
 
 				// TOOD: Record for missing check
@@ -259,16 +296,23 @@ namespace MsgPack.Serialization
 				unpackerIL.MarkLabel( endIf0 );
 			}
 
+			// TODO: Handle unknown member.
+
 			unpackerIL.MarkLabel( endWhile );
-			
+
 			// TOOD: Check missing
 
 			foreach ( var item in items )
 			{
-				if ( item.Local == null )
+				if ( item.UnpackedLocal == null )
 				{
 					continue;
 				}
+
+				// TODO: Mandatory -> Exception?
+				var endIf = unpackerIL.DefineLabel( "END_IF" );
+				unpackerIL.EmitAnyLdloc( item.IsUnpackedLocal );
+				unpackerIL.EmitBrfalse_S( endIf );
 
 				if ( result.LocalType.IsValueType )
 				{
@@ -279,8 +323,9 @@ namespace MsgPack.Serialization
 					unpackerIL.EmitAnyLdloc( result );
 				}
 
-				unpackerIL.EmitAnyLdloc( item.Local );
+				unpackerIL.EmitAnyLdloc( item.UnpackedLocal );
 				Emittion.EmitStoreValue( unpackerIL, item.Entry.Member );
+				unpackerIL.MarkLabel( endIf );
 			}
 		}
 

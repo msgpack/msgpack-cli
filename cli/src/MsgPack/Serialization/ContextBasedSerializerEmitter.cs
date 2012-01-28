@@ -47,6 +47,7 @@ namespace MsgPack.Serialization
 		{
 			if ( IsTraceEnabled )
 			{
+				this.Trace.WriteLine();
 				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethod );
 			}
 
@@ -57,6 +58,7 @@ namespace MsgPack.Serialization
 		{
 			if ( IsTraceEnabled )
 			{
+				this.Trace.WriteLine();
 				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethod );
 			}
 
@@ -72,6 +74,7 @@ namespace MsgPack.Serialization
 
 			if ( IsTraceEnabled )
 			{
+				this.Trace.WriteLine();
 				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackToMethod );
 			}
 

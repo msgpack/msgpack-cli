@@ -293,33 +293,125 @@ namespace MsgPack.Serialization
 			il.EmitConv_I4();
 		}
 
-		public static void EmitSerializeValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, Action<TracingILGenerator> loadValueEmitter )
+		public static void EmitSerializeValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, string memberName, NilImplication nilImplication, Action<TracingILGenerator> loadValueEmitter )
 		{
+			var value = il.DeclareLocal( valueType, "serializingValue" );
+			loadValueEmitter( il );
+			il.EmitAnyStloc( value );
+			if ( memberName != null && nilImplication == NilImplication.Prohibit )
+			{
+				if ( !valueType.IsValueType )
+				{
+					il.EmitAnyLdloc( value );
+					var endIf = il.DefineLabel( "END_IF" );
+					il.EmitBrtrue_S( endIf );
+					il.EmitLdstr( memberName );
+					il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+					il.EmitThrow();
+					il.MarkLabel( endIf );
+				}
+				else if ( Nullable.GetUnderlyingType( valueType ) != null )
+				{
+					il.EmitAnyLdloca( value );
+					il.EmitGetProperty( typeof( Nullable<> ).MakeGenericType( Nullable.GetUnderlyingType( valueType ) ).GetProperty( "HasValue" ) );
+					var endIf = il.DefineLabel( "END_IF" );
+					il.EmitBrtrue_S( endIf );
+					il.EmitLdstr( memberName );
+					il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+					il.EmitThrow();
+					il.MarkLabel( endIf );
+				}
+			}
+
 			var serializerGetter = emitter.RegisterSerializer( valueType );
 			//  context.MarshalTo( packer, ... ) )
 			serializerGetter( il, 0 );
 			il.EmitAnyLdarg( packerArgumentIndex );
-			loadValueEmitter( il );
+			il.EmitAnyLdloc( value );
 			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( valueType ).GetMethod( "PackTo" ) );
 		}
 
-		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Action<TracingILGenerator, int> customUnpackerReading )
+		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, LocalBuilder isUnpacked, string memberName, NilImplication nilImplication, Action<TracingILGenerator, int> customUnpackerReading )
 		{
 			if ( customUnpackerReading != null )
 			{
 				customUnpackerReading( il, unpackerArgumentIndex );
 			}
 
+			var endOfDeserialization = il.DefineLabel( "END_OF_DESERIALIZATION" );
+			if ( memberName != null )
+			{
+				switch ( nilImplication )
+				{
+					case NilImplication.MemberDefault:
+					{
+						/*
+						 * if( unpacker.Data.Value.IsNil )
+						 * {
+						 *		// Skip current.
+						 *		goto END_OF_DESERIALIZATION;
+						 * }
+						 */
+						il.EmitAnyLdarg( unpackerArgumentIndex );
+						il.EmitGetProperty( Metadata._Unpacker.Data );
+						var data = il.DeclareLocal( typeof( MessagePackObject? ), "data" );
+						il.EmitAnyStloc( data );
+						il.EmitAnyLdloca( data );
+						il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
+						var dataValue = il.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+						il.EmitAnyStloc( dataValue );
+						il.EmitAnyLdloca( dataValue );
+						il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
+						il.EmitBrtrue( endOfDeserialization );
+
+						break;
+					}
+					case NilImplication.Prohibit:
+					{
+						/*
+						 * if( unpacker.Data.Value.IsNil )
+						 * {
+						 *		throw SerializationEceptions.NewProhibitNullException( "..." );
+						 * }
+						 */
+						il.EmitAnyLdarg( unpackerArgumentIndex );
+						il.EmitGetProperty( Metadata._Unpacker.Data );
+						var data = il.DeclareLocal( typeof( MessagePackObject? ), "data" );
+						il.EmitAnyStloc( data );
+						il.EmitAnyLdloca( data );
+						il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
+						var dataValue = il.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+						il.EmitAnyStloc( dataValue );
+						il.EmitAnyLdloca( dataValue );
+						il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
+						var endIf0 = il.DefineLabel( "END_IF0" );
+						il.EmitBrfalse_S( endIf0 );
+						il.EmitLdstr( memberName );
+						il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+						il.EmitThrow();
+						il.MarkLabel( endIf0 );
+
+						break;
+					}
+				}
+			}
+
 			/*
-			 * if( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+			 * 
+			 * if( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
 			 * {
-			 *		
-			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
+			 *		valueN = GET_SERIALIZER.UnpackFrom( unpacker );
 			 * }
 			 * else
 			 * {
-			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
+			 *		using( var subtreeUnpacker = unpacker.ReadSubtree )
+			 *		{
+			 *			valueN = GET_SERIALIZER.UnpackFrom( unpacker );
+			 *		}
 			 * }
+			 * 
+			 * isValueNUnpacked = true;
+			 * END_OF_DESERIALIZATION:
 			 */
 
 			var then = il.DefineLabel( "THEN" );
@@ -348,39 +440,113 @@ namespace MsgPack.Serialization
 			il.EmitAnyStloc( value );
 			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
 			il.MarkLabel( endIf );
+
+			if ( isUnpacked != null )
+			{
+				il.EmitLdc_I4_1();
+				il.EmitAnyStloc( isUnpacked );
+			}
+
+			il.MarkLabel( endOfDeserialization );
 		}
 
-		public static void EmitDeserializeCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType )
+		public static void EmitDeserializeCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType, NilImplication nilImplication )
 		{
+
+			var endOfDeserialization = il.DefineLabel( "END_OF_DESERIALIZATION" );
+			switch ( nilImplication )
+			{
+				case NilImplication.MemberDefault:
+				{
+					/*
+					 * if( unpacker.Data.Value.IsNil )
+					 * {
+					 *		// Skip current.
+					 *		goto END_OF_DESERIALIZATION;
+					 * }
+					 */
+					il.EmitAnyLdarg( unpackerArgumentIndex );
+					il.EmitGetProperty( Metadata._Unpacker.Data );
+					var data = il.DeclareLocal( typeof( MessagePackObject? ), "data" );
+					il.EmitAnyStloc( data );
+					il.EmitAnyLdloca( data );
+					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
+					var dataValue = il.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+					il.EmitAnyStloc( dataValue );
+					il.EmitAnyLdloca( dataValue );
+					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
+					il.EmitBrtrue( endOfDeserialization );
+
+					break;
+				}
+				case NilImplication.Null:
+				case NilImplication.Prohibit:
+				{
+					/*
+					 * if( unpacker.Data.Value.IsNil )
+					 * {
+					 *		throw SerializationEceptions.NewProhibitNullException( "..." );
+					 * }
+					 */
+					il.EmitAnyLdarg( unpackerArgumentIndex );
+					il.EmitGetProperty( Metadata._Unpacker.Data );
+					var data = il.DeclareLocal( typeof( MessagePackObject? ), "data" );
+					il.EmitAnyStloc( data );
+					il.EmitAnyLdloca( data );
+					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
+					var dataValue = il.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+					il.EmitAnyStloc( dataValue );
+					il.EmitAnyLdloca( dataValue );
+					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
+					var endIf0 = il.DefineLabel( "END_IF0" );
+					il.EmitBrfalse_S( endIf0 );
+					il.EmitLdstr( member.Name );
+					if ( nilImplication == NilImplication.Prohibit )
+					{
+						il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+					}
+					else
+					{
+						il.EmitAnyCall( SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNullMethod );
+					}
+					il.EmitThrow();
+					il.MarkLabel( endIf0 );
+
+					break;
+				}
+			}
+
 			/*
-			 * if( unpacker.IsArrayHeader || unpacker.IsMapHeader )
-			 * {
-			 *		
-			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
-			 * }
-			 * else
-			 * {
-			 *		context..UnmarshalFrom<T>( unpacker, ... ) )
-			 * }
+			 *	if( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+			 *	{
+			 *		throw new SerializatonException( "Cannot deserialize..." );
+			 *	}
+			 * 
+			 *	using( var subtreeUnpacker = unpacker.ReadSubtree() )
+			 *	{
+			 *		GET_SERIALIZER.UnpackTo( unpacker, target ) )
+			 *	}
+			 *	
+			 *	END_OF_DESERIALIZATION:
 			 */
 
-			var then = il.DefineLabel( "THEN" );
-			var endIf = il.DefineLabel( "END_IF" );
+			var endIf = il.DefineLabel( "THEN" );
 			var serializerGetter = emitter.RegisterSerializer( memberType );
 
 			il.EmitAnyLdarg( unpackerArgumentIndex );
 			il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
-			il.EmitBrtrue_S( then );
+			il.EmitBrtrue_S( endIf );
 			il.EmitAnyLdarg( unpackerArgumentIndex );
 			il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
-			il.EmitBrtrue_S( then );
+			il.EmitBrtrue_S( endIf );
 			// else
 			il.EmitTypeOf( memberType );
-			il.EmitAnyCall( SerializationExceptions.NewTypeCannotDeserializeMethod );
+			il.EmitLdstr( member.Name );
+			il.EmitAnyCall( SerializationExceptions.NewStreamDoesNotContainCollectionForMemberMethod );
 			il.EmitThrow();
 			// then
 			var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
-			il.MarkLabel( then );
+			il.MarkLabel( endIf );
 			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
 			serializerGetter( il, 0 );
 			il.EmitAnyLdloc( subtreeUnpacker );
@@ -388,7 +554,7 @@ namespace MsgPack.Serialization
 			Emittion.EmitLoadValue( il, member );
 			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( memberType ).GetMethod( "UnpackTo", new[] { typeof( Unpacker ), memberType } ) );
 			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
-			il.MarkLabel( endIf );
+			il.MarkLabel( endOfDeserialization );
 		}
 
 		public static void EmitUnpackerBeginReadSubtree( TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder subtreeUnpacker )
@@ -410,7 +576,7 @@ namespace MsgPack.Serialization
 			il.MarkLabel( endIf );
 			il.EndExceptionBlock();
 		}
-		
+
 		public static void EmitConstruction( TracingILGenerator il, LocalBuilder target, Action<TracingILGenerator> initialCountLoadingEmitter )
 		{
 			Contract.Assert( il != null );

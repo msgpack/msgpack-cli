@@ -45,7 +45,7 @@ namespace MsgPack.Serialization
 		{
 			PropertyInfo asProperty = source as PropertyInfo;
 			FieldInfo asField = source as FieldInfo;
-			return asProperty != null ? asProperty.CanWrite : !asField.IsInitOnly;
+			return asProperty != null ? ( asProperty.CanWrite && asProperty.GetSetMethod() != null ) : !asField.IsInitOnly;
 		}
 
 		public static CollectionTraits GetCollectionTraits( this Type source )
@@ -270,7 +270,7 @@ namespace MsgPack.Serialization
 			var map = targetType.GetInterfaceMap( interfaceType );
 			int index =
 #if !SILVERLIGHT
-				Array.FindIndex( map.InterfaceMethods, method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
+ Array.FindIndex( map.InterfaceMethods, method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
 #else
 				map.InterfaceMethods.FindIndex( method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
 #endif

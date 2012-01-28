@@ -85,6 +85,8 @@ namespace MsgPack.Serialization
 								il0,
 								1,
 								traits.ElementType,
+								null,
+								NilImplication.MemberDefault,
 								il1 =>
 								{
 									il1.EmitAnyLdarg( 2 );
@@ -127,6 +129,8 @@ namespace MsgPack.Serialization
 								il0,
 								1,
 								traits.ElementType,
+								null,
+								NilImplication.MemberDefault,
 								il1 =>
 								{
 									il1.EmitAnyLdloc( array );
@@ -170,6 +174,8 @@ namespace MsgPack.Serialization
 								il0,
 								1,
 								traits.ElementType,
+								null,
+								NilImplication.MemberDefault,
 								_ => getCurrentEmitter()
 							);
 						}
@@ -426,6 +432,8 @@ namespace MsgPack.Serialization
 								il0,
 								1,
 								traits.ElementType.GetGenericArguments()[ 0 ],
+								null,
+								NilImplication.MemberDefault,
 								il1 =>
 								{
 									il1.EmitAnyLdloca( item );
@@ -438,6 +446,8 @@ namespace MsgPack.Serialization
 								il0,
 								1,
 								traits.ElementType.GetGenericArguments()[ 1 ],
+								null,
+								NilImplication.MemberDefault,
 								il1 =>
 								{
 									il1.EmitAnyLdloca( item );
@@ -455,6 +465,8 @@ namespace MsgPack.Serialization
 								il0,
 								1,
 								typeof( MessagePackObject ),
+								null,
+								NilImplication.MemberDefault,
 								il1 =>
 								{
 									il0.EmitAnyLdloca( item );
@@ -468,6 +480,8 @@ namespace MsgPack.Serialization
 								il0,
 								1,
 								typeof( MessagePackObject ),
+								null,
+								NilImplication.MemberDefault,
 								il1 =>
 								{
 									il0.EmitAnyLdloca( item );
@@ -679,6 +693,8 @@ namespace MsgPack.Serialization
 						il,
 						1,
 						itemTypes[ i ],
+						null,
+						NilImplication.MemberDefault,
 						il0 =>
 						{
 							il0.EmitAnyLdloc( tuple );
@@ -793,7 +809,7 @@ namespace MsgPack.Serialization
 				for ( ; i < itemTypes.Count; i++ )
 				{
 					itemLocals[ i ] = il.DeclareLocal( itemTypes[ i ], "item" + i );
-					Emittion.EmitDeserializeValue( emitter, il, 1, itemLocals[ i ], unpackerReading );
+					Emittion.EmitDeserializeValue( emitter, il, 1, itemLocals[ i ], null, null, NilImplication.MemberDefault, unpackerReading );
 				}
 
 				foreach ( var item in itemLocals )

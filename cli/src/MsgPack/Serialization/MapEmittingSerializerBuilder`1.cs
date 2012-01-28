@@ -50,6 +50,8 @@ namespace MsgPack.Serialization
 					packerIL,
 					1,
 					entry.Member.GetMemberValueType(),
+					null,
+					NilImplication.MemberDefault,
 					il0 =>
 					{
 						if ( typeof( TObject ).IsValueType )

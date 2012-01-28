@@ -64,6 +64,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 					il,
 					1,
 					typeof( TKey ),
+					null,
+					NilImplication.MemberDefault,
 					il0 =>
 					{
 						il0.EmitAnyLdarga( 2 );
@@ -75,6 +77,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 					il,
 					1,
 					typeof( TValue ),
+					null,
+					NilImplication.MemberDefault,
 					il0 =>
 					{
 						il0.EmitAnyLdarga( 2 );
@@ -103,7 +107,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
 				il.EmitThrow();
 				il.MarkLabel( endIf0 );
-				Emittion.EmitDeserializeValue( emitter, il, 1, key, null );
+				Emittion.EmitDeserializeValue( emitter, il, 1, key, null, null, NilImplication.MemberDefault, null );
 				il.EmitAnyLdarg( 1 );
 				il.EmitAnyCall( Metadata._Unpacker.Read );
 				var endIf1 = il.DefineLabel( "END_IF" );
@@ -111,7 +115,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
 				il.EmitThrow();
 				il.MarkLabel( endIf1 );
-				Emittion.EmitDeserializeValue( emitter, il, 1, value, null );
+				Emittion.EmitDeserializeValue( emitter, il, 1, value, null, null, NilImplication.MemberDefault, null );
 
 				var result = il.DeclareLocal( typeof( KeyValuePair<TKey, TValue> ), "result" );
 				il.EmitAnyLdloca( result );

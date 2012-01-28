@@ -105,6 +105,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 					il,
 					1,
 					_nullableTValueProperty.PropertyType,
+					null,
+					NilImplication.MemberDefault,
 					il0 =>
 					{
 						il0.EmitAnyLdarga( 2 );
@@ -127,6 +129,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			var il = emitter.GetUnpackFromMethodILGenerator();
 			try
 			{
+				// FIXME: Comment
 				/*
 				 * if( unpacker.Data.Value.IsNil )
 				 * {
@@ -155,7 +158,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.EmitBr_S( endMethod );
 
 				il.MarkLabel( endIf );
-				Emittion.EmitDeserializeValue( emitter, il, 1, value, null );
+				Emittion.EmitDeserializeValue( emitter, il, 1, value, null, null, NilImplication.MemberDefault, null );
 				il.EmitAnyLdloc( value );
 				il.EmitAnyCall( _nullableTImplicitOperator );
 				il.EmitAnyStloc( result );

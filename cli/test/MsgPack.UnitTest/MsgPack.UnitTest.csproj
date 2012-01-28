@@ -192,6 +192,7 @@
     <Compile Include="Serialization\ComplexType.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContractWithOrder.cs" />
     <Compile Include="Serialization\ComplexTypeWithoutAnyAttribute.cs" />
+    <Compile Include="Serialization\ComplexTypeWithTwoMember.cs" />
     <Compile Include="Serialization\CompositeTest.cs" />
     <Compile Include="Serialization\DataContractAndNonSerializedMixedTarget.cs" />
     <Compile Include="Serialization\DataMemberAttributeNamedPropertyTestTarget.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Serialization\MessagePackSerializerTTest.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeComparer.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeOffsetComparer.cs" />
+    <Compile Include="Serialization\NilImplicationCollectionTestTarget.cs" />
     <Compile Include="Serialization\NilImplicationTest.cs" />
     <Compile Include="Serialization\NilImplicationTestTarget.cs" />
     <Compile Include="Serialization\PackerTest.cs" />

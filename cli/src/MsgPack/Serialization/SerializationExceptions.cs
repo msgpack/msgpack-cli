@@ -260,5 +260,40 @@ namespace MsgPack.Serialization
 		{
 			return new SerializationException( "The unpacker did not read any data yet. The unpacker might never read or underlying stream is empty." );
 		}
+
+		internal static readonly MethodInfo NewNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => SerializationExceptions.NewNullIsProhibited( memberName ) );
+
+		public static Exception NewNullIsProhibited( string memberName )
+		{
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member '{0}' cannot be nil.", memberName ) );
+		}
+
+		internal static readonly MethodInfo NewReadOnlyMemberItemsMustNotBeNullMethod = FromExpression.ToMethod( ( string memberName ) => SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( memberName ) );
+
+		public static Exception NewReadOnlyMemberItemsMustNotBeNull( string memberName )
+		{
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member '{0}' cannot be nil because it is read only member.", memberName ) );
+		}
+
+		internal static readonly MethodInfo NewStreamDoesNotContainCollectionMethod = FromExpression.ToMethod( ( Type type ) => SerializationExceptions.NewStreamDoesNotContainCollection( type ) );
+
+		public static Exception NewStreamDoesNotContainCollection( Type type )
+		{
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize '{0}' type object because the underlying stream does not contain collection.", type ) );
+		}
+
+		internal static readonly MethodInfo NewStreamDoesNotContainCollectionForMemberMethod = FromExpression.ToMethod( ( Type type, string memberName ) => SerializationExceptions.NewStreamDoesNotContainCollectionForMember( type, memberName ) );
+
+		public static Exception NewStreamDoesNotContainCollectionForMember( Type type, string memberName )
+		{
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{0}' which is '{1}' type object because the underlying stream does not contain collection.", memberName, type ) );
+		}
+
+		internal static readonly MethodInfo NewUnexpectedArrayLengthMethod = FromExpression.ToMethod( ( int expectedLength, int actualLength ) => SerializationExceptions.NewUnexpectedArrayLength( expectedLength, actualLength ) );
+
+		public static Exception NewUnexpectedArrayLength( int expectedLength, int actualLength )
+		{
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The MessagePack stream is invalid. Expected array length is {0}, but actual is {1}.", expectedLength, actualLength ) );
+		}
 	}
 }

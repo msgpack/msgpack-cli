@@ -19,24 +19,37 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 
 namespace MsgPack.Serialization
 {
-	public class NilImplicationTestTarget
+	public class NilImplicationCollectionTestTarget
 	{
+		private List<int> _memberDefault = new List<int>() { 0 };
+
 		[MessagePackMember( 0, NilImplication = NilImplication.MemberDefault )]
-		public int MemberDefault = 1;
+		public List<int> MemberDefault
+		{
+			get { return this._memberDefault; }
+			internal set { this._memberDefault = value; }
+		}
+
+		private List<int> _null = new List<int>() { 1 };
 
 		[MessagePackMember( 1, NilImplication = NilImplication.Null )]
-		public int NullButValueType = 2;
+		public List<int> Null
+		{
+			get { return this._null; }
+			internal set { this._null = value; }
+		}
 
-		[MessagePackMember( 2, NilImplication = NilImplication.Null )]
-		public int? NullAndNullableValueType = 3;
+		private List<int> _prohibit = new List<int>() { 2 };
 
-		[MessagePackMember( 3, NilImplication = NilImplication.Null )]
-		public string NullAndReferenceType = "4";
-
-		[MessagePackMember( 4, NilImplication = NilImplication.Prohibit )]
-		public string ProhibitReferenceType = "5";
+		[MessagePackMember( 2, NilImplication = NilImplication.Prohibit )]
+		public List<int> Prohibit
+		{
+			get { return this._prohibit; }
+			internal set { this._prohibit = value; }
+		}
 	}
 }

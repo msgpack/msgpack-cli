@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
@@ -29,7 +30,7 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class NilImplicationTest
 	{
-		private static bool _traceOn = true;
+		private static bool _traceOn = false;
 
 		[SetUp]
 		public void SetUp()
@@ -99,7 +100,37 @@ namespace MsgPack.Serialization
 			packer.Pack( prohibitReferenceType );
 		}
 
-		private static void TestCore(
+
+		private static void PackValuesAsArray(
+			Packer packer,
+			List<int> memberDefault,
+			List<int> @null,
+			List<int> prohibit
+		)
+		{
+			packer.PackArrayHeader( 3 );
+			packer.Pack( memberDefault == null ? default( int[] ) : memberDefault.ToArray() );
+			packer.Pack( @null == null ? default( int[] ) : @null.ToArray() );
+			packer.Pack( prohibit == null ? default( int[] ) : prohibit.ToArray() );
+		}
+
+		private static void PackValuesAsMap(
+			Packer packer,
+			List<int> memberDefault,
+			List<int> @null,
+			List<int> prohibit
+		)
+		{
+			packer.PackMapHeader( 3 );
+			packer.PackString( "MemberDefault" );
+			packer.Pack( memberDefault == null ? default( int[] ) : memberDefault.ToArray() );
+			packer.PackString( "Null" );
+			packer.Pack( @null == null ? default( int[] ) : @null.ToArray() );
+			packer.PackString( "Prohibit" );
+			packer.Pack( prohibit == null ? default( int[] ) : prohibit.ToArray() );
+		}
+
+		private static void TestNonCollectionCore(
 			Action<NilImplicationTestTarget> adjuster,
 			Action<Packer, MessagePackObject, MessagePackObject, MessagePackObject, MessagePackObject, MessagePackObject> packing,
 			MessagePackObject? memberDefault = null,
@@ -113,15 +144,7 @@ namespace MsgPack.Serialization
 			using ( var packer = Packer.Create( buffer ) )
 			{
 				var serializer = MessagePackSerializer.Create<NilImplicationTestTarget>( new SerializationContext() );
-				var target =
-					new NilImplicationTestTarget()
-					{
-						MemberDefault = 0,
-						NullButValueType = 1,
-						NullAndNullableValueType = 2,
-						NullAndReferenceType = "3",
-						ProhibitReferenceType = "4"
-					};
+				var target = new NilImplicationTestTarget();
 
 				if ( adjuster != null )
 				{
@@ -154,14 +177,53 @@ namespace MsgPack.Serialization
 			}
 		}
 
+
+		private static void TestCollectionCore(
+			Action<NilImplicationCollectionTestTarget> adjuster,
+			Action<Packer, List<int>, List<int>, List<int>> packing,
+			Func<List<int>> memberDefault = null,
+			Func<List<int>> @null = null,
+			Func<List<int>> prohibit = null
+		)
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				var serializer = MessagePackSerializer.Create<NilImplicationCollectionTestTarget>( new SerializationContext() );
+				var target = new NilImplicationCollectionTestTarget();
+
+				if ( adjuster != null )
+				{
+					adjuster( target );
+				}
+
+				packing(
+					packer,
+					memberDefault != null ? memberDefault() : target.MemberDefault,
+					@null != null ? @null() : target.Null,
+					prohibit != null ? prohibit() : target.Prohibit
+				);
+
+				buffer.Position = 0;
+
+				var result = serializer.Unpack( buffer );
+				Assert.That( result.MemberDefault, Is.EqualTo( target.MemberDefault ) );
+				Assert.That( result.Null, Is.EqualTo( target.Null ) );
+				Assert.That( result.Prohibit, Is.EqualTo( target.Prohibit ) );
+
+				var expectedBytes = buffer.ToArray();
+				using ( var actual = new MemoryStream() )
+				{
+					serializer.Pack( actual, target );
+				}
+			}
+		}
+				
 		[Test]
 		public void TestMemberDefault_Array_NilToDefault()
 		{
-			TestCore(
-				target =>
-				{
-					target.MemberDefault = -1;
-				},
+			TestNonCollectionCore(
+				null,
 				PackValuesAsArray,
 				memberDefault: MessagePackObject.Nil
 			);
@@ -170,11 +232,8 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestMemberDefault_Map_NilToDefault()
 		{
-			TestCore(
-				target =>
-				{
-					target.MemberDefault = -1;
-				},
+			TestNonCollectionCore(
+				null,
 				PackValuesAsMap,
 				memberDefault: MessagePackObject.Nil
 			);
@@ -184,7 +243,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestNullButValueType_Array_Fail()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				null,
 				PackValuesAsArray,
 				nullButValueType: MessagePackObject.Nil
@@ -195,7 +254,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestNullButValueType_Map_Fail()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				null,
 				PackValuesAsMap,
 				nullButValueType: MessagePackObject.Nil
@@ -205,7 +264,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestNullAndNullableValueType_Array_Null()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				target =>
 				{
 					target.NullAndNullableValueType = null;
@@ -217,7 +276,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestNullAndNullableValueType_Map_Null()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				target =>
 				{
 					target.NullAndNullableValueType = null;
@@ -229,7 +288,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestNullAndReferenceType_Array_Null()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				target =>
 				{
 					target.NullAndReferenceType = null;
@@ -241,7 +300,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestNullAndReferenceType_Map_Null()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				target =>
 				{
 					target.NullAndReferenceType = null;
@@ -254,10 +313,10 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitReferenceType_Array_Pack_Fail()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				target =>
 				{
-					target.NullAndReferenceType = null;
+					target.ProhibitReferenceType = null;
 				},
 				PackValuesAsArray
 			);
@@ -267,7 +326,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitReferenceType_Map_Pack_Fail()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				target =>
 				{
 					target.ProhibitReferenceType = null;
@@ -281,7 +340,7 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitReferenceType_Array_Unpack_Fail()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				null,
 				PackValuesAsArray,
 				prohibitReferenceType: MessagePackObject.Nil
@@ -292,11 +351,204 @@ namespace MsgPack.Serialization
 		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitReferenceType_Map_Unpack_Fail()
 		{
-			TestCore(
+			TestNonCollectionCore(
 				null,
 				PackValuesAsMap,
 				prohibitReferenceType: MessagePackObject.Nil
 			);
+		}
+
+
+		[Test]
+		public void TestMemberDefaultForCollection_Array_NilToDefault()
+		{
+			TestCollectionCore(
+				null,
+				PackValuesAsArray,
+				memberDefault: () => null,
+				@null: () => new List<int>(), // Prevent the value to be doubled because packer pack non-null value and unpacker appends unpacked values.
+				prohibit: () => new List<int>() // Prevent the value to be doubled because packer pack non-null value and unpacker appends unpacked values.
+			);
+		}
+
+		[Test]
+		public void TestMemberDefaultForCollection_Map_NilToDefault()
+		{
+			TestCollectionCore(
+				null,
+				PackValuesAsMap,
+				memberDefault: () => null,
+				@null: () => new List<int>(), // Prevent the value to be doubled because packer pack non-null value and unpacker appends unpacked values.
+				prohibit: () => new List<int>() // Prevent the value to be doubled because packer pack non-null value and unpacker appends unpacked values.
+			);
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestNullForCollection_Array_Null()
+		{
+			TestCollectionCore(
+				target =>
+				{
+					target.Null = null;
+				},
+				PackValuesAsArray
+			);
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestNullForCollection_Map_Null()
+		{
+			TestCollectionCore(
+				target =>
+				{
+					target.Null = null;
+				},
+				PackValuesAsMap
+			);
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestProhibitForCollection_Array_Pack_Fail()
+		{
+			TestCollectionCore(
+				target =>
+				{
+					target.Prohibit = null;
+				},
+				PackValuesAsArray
+			);
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestProhibitForCollection_Map_Pack_Fail()
+		{
+			TestCollectionCore(
+				target =>
+				{
+					target.Prohibit = null;
+				},
+				PackValuesAsMap
+			);
+		}
+
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestProhibitForCollection_Array_Unpack_Fail()
+		{
+			TestCollectionCore(
+				null,
+				PackValuesAsArray,
+				prohibit: () => null
+			);
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestProhibitForCollection_Map_Unpack_Fail()
+		{
+			TestCollectionCore(
+				null,
+				PackValuesAsMap,
+				prohibit: () => null
+			);
+		}
+
+		// FIXME: Array and element count less/more expected. Map and missing
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestElelementMissingInTheFirstPlace_Array_Fail()
+		{
+			using ( var buffer = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( buffer, false ) )
+				{
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+				}
+
+				buffer.Position = 0;
+
+				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( new SerializationContext() { SerializationMethod = SerializationMethod.Array } );
+				target.Unpack( buffer );
+			}
+		}
+
+		[Test]
+		[ExpectedException( typeof( SerializationException ) )]
+		public void TestElelementTooManyInTheFirstPlace_Array_Fail()
+		{
+			using ( var buffer = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( buffer, false ) )
+				{
+					packer.PackArrayHeader( 3 );
+					packer.PackString( "123" );
+					packer.PackString( "234" );
+					packer.PackString( "345" );
+				}
+
+				buffer.Position = 0;
+
+				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( new SerializationContext() { SerializationMethod = SerializationMethod.Array } );
+				target.Unpack( buffer );
+			}
+		}
+
+		[Test]
+		public void TestElelementMissingInTheFirstPlace_Map_MissingMembersAreSkipped()
+		{
+			using ( var buffer = new MemoryStream() )
+			{
+				var valueOfValue1 = "123";
+				using ( var packer = Packer.Create( buffer, false ) )
+				{
+					packer.PackMapHeader( 1 );
+					packer.PackString( "Value1" );
+					packer.PackString( valueOfValue1 );
+				}
+
+				buffer.Position = 0;
+
+				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( new SerializationContext() { SerializationMethod = SerializationMethod.Map } );
+				var result = target.Unpack( buffer );
+
+				Assert.That( result.Value1, Is.EqualTo( valueOfValue1 ) );
+				Assert.That( result.Value2, Is.EqualTo( new ComplexTypeWithTwoMember().Value2 ) );
+			}
+		}
+
+		[Test]
+		public void TestElelementTooManyInTheFirstPlace_Map_ExtrasAreIgnored()
+		{
+			using ( var buffer = new MemoryStream() )
+			{
+				var valueOfValue1 = "123";
+				var valueOfValue2 = "234";
+				var valueOfValue3 = "345";
+				using ( var packer = Packer.Create( buffer, false ) )
+				{
+					packer.PackMapHeader( 1 );
+					packer.PackString( "Value1" );
+					packer.PackString( valueOfValue1 );
+					packer.PackString( "Value2" );
+					packer.PackString( valueOfValue2 );
+					packer.PackString( "Value3" );
+					packer.PackString( valueOfValue3 );
+				}
+
+				buffer.Position = 0;
+
+				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( new SerializationContext() { SerializationMethod = SerializationMethod.Map } );
+				var result = target.Unpack( buffer );
+
+				Assert.That( result.Value1, Is.EqualTo( valueOfValue1 ) );
+				Assert.That( result.Value2, Is.EqualTo( valueOfValue2 ) );
+			}
 		}
 	}
 }

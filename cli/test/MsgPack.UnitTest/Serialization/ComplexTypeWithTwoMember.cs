@@ -22,21 +22,12 @@ using System;
 
 namespace MsgPack.Serialization
 {
-	public class NilImplicationTestTarget
+	public class ComplexTypeWithTwoMember
 	{
-		[MessagePackMember( 0, NilImplication = NilImplication.MemberDefault )]
-		public int MemberDefault = 1;
+		[MessagePackMember( 0 )]
+		public string Value1 = "111";
 
-		[MessagePackMember( 1, NilImplication = NilImplication.Null )]
-		public int NullButValueType = 2;
-
-		[MessagePackMember( 2, NilImplication = NilImplication.Null )]
-		public int? NullAndNullableValueType = 3;
-
-		[MessagePackMember( 3, NilImplication = NilImplication.Null )]
-		public string NullAndReferenceType = "4";
-
-		[MessagePackMember( 4, NilImplication = NilImplication.Prohibit )]
-		public string ProhibitReferenceType = "5";
+		[MessagePackMember( 1 )]
+		public string Value2 = "222";
 	}
 }
