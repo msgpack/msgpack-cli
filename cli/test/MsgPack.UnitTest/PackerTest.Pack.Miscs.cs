@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using System.Runtime.Serialization;
 
 namespace MsgPack
 {
@@ -249,7 +250,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				packer.PackItems( new int[] { 1, 2, 3 } );
+				packer.Pack( new int[] { 1, 2, 3 } );
 				Assert.AreEqual(
 					new byte[] { 0x93, 1, 2, 3 },
 					buffer.ToArray()
@@ -258,16 +259,13 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestPackItems_NotNullEnumerable__AsArray()
+		[ExpectedException(typeof(SerializationException))]
+		public void TestPackItems_NotNullEnumerable_Fail()
 		{
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				packer.PackItems( Enumerable.Range( 1, 3 ) );
-				Assert.AreEqual(
-					new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x3, 1, 2, 3 },
-					buffer.ToArray()
-				);
+				packer.Pack( Enumerable.Range( 1, 3 ) );
 			}
 		}
 
@@ -277,7 +275,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				packer.PackItems( default( MessagePackObject[] ) );
+				packer.Pack( default( MessagePackObject[] ) );
 				Assert.AreEqual(
 					new byte[] { 0xC0 },
 					buffer.ToArray()

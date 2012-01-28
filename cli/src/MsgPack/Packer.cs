@@ -551,7 +551,7 @@ namespace MsgPack
 			var b = this.TryPackUInt32( value );
 			Contract.Assume( b );
 		}
-		
+
 		/// <summary>
 		///		Try pack <see cref="UInt32"/> value to current stream strictly.
 		/// </summary>
@@ -686,7 +686,7 @@ namespace MsgPack
 			var b = this.TryPackUInt64( value );
 			Contract.Assume( b );
 		}
-		
+
 		/// <summary>
 		///		Try pack <see cref="UInt64"/> value to current stream strictly.
 		/// </summary>
@@ -1318,106 +1318,6 @@ namespace MsgPack
 		}
 
 		#endregion -- String --
-
-		#region -- Enumerable --
-		/// <summary>
-		///		Pack specified collection to current stream with appropriate serialization.
-		/// </summary>
-		/// <param name="value">Source collection.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public Packer PackItems<TItem>( IEnumerable<TItem> value )
-		{
-			return this.PackItems( value, null );
-		}
-
-		/// <summary>
-		///		Pack specified collection to current stream with appropriate serialization.
-		/// </summary>
-		/// <param name="value">Source collection.</param>
-		/// <param name="options">Packing options. This value can be null.</param>
-		/// <returns>This instance.</returns>
-		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public Packer PackItems<TItem>( IEnumerable<TItem> value, PackingOptions options )
-		{
-			this.VerifyNotDisposed();
-			Contract.EndContractBlock();
-
-			this.PrivatePackItems( value, options );
-			return this;
-		}
-
-		private void PrivatePackItems<TItem>( IEnumerable<TItem> value, PackingOptions options )
-		{
-			if ( value == null )
-			{
-				this.PrivatePackNullCore();
-				return;
-			}
-
-			this.PrivatePackArrayCore( value, GetCount<TItem>( value ), this.PackObjectsCore, options );
-		}
-
-		private static int? GetCount( System.Collections.IEnumerable value )
-		{
-			var asCollection = value as System.Collections.ICollection;
-			if ( asCollection != null )
-			{
-				return asCollection.Count;
-			}
-			else
-			{
-				return null;
-			}
-		}
-
-		private static int? GetCount<TItem>( IEnumerable<TItem> value )
-		{
-			int? count = GetCount( value as System.Collections.IEnumerable );
-
-			if ( count != null )
-			{
-				return count;
-			}
-
-			var asCollectionT = value as ICollection<TItem>;
-			if ( asCollectionT != null )
-			{
-				count = asCollectionT.Count;
-			}
-
-			return count;
-		}
-
-		private void PrivatePackArrayCore<TItem>( IEnumerable<TItem> value, int? count, Action<IEnumerable<TItem>, PackingOptions> packObjects, PackingOptions options )
-		{
-			Contract.Assert( value != null );
-			Contract.Assert( packObjects != null );
-			Contract.Assert( 0 <= count.GetValueOrDefault() );
-
-			if ( count != null )
-			{
-				this.PrivatePackArrayHeaderCore( count.Value );
-				packObjects( value, options );
-			}
-			else
-			{
-				// array32 indicator
-				this.WriteByte( MessagePackCode.Array32 );
-				this.StreamWrite( value, packObjects, options );
-			}
-		}
-
-		private void PackObjectsCore<TItem>( IEnumerable<TItem> value, PackingOptions options )
-		{
-			foreach ( var item in value )
-			{
-				// Dispacthed to Pack(Object)
-				ValuePacker<TItem>.Instance.Pack( this, item, options );
-			}
-		}
-
-		#endregion -- Enumerable --
 
 		#region -- List --
 

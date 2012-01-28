@@ -624,7 +624,7 @@ namespace MsgPack
 					if ( asMap.Count > 0 )
 					{
 						bool isFirst = true;
-						foreach( var entry in asMap )
+						foreach ( var entry in asMap )
 						{
 							if ( isFirst )
 							{
@@ -988,7 +988,35 @@ namespace MsgPack
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
 			if ( typeCode == null )
 			{
-				packer.PackObject( this._handleOrTypeCode, options );
+				MessagePackString asString;
+				IList<MessagePackObject> asList;
+				IDictionary<MessagePackObject, MessagePackObject> asDictionary;
+				if ( ( asString = this._handleOrTypeCode as MessagePackString ) != null )
+				{
+					packer.PackRaw( asString.GetBytes() );
+				}
+				else if ( ( asList = this._handleOrTypeCode as IList<MessagePackObject> ) != null )
+				{
+					packer.PackArrayHeader( asList.Count );
+					foreach ( var item in asList )
+					{
+						item.PackToMessage( packer, options );
+					}
+				}
+				else if ( ( asDictionary = this._handleOrTypeCode as IDictionary<MessagePackObject, MessagePackObject> ) != null )
+				{
+					packer.PackMapHeader( asDictionary.Count );
+					foreach ( var item in asDictionary )
+					{
+						item.Key.PackToMessage( packer, options );
+						item.Value.PackToMessage( packer, options );
+					}
+				}
+				else
+				{
+					throw new SerializationException( "Failed to pack this object." );
+				}
+
 				return;
 			}
 

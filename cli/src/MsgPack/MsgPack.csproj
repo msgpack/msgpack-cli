@@ -130,12 +130,6 @@
     <Compile Include="MessagePackObjectDictionary.cs" />
     <Compile Include="MessagePackObjectEqualityComparer.cs" />
     <Compile Include="MessagePackString.cs" />
-    <Compile Include="Packer.Utilities.cs" />
-    <Compile Include="Packer.ValuePacker.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Packer.ValuePacker.tt</DependentUpon>
-    </Compile>
     <Compile Include="PackerUnpackerExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -146,7 +140,6 @@
       <DependentUpon>MessagePackObject.tt</DependentUpon>
     </Compile>
     <Compile Include="MessageTypeException.cs" />
-    <Compile Include="ObjectPackingOptions.cs" />
     <Compile Include="Packer.cs" />
     <Compile Include="Packer.Nullable.cs">
       <AutoGen>True</AutoGen>
@@ -282,10 +275,6 @@
     <Compile Include="StreamingUnpacker.cs" />
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
-    </None>
-    <None Include="Packer.ValuePacker.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Packer.ValuePacker.cs</LastGenOutput>
     </None>
     <None Include="Serialization\DefaultSerializers\DefaultSerializers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -37,7 +37,7 @@ namespace MsgPack
 			using ( var stream = new MemoryStream() )
 			{
 				var packer = Packer.Create( stream );
-				packer.PackItems(
+				packer.Pack(
 					new[] 
 					{ 
 						new MessagePackObject( new[] { new MessagePackObject( "1-1" ), new MessagePackObject( "1-2" ), new MessagePackObject( "1-3" ) } ),
@@ -75,7 +75,7 @@ namespace MsgPack
 			using ( var stream = new MemoryStream() )
 			{
 				var packer = Packer.Create( stream );
-				packer.PackItems(
+				packer.Pack(
 					new[] 
 					{ 
 						new MessagePackObject( 
