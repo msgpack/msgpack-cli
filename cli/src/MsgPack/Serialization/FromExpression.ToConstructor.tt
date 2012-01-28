@@ -29,7 +29,8 @@
 <#
 var __typeName = "FromExpression";
 var __funcs =  GetDelegates( typeof( object ).Assembly, "Func" ).Concat( GetDelegates( typeof( Enumerable ).Assembly, "Func" ) ).ToArray();
-	
+var __maxWindowsPhoneArity = 5;	
+
 #>
 #region -- License Terms --
 //
@@ -66,12 +67,26 @@ namespace MsgPack.Serialization
 <#
 foreach( Type __func in __funcs )
 {
+	var __notAvailableOnWP = __func.GetGenericArguments().Length > __maxWindowsPhoneArity;
+
+	if ( __notAvailableOnWP )
+	{
+#>
+#if !WINDOWS_PHONE
+<#
+	}
 #>
 		public static ConstructorInfo ToConstructor<#= GetCSharpGenericArgumentsToken( __func ) #>( Expression< <#= ToCSharpToken( __func ) #> > source )
 		{
 			return ToConstructorCore( source );
 		}
 <#
+	if ( __notAvailableOnWP )
+	{
+#>
+#endif
+<#
+	}
 }
 #>
 	}

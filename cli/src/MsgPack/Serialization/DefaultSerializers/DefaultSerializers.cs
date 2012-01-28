@@ -360,8 +360,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return new System.Collections.Specialized.BitVector32( ctorArgument );
 		}
 	}
-#endif
+#endif // !SILVERLIGHT
 
+#if !WINDOWS_PHONE
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
 		protected internal sealed override void PackToCore( Packer packer, System.Numerics.BigInteger value )
@@ -374,4 +375,5 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); 
 		}
 	}
+#endif // !WINDOWS_PHONE
 }

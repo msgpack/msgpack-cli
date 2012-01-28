@@ -33,11 +33,21 @@ namespace MsgPack.Serialization.DefaultSerializers
 			where T : struct
 		{
 			T value;
+#if !WINDOWS_PHONE
 			if ( !Enum.TryParse( unpacker.Data.Value.AsString(), out value ) )
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.Data.Value.AsString(), typeof( T ) ) );
 			}
-
+#else
+			try
+			{
+				value = ( T )Enum.Parse( typeof( T ), unpacker.Data.Value.AsString(), false );
+			}
+			catch( ArgumentException )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.Data.Value.AsString(), typeof( T ) ) );
+			}
+#endif
 			return value;
 		}
 	}

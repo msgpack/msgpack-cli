@@ -150,6 +150,12 @@ var __notInSLs =
 		typeof( System.Collections.Specialized.NameValueCollection ),
 		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
 	};
+var __notInWPs =
+	new HashSet<Type>()
+	{
+		typeof( System.Numerics.BigInteger ),
+		typeof( System.Numerics.Complex ),
+	};
 #>
 #region -- License Terms --
 //
@@ -176,7 +182,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
-#if !SILVERLIGHT
+#if !WINDOWS_PHONE
 using System.Numerics;
 #endif
 using System.Reflection;
@@ -214,6 +220,13 @@ foreach( Type __type in __structTypes )
 #if !SILVERLIGHT
 <#
 	}
+	
+	if( __notInWPs.Contains( __type ) )
+	{
+#>
+#if !WINDOWS_PHONE
+<#
+	}
 #>
 			dictionary.Add( typeof( <#= __type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
 <#
@@ -248,10 +261,17 @@ foreach( Type __type in __classTypes )
 <#
 	}
 	
+	if( __notInWPs.Contains( __type ) )
+	{
+#>
+#endif // !WINDOWS_PHONE
+<#
+	}
+	
 	if( __notInSLs.Contains( __type ) )
 	{
 #>
-#endif
+#endif // !SILVERLIGHT
 <#
 	}
 }

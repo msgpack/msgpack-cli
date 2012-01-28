@@ -172,6 +172,7 @@ namespace NLiblet.Reflection
 		// TODO: NLiblet
 		private readonly bool _isDebuggable;
 
+#if !WINDOWS_PHONE
 		/// <summary>
 		///		Initializes a new instance of the <see cref="TracingILGenerator"/> class.
 		/// </summary>
@@ -182,6 +183,7 @@ namespace NLiblet.Reflection
 		{
 			Contract.Assert( methodBuilder != null );
 		}
+#endif
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TracingILGenerator"/> class.
@@ -195,6 +197,7 @@ namespace NLiblet.Reflection
 		}
 
 		// TODO: NLIblet
+#if !WINDOWS_PHONE
 		/// <summary>
 		///		Initializes a new instance of the <see cref="TracingILGenerator"/> class.
 		/// </summary>
@@ -206,6 +209,7 @@ namespace NLiblet.Reflection
 		{
 			Contract.Assert( methodBuilder != null );
 		}
+#endif
 
 		// TODO: NLiblet
 		private TracingILGenerator( ILGenerator underlying, bool isInDynamicMethod, TextWriter traceWriter, bool isDebuggable )
@@ -992,8 +996,8 @@ namespace NLiblet.Reflection
 			this._trace.Write( " " );
 
 			// TODO: NLiblet
-			var asFieldBuilder = field as FieldBuilder;
 #if !SILVERLIGHT
+			var asFieldBuilder = field as FieldBuilder;
 			if ( asFieldBuilder == null )
 			{
 				var modreqs = field.GetRequiredCustomModifiers();
@@ -1024,7 +1028,9 @@ namespace NLiblet.Reflection
 			}
 #endif
 
+#if !SILVERLIGHT
 			if ( this._isInDynamicMethod || asFieldBuilder == null ) // declaring type of the field should be omitted for same type.
+#endif
 			{
 				WriteType( this._trace, field.DeclaringType );
 			}
@@ -1090,7 +1096,9 @@ namespace NLiblet.Reflection
 		{
 			Contract.Assert( method != null );
 
+#if !WINDOWS_PHONE
 			bool isMethodBuilder = method is MethodBuilder;
+#endif
 
 			/*
 			 *	<instr_method> <callConv> <type> [ <typeSpec> :: ] <methodName> ( <parameters> ) 
@@ -1104,7 +1112,9 @@ namespace NLiblet.Reflection
 
 			var unamanagedCallingConvention = default( CallingConvention? );
 			// TODO: Back to NLiblet
+#if !WINDOWS_PHONE
 			if ( !isMethodBuilder )
+#endif
 			{
 				// TODO: C++/CLI etc...
 				var dllImport = Attribute.GetCustomAttribute( method, typeof( DllImportAttribute ) ) as DllImportAttribute;
@@ -1130,7 +1140,11 @@ namespace NLiblet.Reflection
 				this._trace.Write( asMethodInfo.Module.Name );
 				this._trace.Write( "]::" );
 			}
+#if !WINDOWS_PHONE
 			else if ( this._isInDynamicMethod || !isMethodBuilder ) // declaring type of the method should be omitted for same type.
+#else
+			else
+#endif
 			{
 				WriteType( this._trace, method.DeclaringType );
 				this._trace.Write( "::" );
@@ -1138,7 +1152,9 @@ namespace NLiblet.Reflection
 
 			this._trace.Write( method.Name );
 			this._trace.Write( "(" );
+#if !WINDOWS_PHONE
 			if ( !isMethodBuilder )
+#endif
 			{
 				var parameters = method.GetParameters();
 				for ( int i = 0; i < parameters.Length; i++ )

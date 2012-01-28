@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 
 namespace System.Diagnostics.Contracts
 {
@@ -52,8 +53,63 @@ namespace System.Diagnostics.Contracts
 		}
 
 		[Conditional( "DEBUG" )]
+		public static void Requires( bool condition )
+		{
+			Debug.Assert( condition, "Precondition failed." );
+		}
+
+		[Conditional( "NEVER_COMPILED" )]
+		public static void Ensures( bool condition ) { }
+
+		public static T Result<T>()
+		{
+			return default( T );
+		}
+
+		public static T ValueAtReturn<T>( out T value )
+		{
+			value = default( T );
+			return default( T );
+		}
+
+		public static bool ForAll<T>( IEnumerable<T> collection, Predicate<T> predicate )
+		{
+			return true;
+		}
+
+		[Conditional( "NEVER_COMPILED" )]
 		public static void EndContractBlock() { }
 	}
 
+	/// <summary>
+	///		Compatibility Mock.
+	/// </summary>
+	[Conditional( "NEVER_COMPILED" )]
+	[AttributeUsage(
+		AttributeTargets.Class | AttributeTargets.Delegate
+		| AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event
+		| AttributeTargets.Parameter,
+		Inherited = true
+	)]
 	internal sealed class PureAttribute : Attribute { }
+
+	/// <summary>
+	///		Compatibility Mock.
+	/// </summary>
+	[Conditional( "NEVER_COMPILED" )]
+	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Delegate )]
+	internal sealed class ContractClassAttribute : Attribute
+	{
+		public ContractClassAttribute( Type typeContainingContracts ) { }
+	}
+
+	/// <summary>
+	///		Compatibility Mock.
+	/// </summary>
+	[Conditional( "NEVER_COMPILED" )]
+	[AttributeUsage( AttributeTargets.Class )]
+	internal sealed class ContractClassForAttribute : Attribute
+	{
+		public ContractClassForAttribute( Type typeContractsAreFor ) { }
+	}
 }

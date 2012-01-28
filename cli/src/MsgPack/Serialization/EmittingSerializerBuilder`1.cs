@@ -386,6 +386,9 @@ namespace MsgPack.Serialization
 		/// </returns>
 		public sealed override MessagePackSerializer<TObject> CreateTupleSerializer()
 		{
+#if WINDOWS_PHONE
+			throw new PlatformNotSupportedException();
+#else
 			using ( var emitter = EmittingSerializerBuilderLogics.CreateTupleSerializerCore( typeof( TObject ), this._emitterFlavor ) )
 			{
 				try
@@ -397,6 +400,7 @@ namespace MsgPack.Serialization
 					emitter.FlushTrace();
 				}
 			}
+#endif
 		}
 	}
 

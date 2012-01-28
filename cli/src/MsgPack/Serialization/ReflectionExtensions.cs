@@ -268,12 +268,13 @@ namespace MsgPack.Serialization
 			}
 
 			var map = targetType.GetInterfaceMap( interfaceType );
-			int index =
+			
 #if !SILVERLIGHT
- Array.FindIndex( map.InterfaceMethods, method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
+			int index = Array.FindIndex( map.InterfaceMethods, method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
 #else
-				map.InterfaceMethods.FindIndex( method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
+			int index = map.InterfaceMethods.FindIndex( method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
 #endif
+
 			if ( index < 0 )
 			{
 #if DEBUG
@@ -357,5 +358,18 @@ namespace MsgPack.Serialization
 			Contract.Assert( type.IsInterface );
 			return type.Assembly == typeof( Array ).Assembly && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
 		}
+
+#if WINDOWS_PHONE
+		public static IEnumerable<Type> FindInterfaces( this Type source, Func<Type, object, bool> filter, object criterion )
+		{
+			foreach ( var @interface in source.GetInterfaces() )
+			{
+				if ( filter( @interface, criterion ) )
+				{
+					yield return @interface;
+				}
+			}
+		}
+#endif
 	}
 }

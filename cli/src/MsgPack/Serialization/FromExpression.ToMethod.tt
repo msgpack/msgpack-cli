@@ -30,6 +30,7 @@
 var __typeName = "FromExpression";
 var __actions =  GetDelegates( typeof( object ).Assembly, "Action" ).Concat( GetDelegates( typeof( Enumerable ).Assembly, "Action" ) ).ToArray();
 var __funcs =  GetDelegates( typeof( object ).Assembly, "Func" ).Concat( GetDelegates( typeof( Enumerable ).Assembly, "Func" ) ).ToArray();
+var __maxWindowsPhoneArity = 5;	
 	
 #>
 #region -- License Terms --
@@ -67,24 +68,52 @@ namespace MsgPack.Serialization
 <#
 foreach( Type __action in __actions )
 {
+	var __notAvailableOnWP = __action.GetGenericArguments().Length >= __maxWindowsPhoneArity;
+
+	if ( __notAvailableOnWP )
+	{
+#>
+#if !WINDOWS_PHONE
+<#
+	}
 #>
 		public static MethodInfo ToMethod<#= GetCSharpGenericArgumentsToken( __action ) #>( Expression< <#= ToCSharpToken( __action ) #> > source )
 		{
 			return ToMethodCore( source );
 		}
 <#
+	if ( __notAvailableOnWP )
+	{
+#>
+#endif
+<#
+	}
 }
 #>
 
 <#
 foreach( Type __func in __funcs )
 {
+	var __notAvailableOnWP = __func.GetGenericArguments().Length > __maxWindowsPhoneArity;
+
+	if ( __notAvailableOnWP )
+	{
+#>
+#if !WINDOWS_PHONE
+<#
+	}
 #>
 		public static MethodInfo ToMethod<#= GetCSharpGenericArgumentsToken( __func ) #>( Expression< <#= ToCSharpToken( __func ) #> > source )
 		{
 			return ToMethodCore( source );
 		}
 <#
+	if ( __notAvailableOnWP )
+	{
+#>
+#endif
+<#
+	}
 }
 #>
 	}

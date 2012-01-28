@@ -139,6 +139,14 @@ var __notInSLs =
 	{
 		typeof( System.Collections.Specialized.BitVector32 ),
 	};
+
+var __notInWPs =
+	new HashSet<Type>()
+	{
+		typeof( System.Numerics.BigInteger ),
+		typeof( System.Numerics.Complex ),
+	};
+
 #>
 #region -- License Terms --
 //
@@ -194,6 +202,13 @@ foreach( Type __type in __types )
 	{
 #>
 #if !SILVERLIGHT
+<#
+	}
+	
+	if ( __notInWPs.Contains( __type ) )
+	{
+#>
+#if !WINDOWS_PHONE
 <#
 	}
 #>
@@ -310,10 +325,17 @@ foreach( var ctor in ctors )
 		}
 	}
 <#
+	if ( __notInWPs.Contains( __type ) )
+	{
+#>
+#endif // !WINDOWS_PHONE
+<#
+	}
+
 	if ( __notInSLs.Contains( __type ) )
 	{
 #>
-#endif
+#endif // !SILVERLIGHT
 <#
 	}
 }

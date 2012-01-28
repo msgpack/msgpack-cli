@@ -35,8 +35,11 @@ namespace MsgPack.Serialization
 		private static readonly ConstructorInfo _debuggableAttributeCtor =
 			typeof( DebuggableAttribute ).GetConstructor( new[] { typeof( bool ), typeof( bool ) } );
 		private static readonly object[] _debuggableAttributeCtorArguments = new object[] { true, true };
+
+#if !WINDOWS_PHONE
 		private static int _assemblySequence = -1;
 		private int _typeSequence = -1;
+#endif
 
 #if !SILVERLIGHT
 		private static DefaultSerializationMethodGeneratorManager _canCollect = new DefaultSerializationMethodGeneratorManager( false, true );
@@ -100,13 +103,16 @@ namespace MsgPack.Serialization
 		}
 #endif
 
+#if !WINDOWS_PHONE
 		private readonly AssemblyBuilder _assembly;
 		private readonly ModuleBuilder _module;
 		private readonly string _moduleFileName;
 		private readonly bool _isDebuggable;
+#endif
 
 		private DefaultSerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable )
 		{
+#if !WINDOWS_PHONE
 			this._isDebuggable = isDebuggable;
 
 			var assemblyName = typeof( DefaultSerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
@@ -164,7 +170,8 @@ namespace MsgPack.Serialization
 			{
 				this._module = this._assembly.DefineDynamicModule( assemblyName, true );
 			}
-#endif
+#endif // else SILVERLIGHT
+#endif // WINDOWS_PHONE
 		}
 
 #if !SILVERLIGHT
@@ -184,6 +191,7 @@ namespace MsgPack.Serialization
 		/// </returns>
 		protected sealed override SerializerEmitter CreateEmitterCore( Type targetType, EmitterFlavor emitterFlavor )
 		{
+#if !WINDOWS_PHONE
 			switch ( emitterFlavor )
 			{
 				case EmitterFlavor.FieldBased:
@@ -196,6 +204,9 @@ namespace MsgPack.Serialization
 					return new ContextBasedSerializerEmitter( targetType );
 				}
 			}
+#else
+			return new ContextBasedSerializerEmitter( targetType );
+#endif
 		}
 	}
 }

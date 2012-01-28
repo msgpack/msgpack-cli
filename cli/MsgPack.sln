@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Serialization.Silve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.WindowsPhone.7.1", "src\MsgPack.WindowsPhone.7.1\MsgPack.WindowsPhone.7.1.csproj", "{FFD952F7-DAB0-41CF-9A5D-4038A747CA8A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Serialization.WindowsPhone.7.1", "src\MsgPack.Serialization.WindowsPhone.7.1\MsgPack.Serialization.WindowsPhone.7.1.csproj", "{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CodeAnalysis|Any CPU = CodeAnalysis|Any CPU
@@ -93,6 +95,18 @@ Global
 		{FFD952F7-DAB0-41CF-9A5D-4038A747CA8A}.PerformanceTest|Any CPU.Build.0 = Release|Any CPU
 		{FFD952F7-DAB0-41CF-9A5D-4038A747CA8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFD952F7-DAB0-41CF-9A5D-4038A747CA8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.CodeAnalysis|Any CPU.ActiveCfg = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.CodeAnalysis|Any CPU.Build.0 = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.CoreProfile|Any CPU.ActiveCfg = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.CoreProfile|Any CPU.Build.0 = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.Instrument|Any CPU.ActiveCfg = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.Instrument|Any CPU.Build.0 = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.PerformanceTest|Any CPU.ActiveCfg = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.PerformanceTest|Any CPU.Build.0 = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,5 +120,6 @@ Global
 		{8E1A7F0A-85E6-4BB7-AAF6-BBFD46775796} = {6EAE43C8-397B-4223-8C28-98BC63CBC076}
 		{B1CE3A0C-BC12-4394-8F67-622C5448BBCE} = {6EAE43C8-397B-4223-8C28-98BC63CBC076}
 		{FFD952F7-DAB0-41CF-9A5D-4038A747CA8A} = {8C48237E-FEB8-45D4-9DF9-B214481B09CD}
+		{4BA9703C-3F84-4F96-9B79-4934C0EFFC97} = {8C48237E-FEB8-45D4-9DF9-B214481B09CD}
 	EndGlobalSection
 EndGlobal
