@@ -152,12 +152,15 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\ArrayEmittingSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\CallbackMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ContextBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\DefaultSerializers\DefaultSerializers.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultSerializers.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\EmittingSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\FieldBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\MapEmittingSerializerBuilder`1.cs" />
