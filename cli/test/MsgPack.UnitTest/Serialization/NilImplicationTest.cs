@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using NUnit.Framework;
@@ -28,6 +29,37 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class NilImplicationTest
 	{
+		private static bool _traceOn = true;
+
+		[SetUp]
+		public void SetUp()
+		{
+			if ( _traceOn )
+			{
+				Tracer.Emit.Listeners.Clear();
+				Tracer.Emit.Switch.Level = SourceLevels.All;
+				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+			}
+
+			SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanDump;
+		}
+
+		[TearDown]
+		public void TearDown()
+		{
+			if ( _traceOn )
+			{
+				try
+				{
+					DefaultSerializationMethodGeneratorManager.DumpTo();
+				}
+				finally
+				{
+					DefaultSerializationMethodGeneratorManager.Refresh();
+				}
+			}
+		}
+
 		private static void PackValuesAsArray(
 			Packer packer,
 			MessagePackObject memberDefault,
