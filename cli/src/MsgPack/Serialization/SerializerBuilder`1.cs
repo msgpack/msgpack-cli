@@ -147,9 +147,13 @@ namespace MsgPack.Serialization
 					);
 			}
 
+#if SILVERLIGHT
+			return members.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
+#else
 			return
 				members.Where( item => !Attribute.IsDefined( item, typeof( NonSerializedAttribute ) ) )
 				.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
+#endif
 		}
 
 		/// <summary>
