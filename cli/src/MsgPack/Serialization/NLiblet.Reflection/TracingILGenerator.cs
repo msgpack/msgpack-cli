@@ -245,10 +245,9 @@ namespace NLiblet.Reflection
 			this._isEnded = true;
 		}
 
-		// TODO: NLiblet
 		public void FlushTrace()
 		{
-			if ( 0 < this._traceBuffer.Length )
+			if ( this._traceBuffer != null && this._traceBuffer.Length > 0 )
 			{
 				this.TraceLocals();
 				this._trace.Flush();
