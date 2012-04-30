@@ -48,7 +48,7 @@ namespace MsgPack.Serialization
 
 		public object NonSerialized { get; set; }
 
-		// FIXME: with Number test
+		// FIXME: with Number(DataMember(n)) test
 		public void Verify( Stream stream )
 		{
 			stream.Position = 0;

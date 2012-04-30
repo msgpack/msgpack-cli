@@ -187,7 +187,7 @@ namespace NLiblet.Reflection
 					if ( genericType.IsGenericTypeDefinition )
 					{
 						var definition = current.IsGenericTypeDefinition ? current : current.GetGenericTypeDefinition();
-						// TODO: NLiblet
+
 						if ( definition == genericType )
 						{
 							// If source is GenericTypeDefinition, type def is only valid type (i.e. has name)
@@ -196,7 +196,6 @@ namespace NLiblet.Reflection
 					}
 					else
 					{
-						// TODO: NLiblet
 						if ( current == genericType )
 						{
 							return current;
@@ -210,7 +209,6 @@ namespace NLiblet.Reflection
 
 		private static IEnumerable<Type> EnumerateGenericIntefaces( Type source, Type genericType, bool includesOwn )
 		{
-			// TODO: NLiblet
 			return
 				( includesOwn ? new[] { source }.Concat( source.GetInterfaces() ) : source.GetInterfaces() )
 				.Where( @interface =>
@@ -247,7 +245,6 @@ namespace NLiblet.Reflection
 			}
 			else
 			{
-				// TODO: NLiblet
 				return genericTypeDefinition == source.GetGenericTypeDefinition();
 			}
 		}
@@ -286,7 +283,6 @@ namespace NLiblet.Reflection
 		{
 			Contract.Assert( source != null );
 
-			// TODO: NLiblet
 			if ( source.IsArray )
 			{
 				var elementType = source.GetElementType();
