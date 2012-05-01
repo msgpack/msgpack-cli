@@ -971,7 +971,6 @@ namespace NLiblet.Reflection
 			Contract.Assert( writer != null );
 			Contract.Assert( type != null );
 
-			// TODO: NLiblet
 			if ( type == null || type == typeof( void ) )
 			{
 				writer.Write( "void" );
@@ -982,7 +981,12 @@ namespace NLiblet.Reflection
 			}
 			else
 			{
+#if SILVERLIGHT
+				var endOfAssemblySimpleName = type.Assembly.FullName.IndexOf( ',' );
+				writer.Write( "[{0}]{1}", endOfAssemblySimpleName < 0 ? type.Assembly.FullName : type.Assembly.FullName.Remove( endOfAssemblySimpleName ), type.FullName );
+#else
 				writer.Write( "[{0}]{1}", type.Assembly.GetName().Name, type.FullName );
+#endif
 			}
 		}
 
