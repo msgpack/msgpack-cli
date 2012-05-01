@@ -23,8 +23,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Resources;
 
-[assembly: AssemblyTitle( "Unit test of MessagePack for C#" )]
-[assembly: AssemblyDescription( "Unit test of MessagePack C# binding" )]
+[assembly: AssemblyTitle( "Unit test of MessagePack for CLI" )]
+[assembly: AssemblyDescription( "Unit test of MessagePack CLI binding" )]
 [assembly: AssemblyConfiguration( "Develop" )]
 [assembly: AssemblyProduct( "MessagePack" )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010" )]
