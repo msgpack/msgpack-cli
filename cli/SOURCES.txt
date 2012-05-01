@@ -1,0 +1,14 @@
+For a bit of incompatibility, there are some 'specialized' projects as following:
+
+MsgPack.sln: Visual Studio solution file for .NET Framework build.
+	MsgPack.csproj: Project for full CLR (.NET 4 Client Profile)
+	MsgPack.Silverlight.4.csproj: Project for Silverlight4, contains only core (manual) packing/unpacking.
+	MsgPack.Silverlight.Serialization.4.csproj: Project for Silverlight4, contains typed serializers and their infrastructures.
+	MsgPack.Silverlight.5.csproj: Project for Silverlight5, it is similar to MsgPack.Silverlight.4.csproj.
+	MsgPack.Silverlight.Serialization.5.csproj: Project for Silverlight5, it is similar to MsgPack.Silverlight.Serialization.4.csproj.
+	MsgPack.WindowsPhone.7.1.csproj: Project for Windows Phone 7.1, it is similar to MsgPack.Silverlight.4.csproj.
+	MsgPack.WindowsPhone.7.1.Serialization.csproj: Project for Windows Phone 7.1, it is similar to MsgPack.Silverlight.Serialization.4.csproj.
+
+MsgPack.mono.sln: Mono Develop solution file for mono build (mono does not support client profile, and recent Silverlight assemblies).
+	MsgPack.Mono.csproj: Project for mono (.NET 4 Full Profile)
+	MsgPack.UnitTest.Mono.csproj: Unit test for MsgPack.Mono.csproj, it is mirror of MsgPack.UnitTest.csproj project.
