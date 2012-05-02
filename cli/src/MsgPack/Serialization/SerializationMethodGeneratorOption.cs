@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.ComponentModel;
 
 namespace MsgPack.Serialization
 {
@@ -30,7 +31,9 @@ namespace MsgPack.Serialization
 #if !SILVERLIGHT
 		/// <summary>
 		///		The generated method IL can be dumped to the current directory.
+		///		It is intended for the runtime, you cannot use this option.
 		/// </summary>
+		[EditorBrowsable( EditorBrowsableState.Never )]
 		CanDump,
 
 		/// <summary>
