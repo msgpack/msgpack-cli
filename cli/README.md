@@ -7,7 +7,7 @@ This library can be from ALL CLS compliant languages such as C#, F#, Visual Basi
 
 ## Documentation
 
-Markdown format documentations are [here](./doc/ReadMe.md).
+See [wiki](https://github.com/yfakariya/msgpack/wiki)
 
 ## How to build
 
