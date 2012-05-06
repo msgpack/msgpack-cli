@@ -21,7 +21,7 @@
 using System;
 using System.Linq;
 using System.Reflection.Emit;
-using NLiblet.Reflection;
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {

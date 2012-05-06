@@ -20,7 +20,7 @@
 
 using System;
 using System.Text;
-using NLiblet.Reflection;
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {

@@ -209,13 +209,13 @@
     </Compile>
     <Compile Include="Serialization\Metadata\_UnpackHelpers.cs" />
     <Compile Include="Serialization\NilImplication.cs" />
-    <Compile Include="Serialization\NLiblet.Reflection\GenericTypeExtensions.cs" />
-    <Compile Include="Serialization\NLiblet.Reflection\ReflectionExtensions.cs">
+    <Compile Include="Serialization\Reflection\GenericTypeExtensions.cs" />
+    <Compile Include="Serialization\Reflection\ReflectionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\NLiblet.Reflection\TracingILGenerator.conveniences.cs" />
-    <Compile Include="Serialization\NLiblet.Reflection\TracingILGenerator.cs" />
-    <Compile Include="Serialization\NLiblet.Reflection\TracingILGenerator.emits.cs" />
+    <Compile Include="Serialization\Reflection\TracingILGenerator.conveniences.cs" />
+    <Compile Include="Serialization\Reflection\TracingILGenerator.cs" />
+    <Compile Include="Serialization\Reflection\TracingILGenerator.emits.cs" />
     <Compile Include="Serialization\SerializationMethod.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorOption.cs" />

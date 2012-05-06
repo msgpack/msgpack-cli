@@ -28,7 +28,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
-namespace NLiblet.Reflection
+namespace MsgPack.Serialization.Reflection
 {
 	partial class TracingILGenerator
 	{

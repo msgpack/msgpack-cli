@@ -23,7 +23,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
-using NLiblet.Reflection;
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {

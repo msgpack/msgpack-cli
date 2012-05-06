@@ -252,20 +252,20 @@
     <Compile Include="..\MsgPack\Serialization\NilImplication.cs">
       <Link>Serialization\NilImplication.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\GenericTypeExtensions.cs">
-      <Link>Serialization\NLiblet.Reflection\GenericTypeExtensions.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs">
+      <Link>Serialization\Reflection\GenericTypeExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\ReflectionExtensions.cs">
-      <Link>Serialization\NLiblet.Reflection\ReflectionExtensions.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs">
+      <Link>Serialization\Reflection\ReflectionExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\TracingILGenerator.conveniences.cs">
-      <Link>Serialization\NLiblet.Reflection\TracingILGenerator.conveniences.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.conveniences.cs">
+      <Link>Serialization\Reflection\TracingILGenerator.conveniences.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\TracingILGenerator.cs">
-      <Link>Serialization\NLiblet.Reflection\TracingILGenerator.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.cs">
+      <Link>Serialization\Reflection\TracingILGenerator.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\NLiblet.Reflection\TracingILGenerator.emits.cs">
-      <Link>Serialization\NLiblet.Reflection\TracingILGenerator.emits.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.emits.cs">
+      <Link>Serialization\Reflection\TracingILGenerator.emits.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
       <Link>Serialization\ReflectionExtensions.cs</Link>

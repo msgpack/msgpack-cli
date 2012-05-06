@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace NLiblet.Reflection
+namespace MsgPack.Serialization.Reflection
 {
 	/// <summary>
 	///		Defines utility extension method for reflection API.

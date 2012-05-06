@@ -24,7 +24,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace NLiblet.Reflection
+namespace MsgPack.Serialization.Reflection
 {
 	partial class TracingILGenerator
 	{

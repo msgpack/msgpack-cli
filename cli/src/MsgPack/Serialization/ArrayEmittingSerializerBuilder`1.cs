@@ -19,7 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-using NLiblet.Reflection;
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {

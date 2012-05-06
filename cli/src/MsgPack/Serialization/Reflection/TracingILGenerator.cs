@@ -29,7 +29,7 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace NLiblet.Reflection
+namespace MsgPack.Serialization.Reflection
 {
 	/// <summary>
 	///		<see cref="ILGenerator"/> like IL stream builder with tracing.
@@ -523,6 +523,7 @@ namespace NLiblet.Reflection
 
 			var result = this._underlying.BeginExceptionBlock();
 			this._endOfExceptionBlocks.Push( result );
+			this._labels[ result ] = "END_TRY_" + this._labels.Count.ToString( CultureInfo.InvariantCulture );
 			return result;
 		}
 
