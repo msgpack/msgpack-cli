@@ -108,7 +108,7 @@ namespace MsgPack
 			}
 
 			// Get invalid value.
-			int position = -1;
+			int position = 0;
 			int validLength = 0;
 			for ( int i = 0; i < matches.Count; i++ )
 			{
