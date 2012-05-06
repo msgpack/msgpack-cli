@@ -56,7 +56,6 @@ Global
 		{A74BE492-C4AB-460D-B37B-1BA6ABAD434B}.PerformanceTest|Any CPU.ActiveCfg = Release|Any CPU
 		{A74BE492-C4AB-460D-B37B-1BA6ABAD434B}.PerformanceTest|Any CPU.Build.0 = Release|Any CPU
 		{A74BE492-C4AB-460D-B37B-1BA6ABAD434B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A74BE492-C4AB-460D-B37B-1BA6ABAD434B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
