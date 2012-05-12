@@ -970,7 +970,6 @@ namespace MsgPack.Serialization.Reflection
 		private static void WriteType( TextWriter writer, Type type )
 		{
 			Contract.Assert( writer != null );
-			Contract.Assert( type != null );
 
 			if ( type == null || type == typeof( void ) )
 			{
