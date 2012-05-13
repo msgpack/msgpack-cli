@@ -266,9 +266,10 @@ namespace MsgPack
 		public void TestFromDateTime_Now_AsUtcUnixEpoc()
 		{
 			// LocalTime will be converted to UtcTime
+			var now = DateTime.Now;
 			Assert.AreEqual(
-				checked( ( long )DateTime.UtcNow.Subtract( _utcEpoc ).TotalMilliseconds ),
-				MessagePackConvert.FromDateTime( DateTime.Now )
+				checked( ( long )now.ToUniversalTime().Subtract( _utcEpoc ).TotalMilliseconds ),
+				MessagePackConvert.FromDateTime( now )
 			);
 		}
 
