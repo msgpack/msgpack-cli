@@ -132,14 +132,26 @@ namespace MsgPack
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 			var evidence = new Evidence();
+#if MONO
+#pragma warning disable 0612
+			// TODO: patching
+			// currently, Mono does not declare AddHostEvidence
+			evidence.AddHost( new Zone( SecurityZone.Internet ) );
+#pragma warning restore 0612
+			var permisions = GetDefaultInternetZoneSandbox();
+#else
 			evidence.AddHostEvidence( new Zone( SecurityZone.Internet ) );
 			var permisions = SecurityManager.GetStandardSandbox( evidence );
+#endif
 			AppDomain workerDomain = AppDomain.CreateDomain( "PartialTrust", evidence, appDomainSetUp, permisions, GetStrongName( this.GetType() ) );
 			try
 			{
 				workerDomain.DoCallBack( TestEqualsWorker );
-
+				
+#if !MONO
+				// P/Invoke is not disabled on Mono even if in the InternetZone.
 				Assert.That( ( bool )workerDomain.GetData( "MessagePackString.IsFastEqualsDisabled" ), Is.True );
+#endif
 				Console.WriteLine( "TestEqualsPartialTrust" );
 				ShowResult( workerDomain.GetData( "TestEqualsWorker.Performance" ) as Tuple<double, double, double, double> );
 			}
@@ -148,6 +160,38 @@ namespace MsgPack
 				AppDomain.Unload( workerDomain );
 			}
 		}
+		
+#if MONO
+		private static PermissionSet GetDefaultInternetZoneSandbox()
+		{
+			var permissions = new PermissionSet( PermissionState.None );
+			permissions.AddPermission(
+				new FileDialogPermission(
+					FileDialogPermissionAccess.Open
+				)
+			);
+			permissions.AddPermission(
+				new IsolatedStorageFilePermission( PermissionState.None )
+				{
+					UsageAllowed = IsolatedStorageContainment.ApplicationIsolationByUser,
+					UserQuota = 1024000
+				}			
+			);
+			permissions.AddPermission(
+				new SecurityPermission(
+					SecurityPermissionFlag.Execution
+				)
+			);
+			permissions.AddPermission(
+				new UIPermission(
+					UIPermissionWindow.SafeTopLevelWindows,
+					UIPermissionClipboard.OwnClipboard
+				)
+			);
+			
+			return permissions;
+		}
+#endif
 
 		public static void TestEqualsWorker()
 		{

@@ -100,7 +100,6 @@ namespace MsgPack.Serialization
 				il.BeginExceptionBlock();
 			}
 
-			var hasNext = il.DeclareLocal( typeof( bool ), "hasNext" );
 			var startLoop = il.DefineLabel( "START_LOOP" );
 			il.MarkLabel( startLoop );
 			var endLoop = il.DefineLabel( "END_LOOP" );
@@ -287,7 +286,6 @@ namespace MsgPack.Serialization
 			il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
 			il.EmitAnyStloc( rawItemsCount );
 			il.BeginCatchBlock( typeof( InvalidOperationException ) );
-			var ex = il.DeclareLocal( typeof( InvalidOperationException ), "ex" );
 			il.EmitAnyCall( SerializationExceptions.NewIsIncorrectStreamMethod );
 			il.EmitThrow();
 			il.EndExceptionBlock();

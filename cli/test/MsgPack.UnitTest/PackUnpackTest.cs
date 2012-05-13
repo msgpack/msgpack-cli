@@ -33,8 +33,6 @@ namespace MsgPack
 	public partial class PackUnpackTest
 	{
 		private static bool _traceUnpackingBytes = false;
-		private static readonly Encoding _utf8NoBom =
-			new UTF8Encoding( false, false );
 
 		private static MessagePackObject UnpackOne( MemoryStream output )
 		{

@@ -170,7 +170,6 @@ namespace MsgPack
 			}
 
 			var type = value.GetType();
-			var typeParameter = Expression.Parameter( typeof( Type ), "type" );
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			var packerParameter = Expression.Parameter( typeof( Packer ), "packer" );
 			var valueParameter = Expression.Parameter( typeof( object ), "value" );
