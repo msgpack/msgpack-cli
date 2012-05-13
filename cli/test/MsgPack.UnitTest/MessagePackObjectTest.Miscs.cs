@@ -104,6 +104,9 @@ namespace MsgPack
 		[Test]
 		public void TestToString_AllPossibleTypes_Success()
 		{
+#if MONO
+			Assert.Inconclusive( "Mono Regex causes StackOverflow... ");
+#endif
 			TestToStringCore(
 				MessagePackObject.Nil,
 				true,

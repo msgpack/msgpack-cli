@@ -129,6 +129,9 @@ namespace MsgPack
 		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackString_ByteArray_Encoding_1ByteNonSpecifiedString()
 		{
+#if MONO
+			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
+#endif
 			var dummy = Unpacking.UnpackString( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F }, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) );
 		}
 
@@ -276,6 +279,10 @@ namespace MsgPack
 		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackString_Stream_Encoding_1ByteNonSpecifiedString()
 		{
+#if MONO
+			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
+#endif
+
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F } ) )
 			{
 				var dummy = Unpacking.UnpackString( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) );
@@ -546,6 +553,9 @@ namespace MsgPack
 		[ExpectedException( typeof( DecoderFallbackException ) )]
 		public void TestUnpackCharStream_Stream_Encoding_1ByteNonSpecifiedString_ExceptionInReaderOperation()
 		{
+#if MONO
+			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
+#endif
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F } ) )
 			{
 				using ( var result = Unpacking.UnpackCharStream( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) )

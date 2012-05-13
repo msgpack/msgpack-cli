@@ -97,6 +97,9 @@ namespace MsgPack
 		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString1_EncodingIsNotUtf32_SpecifyUtf32_Fail()
 		{
+#if MONO
+			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
+#endif
 			var target = new MessagePackObject( new byte[] { 0xFF } );
 			var result = target.AsString( new UTF32Encoding( bigEndian: false, byteOrderMark: false, throwOnInvalidCharacters: true ) );
 		}
