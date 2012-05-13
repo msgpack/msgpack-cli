@@ -9,8 +9,8 @@
     <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsgPack.Serialization.WindowsPhone._7._1</RootNamespace>
-    <AssemblyName>MsgPack.Serialization.WindowsPhone.7.1</AssemblyName>
+    <RootNamespace>MsgPack</RootNamespace>
+    <AssemblyName>MsgPack.Serialization</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
@@ -39,7 +39,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\sl4-windowsphone71\MsgPack.Serialization.WindowsPhone.7.1.XML</DocumentationFile>
+    <DocumentationFile>..\..\bin\sl4-windowsphone71\MsgPack.Serialization.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Runtime.Serialization" />
