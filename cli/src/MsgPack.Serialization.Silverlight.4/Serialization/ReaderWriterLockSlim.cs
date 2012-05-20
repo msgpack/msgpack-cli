@@ -105,7 +105,7 @@ namespace MsgPack.Serialization
 			{
 				if ( 0 <= Interlocked.Decrement( ref this._lockCount ) )
 				{
-					Monitor.Exit( this._lockCount );
+					Monitor.Exit( this._syncRoot );
 				}
 				else
 				{
