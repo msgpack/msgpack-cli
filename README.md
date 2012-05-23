@@ -1,37 +1,34 @@
-MessagePack
-===========
-Extremely efficient object serialization library. It's like JSON, but very fast and small.
+# MessagePack for CLI
 
+## What is it?
 
-## What's MessagePack?
+This is MessagePack serialization/deserialization for CLI (Common Language Infrastructure) implementations such as .NET Framework, Silverlight, Mono (including Moonlight.)
+This library can be from ALL CLS compliant languages such as C#, F#, Visual Basic, Iron Pyhton, Iron Ruby, PowerShell, C++/CLI or so.
 
-MessagePack is a binary-based efficient object serialization library. It enables to exchange structured objects between many languages like JSON. But unlike JSON, it is very fast and small.
+## Documentation
 
-Typical small integer (like flags or error code) is saved only in 1 byte, and typical short string only needs 1 byte except the length of the string itself. \[1,2,3\] (3 elements array) is serialized in 4 bytes using MessagePack as follows:
+See [wiki](https://github.com/yfakariya/msgpack/wiki)
 
-    require 'msgpack'
-    msg = [1,2,3].to_msgpack  #=> "\x93\x01\x02\x03"
-    MessagePack.unpack(msg)   #=> [1,2,3]
+## How to build
 
+### For .NET Framework
 
-## Performance
+1. Install recent Windows SDK (at least, .NET Framework 4 Full Profile and MSBuild is needed.)
+   Or install Visual Studio or Visual Studio Express.
+    1. If you want to build unit test assemblies, install NuGet.
+2. Run:
+    msbuild MsgPack.csproj
+   Or open MsgPack.sln in your IDE and run build command in it.
 
-![Serialization + Deserialization Speed Test](http://msgpack.sourceforge.net/index/speedtest.png)
+### For Mono
 
-In this test, it measured the elapsed time of serializing and deserializing 200,000 target objects. The target object consists of the three integers and 512 bytes string.
-The source code of this test is available from [frsyuki' serializer-speed-test repository.](http://github.com/frsyuki/serializer-speed-test)
+Open MsgPack.mono.sln in MonoDevelop and build it.
+(You might be able to build via xbuild.)
 
+## See also
 
-## Getting Started
-
-Usage and other documents about implementations in each language are found at [the web site.](http://msgpack.sourceforge.net/)
-
-
-## Learn More
-
-  - [Project Web Site](http://msgpack.sourceforge.net/)
-  - [MessagePack format specification](http://msgpack.sourceforge.net/spec)
-  - [Repository at github](http://github.com/msgpack/msgpack)
-  - [Wiki](http://msgpack.sourceforge.net/start)
-  - [MessagePack-RPC](http://github.com/msgpack/msgpack-rpc)
-
+  Wiki                  : https://github.com/yfakariya/msgpack/wiki
+  Issue tracker         : https://github.com/yfakariya/msgpack/issues
+  MSBuild reference     : http://msdn.microsoft.com/en-us/library/0k6kkbsd.aspx
+  (You can see translated version by changing "en-us" to some locale as you like (e.g. "ja-jp".)
+  Mono xbuild reference : http://www.mono-project.com/Microsoft.Build
