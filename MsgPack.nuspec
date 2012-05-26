@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MsgPack</id>
+    <title>MessagePack for CLI</title>
+    <version>0.2-beta</version>
+    <authors>FUJIWARA, Yusuke</authors>
+    <owners>FUJIWARA, Yusuke</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/msgpack/msgpack-cli</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MessagePack is fast, compact, and interoperable binary serialization format. This library provides MessagePack serialization/deserialization APIs.</description>
+    <releaseNotes>This release contains RPC related features.</releaseNotes>
+    <copyright>Copyright 2010-2012 FUJIWARA, Yusuke, all rights reserved.</copyright>
+    <tags>Serialization MessagePack MsgPack</tags>
+    <dependencies />
+  </metadata>
+</package>
