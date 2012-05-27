@@ -17,13 +17,4 @@ $buildOptions += '/p:Configuration=Release'
 
 &$builder $sln $buildOptions
 
-[string]$source =  [IO.Path]::GetFullPath( '.\bin' )
-$excludes = @('*.pdb', '*.resources.dll', 'System.*', 'Microsoft.*', 'Mono.*')
-
-# PS cannot handle exclusion in directory copying like Ant...
-ls $source -Recurse -Exclude $excludes | copy -Destination { Join-Path ".\$temp\lib" $_.FullName.Substring( $source.Length ) }
-# Remove empty directories to exclude extra Silverlight related resources...
-ls ".\$temp\lib" -Recurse | where { ( $_.Attributes -band [IO.FileAttributes]::Directory ) -and ( ( [IO.DirectoryInfo]$_ ).GetFiles().Length -eq 0 ) } | Remove-Item
-
-.\.nuget\nuget.exe pack $nuspec -BasePath .\nugettmp
-Remove-Item $temp -Force -Recurse
+.\.nuget\nuget.exe pack $nuspec
