@@ -810,7 +810,7 @@ namespace MsgPack
 
 			if ( this._handleOrTypeCode == null )
 			{
-				return ( type.IsValueType && Nullable.GetUnderlyingType( type ) == null ) ? false : default( bool? );
+				return ( type.GetIsValueType() && Nullable.GetUnderlyingType( type ) == null ) ? false : default( bool? );
 			}
 
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
@@ -1284,7 +1284,7 @@ namespace MsgPack
 		{
 			if ( instance.IsNil )
 			{
-				if ( !typeof( T ).IsValueType || Nullable.GetUnderlyingType( typeof( T ) ) != null )
+				if ( !typeof( T ).GetIsValueType() || Nullable.GetUnderlyingType( typeof( T ) ) != null )
 				{
 					return;
 				}

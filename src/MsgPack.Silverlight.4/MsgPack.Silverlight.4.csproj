@@ -189,6 +189,9 @@
     <Compile Include="..\MsgPack\PackingOptions.cs">
       <Link>PackingOptions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\ReflectionAbstractions.cs">
+      <Link>ReflectionAbstractions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\SetOperation.cs">
       <Link>SetOperation.cs</Link>
     </Compile>

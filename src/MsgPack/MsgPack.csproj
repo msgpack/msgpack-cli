@@ -154,6 +154,7 @@
     </Compile>
     <Compile Include="Serialization\EmitterFlavor.cs" />
     <Compile Include="Serialization\EmittingSerializerBuilder`1.cs" />
+    <Compile Include="ReflectionAbstractions.cs" />
     <Compile Include="Serialization\FieldBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
