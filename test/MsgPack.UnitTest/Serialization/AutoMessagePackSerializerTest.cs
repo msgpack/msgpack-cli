@@ -147,26 +147,78 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestComplexObject()
+		public void TestComplexObject_Field()
+		{
+			this.TestComplexObjectCore( GetSerializationContextField() );
+		}
+
+		[Test]
+		public void TestComplexObject_Context()
+		{
+			this.TestComplexObjectCore( GetSerializationContextContext() );
+		}
+
+
+		[Test]
+		public void TestComplexObject_Expression()
+		{
+			this.TestComplexObjectCore( GetSerializationContextExpression() );
+		}
+
+		private void TestComplexObjectCore( SerializationContext context )
 		{
 			var target = new ComplexType() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
-			TestCoreWithVerify( target );
+			TestCoreWithVerify( target, context );
 		}
 
 		[Test]
-		public void TestComplexTypeWithoutAnyAttribute()
+		public void TestComplexTypeWithoutAnyAttribute_Field()
+		{
+			this.TestComplexTypeWithoutAnyAttribute( GetSerializationContextField() );
+		}
+
+		[Test]
+		public void TestComplexTypeWithoutAnyAttribute_Context()
+		{
+			this.TestComplexTypeWithoutAnyAttribute( GetSerializationContextContext() );
+		}
+
+		[Test]
+		public void TestComplexTypeWithoutAnyAttribute_Expression()
+		{
+			this.TestComplexTypeWithoutAnyAttribute( GetSerializationContextExpression() );
+		}
+
+		private void TestComplexTypeWithoutAnyAttribute( SerializationContext context )
 		{
 			var target = new ComplexTypeWithoutAnyAttribute() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
-			TestCoreWithVerify( target );
+			TestCoreWithVerify( target, context );
 		}
 
 		[Test]
-		public void TestTypeWithMissingMessagePackMemberAttributeMember()
+		public void TestTypeWithMissingMessagePackMemberAttributeMember_Field()
+		{
+			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( GetSerializationContextField() );
+		}
+
+		[Test]
+		public void TestTypeWithMissingMessagePackMemberAttributeMember_Context()
+		{
+			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( GetSerializationContextContext() );
+		}
+
+		[Test]
+		public void TestTypeWithMissingMessagePackMemberAttributeMember_Expression()
+		{
+			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( GetSerializationContextExpression() );
+		}
+
+		private void TestTypeWithMissingMessagePackMemberAttributeMemberCore( SerializationContext context )
 		{
 			var target = new TypeWithMissingMessagePackMemberAttributeMember();
-			TestCoreWithVerify( target );
+			TestCoreWithVerify( target, context );
 		}
 
 		[Test]
@@ -182,32 +234,83 @@ namespace MsgPack.Serialization
 		{
 			var target = this.CreateTarget<TypeWithDuplicatedMessagePackMemberAttributeMember>( GetSerializationContext() );
 		}
-		
+
 		[Test]
-		public void TestComplexObjectTypeWithDataContract()
+		public void TestComplexObjectTypeWithDataContract_Field()
+		{
+			this.TestComplexObjectTypeWithDataContractCore( GetSerializationContextField() );
+		}
+
+		[Test]
+		public void TestComplexObjectTypeWithDataContract_Context()
+		{
+			this.TestComplexObjectTypeWithDataContractCore( GetSerializationContextContext() );
+		}
+
+		[Test]
+		public void TestComplexObjectTypeWithDataContract_Expression()
+		{
+			this.TestComplexObjectTypeWithDataContractCore( GetSerializationContextExpression() );
+		}
+
+		private void TestComplexObjectTypeWithDataContractCore( SerializationContext context )
 		{
 			var target = new ComplexTypeWithDataContract() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
 			target.NonSerialized = new DefaultTraceListener();
-			TestCoreWithVerify( target );
+			TestCoreWithVerify( target, context );
 		}
 
 		[Test]
-		public void TestComplexTypeWithDataContractWithOrder()
+		public void TestComplexTypeWithDataContractWithOrder_Field()
+		{
+			this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContextField() );
+		}
+
+		[Test]
+		public void TestComplexTypeWithDataContractWithOrder_Context()
+		{
+			this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContextContext() );
+		}
+
+		[Test]
+		public void TestComplexTypeWithDataContractWithOrder_Expresion()
+		{
+			this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContextExpression() );
+		}
+
+		private void TestComplexTypeWithDataContractWithOrderCore( SerializationContext context )
 		{
 			var target = new ComplexTypeWithDataContractWithOrder() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
 			target.NonSerialized = new DefaultTraceListener();
-			TestCoreWithVerify( target );
+			TestCoreWithVerify( target, context );
 		}
 
 		[Test]
-		public void TestComplexObjectTypeWithNonSerialized()
+		public void TestComplexObjectTypeWithNonSerialized_Field()
+		{
+			this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContextField() );
+		}
+
+		[Test]
+		public void TestComplexObjectTypeWithNonSerialized_Context()
+		{
+			this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContextContext() );
+		}
+
+		[Test]
+		public void TestComplexObjectTypeWithNonSerialized_Expression()
+		{
+			this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContextExpression() );
+		}
+
+		private void TestComplexObjectTypeWithNonSerializedCore( SerializationContext context )
 		{
 			var target = new ComplexTypeWithNonSerialized() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
 			target.NonSerialized = new DefaultTraceListener();
-			TestCoreWithVerify( target );
+			TestCoreWithVerify( target, context );
 		}
 
 		[Test]
@@ -573,10 +676,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private void TestCoreWithVerify<T>( T value )
+		private void TestCoreWithVerify<T>( T value, SerializationContext context )
 			where T : IVerifiable
 		{
-			var target = this.CreateTarget<T>( GetSerializationContext() );
+			var target = this.CreateTarget<T>( context );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );

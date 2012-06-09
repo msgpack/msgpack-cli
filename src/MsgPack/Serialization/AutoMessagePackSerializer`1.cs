@@ -125,5 +125,10 @@ namespace MsgPack.Serialization
 		{
 			this._underlying.UnpackTo( unpacker, collection );
 		}
+
+		public override string ToString()
+		{
+			return this._underlying.ToString();
+		}
 	}
 }

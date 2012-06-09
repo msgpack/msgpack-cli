@@ -21,6 +21,7 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using MsgPack.Serialization.ExpressionSerializers;
 
 namespace MsgPack.Serialization
 {
@@ -51,6 +52,18 @@ namespace MsgPack.Serialization
 			TestCore( EmitterFlavor.ContextBased, c => new MapEmittingSerializerBuilder<DirectoryItem>( c ) );
 		}
 
+		[Test]
+		public void TestArrayExpressionBased()
+		{
+			TestCore( EmitterFlavor.ExpressionBased, c => new ExpressionSerializerBuilder<DirectoryItem>( c ) );
+		}
+
+		[Test]
+		public void TestMapExpressionBased()
+		{
+			TestCore( EmitterFlavor.ExpressionBased, c => new ExpressionSerializerBuilder<DirectoryItem>( c ) );
+		}
+
 		private static void TestCore( EmitterFlavor emittingFlavor, Func<SerializationContext, SerializerBuilder<DirectoryItem>> builderProvider )
 		{
 			var root = new DirectoryItem() { Name = "/" };
@@ -67,10 +80,11 @@ namespace MsgPack.Serialization
 				};
 			root.Files = new FileItem[ 0 ];
 
-			var serializer = new AutoMessagePackSerializer<DirectoryItem>( new SerializationContext() { EmitterFlavor = emittingFlavor }, builderProvider );
+			var serializer = new AutoMessagePackSerializer<DirectoryItem>( new SerializationContext() { EmitterFlavor = emittingFlavor, GeneratorOption = SerializationMethodGeneratorOption.CanDump }, builderProvider );
 			using ( var memoryStream = new MemoryStream() )
 			{
 				serializer.Pack( memoryStream, root );
+
 				memoryStream.Position = 0;
 				var result = serializer.Unpack( memoryStream );
 				Assert.That( result.Name, Is.EqualTo( "/" ) );

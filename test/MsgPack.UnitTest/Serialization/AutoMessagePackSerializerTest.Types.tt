@@ -12,6 +12,8 @@
 <#@ import namespace="System.Runtime.InteropServices.ComTypes" #>
 <#@ import namespace="System.Text" #>
 <#
+var __flavors = new []{ "Field", "Context", "Expression" };
+
 var __fields =
 	new Tuple<Object, string, string, bool>[]
 	{
@@ -129,29 +131,31 @@ namespace MsgPack.Serialization
 	{
 <#
 
-// Root
-foreach( Tuple<Object, string, string, bool> __item in __fields )
+foreach( var __flavor in __flavors )
 {
-	String __typeName;
-	if( __item.Item1 is Type )
+	// Root
+	foreach( Tuple<Object, string, string, bool> __item in __fields )
 	{
-		__typeName = ToTypeName( __item.Item1 as Type );
-	}
-	else
-	{
-		__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
-	}
+		String __typeName;
+		if( __item.Item1 is Type )
+		{
+			__typeName = ToTypeName( __item.Item1 as Type );
+		}
+		else
+		{
+			__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
+		}
 #>
 		[Test]
-		public void Test<#= ToFieldName( __item ) #>()
+		public void Test<#= ToFieldName( __item ) + __flavor #>()
 		{
-			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #> );
+			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, this.GetSerializationContext<#= __flavor #>() );
 		}
 		
 		[Test]
-		public void Test<#= ToFieldName( __item ) #>Array()
+		public void Test<#= ToFieldName( __item ) + __flavor #>Array()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray(), this.GetSerializationContext<#= __flavor #>() );
 		}
 		
 <#
@@ -159,56 +163,66 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	{
 #>
 		[Test]
-		public void Test<#= ToFieldName( __item ) #>Null()
+		public void Test<#= ToFieldName( __item ) + __flavor #>Null()
 		{
-			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ) );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ), this.GetSerializationContext<#= __flavor #>() );
 		}
 		
 		[Test]
-		public void Test<#= ToFieldName( __item ) #>ArrayNull()
+		public void Test<#= ToFieldName( __item ) + __flavor #>ArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ) );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ), this.GetSerializationContext<#= __flavor #>() );
 		}	
 		
 <#
+		}
 	}
-}
-// In object
+	// In object
 #>
 		[Test]
-		public void TestComplexTypeGeneratedEnclosure()
+		public void TestComplexTypeGeneratedEnclosure_<#= __flavor #>()
 		{
 			var target = new ComplexTypeGeneratedEnclosure();
 			target.Initialize();
-			this.TestCoreWithVerifiable( target );
+			this.TestCoreWithVerifiable( target, this.GetSerializationContext<#= __flavor #>() );
 		}
 		
 		[Test]
-		public void TestComplexTypeGeneratedEnclosureArray()
+		public void TestComplexTypeGeneratedEnclosureArray_<#= __flavor #>()
 		{
-			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray() );
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext<#= __flavor #>() );
 		}
 		
 <#
-// In nested object
+	// In nested object
 #>
 		[Test]
-		public void TestComplexTypeGenerated()
+		public void TestComplexTypeGenerated_<#= __flavor #>()
 		{
 			var target = new ComplexTypeGenerated();
 			target.Initialize();
-			this.TestCoreWithVerifiable( target );
+			this.TestCoreWithVerifiable( target, this.GetSerializationContext<#= __flavor #>() );
 		}
 		
 		[Test]
-		public void TestComplexTypeGeneratedArray()
+		public void TestComplexTypeGeneratedArray_<#= __flavor #>()
 		{
-			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray() );
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext<#= __flavor #>() );
 		}
 
-		private void TestCoreWithAutoVerify<T>( T value )
+		private SerializationContext GetSerializationContext<#= __flavor #>()
 		{
-			var target = this.CreateTarget<T>( this.GetSerializationContext() );
+			var result = this.GetSerializationContext();
+			result.EmitterFlavor = EmitterFlavor.<#= __flavor #>Based;
+			return result;
+		}
+<#
+}
+#>
+
+		private void TestCoreWithAutoVerify<T>( T value, SerializationContext context )
+		{
+			var target = this.CreateTarget<T>( context );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );
@@ -219,10 +233,10 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 			}
 		}
 		
-		private void TestCoreWithVerifiable<T>( T value )
+		private void TestCoreWithVerifiable<T>( T value, SerializationContext context )
 			where T : IVerifiable<T>
 		{
-			var target = this.CreateTarget<T>( this.GetSerializationContext() );
+			var target = this.CreateTarget<T>( context );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );
@@ -233,10 +247,10 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 			}
 		}	
 		
-		private void TestCoreWithVerifiable<T>( T[] value )
+		private void TestCoreWithVerifiable<T>( T[] value, SerializationContext context )
 			where T : IVerifiable<T>
 		{
-			var target = this.CreateTarget<T[]>( this.GetSerializationContext() );
+			var target = this.CreateTarget<T[]>( context );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );

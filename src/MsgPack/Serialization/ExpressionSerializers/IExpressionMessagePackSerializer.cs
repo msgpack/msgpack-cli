@@ -19,16 +19,12 @@
 #endregion -- License Terms --
 
 using System;
-using System.Linq;
-using System.Reflection;
+using System.IO;
 
-namespace MsgPack.Serialization.Metadata
+namespace MsgPack.Serialization.ExpressionSerializers
 {
-	internal static class _Enumerable
+	internal interface IExpressionMessagePackSerializer
 	{
-		public static readonly MethodInfo Count1Method =
-			typeof( Enumerable ).GetMethods().Single( m => m.Name == "Count" && m.GetParameters().Length == 1 );
-
-		public static readonly MethodInfo ToArray1Method = typeof( Enumerable ).GetMethod( "ToArray" );
+		void ToString( TextWriter writer, int depth );
 	}
 }

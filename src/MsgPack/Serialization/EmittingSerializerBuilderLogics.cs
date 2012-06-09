@@ -618,7 +618,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
 
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( tupleType, emitterFlavor );
-			var itemTypes = GetTupleItemTypes( tupleType );
+			var itemTypes = TupleItems.GetTupleItemTypes( tupleType );
 			CreateTuplePack(
 				emitter,
 				tupleType,
@@ -635,31 +635,6 @@ namespace MsgPack.Serialization
 			);
 
 			return emitter;
-		}
-
-		private static IList<Type> GetTupleItemTypes( Type tupleType )
-		{
-			Contract.Assert( tupleType.Name.StartsWith( "Tuple`" ) && tupleType.Assembly == typeof( Tuple ).Assembly );
-			var arguments = tupleType.GetGenericArguments();
-			List<Type> itemTypes = new List<Type>( tupleType.GetGenericArguments().Length );
-			GetTupleItemTypes( arguments, itemTypes );
-			return itemTypes;
-		}
-
-		private static void GetTupleItemTypes( IList<Type> itemTypes, IList<Type> result )
-		{
-			int count = itemTypes.Count == 8 ? 7 : itemTypes.Count;
-			for ( int i = 0; i < count; i++ )
-			{
-				result.Add( itemTypes[ i ] );
-			}
-
-			if ( itemTypes.Count == 8 )
-			{
-				var trest = itemTypes[ 7 ];
-				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.Assembly == typeof( Tuple ).Assembly );
-				GetTupleItemTypes( trest.GetGenericArguments(), result );
-			}
 		}
 
 		private static void CreateTuplePack( SerializerEmitter emiter, Type tupleType, IList<Type> itemTypes, Action<TracingILGenerator, LocalBuilder> loadTupleEmitter )

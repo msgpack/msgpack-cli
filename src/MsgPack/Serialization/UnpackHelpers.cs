@@ -506,7 +506,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static int GetItemsCount( Unpacker unpacker )
+		internal static int GetItemsCount( Unpacker unpacker )
 		{
 			long rawItemsCount;
 			try

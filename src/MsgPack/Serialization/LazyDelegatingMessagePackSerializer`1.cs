@@ -87,5 +87,10 @@ namespace MsgPack.Serialization
 		{
 			this.GetDelegatedSerializer().UnpackToCore( unpacker, collection );
 		}
+
+		public override string ToString()
+		{
+			return this.GetDelegatedSerializer().ToString();
+		}
 	}
 }

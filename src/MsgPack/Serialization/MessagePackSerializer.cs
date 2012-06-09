@@ -24,6 +24,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Diagnostics.Contracts;
+using MsgPack.Serialization.ExpressionSerializers;
 
 namespace MsgPack.Serialization
 {
@@ -67,13 +68,20 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
 			Func<SerializationContext, SerializerBuilder<T>> builderProvider;
-			if ( context.SerializationMethod == SerializationMethod.Map )
+			if ( context.EmitterFlavor == EmitterFlavor.ExpressionBased )
 			{
-				builderProvider = c => new MapEmittingSerializerBuilder<T>( c );
+				builderProvider = c => new ExpressionSerializerBuilder<T>( c );
 			}
 			else
 			{
-				builderProvider = c => new ArrayEmittingSerializerBuilder<T>( c );
+				if ( context.SerializationMethod == SerializationMethod.Map )
+				{
+					builderProvider = c => new MapEmittingSerializerBuilder<T>( c );
+				}
+				else
+				{
+					builderProvider = c => new ArrayEmittingSerializerBuilder<T>( c );
+				}
 			}
 
 			return new AutoMessagePackSerializer<T>( context, builderProvider );

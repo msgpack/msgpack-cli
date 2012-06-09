@@ -35,1488 +35,4467 @@ namespace MsgPack.Serialization
 	partial class AutoMessagePackSerializerTest
 	{
 		[Test]
-		public void TestNullField()
+		public void TestNullFieldField()
 		{
-			this.TestCoreWithAutoVerify( default( object ) );
+			this.TestCoreWithAutoVerify( default( object ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestNullFieldArray()
+		public void TestNullFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( default( object ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( default( object ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestNullFieldNull()
+		public void TestNullFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object ) );
+			this.TestCoreWithAutoVerify( default( Object ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestNullFieldArrayNull()
+		public void TestNullFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object[] ) );
+			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestTrueField()
+		public void TestTrueFieldField()
 		{
-			this.TestCoreWithAutoVerify( true );
+			this.TestCoreWithAutoVerify( true, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTrueFieldArray()
+		public void TestTrueFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( true, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( true, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestFalseField()
+		public void TestFalseFieldField()
 		{
-			this.TestCoreWithAutoVerify( false );
+			this.TestCoreWithAutoVerify( false, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestFalseFieldArray()
+		public void TestFalseFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( false, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( false, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTinyByteField()
+		public void TestTinyByteFieldField()
 		{
-			this.TestCoreWithAutoVerify( 1 );
+			this.TestCoreWithAutoVerify( 1, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTinyByteFieldArray()
+		public void TestTinyByteFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 1, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 1, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestByteField()
+		public void TestByteFieldField()
 		{
-			this.TestCoreWithAutoVerify( 0x80 );
+			this.TestCoreWithAutoVerify( 0x80, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestByteFieldArray()
+		public void TestByteFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x80, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x80, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMaxByteField()
+		public void TestMaxByteFieldField()
 		{
-			this.TestCoreWithAutoVerify( 0xff );
+			this.TestCoreWithAutoVerify( 0xff, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMaxByteFieldArray()
+		public void TestMaxByteFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xff, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xff, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTinyUInt16Field()
+		public void TestTinyUInt16FieldField()
 		{
-			this.TestCoreWithAutoVerify( 0x100 );
+			this.TestCoreWithAutoVerify( 0x100, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTinyUInt16FieldArray()
+		public void TestTinyUInt16FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMaxUInt16Field()
+		public void TestMaxUInt16FieldField()
 		{
-			this.TestCoreWithAutoVerify( 0xffff );
+			this.TestCoreWithAutoVerify( 0xffff, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMaxUInt16FieldArray()
+		public void TestMaxUInt16FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xffff, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xffff, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTinyInt32Field()
+		public void TestTinyInt32FieldField()
 		{
-			this.TestCoreWithAutoVerify( 0x10000 );
+			this.TestCoreWithAutoVerify( 0x10000, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTinyInt32FieldArray()
+		public void TestTinyInt32FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x10000, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x10000, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMaxInt32Field()
+		public void TestMaxInt32FieldField()
 		{
-			this.TestCoreWithAutoVerify( Int32.MaxValue );
+			this.TestCoreWithAutoVerify( Int32.MaxValue, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMaxInt32FieldArray()
+		public void TestMaxInt32FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MaxValue, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MaxValue, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMinInt32Field()
+		public void TestMinInt32FieldField()
 		{
-			this.TestCoreWithAutoVerify( Int32.MinValue );
+			this.TestCoreWithAutoVerify( Int32.MinValue, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMinInt32FieldArray()
+		public void TestMinInt32FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MinValue, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MinValue, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTinyInt64Field()
+		public void TestTinyInt64FieldField()
 		{
-			this.TestCoreWithAutoVerify( 0x100000000 );
+			this.TestCoreWithAutoVerify( 0x100000000, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTinyInt64FieldArray()
+		public void TestTinyInt64FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100000000, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100000000, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMaxInt64Field()
+		public void TestMaxInt64FieldField()
 		{
-			this.TestCoreWithAutoVerify( Int64.MaxValue );
+			this.TestCoreWithAutoVerify( Int64.MaxValue, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMaxInt64FieldArray()
+		public void TestMaxInt64FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MaxValue, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MaxValue, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMinInt64Field()
+		public void TestMinInt64FieldField()
 		{
-			this.TestCoreWithAutoVerify( Int64.MinValue );
+			this.TestCoreWithAutoVerify( Int64.MinValue, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMinInt64FieldArray()
+		public void TestMinInt64FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MinValue, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MinValue, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDateTimeField()
+		public void TestDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( DateTime.UtcNow );
+			this.TestCoreWithAutoVerify( DateTime.UtcNow, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDateTimeFieldArray()
+		public void TestDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTime.UtcNow, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTime.UtcNow, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDateTimeOffsetField()
+		public void TestDateTimeOffsetFieldField()
 		{
-			this.TestCoreWithAutoVerify( DateTimeOffset.UtcNow );
+			this.TestCoreWithAutoVerify( DateTimeOffset.UtcNow, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDateTimeOffsetFieldArray()
+		public void TestDateTimeOffsetFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTimeOffset.UtcNow, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTimeOffset.UtcNow, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestUriField()
+		public void TestUriFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Uri( "http://example.com/" ) );
+			this.TestCoreWithAutoVerify( new Uri( "http://example.com/" ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestUriFieldArray()
+		public void TestUriFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Uri( "http://example.com/" ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Uri( "http://example.com/" ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestUriFieldNull()
+		public void TestUriFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Uri ) );
+			this.TestCoreWithAutoVerify( default( Uri ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestUriFieldArrayNull()
+		public void TestUriFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Uri[] ) );
+			this.TestCoreWithAutoVerify( default( Uri[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestVersionField()
+		public void TestVersionFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Version( 1, 2, 3, 4 ) );
+			this.TestCoreWithAutoVerify( new Version( 1, 2, 3, 4 ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestVersionFieldArray()
+		public void TestVersionFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3, 4 ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3, 4 ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestVersionFieldNull()
+		public void TestVersionFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Version ) );
+			this.TestCoreWithAutoVerify( default( Version ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestVersionFieldArrayNull()
+		public void TestVersionFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Version[] ) );
+			this.TestCoreWithAutoVerify( default( Version[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestFILETIMEField()
+		public void TestFILETIMEFieldField()
 		{
-			this.TestCoreWithAutoVerify( ToFileTime( DateTime.UtcNow ) );
+			this.TestCoreWithAutoVerify( ToFileTime( DateTime.UtcNow ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestFILETIMEFieldArray()
+		public void TestFILETIMEFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.UtcNow ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.UtcNow ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTimeSpanField()
+		public void TestTimeSpanFieldField()
 		{
-			this.TestCoreWithAutoVerify( TimeSpan.FromMilliseconds( 123456789 ) );
+			this.TestCoreWithAutoVerify( TimeSpan.FromMilliseconds( 123456789 ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTimeSpanFieldArray()
+		public void TestTimeSpanFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( TimeSpan.FromMilliseconds( 123456789 ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( TimeSpan.FromMilliseconds( 123456789 ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestGuidField()
+		public void TestGuidFieldField()
 		{
-			this.TestCoreWithAutoVerify( Guid.NewGuid() );
+			this.TestCoreWithAutoVerify( Guid.NewGuid(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestGuidFieldArray()
+		public void TestGuidFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( Guid.NewGuid(), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Guid.NewGuid(), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCharField()
+		public void TestCharFieldField()
 		{
-			this.TestCoreWithAutoVerify( '　' );
+			this.TestCoreWithAutoVerify( '　', this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCharFieldArray()
+		public void TestCharFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( '　', 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( '　', 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDecimalField()
+		public void TestDecimalFieldField()
 		{
-			this.TestCoreWithAutoVerify( 123456789.0987654321m );
+			this.TestCoreWithAutoVerify( 123456789.0987654321m, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDecimalFieldArray()
+		public void TestDecimalFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( 123456789.0987654321m, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 123456789.0987654321m, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestBigIntegerField()
+		public void TestBigIntegerFieldField()
 		{
-			this.TestCoreWithAutoVerify( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue );
+			this.TestCoreWithAutoVerify( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestBigIntegerFieldArray()
+		public void TestBigIntegerFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestComplexField()
+		public void TestComplexFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Complex( 1.3, 2.4 ) );
+			this.TestCoreWithAutoVerify( new Complex( 1.3, 2.4 ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestComplexFieldArray()
+		public void TestComplexFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Complex( 1.3, 2.4 ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Complex( 1.3, 2.4 ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionaryEntryField()
+		public void TestDictionaryEntryFieldField()
 		{
-			this.TestCoreWithAutoVerify( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ) );
+			this.TestCoreWithAutoVerify( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionaryEntryFieldArray()
+		public void TestDictionaryEntryFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestKeyValuePairStringComplexField()
+		public void TestKeyValuePairStringComplexFieldField()
 		{
-			this.TestCoreWithAutoVerify( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ) );
+			this.TestCoreWithAutoVerify( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestKeyValuePairStringComplexFieldArray()
+		public void TestKeyValuePairStringComplexFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringField()
+		public void TestStringFieldField()
 		{
-			this.TestCoreWithAutoVerify( "StringValue" );
+			this.TestCoreWithAutoVerify( "StringValue", this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringFieldArray()
+		public void TestStringFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( "StringValue", 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( "StringValue", 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringFieldNull()
+		public void TestStringFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( String ) );
+			this.TestCoreWithAutoVerify( default( String ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringFieldArrayNull()
+		public void TestStringFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( String[] ) );
+			this.TestCoreWithAutoVerify( default( String[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestByteArrayField()
+		public void TestByteArrayFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Byte[]{ 1, 2, 3, 4 } );
+			this.TestCoreWithAutoVerify( new Byte[]{ 1, 2, 3, 4 }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestByteArrayFieldArray()
+		public void TestByteArrayFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Byte[]{ 1, 2, 3, 4 }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Byte[]{ 1, 2, 3, 4 }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestByteArrayFieldNull()
+		public void TestByteArrayFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Byte[] ) );
+			this.TestCoreWithAutoVerify( default( Byte[] ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestByteArrayFieldArrayNull()
+		public void TestByteArrayFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Byte[][] ) );
+			this.TestCoreWithAutoVerify( default( Byte[][] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestCharArrayField()
+		public void TestCharArrayFieldField()
 		{
-			this.TestCoreWithAutoVerify( "ABCD".ToCharArray() );
+			this.TestCoreWithAutoVerify( "ABCD".ToCharArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCharArrayFieldArray()
+		public void TestCharArrayFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( "ABCD".ToCharArray(), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( "ABCD".ToCharArray(), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCharArrayFieldNull()
+		public void TestCharArrayFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Char[] ) );
+			this.TestCoreWithAutoVerify( default( Char[] ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCharArrayFieldArrayNull()
+		public void TestCharArrayFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Char[][] ) );
+			this.TestCoreWithAutoVerify( default( Char[][] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestArraySegmentByteField()
+		public void TestArraySegmentByteFieldField()
 		{
-			this.TestCoreWithAutoVerify( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ) );
+			this.TestCoreWithAutoVerify( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestArraySegmentByteFieldArray()
+		public void TestArraySegmentByteFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestArraySegmentInt32Field()
+		public void TestArraySegmentInt32FieldField()
 		{
-			this.TestCoreWithAutoVerify( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ) );
+			this.TestCoreWithAutoVerify( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestArraySegmentInt32FieldArray()
+		public void TestArraySegmentInt32FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestArraySegmentDecimalField()
+		public void TestArraySegmentDecimalFieldField()
 		{
-			this.TestCoreWithAutoVerify( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ) );
+			this.TestCoreWithAutoVerify( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestArraySegmentDecimalFieldArray()
+		public void TestArraySegmentDecimalFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTuple_Int32_String_MessagePackObject_ObjectField()
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) )  );
+			this.TestCoreWithAutoVerify( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldArray()
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldNull()
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> ) );
+			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldArrayNull()
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestImage_Field()
+		public void TestImage_FieldField()
 		{
-			this.TestCoreWithAutoVerify( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 } );
+			this.TestCoreWithAutoVerify( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestImage_FieldArray()
+		public void TestImage_FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestImage_FieldNull()
+		public void TestImage_FieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Image ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Image ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestImage_FieldArrayNull()
+		public void TestImage_FieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Image[] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Image[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestListDateTimeField()
+		public void TestListDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
+			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestListDateTimeFieldArray()
+		public void TestListDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestListDateTimeFieldNull()
+		public void TestListDateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( List<DateTime> ) );
+			this.TestCoreWithAutoVerify( default( List<DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestListDateTimeFieldArrayNull()
+		public void TestListDateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( List<DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( List<DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestDictionaryStringDateTimeField()
+		public void TestDictionaryStringDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } } );
+			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionaryStringDateTimeFieldArray()
+		public void TestDictionaryStringDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionaryStringDateTimeFieldNull()
+		public void TestDictionaryStringDateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime> ) );
+			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionaryStringDateTimeFieldArrayNull()
+		public void TestDictionaryStringDateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestCollectionDateTimeField()
+		public void TestCollectionDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
+			this.TestCoreWithAutoVerify( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCollectionDateTimeFieldArray()
+		public void TestCollectionDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCollectionDateTimeFieldNull()
+		public void TestCollectionDateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Collection<DateTime> ) );
+			this.TestCoreWithAutoVerify( default( Collection<DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCollectionDateTimeFieldArrayNull()
+		public void TestCollectionDateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Collection<DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( Collection<DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestStringKeyedCollection_DateTimeField()
+		public void TestStringKeyedCollection_DateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringKeyedCollection_DateTimeFieldArray()
+		public void TestStringKeyedCollection_DateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringKeyedCollection_DateTimeFieldNull()
+		public void TestStringKeyedCollection_DateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime> ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringKeyedCollection_DateTimeFieldArrayNull()
+		public void TestStringKeyedCollection_DateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestObservableCollectionDateTimeField()
+		public void TestObservableCollectionDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
+			this.TestCoreWithAutoVerify( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObservableCollectionDateTimeFieldArray()
+		public void TestObservableCollectionDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObservableCollectionDateTimeFieldNull()
+		public void TestObservableCollectionDateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime> ) );
+			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObservableCollectionDateTimeFieldArrayNull()
+		public void TestObservableCollectionDateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestHashSetDateTimeField()
+		public void TestHashSetDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashSetDateTimeFieldArray()
+		public void TestHashSetDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashSetDateTimeFieldNull()
+		public void TestHashSetDateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( HashSet<DateTime> ) );
+			this.TestCoreWithAutoVerify( default( HashSet<DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashSetDateTimeFieldArrayNull()
+		public void TestHashSetDateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( HashSet<DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( HashSet<DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestICollectionDateTimeField()
+		public void TestICollectionDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
+			this.TestCoreWithAutoVerify( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestICollectionDateTimeFieldArray()
+		public void TestICollectionDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestICollectionDateTimeFieldNull()
+		public void TestICollectionDateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ICollection<DateTime> ) );
+			this.TestCoreWithAutoVerify( default( ICollection<DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestICollectionDateTimeFieldArrayNull()
+		public void TestICollectionDateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ICollection<DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( ICollection<DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestISetDateTimeField()
+		public void TestISetDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestISetDateTimeFieldArray()
+		public void TestISetDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestISetDateTimeFieldNull()
+		public void TestISetDateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ISet<DateTime> ) );
+			this.TestCoreWithAutoVerify( default( ISet<DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestISetDateTimeFieldArrayNull()
+		public void TestISetDateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ISet<DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( ISet<DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestIListDateTimeField()
+		public void TestIListDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
+			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIListDateTimeFieldArray()
+		public void TestIListDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIListDateTimeFieldNull()
+		public void TestIListDateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( IList<DateTime> ) );
+			this.TestCoreWithAutoVerify( default( IList<DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIListDateTimeFieldArrayNull()
+		public void TestIListDateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( IList<DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( IList<DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestIDictionaryStringDateTimeField()
+		public void TestIDictionaryStringDateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } } );
+			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIDictionaryStringDateTimeFieldArray()
+		public void TestIDictionaryStringDateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIDictionaryStringDateTimeFieldNull()
+		public void TestIDictionaryStringDateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime> ) );
+			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIDictionaryStringDateTimeFieldArrayNull()
+		public void TestIDictionaryStringDateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestAddOnlyCollection_DateTimeField()
+		public void TestAddOnlyCollection_DateTimeFieldField()
 		{
-			this.TestCoreWithAutoVerify( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow } );
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestAddOnlyCollection_DateTimeFieldArray()
+		public void TestAddOnlyCollection_DateTimeFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestAddOnlyCollection_DateTimeFieldNull()
+		public void TestAddOnlyCollection_DateTimeFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime> ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestAddOnlyCollection_DateTimeFieldArrayNull()
+		public void TestAddOnlyCollection_DateTimeFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime>[] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestObjectField()
+		public void TestObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ) );
+			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObjectFieldArray()
+		public void TestObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObjectFieldNull()
+		public void TestObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object ) );
+			this.TestCoreWithAutoVerify( default( Object ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObjectFieldArrayNull()
+		public void TestObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object[] ) );
+			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestObjectArrayField()
+		public void TestObjectArrayFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObjectArrayFieldArray()
+		public void TestObjectArrayFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObjectArrayFieldNull()
+		public void TestObjectArrayFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object[] ) );
+			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObjectArrayFieldArrayNull()
+		public void TestObjectArrayFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Object[][] ) );
+			this.TestCoreWithAutoVerify( default( Object[][] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestArrayListField()
+		public void TestArrayListFieldField()
 		{
-			this.TestCoreWithAutoVerify( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestArrayListFieldArray()
+		public void TestArrayListFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestArrayListFieldNull()
+		public void TestArrayListFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ArrayList ) );
+			this.TestCoreWithAutoVerify( default( ArrayList ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestArrayListFieldArrayNull()
+		public void TestArrayListFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ArrayList[] ) );
+			this.TestCoreWithAutoVerify( default( ArrayList[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestHashtableField()
+		public void TestHashtableFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } } );
+			this.TestCoreWithAutoVerify( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashtableFieldArray()
+		public void TestHashtableFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashtableFieldNull()
+		public void TestHashtableFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Hashtable ) );
+			this.TestCoreWithAutoVerify( default( Hashtable ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashtableFieldArrayNull()
+		public void TestHashtableFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Hashtable[] ) );
+			this.TestCoreWithAutoVerify( default( Hashtable[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestListObjectField()
+		public void TestListObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestListObjectFieldArray()
+		public void TestListObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestListObjectFieldNull()
+		public void TestListObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( List<Object> ) );
+			this.TestCoreWithAutoVerify( default( List<Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestListObjectFieldArrayNull()
+		public void TestListObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( List<Object>[] ) );
+			this.TestCoreWithAutoVerify( default( List<Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestDictionaryObjectObjectField()
+		public void TestDictionaryObjectObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } } );
+			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionaryObjectObjectFieldArray()
+		public void TestDictionaryObjectObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionaryObjectObjectFieldNull()
+		public void TestDictionaryObjectObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object> ) );
+			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionaryObjectObjectFieldArrayNull()
+		public void TestDictionaryObjectObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object>[] ) );
+			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestCollectionObjectField()
+		public void TestCollectionObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCollectionObjectFieldArray()
+		public void TestCollectionObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCollectionObjectFieldNull()
+		public void TestCollectionObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( Collection<Object> ) );
+			this.TestCoreWithAutoVerify( default( Collection<Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCollectionObjectFieldArrayNull()
+		public void TestCollectionObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( Collection<Object>[] ) );
+			this.TestCoreWithAutoVerify( default( Collection<Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestStringKeyedCollection_ObjectField()
+		public void TestStringKeyedCollection_ObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringKeyedCollection_ObjectFieldArray()
+		public void TestStringKeyedCollection_ObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringKeyedCollection_ObjectFieldNull()
+		public void TestStringKeyedCollection_ObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object> ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringKeyedCollection_ObjectFieldArrayNull()
+		public void TestStringKeyedCollection_ObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object>[] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestObservableCollectionObjectField()
+		public void TestObservableCollectionObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObservableCollectionObjectFieldArray()
+		public void TestObservableCollectionObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObservableCollectionObjectFieldNull()
+		public void TestObservableCollectionObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ObservableCollection<Object> ) );
+			this.TestCoreWithAutoVerify( default( ObservableCollection<Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObservableCollectionObjectFieldArrayNull()
+		public void TestObservableCollectionObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ObservableCollection<Object>[] ) );
+			this.TestCoreWithAutoVerify( default( ObservableCollection<Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestHashSetObjectField()
+		public void TestHashSetObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashSetObjectFieldArray()
+		public void TestHashSetObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashSetObjectFieldNull()
+		public void TestHashSetObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( HashSet<Object> ) );
+			this.TestCoreWithAutoVerify( default( HashSet<Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashSetObjectFieldArrayNull()
+		public void TestHashSetObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( HashSet<Object>[] ) );
+			this.TestCoreWithAutoVerify( default( HashSet<Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestICollectionObjectField()
+		public void TestICollectionObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestICollectionObjectFieldArray()
+		public void TestICollectionObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestICollectionObjectFieldNull()
+		public void TestICollectionObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ICollection<Object> ) );
+			this.TestCoreWithAutoVerify( default( ICollection<Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestICollectionObjectFieldArrayNull()
+		public void TestICollectionObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ICollection<Object>[] ) );
+			this.TestCoreWithAutoVerify( default( ICollection<Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestISetObjectField()
+		public void TestISetObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestISetObjectFieldArray()
+		public void TestISetObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestISetObjectFieldNull()
+		public void TestISetObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( ISet<Object> ) );
+			this.TestCoreWithAutoVerify( default( ISet<Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestISetObjectFieldArrayNull()
+		public void TestISetObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( ISet<Object>[] ) );
+			this.TestCoreWithAutoVerify( default( ISet<Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestIListObjectField()
+		public void TestIListObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIListObjectFieldArray()
+		public void TestIListObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIListObjectFieldNull()
+		public void TestIListObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( IList<Object> ) );
+			this.TestCoreWithAutoVerify( default( IList<Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIListObjectFieldArrayNull()
+		public void TestIListObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( IList<Object>[] ) );
+			this.TestCoreWithAutoVerify( default( IList<Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestIDictionaryObjectObjectField()
+		public void TestIDictionaryObjectObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } } );
+			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIDictionaryObjectObjectFieldArray()
+		public void TestIDictionaryObjectObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIDictionaryObjectObjectFieldNull()
+		public void TestIDictionaryObjectObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object> ) );
+			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIDictionaryObjectObjectFieldArrayNull()
+		public void TestIDictionaryObjectObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object>[] ) );
+			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestAddOnlyCollection_ObjectField()
+		public void TestAddOnlyCollection_ObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestAddOnlyCollection_ObjectFieldArray()
+		public void TestAddOnlyCollection_ObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestAddOnlyCollection_ObjectFieldNull()
+		public void TestAddOnlyCollection_ObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object> ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestAddOnlyCollection_ObjectFieldArrayNull()
+		public void TestAddOnlyCollection_ObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object>[] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestMessagePackObject_Field()
+		public void TestMessagePackObject_FieldField()
 		{
-			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ) );
+			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMessagePackObject_FieldArray()
+		public void TestMessagePackObject_FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMessagePackObject_FieldNull()
+		public void TestMessagePackObject_FieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMessagePackObject_FieldArrayNull()
+		public void TestMessagePackObject_FieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestMessagePackObjectArray_Field()
+		public void TestMessagePackObjectArray_FieldField()
 		{
-			this.TestCoreWithAutoVerify( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMessagePackObjectArray_FieldArray()
+		public void TestMessagePackObjectArray_FieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMessagePackObjectArray_FieldNull()
+		public void TestMessagePackObjectArray_FieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestMessagePackObjectArray_FieldArrayNull()
+		public void TestMessagePackObjectArray_FieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[][] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[][] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestList_MessagePackObjectField()
+		public void TestList_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestList_MessagePackObjectFieldArray()
+		public void TestList_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestList_MessagePackObjectFieldNull()
+		public void TestList_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestList_MessagePackObjectFieldArrayNull()
+		public void TestList_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestDictionary_MessagePackObject_MessagePackObjectField()
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } } );
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionary_MessagePackObject_MessagePackObjectFieldArray()
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionary_MessagePackObject_MessagePackObjectFieldNull()
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestDictionary_MessagePackObject_MessagePackObjectFieldArrayNull()
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestCollection_MessagePackObjectField()
+		public void TestCollection_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCollection_MessagePackObjectFieldArray()
+		public void TestCollection_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCollection_MessagePackObjectFieldNull()
+		public void TestCollection_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestCollection_MessagePackObjectFieldArrayNull()
+		public void TestCollection_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestStringKeyedCollection_MessagePackObjectField()
+		public void TestStringKeyedCollection_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringKeyedCollection_MessagePackObjectFieldArray()
+		public void TestStringKeyedCollection_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringKeyedCollection_MessagePackObjectFieldNull()
+		public void TestStringKeyedCollection_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestStringKeyedCollection_MessagePackObjectFieldArrayNull()
+		public void TestStringKeyedCollection_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestObservableCollection_MessagePackObjectField()
+		public void TestObservableCollection_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObservableCollection_MessagePackObjectFieldArray()
+		public void TestObservableCollection_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObservableCollection_MessagePackObjectFieldNull()
+		public void TestObservableCollection_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestObservableCollection_MessagePackObjectFieldArrayNull()
+		public void TestObservableCollection_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestHashSet_MessagePackObjectField()
+		public void TestHashSet_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashSet_MessagePackObjectFieldArray()
+		public void TestHashSet_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashSet_MessagePackObjectFieldNull()
+		public void TestHashSet_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestHashSet_MessagePackObjectFieldArrayNull()
+		public void TestHashSet_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestICollection_MessagePackObjectField()
+		public void TestICollection_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestICollection_MessagePackObjectFieldArray()
+		public void TestICollection_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestICollection_MessagePackObjectFieldNull()
+		public void TestICollection_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestICollection_MessagePackObjectFieldArrayNull()
+		public void TestICollection_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestISet_MessagePackObjectField()
+		public void TestISet_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestISet_MessagePackObjectFieldArray()
+		public void TestISet_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestISet_MessagePackObjectFieldNull()
+		public void TestISet_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestISet_MessagePackObjectFieldArrayNull()
+		public void TestISet_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestIList_MessagePackObjectField()
+		public void TestIList_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIList_MessagePackObjectFieldArray()
+		public void TestIList_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIList_MessagePackObjectFieldNull()
+		public void TestIList_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIList_MessagePackObjectFieldArrayNull()
+		public void TestIList_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestIDictionary_MessagePackObject_MessagePackObjectField()
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } } );
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldArray()
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldNull()
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldArrayNull()
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestAddOnlyCollection_MessagePackObjectField()
+		public void TestAddOnlyCollection_MessagePackObjectFieldField()
 		{
-			this.TestCoreWithAutoVerify( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) } );
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestAddOnlyCollection_MessagePackObjectFieldArray()
+		public void TestAddOnlyCollection_MessagePackObjectFieldFieldArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestAddOnlyCollection_MessagePackObjectFieldNull()
+		public void TestAddOnlyCollection_MessagePackObjectFieldFieldNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> ), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestAddOnlyCollection_MessagePackObjectFieldArrayNull()
+		public void TestAddOnlyCollection_MessagePackObjectFieldFieldArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>[] ) );
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextField() );
 		}	
 		
 		[Test]
-		public void TestComplexTypeGeneratedEnclosure()
+		public void TestComplexTypeGeneratedEnclosure_Field()
 		{
 			var target = new ComplexTypeGeneratedEnclosure();
 			target.Initialize();
-			this.TestCoreWithVerifiable( target );
+			this.TestCoreWithVerifiable( target, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestComplexTypeGeneratedEnclosureArray()
+		public void TestComplexTypeGeneratedEnclosureArray_Field()
 		{
-			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray() );
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestComplexTypeGenerated()
+		public void TestComplexTypeGenerated_Field()
 		{
 			var target = new ComplexTypeGenerated();
 			target.Initialize();
-			this.TestCoreWithVerifiable( target );
+			this.TestCoreWithVerifiable( target, this.GetSerializationContextField() );
 		}
 		
 		[Test]
-		public void TestComplexTypeGeneratedArray()
+		public void TestComplexTypeGeneratedArray_Field()
 		{
-			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray() );
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContextField() );
 		}
 
-		private void TestCoreWithAutoVerify<T>( T value )
+		private SerializationContext GetSerializationContextField()
 		{
-			var target = this.CreateTarget<T>( this.GetSerializationContext() );
+			var result = this.GetSerializationContext();
+			result.EmitterFlavor = EmitterFlavor.FieldBased;
+			return result;
+		}
+		[Test]
+		public void TestNullFieldContext()
+		{
+			this.TestCoreWithAutoVerify( default( object ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestNullFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( default( object ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestNullFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestNullFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestTrueFieldContext()
+		{
+			this.TestCoreWithAutoVerify( true, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTrueFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( true, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestFalseFieldContext()
+		{
+			this.TestCoreWithAutoVerify( false, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestFalseFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( false, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTinyByteFieldContext()
+		{
+			this.TestCoreWithAutoVerify( 1, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTinyByteFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 1, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestByteFieldContext()
+		{
+			this.TestCoreWithAutoVerify( 0x80, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestByteFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x80, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMaxByteFieldContext()
+		{
+			this.TestCoreWithAutoVerify( 0xff, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMaxByteFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xff, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTinyUInt16FieldContext()
+		{
+			this.TestCoreWithAutoVerify( 0x100, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTinyUInt16FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMaxUInt16FieldContext()
+		{
+			this.TestCoreWithAutoVerify( 0xffff, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMaxUInt16FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xffff, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTinyInt32FieldContext()
+		{
+			this.TestCoreWithAutoVerify( 0x10000, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTinyInt32FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x10000, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMaxInt32FieldContext()
+		{
+			this.TestCoreWithAutoVerify( Int32.MaxValue, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMaxInt32FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MaxValue, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMinInt32FieldContext()
+		{
+			this.TestCoreWithAutoVerify( Int32.MinValue, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMinInt32FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MinValue, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTinyInt64FieldContext()
+		{
+			this.TestCoreWithAutoVerify( 0x100000000, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTinyInt64FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100000000, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMaxInt64FieldContext()
+		{
+			this.TestCoreWithAutoVerify( Int64.MaxValue, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMaxInt64FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MaxValue, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMinInt64FieldContext()
+		{
+			this.TestCoreWithAutoVerify( Int64.MinValue, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMinInt64FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MinValue, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( DateTime.UtcNow, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTime.UtcNow, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDateTimeOffsetFieldContext()
+		{
+			this.TestCoreWithAutoVerify( DateTimeOffset.UtcNow, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDateTimeOffsetFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTimeOffset.UtcNow, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestUriFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Uri( "http://example.com/" ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestUriFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Uri( "http://example.com/" ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestUriFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Uri ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestUriFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Uri[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestVersionFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Version( 1, 2, 3, 4 ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestVersionFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3, 4 ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestVersionFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Version ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestVersionFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Version[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestFILETIMEFieldContext()
+		{
+			this.TestCoreWithAutoVerify( ToFileTime( DateTime.UtcNow ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestFILETIMEFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.UtcNow ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTimeSpanFieldContext()
+		{
+			this.TestCoreWithAutoVerify( TimeSpan.FromMilliseconds( 123456789 ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTimeSpanFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( TimeSpan.FromMilliseconds( 123456789 ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestGuidFieldContext()
+		{
+			this.TestCoreWithAutoVerify( Guid.NewGuid(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestGuidFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Guid.NewGuid(), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCharFieldContext()
+		{
+			this.TestCoreWithAutoVerify( '　', this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCharFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( '　', 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDecimalFieldContext()
+		{
+			this.TestCoreWithAutoVerify( 123456789.0987654321m, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDecimalFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 123456789.0987654321m, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestBigIntegerFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestBigIntegerFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestComplexFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Complex( 1.3, 2.4 ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestComplexFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Complex( 1.3, 2.4 ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionaryEntryFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionaryEntryFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestKeyValuePairStringComplexFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestKeyValuePairStringComplexFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringFieldContext()
+		{
+			this.TestCoreWithAutoVerify( "StringValue", this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( "StringValue", 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( String ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( String[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestByteArrayFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Byte[]{ 1, 2, 3, 4 }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestByteArrayFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Byte[]{ 1, 2, 3, 4 }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestByteArrayFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Byte[] ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestByteArrayFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Byte[][] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestCharArrayFieldContext()
+		{
+			this.TestCoreWithAutoVerify( "ABCD".ToCharArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCharArrayFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( "ABCD".ToCharArray(), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCharArrayFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Char[] ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCharArrayFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Char[][] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestArraySegmentByteFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestArraySegmentByteFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestArraySegmentInt32FieldContext()
+		{
+			this.TestCoreWithAutoVerify( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestArraySegmentInt32FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestArraySegmentDecimalFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestArraySegmentDecimalFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestImage_FieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestImage_FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestImage_FieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Image ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestImage_FieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Image[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestListDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestListDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestListDateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( List<DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestListDateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( List<DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestDictionaryStringDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionaryStringDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionaryStringDateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionaryStringDateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestCollectionDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCollectionDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCollectionDateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Collection<DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCollectionDateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Collection<DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestHashSetDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashSetDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashSetDateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( HashSet<DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashSetDateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( HashSet<DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestICollectionDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestICollectionDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestICollectionDateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( ICollection<DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestICollectionDateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ICollection<DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestISetDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestISetDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestISetDateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( ISet<DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestISetDateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ISet<DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestIListDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIListDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIListDateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( IList<DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIListDateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( IList<DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestIDictionaryStringDateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIDictionaryStringDateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIDictionaryStringDateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIDictionaryStringDateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestObjectArrayFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObjectArrayFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObjectArrayFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObjectArrayFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object[][] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestArrayListFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestArrayListFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestArrayListFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( ArrayList ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestArrayListFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ArrayList[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestHashtableFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashtableFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashtableFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Hashtable ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashtableFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Hashtable[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestListObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestListObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestListObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( List<Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestListObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( List<Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestCollectionObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCollectionObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCollectionObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( Collection<Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCollectionObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Collection<Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestObservableCollectionObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( ObservableCollection<Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ObservableCollection<Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestHashSetObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashSetObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashSetObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( HashSet<Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashSetObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( HashSet<Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestICollectionObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestICollectionObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestICollectionObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( ICollection<Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestICollectionObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ICollection<Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestISetObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestISetObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestISetObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( ISet<Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestISetObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ISet<Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestIListObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIListObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIListObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( IList<Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIListObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( IList<Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestAddOnlyCollection_ObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_ObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_ObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_ObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestMessagePackObject_FieldContext()
+		{
+			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMessagePackObject_FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMessagePackObject_FieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMessagePackObject_FieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestMessagePackObjectArray_FieldContext()
+		{
+			this.TestCoreWithAutoVerify( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMessagePackObjectArray_FieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMessagePackObjectArray_FieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestMessagePackObjectArray_FieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[][] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestHashSet_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashSet_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashSet_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestHashSet_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestISet_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestISet_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestISet_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestISet_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldContext()
+		{
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldContextArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldContextNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> ), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldContextArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextContext() );
+		}	
+		
+		[Test]
+		public void TestComplexTypeGeneratedEnclosure_Context()
+		{
+			var target = new ComplexTypeGeneratedEnclosure();
+			target.Initialize();
+			this.TestCoreWithVerifiable( target, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestComplexTypeGeneratedEnclosureArray_Context()
+		{
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestComplexTypeGenerated_Context()
+		{
+			var target = new ComplexTypeGenerated();
+			target.Initialize();
+			this.TestCoreWithVerifiable( target, this.GetSerializationContextContext() );
+		}
+		
+		[Test]
+		public void TestComplexTypeGeneratedArray_Context()
+		{
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContextContext() );
+		}
+
+		private SerializationContext GetSerializationContextContext()
+		{
+			var result = this.GetSerializationContext();
+			result.EmitterFlavor = EmitterFlavor.ContextBased;
+			return result;
+		}
+		[Test]
+		public void TestNullFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( default( object ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestNullFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( default( object ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestNullFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestNullFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestTrueFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( true, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTrueFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( true, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestFalseFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( false, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestFalseFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( false, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTinyByteFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( 1, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTinyByteFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 1, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestByteFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( 0x80, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestByteFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x80, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMaxByteFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( 0xff, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMaxByteFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xff, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTinyUInt16FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( 0x100, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTinyUInt16FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMaxUInt16FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( 0xffff, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMaxUInt16FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0xffff, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTinyInt32FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( 0x10000, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTinyInt32FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x10000, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMaxInt32FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( Int32.MaxValue, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMaxInt32FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MaxValue, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMinInt32FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( Int32.MinValue, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMinInt32FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int32.MinValue, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTinyInt64FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( 0x100000000, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTinyInt64FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 0x100000000, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMaxInt64FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( Int64.MaxValue, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMaxInt64FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MaxValue, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMinInt64FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( Int64.MinValue, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMinInt64FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Int64.MinValue, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( DateTime.UtcNow, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTime.UtcNow, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDateTimeOffsetFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( DateTimeOffset.UtcNow, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDateTimeOffsetFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( DateTimeOffset.UtcNow, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestUriFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Uri( "http://example.com/" ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestUriFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Uri( "http://example.com/" ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestUriFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Uri ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestUriFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Uri[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestVersionFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Version( 1, 2, 3, 4 ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestVersionFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3, 4 ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestVersionFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Version ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestVersionFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Version[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestFILETIMEFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( ToFileTime( DateTime.UtcNow ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestFILETIMEFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.UtcNow ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTimeSpanFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( TimeSpan.FromMilliseconds( 123456789 ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTimeSpanFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( TimeSpan.FromMilliseconds( 123456789 ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestGuidFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( Guid.NewGuid(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestGuidFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( Guid.NewGuid(), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCharFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( '　', this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCharFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( '　', 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDecimalFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( 123456789.0987654321m, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDecimalFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( 123456789.0987654321m, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestBigIntegerFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestBigIntegerFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestComplexFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Complex( 1.3, 2.4 ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestComplexFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Complex( 1.3, 2.4 ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionaryEntryFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionaryEntryFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestKeyValuePairStringComplexFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestKeyValuePairStringComplexFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( "StringValue", this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( "StringValue", 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( String ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( String[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestByteArrayFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Byte[]{ 1, 2, 3, 4 }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestByteArrayFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Byte[]{ 1, 2, 3, 4 }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestByteArrayFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Byte[] ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestByteArrayFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Byte[][] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestCharArrayFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( "ABCD".ToCharArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCharArrayFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( "ABCD".ToCharArray(), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCharArrayFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Char[] ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCharArrayFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Char[][] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestArraySegmentByteFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestArraySegmentByteFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestArraySegmentInt32FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestArraySegmentInt32FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestArraySegmentDecimalFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestArraySegmentDecimalFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestImage_FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestImage_FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestImage_FieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Image ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestImage_FieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Image[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestListDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestListDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestListDateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( List<DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestListDateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( List<DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestDictionaryStringDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionaryStringDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionaryStringDateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionaryStringDateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Dictionary<String, DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestCollectionDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCollectionDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCollectionDateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Collection<DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCollectionDateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Collection<DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_DateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionDateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestHashSetDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashSetDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashSetDateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( HashSet<DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashSetDateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( HashSet<DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestICollectionDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestICollectionDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestICollectionDateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( ICollection<DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestICollectionDateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ICollection<DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestISetDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestISetDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestISetDateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( ISet<DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestISetDateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ISet<DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestIListDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIListDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIListDateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( IList<DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIListDateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( IList<DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestIDictionaryStringDateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIDictionaryStringDateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIDictionaryStringDateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIDictionaryStringDateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( IDictionary<String, DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_DateTimeFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.DateTime>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestObjectArrayFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObjectArrayFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObjectArrayFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object[] ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObjectArrayFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Object[][] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestArrayListFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestArrayListFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestArrayListFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( ArrayList ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestArrayListFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ArrayList[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestHashtableFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashtableFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashtableFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Hashtable ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashtableFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Hashtable[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestListObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestListObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestListObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( List<Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestListObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( List<Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionaryObjectObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Dictionary<Object, Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestCollectionObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCollectionObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCollectionObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( Collection<Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCollectionObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Collection<Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_ObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestObservableCollectionObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( ObservableCollection<Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObservableCollectionObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ObservableCollection<Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestHashSetObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashSetObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashSetObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( HashSet<Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashSetObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( HashSet<Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestICollectionObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestICollectionObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestICollectionObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( ICollection<Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestICollectionObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ICollection<Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestISetObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestISetObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestISetObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( ISet<Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestISetObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( ISet<Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestIListObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIListObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIListObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( IList<Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIListObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( IList<Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIDictionaryObjectObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( IDictionary<Object, Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestAddOnlyCollection_ObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_ObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_ObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_ObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<System.Object>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestMessagePackObject_FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new MessagePackObject( 1 ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMessagePackObject_FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject( 1 ), 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMessagePackObject_FieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMessagePackObject_FieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestMessagePackObjectArray_FieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMessagePackObjectArray_FieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMessagePackObjectArray_FieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[] ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestMessagePackObjectArray_FieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.MessagePackObject[][] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestList_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.List<MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestDictionary_MessagePackObject_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestCollection_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestStringKeyedCollection_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestObservableCollection_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestHashSet_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashSet_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashSet_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestHashSet_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.HashSet<MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestICollection_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestISet_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestISet_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestISet_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestISet_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIList_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IList<MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestIDictionary_MessagePackObject_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldExpression()
+		{
+			this.TestCoreWithAutoVerify( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldExpressionArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }, 2 ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldExpressionNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> ), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestAddOnlyCollection_MessagePackObjectFieldExpressionArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContextExpression() );
+		}	
+		
+		[Test]
+		public void TestComplexTypeGeneratedEnclosure_Expression()
+		{
+			var target = new ComplexTypeGeneratedEnclosure();
+			target.Initialize();
+			this.TestCoreWithVerifiable( target, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestComplexTypeGeneratedEnclosureArray_Expression()
+		{
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestComplexTypeGenerated_Expression()
+		{
+			var target = new ComplexTypeGenerated();
+			target.Initialize();
+			this.TestCoreWithVerifiable( target, this.GetSerializationContextExpression() );
+		}
+		
+		[Test]
+		public void TestComplexTypeGeneratedArray_Expression()
+		{
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContextExpression() );
+		}
+
+		private SerializationContext GetSerializationContextExpression()
+		{
+			var result = this.GetSerializationContext();
+			result.EmitterFlavor = EmitterFlavor.ExpressionBased;
+			return result;
+		}
+
+		private void TestCoreWithAutoVerify<T>( T value, SerializationContext context )
+		{
+			var target = this.CreateTarget<T>( context );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );
@@ -1527,10 +4506,10 @@ namespace MsgPack.Serialization
 			}
 		}
 		
-		private void TestCoreWithVerifiable<T>( T value )
+		private void TestCoreWithVerifiable<T>( T value, SerializationContext context )
 			where T : IVerifiable<T>
 		{
-			var target = this.CreateTarget<T>( this.GetSerializationContext() );
+			var target = this.CreateTarget<T>( context );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );
@@ -1541,10 +4520,10 @@ namespace MsgPack.Serialization
 			}
 		}	
 		
-		private void TestCoreWithVerifiable<T>( T[] value )
+		private void TestCoreWithVerifiable<T>( T[] value, SerializationContext context )
 			where T : IVerifiable<T>
 		{
-			var target = this.CreateTarget<T[]>( this.GetSerializationContext() );
+			var target = this.CreateTarget<T[]>( context );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, value );
