@@ -129,6 +129,13 @@ namespace MsgPack
 			get { return this._currentSource.Stream; }
 		}
 
+#if DEBUG
+		internal override long? UnderlyingStreamPosition
+		{
+			get { return this.UnderlyingStream.Position; }
+		}
+#endif
+
 		/// <summary>
 		///		Initializes a new instance with default sized on memory buffer.
 		/// </summary>

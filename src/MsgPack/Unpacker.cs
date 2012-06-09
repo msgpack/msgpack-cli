@@ -145,6 +145,13 @@ namespace MsgPack
 			get { throw new NotSupportedException(); }
 		}
 
+#if DEBUG
+		internal virtual long? UnderlyingStreamPosition
+		{
+			get { return null; }
+		}
+#endif
+
 		#endregion -- Properties --
 
 		#region -- Factories --

@@ -58,6 +58,13 @@ namespace MsgPack
 			get { return this._root.Data; }
 		}
 
+#if DEBUG
+		internal override long? UnderlyingStreamPosition
+		{
+			get { return this._root.UnderlyingStreamPosition; }
+		}
+#endif
+
 		public SubtreeUnpacker( StreamUnpacker parent ) : this( parent, null ) { }
 
 		private SubtreeUnpacker( StreamUnpacker root, SubtreeUnpacker parent )
