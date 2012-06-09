@@ -19,8 +19,14 @@
 #endregion -- License Terms --
 
 using System;
+#if !SILVERLIGHT
+using System.Collections.Concurrent;
+#endif
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+#if SILVERLIGHT
+using System.Threading;
+#endif
 
 namespace MsgPack.Serialization
 {
@@ -31,7 +37,11 @@ namespace MsgPack.Serialization
 	public sealed class SerializationContext
 	{
 		private readonly SerializerRepository _serializers;
-		private readonly HashSet<Type> _typeLock;
+#if SILVERLIGHT
+		private readonly object _typeLock;
+#else
+		private readonly ConcurrentDictionary<Type, object> _typeLock;
+#endif
 
 		/// <summary>
 		///		Gets the current <see cref="SerializerRepository"/>.
@@ -154,7 +164,11 @@ namespace MsgPack.Serialization
 			Contract.Requires( serializers != null );
 
 			this._serializers = serializers;
-			this._typeLock = new HashSet<Type>();
+#if SILVERLIGHT
+			this._typeLock = new object();
+#else
+			this._typeLock = new ConcurrentDictionary<Type, object>();
+#endif
 		}
 
 		/// <summary>
@@ -176,13 +190,38 @@ namespace MsgPack.Serialization
 			var serializer = this._serializers.Get<T>( this );
 			if ( serializer == null )
 			{
-				if ( !this._typeLock.Add( typeof( T ) ) )
+				bool lockTaken = false;
+				try
 				{
-					return new LazyDelegatingMessagePackSerializer<T>( this );
+					try { }
+					finally
+					{
+#if SILVERLIGHT
+						lockTaken = Monitor.TryEnter( this._typeLock );
+#else
+						lockTaken = this._typeLock.TryAdd( typeof( T ), null );
+#endif
+					}
+					if ( !lockTaken )
+					{
+						return new LazyDelegatingMessagePackSerializer<T>( this );
+					}
+
+					serializer = MessagePackSerializer.Create<T>( this );
+				}
+				finally
+				{
+					if ( lockTaken )
+					{
+#if SILVERLIGHT
+						Monitor.Exit( this._typeLock );
+#else
+						object dummy;
+						this._typeLock.TryRemove( typeof( T ), out dummy );
+#endif
+					}
 				}
 
-				serializer = MessagePackSerializer.Create<T>( this );
-				this._typeLock.Remove( typeof( T ) );
 				if ( !this._serializers.Register<T>( serializer ) )
 				{
 					serializer = this._serializers.Get<T>( this );
