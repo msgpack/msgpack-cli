@@ -25,7 +25,7 @@ using System.Globalization;
 using System.IO;
 using MsgPack.Serialization.Reflection;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
 	///		Genereates serialization methods which can be save to file.

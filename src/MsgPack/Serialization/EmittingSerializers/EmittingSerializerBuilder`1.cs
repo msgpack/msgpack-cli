@@ -23,7 +23,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using MsgPack.Serialization.Reflection;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
 	///		Implements common features code generation based serializer builders.
@@ -31,8 +31,15 @@ namespace MsgPack.Serialization
 	/// <typeparam name="TObject">The type of the serialization target.</typeparam>
 	internal abstract class EmittingSerializerBuilder<TObject> : SerializerBuilder<TObject>
 	{
-		private readonly SerializationMethodGeneratorOption _generatorOption;
 		private readonly EmitterFlavor _emitterFlavor;
+
+		private SerializationMethodGeneratorManager _generatorManager;
+
+		internal SerializationMethodGeneratorManager GeneratorManager
+		{
+			get { return this._generatorManager; }
+			set { this._generatorManager = value; }
+		}
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="EmittingSerializerBuilder&lt;TObject&gt;"/> class.
@@ -41,8 +48,8 @@ namespace MsgPack.Serialization
 		protected EmittingSerializerBuilder( SerializationContext context )
 			: base( context )
 		{
-			this._generatorOption = context.GeneratorOption;
 			this._emitterFlavor = context.EmitterFlavor;
+			this._generatorManager = SerializationMethodGeneratorManager.Get( context.GeneratorOption );
 		}
 
 		/// <summary>
@@ -54,7 +61,7 @@ namespace MsgPack.Serialization
 		/// </returns>
 		protected sealed override MessagePackSerializer<TObject> CreateSerializer( SerializingMember[] entries )
 		{
-			using ( var emitter = SerializationMethodGeneratorManager.Get( this._generatorOption ).CreateEmitter( typeof( TObject ), this._emitterFlavor ) )
+			using ( var emitter = this._generatorManager.CreateEmitter( typeof( TObject ), this._emitterFlavor ) )
 			{
 				try
 				{
@@ -403,5 +410,4 @@ namespace MsgPack.Serialization
 #endif
 		}
 	}
-
 }

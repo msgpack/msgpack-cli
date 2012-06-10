@@ -21,6 +21,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization;
+using MsgPack.Serialization.EmittingSerializers;
 using NUnit.Framework;
 
 namespace MsgPack.Serialization

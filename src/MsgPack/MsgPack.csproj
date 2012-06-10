@@ -144,18 +144,18 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\ArrayEmittingSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ArrayEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ArrayFormatObjectExpressionMessagePackSerializer.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ArrayMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CallbackMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\ContextBasedSerializerEmitter.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\DefaultSerializers\DefaultSerializers.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultSerializers.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\EmitterFlavor.cs" />
-    <Compile Include="Serialization\EmittingSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\EmittingSerializerBuilder`1.cs" />
     <Compile Include="ReflectionAbstractions.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionDumper.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionSerializerLogics.cs" />
@@ -166,10 +166,10 @@
     <Compile Include="Serialization\ExpressionSerializers\ObjectExpressionMessagePackSerializer.cs" />
     <Compile Include="Serialization\ExpressionSerializers\SequenceExpressionMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ExpressionSerializers\TupleExpressionMessagePackSerializer.cs" />
-    <Compile Include="Serialization\FieldBasedSerializerEmitter.cs" />
+    <Compile Include="Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\MapEmittingSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\MessagePackMemberAttribute.cs" />
     <Compile Include="Serialization\Metadata\_Enumerable.cs" />
     <Compile Include="Serialization\Metadata\_IDictionaryEnumerator.cs" />
@@ -210,9 +210,9 @@
     <Compile Include="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializationMethodGeneratorManager.cs" />
-    <Compile Include="Serialization\EmittingSerializerBuilderLogics.cs" />
-    <Compile Include="Serialization\Emittion.cs" />
+    <Compile Include="Serialization\EmittingSerializers\DefaultSerializationMethodGeneratorManager.cs" />
+    <Compile Include="Serialization\EmittingSerializers\EmittingSerializerBuilderLogics.cs" />
+    <Compile Include="Serialization\EmittingSerializers\Emittion.cs" />
     <Compile Include="Serialization\FromExpression.cs" />
     <Compile Include="Serialization\FromExpression.ToMethod.cs">
       <AutoGen>True</AutoGen>
@@ -230,9 +230,9 @@
     <Compile Include="Serialization\Reflection\TracingILGenerator.cs" />
     <Compile Include="Serialization\Reflection\TracingILGenerator.emits.cs" />
     <Compile Include="Serialization\SerializationMethod.cs" />
-    <Compile Include="Serialization\SerializationMethodGeneratorManager.cs" />
+    <Compile Include="Serialization\EmittingSerializers\SerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorOption.cs" />
-    <Compile Include="Serialization\SerializerEmitter.cs" />
+    <Compile Include="Serialization\EmittingSerializers\SerializerEmitter.cs" />
     <Compile Include="Serialization\SerializerRepository.defaults.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -327,9 +327,7 @@
   <ItemGroup>
     <Content Include="remarks.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Serialization\EmittingSerializers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

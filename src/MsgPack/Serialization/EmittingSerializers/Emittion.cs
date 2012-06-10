@@ -28,7 +28,7 @@ using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using MsgPack.Serialization.Reflection;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.EmittingSerializers
 {
 	// FIXME : comment
 	internal static class Emittion

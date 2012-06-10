@@ -21,7 +21,7 @@
 using System;
 using MsgPack.Serialization.Reflection;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
 	///		<see cref="EmittingSerializerBuilder{T}"/> implementation which emits as map.

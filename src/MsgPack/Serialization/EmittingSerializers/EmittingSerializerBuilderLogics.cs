@@ -27,7 +27,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using MsgPack.Serialization.Reflection;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.EmittingSerializers
 {
 	// Reduce JIT
 	/// <summary>

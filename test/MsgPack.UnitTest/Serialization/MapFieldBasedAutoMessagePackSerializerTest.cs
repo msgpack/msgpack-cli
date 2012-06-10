@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using MsgPack.Serialization.EmittingSerializers;
 using NUnit.Framework;
 
 namespace MsgPack.Serialization

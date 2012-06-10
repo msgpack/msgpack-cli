@@ -20,8 +20,9 @@
 
 using System;
 using System.IO;
-using NUnit.Framework;
+using MsgPack.Serialization.EmittingSerializers;
 using MsgPack.Serialization.ExpressionSerializers;
+using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {

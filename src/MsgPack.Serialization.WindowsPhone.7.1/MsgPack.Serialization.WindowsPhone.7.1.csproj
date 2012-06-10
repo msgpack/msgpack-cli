@@ -87,9 +87,6 @@
     <Compile Include="..\MsgPack\PackerUnpackerExtensions.cs">
       <Link>PackerUnpackerExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\ArrayEmittingSerializerBuilder`1.cs">
-      <Link>Serialization\ArrayEmittingSerializerBuilder`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\AutoMessagePackSerializer`1.cs">
       <Link>Serialization\AutoMessagePackSerializer`1.cs</Link>
     </Compile>
@@ -102,14 +99,8 @@
     <Compile Include="..\MsgPack\Serialization\CollectionTraits.cs">
       <Link>Serialization\CollectionTraits.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\ContextBasedSerializerEmitter.cs">
-      <Link>Serialization\ContextBasedSerializerEmitter.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DataMemberContract.cs">
       <Link>Serialization\DataMemberContract.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializationMethodGeneratorManager.cs">
-      <Link>Serialization\DefaultSerializationMethodGeneratorManager.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs">
       <Link>Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs</Link>
@@ -171,14 +162,32 @@
     <Compile Include="..\MsgPack\Serialization\EmitterFlavor.cs">
       <Link>Serialization\EmitterFlavor.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializerBuilderLogics.cs">
-      <Link>Serialization\EmittingSerializerBuilderLogics.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ArrayEmittingSerializerBuilder`1.cs">
+      <Link>Serialization\EmittingSerializers\ArrayEmittingSerializerBuilder`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializerBuilder`1.cs">
-      <Link>Serialization\EmittingSerializerBuilder`1.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs">
+      <Link>Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Emittion.cs">
-      <Link>Serialization\Emittion.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\DefaultSerializationMethodGeneratorManager.cs">
+      <Link>Serialization\EmittingSerializers\DefaultSerializationMethodGeneratorManager.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\EmittingSerializerBuilderLogics.cs">
+      <Link>Serialization\EmittingSerializers\EmittingSerializerBuilderLogics.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\EmittingSerializerBuilder`1.cs">
+      <Link>Serialization\EmittingSerializers\EmittingSerializerBuilder`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\Emittion.cs">
+      <Link>Serialization\EmittingSerializers\Emittion.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs">
+      <Link>Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\SerializationMethodGeneratorManager.cs">
+      <Link>Serialization\EmittingSerializers\SerializationMethodGeneratorManager.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\SerializerEmitter.cs">
+      <Link>Serialization\EmittingSerializers\SerializerEmitter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\FromExpression.cs">
       <Link>Serialization\FromExpression.cs</Link>
@@ -197,9 +206,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\MapEmittingSerializerBuilder`1.cs">
-      <Link>Serialization\MapEmittingSerializerBuilder`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackMemberAttribute.cs">
       <Link>Serialization\MessagePackMemberAttribute.cs</Link>
@@ -279,17 +285,11 @@
     <Compile Include="..\MsgPack\Serialization\SerializationMethod.cs">
       <Link>Serialization\SerializationMethod.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\SerializationMethodGeneratorManager.cs">
-      <Link>Serialization\SerializationMethodGeneratorManager.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationMethodGeneratorOption.cs">
       <Link>Serialization\SerializationMethodGeneratorOption.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerBuilder`1.cs">
       <Link>Serialization\SerializerBuilder`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\SerializerEmitter.cs">
-      <Link>Serialization\SerializerEmitter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerRepository.cs">
       <Link>Serialization\SerializerRepository.cs</Link>

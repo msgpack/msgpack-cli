@@ -24,6 +24,8 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Diagnostics.Contracts;
+using MsgPack.Serialization.EmittingSerializers;
+#endif
 using MsgPack.Serialization.ExpressionSerializers;
 
 namespace MsgPack.Serialization

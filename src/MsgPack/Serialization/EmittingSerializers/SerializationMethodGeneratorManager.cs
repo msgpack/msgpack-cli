@@ -21,7 +21,7 @@
 using System;
 using System.Diagnostics.Contracts;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
 	///		Defines common features and interfaces for <see cref="SerializationMethodGeneratorManager"/>.
@@ -73,6 +73,21 @@ namespace MsgPack.Serialization
 			}
 #endif
 		}
+
+#if !SILVERLIGHT
+		/// <summary>
+		///		Get the dumpable <see cref="SerializationMethodGeneratorManager"/> with specified brandnew assembly builder.
+		/// </summary>
+		/// <param name="assemblyBuilder">An assembly builder which will store all generated types.</param>
+		/// <returns>
+		///		The appropriate <see cref="SerializationMethodGeneratorManager"/> to generate pre-cimplied serializers.
+		///		This value will not be <c>null</c>.
+		///	</returns>
+		public static SerializationMethodGeneratorManager Get( System.Reflection.Emit.AssemblyBuilder assemblyBuilder )
+		{
+			return DefaultSerializationMethodGeneratorManager.Create( assemblyBuilder );
+		}
+#endif
 
 		/// <summary>
 		///		Creates new <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.

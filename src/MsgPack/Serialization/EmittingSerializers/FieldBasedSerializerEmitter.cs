@@ -26,7 +26,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using MsgPack.Serialization.Reflection;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
 	///		<see cref="SerializerEmitter"/> using instance fields to hold serializers for target members.
@@ -47,10 +47,10 @@ namespace MsgPack.Serialization
 		/// Initializes a new instance of the <see cref="FieldBasedSerializerEmitter"/> class.
 		/// </summary>
 		/// <param name="host">The host <see cref="ModuleBuilder"/>.</param>
-		/// <param name="sequence">The sequence number to name new type..</param>
+		/// <param name="sequence">The sequence number to name new type.</param>
 		/// <param name="targetType">Type of the serialization target.</param>
 		/// <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
-		public FieldBasedSerializerEmitter( ModuleBuilder host, int sequence, Type targetType, bool isDebuggable )
+		public FieldBasedSerializerEmitter( ModuleBuilder host, int? sequence, Type targetType, bool isDebuggable )
 			: base()
 		{
 			Contract.Requires( host != null );

@@ -25,7 +25,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.EmittingSerializers
 {
 	/// <summary>
 	///		Manages serializer generators.
@@ -42,7 +42,7 @@ namespace MsgPack.Serialization
 #endif
 
 #if !SILVERLIGHT
-		private static DefaultSerializationMethodGeneratorManager _canCollect = new DefaultSerializationMethodGeneratorManager( false, true );
+		private static DefaultSerializationMethodGeneratorManager _canCollect = new DefaultSerializationMethodGeneratorManager( false, true, null );
 
 		/// <summary>
 		///		Get the singleton instance for can-collect mode.
@@ -52,7 +52,7 @@ namespace MsgPack.Serialization
 			get { return DefaultSerializationMethodGeneratorManager._canCollect; }
 		}
 
-		private static DefaultSerializationMethodGeneratorManager _canDump = new DefaultSerializationMethodGeneratorManager( true, false );
+		private static DefaultSerializationMethodGeneratorManager _canDump = new DefaultSerializationMethodGeneratorManager( true, false, null );
 
 		/// <summary>
 		///		Get the singleton instance for can-dump mode.
@@ -63,7 +63,7 @@ namespace MsgPack.Serialization
 		}
 #endif
 
-		private static DefaultSerializationMethodGeneratorManager _fast = new DefaultSerializationMethodGeneratorManager( false, false );
+		private static DefaultSerializationMethodGeneratorManager _fast = new DefaultSerializationMethodGeneratorManager( false, false, null );
 
 		/// <summary>
 		///		Get the singleton instance for fast mode.
@@ -76,10 +76,10 @@ namespace MsgPack.Serialization
 		internal static void Refresh()
 		{
 #if !SILVERLIGHT
-			_canCollect = new DefaultSerializationMethodGeneratorManager( false, true );
-			_canDump = new DefaultSerializationMethodGeneratorManager( true, false );
+			_canCollect = new DefaultSerializationMethodGeneratorManager( false, true, null );
+			_canDump = new DefaultSerializationMethodGeneratorManager( true, false, null );
 #endif
-			_fast = new DefaultSerializationMethodGeneratorManager( false, false );
+			_fast = new DefaultSerializationMethodGeneratorManager( false, false, null );
 		}
 
 #if !SILVERLIGHT
@@ -108,54 +108,41 @@ namespace MsgPack.Serialization
 		private readonly ModuleBuilder _module;
 		private readonly string _moduleFileName;
 		private readonly bool _isDebuggable;
+		private readonly bool _isExternalAssemblyBuilder;
 #endif
 
-		private DefaultSerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable )
+#if WINDOWS_PHONE
+		private DefaultSerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable, object assemblyBuilder )
 		{
-#if !WINDOWS_PHONE
-			this._isDebuggable = isDebuggable;
-
-			var assemblyName = typeof( DefaultSerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
-			this._assembly =
-				AppDomain.CurrentDomain.DefineDynamicAssembly(
-					new AssemblyName( assemblyName ),
-#if !SILVERLIGHT
-					isDebuggable ? AssemblyBuilderAccess.RunAndSave : ( isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run )
+		}
 #else
-					AssemblyBuilderAccess.Run 
-#endif
-				);
+		private DefaultSerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable, AssemblyBuilder assemblyBuilder )
+		{
+			this._isDebuggable = isDebuggable;
+			this._isExternalAssemblyBuilder = assemblyBuilder != null;
 
-			if ( isDebuggable )
+			string assemblyName;
+			if ( assemblyBuilder != null )
 			{
-				this._assembly.SetCustomAttribute( new CustomAttributeBuilder( _debuggableAttributeCtor, _debuggableAttributeCtorArguments ) );
+				assemblyName = assemblyBuilder.GetName( false ).Name;
+				this._assembly = assemblyBuilder;
 			}
 			else
 			{
-				this._assembly.SetCustomAttribute(
-					new CustomAttributeBuilder(
-						typeof( DebuggableAttribute ).GetConstructor( new[] { typeof( DebuggableAttribute.DebuggingModes ) } ),
-						new object[] { DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints }
-					)
-				);
-			}
-
-			this._assembly.SetCustomAttribute(
-				new CustomAttributeBuilder(
-					typeof( System.Runtime.CompilerServices.CompilationRelaxationsAttribute ).GetConstructor( new[] { typeof( int ) } ),
-					new object[] { 8 }
-				)
-			);
+				assemblyName = typeof( DefaultSerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
+				var dedicatedAssemblyBuilder =
+					AppDomain.CurrentDomain.DefineDynamicAssembly(
+						new AssemblyName( assemblyName ),
 #if !SILVERLIGHT
-			this._assembly.SetCustomAttribute(
-				new CustomAttributeBuilder(
-					typeof( System.Security.SecurityRulesAttribute ).GetConstructor( new[] { typeof( System.Security.SecurityRuleSet ) } ),
-					new object[] { System.Security.SecurityRuleSet.Level2 },
-					new[] { typeof( System.Security.SecurityRulesAttribute ).GetProperty( "SkipVerificationInFullTrust" ) },
-					new object[] { true }
-				)
-			);
+					isDebuggable ? AssemblyBuilderAccess.RunAndSave : ( isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run )
+#else
+						AssemblyBuilderAccess.Run 
 #endif
+					);
+
+				SetUpAssemblyBuilderAttributes( dedicatedAssemblyBuilder, isDebuggable );
+				this._assembly = dedicatedAssemblyBuilder;
+			}
 
 			this._moduleFileName = assemblyName + ".dll";
 
@@ -171,10 +158,59 @@ namespace MsgPack.Serialization
 				this._module = this._assembly.DefineDynamicModule( assemblyName, true );
 			}
 #endif // else SILVERLIGHT
-#endif // WINDOWS_PHONE
 		}
+#endif // !WINDOWS_PHONE
+
+#if !WINDOWS_PHONE
+		internal static void SetUpAssemblyBuilderAttributes( AssemblyBuilder dedicatedAssemblyBuilder, bool isDebuggable )
+		{
+			if ( isDebuggable )
+			{
+				dedicatedAssemblyBuilder.SetCustomAttribute( new CustomAttributeBuilder( _debuggableAttributeCtor, _debuggableAttributeCtorArguments ) );
+			}
+			else
+			{
+				dedicatedAssemblyBuilder.SetCustomAttribute(
+					new CustomAttributeBuilder(
+						typeof( DebuggableAttribute ).GetConstructor( new[] { typeof( DebuggableAttribute.DebuggingModes ) } ),
+						new object[] { DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints }
+					)
+				);
+			}
+
+			dedicatedAssemblyBuilder.SetCustomAttribute(
+				new CustomAttributeBuilder(
+					typeof( System.Runtime.CompilerServices.CompilationRelaxationsAttribute ).GetConstructor( new[] { typeof( int ) } ),
+					new object[] { 8 }
+				)
+			);
+#if !SILVERLIGHT
+			dedicatedAssemblyBuilder.SetCustomAttribute(
+				new CustomAttributeBuilder(
+					typeof( System.Security.SecurityRulesAttribute ).GetConstructor( new[] { typeof( System.Security.SecurityRuleSet ) } ),
+					new object[] { System.Security.SecurityRuleSet.Level2 },
+					new[] { typeof( System.Security.SecurityRulesAttribute ).GetProperty( "SkipVerificationInFullTrust" ) },
+					new object[] { true }
+				)
+			);
+#endif // !SILVERLIGHT
+		}
+#endif // !WINDOWS_PHONE
 
 #if !SILVERLIGHT
+		/// <summary>
+		///		Create a new dumpable <see cref="SerializationMethodGeneratorManager"/> with specified brandnew assembly builder.
+		/// </summary>
+		/// <param name="assemblyBuilder">An assembly builder which will store all generated types.</param>
+		/// <returns>
+		///		The appropriate <see cref="SerializationMethodGeneratorManager"/> to generate pre-cimplied serializers.
+		///		This value will not be <c>null</c>.
+		///	</returns>
+		public static SerializationMethodGeneratorManager Create( AssemblyBuilder assemblyBuilder )
+		{
+			return new DefaultSerializationMethodGeneratorManager( true, false, assemblyBuilder );
+		}
+
 		private void DumpToCore()
 		{
 			this._assembly.Save( this._moduleFileName );
@@ -196,7 +232,7 @@ namespace MsgPack.Serialization
 			{
 				case EmitterFlavor.FieldBased:
 				{
-					return new FieldBasedSerializerEmitter( this._module, Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
+					return new FieldBasedSerializerEmitter( this._module, this._isExternalAssemblyBuilder ? default( int? ) : Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
 				}
 				case EmitterFlavor.ContextBased:
 				default:

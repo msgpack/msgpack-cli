@@ -29,6 +29,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
+using MsgPack.Serialization.EmittingSerializers;
 using NUnit.Framework;
 
 namespace MsgPack.Serialization
