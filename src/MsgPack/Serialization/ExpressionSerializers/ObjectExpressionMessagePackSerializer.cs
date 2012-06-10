@@ -20,12 +20,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using System.IO;
-using System.Globalization;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -33,7 +32,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	///		Implements expression tree based serializer for general object.
 	/// </summary>
 	/// <typeparam name="T">The type of target object.</typeparam>
-	internal abstract class ObjectExpressionMessagePackSerializer<T> : MessagePackSerializer<T>, IExpressionMessagePackSerializer
+	internal abstract class ObjectExpressionMessagePackSerializer<T> : MessagePackSerializer<T>
+#if !SILVERLIGHT
+		, IExpressionMessagePackSerializer
+#endif
 	{
 		private readonly Func<T, object>[] _memberGetters;
 
@@ -66,7 +68,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected ObjectExpressionMessagePackSerializer( SerializationContext context, SerializingMember[] members )
 		{
-			this._createInstance = Expression.Lambda<Func<T>>( Expression.New( typeof( T ).GetConstructor( Type.EmptyTypes ) ) ).Compile();
+			this._createInstance = Expression.Lambda<Func<T>>( Expression.New( typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes ) ) ).Compile();
 			this._memberSerializers = members.Select( m => context.GetSerializer( m.Member.GetMemberValueType() ) ).ToArray();
 			this._indexMap =
 				members
@@ -198,6 +200,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
+#if !SILVERLIGHT
 		public override string ToString()
 		{
 			var buffer = new StringBuilder( Int16.MaxValue );
@@ -245,5 +248,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				writer.WriteLine();
 			}
 		}
+#endif
 	}
 }

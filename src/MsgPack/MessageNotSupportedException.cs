@@ -26,7 +26,7 @@ namespace MsgPack
 	/// <summary>
 	///		Exception occurs when serialized stream contains structures or features which will never be supported by MsgPack/CLI implementation.
 	/// </summary>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
 	public sealed class MessageNotSupportedException : Exception
@@ -51,7 +51,7 @@ namespace MsgPack
 		/// </param>
 		public MessageNotSupportedException( string message, Exception inner ) : base( message ?? "Specified object is not supported.", inner ) { }
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with serialized data.
 		/// </summary>

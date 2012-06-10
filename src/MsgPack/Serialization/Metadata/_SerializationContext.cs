@@ -25,6 +25,6 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _SerializationContext
 	{
-		public static readonly MethodInfo GetSerializer1_Method = typeof( SerializationContext ).GetMethod( "GetSerializer", Type.EmptyTypes );
+		public static readonly MethodInfo GetSerializer1_Method = typeof( SerializationContext ).GetMethod( "GetSerializer", ReflectionAbstractions.EmptyTypes );
 	}
 }

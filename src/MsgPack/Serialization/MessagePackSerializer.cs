@@ -24,9 +24,12 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Diagnostics.Contracts;
+#if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
+#if !WINDOWS_PHONE
 using MsgPack.Serialization.ExpressionSerializers;
+#endif
 
 namespace MsgPack.Serialization
 {
@@ -70,12 +73,17 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
 			Func<SerializationContext, SerializerBuilder<T>> builderProvider;
+#if NETFX_CORE
+			builderProvider = c => new ExpressionSerializerBuilder<T>( c );
+#else
+#if !WINDOWS_PHONE
 			if ( context.EmitterFlavor == EmitterFlavor.ExpressionBased )
 			{
 				builderProvider = c => new ExpressionSerializerBuilder<T>( c );
 			}
 			else
 			{
+#endif // !WINDOWS_PHONE
 				if ( context.SerializationMethod == SerializationMethod.Map )
 				{
 					builderProvider = c => new MapEmittingSerializerBuilder<T>( c );
@@ -84,12 +92,15 @@ namespace MsgPack.Serialization
 				{
 					builderProvider = c => new ArrayEmittingSerializerBuilder<T>( c );
 				}
+#if !WINDOWS_PHONE
 			}
+#endif // !WINDOWS_PHONE
+#endif // NETFX_CORE else
 
 			return new AutoMessagePackSerializer<T>( context, builderProvider );
 		}
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		/// <summary>
 		///		Get or set method generator option to control generated serialization code traits.
 		/// </summary>

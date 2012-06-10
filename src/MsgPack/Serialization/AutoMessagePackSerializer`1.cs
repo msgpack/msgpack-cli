@@ -21,6 +21,9 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
+#if NETFX_CORE
+using System.Reflection;
+#endif
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
@@ -62,8 +65,8 @@ namespace MsgPack.Serialization
 				}
 				case CollectionKind.NotCollection:
 				{
-					if ( ( typeof( T ).Assembly == typeof( object ).Assembly || typeof( T ).Assembly == typeof( Enumerable ).Assembly )
-						&& typeof( T ).IsPublic && typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
+					if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) || typeof( T ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
+						&& typeof( T ).GetIsPublic() && typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
 					{
 						serializer = builderProvider( context ).CreateTupleSerializer();
 					}

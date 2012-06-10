@@ -26,7 +26,7 @@ namespace MsgPack
 	/// <summary>
 	///		Represents generic unpacking error.
 	/// </summary>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
 	public sealed class UnpackException : Exception
@@ -51,7 +51,7 @@ namespace MsgPack
 		/// </param>
 		public UnpackException( string message, Exception inner ) : base( message ?? "Failed to unpacking.", inner ) { }
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		/// <summary>
 		///		Initializes a new instance of the <see cref="UnpackException"/> class with serialized data.
 		/// </summary>

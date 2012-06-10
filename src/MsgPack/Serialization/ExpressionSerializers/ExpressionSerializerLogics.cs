@@ -19,13 +19,13 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics.Contracts;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -71,6 +71,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		public static Expression Using( Type variableType, Type expressionType, Expression right, Func<Expression, Expression> bodyCreator )
 		{
 			Contract.Requires( typeof( IDisposable ).IsAssignableFrom( variableType ) );
+
 			/*
 			 *	var u = right();
 			 *	try
@@ -199,6 +200,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			var endLoop = Expression.Label( "END_FOREACH" );
 			var currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" ) ?? Metadata._IEnumerator.Current;
+
 			return
 				Expression.Loop(
 					Expression.IfThenElse(
@@ -217,7 +219,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return null;
 			}
 
-			if ( traits.GetEnumeratorMethod.ReturnType.GetMethod( "Dispose", Type.EmptyTypes ) != null )
+			if ( traits.GetEnumeratorMethod.ReturnType.GetMethod( "Dispose", ReflectionAbstractions.EmptyTypes ) != null )
 			{
 				return Expression.Call( enumeratorVariable, Metadata._IDisposable.Dispose );
 			}
@@ -231,7 +233,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		public static ConstructorInfo GetCollectionConstructor<T>()
 		{
-			return typeof( T ).GetConstructor( _containsCapacity ) ?? typeof( T ).GetConstructor( Type.EmptyTypes );
+			return typeof( T ).GetConstructor( _containsCapacity ) ?? typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes );
 		}
 
 		[Obsolete]

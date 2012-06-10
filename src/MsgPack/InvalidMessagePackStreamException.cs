@@ -26,7 +26,7 @@ namespace MsgPack
 	/// <summary>
 	///		Exception occured when inbound stream is invalid as serialized Message Pack stream.
 	/// </summary>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
 	public sealed class InvalidMessagePackStreamException : Exception
@@ -51,7 +51,7 @@ namespace MsgPack
 		/// </param>
 		public InvalidMessagePackStreamException( string message, Exception inner ) : base( message ?? "Stream is not valid as serialized Message Pack object.", inner ) { }
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		/// <summary>
 		///		Initializes a new instance of the <see cref="InvalidMessagePackStreamException"/> class with serialized data.
 		/// </summary>

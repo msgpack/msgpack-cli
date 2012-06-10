@@ -1,47 +1,108 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6E8C2296-21E9-4113-89C4-76376516AA14}</ProjectGuid>
+    <ProjectGuid>{F010646A-7343-4F6E-B8CD-9F37042DDD5E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MsgPack</RootNamespace>
-    <AssemblyName>MsgPack</AssemblyName>
+    <AssemblyName>MsgPack.Serialization</AssemblyName>
+    <DefaultLanguage>ja-JP</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;MONO</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\net40\</OutputPath>
-    <DefineConstants>TRACE;MONO</DefineConstants>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\net40\MsgPack.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\MsgPack.snk</AssemblyOriginatorKeyFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="..\MsgPack.snk">
+      <Link>MsgPack.snk</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -50,95 +111,8 @@
     <Compile Include="..\CommonAssemblyInfo.Pack.cs">
       <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\BigEndianBinary.cs">
-      <Link>BigEndianBinary.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Binary.cs">
-      <Link>Binary.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
-      <Link>CollectionDebuggerProxy`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\CollectionOperation.cs">
-      <Link>CollectionOperation.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\DictionaryDebuggerProxy`2.cs">
-      <Link>DictionaryDebuggerProxy`2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\EnumerableStream.cs">
-      <Link>EnumerableStream.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Float32Bits.cs">
-      <Link>Float32Bits.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Float64Bits.cs">
-      <Link>Float64Bits.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\GlobalSuppressions.cs">
-      <Link>GlobalSuppressions.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\InvalidMessagePackStreamException.cs">
-      <Link>InvalidMessagePackStreamException.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\IPackable.cs">
-      <Link>IPackable.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\IUnpackable.cs">
-      <Link>IUnpackable.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessageNotSupportedException.cs">
-      <Link>MessageNotSupportedException.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackCode.cs">
-      <Link>MessagePackCode.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackConvert.cs">
-      <Link>MessagePackConvert.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackObject.cs">
-      <Link>MessagePackObject.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackObject.Utilities.cs">
-      <Link>MessagePackObject.Utilities.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackObjectDictionary.cs">
-      <Link>MessagePackObjectDictionary.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackObjectDictionary.Enumerator.cs">
-      <Link>MessagePackObjectDictionary.Enumerator.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackObjectDictionary.KeySet.cs">
-      <Link>MessagePackObjectDictionary.KeySet.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackObjectDictionary.KeySet.Enumerator.cs">
-      <Link>MessagePackObjectDictionary.KeySet.Enumerator.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackObjectDictionary.ValueCollection.cs">
-      <Link>MessagePackObjectDictionary.ValueCollection.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackObjectDictionary.ValueCollection.Enumerator.cs">
-      <Link>MessagePackObjectDictionary.ValueCollection.Enumerator.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackObjectEqualityComparer.cs">
-      <Link>MessagePackObjectEqualityComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackString.cs">
-      <Link>MessagePackString.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessageTypeException.cs">
-      <Link>MessageTypeException.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Packer.cs">
-      <Link>Packer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Packer.Nullable.cs">
-      <Link>Packer.Nullable.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\PackerUnpackerExtensions.cs">
       <Link>PackerUnpackerExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\PackingOptions.cs">
-      <Link>PackingOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\ReflectionAbstractions.cs">
       <Link>ReflectionAbstractions.cs</Link>
@@ -194,9 +168,6 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessagePackSerializer`2.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessagePackSerializer`2.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs</Link>
     </Compile>
@@ -220,36 +191,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EmitterFlavor.cs">
       <Link>Serialization\EmitterFlavor.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ArrayEmittingSerializerBuilder`1.cs">
-      <Link>Serialization\EmittingSerializers\ArrayEmittingSerializerBuilder`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs">
-      <Link>Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\DefaultSerializationMethodGeneratorManager.cs">
-      <Link>Serialization\EmittingSerializers\DefaultSerializationMethodGeneratorManager.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\EmittingSerializerBuilderLogics.cs">
-      <Link>Serialization\EmittingSerializers\EmittingSerializerBuilderLogics.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\EmittingSerializerBuilder`1.cs">
-      <Link>Serialization\EmittingSerializers\EmittingSerializerBuilder`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\Emittion.cs">
-      <Link>Serialization\EmittingSerializers\Emittion.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs">
-      <Link>Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs">
-      <Link>Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\SerializationMethodGeneratorManager.cs">
-      <Link>Serialization\EmittingSerializers\SerializationMethodGeneratorManager.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\SerializerEmitter.cs">
-      <Link>Serialization\EmittingSerializers\SerializerEmitter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ArrayFormatObjectExpressionMessagePackSerializer.cs">
       <Link>Serialization\ExpressionSerializers\ArrayFormatObjectExpressionMessagePackSerializer.cs</Link>
@@ -314,14 +255,8 @@
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer`1.cs">
       <Link>Serialization\MessagePackSerializer`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_DictionaryEntry.cs">
-      <Link>Serialization\Metadata\_DictionaryEntry.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Enumerable.cs">
       <Link>Serialization\Metadata\_Enumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_IDictionaryEnumerator.cs">
-      <Link>Serialization\Metadata\_IDictionaryEnumerator.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_IDisposable.cs">
       <Link>Serialization\Metadata\_IDisposable.cs</Link>
@@ -329,14 +264,8 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_IEnumreator.cs">
       <Link>Serialization\Metadata\_IEnumreator.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_KeyValuePair`2.cs">
-      <Link>Serialization\Metadata\_KeyValuePair`2.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_MessagePackObject.cs">
       <Link>Serialization\Metadata\_MessagePackObject.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_Nullable`1.cs">
-      <Link>Serialization\Metadata\_Nullable`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Packer.cs">
       <Link>Serialization\Metadata\_Packer.cs</Link>
@@ -344,35 +273,20 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_SerializationContext.cs">
       <Link>Serialization\Metadata\_SerializationContext.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_String.cs">
-      <Link>Serialization\Metadata\_String.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Unpacker.cs">
       <Link>Serialization\Metadata\_Unpacker.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_UnpackHelpers.cs">
-      <Link>Serialization\Metadata\_UnpackHelpers.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\NilImplication.cs">
       <Link>Serialization\NilImplication.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
+      <Link>Serialization\ReflectionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs">
       <Link>Serialization\Reflection\GenericTypeExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs">
       <Link>Serialization\Reflection\ReflectionExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.conveniences.cs">
-      <Link>Serialization\Reflection\TracingILGenerator.conveniences.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.cs">
-      <Link>Serialization\Reflection\TracingILGenerator.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.emits.cs">
-      <Link>Serialization\Reflection\TracingILGenerator.emits.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
-      <Link>Serialization\ReflectionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>
@@ -398,85 +312,33 @@
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
       <Link>Serialization\SerializingMember.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Tracer.cs">
-      <Link>Serialization\Tracer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs">
       <Link>Serialization\TypeKeyRepository.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\UnpackHelpers.cs">
       <Link>Serialization\UnpackHelpers.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\SetOperation.cs">
-      <Link>SetOperation.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\StreamingUnpacker.cs">
-      <Link>StreamingUnpacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\StreamPacker.cs">
-      <Link>StreamPacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\StreamUnpacker.cs">
-      <Link>StreamUnpacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\SubtreeUnpacker.cs">
-      <Link>SubtreeUnpacker.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\TupleItems.cs">
       <Link>TupleItems.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Unpacker.cs">
-      <Link>Unpacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\UnpackException.cs">
-      <Link>UnpackException.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Unpacking.cs">
-      <Link>Unpacking.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Unpacking.Numerics.cs">
-      <Link>Unpacking.Numerics.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Unpacking.Others.cs">
-      <Link>Unpacking.Others.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Unpacking.Streaming.cs">
-      <Link>Unpacking.Streaming.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Unpacking.String.cs">
-      <Link>Unpacking.String.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\UnpackingMode.cs">
-      <Link>UnpackingMode.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\UnpackingResult.cs">
-      <Link>UnpackingResult.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\UnpackingStream.cs">
-      <Link>UnpackingStream.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
-      <Link>UnpackingStreamReader.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
-      <Link>UnsafeNativeMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Validation.cs">
-      <Link>Validation.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\MsgPack.snk">
-      <Link>MsgPack.snk</Link>
-    </None>
+    <ProjectReference Include="..\MsgPack.WinRT\MsgPack.WinRT.csproj">
+      <Project>{725997ad-f083-485e-bd88-f2a5bf34bee7}</Project>
+      <Name>MsgPack.WinRT</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\MsgPack\remarks.xml">
-      <Link>remarks.xml</Link>
-    </Content>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
+    <VisualStudioVersion>11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\MsgPack.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -21,6 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+#if NETFX_CORE
+using System.Reflection;
+#endif
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Security;
@@ -73,7 +76,7 @@ namespace MsgPack.Serialization
 		private Dictionary<RuntimeTypeHandle, object> GetClonedTable()
 		{
 			bool holdsReadLock = false;
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			RuntimeHelpers.PrepareConstrainedRegions();
 #endif
 			try { }
@@ -82,7 +85,7 @@ namespace MsgPack.Serialization
 				this._lock.EnterReadLock();
 				holdsReadLock = true;
 			}
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			RuntimeHelpers.PrepareConstrainedRegions();
 #endif
 			try
@@ -114,11 +117,11 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-				Contract.Assert( typeof( T ).IsGenericType );
-				Contract.Assert( !typeof( T ).IsGenericTypeDefinition );
+				Contract.Assert( typeof( T ).GetIsGenericType() );
+				Contract.Assert( !typeof( T ).GetIsGenericTypeDefinition() );
 				var type = genericDefinitionMatched as Type;
 				Contract.Assert( type != null );
-				Contract.Assert( type.IsGenericTypeDefinition );
+				Contract.Assert( type.GetIsGenericTypeDefinition() );
 				var result = ( TEntry )Activator.CreateInstance( type.MakeGenericType( typeof( T ).GetGenericArguments() ), context );
 				Contract.Assert( result != null );
 				return result;
@@ -131,7 +134,7 @@ namespace MsgPack.Serialization
 		private bool Get<T>( out object matched, out object genericDefinitionMatched )
 		{
 			bool holdsReadLock = false;
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			RuntimeHelpers.PrepareConstrainedRegions();
 #endif
 			try { }
@@ -140,7 +143,7 @@ namespace MsgPack.Serialization
 				this._lock.EnterReadLock();
 				holdsReadLock = true;
 			}
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			RuntimeHelpers.PrepareConstrainedRegions();
 #endif
 			try
@@ -153,7 +156,7 @@ namespace MsgPack.Serialization
 					return true;
 				}
 
-				if ( typeof( T ).IsGenericType )
+				if ( typeof( T ).GetIsGenericType() )
 				{
 					if ( this._table.TryGetValue( typeof( T ).GetGenericTypeDefinition().TypeHandle, out result ) )
 					{
@@ -201,7 +204,7 @@ namespace MsgPack.Serialization
 			if ( !this._table.ContainsKey( key.TypeHandle ) )
 			{
 				bool holdsWriteLock = false;
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 				RuntimeHelpers.PrepareConstrainedRegions();
 #endif
 				try { }
@@ -210,7 +213,7 @@ namespace MsgPack.Serialization
 					this._lock.EnterWriteLock();
 					holdsWriteLock = true;
 				}
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 				RuntimeHelpers.PrepareConstrainedRegions();
 #endif
 				try

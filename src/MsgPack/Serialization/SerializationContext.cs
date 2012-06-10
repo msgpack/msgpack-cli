@@ -24,6 +24,11 @@ using System.Collections.Concurrent;
 #endif
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+#if NETFX_CORE
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+#endif
 #if SILVERLIGHT
 using System.Threading;
 #endif
@@ -193,7 +198,7 @@ namespace MsgPack.Serialization
 				bool lockTaken = false;
 				try
 				{
-					try { }
+					try {}
 					finally
 					{
 #if SILVERLIGHT
@@ -202,6 +207,7 @@ namespace MsgPack.Serialization
 						lockTaken = this._typeLock.TryAdd( typeof( T ), null );
 #endif
 					}
+
 					if ( !lockTaken )
 					{
 						return new LazyDelegatingMessagePackSerializer<T>( this );
@@ -273,11 +279,24 @@ namespace MsgPack.Serialization
 				Func<SerializationContext, IMessagePackSerializer> func;
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
+#if !NETFX_CORE
 					func =
 						Delegate.CreateDelegate(
 							typeof( Func<SerializationContext, IMessagePackSerializer> ),
 							typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
 						) as Func<SerializationContext, IMessagePackSerializer>;
+#else
+					var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
+					func =
+						Expression.Lambda<Func<SerializationContext, IMessagePackSerializer>>(
+							Expression.Call(
+								null,
+								typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetRuntimeMethods().Single( m => m.Name == "Get" ),
+								contextParameter
+							),
+							contextParameter
+						).Compile();
+#endif
 					this._cache[ targetType.TypeHandle ] = func;
 				}
 
@@ -287,11 +306,29 @@ namespace MsgPack.Serialization
 
 		private static class SerializerGetter<T>
 		{
+#if !NETFX_CORE
 			private static readonly Func<SerializationContext, MessagePackSerializer<T>> _func =
 				Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, MessagePackSerializer<T>> ),
 					Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( typeof( T ) )
 				) as Func<SerializationContext, MessagePackSerializer<T>>;
+#else
+			private static readonly Func<SerializationContext, MessagePackSerializer<T>> _func =
+				CreateFunc();
+
+			private static Func<SerializationContext, MessagePackSerializer<T>> CreateFunc()
+			{
+				var thisParameter = Expression.Parameter( typeof( SerializationContext ), "this" );
+				return
+					Expression.Lambda<Func<SerializationContext, MessagePackSerializer<T>>>(
+						Expression.Call(
+							thisParameter,
+							Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( typeof( T ) )
+						),
+						thisParameter
+					).Compile();
+			}
+#endif
 
 			public static IMessagePackSerializer Get( SerializationContext context )
 			{

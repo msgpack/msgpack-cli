@@ -26,7 +26,7 @@ using System.Threading;
 namespace MsgPack
 {
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	[SuppressUnmanagedCodeSecurity]
 #endif
 #if !WINDOWS_PHONE

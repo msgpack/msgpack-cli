@@ -26,7 +26,7 @@ namespace MsgPack
 	/// <summary>
 	///		Implements <see cref="EqualityComparer{T}"/> of <see cref="MessagePackObject"/>.
 	/// </summary>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
 	public sealed class MessagePackObjectEqualityComparer : EqualityComparer<MessagePackObject>

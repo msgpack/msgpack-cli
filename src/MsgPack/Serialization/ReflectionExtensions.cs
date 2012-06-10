@@ -50,8 +50,7 @@ namespace MsgPack.Serialization
 
 		public static CollectionTraits GetCollectionTraits( this Type source )
 		{
-			Contract.Assert( !source.ContainsGenericParameters );
-
+			Contract.Assert( !source.GetContainsGenericParameters() );
 			/*
 			 * SPEC
 			 * If the object has single public method TEnumerator GetEnumerator() ( where TEnumerator implements IEnumerator<TItem>),
@@ -85,13 +84,13 @@ namespace MsgPack.Serialization
 					);
 			}
 
-			var getEnumerator = source.GetMethod( "GetEnumerator", Type.EmptyTypes );
+			var getEnumerator = source.GetMethod( "GetEnumerator", ReflectionAbstractions.EmptyTypes );
 			if ( getEnumerator != null && getEnumerator.ReturnType.IsAssignableTo( typeof( IEnumerator ) ) )
 			{
 				// If public 'GetEnumerator' is found, it is primary collection traits.
 				if ( source.Implements( typeof( IDictionary<,> ) ) )
 				{
-					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof( IEnumerator<> ) );
+					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.GetIsGenericType() && @interface.GetGenericTypeDefinition() == typeof( IEnumerator<> ) );
 					if ( ienumetaorT != null )
 					{
 						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
@@ -120,7 +119,7 @@ namespace MsgPack.Serialization
 
 				// Block to limit variable scope
 				{
-					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof( IEnumerator<> ) );
+					var ienumetaorT = getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( @interface => @interface.GetIsGenericType() && @interface.GetGenericTypeDefinition() == typeof( IEnumerator<> ) );
 					if ( ienumetaorT != null )
 					{
 						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
@@ -148,7 +147,7 @@ namespace MsgPack.Serialization
 						new CollectionTraits(
 							CollectionKind.Map,
 							GetAddMethod( source, typeof( MessagePackObject ), typeof( MessagePackObject ) ),
-							FindInterfaceMethod( source, typeof( IEnumerable<KeyValuePair<MessagePackObject, MessagePackObject>> ), "GetEnumerator", Type.EmptyTypes ),
+							FindInterfaceMethod( source, typeof( IEnumerable<KeyValuePair<MessagePackObject, MessagePackObject>> ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 							GetDictionaryCountProperty( source, typeof( MessagePackObject ), typeof( MessagePackObject ) ),
 							typeof( KeyValuePair<MessagePackObject, MessagePackObject> )
 						);
@@ -163,14 +162,14 @@ namespace MsgPack.Serialization
 							new CollectionTraits(
 								CollectionKind.Array,
 								addMethod,
-								FindInterfaceMethod( source, typeof( IEnumerable<MessagePackObject> ), "GetEnumerator", Type.EmptyTypes ),
+								FindInterfaceMethod( source, typeof( IEnumerable<MessagePackObject> ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 								GetCollectionTCountProperty( source, typeof( MessagePackObject ) ),
 								typeof( MessagePackObject )
 							);
 					}
 				}
 
-				if ( type.IsGenericType )
+				if ( type.GetIsGenericType() )
 				{
 					var genericTypeDefinition = type.GetGenericTypeDefinition();
 					if ( genericTypeDefinition == typeof( IDictionary<,> ) )
@@ -210,7 +209,7 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						CollectionKind.Map,
 						GetAddMethod( source, idictionaryT.GetGenericArguments()[ 0 ], idictionaryT.GetGenericArguments()[ 1 ] ),
-						FindInterfaceMethod( source, typeof( IEnumerable<> ).MakeGenericType( elementType ), "GetEnumerator", Type.EmptyTypes ),
+						FindInterfaceMethod( source, typeof( IEnumerable<> ).MakeGenericType( elementType ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 						GetDictionaryCountProperty( source, idictionaryT.GetGenericArguments()[ 0 ], idictionaryT.GetGenericArguments()[ 1 ] ),
 						elementType
 					);
@@ -223,7 +222,7 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						CollectionKind.Array,
 						GetAddMethod( source, elementType ),
-						FindInterfaceMethod( source, ienumerableT, "GetEnumerator", Type.EmptyTypes ),
+						FindInterfaceMethod( source, ienumerableT, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 						GetCollectionTCountProperty( source, elementType ),
 						elementType
 					);
@@ -235,7 +234,7 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						CollectionKind.Map,
 						GetAddMethod( source, typeof( object ), typeof( object ) ),
-						FindInterfaceMethod( source, idictionary, "GetEnumerator", Type.EmptyTypes ),
+						FindInterfaceMethod( source, idictionary, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 						_icollectionCount,
 						typeof( object )
 					);
@@ -250,7 +249,7 @@ namespace MsgPack.Serialization
 						new CollectionTraits(
 							CollectionKind.Array,
 							addMethod,
-							FindInterfaceMethod( source, ienumerable, "GetEnumerator", Type.EmptyTypes ),
+							FindInterfaceMethod( source, ienumerable, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 							_icollectionCount,
 							typeof( object )
 						);
@@ -262,13 +261,13 @@ namespace MsgPack.Serialization
 
 		private static MethodInfo FindInterfaceMethod( Type targetType, Type interfaceType, string name, Type[] parameterTypes )
 		{
-			if ( targetType.IsInterface )
+			if ( targetType.GetIsInterface() )
 			{
 				return targetType.FindInterfaces( ( type, _ ) => type == interfaceType, null ).Single().GetMethod( name, parameterTypes );
 			}
 
 			var map = targetType.GetInterfaceMap( interfaceType );
-			
+
 #if !SILVERLIGHT
 			int index = Array.FindIndex( map.InterfaceMethods, method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
 #else
@@ -290,7 +289,7 @@ namespace MsgPack.Serialization
 
 		private static PropertyInfo GetCollectionTCountProperty( Type targetType, Type elementType )
 		{
-			if ( !targetType.IsValueType && targetType.Implements( typeof( ICollection<> ) ) )
+			if ( !targetType.GetIsValueType() && targetType.Implements( typeof( ICollection<> ) ) )
 			{
 				return typeof( ICollection<> ).MakeGenericType( elementType ).GetProperty( "Count" );
 			}
@@ -355,8 +354,14 @@ namespace MsgPack.Serialization
 
 		private static bool FilterCollectionType( Type type, object filterCriteria )
 		{
+#if !NETFX_CORE
 			Contract.Assert( type.IsInterface );
 			return type.Assembly == typeof( Array ).Assembly && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
+#else
+			var typeInfo = type.GetTypeInfo();
+			Contract.Assert( typeInfo.IsInterface );
+			return typeInfo.Assembly.Equals( typeof( Array ).GetTypeInfo().Assembly ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
+#endif
 		}
 
 #if WINDOWS_PHONE

@@ -25,13 +25,16 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
+#if !NETFX_CORE
 using System.Security.Permissions;
+#endif
 using System.Text;
 
 namespace MsgPack
 {
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
 	partial struct MessagePackObject
@@ -810,7 +813,11 @@ namespace MsgPack
 
 			if ( this._handleOrTypeCode == null )
 			{
-				return ( type.GetIsValueType() && Nullable.GetUnderlyingType( type ) == null ) ? false : default( bool? );
+#if NETFX_CORE
+				return ( type.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType( type ) == null ) ? false : default( bool? );
+#else
+				return ( type.IsValueType && Nullable.GetUnderlyingType( type ) == null ) ? false : default( bool? );
+#endif
 			}
 
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
@@ -839,7 +846,11 @@ namespace MsgPack
 			}
 
 			// Lifting support.
+#if NETFX_CORE
+			switch ( WinRTCompatibility.GetTypeCode( type ) )
+#else
 			switch ( Type.GetTypeCode( type ) )
+#endif
 			{
 				case TypeCode.SByte:
 				{
@@ -1284,7 +1295,11 @@ namespace MsgPack
 		{
 			if ( instance.IsNil )
 			{
-				if ( !typeof( T ).GetIsValueType() || Nullable.GetUnderlyingType( typeof( T ) ) != null )
+#if NETFX_CORE
+				if ( !typeof( T ).GetTypeInfo().IsValueType || Nullable.GetUnderlyingType( typeof( T ) ) != null )
+#else
+				if ( !typeof( T ).IsValueType || Nullable.GetUnderlyingType( typeof( T ) ) != null )
+#endif
 				{
 					return;
 				}
@@ -1626,7 +1641,7 @@ namespace MsgPack
 
 		#endregion -- Conversion Operator Overloads --
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]
 #endif
 		private enum MessagePackValueTypeCode
@@ -1646,7 +1661,7 @@ namespace MsgPack
 			Object = 16
 		}
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]
 #endif
 		private sealed class ValueTypeCode

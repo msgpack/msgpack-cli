@@ -21,9 +21,15 @@
 using System;
 using System.Collections;
 using System.Diagnostics.Contracts;
-using System.Linq.Expressions;
-using System.Text;
 using System.IO;
+#if NETFX_CORE
+using System.Linq;
+#endif
+using System.Linq.Expressions;
+#if NETFX_CORE
+using System.Reflection;
+#endif
+using System.Text;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -31,7 +37,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	///		<see cref="MessagePackSerializer{T}"/> for a sequential collection using expression tree.
 	/// </summary>
 	/// <typeparam name="T">The type of element.</typeparam>
-	internal abstract class SequenceExpressionMessagePackSerializer<T> : MessagePackSerializer<T>, IExpressionMessagePackSerializer
+	internal abstract class SequenceExpressionMessagePackSerializer<T> : MessagePackSerializer<T>
+#if !SILVERLIGHT
+		, IExpressionMessagePackSerializer
+#endif
 	{
 		private readonly Func<T, int> _getCount;
 		private readonly CollectionTraits _traits;
@@ -45,8 +54,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		private readonly Action<Packer, T, IMessagePackSerializer> _packToCore;
 		private readonly Action<Unpacker, T, IMessagePackSerializer, int> _unpackToCore;
+#if !SILVERLIGHT
 		private readonly Expression _packToCoreExpression;
 		private readonly Expression _unpackToCoreExpression;
+#endif
 
 		protected SequenceExpressionMessagePackSerializer( SerializationContext context, CollectionTraits traits )
 		{
@@ -101,10 +112,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					packerParameter, objectTreeParameter, elementSerializerParameter
 				);
 
+#if !SILVERLIGHT
 			if ( context.GeneratorOption == SerializationMethodGeneratorOption.CanDump )
 			{
 				this._packToCoreExpression = packToCore;
 			}
+#endif
 
 			this._packToCore = packToCore.Compile();
 
@@ -139,6 +152,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 			var itemVariable = Expression.Variable( traits.ElementType, "item" );
 			var unpackFrom = typeof( MessagePackSerializer<> ).MakeGenericType( traits.ElementType ).GetMethod( "UnpackFrom" );
+
 			var unpackToCore =
 				Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer, int>>(
 					ExpressionSerializerLogics.For(
@@ -172,10 +186,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					unpackerParameter, instanceParameter, elementSerializerParameter, countParamter
 				);
 
+#if !SILVERLIGHT
 			if ( context.GeneratorOption == SerializationMethodGeneratorOption.CanDump )
 			{
 				this._unpackToCoreExpression = unpackToCore;
 			}
+#endif
 
 			this._unpackToCore = unpackToCore.Compile();
 		}
@@ -190,6 +206,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._unpackToCore( unpacker, collection, this._elementSerializer, UnpackHelpers.GetItemsCount( unpacker ) );
 		}
 
+#if !SILVERLIGHT
 		public override string ToString()
 		{
 			if ( this._packToCoreExpression == null || this._unpackToCoreExpression == null )
@@ -235,5 +252,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			writer.Write( "UnpackToCore : " );
 			new ExpressionDumper( writer, depth + 2 ).Visit( this._unpackToCoreExpression );
 		}
+#endif
 	}
 }

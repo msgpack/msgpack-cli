@@ -20,12 +20,17 @@
 
 using System;
 using System.Collections;
-using System.Diagnostics.Contracts;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
+using System.Diagnostics.Contracts;
 using System.IO;
+#if NETFX_CORE
+using System.Linq;
+#endif
+using System.Linq.Expressions;
+#if NETFX_CORE
+using System.Reflection;
+#endif
+using System.Text;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -33,7 +38,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	///		<see cref="MessagePackSerializer{T}"/> for a map collection using expression tree.
 	/// </summary>
 	/// <typeparam name="T">The type of element.</typeparam>
-	internal class MapExpressionMessagePackSerializer<T> : MessagePackSerializer<T>, IExpressionMessagePackSerializer
+	internal class MapExpressionMessagePackSerializer<T> : MessagePackSerializer<T>
+#if !SILVERLIGHT
+		, IExpressionMessagePackSerializer
+#endif
 	{
 		private readonly Func<T, int> _getCount;
 		private readonly CollectionTraits _traits;
@@ -43,13 +51,15 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private readonly Action<Unpacker, T, IMessagePackSerializer, IMessagePackSerializer, int> _unpackToCore;
 		private readonly Func<int, T> _createInstanceWithCapacity;
 		private readonly Func<T> _createInstance;
+#if !SILVERLIGHT
 		private readonly Expression _packToCoreExpression;
 		private readonly Expression _unpackToCoreExpression;
+#endif
 
 		public MapExpressionMessagePackSerializer( SerializationContext context, CollectionTraits traits )
 		{
 			Contract.Assert( typeof( T ) is IEnumerable, typeof( T ) + " is IEnumerable" );
-			Contract.Assert( traits.ElementType.IsGenericType && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ), "Element type " + traits.ElementType + " is not KeyValuePair<TKey,TValue>." );
+			Contract.Assert( traits.ElementType.GetIsGenericType() && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ), "Element type " + traits.ElementType + " is not KeyValuePair<TKey,TValue>." );
 			this._traits = traits;
 			this._keySerializer = context.GetSerializer( traits.ElementType.GetGenericArguments()[ 0 ] );
 			this._valueSerializer = context.GetSerializer( traits.ElementType.GetGenericArguments()[ 1 ] );
@@ -121,10 +131,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					)
 				);
 
+#if !SILVERLIGHT
 			if ( context.GeneratorOption == SerializationMethodGeneratorOption.CanDump )
 			{
 				this._packToCoreExpression = packToCore;
 			}
+#endif
 
 			this._packToCore = packToCore.Compile();
 
@@ -173,6 +185,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			var keyVariable = Expression.Variable( traits.ElementType.GetGenericArguments()[ 0 ], "key" );
 			var valueVariable = Expression.Variable( traits.ElementType.GetGenericArguments()[ 1 ], "value" );
 			var unpackFrom = typeof( MessagePackSerializer<> ).MakeGenericType( traits.ElementType ).GetMethod( "UnpackFrom" );
+
 			var unpackToCore =
 				Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer, IMessagePackSerializer, int>>(
 					ExpressionSerializerLogics.For(
@@ -207,10 +220,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					unpackerParameter, instanceParameter, keySerializerParameter, valueSerializerParameter, countParamter
 				);
 
+#if !SILVERLIGHT
 			if ( context.GeneratorOption == SerializationMethodGeneratorOption.CanDump )
 			{
 				this._unpackToCoreExpression = unpackToCore;
 			}
+#endif
 
 			this._unpackToCore = unpackToCore.Compile();
 		}
@@ -232,6 +247,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._unpackToCore( unpacker, collection, this._keySerializer, this._valueSerializer, UnpackHelpers.GetItemsCount( unpacker ) );
 		}
 
+#if !SILVERLIGHT
 		public override string ToString()
 		{
 			if ( this._packToCoreExpression == null || this._unpackToCoreExpression == null )
@@ -277,5 +293,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			writer.Write( "UnpackToCore : " );
 			new ExpressionDumper( writer, depth + 1 ).Visit( this._unpackToCoreExpression );
 		}
+#endif
 	}
 }

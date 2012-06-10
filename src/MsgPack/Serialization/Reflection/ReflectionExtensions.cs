@@ -22,6 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+#if NETFX_CORE
+using System.Reflection;
+#endif
 
 namespace MsgPack.Serialization.Reflection
 {

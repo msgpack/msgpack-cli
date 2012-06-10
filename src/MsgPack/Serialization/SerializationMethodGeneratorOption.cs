@@ -24,7 +24,7 @@ using System.ComponentModel;
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Define options of <see cref="SerializationMethodGeneratorManager"/>
+	///		Define options of serializer generation.
 	/// </summary>
 	public enum SerializationMethodGeneratorOption
 	{

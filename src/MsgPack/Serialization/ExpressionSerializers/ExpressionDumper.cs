@@ -19,16 +19,18 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.IO;
 using System.Globalization;
+using System.IO;
+using System.Linq.Expressions;
+#if NETFX_CORE
+using  System.Reflection;
+#endif
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
+	/// <summary>
+	///		Takes text dump for expression tree supporting block expression etc.
+	/// </summary>
 	internal class ExpressionDumper : ExpressionVisitor
 	{
 		private int _indentLevel;
@@ -520,11 +522,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
+#if !NETFX_CORE
 		protected override Expression VisitDynamic( DynamicExpression node )
 		{
 			this.ThrowUnsupportedNodeException( node );
 			return base.VisitDynamic( node );
 		}
+#endif
 
 		protected override ElementInit VisitElementInit( ElementInit node )
 		{
@@ -1092,18 +1096,34 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		private void ThrowUnsupportedNodeException( Expression node )
 		{
+#if DEBUG
+#if !NETFX_CORE
 			Type expressionType = node.GetType();
 			while ( expressionType.IsNotPublic )
 			{
 				expressionType = expressionType.BaseType;
 			}
+#else
+			TypeInfo expressionType = node.GetType().GetTypeInfo();
+			while ( expressionType.IsNotPublic )
+			{
+				expressionType = expressionType.BaseType.GetTypeInfo();
+			}
+#endif
 
 			throw new NotImplementedException( String.Format( CultureInfo.CurrentCulture, "{0}(NodeType:{1})", expressionType.Name, node.NodeType ) );
+#else
+			this._writer.Write( node );
+#endif
 		}
 
 		private void ThrowUnsupportedNodeException<T>( T node )
 		{
+#if DEBUG
 			throw new NotImplementedException( String.Format( CultureInfo.CurrentCulture, "{0}({1}) is not supported yet.", typeof( T ).Name, node.GetType() ) );
+#else
+			this._writer.Write( node );
+#endif
 		}
 
 		private void WriteIndent()

@@ -38,7 +38,7 @@ namespace MsgPack
 	///		Additionally, this dictionary implements 'freezing' feature. 
 	///		For details, see <see cref="IsFrozen"/>, <see cref="Freeze"/>, and <see cref="AsFrozen"/>.
 	/// </remarks>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
 	public partial class MessagePackObjectDictionary :
@@ -483,7 +483,11 @@ namespace MsgPack
 				return new MessagePackObject( asMessagePackString );
 			}
 
+#if NETFX_CORE
+			switch ( WinRTCompatibility.GetTypeCode( value.GetType() ) )
+#else
 			switch ( Type.GetTypeCode( value.GetType() ) )
+#endif		
 			{
 				case TypeCode.Boolean:
 				{

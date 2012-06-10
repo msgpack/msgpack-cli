@@ -26,7 +26,7 @@ namespace MsgPack
 	/// <summary>
 	///		Represents unpacking error when message type is unknown or unavailable.
 	/// </summary>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
 	public sealed class MessageTypeException : Exception
@@ -51,7 +51,7 @@ namespace MsgPack
 		/// </param>
 		public MessageTypeException( string message, Exception inner ) : base( message ?? "Invalid message type.", inner ) { }
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with serialized data.
 		/// </summary>

@@ -116,6 +116,22 @@ var __excludes =
 		typeof( System.Threading.SpinWait ),
 		typeof( System.Threading.Tasks.ParallelLoopResult ),
 	};
+var __winRTExcludes =
+	new HashSet<string>()
+	{
+		"System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken",
+		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
+		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder",
+		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
+		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1",
+		"System.Runtime.CompilerServices.TaskAwaiter",
+		"System.Runtime.CompilerServices.TaskAwaiter`1",
+		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable",
+		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1",
+		"System.Runtime.CompilerServices.YieldAwaitable",
+		"System.Reflection.Emit.ExceptionHandler",
+		"System.Net.Sockets.UdpReceiveResult",
+	};
 var __structTypes = 
 	typeof( object ).Assembly.GetTypes()
 	.Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
@@ -126,6 +142,7 @@ var __structTypes =
 	).Concat(
 		typeof( BigInteger ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	).Except( __excludes )
+	.Where( t => !__winRTExcludes.Contains( t.FullName ) )
 	.ToArray();
 var __classTypes =
 	new[]
@@ -217,7 +234,7 @@ foreach( Type __type in __structTypes )
 	if( __notInSLs.Contains( __type ) )
 	{
 #>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 <#
 	}
 	
@@ -244,7 +261,7 @@ foreach( Type __type in __classTypes )
 	if( __notInSLs.Contains( __type ) )
 	{
 #>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 <#
 	}
 	

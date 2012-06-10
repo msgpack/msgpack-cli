@@ -32,7 +32,7 @@ namespace MsgPack
 		/// <summary>
 		///		Represents the collection of values in a <see cref="MessagePackObjectDictionary"/>.
 		/// </summary>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]
 #endif
 		[DebuggerDisplay( "Count={Count}" )]

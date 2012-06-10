@@ -146,9 +146,9 @@ namespace MsgPack.Serialization
 
 			if ( typeof( T ) != typeof( MessagePackObject ) && unpacker.Data.Value.IsNil )
 			{
-				if ( typeof( T ).IsValueType )
+				if ( typeof( T ).GetIsValueType() )
 				{
-					if ( !( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
+					if ( !( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
 					{
 						throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
 					}
@@ -241,9 +241,9 @@ namespace MsgPack.Serialization
 
 			if ( objectTree == null )
 			{
-				if ( typeof( T ).IsValueType )
+				if ( typeof( T ).GetIsValueType() )
 				{
-					if ( !( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
+					if ( !( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
 					{
 						throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
 					}

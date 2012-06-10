@@ -20,6 +20,10 @@
 
 using System;
 using System.Globalization;
+#if NETFX_CORE
+using System.Linq.Expressions;
+using System.Reflection;
+#endif
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -29,13 +33,26 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static Func<Unpacker, T> InitializeUnpacking()
 		{
-			if ( typeof( T ).IsValueType )
+			if ( typeof( T ).GetIsValueType() )
 			{
+#if !NETFX_CORE
 				return
 					Delegate.CreateDelegate(
 						typeof( Func<Unpacker, T> ),
 						EnumMessagePackSerializer.Unmarshal1Method.MakeGenericMethod( typeof( T ) )
 					) as Func<Unpacker, T>;
+#else
+				var unpackerParameter = Expression.Parameter( typeof( Unpacker ), "unpacker" );
+				return
+					Expression.Lambda<Func<Unpacker, T>>(
+						Expression.Call( 
+							null,
+							EnumMessagePackSerializer.Unmarshal1Method.MakeGenericMethod( typeof( T ) ),
+							unpackerParameter
+						),
+						unpackerParameter
+					).Compile();
+#endif
 			}
 			else
 			{
@@ -45,7 +62,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		public EnumMessagePackSerializer()
 		{
-			if ( !typeof( T ).IsEnum )
+			if ( !typeof( T ).GetIsEnum() )
 			{
 				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not enum.", typeof( T ) ) );
 			}

@@ -31,7 +31,7 @@ namespace MsgPack
 	/// <summary>
 	///		Encapselates <see cref="String"/> and its serialized UTF-8 bytes.
 	/// </summary>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
 	internal sealed class MessagePackString
@@ -259,6 +259,8 @@ namespace MsgPack
 #if !WINDOWS_PHONE
 #if MONO
 		private static int _isFastEqualsDisabled = 0;
+#elif NETFX_CORE
+		private static int _isFastEqualsDisabled = 0;
 #elif !SILVERLIGHT
 		private static int _isFastEqualsDisabled =
 			typeof( MessagePackString ).GetMethod( "UnsafeFastEquals", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic ).IsSecuritySafeCritical ? 0 : 1;
@@ -292,7 +294,7 @@ namespace MsgPack
 		}
 #endif
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]
 #endif
 		private enum BinaryType : int

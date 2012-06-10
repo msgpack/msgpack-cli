@@ -19,6 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+#if NETFX_CORE
+using System.Linq.Expressions;
+using System.Reflection;
+#endif
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -29,6 +33,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> InitializePacking()
 		{
+#if !NETFX_CORE
 			if ( typeof( T ) == typeof( byte ) )
 			{
 				return
@@ -53,10 +58,39 @@ namespace MsgPack.Serialization.DefaultSerializers
 						ArraySegmentMessageSerializer.PackGenericArraySegmentTo1Method.MakeGenericMethod( typeof( T ) )
 					) as Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>;
 			}
+#else
+			MethodInfo packingMethod;
+			if ( typeof( T ).Equals( typeof( byte ) ) )
+			{
+				packingMethod = ArraySegmentMessageSerializer.PackByteArraySegmentToMethod;
+			}
+			else if ( typeof( T ).Equals( typeof( char ) ) )
+			{
+				packingMethod = ArraySegmentMessageSerializer.PackCharArraySegmentToMethod;
+			}
+			else
+			{
+				packingMethod = ArraySegmentMessageSerializer.PackGenericArraySegmentTo1Method.MakeGenericMethod( typeof( T ) );
+			}
+
+			var packerParameter = Expression.Parameter( typeof( Packer ), "packer" );
+			var targetParameter = Expression.Parameter( typeof( ArraySegment<T> ), "target" );
+			var serializerParameter = Expression.Parameter( typeof( MessagePackSerializer<T> ), "serializer" );
+			return
+				Expression.Lambda<Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>>(
+					Expression.Call(
+						null,
+						packingMethod,
+						packerParameter, targetParameter, serializerParameter
+					),
+					packerParameter, targetParameter, serializerParameter
+				).Compile();
+#endif
 		}
 
 		private static Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> InitializeUnacking()
 		{
+#if !NETFX_CORE
 			if ( typeof( T ) == typeof( byte ) )
 			{
 				return
@@ -82,6 +116,33 @@ namespace MsgPack.Serialization.DefaultSerializers
 						ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom1Method.MakeGenericMethod( typeof( T ) )
 					) as Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>;
 			}
+#else
+			MethodInfo unpackingMethod;
+			if ( typeof( T ).Equals( typeof( byte ) ) )
+			{
+				unpackingMethod = ArraySegmentMessageSerializer.UnpackByteArraySegmentFromMethod;
+			}
+			else if ( typeof( T ).Equals( typeof( char ) ) )
+			{
+				unpackingMethod = ArraySegmentMessageSerializer.UnpackCharArraySegmentFromMethod;
+			}
+			else
+			{
+				unpackingMethod = ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom1Method.MakeGenericMethod( typeof( T ) );
+			}
+
+			var unpackerParameter = Expression.Parameter( typeof( Unpacker ), "unpacker" );
+			var serializerParameter = Expression.Parameter( typeof( MessagePackSerializer<T> ), "serializer" );
+			return
+				Expression.Lambda<Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>>(
+					Expression.Call(
+						null,
+						unpackingMethod,
+						unpackerParameter, serializerParameter 
+					),
+					unpackerParameter, serializerParameter
+				).Compile();
+#endif
 		}
 
 		private readonly MessagePackSerializer<T> _itemSerializer;

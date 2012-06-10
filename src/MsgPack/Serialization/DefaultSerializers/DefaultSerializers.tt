@@ -111,6 +111,23 @@ var __excludes =
 		typeof( System.Threading.SpinWait ),
 		typeof( System.Threading.Tasks.ParallelLoopResult ),
 	};
+var __winRTExcludes =
+	new HashSet<string>()
+	{
+		"System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken",
+		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
+		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder",
+		"System.Runtime.CompilerServices.AsyncVoidMethodBuilder",
+		"System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1",
+		"System.Runtime.CompilerServices.TaskAwaiter",
+		"System.Runtime.CompilerServices.TaskAwaiter`1",
+		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable",
+		"System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1",
+		"System.Runtime.CompilerServices.YieldAwaitable",
+		"System.Reflection.Emit.ExceptionHandler",
+		"System.Net.Sockets.UdpReceiveResult",
+	};
+	
 var __types = 
 	typeof( object ).Assembly.GetTypes()
 	.Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
@@ -121,6 +138,7 @@ var __types =
 	).Concat(
 		typeof( BigInteger ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	).Except( __excludes )
+	.Where( t => !__winRTExcludes.Contains( t.FullName ) )
 	.ToArray();
 	
 var __workArounds =
@@ -176,7 +194,7 @@ using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	// This file generated from DefaultMarshalers.tt T4Template.
+	// This file generated from DefaultSerializers.tt T4Template.
 	// Do not modify this file. Edit DefaultMarshalers.tt instead.
 <#
 foreach( Type __type in __types )
@@ -201,7 +219,7 @@ foreach( Type __type in __types )
 	if ( __notInSLs.Contains( __type ) )
 	{
 #>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 <#
 	}
 	

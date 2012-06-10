@@ -1,4 +1,5 @@
-﻿#region -- License Terms --
+﻿
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -22,15 +23,44 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+#if FALSE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
+
+#warning Remove FALSE
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Collections_Generic_KeyValuePair_2MessagePackSerializer<TKey, TValue> : MessagePackSerializer<KeyValuePair<TKey, TValue>>
 	{
+#if FALSE
 		private readonly MessagePackSerializer<KeyValuePair<TKey, TValue>> _underlying;
+#endif
+		private readonly MessagePackSerializer<TKey> _keySerializer;
+		private readonly MessagePackSerializer<TValue> _valueSerializer;
 
+		public System_Collections_Generic_KeyValuePair_2MessagePackSerializer( SerializationContext context )
+		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			this._keySerializer = context.GetSerializer<TKey>();
+			this._valueSerializer = context.GetSerializer<TValue>();
+		}
+
+		private static Action<Packer, KeyValuePair<TKey, TValue>> CreatePackToCore()
+		{
+			throw new NotImplementedException();
+		}
+
+		private static Func<Unpacker, KeyValuePair<TKey, TValue>> CreateUnpackFromCore()
+		{
+			throw new NotImplementedException();
+		}
+
+#if FALSE
 		public System_Collections_Generic_KeyValuePair_2MessagePackSerializer( SerializationContext context )
 #if !WINDOWS_PHONE
 			: this( context, EmitterFlavor.FieldBased )
@@ -132,15 +162,40 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.FlushTrace();
 			}
 		}
+#endif // NETFX_CORE else
 
 		protected internal sealed override void PackToCore( Packer packer, KeyValuePair<TKey, TValue> objectTree )
 		{
+#if FALSE
 			this._underlying.PackTo( packer, objectTree );
+#else
+			packer.PackArrayHeader( 2 );
+			this._keySerializer.PackTo( packer, objectTree.Key );
+			this._valueSerializer.PackTo( packer, objectTree.Value );
+#endif
 		}
 
 		protected internal sealed override KeyValuePair<TKey, TValue> UnpackFromCore( Unpacker unpacker )
 		{
+#if FALSE
 			return this._underlying.UnpackFrom( unpacker );
+#else
+			if ( !unpacker.Read() )
+			{
+				throw SerializationExceptions.NewUnexpectedEndOfStream();
+			}
+
+			TKey key = unpacker.Data.Value.IsNil ? default( TKey ) : this._keySerializer.UnpackFrom( unpacker );
+
+			if ( !unpacker.Read() )
+			{
+				throw SerializationExceptions.NewUnexpectedEndOfStream();
+			}
+
+			TValue value = unpacker.Data.Value.IsNil ? default( TValue ) : this._valueSerializer.UnpackFrom( unpacker );
+
+			return new KeyValuePair<TKey, TValue>( key, value );
+#endif
 		}
 	}
 }

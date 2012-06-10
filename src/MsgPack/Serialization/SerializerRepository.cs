@@ -87,12 +87,12 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-			if ( typeof( T ).IsEnum )
+			if ( typeof( T ).GetIsEnum() )
 			{
 				return new EnumMessagePackSerializer<T>();
 			}
 
-			if ( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
+			if ( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
 			{
 				return new NullableMessagePackSerializer<T>( context );
 			}

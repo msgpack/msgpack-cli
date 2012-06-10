@@ -20,7 +20,13 @@
 
 using System;
 using System.Diagnostics.Contracts;
+#if NETFX_CORE
+using System.Linq;
+#endif
 using System.Linq.Expressions;
+#if NETFX_CORE
+using System.Reflection;
+#endif
 using MsgPack.Serialization;
 
 namespace MsgPack

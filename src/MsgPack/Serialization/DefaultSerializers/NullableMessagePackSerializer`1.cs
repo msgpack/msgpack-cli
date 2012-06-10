@@ -19,9 +19,14 @@
 #endregion -- License Terms --
 
 using System;
-using System.Globalization;
-using System.Reflection;
 using System.Diagnostics.Contracts;
+using System.Globalization;
+#if NETFX_CORE
+using System.Linq;
+using System.Linq.Expressions;
+#endif
+using System.Reflection;
+#if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
 
@@ -37,7 +42,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static TValue GetOnlyWhenNullable<TValue>( TValue value )
 		{
-			if ( typeof( T ).IsGenericType && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
+			if ( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
 			{
 				return value;
 			}
@@ -47,13 +52,20 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+#if !NETFX_CORE
 		private readonly MessagePackSerializer<T> _underlying;
-
-		public NullableMessagePackSerializer( SerializationContext context ) 
-#if !WINDOWS_PHONE
-			: this( context, EmitterFlavor.FieldBased )
 #else
+		private readonly Action<Packer, T, IMessagePackSerializer> _packToCore;
+		private readonly Func<Unpacker, IMessagePackSerializer, T> _unpackFromCore;
+		private readonly IMessagePackSerializer _underlyingTypeSerializer;
+#endif
+		public NullableMessagePackSerializer( SerializationContext context ) 
+#if WINDOWS_PHONE
 			: this( context, EmitterFlavor.ContextBased )
+#elif NETFX_CORE
+			: this( context, EmitterFlavor.ExpressionBased )
+#else
+			: this( context, EmitterFlavor.FieldBased )
 #endif
 		{}
 
@@ -71,12 +83,20 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not nullable type.", typeof( T ) ) );
 			}
 
+#if !NETFX_CORE
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( T ), emitterFlavor );
 			CreatePacking( emitter );
 			CreateUnpacking( emitter );
 			this._underlying = emitter.CreateInstance<T>( context );
+#else
+			var underlyingType = Nullable.GetUnderlyingType( typeof( T ) );
+			this._packToCore = CreatePacking( underlyingType );
+			this._unpackFromCore = CreateUnpacking( underlyingType );
+			this._underlyingTypeSerializer = context.GetSerializer( underlyingType );
+#endif
 		}
 
+#if !NETFX_CORE
 		private static void CreatePacking( SerializerEmitter emitter )
 		{
 			var il = emitter.GetPackToMethodILGenerator();
@@ -125,7 +145,53 @@ namespace MsgPack.Serialization.DefaultSerializers
 				emitter.FlushTrace();
 			}
 		}
+#else
+		private static Action<Packer, T, IMessagePackSerializer> CreatePacking( Type underlyingType )
+		{
+			var packerParameter = Expression.Parameter( typeof( Packer ), "packer" );
+			var targetParameter = Expression.Parameter( typeof( T ), "target" );
+			var serializerParameter = Expression.Parameter( typeof( IMessagePackSerializer ), "serializer" );
+			var serializerType = typeof( MessagePackSerializer<> ).MakeGenericType( underlyingType );
+			var endOfMethod = Expression.Label( "END_OF_METHOD" );
 
+			return 
+				Expression.Lambda<Action<Packer,T, IMessagePackSerializer>>(
+					Expression.Block(
+						Expression.IfThen(
+							Expression.IsFalse(
+								Expression.Property(
+									targetParameter,
+									_nullableTHasValueProperty
+								)
+							),
+							Expression.Block(
+								Expression.Call(
+									packerParameter,
+									Metadata._Packer.PackNull
+								),
+								Expression.Return( endOfMethod )
+							)
+						),
+						Expression.Call(
+							Expression.TypeAs( 
+								serializerParameter,
+								serializerType
+							),
+							serializerType.GetRuntimeMethods().Single( m => m.Name == "PackTo" ),
+							packerParameter,
+							Expression.Property(
+								targetParameter,
+								_nullableTValueProperty
+							)
+						),
+						Expression.Label( endOfMethod )
+					),
+					packerParameter, targetParameter, serializerParameter
+				).Compile();
+		}
+#endif
+
+#if !NETFX_CORE
 		private static void CreateUnpacking( SerializerEmitter emitter )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
@@ -174,15 +240,64 @@ namespace MsgPack.Serialization.DefaultSerializers
 				emitter.FlushTrace();
 			}
 		}
+#else
+		private static Func<Unpacker, IMessagePackSerializer, T> CreateUnpacking( Type underlyingType )
+		{
+			var unpackerParameter = Expression.Parameter( typeof( Unpacker ), "unpacker" );
+			var serializerParameter = Expression.Parameter( typeof( IMessagePackSerializer ), "serializer" );
+			var serializerType = typeof( MessagePackSerializer<> ).MakeGenericType( underlyingType );
+			var endOfMethod = Expression.Label( "END_OF_METHOD" );
+
+			return 
+				Expression.Lambda<Func<Unpacker, IMessagePackSerializer, T>>(
+					Expression.Condition(
+						Expression.IsTrue(
+							Expression.Property(
+								Expression.Property(
+									Expression.Property(
+										unpackerParameter,
+										Metadata._Unpacker.Data
+									),
+									_nullableTValueProperty
+								),
+								Metadata._MessagePackObject.IsNil
+							)
+						),
+						Expression.Default( typeof( T ) ),
+						Expression.Convert(
+							Expression.Call(
+								Expression.TypeAs( 
+									serializerParameter,
+									serializerType
+								),
+								serializerType.GetRuntimeMethods().Single( m => m.Name == "UnpackFrom" ),
+								unpackerParameter
+							),
+							typeof( T ),
+							_nullableTImplicitOperator
+						)
+					),
+					unpackerParameter, serializerParameter
+				).Compile();
+		}
+#endif
 
 		protected internal sealed override void PackToCore( Packer packer, T value )
 		{
+#if !NETFX_CORE
 			this._underlying.PackTo( packer, value );
+#else
+			this._packToCore( packer, value, this._underlyingTypeSerializer );
+#endif
 		}
 
 		protected internal sealed override T UnpackFromCore( Unpacker unpacker )
 		{
+#if !NETFX_CORE
 			return this._underlying.UnpackFrom( unpacker );
+#else
+			return this._unpackFromCore( unpacker, this._underlyingTypeSerializer );
+#endif
 		}
 	}
 }

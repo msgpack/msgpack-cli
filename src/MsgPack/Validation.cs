@@ -91,7 +91,7 @@ namespace MsgPack
 		private static readonly Regex _unicodeTR15Annex7IdentifierPattern =
 			new Regex( 
 				@"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*", 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 				RegexOptions.Compiled |
 #endif
 				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline

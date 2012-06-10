@@ -23,6 +23,9 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
+#if NETFX_CORE
+using System.Reflection;
+#endif
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.ExpressionSerializers

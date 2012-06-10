@@ -22,6 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+#if NETFX_CORE
+using System.Reflection;
+#endif
 
 namespace MsgPack
 {
@@ -70,7 +73,7 @@ namespace MsgPack
 
 		public static IList<Type> GetTupleItemTypes( Type tupleType )
 		{
-			Contract.Assert( tupleType.Name.StartsWith( "Tuple`" ) && tupleType.Assembly == typeof( Tuple ).Assembly );
+			Contract.Assert( tupleType.Name.StartsWith( "Tuple`" ) && tupleType.GetAssembly().Equals( typeof( Tuple ).GetAssembly() ) );
 			var arguments = tupleType.GetGenericArguments();
 			List<Type> itemTypes = new List<Type>( tupleType.GetGenericArguments().Length );
 			GetTupleItemTypes( arguments, itemTypes );
@@ -88,8 +91,13 @@ namespace MsgPack
 			if ( itemTypes.Count == 8 )
 			{
 				var trest = itemTypes[ 7 ];
+#if !NETFX_CORE
 				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.Assembly == typeof( Tuple ).Assembly );
 				GetTupleItemTypes( trest.GetGenericArguments(), result );
+#else
+				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.GetTypeInfo().Assembly.Equals( typeof( Tuple ).GetTypeInfo().Assembly ) );
+				GetTupleItemTypes( trest.GenericTypeArguments, result );
+#endif
 			}
 		}
 	}

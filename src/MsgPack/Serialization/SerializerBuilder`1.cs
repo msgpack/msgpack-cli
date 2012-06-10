@@ -115,6 +115,7 @@ namespace MsgPack.Serialization
 
 		private static IEnumerable<SerializingMember> GetTargetMembers()
 		{
+#if !NETFX_CORE
 			var members =
 				typeof( TObject ).FindMembers(
 					MemberTypes.Field | MemberTypes.Property,
@@ -122,32 +123,37 @@ namespace MsgPack.Serialization
 					( member, criteria ) => true,
 					null
 				);
-
 			var filtered = members.Where( item => Attribute.IsDefined( item, typeof( MessagePackMemberAttribute ) ) ).ToArray();
+#else
+			var members =
+				typeof( TObject ).GetRuntimeFields().OfType<MemberInfo>().Concat( typeof( TObject ).GetRuntimeProperties() );
+			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
+#endif
+
 			if ( filtered.Length > 0 )
 			{
 				return
 					filtered.Select( member =>
 						new SerializingMember(
 							member,
-							new DataMemberContract( member, Attribute.GetCustomAttribute( member, typeof( MessagePackMemberAttribute ) ) as MessagePackMemberAttribute )
+							new DataMemberContract( member, member.GetCustomAttribute<MessagePackMemberAttribute>() )
 						)
 					);
 			}
 
-			if ( Attribute.IsDefined( typeof( TObject ), typeof( DataContractAttribute ) ) )
+			if ( typeof( TObject ).IsDefined( typeof( DataContractAttribute ) ) )
 			{
 				return
-					members.Where( item => Attribute.IsDefined( item, typeof( DataMemberAttribute ) ) )
+					members.Where( item => item.IsDefined( typeof( DataMemberAttribute ) ) )
 					.Select( member =>
 						new SerializingMember(
 							member,
-							new DataMemberContract( member, Attribute.GetCustomAttribute( member, typeof( DataMemberAttribute ) ) as DataMemberAttribute )
+							new DataMemberContract( member, member.GetCustomAttribute<DataMemberAttribute>() )
 						)
 					);
 			}
 
-#if SILVERLIGHT
+#if SILVERLIGHT || NETFX_CORE
 			return members.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 #else
 			return

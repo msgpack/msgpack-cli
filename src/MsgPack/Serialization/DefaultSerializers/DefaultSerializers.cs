@@ -26,7 +26,7 @@ using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	// This file generated from DefaultMarshalers.tt T4Template.
+	// This file generated from DefaultSerializers.tt T4Template.
 	// Do not modify this file. Edit DefaultMarshalers.tt instead.
 
 	internal sealed class System_DateTimeMessagePackSerializer : MessagePackSerializer< System.DateTime >
@@ -337,7 +337,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 	}
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
 		protected internal sealed override void PackToCore( Packer packer, System.Collections.Specialized.BitVector32 value )

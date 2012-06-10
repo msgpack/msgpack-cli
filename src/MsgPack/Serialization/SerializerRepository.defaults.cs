@@ -40,7 +40,7 @@ namespace MsgPack.Serialization
 	{
 		private static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable()
 		{
-			var dictionary = new Dictionary<RuntimeTypeHandle, object>( 410 );
+			var dictionary = new Dictionary<RuntimeTypeHandle, object>( 428 );
 			dictionary.Add( typeof( MessagePackObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer() );
 			dictionary.Add( typeof( Object ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_ObjectMessagePackSerializer() );
 			dictionary.Add( typeof( String ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_StringMessagePackSerializer() );
@@ -64,10 +64,10 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( System.UInt16 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt16MessagePackSerializer() );
 			dictionary.Add( typeof( System.UInt32 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt32MessagePackSerializer() );
 			dictionary.Add( typeof( System.UInt64 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt64MessagePackSerializer() );
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer() );
 #endif
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			dictionary.Add( typeof( System.Collections.Specialized.BitVector32 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Specialized_BitVector32MessagePackSerializer() );
 #endif
 #if !WINDOWS_PHONE
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization
 #endif // !WINDOWS_PHONE
 			dictionary.Add( typeof( System.Uri ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UriMessagePackSerializer() );
 			dictionary.Add( typeof( System.Version ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_VersionMessagePackSerializer() );
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			dictionary.Add( typeof( System.Collections.Specialized.NameValueCollection ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Specialized_NameValueCollectionMessagePackSerializer() );
 #endif // !SILVERLIGHT
 			return dictionary;
