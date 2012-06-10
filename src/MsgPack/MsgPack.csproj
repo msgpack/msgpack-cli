@@ -233,6 +233,7 @@
     <Compile Include="Serialization\EmittingSerializers\SerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorOption.cs" />
     <Compile Include="Serialization\EmittingSerializers\SerializerEmitter.cs" />
+    <Compile Include="Serialization\SerializerGenerator.cs" />
     <Compile Include="Serialization\SerializerRepository.defaults.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
