@@ -21,6 +21,8 @@
 using System;
 using System.Threading;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MsgPack.Serialization
 {
@@ -93,20 +95,26 @@ namespace MsgPack.Serialization
 
 			public void Test()
 			{
+				var tasks = new List<Task>();
 				for ( int i = 0; i < Environment.ProcessorCount * 2; i++ )
 				{
 					this._barrier.AddParticipant();
-					ThreadPool.QueueUserWorkItem( @this => ( @this as ConcurrentHelper<T> ).TestCore(), this );
+					tasks.Add(
+						Task.Factory.StartNew(
+							@this => ( @this as ConcurrentHelper<T> ).TestCore(),
+							this
+						)
+					);
 				}
 
 				this._barrier.SignalAndWait();
 				// Wait join
-				this._barrier.SignalAndWait();
+				Task.WaitAll( tasks.ToArray() );
 			}
 
 			private void TestCore()
 			{
-				var iteration = this._random.Next( 1000 );
+				var iteration = 50;
 
 				this._barrier.SignalAndWait();
 
@@ -114,8 +122,6 @@ namespace MsgPack.Serialization
 				{
 					this.TestValue();
 				}
-
-				this._barrier.SignalAndWait();
 			}
 
 			private void TestValue()
