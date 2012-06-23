@@ -19,15 +19,15 @@
 #endregion -- License Terms --
 
 using System;
-using System.Threading;
-using NUnit.Framework;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {
 	[TestFixture]
-	[Timeout( 3000 )]
+	[Timeout( 15000 )]
 	public class SerializationContextTest
 	{
 		[Test]
