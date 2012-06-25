@@ -23,7 +23,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+using ExplicitAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.IgnoreAttribute;
+#endif
 
 namespace MsgPack
 {
@@ -31,6 +40,26 @@ namespace MsgPack
 	[Timeout( 5000 )]
 	public partial class DirectConversionTest
 	{
+#if MSTEST
+		public Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestContext TestContext
+		{
+			get;
+			set;
+		}
+
+		private System.IO.TextWriter Console
+		{
+			get
+			{
+#if !SILVERLIGHT && !NETFX_CORE
+				return System.Console.Out;
+#else
+				return System.IO.TextWriter.Null;
+#endif
+			}
+		}
+#endif
+
 		[Test]
 		public void TestNil()
 		{
@@ -120,7 +149,7 @@ namespace MsgPack
 				TestString( sb.ToString() );
 			}
 			sw.Stop();
-			Console.WriteLine( "Large String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 10.0 , avg );
+			Console.WriteLine( "Large String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 10.0, avg );
 			sw.Reset();
 #endif
 
@@ -133,7 +162,13 @@ namespace MsgPack
 				int len = ( int )random.Next() % 100 + ( 1 << 8 );
 				for ( int j = 0; j < len; j++ )
 				{
-					sb.Append( Encoding.UTF32.GetChars( BitConverter.GetBytes( random.Next( 0x10ffff ) ) ) );
+					var cp = random.Next( 0x10ffff );
+					if ( 0xd800 <= cp && cp <= 0xdfff )
+					{
+						cp /= 2;
+					}
+
+					sb.Append( Char.ConvertFromUtf32( cp ) );
 				}
 				avg = ( avg + sb.Length ) / 2.0;
 				TestString( sb.ToString() );

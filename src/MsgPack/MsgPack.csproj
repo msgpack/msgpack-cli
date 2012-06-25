@@ -220,6 +220,7 @@
       <DependentUpon>FromExpression.ToMethod.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\Metadata\_UnpackHelpers.cs" />
+    <Compile Include="Serialization\Metadata\_NotImplementedException.cs" />
     <Compile Include="Serialization\NilImplication.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionSerializerBuilder`1.cs" />
     <Compile Include="Serialization\Reflection\GenericTypeExtensions.cs" />

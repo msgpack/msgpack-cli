@@ -22,7 +22,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {

@@ -258,7 +258,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 										unpackerParameter,
 										Metadata._Unpacker.Data
 									),
-									_nullableTValueProperty
+									NullableMessagePackSerializer.Nullable_MessagePackObject_ValueProperty
 								),
 								Metadata._MessagePackObject.IsNil
 							)

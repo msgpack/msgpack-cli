@@ -27,7 +27,9 @@ namespace MsgPack.Serialization
 	public class DataContractAndNonSerializedMixedTarget
 	{
 		[DataMember]
+#if !NETFX_CORE
 		[NonSerialized]
+#endif
 		public int ShouldSerialized;
 	}
 }

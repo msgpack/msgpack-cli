@@ -22,7 +22,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {
@@ -40,11 +48,10 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestGetSerializer_Null()
 		{
 			var target = new SerializationContext();
-			target.GetSerializer( null );
+			Assert.Throws<ArgumentNullException>( () => target.GetSerializer( null ) );
 		}
 
 		[Test]
@@ -130,7 +137,11 @@ namespace MsgPack.Serialization
 				if ( value != null )
 				{
 					var old = Interlocked.Exchange( ref this._gotten, value );
+#if !NETFX_CORE
 					Assert.That( old, Is.Null.Or.SameAs( value ).Or.InstanceOf( typeof( LazyDelegatingMessagePackSerializer<> ).MakeGenericType( typeof( T ).GetGenericArguments()[ 0 ] ) ) );
+#else
+					Assert.That( old, Is.Null.Or.SameAs( value ).Or.InstanceOf( typeof( LazyDelegatingMessagePackSerializer<> ).MakeGenericType( typeof( T ).GenericTypeArguments[ 0 ] ) ) );
+#endif
 				}
 			}
 		}

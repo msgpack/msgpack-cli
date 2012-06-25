@@ -25,7 +25,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -71,69 +79,60 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackBoolean_ByteArray_Nil()
 		{
-			var result = Unpacking.UnpackBoolean( new byte[] { 0xC0 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackBoolean( new byte[] { 0xC0 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackBoolean_Stream_Nil()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			{
-				var result = Unpacking.UnpackBoolean( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackBoolean( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackBoolean_ByteArray_Empty()
 		{
-			Unpacking.UnpackBoolean( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackBoolean( new byte[ 0 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackBoolean_ByteArray_Null()
 		{
-			Unpacking.UnpackBoolean( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackBoolean( default( byte[] ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackBoolean_ByteArray_Offset_Null()
 		{
-			Unpacking.UnpackBoolean( default( byte[] ), 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackBoolean( default( byte[] ), 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackBoolean_ByteArray_Offset_OffsetIsNegative()
 		{
-			Unpacking.UnpackBoolean( new byte[]{ 0x1 }, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackBoolean( new byte[]{ 0x1 }, -1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackBoolean_ByteArray_Offset_OffsetIsTooBig()
 		{
-			Unpacking.UnpackBoolean( new byte[]{ 0x1 }, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackBoolean( new byte[]{ 0x1 }, 1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackBoolean_ByteArray_Offset_Empty()
 		{
-			Unpacking.UnpackBoolean( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackBoolean( new byte[ 0 ], 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackBoolean_Stream_Null()
 		{
-			Unpacking.UnpackBoolean( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackBoolean( default( Stream ) ) );
 		}
 
 		[Test]

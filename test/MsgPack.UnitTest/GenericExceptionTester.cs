@@ -21,11 +21,23 @@
 using System;
 using System.IO;
 using System.Linq.Expressions;
+#if !NETFX_CORE
 using System.Runtime.Serialization.Formatters.Binary;
+#endif
 using System.Security;
+#if !NETFX_CORE
 using System.Security.Permissions;
 using System.Security.Policy;
+#endif
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {

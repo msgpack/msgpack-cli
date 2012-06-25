@@ -23,17 +23,37 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
+#if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
+#endif
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {
+	// FIXME: Add Expression Based
 	[TestFixture]
 	public class NilImplicationTest
 	{
+#if !NETFX_CORE
 		private static bool _traceOn = false;
 
+#if MSTEST
+		[Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestInitialize]
+		public void Initialize( Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestContext c )
+		{
+			this.SetUp();
+		}
+#else
 		[SetUp]
+#endif
 		public void SetUp()
 		{
 			if ( _traceOn )
@@ -61,6 +81,7 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
+#endif
 
 		private static void PackValuesAsArray(
 			Packer packer,
@@ -241,24 +262,28 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestNullButValueType_Array_Fail()
 		{
-			TestNonCollectionCore(
-				null,
-				PackValuesAsArray,
-				nullButValueType: MessagePackObject.Nil
+			Assert.Throws<SerializationException>(
+				() =>
+				TestNonCollectionCore(
+					null,
+					PackValuesAsArray,
+					nullButValueType: MessagePackObject.Nil
+				)
 			);
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestNullButValueType_Map_Fail()
 		{
-			TestNonCollectionCore(
-				null,
-				PackValuesAsMap,
-				nullButValueType: MessagePackObject.Nil
+			Assert.Throws<SerializationException>(
+				() =>
+				TestNonCollectionCore(
+					null,
+					PackValuesAsMap,
+					nullButValueType: MessagePackObject.Nil
+				)
 			);
 		}
 
@@ -311,51 +336,59 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitReferenceType_Array_Pack_Fail()
 		{
-			TestNonCollectionCore(
-				target =>
-				{
-					target.ProhibitReferenceType = null;
-				},
-				PackValuesAsArray
+			Assert.Throws<SerializationException>(
+				() =>
+				TestNonCollectionCore(
+					target =>
+					{
+						target.ProhibitReferenceType = null;
+					},
+					PackValuesAsArray
+				)
 			);
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitReferenceType_Map_Pack_Fail()
 		{
-			TestNonCollectionCore(
-				target =>
-				{
-					target.ProhibitReferenceType = null;
-				},
-				PackValuesAsMap
+			Assert.Throws<SerializationException>(
+				() =>
+				TestNonCollectionCore(
+					target =>
+					{
+						target.ProhibitReferenceType = null;
+					},
+					PackValuesAsMap
+				)
 			);
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitReferenceType_Array_Unpack_Fail()
 		{
-			TestNonCollectionCore(
-				null,
-				PackValuesAsArray,
-				prohibitReferenceType: MessagePackObject.Nil
+			Assert.Throws<SerializationException>(
+				() =>
+				TestNonCollectionCore(
+					null,
+					PackValuesAsArray,
+					prohibitReferenceType: MessagePackObject.Nil
+				)
 			);
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitReferenceType_Map_Unpack_Fail()
 		{
-			TestNonCollectionCore(
-				null,
-				PackValuesAsMap,
-				prohibitReferenceType: MessagePackObject.Nil
+			Assert.Throws<SerializationException>(
+				() =>
+				TestNonCollectionCore(
+					null,
+					PackValuesAsMap,
+					prohibitReferenceType: MessagePackObject.Nil
+				)
 			);
 		}
 
@@ -385,83 +418,94 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestNullForCollection_Array_Null()
 		{
-			TestCollectionCore(
-				target =>
-				{
-					target.Null = null;
-				},
-				PackValuesAsArray
+			Assert.Throws<SerializationException>(
+				() =>
+				TestCollectionCore(
+					target =>
+					{
+						target.Null = null;
+					},
+					PackValuesAsArray
+				)
 			);
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestNullForCollection_Map_Null()
 		{
-			TestCollectionCore(
-				target =>
-				{
-					target.Null = null;
-				},
-				PackValuesAsMap
+			Assert.Throws<SerializationException>(
+				() =>
+				TestCollectionCore(
+					target =>
+					{
+						target.Null = null;
+					},
+					PackValuesAsMap
+				)
 			);
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitForCollection_Array_Pack_Fail()
 		{
-			TestCollectionCore(
-				target =>
-				{
-					target.Prohibit = null;
-				},
-				PackValuesAsArray
+			Assert.Throws<SerializationException>(
+				() =>
+				TestCollectionCore(
+					target =>
+					{
+						target.Prohibit = null;
+					},
+					PackValuesAsArray
+				)
 			);
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitForCollection_Map_Pack_Fail()
 		{
-			TestCollectionCore(
-				target =>
-				{
-					target.Prohibit = null;
-				},
-				PackValuesAsMap
+			Assert.Throws<SerializationException>(
+				() =>
+				TestCollectionCore(
+					target =>
+					{
+						target.Prohibit = null;
+					},
+					PackValuesAsMap
+				)
 			);
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitForCollection_Array_Unpack_Fail()
 		{
-			TestCollectionCore(
-				null,
-				PackValuesAsArray,
-				prohibit: () => null
+			Assert.Throws<SerializationException>(
+				() =>
+				TestCollectionCore(
+					null,
+					PackValuesAsArray,
+					prohibit: () => null
+				)
 			);
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestProhibitForCollection_Map_Unpack_Fail()
 		{
-			TestCollectionCore(
-				null,
-				PackValuesAsMap,
-				prohibit: () => null
+			Assert.Throws<SerializationException>(
+				() =>
+				TestCollectionCore(
+					null,
+					PackValuesAsMap,
+					prohibit: () => null
+				)
 			);
 		}
 
 		// FIXME: Array and element count less/more expected. Map and missing
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestElelementMissingInTheFirstPlace_Array_Fail()
 		{
 			using ( var buffer = new MemoryStream() )
@@ -475,12 +519,11 @@ namespace MsgPack.Serialization
 				buffer.Position = 0;
 
 				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( new SerializationContext() { SerializationMethod = SerializationMethod.Array } );
-				target.Unpack( buffer );
+				Assert.Throws<SerializationException>( () => target.Unpack( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestElelementTooManyInTheFirstPlace_Array_Fail()
 		{
 			using ( var buffer = new MemoryStream() )
@@ -496,7 +539,7 @@ namespace MsgPack.Serialization
 				buffer.Position = 0;
 
 				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( new SerializationContext() { SerializationMethod = SerializationMethod.Array } );
-				target.Unpack( buffer );
+				Assert.Throws<SerializationException>( () =>target.Unpack( buffer ) );
 			}
 		}
 

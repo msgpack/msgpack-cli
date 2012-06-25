@@ -39,7 +39,9 @@ namespace MsgPack.Serialization
 		public int ShouldNotSerialized2;
 
 		[MessagePackMember( 2 )]
+#if !NETFX_CORE && !SILVERLIGHT
 		[NonSerialized]
+#endif
 		public int ShouldSerialized3;
 	}
 }

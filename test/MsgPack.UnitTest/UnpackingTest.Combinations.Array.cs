@@ -25,7 +25,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -579,52 +587,45 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackArrayLength_ByteArray_Empty()
 		{
-			Unpacking.UnpackArrayLength( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackArrayLength( new byte[ 0 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackArrayLength_ByteArray_Null()
 		{
-			Unpacking.UnpackArrayLength( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackArrayLength( default( byte[] ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackArrayLength_ByteArray_Offset_Null()
 		{
-			Unpacking.UnpackArrayLength( default( byte[] ), 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackArrayLength( default( byte[] ), 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackArrayLength_ByteArray_Offset_OffsetIsNegative()
 		{
-			Unpacking.UnpackArrayLength( new byte[]{ 0x1 }, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackArrayLength( new byte[]{ 0x1 }, -1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackArrayLength_ByteArray_Offset_OffsetIsTooBig()
 		{
-			Unpacking.UnpackArrayLength( new byte[]{ 0x1 }, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackArrayLength( new byte[]{ 0x1 }, 1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackArrayLength_ByteArray_Offset_Empty()
 		{
-			Unpacking.UnpackArrayLength( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackArrayLength( new byte[ 0 ], 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackArrayLength_Stream_Null()
 		{
-			Unpacking.UnpackArrayLength( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackArrayLength( default( Stream ) ) );
 		}
 
 		[Test]
@@ -644,10 +645,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackArrayLength_ByteArray_NotArray()
 		{
-			var dummy = Unpacking.UnpackArrayLength( new byte[] { 0x1 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackArrayLength( new byte[] { 0x1 } ) );
 		}
 
 		[Test]
@@ -659,12 +659,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackArray_ByteArray_NotArray()
 		{
-			var result = Unpacking.UnpackArray( new byte[] { 0x1 } );
-			Assert.AreEqual( 1, result.ReadCount );
-			Assert.IsNull( result.Value );
+			Assert.Throws<MessageTypeException>( () =>  Unpacking.UnpackArray( new byte[] { 0x1 } ) );
 		}
 	}
 }

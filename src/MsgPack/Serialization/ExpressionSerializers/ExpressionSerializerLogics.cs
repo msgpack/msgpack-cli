@@ -46,7 +46,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 			else if ( traits.CountProperty != null )
 			{
-				body = Expression.PropertyOrField( targetParameter, "Count" );
+				body = Expression.Property( targetParameter, traits.CountProperty );
 			}
 			else
 			{
@@ -188,7 +188,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					? tryBlock
 					: Expression.TryFinally(
 						tryBlock,
-						Expression.IfThen(
+						enumeratorVariable.Type.GetIsValueType()
+						? finallyBlock
+						: Expression.IfThen(
 							Expression.ReferenceNotEqual( enumeratorVariable, Expression.Constant( null ) ),
 							finallyBlock
 						)

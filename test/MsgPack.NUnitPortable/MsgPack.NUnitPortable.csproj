@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FC521316-EBCD-4EF1-8235-C976B2A31EB0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MsgPack.NUnitPortable</RootNamespace>
+    <AssemblyName>MsgPack.NUnitPortable</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile88</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CLR_4_0</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="..\..\src\MsgPack.snk">
+      <Link>MsgPack.snk</Link>
+    </None>
+    <None Include="ReadMe.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NUnit\Framework\Assert.cs" />
+    <Compile Include="NUnit\Framework\Attributes\ThreadingAttributes.cs" />
+    <Compile Include="NUnit\Framework\Constraints\BasicConstraints.cs" />
+    <Compile Include="NUnit\Framework\Constraints\BinaryOperations.cs" />
+    <Compile Include="NUnit\Framework\Constraints\CollectionConstraints.cs" />
+    <Compile Include="NUnit\Framework\Constraints\CollectionTally.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ComparisonAdapter.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ComparisonConstraints.cs" />
+    <Compile Include="NUnit\Framework\Constraints\Constraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ConstraintBuilder.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ConstraintExpression.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ConstraintExpressionBase.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ConstraintFactory.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ConstraintOperators.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ContainsConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\EmptyConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\EqualConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\EqualityAdapter.cs" />
+    <Compile Include="NUnit\Framework\Constraints\FloatingPointNumerics.cs" />
+    <Compile Include="NUnit\Framework\Constraints\GreaterThanConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\GreaterThanOrEqualConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\IResolveConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\LessThanConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\LessThanOrEqualConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\MessageWriter.cs" />
+    <Compile Include="NUnit\Framework\Constraints\MsgUtils.cs" />
+    <Compile Include="NUnit\Framework\Constraints\Numerics.cs" />
+    <Compile Include="NUnit\Framework\Constraints\NUnitComparer.cs" />
+    <Compile Include="NUnit\Framework\Constraints\NUnitEqualityComparer.cs" />
+    <Compile Include="NUnit\Framework\Constraints\PredicateConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\PrefixConstraints.cs" />
+    <Compile Include="NUnit\Framework\Constraints\PropertyConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\RangeConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ResolvableConstraintExpression.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ReusableConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\SameAsConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\StringConstraints.cs" />
+    <Compile Include="NUnit\Framework\Constraints\ThrowsConstraint.cs" />
+    <Compile Include="NUnit\Framework\Constraints\Tolerance.cs" />
+    <Compile Include="NUnit\Framework\Constraints\TypeConstraints.cs" />
+    <Compile Include="NUnit\Framework\GlobalSettings.cs" />
+    <Compile Include="NUnit\Framework\Has.cs" />
+    <Compile Include="NUnit\Framework\Interfaces\INUnitEqualityComparer.cs" />
+    <Compile Include="NUnit\Framework\Is.cs" />
+    <Compile Include="NUnit\Framework\TextMessageWriter.cs" />
+    <Compile Include="TestingPlatform.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

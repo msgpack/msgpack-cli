@@ -20,7 +20,15 @@
 
 using System;
 using System.IO;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -142,7 +150,6 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestRead_InSubtreeMode_Fail()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
@@ -153,14 +160,12 @@ namespace MsgPack
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
 					// To be failed.
-					rootUnpacker.Read();
-					Assert.Fail();
+					Assert.Throws<InvalidOperationException>( () => rootUnpacker.Read() );
 				}
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestReadSubtree_IsScalar_Fail()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
@@ -169,10 +174,14 @@ namespace MsgPack
 				Assert.That( rootUnpacker.Read(), "Failed to first read" );
 
 				// To be failed.
-				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
-				{
-					Assert.Fail();
-				}
+				Assert.Throws<InvalidOperationException>( () =>
+					{
+						using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
+						{
+							Assert.Fail();
+						}
+					}
+				);
 			}
 		}
 
@@ -332,7 +341,6 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestReadSubtree_InLeafBody_Fail()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
@@ -342,22 +350,24 @@ namespace MsgPack
 
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
-					Assert.That( rootUnpacker.Read(), "Failed to second read" );
 					// To be failed
-					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
-					{
-						Assert.Fail();
-					}
+					Assert.Throws<InvalidOperationException>( () =>
+						{
+							using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
+							{
+								Assert.Fail();
+							}
+						}
+					);
 				}
 			}
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestCreate_StreamIsNull()
 		{
-			using ( Unpacker.Create( null ) ) { }
+			Assert.Throws<ArgumentNullException>( () => { using ( Unpacker.Create( null ) ) { } } );
 		}
 
 		[Test]
@@ -373,85 +383,86 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestRead_UnderSkipping()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
 			using ( var target = Unpacker.Create( buffer ) )
 			{
 				Assert.That( target.Skip(), Is.Null, "Precondition" );
-				target.Read();
+				Assert.Throws<InvalidOperationException>( () => target.Read() );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestGetEnumerator_UnderSkipping()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
 			using ( var target = Unpacker.Create( buffer ) )
 			{
 				Assert.That( target.Skip(), Is.Null, "Precondition" );
-				foreach ( var item in target )
-				{
+				Assert.Throws<InvalidOperationException>( () =>
+					{
+						foreach ( var item in target )
+						{
 
-				}
+						}
+					}
+				);
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestReadSubtree_UnderSkipping()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
 			using ( var target = Unpacker.Create( buffer ) )
 			{
 				Assert.That( target.Skip(), Is.Null, "Precondition" );
-				target.ReadSubtree();
+				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestSkip_UnderReading()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
 			using ( var target = Unpacker.Create( buffer ) )
 			{
 				Assert.That( target.Read(), Is.False, "Precondition" );
-				target.Skip();
+				Assert.Throws<InvalidOperationException>( () => target.Skip() );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestGetEnumerator_UnderReading()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
 			using ( var target = Unpacker.Create( buffer ) )
 			{
 				Assert.That( target.Read(), Is.False, "Precondition" );
-				foreach ( var item in target )
-				{
+				Assert.Throws<InvalidOperationException>( () =>
+					{
+						foreach ( var item in target )
+						{
 
-				}
+						}
+					}
+				);
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestReadSubtree_UnderReading()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
 			using ( var target = Unpacker.Create( buffer ) )
 			{
 				Assert.That( target.Read(), Is.False, "Precondition" );
-				target.ReadSubtree();
+				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestRead_UnderEnumerating()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
@@ -459,13 +470,12 @@ namespace MsgPack
 			{
 				foreach ( var item in target )
 				{
-					target.Read();
+					Assert.Throws<InvalidOperationException>( () => target.Read() );
 				}
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestSkip_UnderEnumerating()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
@@ -473,13 +483,12 @@ namespace MsgPack
 			{
 				foreach ( var item in target )
 				{
-					target.Skip();
+					Assert.Throws<InvalidOperationException>( () => target.Skip() );
 				}
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestReadSubtree_UnderEnumerating()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
@@ -487,7 +496,7 @@ namespace MsgPack
 			{
 				foreach ( var item in target )
 				{
-					target.ReadSubtree();
+					Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
 				}
 			}
 		}
@@ -510,18 +519,16 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestReadSubtree_InScalar()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD0, 0x1 } ) )
 			using ( var target = Unpacker.Create( buffer ) )
 			{
-				target.ReadSubtree();
+				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestReadSubtree_InNestedScalar()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x81, 0x1, 0x91, 0x1 } ) )
@@ -531,7 +538,7 @@ namespace MsgPack
 				Assert.That( target.IsMapHeader, Is.True );
 				Assert.That( target.Read() );
 				Assert.That( target.IsMapHeader, Is.False );
-				target.ReadSubtree();
+				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
 			}
 		}	
 		

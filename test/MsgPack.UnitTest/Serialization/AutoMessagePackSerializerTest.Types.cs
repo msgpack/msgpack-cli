@@ -28,7 +28,15 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {
@@ -862,6 +870,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( Object[][] ), this.GetSerializationContextField() );
 		}	
 		
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestArrayListFieldField()
 		{
@@ -886,6 +895,8 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( ArrayList[] ), this.GetSerializationContextField() );
 		}	
 		
+#endif
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestHashtableFieldField()
 		{
@@ -910,6 +921,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( Hashtable[] ), this.GetSerializationContextField() );
 		}	
 		
+#endif
 		[Test]
 		public void TestListObjectFieldField()
 		{
@@ -2348,6 +2360,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( Object[][] ), this.GetSerializationContextContext() );
 		}	
 		
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestArrayListFieldContext()
 		{
@@ -2372,6 +2385,8 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( ArrayList[] ), this.GetSerializationContextContext() );
 		}	
 		
+#endif
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestHashtableFieldContext()
 		{
@@ -2396,6 +2411,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( Hashtable[] ), this.GetSerializationContextContext() );
 		}	
 		
+#endif
 		[Test]
 		public void TestListObjectFieldContext()
 		{
@@ -3834,6 +3850,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( Object[][] ), this.GetSerializationContextExpression() );
 		}	
 		
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestArrayListFieldExpression()
 		{
@@ -3858,6 +3875,8 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( ArrayList[] ), this.GetSerializationContextExpression() );
 		}	
 		
+#endif
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestHashtableFieldExpression()
 		{
@@ -3882,6 +3901,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( Hashtable[] ), this.GetSerializationContextExpression() );
 		}	
 		
+#endif
 		[Test]
 		public void TestListObjectFieldExpression()
 		{
@@ -4537,10 +4557,17 @@ namespace MsgPack.Serialization
 					{
 						unpacked[ i ].Verify( value[ i ] );
 					}
+#if MSTEST
+					catch( Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException ae )
+					{
+						throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( i.ToString(), ae );
+					}
+#else
 					catch( AssertionException ae )
 					{
 						throw new AssertionException( i.ToString(), ae );
 					}
+#endif
 				}
 			}
 		}	
@@ -4574,7 +4601,6 @@ namespace MsgPack.Serialization
 	
 	public sealed class ComplexTypeGenerated : IVerifiable<ComplexTypeGenerated>
 	{
-
 		private Object _NullField;
 		
 		public Object NullField
@@ -4582,7 +4608,6 @@ namespace MsgPack.Serialization
 			get { return this._NullField; }
 			set { this._NullField = value; }
 		}
-
 		private Boolean _TrueField;
 		
 		public Boolean TrueField
@@ -4590,7 +4615,6 @@ namespace MsgPack.Serialization
 			get { return this._TrueField; }
 			set { this._TrueField = value; }
 		}
-
 		private Boolean _FalseField;
 		
 		public Boolean FalseField
@@ -4598,7 +4622,6 @@ namespace MsgPack.Serialization
 			get { return this._FalseField; }
 			set { this._FalseField = value; }
 		}
-
 		private Byte _TinyByteField;
 		
 		public Byte TinyByteField
@@ -4606,7 +4629,6 @@ namespace MsgPack.Serialization
 			get { return this._TinyByteField; }
 			set { this._TinyByteField = value; }
 		}
-
 		private Byte _ByteField;
 		
 		public Byte ByteField
@@ -4614,7 +4636,6 @@ namespace MsgPack.Serialization
 			get { return this._ByteField; }
 			set { this._ByteField = value; }
 		}
-
 		private Byte _MaxByteField;
 		
 		public Byte MaxByteField
@@ -4622,7 +4643,6 @@ namespace MsgPack.Serialization
 			get { return this._MaxByteField; }
 			set { this._MaxByteField = value; }
 		}
-
 		private UInt16 _TinyUInt16Field;
 		
 		public UInt16 TinyUInt16Field
@@ -4630,7 +4650,6 @@ namespace MsgPack.Serialization
 			get { return this._TinyUInt16Field; }
 			set { this._TinyUInt16Field = value; }
 		}
-
 		private UInt16 _MaxUInt16Field;
 		
 		public UInt16 MaxUInt16Field
@@ -4638,7 +4657,6 @@ namespace MsgPack.Serialization
 			get { return this._MaxUInt16Field; }
 			set { this._MaxUInt16Field = value; }
 		}
-
 		private Int32 _TinyInt32Field;
 		
 		public Int32 TinyInt32Field
@@ -4646,7 +4664,6 @@ namespace MsgPack.Serialization
 			get { return this._TinyInt32Field; }
 			set { this._TinyInt32Field = value; }
 		}
-
 		private Int32 _MaxInt32Field;
 		
 		public Int32 MaxInt32Field
@@ -4654,7 +4671,6 @@ namespace MsgPack.Serialization
 			get { return this._MaxInt32Field; }
 			set { this._MaxInt32Field = value; }
 		}
-
 		private Int32 _MinInt32Field;
 		
 		public Int32 MinInt32Field
@@ -4662,7 +4678,6 @@ namespace MsgPack.Serialization
 			get { return this._MinInt32Field; }
 			set { this._MinInt32Field = value; }
 		}
-
 		private Int64 _TinyInt64Field;
 		
 		public Int64 TinyInt64Field
@@ -4670,7 +4685,6 @@ namespace MsgPack.Serialization
 			get { return this._TinyInt64Field; }
 			set { this._TinyInt64Field = value; }
 		}
-
 		private Int64 _MaxInt64Field;
 		
 		public Int64 MaxInt64Field
@@ -4678,7 +4692,6 @@ namespace MsgPack.Serialization
 			get { return this._MaxInt64Field; }
 			set { this._MaxInt64Field = value; }
 		}
-
 		private Int64 _MinInt64Field;
 		
 		public Int64 MinInt64Field
@@ -4686,7 +4699,6 @@ namespace MsgPack.Serialization
 			get { return this._MinInt64Field; }
 			set { this._MinInt64Field = value; }
 		}
-
 		private DateTime _DateTimeField;
 		
 		public DateTime DateTimeField
@@ -4694,7 +4706,6 @@ namespace MsgPack.Serialization
 			get { return this._DateTimeField; }
 			set { this._DateTimeField = value; }
 		}
-
 		private DateTimeOffset _DateTimeOffsetField;
 		
 		public DateTimeOffset DateTimeOffsetField
@@ -4702,7 +4713,6 @@ namespace MsgPack.Serialization
 			get { return this._DateTimeOffsetField; }
 			set { this._DateTimeOffsetField = value; }
 		}
-
 		private Uri _UriField;
 		
 		public Uri UriField
@@ -4710,7 +4720,6 @@ namespace MsgPack.Serialization
 			get { return this._UriField; }
 			set { this._UriField = value; }
 		}
-
 		private Version _VersionField;
 		
 		public Version VersionField
@@ -4718,7 +4727,6 @@ namespace MsgPack.Serialization
 			get { return this._VersionField; }
 			set { this._VersionField = value; }
 		}
-
 		private FILETIME _FILETIMEField;
 		
 		public FILETIME FILETIMEField
@@ -4726,7 +4734,6 @@ namespace MsgPack.Serialization
 			get { return this._FILETIMEField; }
 			set { this._FILETIMEField = value; }
 		}
-
 		private TimeSpan _TimeSpanField;
 		
 		public TimeSpan TimeSpanField
@@ -4734,7 +4741,6 @@ namespace MsgPack.Serialization
 			get { return this._TimeSpanField; }
 			set { this._TimeSpanField = value; }
 		}
-
 		private Guid _GuidField;
 		
 		public Guid GuidField
@@ -4742,7 +4748,6 @@ namespace MsgPack.Serialization
 			get { return this._GuidField; }
 			set { this._GuidField = value; }
 		}
-
 		private Char _CharField;
 		
 		public Char CharField
@@ -4750,7 +4755,6 @@ namespace MsgPack.Serialization
 			get { return this._CharField; }
 			set { this._CharField = value; }
 		}
-
 		private Decimal _DecimalField;
 		
 		public Decimal DecimalField
@@ -4758,7 +4762,6 @@ namespace MsgPack.Serialization
 			get { return this._DecimalField; }
 			set { this._DecimalField = value; }
 		}
-
 		private BigInteger _BigIntegerField;
 		
 		public BigInteger BigIntegerField
@@ -4766,7 +4769,6 @@ namespace MsgPack.Serialization
 			get { return this._BigIntegerField; }
 			set { this._BigIntegerField = value; }
 		}
-
 		private Complex _ComplexField;
 		
 		public Complex ComplexField
@@ -4774,7 +4776,6 @@ namespace MsgPack.Serialization
 			get { return this._ComplexField; }
 			set { this._ComplexField = value; }
 		}
-
 		private DictionaryEntry _DictionaryEntryField;
 		
 		public DictionaryEntry DictionaryEntryField
@@ -4782,7 +4783,6 @@ namespace MsgPack.Serialization
 			get { return this._DictionaryEntryField; }
 			set { this._DictionaryEntryField = value; }
 		}
-
 		private KeyValuePair<String, Complex> _KeyValuePairStringComplexField;
 		
 		public KeyValuePair<String, Complex> KeyValuePairStringComplexField
@@ -4790,7 +4790,6 @@ namespace MsgPack.Serialization
 			get { return this._KeyValuePairStringComplexField; }
 			set { this._KeyValuePairStringComplexField = value; }
 		}
-
 		private String _StringField;
 		
 		public String StringField
@@ -4798,7 +4797,6 @@ namespace MsgPack.Serialization
 			get { return this._StringField; }
 			set { this._StringField = value; }
 		}
-
 		private Byte[] _ByteArrayField;
 		
 		public Byte[] ByteArrayField
@@ -4806,7 +4804,6 @@ namespace MsgPack.Serialization
 			get { return this._ByteArrayField; }
 			set { this._ByteArrayField = value; }
 		}
-
 		private Char[] _CharArrayField;
 		
 		public Char[] CharArrayField
@@ -4814,7 +4811,6 @@ namespace MsgPack.Serialization
 			get { return this._CharArrayField; }
 			set { this._CharArrayField = value; }
 		}
-
 		private ArraySegment<Byte> _ArraySegmentByteField;
 		
 		public ArraySegment<Byte> ArraySegmentByteField
@@ -4822,7 +4818,6 @@ namespace MsgPack.Serialization
 			get { return this._ArraySegmentByteField; }
 			set { this._ArraySegmentByteField = value; }
 		}
-
 		private ArraySegment<Int32> _ArraySegmentInt32Field;
 		
 		public ArraySegment<Int32> ArraySegmentInt32Field
@@ -4830,7 +4825,6 @@ namespace MsgPack.Serialization
 			get { return this._ArraySegmentInt32Field; }
 			set { this._ArraySegmentInt32Field = value; }
 		}
-
 		private ArraySegment<Decimal> _ArraySegmentDecimalField;
 		
 		public ArraySegment<Decimal> ArraySegmentDecimalField
@@ -4838,7 +4832,6 @@ namespace MsgPack.Serialization
 			get { return this._ArraySegmentDecimalField; }
 			set { this._ArraySegmentDecimalField = value; }
 		}
-
 		private System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> _Tuple_Int32_String_MessagePackObject_ObjectField;
 		
 		public System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> Tuple_Int32_String_MessagePackObject_ObjectField
@@ -4846,7 +4839,6 @@ namespace MsgPack.Serialization
 			get { return this._Tuple_Int32_String_MessagePackObject_ObjectField; }
 			set { this._Tuple_Int32_String_MessagePackObject_ObjectField = value; }
 		}
-
 		private MsgPack.Image _Image_Field;
 		
 		public MsgPack.Image Image_Field
@@ -4854,84 +4846,72 @@ namespace MsgPack.Serialization
 			get { return this._Image_Field; }
 			set { this._Image_Field = value; }
 		}
-
 		private List<DateTime> _ListDateTimeField = new List<DateTime>();
 		
 		public List<DateTime> ListDateTimeField
 		{
 			get { return this._ListDateTimeField; }
 		}
-
 		private Dictionary<String, DateTime> _DictionaryStringDateTimeField = new Dictionary<String, DateTime>();
 		
 		public Dictionary<String, DateTime> DictionaryStringDateTimeField
 		{
 			get { return this._DictionaryStringDateTimeField; }
 		}
-
 		private Collection<DateTime> _CollectionDateTimeField = new Collection<DateTime>();
 		
 		public Collection<DateTime> CollectionDateTimeField
 		{
 			get { return this._CollectionDateTimeField; }
 		}
-
 		private MsgPack.Serialization.StringKeyedCollection<System.DateTime> _StringKeyedCollection_DateTimeField = new StringKeyedCollection<DateTime>();
 		
 		public MsgPack.Serialization.StringKeyedCollection<System.DateTime> StringKeyedCollection_DateTimeField
 		{
 			get { return this._StringKeyedCollection_DateTimeField; }
 		}
-
 		private ObservableCollection<DateTime> _ObservableCollectionDateTimeField = new ObservableCollection<DateTime>();
 		
 		public ObservableCollection<DateTime> ObservableCollectionDateTimeField
 		{
 			get { return this._ObservableCollectionDateTimeField; }
 		}
-
 		private HashSet<DateTime> _HashSetDateTimeField = new HashSet<DateTime>();
 		
 		public HashSet<DateTime> HashSetDateTimeField
 		{
 			get { return this._HashSetDateTimeField; }
 		}
-
 		private ICollection<DateTime> _ICollectionDateTimeField = new SimpleCollection<DateTime>();
 		
 		public ICollection<DateTime> ICollectionDateTimeField
 		{
 			get { return this._ICollectionDateTimeField; }
 		}
-
 		private ISet<DateTime> _ISetDateTimeField = new HashSet<DateTime>();
 		
 		public ISet<DateTime> ISetDateTimeField
 		{
 			get { return this._ISetDateTimeField; }
 		}
-
 		private IList<DateTime> _IListDateTimeField = new List<DateTime>();
 		
 		public IList<DateTime> IListDateTimeField
 		{
 			get { return this._IListDateTimeField; }
 		}
-
 		private IDictionary<String, DateTime> _IDictionaryStringDateTimeField = new Dictionary<String, DateTime>();
 		
 		public IDictionary<String, DateTime> IDictionaryStringDateTimeField
 		{
 			get { return this._IDictionaryStringDateTimeField; }
 		}
-
 		private MsgPack.Serialization.AddOnlyCollection<System.DateTime> _AddOnlyCollection_DateTimeField = new AddOnlyCollection<DateTime>();
 		
 		public MsgPack.Serialization.AddOnlyCollection<System.DateTime> AddOnlyCollection_DateTimeField
 		{
 			get { return this._AddOnlyCollection_DateTimeField; }
 		}
-
 		private Object _ObjectField;
 		
 		public Object ObjectField
@@ -4939,7 +4919,6 @@ namespace MsgPack.Serialization
 			get { return this._ObjectField; }
 			set { this._ObjectField = value; }
 		}
-
 		private Object[] _ObjectArrayField;
 		
 		public Object[] ObjectArrayField
@@ -4947,98 +4926,88 @@ namespace MsgPack.Serialization
 			get { return this._ObjectArrayField; }
 			set { this._ObjectArrayField = value; }
 		}
-
+#if !NETFX_CORE && !SILVERLIGHT
 		private ArrayList _ArrayListField = new ArrayList();
 		
 		public ArrayList ArrayListField
 		{
 			get { return this._ArrayListField; }
 		}
-
+#endif
+#if !NETFX_CORE && !SILVERLIGHT
 		private Hashtable _HashtableField = new Hashtable();
 		
 		public Hashtable HashtableField
 		{
 			get { return this._HashtableField; }
 		}
-
+#endif
 		private List<Object> _ListObjectField = new List<Object>();
 		
 		public List<Object> ListObjectField
 		{
 			get { return this._ListObjectField; }
 		}
-
 		private Dictionary<Object, Object> _DictionaryObjectObjectField = new Dictionary<Object, Object>();
 		
 		public Dictionary<Object, Object> DictionaryObjectObjectField
 		{
 			get { return this._DictionaryObjectObjectField; }
 		}
-
 		private Collection<Object> _CollectionObjectField = new Collection<Object>();
 		
 		public Collection<Object> CollectionObjectField
 		{
 			get { return this._CollectionObjectField; }
 		}
-
 		private MsgPack.Serialization.StringKeyedCollection<System.Object> _StringKeyedCollection_ObjectField = new StringKeyedCollection<Object>();
 		
 		public MsgPack.Serialization.StringKeyedCollection<System.Object> StringKeyedCollection_ObjectField
 		{
 			get { return this._StringKeyedCollection_ObjectField; }
 		}
-
 		private ObservableCollection<Object> _ObservableCollectionObjectField = new ObservableCollection<Object>();
 		
 		public ObservableCollection<Object> ObservableCollectionObjectField
 		{
 			get { return this._ObservableCollectionObjectField; }
 		}
-
 		private HashSet<Object> _HashSetObjectField = new HashSet<Object>();
 		
 		public HashSet<Object> HashSetObjectField
 		{
 			get { return this._HashSetObjectField; }
 		}
-
 		private ICollection<Object> _ICollectionObjectField = new SimpleCollection<Object>();
 		
 		public ICollection<Object> ICollectionObjectField
 		{
 			get { return this._ICollectionObjectField; }
 		}
-
 		private ISet<Object> _ISetObjectField = new HashSet<Object>();
 		
 		public ISet<Object> ISetObjectField
 		{
 			get { return this._ISetObjectField; }
 		}
-
 		private IList<Object> _IListObjectField = new List<Object>();
 		
 		public IList<Object> IListObjectField
 		{
 			get { return this._IListObjectField; }
 		}
-
 		private IDictionary<Object, Object> _IDictionaryObjectObjectField = new Dictionary<Object, Object>();
 		
 		public IDictionary<Object, Object> IDictionaryObjectObjectField
 		{
 			get { return this._IDictionaryObjectObjectField; }
 		}
-
 		private MsgPack.Serialization.AddOnlyCollection<System.Object> _AddOnlyCollection_ObjectField = new AddOnlyCollection<Object>();
 		
 		public MsgPack.Serialization.AddOnlyCollection<System.Object> AddOnlyCollection_ObjectField
 		{
 			get { return this._AddOnlyCollection_ObjectField; }
 		}
-
 		private MsgPack.MessagePackObject _MessagePackObject_Field;
 		
 		public MsgPack.MessagePackObject MessagePackObject_Field
@@ -5046,7 +5015,6 @@ namespace MsgPack.Serialization
 			get { return this._MessagePackObject_Field; }
 			set { this._MessagePackObject_Field = value; }
 		}
-
 		private MsgPack.MessagePackObject[] _MessagePackObjectArray_Field;
 		
 		public MsgPack.MessagePackObject[] MessagePackObjectArray_Field
@@ -5054,77 +5022,66 @@ namespace MsgPack.Serialization
 			get { return this._MessagePackObjectArray_Field; }
 			set { this._MessagePackObjectArray_Field = value; }
 		}
-
 		private System.Collections.Generic.List<MsgPack.MessagePackObject> _List_MessagePackObjectField = new List<MessagePackObject>();
 		
 		public System.Collections.Generic.List<MsgPack.MessagePackObject> List_MessagePackObjectField
 		{
 			get { return this._List_MessagePackObjectField; }
 		}
-
 		private System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> _Dictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>();
 		
 		public System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> Dictionary_MessagePackObject_MessagePackObjectField
 		{
 			get { return this._Dictionary_MessagePackObject_MessagePackObjectField; }
 		}
-
 		private System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> _Collection_MessagePackObjectField = new Collection<MessagePackObject>();
 		
 		public System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> Collection_MessagePackObjectField
 		{
 			get { return this._Collection_MessagePackObjectField; }
 		}
-
 		private MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> _StringKeyedCollection_MessagePackObjectField = new StringKeyedCollection<MessagePackObject>();
 		
 		public MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject> StringKeyedCollection_MessagePackObjectField
 		{
 			get { return this._StringKeyedCollection_MessagePackObjectField; }
 		}
-
 		private System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> _ObservableCollection_MessagePackObjectField = new ObservableCollection<MessagePackObject>();
 		
 		public System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> ObservableCollection_MessagePackObjectField
 		{
 			get { return this._ObservableCollection_MessagePackObjectField; }
 		}
-
 		private System.Collections.Generic.HashSet<MsgPack.MessagePackObject> _HashSet_MessagePackObjectField = new HashSet<MessagePackObject>();
 		
 		public System.Collections.Generic.HashSet<MsgPack.MessagePackObject> HashSet_MessagePackObjectField
 		{
 			get { return this._HashSet_MessagePackObjectField; }
 		}
-
 		private System.Collections.Generic.ICollection<MsgPack.MessagePackObject> _ICollection_MessagePackObjectField = new SimpleCollection<MessagePackObject>();
 		
 		public System.Collections.Generic.ICollection<MsgPack.MessagePackObject> ICollection_MessagePackObjectField
 		{
 			get { return this._ICollection_MessagePackObjectField; }
 		}
-
 		private System.Collections.Generic.ISet<MsgPack.MessagePackObject> _ISet_MessagePackObjectField = new HashSet<MessagePackObject>();
 		
 		public System.Collections.Generic.ISet<MsgPack.MessagePackObject> ISet_MessagePackObjectField
 		{
 			get { return this._ISet_MessagePackObjectField; }
 		}
-
 		private System.Collections.Generic.IList<MsgPack.MessagePackObject> _IList_MessagePackObjectField = new List<MessagePackObject>();
 		
 		public System.Collections.Generic.IList<MsgPack.MessagePackObject> IList_MessagePackObjectField
 		{
 			get { return this._IList_MessagePackObjectField; }
 		}
-
 		private System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> _IDictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>();
 		
 		public System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> IDictionary_MessagePackObject_MessagePackObjectField
 		{
 			get { return this._IDictionary_MessagePackObject_MessagePackObjectField; }
 		}
-
 		private MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> _AddOnlyCollection_MessagePackObjectField = new AddOnlyCollection<MessagePackObject>();
 		
 		public MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject> AddOnlyCollection_MessagePackObjectField
@@ -5182,8 +5139,12 @@ namespace MsgPack.Serialization
 			this._AddOnlyCollection_DateTimeField = new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 			this._ObjectField = new MessagePackObject( 1 );
 			this._ObjectArrayField = new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
+#if !NETFX_CORE && !SILVERLIGHT
 			this._ArrayListField = new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
+#endif
+#if !NETFX_CORE && !SILVERLIGHT
 			this._HashtableField = new Hashtable(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
+#endif
 			this._ListObjectField = new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._DictionaryObjectObjectField = new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
 			this._CollectionObjectField = new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
@@ -5267,8 +5228,12 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._AddOnlyCollection_DateTimeField, this._AddOnlyCollection_DateTimeField );
 			AutoMessagePackSerializerTest.Verify( expected._ObjectField, this._ObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._ObjectArrayField, this._ObjectArrayField );
+#if !NETFX_CORE && !SILVERLIGHT
 			AutoMessagePackSerializerTest.Verify( expected._ArrayListField, this._ArrayListField );
+#endif
+#if !NETFX_CORE && !SILVERLIGHT
 			AutoMessagePackSerializerTest.Verify( expected._HashtableField, this._HashtableField );
+#endif
 			AutoMessagePackSerializerTest.Verify( expected._ListObjectField, this._ListObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._DictionaryObjectObjectField, this._DictionaryObjectObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._CollectionObjectField, this._CollectionObjectField );

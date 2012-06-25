@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -34,7 +35,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	/// <typeparam name="T">The type of target object.</typeparam>
 	internal abstract class ObjectExpressionMessagePackSerializer<T> : MessagePackSerializer<T>
 #if !SILVERLIGHT
-		, IExpressionMessagePackSerializer
+, IExpressionMessagePackSerializer
 #endif
 	{
 		private readonly Func<T, object>[] _memberGetters;
@@ -83,9 +84,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				members.Select(
 					m =>
 						Expression.Lambda<Func<T, object>>(
-							Expression.PropertyOrField(
-								targetParameter,
-								m.Member.Name
+							Expression.Convert(
+								Expression.PropertyOrField(
+									targetParameter,
+									m.Member.Name
+								),
+								typeof( object )
 							),
 							targetParameter
 						).Compile()
@@ -94,13 +98,43 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._memberSetters =
 				members.Select(
 					m =>
-						Expression.Lambda<Action<T, object>>(
+						CanWrite( m.Member )
+						? Expression.Lambda<Action<T, object>>(
 							Expression.Assign(
 								Expression.PropertyOrField(
 									targetParameter,
 									m.Member.Name
 								),
-								Expression.Convert( valueParameter, m.Member.GetMemberValueType() )
+								m.Member.GetMemberValueType().GetIsValueType()
+								? Expression.Condition(
+									Expression.ReferenceEqual( valueParameter, Expression.Constant( null ) ),
+									Expression.Throw(
+										Expression.Call(
+											null,
+											SerializationExceptions.NewValueTypeCannotBeNull3Method,
+											Expression.Constant( m.Member.Name ),
+											Expression.Quote(
+											Expression.Constant( m.Member.GetMemberValueType() ) ),
+											Expression.Quote(
+											Expression.Constant( m.Member.DeclaringType ) )
+										),
+										m.Member.GetMemberValueType()
+									),
+									Expression.Convert( valueParameter, m.Member.GetMemberValueType() )
+								) as Expression
+								: Expression.Convert( valueParameter, m.Member.GetMemberValueType() )
+							),
+							targetParameter,
+							valueParameter
+						).Compile()
+						: Expression.Lambda<Action<T, object>>(
+							Expression.Throw(
+								Expression.New(
+									Metadata._NotImplementedException.ctor_String,
+									Expression.Constant(
+										String.Format( CultureInfo.CurrentCulture, "Cannot handle read only member '{0}'.", m.Member )
+									)
+								)
 							),
 							targetParameter,
 							valueParameter
@@ -108,9 +142,24 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				).ToArray();
 		}
 
+		private static bool CanWrite( MemberInfo member )
+		{
+			PropertyInfo asProperty = member as PropertyInfo;
+			if ( asProperty != null )
+			{
+				return asProperty.CanWrite;
+			}
+			else
+			{
+				var asFieldInfo = member as FieldInfo;
+				return !asFieldInfo.IsInitOnly && !asFieldInfo.IsLiteral;
+			}
+		}
+
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
-			if ( unpacker.ItemsCount != this._memberSerializers.Length )
+			// FIXME: Redesign missing element handling
+			if ( unpacker.IsArrayHeader && unpacker.ItemsCount != this._memberSerializers.Length )
 			{
 				throw SerializationExceptions.NewUnexpectedArrayLength( this._memberSerializers.Length, unchecked( ( int )unpacker.ItemsCount ) );
 			}
@@ -144,6 +193,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					{
 						case NilImplication.Null:
 						{
+							if ( this._memberSetters[ i ] == null )
+							{
+								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ i ] );
+							}
+
 							this._memberSetters[ i ]( instance, null );
 							break;
 						}
@@ -172,8 +226,21 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				int index;
 				if ( !this._indexMap.TryGetValue( memberName, out index ) )
 				{
+					// Drains unused value.
+					if ( !unpacker.Read() )
+					{
+						throw SerializationExceptions.NewUnexpectedEndOfStream();
+					}
+
 					// TODO: unknown member handling.
+
 					continue;
+				}
+
+				// Fetches value
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
 				if ( unpacker.Data.Value.IsNil )
@@ -182,6 +249,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					{
 						case NilImplication.Null:
 						{
+							if ( this._memberSetters[ index ] == null )
+							{
+								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
+							}
+
 							this._memberSetters[ index ]( instance, null );
 							continue;
 						}

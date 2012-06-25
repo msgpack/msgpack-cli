@@ -22,7 +22,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 using System.IO;
 
 namespace MsgPack.Serialization
@@ -58,12 +66,11 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestCreate_StreamIsNull()
 		{
 			using ( var stream = new MemoryStream() )
 			{
-				using ( var packer = Packer.Create( null, true ) ) { }
+				Assert.Throws<ArgumentNullException>( () => { using ( var packer = Packer.Create( null, true ) ) { } } );
 			}
 		}
 	}

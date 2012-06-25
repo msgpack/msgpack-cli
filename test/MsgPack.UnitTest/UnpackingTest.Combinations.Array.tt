@@ -56,7 +56,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -133,10 +141,9 @@ foreach( var __testCase in TestData.ArrayValues )
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackArrayLength_ByteArray_NotArray()
 		{
-			var dummy = Unpacking.UnpackArrayLength( new byte[] { 0x1 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackArrayLength( new byte[] { 0x1 } ) );
 		}
 
 		[Test]
@@ -148,12 +155,9 @@ foreach( var __testCase in TestData.ArrayValues )
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackArray_ByteArray_NotArray()
 		{
-			var result = Unpacking.UnpackArray( new byte[] { 0x1 } );
-			Assert.AreEqual( 1, result.ReadCount );
-			Assert.IsNull( result.Value );
+			Assert.Throws<MessageTypeException>( () =>  Unpacking.UnpackArray( new byte[] { 0x1 } ) );
 		}
 	}
 }

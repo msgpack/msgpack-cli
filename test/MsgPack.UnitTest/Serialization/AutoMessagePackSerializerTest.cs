@@ -29,19 +29,33 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
+#if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
+#endif
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {
+	// FIXME: Expression Based
 	[Timeout( 3000 )]
 	public abstract partial class AutoMessagePackSerializerTest
 	{
+#if !NETFX_CORE
 		private static bool _traceOn = false;
+#endif
 		protected static bool ReuseContext = true;
 
 		protected abstract SerializationContext GetSerializationContext();
 
+#if !NETFX_CORE
 		[SetUp]
 		public void SetUp()
 		{
@@ -77,6 +91,7 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
+#endif
 
 		protected abstract MessagePackSerializer<T> CreateTarget<T>( SerializationContext context );
 
@@ -223,17 +238,15 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestTypeWithInvalidMessagePackMemberAttributeMember()
 		{
-			var target = this.CreateTarget<TypeWithInvalidMessagePackMemberAttributeMember>( GetSerializationContext() );
+			Assert.Throws<SerializationException>( () => this.CreateTarget<TypeWithInvalidMessagePackMemberAttributeMember>( GetSerializationContext() ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestTypeWithDuplicatedMessagePackMemberAttributeMember()
 		{
-			var target = this.CreateTarget<TypeWithDuplicatedMessagePackMemberAttributeMember>( GetSerializationContext() );
+			Assert.Throws<SerializationException>( () => this.CreateTarget<TypeWithDuplicatedMessagePackMemberAttributeMember>( GetSerializationContext() ) );
 		}
 
 		[Test]
@@ -258,7 +271,11 @@ namespace MsgPack.Serialization
 		{
 			var target = new ComplexTypeWithDataContract() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
+#if !NETFX_CORE
 			target.NonSerialized = new DefaultTraceListener();
+#else
+			target.NonSerialized = new Stopwatch();
+#endif
 			TestCoreWithVerify( target, context );
 		}
 
@@ -284,7 +301,11 @@ namespace MsgPack.Serialization
 		{
 			var target = new ComplexTypeWithDataContractWithOrder() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
+#if !NETFX_CORE
 			target.NonSerialized = new DefaultTraceListener();
+#else
+			target.NonSerialized = new Stopwatch();
+#endif
 			TestCoreWithVerify( target, context );
 		}
 
@@ -310,7 +331,9 @@ namespace MsgPack.Serialization
 		{
 			var target = new ComplexTypeWithNonSerialized() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
+#if !NETFX_CORE && !SILVERLIGHT
 			target.NonSerialized = new DefaultTraceListener();
+#endif
 			TestCoreWithVerify( target, context );
 		}
 
@@ -347,6 +370,7 @@ namespace MsgPack.Serialization
 			TestCore( DayOfWeek.Sunday, stream => ( DayOfWeek )Enum.Parse( typeof( DayOfWeek ), Unpacking.UnpackString( stream ) ), ( x, y ) => x == y );
 		}
 
+#if !NETFX_CORE
 		[Test]
 		public void TestNameValueCollection()
 		{
@@ -376,7 +400,6 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestNameValueCollection_NullKey()
 		{
 			var target = new NameValueCollection();
@@ -384,9 +407,10 @@ namespace MsgPack.Serialization
 			var serializer = this.CreateTarget<NameValueCollection>( this.GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				serializer.Pack( stream, target );
+				Assert.Throws<NotSupportedException>( () => serializer.Pack( stream, target ) );
 			}
 		}
+#endif
 
 		[Test]
 		public void TestByteArrayContent()
@@ -588,33 +612,29 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestAbstractList_Fail()
 		{
 			var serializer = this.CreateTarget<IList<int>>( GetSerializationContext() );
-			serializer.Unpack( new MemoryStream( new byte[] { 0x90 } ) );
+			Assert.Throws<NotSupportedException>( () => serializer.Unpack( new MemoryStream( new byte[] { 0x90 } ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestAbstractDictionary_Fail()
 		{
 			var serializer = this.CreateTarget<IDictionary<int, int>>( GetSerializationContext() );
-			serializer.Unpack( new MemoryStream( new byte[] { 0x90 } ) );
+			Assert.Throws<NotSupportedException>( () => serializer.Unpack( new MemoryStream( new byte[] { 0x90 } ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestHasInitOnlyField_Fail()
 		{
-			this.CreateTarget<HasInitOnlyField>( GetSerializationContext() );
+			Assert.Throws<SerializationException>( () => this.CreateTarget<HasInitOnlyField>( GetSerializationContext() ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestHasGetOnlyProperty_Fail()
 		{
-			this.CreateTarget<HasGetOnlyProperty>( GetSerializationContext() );
+			Assert.Throws<SerializationException>( () => this.CreateTarget<HasGetOnlyProperty>( GetSerializationContext() ) );
 		}
 
 		[Test]
@@ -699,7 +719,11 @@ namespace MsgPack.Serialization
 				return;
 			}
 
+#if !NETFX_CORE
 			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
+#else
+			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
+#endif
 			{
 				AssertArraySegmentEquals( expected, actual );
 				return;
@@ -782,7 +806,11 @@ namespace MsgPack.Serialization
 				return;
 			}
 
+#if !NETFX_CORE
 			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
+#else
+			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
+#endif
 			{
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
 				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
@@ -829,6 +857,7 @@ namespace MsgPack.Serialization
 
 		private static void AssertArraySegmentEquals( object x, object y )
 		{
+#if !NETFX_CORE
 			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( x.GetType().GetGenericArguments()[ 0 ] );
 			Assert.That(
 				( bool )type.InvokeMember( "Equals", BindingFlags.InvokeMethod, null, Activator.CreateInstance( type ), new[] { x, y } ),
@@ -837,6 +866,17 @@ namespace MsgPack.Serialization
 				x,
 				y
 			);
+#else
+			var elementType = x.GetType().GetTypeInfo().GenericTypeArguments[ 0 ];
+			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( elementType );
+			Assert.That(
+				( bool )type.GetRuntimeMethod( "Equals", new[] { elementType, elementType } ).Invoke( Activator.CreateInstance( type ), new[] { x, y } ),
+				"Expected:{1}{0}Actual :{2}",
+				Environment.NewLine,
+				x,
+				y
+			);
+#endif
 		}
 
 		public struct TestValueType

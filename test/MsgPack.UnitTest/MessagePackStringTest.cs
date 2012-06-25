@@ -21,9 +21,19 @@
 using System;
 using System.Diagnostics;
 using System.Security;
+#if !NETFX_CORE
 using System.Security.Permissions;
 using System.Security.Policy;
+#endif
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 using System.Globalization;
 
 namespace MsgPack
@@ -31,6 +41,26 @@ namespace MsgPack
 	[TestFixture]
 	public class MessagePackStringTest
 	{
+#if MSTEST
+		public Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestContext TestContext
+		{
+			get;
+			set;
+		}
+
+		private System.IO.TextWriter Console
+		{
+			get
+			{
+#if !SILVERLIGHT && !NETFX_CORE
+				return System.Console.Out;
+#else
+				return System.IO.TextWriter.Null;
+#endif
+			}
+		}
+#endif
+
 		[Test]
 		public void TestGetHashCode_Binary()
 		{
@@ -121,6 +151,7 @@ namespace MsgPack
 			Console.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
 		}
 
+#if !NETFX_CORE
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -199,6 +230,7 @@ namespace MsgPack
 			AppDomain.CurrentDomain.SetData( "TestEqualsWorker.Performance", result );
 			AppDomain.CurrentDomain.SetData( "MessagePackString.IsFastEqualsDisabled", MessagePackString.IsFastEqualsDisabled );
 		}
+#endif
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{

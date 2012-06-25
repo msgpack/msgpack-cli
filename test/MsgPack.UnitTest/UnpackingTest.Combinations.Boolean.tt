@@ -56,7 +56,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -102,19 +110,17 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackBoolean_ByteArray_Nil()
 		{
-			var result = Unpacking.UnpackBoolean( <#= TestData.MiscValues[ "Nil" ] #> );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackBoolean( <#= TestData.MiscValues[ "Nil" ] #> ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackBoolean_Stream_Nil()
 		{
 			using ( var buffer = new MemoryStream( <#= TestData.MiscValues[ "Nil" ] #> ) )
 			{
-				var result = Unpacking.UnpackBoolean( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackBoolean( buffer ) );
 			}
 		}
 

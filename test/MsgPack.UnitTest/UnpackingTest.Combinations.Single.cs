@@ -25,7 +25,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -147,52 +155,45 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackSingle_ByteArray_Empty()
 		{
-			Unpacking.UnpackSingle( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackSingle( new byte[ 0 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackSingle_ByteArray_Null()
 		{
-			Unpacking.UnpackSingle( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackSingle( default( byte[] ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackSingle_ByteArray_Offset_Null()
 		{
-			Unpacking.UnpackSingle( default( byte[] ), 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackSingle( default( byte[] ), 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackSingle_ByteArray_Offset_OffsetIsNegative()
 		{
-			Unpacking.UnpackSingle( new byte[]{ 0x1 }, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackSingle( new byte[]{ 0x1 }, -1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackSingle_ByteArray_Offset_OffsetIsTooBig()
 		{
-			Unpacking.UnpackSingle( new byte[]{ 0x1 }, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackSingle( new byte[]{ 0x1 }, 1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackSingle_ByteArray_Offset_Empty()
 		{
-			Unpacking.UnpackSingle( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackSingle( new byte[ 0 ], 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackSingle_Stream_Null()
 		{
-			Unpacking.UnpackSingle( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackSingle( default( Stream ) ) );
 		}
 
 		[Test]
@@ -205,17 +206,15 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSingle_ByteArray_Null_Nil()
 		{
-			Unpacking.UnpackSingle( new byte[] { 0xC0 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSingle( new byte[] { 0xC0 } ) );
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSingle_ByteArray_NotSingle()
 		{
-			Unpacking.UnpackSingle( new byte[] { 0xC3 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSingle( new byte[] { 0xC3 } ) );
 		}
 	}
 }

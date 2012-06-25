@@ -24,7 +24,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 using System.Runtime.Serialization;
 
 namespace MsgPack
@@ -175,10 +183,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestPackArrayHeaderInt32_MinusOne()
 		{
-			TestCore( ( packer, count ) => packer.PackArrayHeader( count ), -1, new byte[] { 0xC0 } );
+			Assert.Throws<ArgumentOutOfRangeException>( () => TestCore( ( packer, count ) => packer.PackArrayHeader( count ), -1, new byte[] { 0xC0 } ) );
 		}
 
 		[Test]
@@ -225,10 +232,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestPackMapHeaderInt32_MinusOne()
 		{
-			TestCore( ( packer, count ) => packer.PackMapHeader( count ), -1, new byte[] { 0xC0 } );
+			Assert.Throws<ArgumentOutOfRangeException>( () => TestCore( ( packer, count ) => packer.PackMapHeader( count ), -1, new byte[] { 0xC0 } ) );
 		}
 
 		[Test]
@@ -259,13 +265,12 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException(typeof(SerializationException))]
 		public void TestPackItems_NotNullEnumerable_Fail()
 		{
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				packer.Pack( Enumerable.Range( 1, 3 ) );
+				Assert.Throws<SerializationException>( () => packer.Pack( Enumerable.Range( 1, 3 ) ) );
 			}
 		}
 
@@ -314,10 +319,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestPackRawHeaderInt32_MinusOne()
 		{
-			TestCore( ( packer, count ) => packer.PackRawHeader( count ), -1, new byte[] { 0xC0 } );
+			Assert.Throws<ArgumentOutOfRangeException>( () => TestCore( ( packer, count ) => packer.PackRawHeader( count ), -1, new byte[] { 0xC0 } ) );
 		}
 
 		[Test]
@@ -388,10 +392,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestPackRawBody_NullIArray_Fail()
 		{
-			TestCore( ( packer, array ) => packer.PackRawBody( array ), default( byte[] ), new byte[] { 0xC0 } );
+			Assert.Throws<ArgumentNullException>( () => TestCore( ( packer, array ) => packer.PackRawBody( array ), default( byte[] ), new byte[] { 0xC0 } ) );
 		}
 
 		[Test]
@@ -413,10 +416,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestPackRawBody_NullIEnumerableOfByte_Fail()
 		{
-			TestCore( ( packer, array ) => packer.PackRawBody( array ), default( IEnumerable<byte> ), new byte[] { 0xC0 } );
+			Assert.Throws<ArgumentNullException>( () => TestCore( ( packer, array ) => packer.PackRawBody( array ), default( IEnumerable<byte> ), new byte[] { 0xC0 } ) );
 		}
 
 
@@ -475,10 +477,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestPackString_StringEncoding_EncodingIsNull_Fail()
 		{
-			TestCore( ( packer, str ) => packer.PackString( str, null ), default( string ), new byte[] { 0xC0 } );
+			Assert.Throws<ArgumentNullException>( () => TestCore( ( packer, str ) => packer.PackString( str, null ), default( string ), new byte[] { 0xC0 } ) );
 		}
 
 		[Test]
@@ -500,10 +501,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestPackString_IEnumerableOfCharEncoding_EncodingIsNull_Fail()
 		{
-			TestCore( ( packer, str ) => packer.PackString( str, null ), default( char[] ), new byte[] { 0xC0 } );
+			Assert.Throws<ArgumentNullException>( () => TestCore( ( packer, str ) => packer.PackString( str, null ), default( char[] ), new byte[] { 0xC0 } ) );
 		}
 
 

@@ -22,7 +22,15 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {
@@ -48,10 +56,12 @@ namespace MsgPack.Serialization
 			FromExpression.ToMethod( ( String value ) => Int32.Parse( value ) );
 			FromExpression.ToMethod( ( String value, NumberStyles style ) => Int32.Parse( value, style ) );
 			FromExpression.ToMethod( ( String value, NumberStyles style, IFormatProvider provider ) => Int32.Parse( value, style, provider ) );
+#if !NETFX_CORE
 			FromExpression.ToMethod( () => Console.WriteLine() );
 			FromExpression.ToMethod( ( String value ) => Console.WriteLine( value ) );
 			FromExpression.ToMethod( ( String value, object arg0 ) => Console.WriteLine( value, arg0 ) );
 			FromExpression.ToMethod( ( String value, object arg0, String arg1 ) => Console.WriteLine( value, arg0, arg1 ) );
+#endif
 		}
 
 		[Test]

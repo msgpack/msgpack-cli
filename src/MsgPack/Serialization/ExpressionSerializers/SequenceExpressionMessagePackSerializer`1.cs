@@ -61,7 +61,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected SequenceExpressionMessagePackSerializer( SerializationContext context, CollectionTraits traits )
 		{
-			Contract.Assert( typeof( T ).IsArray || typeof( T ) is IEnumerable, typeof( T ) + " is not array nor IEnumerable" );
+			Contract.Assert( typeof( T ).IsArray || typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ), typeof( T ) + " is not array nor IEnumerable" );
 			this._traits = traits;
 			this._elementSerializer = context.GetSerializer( traits.ElementType );
 			this._getCount = ExpressionSerializerLogics.CreateGetCount<T>( traits );

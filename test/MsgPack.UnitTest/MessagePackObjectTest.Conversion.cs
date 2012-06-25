@@ -23,13 +23,32 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
 	[TestFixture]
-	partial class MessagePackObjectTest
+	public partial class MessagePackObjectTest
 	{
+		private TextWriter Console
+		{
+			get
+			{
+#if !NETFX_CORE && !SILVERLIGHT
+				return System.Console.Out;
+#else
+				return TextWriter.Null;
+#endif
+			}
+		}
 
 		[Test]
 		public void TestAsByte()
@@ -57,21 +76,29 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsByteOverflow()
 		{
 			var target = new MessagePackObject( Byte.MaxValue + 1 );
-			var result = ( Byte )target;
-			Console.WriteLine( "TestAsByteOverflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( Byte )target;
+					Console.WriteLine( "TestAsByteOverflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsByteUnderflow()
 		{
 			var target = new MessagePackObject( Byte.MinValue - 1 );
-			var result = ( Byte )target;
-			Console.WriteLine( "TestAsByteOverflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( Byte )target;
+					Console.WriteLine( "TestAsByteOverflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 
 
@@ -103,21 +130,29 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsSByteOverflow()
 		{
 			var target = new MessagePackObject( SByte.MaxValue + 1 );
-			var result = ( SByte )target;
-			Console.WriteLine( "TestAsSByteOverflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( SByte )target;
+					Console.WriteLine( "TestAsSByteOverflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsSByteUnderflow()
 		{
 			var target = new MessagePackObject( SByte.MinValue - 1 );
-			var result = ( SByte )target;
-			Console.WriteLine( "TestAsSByteOverflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( SByte )target;
+					Console.WriteLine( "TestAsSByteOverflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 
 
@@ -150,21 +185,29 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsInt16Overflow()
 		{
 			var target = new MessagePackObject( Int16.MaxValue + 1 );
-			var result = ( Int16 )target;
-			Console.WriteLine( "TestAsInt16Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( Int16 )target;
+					Console.WriteLine( "TestAsInt16Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsInt16Underflow()
 		{
 			var target = new MessagePackObject( Int16.MinValue - 1 );
-			var result = ( Int16 )target;
-			Console.WriteLine( "TestAsInt16Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( Int16 )target;
+					Console.WriteLine( "TestAsInt16Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 
 
@@ -194,21 +237,29 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsUInt16Overflow()
 		{
 			var target = new MessagePackObject( UInt16.MaxValue + 1 );
-			var result = ( UInt16 )target;
-			Console.WriteLine( "TestAsUInt16Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( UInt16 )target;
+					Console.WriteLine( "TestAsUInt16Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsUInt16Underflow()
 		{
 			var target = new MessagePackObject( UInt16.MinValue - 1 );
-			var result = ( UInt16 )target;
-			Console.WriteLine( "TestAsUInt16Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( UInt16 )target;
+					Console.WriteLine( "TestAsUInt16Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 
 
@@ -241,21 +292,29 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsInt32Overflow()
 		{
 			var target = new MessagePackObject( Int32.MaxValue + 1L );
-			var result = ( Int32 )target;
-			Console.WriteLine( "TestAsInt32Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( Int32 )target;
+					Console.WriteLine( "TestAsInt32Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsInt32Underflow()
 		{
 			var target = new MessagePackObject( Int32.MinValue - 1L );
-			var result = ( Int32 )target;
-			Console.WriteLine( "TestAsInt32Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( Int32 )target;
+					Console.WriteLine( "TestAsInt32Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 
 
@@ -285,21 +344,29 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsUInt32Overflow()
 		{
 			var target = new MessagePackObject( UInt32.MaxValue + 1L );
-			var result = ( UInt32 )target;
-			Console.WriteLine( "TestAsUInt32Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( UInt32 )target;
+					Console.WriteLine( "TestAsUInt32Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsUInt32Underflow()
 		{
 			var target = new MessagePackObject( UInt32.MinValue - 1L );
-			var result = ( UInt32 )target;
-			Console.WriteLine( "TestAsUInt32Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( UInt32 )target;
+					Console.WriteLine( "TestAsUInt32Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 
 
@@ -332,12 +399,16 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsInt64Overflow()
 		{
 			var target = new MessagePackObject( ( UInt64 )Int64.MaxValue + 1 );
-			var result = ( Int64 )target;
-			Console.WriteLine( "TestAsInt64Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( Int64 )target;
+					Console.WriteLine( "TestAsInt64Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 
 
@@ -367,12 +438,16 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsUInt64Underflow()
 		{
 			var target = new MessagePackObject( -1 );
-			var result = ( UInt64 )target;
-			Console.WriteLine( "TestAsUInt64Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+			Assert.Throws<InvalidOperationException>(
+				() =>
+				{
+					var result = ( UInt64 )target;
+					Console.WriteLine( "TestAsUInt64Overflow:0x{0:x}({0:#,0})[{1}]", result, result.GetType() );
+				}
+			);
 		}
 
 		[Test]

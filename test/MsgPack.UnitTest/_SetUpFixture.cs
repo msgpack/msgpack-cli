@@ -20,18 +20,68 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+#if !MSTEST
+#if !MSTEST
 using NUnit.Framework;
-using System.Diagnostics.Contracts;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+#endif
 
 [CLSCompliant( false )]
+#if !MSTEST
 [SetUpFixture]
+#else
+[Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClass]
+#endif
 public sealed class _SetUpFixture
 {
+#if MSTEST
+	[Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssemblyInitialize]
+	public static void InitializeAssembly(Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestContext c)
+	{
+		new _SetUpFixture().SetupCurrentNamespaceTests();
+		MsgPack.NUnitPortable.TestingPlatform.Current = new MSTest12TestingPlatform();
+	}
+#endif
+
+#if !MSTEST
 	[SetUp]
+#endif
 	public void SetupCurrentNamespaceTests()
 	{
 		Contract.ContractFailed += ( sender, e ) => e.SetUnwind();
 	}
 }
+
+#if MSTEST
+internal class MSTest12TestingPlatform : MsgPack.NUnitPortable.TestingPlatform
+{
+	public override void Success( string message )
+	{
+		throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertInconclusiveException( String.Format( System.Globalization.CultureInfo.CurrentCulture, "Success is not supported on MSTest v12. Original message:{0}{1}", Environment.NewLine, message ) );
+	}
+
+	public override void Fail( string message )
+	{
+		throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( message );
+	}
+
+	public override void Inconclusive( string message )
+	{
+		throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertInconclusiveException( message );
+	}
+
+	public override void Ignore( string message )
+	{
+		throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertInconclusiveException( String.Format( System.Globalization.CultureInfo.CurrentCulture, "Ignore is not supported on MSTest v12. Original message:{0}{1}", Environment.NewLine, message ) );
+	}
+}
+#endif

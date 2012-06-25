@@ -19,7 +19,15 @@
 #endregion -- License Terms --
 
 using System;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {
@@ -48,10 +56,9 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestCreate_WithContext_Null_Fail()
 		{
-			MessagePackSerializer.Create<int>( null );
+			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Create<int>( null ) );
 		}
 	}
 }

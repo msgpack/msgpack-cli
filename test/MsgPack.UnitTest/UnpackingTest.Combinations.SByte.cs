@@ -25,7 +25,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -33,206 +41,182 @@ namespace MsgPack
 	public partial class UnpackingTest_Combinations_SByte
 	{
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Int64MinValueAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_Int64MinValueAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Int32MinValueMinusOneAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_Int32MinValueMinusOneAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Int32MinValueAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x00, 0x00, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x00, 0x00, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_Int32MinValueAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x00, 0x00, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Int32MinValueAsInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_Int32MinValueAsInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Int16MinValueMinusOneAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_Int16MinValueMinusOneAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Int16MinValueMinusOneAsInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_Int16MinValueMinusOneAsInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Int16MinValueAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_Int16MinValueAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Int16MinValueAsInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD2, 0xFF, 0xFF, 0x80, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD2, 0xFF, 0xFF, 0x80, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_Int16MinValueAsInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0x80, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Int16MinValueAsInt16_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD1, 0x80, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD1, 0x80, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_Int16MinValueAsInt16_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x80, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_SByteMinValueMinusOneAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_SByteMinValueMinusOneAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_SByteMinValueMinusOneAsInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0x7F } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0x7F } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_SByteMinValueMinusOneAsInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD2, 0xFF, 0xFF, 0xFF, 0x7F } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_SByteMinValueMinusOneAsInt16_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD1, 0xFF, 0x7F } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD1, 0xFF, 0x7F } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_SByteMinValueMinusOneAsInt16_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0xFF, 0x7F } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
@@ -1092,647 +1076,570 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_PositiveFixNumMaxValuePlusOneAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_PositiveFixNumMaxValuePlusOneAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_PositiveFixNumMaxValuePlusOneAsUInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_PositiveFixNumMaxValuePlusOneAsUInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_PositiveFixNumMaxValuePlusOneAsInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x00, 0x00, 0x80 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x00, 0x00, 0x80 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_PositiveFixNumMaxValuePlusOneAsInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD2, 0x00, 0x00, 0x00, 0x80 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_PositiveFixNumMaxValuePlusOneAsUInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x00, 0x00, 0x80 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x00, 0x00, 0x80 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_PositiveFixNumMaxValuePlusOneAsUInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCE, 0x00, 0x00, 0x00, 0x80 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_PositiveFixNumMaxValuePlusOneAsInt16_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD1, 0x00, 0x80 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD1, 0x00, 0x80 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_PositiveFixNumMaxValuePlusOneAsInt16_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x00, 0x80 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_PositiveFixNumMaxValuePlusOneAsUInt16_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCD, 0x00, 0x80 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCD, 0x00, 0x80 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_PositiveFixNumMaxValuePlusOneAsUInt16_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCD, 0x00, 0x80 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_PositiveFixNumMaxValuePlusOneAsUInt8_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCC, 0x80 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCC, 0x80 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_PositiveFixNumMaxValuePlusOneAsUInt8_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCC, 0x80 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValueAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValueAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValueAsUInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValueAsUInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValueAsInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x00, 0x00, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x00, 0x00, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValueAsInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD2, 0x00, 0x00, 0x00, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValueAsUInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x00, 0x00, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x00, 0x00, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValueAsUInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCE, 0x00, 0x00, 0x00, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValueAsInt16_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD1, 0x00, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD1, 0x00, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValueAsInt16_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x00, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValueAsUInt16_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCD, 0x00, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCD, 0x00, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValueAsUInt16_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCD, 0x00, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValueAsUInt8_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCC, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCC, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValueAsUInt8_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCC, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValuePlusOneAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValuePlusOneAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValuePlusOneAsUInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValuePlusOneAsUInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValuePlusOneAsInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x00, 0x01, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x00, 0x01, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValuePlusOneAsInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD2, 0x00, 0x00, 0x01, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValuePlusOneAsUInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x00, 0x01, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x00, 0x01, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValuePlusOneAsUInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCE, 0x00, 0x00, 0x01, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValuePlusOneAsInt16_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD1, 0x01, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD1, 0x01, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValuePlusOneAsInt16_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x01, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_ByteMaxValuePlusOneAsUInt16_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCD, 0x01, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCD, 0x01, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_ByteMaxValuePlusOneAsUInt16_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCD, 0x01, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt16MaxValueAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt16MaxValueAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt16MaxValueAsUInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt16MaxValueAsUInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt16MaxValueAsInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x00, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x00, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt16MaxValueAsInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD2, 0x00, 0x00, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt16MaxValueAsUInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x00, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x00, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt16MaxValueAsUInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCE, 0x00, 0x00, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt16MaxValueAsUInt16_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCD, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCD, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt16MaxValueAsUInt16_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCD, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt16MaxValuePlusOneAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt16MaxValuePlusOneAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt16MaxValuePlusOneAsUInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt16MaxValuePlusOneAsUInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt16MaxValuePlusOneAsInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x01, 0x00, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD2, 0x00, 0x01, 0x00, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt16MaxValuePlusOneAsInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD2, 0x00, 0x01, 0x00, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt16MaxValuePlusOneAsUInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x01, 0x00, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCE, 0x00, 0x01, 0x00, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt16MaxValuePlusOneAsUInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCE, 0x00, 0x01, 0x00, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt32MaxValueAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt32MaxValueAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt32MaxValueAsUInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt32MaxValueAsUInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt32MaxValueAsUInt32_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt32MaxValueAsUInt32_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt32MaxValuePlusOneAsInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt32MaxValuePlusOneAsInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xD3, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt32MaxValuePlusOneAsUInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt32MaxValuePlusOneAsUInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCF, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_UInt64MaxValueAsUInt64_AsIs()
 		{
-			var result = Unpacking.UnpackSByte( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_Stream_UInt64MaxValueAsUInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackSByte( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackSByte_ByteArray_Empty()
 		{
-			Unpacking.UnpackSByte( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackSByte( new byte[ 0 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackSByte_ByteArray_Null()
 		{
-			Unpacking.UnpackSByte( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackSByte( default( byte[] ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackSByte_ByteArray_Offset_Null()
 		{
-			Unpacking.UnpackSByte( default( byte[] ), 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackSByte( default( byte[] ), 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackSByte_ByteArray_Offset_OffsetIsNegative()
 		{
-			Unpacking.UnpackSByte( new byte[]{ 0x1 }, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackSByte( new byte[]{ 0x1 }, -1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackSByte_ByteArray_Offset_OffsetIsTooBig()
 		{
-			Unpacking.UnpackSByte( new byte[]{ 0x1 }, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackSByte( new byte[]{ 0x1 }, 1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackSByte_ByteArray_Offset_Empty()
 		{
-			Unpacking.UnpackSByte( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackSByte( new byte[ 0 ], 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackSByte_Stream_Null()
 		{
-			Unpacking.UnpackSByte( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackSByte( default( Stream ) ) );
 		}
 
 		[Test]
@@ -1745,17 +1652,15 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_Null_Nil()
 		{
-			Unpacking.UnpackSByte( new byte[] { 0xC0 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xC0 } ) );
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackSByte_ByteArray_NotSByte()
 		{
-			Unpacking.UnpackSByte( new byte[] { 0xA0 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackSByte( new byte[] { 0xA0 } ) );
 		}
 	}
 }

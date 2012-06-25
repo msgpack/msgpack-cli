@@ -20,164 +20,155 @@
 
 using System;
 using System.Collections.Generic;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
 	partial class MessagePackObjectTest_Exceptionals
 	{
+		private void Call<T>( T value )
+		{
+			// Nop
+		}
+
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitBoolean_Nil_Fail()
 		{
-			var result = ( System.Boolean )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Boolean )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitBoolean_NotNumerics_Fail()
 		{
-			var result = ( System.Boolean )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Boolean )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_Nil_Fail()
 		{
-			var result = ( System.SByte )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_NotNumerics_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt16_Nil_Fail()
 		{
-			var result = ( System.Int16 )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int16 )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt16_NotNumerics_Fail()
 		{
-			var result = ( System.Int16 )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int16 )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt32_Nil_Fail()
 		{
-			var result = ( System.Int32 )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int32 )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt32_NotNumerics_Fail()
 		{
-			var result = ( System.Int32 )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int32 )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt64_Nil_Fail()
 		{
-			var result = ( System.Int64 )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int64 )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt64_NotNumerics_Fail()
 		{
-			var result = ( System.Int64 )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int64 )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_Nil_Fail()
 		{
-			var result = ( System.Byte )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_NotNumerics_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_Nil_Fail()
 		{
-			var result = ( System.UInt16 )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_NotNumerics_Fail()
 		{
-			var result = ( System.UInt16 )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt32_Nil_Fail()
 		{
-			var result = ( System.UInt32 )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt32 )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt32_NotNumerics_Fail()
 		{
-			var result = ( System.UInt32 )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt32 )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt64_Nil_Fail()
 		{
-			var result = ( System.UInt64 )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt64 )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt64_NotNumerics_Fail()
 		{
-			var result = ( System.UInt64 )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt64 )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSingle_Nil_Fail()
 		{
-			var result = ( System.Single )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Single )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSingle_NotNumerics_Fail()
 		{
-			var result = ( System.Single )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Single )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitDouble_Nil_Fail()
 		{
-			var result = ( System.Double )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Double )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitDouble_NotNumerics_Fail()
 		{
-			var result = ( System.Double )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Double )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 		[Test]
@@ -223,45 +214,39 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_Int16MinValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( Int16.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( Int16.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_Int16MaxValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( Int16.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( Int16.MaxValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_Int32MinValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( Int32.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( Int32.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_Int32MaxValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( Int32.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( Int32.MaxValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_Int64MinValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( Int64.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( Int64.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_Int64MaxValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( Int64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( Int64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -272,10 +257,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_ByteMaxValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( Byte.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( Byte.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -286,10 +270,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_UInt16MaxValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( UInt16.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( UInt16.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -300,10 +283,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_UInt32MaxValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( UInt32.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( UInt32.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -314,10 +296,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitSByte_UInt64MaxValue_Fail()
 		{
-			var result = ( System.SByte )( new MessagePackObject( UInt64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.SByte )( new MessagePackObject( UInt64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -377,31 +358,27 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt16_Int32MinValue_Fail()
 		{
-			var result = ( System.Int16 )( new MessagePackObject( Int32.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int16 )( new MessagePackObject( Int32.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt16_Int32MaxValue_Fail()
 		{
-			var result = ( System.Int16 )( new MessagePackObject( Int32.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int16 )( new MessagePackObject( Int32.MaxValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt16_Int64MinValue_Fail()
 		{
-			var result = ( System.Int16 )( new MessagePackObject( Int64.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int16 )( new MessagePackObject( Int64.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt16_Int64MaxValue_Fail()
 		{
-			var result = ( System.Int16 )( new MessagePackObject( Int64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int16 )( new MessagePackObject( Int64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -426,10 +403,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt16_UInt16MaxValue_Fail()
 		{
-			var result = ( System.Int16 )( new MessagePackObject( UInt16.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int16 )( new MessagePackObject( UInt16.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -440,10 +416,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt16_UInt32MaxValue_Fail()
 		{
-			var result = ( System.Int16 )( new MessagePackObject( UInt32.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int16 )( new MessagePackObject( UInt32.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -454,10 +429,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt16_UInt64MaxValue_Fail()
 		{
-			var result = ( System.Int16 )( new MessagePackObject( UInt64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int16 )( new MessagePackObject( UInt64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -531,17 +505,15 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt32_Int64MinValue_Fail()
 		{
-			var result = ( System.Int32 )( new MessagePackObject( Int64.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int32 )( new MessagePackObject( Int64.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt32_Int64MaxValue_Fail()
 		{
-			var result = ( System.Int32 )( new MessagePackObject( Int64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int32 )( new MessagePackObject( Int64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -580,10 +552,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt32_UInt32MaxValue_Fail()
 		{
-			var result = ( System.Int32 )( new MessagePackObject( UInt32.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int32 )( new MessagePackObject( UInt32.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -594,10 +565,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt32_UInt64MaxValue_Fail()
 		{
-			var result = ( System.Int32 )( new MessagePackObject( UInt64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int32 )( new MessagePackObject( UInt64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -734,10 +704,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitInt64_UInt64MaxValue_Fail()
 		{
-			var result = ( System.Int64 )( new MessagePackObject( UInt64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Int64 )( new MessagePackObject( UInt64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -755,10 +724,9 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_SByteMinValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( SByte.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( SByte.MinValue ) ) ) );
 		}
 
 		[Test]
@@ -769,45 +737,39 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_Int16MinValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( Int16.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( Int16.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_Int16MaxValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( Int16.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( Int16.MaxValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_Int32MinValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( Int32.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( Int32.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_Int32MaxValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( Int32.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( Int32.MaxValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_Int64MinValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( Int64.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( Int64.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_Int64MaxValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( Int64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( Int64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -832,10 +794,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_UInt16MaxValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( UInt16.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( UInt16.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -846,10 +807,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_UInt32MaxValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( UInt32.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( UInt32.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -860,10 +820,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitByte_UInt64MaxValue_Fail()
 		{
-			var result = ( System.Byte )( new MessagePackObject( UInt64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.Byte )( new MessagePackObject( UInt64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -881,10 +840,9 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_SByteMinValue_Fail()
 		{
-			var result = ( System.UInt16 )( new MessagePackObject( SByte.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( new MessagePackObject( SByte.MinValue ) ) ) );
 		}
 
 		[Test]
@@ -895,10 +853,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_Int16MinValue_Fail()
 		{
-			var result = ( System.UInt16 )( new MessagePackObject( Int16.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( new MessagePackObject( Int16.MinValue ) ) ) );
 		}
 
 		[Test]
@@ -909,31 +866,27 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_Int32MinValue_Fail()
 		{
-			var result = ( System.UInt16 )( new MessagePackObject( Int32.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( new MessagePackObject( Int32.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_Int32MaxValue_Fail()
 		{
-			var result = ( System.UInt16 )( new MessagePackObject( Int32.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( new MessagePackObject( Int32.MaxValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_Int64MinValue_Fail()
 		{
-			var result = ( System.UInt16 )( new MessagePackObject( Int64.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( new MessagePackObject( Int64.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_Int64MaxValue_Fail()
 		{
-			var result = ( System.UInt16 )( new MessagePackObject( Int64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( new MessagePackObject( Int64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -972,10 +925,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_UInt32MaxValue_Fail()
 		{
-			var result = ( System.UInt16 )( new MessagePackObject( UInt32.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( new MessagePackObject( UInt32.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -986,10 +938,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt16_UInt64MaxValue_Fail()
 		{
-			var result = ( System.UInt16 )( new MessagePackObject( UInt64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt16 )( new MessagePackObject( UInt64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -1007,10 +958,9 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt32_SByteMinValue_Fail()
 		{
-			var result = ( System.UInt32 )( new MessagePackObject( SByte.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt32 )( new MessagePackObject( SByte.MinValue ) ) ) );
 		}
 
 		[Test]
@@ -1021,10 +971,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt32_Int16MinValue_Fail()
 		{
-			var result = ( System.UInt32 )( new MessagePackObject( Int16.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt32 )( new MessagePackObject( Int16.MinValue ) ) ) );
 		}
 
 		[Test]
@@ -1035,10 +984,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt32_Int32MinValue_Fail()
 		{
-			var result = ( System.UInt32 )( new MessagePackObject( Int32.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt32 )( new MessagePackObject( Int32.MinValue ) ) ) );
 		}
 
 		[Test]
@@ -1049,17 +997,15 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt32_Int64MinValue_Fail()
 		{
-			var result = ( System.UInt32 )( new MessagePackObject( Int64.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt32 )( new MessagePackObject( Int64.MinValue ) ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt32_Int64MaxValue_Fail()
 		{
-			var result = ( System.UInt32 )( new MessagePackObject( Int64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt32 )( new MessagePackObject( Int64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -1112,10 +1058,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt32_UInt64MaxValue_Fail()
 		{
-			var result = ( System.UInt32 )( new MessagePackObject( UInt64.MaxValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt32 )( new MessagePackObject( UInt64.MaxValue ) ) ) );
 		}
 
 		[Test]
@@ -1133,10 +1078,9 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt64_SByteMinValue_Fail()
 		{
-			var result = ( System.UInt64 )( new MessagePackObject( SByte.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt64 )( new MessagePackObject( SByte.MinValue ) ) ) );
 		}
 
 		[Test]
@@ -1147,10 +1091,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt64_Int16MinValue_Fail()
 		{
-			var result = ( System.UInt64 )( new MessagePackObject( Int16.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt64 )( new MessagePackObject( Int16.MinValue ) ) ) );
 		}
 
 		[Test]
@@ -1161,10 +1104,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt64_Int32MinValue_Fail()
 		{
-			var result = ( System.UInt64 )( new MessagePackObject( Int32.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt64 )( new MessagePackObject( Int32.MinValue ) ) ) );
 		}
 
 		[Test]
@@ -1175,10 +1117,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicitUInt64_Int64MinValue_Fail()
 		{
-			var result = ( System.UInt64 )( new MessagePackObject( Int64.MinValue ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( System.UInt64 )( new MessagePackObject( Int64.MinValue ) ) ) );
 		}
 
 		[Test]

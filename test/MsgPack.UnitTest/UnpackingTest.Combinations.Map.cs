@@ -25,7 +25,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -734,52 +742,45 @@ namespace MsgPack
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackDictionaryCount_ByteArray_Empty()
 		{
-			Unpacking.UnpackDictionaryCount( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackDictionaryCount( new byte[ 0 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackDictionaryCount_ByteArray_Null()
 		{
-			Unpacking.UnpackDictionaryCount( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackDictionaryCount( default( byte[] ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackDictionaryCount_ByteArray_Offset_Null()
 		{
-			Unpacking.UnpackDictionaryCount( default( byte[] ), 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackDictionaryCount( default( byte[] ), 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackDictionaryCount_ByteArray_Offset_OffsetIsNegative()
 		{
-			Unpacking.UnpackDictionaryCount( new byte[]{ 0x1 }, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackDictionaryCount( new byte[]{ 0x1 }, -1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackDictionaryCount_ByteArray_Offset_OffsetIsTooBig()
 		{
-			Unpacking.UnpackDictionaryCount( new byte[]{ 0x1 }, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackDictionaryCount( new byte[]{ 0x1 }, 1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackDictionaryCount_ByteArray_Offset_Empty()
 		{
-			Unpacking.UnpackDictionaryCount( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackDictionaryCount( new byte[ 0 ], 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackDictionaryCount_Stream_Null()
 		{
-			Unpacking.UnpackDictionaryCount( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackDictionaryCount( default( Stream ) ) );
 		}
 
 		[Test]
@@ -799,10 +800,9 @@ namespace MsgPack
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackDictionaryCount_ByteArray_NotMap()
 		{
-			var dummy = Unpacking.UnpackDictionaryCount( new byte[] { 0x1 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackDictionaryCount( new byte[] { 0x1 } ) );
 		}
 
 		[Test]
@@ -814,12 +814,9 @@ namespace MsgPack
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackDictionary_ByteArray_NotMap()
 		{
-			var result = Unpacking.UnpackDictionary( new byte[] { 0x1 } );
-			Assert.AreEqual( 1, result.ReadCount );
-			Assert.IsNull( result.Value );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackDictionary( new byte[] { 0x1 } ) );
 		}
 
 		private static IEnumerable<byte> CreateDictionaryBodyBinary( int count )

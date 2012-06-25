@@ -19,7 +19,15 @@
 #endregion -- License Terms --
 
 using System;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 using System.Linq;
 
 namespace MsgPack
@@ -301,10 +309,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestFromObject_NotSupported()
 		{
-			var dummy = MessagePackObject.FromObject( new Uri( "http://example.com" ) );
+			Assert.Throws<MessageTypeException>( () => MessagePackObject.FromObject( new Uri( "http://example.com" ) ) );
 		}
 
 		private static void TestFromObjectCore<T>( T value, MessagePackObject expected )

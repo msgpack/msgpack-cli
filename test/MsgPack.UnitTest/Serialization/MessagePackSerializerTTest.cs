@@ -21,8 +21,20 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization;
+#if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
+#else
+using MsgPack.Serialization.ExpressionSerializers;
+#endif
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {
@@ -31,33 +43,34 @@ namespace MsgPack.Serialization
 	{
 		private static MessagePackSerializer<T> CreateTarget<T>()
 		{
+#if !NETFX_CORE
 			return new AutoMessagePackSerializer<T>( new SerializationContext(), c => new MapEmittingSerializerBuilder<T>( c ) );
+#else
+			return new AutoMessagePackSerializer<T>( new SerializationContext(), c => new ExpressionSerializerBuilder<T>( c ) );
+#endif
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestPack_StreamIsNull()
 		{
 			var target = CreateTarget<int>();
-			target.Pack( null, 0 );
+			Assert.Throws<ArgumentNullException>( () => target.Pack( null, 0 ) );
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestPackTo_PackerIsNull()
 		{
 			var target = CreateTarget<int>();
-			target.PackTo( null, 0 );
+			Assert.Throws<ArgumentNullException>( () => target.PackTo( null, 0 ) );
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIMessagePackSerializerPackTo_PackerIsNull()
 		{
 			IMessagePackSerializer target = CreateTarget<int>();
-			target.PackTo( null, 0 );
+			Assert.Throws<ArgumentNullException>( () => target.PackTo( null, 0 ) );
 		}
 
 		[Test]
@@ -73,14 +86,13 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestIMessagePackSerializerPackTo_ObjectTreeIsNull_ValueType_AsNil()
 		{
 			IMessagePackSerializer target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				target.PackTo( packer, null );
+				Assert.Throws<SerializationException>( () => target.PackTo( packer, null ) );
 			}
 		}
 
@@ -109,66 +121,60 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestIMessagePackSerializerPackTo_ObjectTreeIsOtherType()
 		{
 			IMessagePackSerializer target = CreateTarget<string>();
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				target.PackTo( packer, Int64.MaxValue );
+				Assert.Throws<ArgumentException>( () => target.PackTo( packer, Int64.MaxValue ) );
 			}
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpack_StreamIsNull()
 		{
 			var target = CreateTarget<int>();
-			target.Unpack( null );
+			Assert.Throws<ArgumentNullException>( () => target.Unpack( null ) );
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackFrom_UnpackerIsNull()
 		{
 			var target = CreateTarget<int>();
-			target.UnpackFrom( null );
+			Assert.Throws<ArgumentNullException>( () => target.UnpackFrom( null ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestUnpackFrom_StreamIsEmpty()
 		{
 			var target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
-				var result = target.UnpackFrom( unpacker );
+				Assert.Throws<SerializationException>( () => target.UnpackFrom( unpacker ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestUnpackFrom_StreamIsNullButTypeIsValueType()
 		{
 			var target = CreateTarget<int>();
 			using ( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
-				var result = target.UnpackFrom( unpacker );
+				Assert.Throws<SerializationException>( () => target.UnpackFrom( unpacker ) );
 			}
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIMessagePackSerializerUnpackFrom_UnpackerIsNull()
 		{
 			IMessagePackSerializer target = CreateTarget<int>();
-			target.UnpackFrom( null );
+			Assert.Throws<ArgumentNullException>( () => target.UnpackFrom( null ) );
 		}
 
 		[Test]
@@ -185,7 +191,6 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestIMessagePackSerializerUnpackFrom_Invalid()
 		{
 			IMessagePackSerializer target = CreateTarget<int>();
@@ -193,21 +198,19 @@ namespace MsgPack.Serialization
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
 				unpacker.Read();
-				var result = target.UnpackFrom( unpacker );
+				Assert.Throws<SerializationException>( () => target.UnpackFrom( unpacker ) );
 			}
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackTo_UnpackerIsNull()
 		{
 			var target = CreateTarget<int[]>();
-			target.UnpackTo( null, new int[ 1 ] );
+			Assert.Throws<ArgumentNullException>( () => target.UnpackTo( null, new int[ 1 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackTo_CollectionIsNull()
 		{
 			var target = CreateTarget<int[]>();
@@ -215,12 +218,11 @@ namespace MsgPack.Serialization
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
 				unpacker.Read();
-				target.UnpackTo( unpacker, null );
+				Assert.Throws<ArgumentNullException>( () => target.UnpackTo( unpacker, null ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestUnpackTo_IsNotCollectionType()
 		{
 			var target = CreateTarget<int>();
@@ -228,12 +230,11 @@ namespace MsgPack.Serialization
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
 				unpacker.Read();
-				target.UnpackTo( unpacker, 0 );
+				Assert.Throws<NotSupportedException>( () => target.UnpackTo( unpacker, 0 ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestUnpackTo_StreamContentIsEmpty()
 		{
 			var target = CreateTarget<int[]>();
@@ -242,7 +243,7 @@ namespace MsgPack.Serialization
 			{
 				unpacker.Read();
 				var collection = new int[ 1 ];
-				target.UnpackTo( unpacker, collection );
+				Assert.Throws<SerializationException>( () => target.UnpackTo( unpacker, collection ) );
 			}
 		}
 
@@ -261,15 +262,13 @@ namespace MsgPack.Serialization
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIMessagePackSerializerUnpackTo_UnpackerIsNull()
 		{
 			IMessagePackSerializer target = CreateTarget<int[]>();
-			target.UnpackTo( null, new int[ 1 ] );
+			Assert.Throws<ArgumentNullException>( () => target.UnpackTo( null, new int[ 1 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIMessagePackSerializerUnpackTo_CollectionIsNull()
 		{
 			IMessagePackSerializer target = CreateTarget<int[]>();
@@ -277,7 +276,7 @@ namespace MsgPack.Serialization
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
 				unpacker.Read();
-				target.UnpackTo( unpacker, null );
+				Assert.Throws<ArgumentNullException>( () => target.UnpackTo( unpacker, null ) );
 			}
 		}
 
@@ -297,7 +296,6 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestIMessagePackSerializerUnpackTo_CollectionTypeIsInvalid()
 		{
 			IMessagePackSerializer target = CreateTarget<int[]>();
@@ -305,12 +303,11 @@ namespace MsgPack.Serialization
 			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
 				var collection = new bool[ 1 ];
-				target.UnpackTo( unpacker, collection );
+				Assert.Throws<ArgumentException>( () => target.UnpackTo( unpacker, collection ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestIMessagePackSerializerUnpackTo_StreamContentIsInvalid()
 		{
 			IMessagePackSerializer target = CreateTarget<int[]>();
@@ -319,12 +316,11 @@ namespace MsgPack.Serialization
 			{
 				unpacker.Read();
 				var collection = new int[ 1 ];
-				target.UnpackTo( unpacker, collection );
+				Assert.Throws<SerializationException>( () => target.UnpackTo( unpacker, collection ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( SerializationException ) )]
 		public void TestIMessagePackSerializerUnpackTo_StreamContentIsEmpty()
 		{
 			IMessagePackSerializer target = CreateTarget<int[]>();
@@ -333,7 +329,7 @@ namespace MsgPack.Serialization
 			{
 				unpacker.Read();
 				var collection = new int[ 1 ];
-				target.UnpackTo( unpacker, collection );
+				Assert.Throws<SerializationException>( () => target.UnpackTo( unpacker, collection ) );
 			}
 		}
 

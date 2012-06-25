@@ -24,7 +24,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+using ExplicitAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.IgnoreAttribute;
+#endif
 
 namespace MsgPack
 {
@@ -32,6 +41,18 @@ namespace MsgPack
 	[Timeout( 1000 )]
 	public partial class PackUnpackTest
 	{
+		private static TextWriter Console
+		{
+			get
+			{
+#if !NETFX_CORE && !SILVERLIGHT
+				return System.Console.Out;
+#else
+				return TextWriter.Null;
+#endif
+			}
+		}
+
 		private static bool _traceUnpackingBytes = false;
 
 		private static MessagePackObject UnpackOne( MemoryStream output )
@@ -192,7 +213,13 @@ namespace MsgPack
 				int len = ( int )random.Next() % 100 + ( 1 << 8 );
 				for ( int j = 0; j < len; j++ )
 				{
-					sb.Append( Encoding.UTF32.GetChars( BitConverter.GetBytes( random.Next( 0x10ffff ) ) ) );
+					var cp = random.Next( 0x10ffff );
+					if ( 0xd800 <= cp && cp <= 0xdfff )
+					{
+						cp /= 2;
+					}
+
+					sb.Append( Char.ConvertFromUtf32( cp ) );
 				}
 				avg = ( avg + sb.Length ) / 2.0;
 				TestString( sb.ToString() );
@@ -252,9 +279,9 @@ namespace MsgPack
 				Console.WriteLine( "Array[0x{0:x}]", count );
 				var output = new MemoryStream();
 				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToArray() );
-				CollectionAssert.AreEqual(
+				Assert.That(
 					Enumerable.Range( 0, count ).ToArray(),
-					UnpackOne( output ).AsEnumerable().Select( item => item.AsInt32() ).ToArray()
+					Is.EqualTo( UnpackOne( output ).AsEnumerable().Select( item => item.AsInt32() ).ToArray() )
 				);
 				sw.Stop();
 			}
@@ -432,9 +459,9 @@ namespace MsgPack
 				Console.WriteLine( "Map[0x{0:x}]", count );
 				var output = new MemoryStream();
 				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ) );
-				CollectionAssert.AreEqual(
+				Assert.That(
 					Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ),
-					UnpackOne( output ).AsDictionary().ToDictionary( kv => kv.Key.AsString(), kv => kv.Value.AsInt32() )
+					Is.EqualTo( UnpackOne( output ).AsDictionary().ToDictionary( kv => kv.Key.AsString(), kv => kv.Value.AsInt32() ) )
 				);
 				sw.Stop();
 			}
@@ -465,9 +492,9 @@ namespace MsgPack
 				Console.WriteLine( "byte[0x{0:x}]", count );
 				var output = new MemoryStream();
 				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray() );
-				CollectionAssert.AreEqual(
+				Assert.That(
 					Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray(),
-					UnpackOne( output ).AsBinary()
+					Is.EqualTo( UnpackOne( output ).AsBinary() )
 				);
 				sw.Stop();
 			}
@@ -520,7 +547,9 @@ namespace MsgPack
 				var item = Unpacking.UnpackObject( stream );
 				Assert.That( item, Is.Not.Null );
 				Assert.That( item.IsTypeOf<int>().Value );
+#if !NETFX_CORE
 				Assert.That( item.UnderlyingType.IsPrimitive, Is.True );
+#endif
 				Assert.That( item.AsInt32(), Is.EqualTo( 1 ) );
 				item = Unpacking.UnpackObject( stream );
 				Assert.That( item, Is.Not.Null );

@@ -20,7 +20,15 @@
 
 using System;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -49,10 +57,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestEncodeString_Null()
 		{
-			MessagePackConvert.EncodeString( null );
+			Assert.Throws<ArgumentNullException>( () => MessagePackConvert.EncodeString( null ) );
 		}
 
 
@@ -73,11 +80,10 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( DecoderFallbackException ) )]
 		public void TestDecodeStringStrict_Invalid()
 		{
 			byte[] value = Encoding.Unicode.GetBytes( _testValue );
-			MessagePackConvert.DecodeStringStrict( value );
+			Assert.Throws<DecoderFallbackException>( () => MessagePackConvert.DecodeStringStrict( value ) );
 		}
 
 		[Test]
@@ -87,10 +93,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestDecodeStringStrict_Null()
 		{
-			MessagePackConvert.DecodeStringStrict( null );
+			Assert.Throws<ArgumentNullException>( () => MessagePackConvert.DecodeStringStrict( null ) );
 		}
 
 
@@ -134,19 +139,17 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestToDateTimeOffset_MaximumPlusOne_IsUtcEpoc()
 		{
 			var offset = checked( ( long )DateTime.MaxValue.Subtract( _utcEpoc ).TotalMilliseconds + 1L );
-			MessagePackConvert.ToDateTimeOffset( offset );
+			Assert.Throws<ArgumentOutOfRangeException>( () => MessagePackConvert.ToDateTimeOffset( offset ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestToDateTimeOffset_MinimumMinusOne_IsUtcEpoc()
 		{
 			var offset = checked( ( long )DateTime.MinValue.Subtract( _utcEpoc ).TotalMilliseconds - 1L );
-			MessagePackConvert.ToDateTimeOffset( offset );
+			Assert.Throws<ArgumentOutOfRangeException>( () => MessagePackConvert.ToDateTimeOffset( offset ) );
 		}
 
 
@@ -190,19 +193,17 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestToDateTime_MaximumPlusOne_IsUtcEpoc()
 		{
 			var offset = checked( ( long )DateTime.MaxValue.Subtract( _utcEpoc ).TotalMilliseconds + 1L );
-			MessagePackConvert.ToDateTime( offset );
+			Assert.Throws<ArgumentOutOfRangeException>( () => MessagePackConvert.ToDateTime( offset ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestToDateTime_MinimumMinusOne_IsUtcEpoc()
 		{
 			var offset = checked( ( long )DateTime.MinValue.Subtract( _utcEpoc ).TotalMilliseconds - 1L );
-			MessagePackConvert.ToDateTime( offset );
+			Assert.Throws<ArgumentOutOfRangeException>( () => MessagePackConvert.ToDateTime( offset ) );
 		}
 
 

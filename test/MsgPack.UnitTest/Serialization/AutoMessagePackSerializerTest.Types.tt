@@ -92,6 +92,13 @@ var __fields =
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IDictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
 		new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
 	};
+
+var __desktopOnly =
+	new HashSet<Type>()
+	{
+		typeof( ArrayList ),
+		typeof( Hashtable )
+	};
 #>
 #region -- License Terms --
 //
@@ -123,7 +130,15 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {
@@ -144,6 +159,14 @@ foreach( var __flavor in __flavors )
 		else
 		{
 			__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
+		}
+
+		var __asType = __item.Item1 as Type;
+		if( __asType != null && __desktopOnly.Contains( __asType ) )
+		{
+#>
+#if !NETFX_CORE && !SILVERLIGHT
+<#
 		}
 #>
 		[Test]
@@ -174,6 +197,13 @@ foreach( var __flavor in __flavors )
 			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ), this.GetSerializationContext<#= __flavor #>() );
 		}	
 		
+<#
+		}
+
+		if( __asType != null && __desktopOnly.Contains( __asType ) )
+		{
+#>
+#endif
 <#
 		}
 	}
@@ -264,10 +294,17 @@ foreach( var __flavor in __flavors )
 					{
 						unpacked[ i ].Verify( value[ i ] );
 					}
+#if MSTEST
+					catch( Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException ae )
+					{
+						throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( i.ToString(), ae );
+					}
+#else
 					catch( AssertionException ae )
 					{
 						throw new AssertionException( i.ToString(), ae );
 					}
+#endif
 				}
 			}
 		}	
@@ -313,8 +350,14 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	{
 		__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
 	}
+	var __asType = __item.Item1 as Type;
+	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	{
 #>
-
+#if !NETFX_CORE && !SILVERLIGHT
+<#
+	}
+#>
 		private <#= __typeName #> _<#= ToFieldName( __item ) #><#= __item.Item4 ? String.Empty : " = " + GetSimpleInitializer( __item ) #>;
 		
 		public <#= __typeName #> <#= ToFieldName( __item ) #>
@@ -330,6 +373,12 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 #>
 		}
 <#
+	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	{
+#>
+#endif
+<#
+	}
 }
 #>
 
@@ -338,9 +387,22 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 <#
 foreach( Tuple<Object, string, string, bool> __item in __fields )
 {
+	var __asType = __item.Item1 as Type;
+	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	{
+#>
+#if !NETFX_CORE && !SILVERLIGHT
+<#
+	}
 #>
 			this._<#= ToFieldName( __item ) #> = <#= __item.Item3 #>;
 <#
+	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	{
+#>
+#endif
+<#
+	}
 }
 #>
 			return this;
@@ -357,9 +419,22 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 <#
 foreach( Tuple<Object, string, string, bool> __item in __fields )
 {
+	var __asType = __item.Item1 as Type;
+	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	{
+#>
+#if !NETFX_CORE && !SILVERLIGHT
+<#
+	}
 #>
 			AutoMessagePackSerializerTest.Verify( expected._<#= ToFieldName( __item ) #>, this._<#= ToFieldName( __item ) #> );
 <#
+	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	{
+#>
+#endif
+<#
+	}
 }
 #>		
 		}

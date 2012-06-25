@@ -56,7 +56,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -115,12 +123,9 @@ foreach( var __testCase in TestData.BinaryValues )
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackBinary_ByteArray_NotBinary()
 		{
-			var result = Unpacking.UnpackBinary( new byte[] { 0x1 } );
-			Assert.AreEqual( 1, result.ReadCount );
-			Assert.IsNull( result.Value );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackBinary( new byte[] { 0x1 } ) );
 		}
 	}
 }

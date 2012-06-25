@@ -25,7 +25,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -1762,69 +1770,60 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackInt64_ByteArray_UInt64MaxValueAsUInt64_AsIs()
 		{
-			var result = Unpacking.UnpackInt64( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackInt64( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackInt64_Stream_UInt64MaxValueAsUInt64_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ) )
 			{
-				var result = Unpacking.UnpackInt64( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackInt64( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackInt64_ByteArray_Empty()
 		{
-			Unpacking.UnpackInt64( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackInt64( new byte[ 0 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackInt64_ByteArray_Null()
 		{
-			Unpacking.UnpackInt64( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackInt64( default( byte[] ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackInt64_ByteArray_Offset_Null()
 		{
-			Unpacking.UnpackInt64( default( byte[] ), 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackInt64( default( byte[] ), 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackInt64_ByteArray_Offset_OffsetIsNegative()
 		{
-			Unpacking.UnpackInt64( new byte[]{ 0x1 }, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackInt64( new byte[]{ 0x1 }, -1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackInt64_ByteArray_Offset_OffsetIsTooBig()
 		{
-			Unpacking.UnpackInt64( new byte[]{ 0x1 }, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackInt64( new byte[]{ 0x1 }, 1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackInt64_ByteArray_Offset_Empty()
 		{
-			Unpacking.UnpackInt64( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackInt64( new byte[ 0 ], 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackInt64_Stream_Null()
 		{
-			Unpacking.UnpackInt64( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackInt64( default( Stream ) ) );
 		}
 
 		[Test]
@@ -1837,17 +1836,15 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackInt64_ByteArray_Null_Nil()
 		{
-			Unpacking.UnpackInt64( new byte[] { 0xC0 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackInt64( new byte[] { 0xC0 } ) );
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackInt64_ByteArray_NotInt64()
 		{
-			Unpacking.UnpackInt64( new byte[] { 0xA0 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackInt64( new byte[] { 0xA0 } ) );
 		}
 	}
 }

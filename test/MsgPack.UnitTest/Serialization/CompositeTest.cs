@@ -20,15 +20,26 @@
 
 using System;
 using System.IO;
+#if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
+#endif
 using MsgPack.Serialization.ExpressionSerializers;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack.Serialization
 {
 	[TestFixture]
 	public class CompositeTest
 	{
+#if !NETFX_CORE
 		[Test]
 		public void TestArrayFieldBased()
 		{
@@ -52,6 +63,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.ContextBased, c => new MapEmittingSerializerBuilder<DirectoryItem>( c ) );
 		}
+#endif
 
 		[Test]
 		public void TestArrayExpressionBased()

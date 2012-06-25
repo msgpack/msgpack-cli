@@ -56,7 +56,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -64,36 +72,32 @@ namespace MsgPack
 	public 	partial class UnpackingTest_Combinations_Nil
 	{
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackNull_ByteArray_True()
 		{
-			var result = Unpacking.UnpackNull( <#= TestData.MiscValues[ "True" ] #> );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackNull( <#= TestData.MiscValues[ "True" ] #> ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackNull_Stream_True()
 		{
 			using ( var buffer = new MemoryStream( <#= TestData.MiscValues[ "True" ] #> ) )
 			{
-				var result = Unpacking.UnpackNull( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackNull( buffer ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackNull_ByteArray_False()
 		{
-			var result = Unpacking.UnpackNull( <#= TestData.MiscValues[ "False" ] #> );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackNull( <#= TestData.MiscValues[ "False" ] #> ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackNull_Stream_False()
 		{
 			using ( var buffer = new MemoryStream( <#= TestData.MiscValues[ "False" ] #> ) )
 			{
-				var result = Unpacking.UnpackNull( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackNull( buffer ) );
 			}
 		}
 		

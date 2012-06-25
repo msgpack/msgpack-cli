@@ -19,7 +19,15 @@
 #endregion -- License Terms --
 
 using System;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -27,10 +35,9 @@ namespace MsgPack
 	public partial class MessagePackObjectTest_Exceptionals
 	{
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsEnumreable_String()
 		{
-			new MessagePackObject( "ABC" ).AsEnumerable();
+			Assert.Throws<InvalidOperationException>( () => new MessagePackObject( "ABC" ).AsEnumerable() );
 		}
 
 		[Test]
@@ -40,10 +47,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsList_String()
 		{
-			new MessagePackObject( "ABC" ).AsList();
+			Assert.Throws<InvalidOperationException>( () => new MessagePackObject( "ABC" ).AsList() );
 		}
 
 		[Test]
@@ -65,46 +71,40 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString_NotString()
 		{
-			Assert.IsNull( new MessagePackObject( 0 ).AsString() );
+			Assert.Throws<InvalidOperationException>( () => new MessagePackObject( 0 ).AsString() );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsStringUtf8_NotString()
 		{
-			Assert.IsNull( new MessagePackObject( 0 ).AsStringUtf8() );
+			Assert.Throws<InvalidOperationException>( () => new MessagePackObject( 0 ).AsStringUtf8() );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsStringUtf16_NotString()
 		{
-			Assert.IsNull( new MessagePackObject( 0 ).AsStringUtf16() );
+			Assert.Throws<InvalidOperationException>( () => new MessagePackObject( 0 ).AsStringUtf16() );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIsTypeOf_Null()
 		{
-			new MessagePackObject( 0 ).IsTypeOf( null );
+			Assert.Throws<ArgumentNullException>( () => new MessagePackObject( 0 ).IsTypeOf( null ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIsTypeOf_ForNull_Null()
 		{
-			new MessagePackObject( default( string ) ).IsTypeOf( null );
+			Assert.Throws<ArgumentNullException>( () => new MessagePackObject( default( string ) ).IsTypeOf( null ) );
 		}
 
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestPackToMessage_Null()
 		{
-			new MessagePackObject( 0 ).PackToMessage( null, new PackingOptions() );
+			Assert.Throws<ArgumentNullException>( () => new MessagePackObject( 0 ).PackToMessage( null, new PackingOptions() ) );
 		}
 
 

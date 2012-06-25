@@ -56,7 +56,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -145,10 +153,9 @@ foreach( var __testCase in TestData.MapValues )
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackDictionaryCount_ByteArray_NotMap()
 		{
-			var dummy = Unpacking.UnpackDictionaryCount( new byte[] { 0x1 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackDictionaryCount( new byte[] { 0x1 } ) );
 		}
 
 		[Test]
@@ -160,12 +167,9 @@ foreach( var __testCase in TestData.MapValues )
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackDictionary_ByteArray_NotMap()
 		{
-			var result = Unpacking.UnpackDictionary( new byte[] { 0x1 } );
-			Assert.AreEqual( 1, result.ReadCount );
-			Assert.IsNull( result.Value );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackDictionary( new byte[] { 0x1 } ) );
 		}
 
 		<#= TestData.CreateDictionaryBodyBinaryCode #>

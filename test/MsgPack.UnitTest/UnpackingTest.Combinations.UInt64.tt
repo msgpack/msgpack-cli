@@ -59,7 +59,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -79,48 +87,44 @@ foreach( var __integerValue in TestData.IntegerValues )
 	{
 #>
 		[Test]
-<#
-		if( __isNotCompatible )
-		{
-#>
-		[ExpectedException( typeof( MessageTypeException ) )]
-<#
-		}
-#>
 		public void TestUnpack<#= __integerType.Name #>_ByteArray_<#= __integerValue.Key #>As<#= ToValueId( __expression ) #>_<#= __isNotCompatible ? "AsIs" : "Fail" #>()
 		{
-			var result = Unpacking.Unpack<#= __integerType.Name #>( <#= __expression #> );
 <#
 		if( !__isNotCompatible )
 		{
 #>
+			var result = Unpacking.Unpack<#= __integerType.Name #>( <#= __expression #> );
 			Assert.AreEqual( <#= __expression.Count( c => c == ',' ) + 1 #>, result.ReadCount );
 			Assert.AreEqual( <#= __testCase.Value #>L, result.Value );
+<#
+		}
+		else
+		{
+#>
+			Assert.Throws<MessageTypeException>( () => Unpacking.Unpack<#= __integerType.Name #>( <#= __expression #> ) );
 <#
 		}
 #>
 		}
 		
 		[Test]
-<#
-		if( __isNotCompatible )
-		{
-#>
-		[ExpectedException( typeof( MessageTypeException ) )]
-<#
-		}
-#>
 		public void TestUnpack<#= __integerType.Name #>_Stream_<#= __integerValue.Key #>As<#= ToValueId( __expression ) #>_<#= __isNotCompatible ? "AsIs" : "Fail" #>()
 		{
 			using ( var buffer = new MemoryStream( <#= __expression #> ) )
 			{
-				var result = Unpacking.Unpack<#= __integerType.Name #>( buffer );
 <#
 		if( !__isNotCompatible )
 		{
 #>
+				var result = Unpacking.Unpack<#= __integerType.Name #>( buffer );
 				Assert.AreEqual( <#= __expression.Count( c => c == ',' ) + 1 #>, buffer.Position );
 				Assert.AreEqual( <#= __testCase.Value #>L, result );
+<#
+		}
+		else
+		{
+#>
+				Assert.Throws<MessageTypeException>( () => Unpacking.Unpack<#= __integerType.Name #>( buffer ) );
 <#
 		}
 #>
@@ -143,17 +147,15 @@ foreach( var __integerValue in TestData.IntegerValues )
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpack<#= __integerType.Name #>_ByteArray_Null_Nil()
 		{
-			Unpacking.Unpack<#= __integerType.Name #>( new byte[] { 0xC0 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.Unpack<#= __integerType.Name #>( new byte[] { 0xC0 } ) );
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpack<#= __integerType.Name #>_ByteArray_Not<#= __integerType.Name #>()
 		{
-			Unpacking.Unpack<#= __integerType.Name #>( new byte[] { 0xA0 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.Unpack<#= __integerType.Name #>( new byte[] { 0xA0 } ) );
 		}
 	}
 }

@@ -34,6 +34,8 @@ namespace MsgPack.Serialization
 	[EditorBrowsable( EditorBrowsableState.Never )]
 	public static class SerializationExceptions
 	{
+		internal static readonly MethodInfo NewValueTypeCannotBeNull3Method = FromExpression.ToMethod( ( string name, Type memberType, Type declaringType ) => SerializationExceptions.NewValueTypeCannotBeNull( name, memberType, declaringType ) );
+
 		/// <summary>
 		///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that value type cannot be <c>null</c> on deserialization.

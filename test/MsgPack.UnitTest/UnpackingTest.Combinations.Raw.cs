@@ -25,7 +25,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -327,52 +335,45 @@ namespace MsgPack
 		}
 		
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackBinary_ByteArray_Empty()
 		{
-			Unpacking.UnpackBinary( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackBinary( new byte[ 0 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackBinary_ByteArray_Null()
 		{
-			Unpacking.UnpackBinary( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackBinary( default( byte[] ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackBinary_ByteArray_Offset_Null()
 		{
-			Unpacking.UnpackBinary( default( byte[] ), 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackBinary( default( byte[] ), 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackBinary_ByteArray_Offset_OffsetIsNegative()
 		{
-			Unpacking.UnpackBinary( new byte[]{ 0x1 }, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackBinary( new byte[]{ 0x1 }, -1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackBinary_ByteArray_Offset_OffsetIsTooBig()
 		{
-			Unpacking.UnpackBinary( new byte[]{ 0x1 }, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackBinary( new byte[]{ 0x1 }, 1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackBinary_ByteArray_Offset_Empty()
 		{
-			Unpacking.UnpackBinary( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackBinary( new byte[ 0 ], 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackBinary_Stream_Null()
 		{
-			Unpacking.UnpackBinary( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackBinary( default( Stream ) ) );
 		}
 
 		[Test]
@@ -392,12 +393,9 @@ namespace MsgPack
 		}
 	
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackBinary_ByteArray_NotBinary()
 		{
-			var result = Unpacking.UnpackBinary( new byte[] { 0x1 } );
-			Assert.AreEqual( 1, result.ReadCount );
-			Assert.IsNull( result.Value );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackBinary( new byte[] { 0x1 } ) );
 		}
 	}
 }

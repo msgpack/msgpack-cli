@@ -21,7 +21,15 @@
 using System;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -31,11 +39,10 @@ namespace MsgPack
 		private const string _japanese = "\uFF21\uFF22\uFF23";
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString_EncodingMissmatch()
 		{
 			var target = new MessagePackObject( Encoding.Unicode.GetBytes( _japanese ) );
-			var result = target.AsString();
+			Assert.Throws<InvalidOperationException>( () => target.AsString() );
 		}
 
 		[Test]
@@ -46,37 +53,34 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString_IsNotString()
 		{
 			var target = new MessagePackObject( 0 );
-			target.AsString();
+			Assert.Throws<InvalidOperationException>( () => target.AsString() );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString1_EncodingMissmatchAndThrowsDecoderFallbackException()
 		{
 			var target = new MessagePackObject( Encoding.Unicode.GetBytes( _japanese ) );
-			var result = target.AsString( new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) );
+			Assert.Throws<InvalidOperationException>( () => target.AsString( new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString1_EncodingMissmatchAndReturnsNull_Null()
 		{
 			var target = new MessagePackObject( Encoding.Unicode.GetBytes( _japanese ) );
-			Assert.IsNull( target.AsString( new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: false ) ) );
+			Assert.Throws<InvalidOperationException>( () => target.AsString( new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: false ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestAsString1_EncodingIsNull()
 		{
 			var target = new MessagePackObject( Encoding.Unicode.GetBytes( _japanese ) );
-			var result = target.AsString( null );
+			Assert.Throws<ArgumentNullException>( () => target.AsString( null ) );
 		}
 
+#if !NETFX_CORE
 		[Test]
 		public void TestAsString1_EncodingIsUtf32_SpecifyUtf32_Success()
 		{
@@ -86,37 +90,35 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString1_EncodingIsUtf32_SpecifyNotUtf32_Fail()
 		{
 			var target = new MessagePackObject( Encoding.UTF32.GetBytes( _japanese ) );
-			var result = target.AsString( new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) );
+			Assert.Throws<InvalidOperationException>( () => target.AsString( new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString1_EncodingIsNotUtf32_SpecifyUtf32_Fail()
 		{
 #if MONO
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
 			var target = new MessagePackObject( new byte[] { 0xFF } );
-			var result = target.AsString( new UTF32Encoding( bigEndian: false, byteOrderMark: false, throwOnInvalidCharacters: true ) );
+			Assert.Throws<InvalidOperationException>( () => target.AsString( new UTF32Encoding( bigEndian: false, byteOrderMark: false, throwOnInvalidCharacters: true ) ) );
 		}
+#endif
 
 		[Test]
 		public void TestAsString1_Null_Success()
 		{
 			var target = new MessagePackObject( default( string ) );
-			Assert.IsNull( target.AsString( Encoding.UTF32 ) );
+			Assert.IsNull( target.AsString( Encoding.UTF8 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsString1_IsNotString()
 		{
 			var target = new MessagePackObject( 0 );
-			target.AsString( Encoding.UTF32 );
+			Assert.Throws<InvalidOperationException>( () => target.AsString( Encoding.UTF8 ) );
 		}
 
 		[Test]
@@ -141,19 +143,17 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsStringUtf8_IsNotString()
 		{
 			var target = new MessagePackObject( 0 );
-			target.AsStringUtf8();
+			Assert.Throws<InvalidOperationException>( () => target.AsStringUtf8() );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsStringUtf8_EncodingMissmatch()
 		{
 			var target = new MessagePackObject( Encoding.Unicode.GetBytes( _japanese ) );
-			var result = target.AsStringUtf8();
+			Assert.Throws<InvalidOperationException>( () => target.AsStringUtf8() );
 		}
 
 		[Test]
@@ -211,11 +211,10 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsStringUtf16_EncodingMissmatch()
 		{
 			var target = new MessagePackObject( Encoding.UTF8.GetBytes( _japanese ) );
-			var result = target.AsStringUtf16();
+			Assert.Throws<InvalidOperationException>( () => target.AsStringUtf16() );
 		}
 
 		[Test]
@@ -226,19 +225,17 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsStringUtf16_IsNotString()
 		{
 			var target = new MessagePackObject( 0 );
-			target.AsStringUtf16();
+			Assert.Throws<InvalidOperationException>( () => target.AsStringUtf16() );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestAsStringUtf16_NonStringBinary()
 		{
 			var target = new MessagePackObject( new byte[] { 0xFF } );
-			target.AsStringUtf16();
+			Assert.Throws<InvalidOperationException>( () => target.AsStringUtf16() );
 		}
 	}
 }

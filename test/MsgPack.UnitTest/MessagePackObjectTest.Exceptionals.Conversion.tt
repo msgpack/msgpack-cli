@@ -89,28 +89,39 @@ var __reals =
 
 using System;
 using System.Collections.Generic;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
 	partial class MessagePackObjectTest_Exceptionals
 	{
+		private void Call<T>( T value )
+		{
+			// Nop
+		}
+
 <#
 foreach( var __type in __types )
 {
 #>
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicit<#= __type.Name #>_Nil_Fail()
 		{
-			var result = ( <#= __type #> )( MessagePackObject.Nil );
+			Assert.Throws<InvalidOperationException>( () => Call( ( <#= __type #> )( MessagePackObject.Nil ) ) );
 		}
 		
 		[Test]
-		[ExpectedException( typeof( InvalidOperationException ) )]
 		public void TestOpExplicit<#= __type.Name #>_NotNumerics_Fail()
 		{
-			var result = ( <#= __type #> )( new MessagePackObject( "A" ) );
+			Assert.Throws<InvalidOperationException>( () => Call( ( <#= __type #> )( new MessagePackObject( "A" ) ) ) );
 		}
 		
 <#
@@ -152,22 +163,20 @@ foreach( var __integer in __integers )
 		var __isExceptional = __sourceMinValue < __destinationMinValue;
 #>
 		[Test]
-<#
-		if( __isExceptional )
-		{
-#>
-		[ExpectedException( typeof( InvalidOperationException ) )]
-<#
-		}
-#>
 		public void TestOpExplicit<#= __integer.Name #>_<#= __source.Name #>MinValue_<#= __isExceptional ? "Fail" : "Success" #>()
 		{
-			var result = ( <#= __integer #> )( new MessagePackObject( <#= __source.Name #>.MinValue ) );
 <#
 		if( !__isExceptional )
 		{
 #>
+			var result = ( <#= __integer #> )( new MessagePackObject( <#= __source.Name #>.MinValue ) );
 			Assert.AreEqual( ( <#= __integer #> )( <#= __source.Name #>.MinValue ), result );
+<#
+		}
+		else
+		{
+#>
+			Assert.Throws<InvalidOperationException>( () => Call( ( <#= __integer #> )( new MessagePackObject( <#= __source.Name #>.MinValue ) ) ) );
 <#
 		}
 #>
@@ -177,22 +186,20 @@ foreach( var __integer in __integers )
 		__isExceptional = __destinationMaxValue < __sourceMaxValue;
 #>
 		[Test]
-<#
-		if( __isExceptional )
-		{
-#>
-		[ExpectedException( typeof( InvalidOperationException ) )]
-<#
-		}
-#>
 		public void TestOpExplicit<#= __integer.Name #>_<#= __source.Name #>MaxValue_<#= __isExceptional ? "Fail" : "Success" #>()
 		{
-			var result = ( <#= __integer #> )( new MessagePackObject( <#= __source.Name #>.MaxValue ) );
 <#
 		if( !__isExceptional )
 		{
 #>
+			var result = ( <#= __integer #> )( new MessagePackObject( <#= __source.Name #>.MaxValue ) );
 			Assert.AreEqual( ( <#= __integer #> )( <#= __source.Name #>.MaxValue ), result );
+<#
+		}
+		else
+		{
+#>
+			Assert.Throws<InvalidOperationException>( () => Call( ( <#= __integer #> )( new MessagePackObject( <#= __source.Name #>.MaxValue ) ) ) );
 <#
 		}
 #>

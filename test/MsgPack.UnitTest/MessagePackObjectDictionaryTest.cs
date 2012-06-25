@@ -22,10 +22,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 using System.Text;
 using System.IO;
+#if !NETFX_CORE
 using System.Runtime.Serialization.Formatters.Binary;
+#endif
 
 namespace MsgPack
 {
@@ -266,139 +276,126 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestAddNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
-			new MessagePackObjectDictionary().Add( MessagePackObject.Nil, 0 );
+			Assert.Throws<ArgumentNullException>( () => new MessagePackObjectDictionary().Add( MessagePackObject.Nil, 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestICollectionTAddNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
-			( new MessagePackObjectDictionary() as ICollection<KeyValuePair<MessagePackObject, MessagePackObject>> )
-				.Add( new KeyValuePair<MessagePackObject, MessagePackObject>( MessagePackObject.Nil, MessagePackObject.Nil ) );
+			Assert.Throws<ArgumentNullException>( () =>
+				( new MessagePackObjectDictionary() as ICollection<KeyValuePair<MessagePackObject, MessagePackObject>> )
+					.Add( new KeyValuePair<MessagePackObject, MessagePackObject>( MessagePackObject.Nil, MessagePackObject.Nil ) )
+			);
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIDictionaryAddObjectNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
-			( new MessagePackObjectDictionary() as IDictionary ).Add( null, 0 );
+			Assert.Throws<ArgumentNullException>( () => ( new MessagePackObjectDictionary() as IDictionary ).Add( null, 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIDictionaryAddMessagePackObjectNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
-			( new MessagePackObjectDictionary() as IDictionary ).Add( MessagePackObject.Nil, 0 );
+			Assert.Throws<ArgumentNullException>( () => ( new MessagePackObjectDictionary() as IDictionary ).Add( MessagePackObject.Nil, 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestGetNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
 			var target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
-			var v = target[ MessagePackObject.Nil ];
+			Assert.Throws<ArgumentNullException>( () => { var v = target[ MessagePackObject.Nil ]; } );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIDictionaryGetObjectNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
 			IDictionary target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
-			var v = target[ null ];
+			Assert.Throws<ArgumentNullException>( () => { var v = target[ null ]; } );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIDictionaryGetMessagePackObjectNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
 			IDictionary target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
-			var v = target[ MessagePackObject.Nil ];
+			Assert.Throws<ArgumentNullException>( () => { var v = target[ MessagePackObject.Nil ]; } );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestTryGetValueNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
 			var target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
 			MessagePackObject value;
-			target.TryGetValue( MessagePackObject.Nil, out value );
+			Assert.Throws<ArgumentNullException>( () => target.TryGetValue( MessagePackObject.Nil, out value ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestSetNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
-			new MessagePackObjectDictionary()[ MessagePackObject.Nil ] = 0;
+			Assert.Throws<ArgumentNullException>( () => new MessagePackObjectDictionary()[ MessagePackObject.Nil ] = 0 );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIDictionarySetObjectNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
-			( new MessagePackObjectDictionary() as IDictionary )[ null ] = 0;
+			Assert.Throws<ArgumentNullException>( () => ( new MessagePackObjectDictionary() as IDictionary )[ null ] = 0 );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIDictionarySetMessagePackObjectNull()
 		{
 			// The spec is ambigious, but many languages do not allow null key, so this implementation should not allow null key.
-			( new MessagePackObjectDictionary() as IDictionary )[ MessagePackObject.Nil ] = 0;
+			Assert.Throws<ArgumentNullException>( () => ( new MessagePackObjectDictionary() as IDictionary )[ MessagePackObject.Nil ] = 0 );
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void TestContainsKeyNull()
 		{
 			var target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
-			target.ContainsKey( MessagePackObject.Nil );
+			Assert.Throws<ArgumentNullException>( () => target.ContainsKey( MessagePackObject.Nil ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestRemoveNull()
 		{
 			var target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
-			target.Remove( MessagePackObject.Nil );
+			Assert.Throws<ArgumentNullException>( () => target.Remove( MessagePackObject.Nil ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestCollectionTContainsNull()
 		{
 			var target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
 			var asCollectionT = target as ICollection<KeyValuePair<MessagePackObject, MessagePackObject>>;
-			asCollectionT.Contains( new KeyValuePair<MessagePackObject, MessagePackObject>( MessagePackObject.Nil, MessagePackObject.Nil ) );
+			Assert.Throws<ArgumentNullException>( () => asCollectionT.Contains( new KeyValuePair<MessagePackObject, MessagePackObject>( MessagePackObject.Nil, MessagePackObject.Nil ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestCollectionTRemoveNull()
 		{
 			var target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
 			var asCollectionT = target as ICollection<KeyValuePair<MessagePackObject, MessagePackObject>>;
-			asCollectionT.Remove( new KeyValuePair<MessagePackObject, MessagePackObject>( MessagePackObject.Nil, MessagePackObject.Nil ) );
+			Assert.Throws<ArgumentNullException>( () => asCollectionT.Remove( new KeyValuePair<MessagePackObject, MessagePackObject>( MessagePackObject.Nil, MessagePackObject.Nil ) ) );
 		}		
 
 		[Test]
@@ -412,23 +409,21 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIDictionaryRemoveObjectNull()
 		{
 			var target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
 			var asIDictionary = target as IDictionary;
-			asIDictionary.Remove( null );
+			Assert.Throws<ArgumentNullException>( () => asIDictionary.Remove( null ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestIDictionaryRemoveMessagePackObjectNull()
 		{
 			var target = new MessagePackObjectDictionary();
 			target.Add( 0, 0 );
 			var asIDictionary = target as IDictionary;
-			asIDictionary.Remove( MessagePackObject.Nil );
+			Assert.Throws<ArgumentNullException>( () => asIDictionary.Remove( MessagePackObject.Nil ) );
 		}
 
 		[Test]
@@ -638,49 +633,58 @@ namespace MsgPack
 			Assert.AreEqual( typeof( KeyValuePair<MessagePackObject, MessagePackObject> ), ( ( object )enumerator.Current ).GetType(), "#5" );
 		}
 
-		[Test, ExpectedException( typeof( InvalidOperationException ) )]
+		[Test]
 		public void FailFastTest1()
 		{
 			var d = new MessagePackObjectDictionary();
 			d[ 1 ] = 1;
 			int count = 0;
-			foreach ( KeyValuePair<MessagePackObject, MessagePackObject> kv in d )
-			{
-				d[ kv.Key.AsInt32() + 1 ] = kv.Value.AsInt32() + 1;
-				if ( count++ != 0 )
-					Assert.Fail( "Should not be reached" );
-			}
-			Assert.Fail( "Should not be reached" );
+			Assert.Throws<InvalidOperationException>( () =>
+				{
+					foreach ( KeyValuePair<MessagePackObject, MessagePackObject> kv in d )
+					{
+						d[ kv.Key.AsInt32() + 1 ] = kv.Value.AsInt32() + 1;
+						if ( count++ != 0 )
+							Assert.Fail( "Should not be reached" );
+					}
+				}
+			);
 		}
 
-		[Test, ExpectedException( typeof( InvalidOperationException ) )]
+		[Test]
 		public void FailFastTest2()
 		{
 			var d = new MessagePackObjectDictionary();
 			d[ 1 ] = 1;
 			int count = 0;
-			foreach ( int i in d.Keys )
-			{
-				d[ i + 1 ] = i + 1;
-				if ( count++ != 0 )
-					Assert.Fail( "Should not be reached" );
-			}
-			Assert.Fail( "Should not be reached" );
+			Assert.Throws<InvalidOperationException>( () =>
+				{
+					foreach ( int i in d.Keys )
+					{
+						d[ i + 1 ] = i + 1;
+						if ( count++ != 0 )
+							Assert.Fail( "Should not be reached" );
+					}
+				}
+			);
 		}
 
-		[Test, ExpectedException( typeof( InvalidOperationException ) )]
+		[Test]
 		public void FailFastTest3()
 		{
 			var d = new MessagePackObjectDictionary();
 			d[ 1 ] = 1;
 			int count = 0;
-			foreach ( int i in d.Keys )
-			{
-				d[ i ] = i;
-				if ( count++ != 0 )
-					Assert.Fail( "Should not be reached" );
-			}
-			Assert.Fail( "Should not be reached" );
+			Assert.Throws<InvalidOperationException>( () =>
+				{
+					foreach ( int i in d.Keys )
+					{
+						d[ i ] = i;
+						if ( count++ != 0 )
+							Assert.Fail( "Should not be reached" );
+					}
+				}
+			);
 		}
 
 		[Test]
@@ -899,7 +903,6 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void ICollectionCopyToInvalidArray()
 		{
 			var dictionary = new MessagePackObjectDictionary();
@@ -911,7 +914,7 @@ namespace MsgPack
 
 			var array = new int[ 1 ];
 
-			collection.CopyTo( array, 0 );
+			Assert.Throws<ArgumentException>( () => collection.CopyTo( array, 0 ) );
 		}
 
 		[Test]
@@ -1060,24 +1063,24 @@ namespace MsgPack
 			c.CopyTo( new object[ 1 ], 0 );
 		}
 
-		[Test, ExpectedException( typeof( ArgumentException ) )]
+		[Test]
 		public void ICollectionCopyTo_ex3()
 		{
 			var d = new MessagePackObjectDictionary();
 			d[ 3 ] = "5";
 
 			ICollection c = d.Keys;
-			c.CopyTo( new MyClass[ 1 ], 0 );
+			Assert.Throws<ArgumentException>( () => c.CopyTo( new MyClass[ 1 ], 0 ) );
 		}
 
-		[Test, ExpectedException( typeof( ArgumentException ) )]
+		[Test]
 		public void ICollectionCopyTo_ex4()
 		{
 			var d = new MessagePackObjectDictionary();
 			d[ 3 ] = "5";
 
 			ICollection c = d.Values;
-			c.CopyTo( new MyClass[ 1 ], 0 );
+			Assert.Throws<ArgumentException>( () => c.CopyTo( new MyClass[ 1 ], 0 ) );
 		}
 
 		#endregion -- Ported from Mono's Dictionary`2 unit tests --
@@ -1320,6 +1323,7 @@ namespace MsgPack
 			Assert.That( array[ 4 ], Is.EqualTo( MessagePackObject.Nil ) );
 		}
 
+#if !NETFX_CORE
 		[Test]
 		public void TestRuntimeSerialization_NotEmpty_RoundTripped()
 		{
@@ -1333,6 +1337,7 @@ namespace MsgPack
 				Assert.AreEqual( target, deserialized );
 			}
 		}
+#endif
 
 		private sealed class MyClass { }
 	}

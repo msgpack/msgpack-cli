@@ -228,6 +228,9 @@
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\TupleExpressionMessagePackSerializer.cs">
       <Link>Serialization\ExpressionSerializers\TupleExpressionMessagePackSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExtensionObjectHandler.cs">
+      <Link>Serialization\ExtensionObjectHandler.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\FromExpression.cs">
       <Link>Serialization\FromExpression.cs</Link>
     </Compile>
@@ -239,6 +242,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\IdentifierUtility.cs">
       <Link>Serialization\IdentifierUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\IMessagePackExtensibleObject.cs">
+      <Link>Serialization\IMessagePackExtensibleObject.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\IMessagePackSerializer.cs">
       <Link>Serialization\IMessagePackSerializer.cs</Link>
@@ -266,6 +272,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_MessagePackObject.cs">
       <Link>Serialization\Metadata\_MessagePackObject.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_NotImplementedException.cs">
+      <Link>Serialization\Metadata\_NotImplementedException.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Packer.cs">
       <Link>Serialization\Metadata\_Packer.cs</Link>

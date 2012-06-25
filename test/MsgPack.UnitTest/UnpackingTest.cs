@@ -23,7 +23,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !MSTEST
 using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
 
 namespace MsgPack
 {
@@ -39,10 +47,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageNotSupportedException ) )]
 		public void TestUnpackArray_ArrayLengthIsGreaterThanInt32MaxValue()
 		{
-			Unpacking.UnpackArray( new byte[] { 0xDD, 0x80, 0x00, 0x00, 0x00, 0xFF } );
+			Assert.Throws<MessageNotSupportedException>( () => Unpacking.UnpackArray( new byte[] { 0xDD, 0x80, 0x00, 0x00, 0x00, 0xFF } ) );
 		}
 
 		[Test]
@@ -54,26 +61,23 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageNotSupportedException ) )]
 		public void TestUnpackDictionary_DictionaryCountIsGreaterThanInt32MaxValue()
 		{
-			Unpacking.UnpackDictionary( new byte[] { 0xDF, 0x80, 0x00, 0x00, 0x00, 0xFF } );
+			Assert.Throws<MessageNotSupportedException>( () => Unpacking.UnpackDictionary( new byte[] { 0xDF, 0x80, 0x00, 0x00, 0x00, 0xFF } ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageNotSupportedException ) )]
 		public void TestUnpackBinary_BinaryLengthIsGreaterThanInt32MaxValue()
 		{
-			Unpacking.UnpackBinary( new byte[] { 0xDB, 0x80, 0x00, 0x00, 0x00, 0xFF } );
+			Assert.Throws<MessageNotSupportedException>( () => Unpacking.UnpackBinary( new byte[] { 0xDB, 0x80, 0x00, 0x00, 0x00, 0xFF } ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackBinary_Stream_ReadOnlyStream()
 		{
 			using ( var stream = new WrapperStream( new MemoryStream(), canRead: false ) )
 			{
-				Unpacking.UnpackBinary( stream );
+				Assert.Throws<ArgumentException>( () => Unpacking.UnpackBinary( stream ) );
 			}
 		}
 
@@ -95,24 +99,26 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackString_ByteArray_1ByteNonUtf8String_ExceptionInReaderOperation()
 		{
-			var dummy = Unpacking.UnpackString( new byte[] { 0xA1, 0xFF } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( new byte[] { 0xA1, 0xFF } ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackString_ByteArray_Null()
 		{
-			Unpacking.UnpackString( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackString( default( byte[] ) ) );
 		}
 
 
 		[Test]
 		public void TestUnpackString_ByteArray_Encoding_Empty_AsIsAndBounded()
 		{
+#if !NETFX_CORE
 			var result = Unpacking.UnpackString( new byte[] { 0xA0, 0xFF }, Encoding.UTF32 );
+#else
+			var result = Unpacking.UnpackString( new byte[] { 0xA0, 0xFF }, Encoding.UTF8 );
+#endif
 			Assert.That( result.ReadCount, Is.EqualTo( 1 ) );
 			Assert.That( result.Value, Is.EqualTo( String.Empty ) );
 		}
@@ -120,96 +126,93 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackString_ByteArray_Encoding_1Byte_AsIsAndBounded()
 		{
+#if !NETFX_CORE
 			var result = Unpacking.UnpackString( new byte[] { 0xA4, 0x00, 0x00, 0x00, ( byte )'A', 0xFF }, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) );
 			Assert.That( result.ReadCount, Is.EqualTo( 5 ) );
 			Assert.That( result.Value, Is.EqualTo( "A" ) );
+#else
+			var result = Unpacking.UnpackString( new byte[] { 0xA2, 0x00, ( byte )'A', 0xFF }, new UnicodeEncoding( bigEndian: true, byteOrderMark: false, throwOnInvalidBytes: true ) );
+			Assert.That( result.ReadCount, Is.EqualTo( 3 ) );
+			Assert.That( result.Value, Is.EqualTo( "A" ) );
+#endif
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackString_ByteArray_Encoding_1ByteNonSpecifiedString()
 		{
 #if MONO
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
+#elif !NETFX_CORE 
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F }, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) );
+#else
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( new byte[] { 0xA5, 0xF8, 0x88, 0x80, 0x80, 0x80 }, new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) ) );
 #endif
-			var dummy = Unpacking.UnpackString( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F }, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackString_ByteArray_ByteArrayIsNull()
 		{
-			Unpacking.UnpackString( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackString( default( byte[] ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackString_ByteArray_ByteArrayIsEmpty()
 		{
-			Unpacking.UnpackString( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackString( new byte[ 0 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackString_ByteArray_Int32_ByteArrayIsNull()
 		{
-			Unpacking.UnpackString( null, 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackString( null, 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackString_ByteArray_Int32_ByteArrayIsEmpty()
 		{
-			Unpacking.UnpackString( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackString( new byte[ 0 ], 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackString_ByteArray_Int32_OffsetIsTooBig()
 		{
-			Unpacking.UnpackString( new byte[] { 0x1 }, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackString( new byte[] { 0x1 }, 1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackString_ByteArray_Int32_OffsetIsNegative()
 		{
-			Unpacking.UnpackString( new byte[] { 0x1 }, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackString( new byte[] { 0x1 }, -1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackString_ByteArray_Int32_Encoding_ByteArrayIsNull()
 		{
-			Unpacking.UnpackString( null, 0, Encoding.UTF8 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackString( null, 0, Encoding.UTF8 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackString_ByteArray_Int32_Encoding_ByteArrayIsEmpty()
 		{
-			Unpacking.UnpackString( new byte[ 0 ], 0, Encoding.UTF8 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackString( new byte[ 0 ], 0, Encoding.UTF8 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackString_ByteArray_Int32_Encoding_OffsetIsTooBig()
 		{
-			Unpacking.UnpackString( new byte[] { 0x1 }, 1, Encoding.UTF8 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackString( new byte[] { 0x1 }, 1, Encoding.UTF8 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackString_ByteArray_Int32_Encoding_OffsetIsNegative()
 		{
-			Unpacking.UnpackString( new byte[] { 0x1 }, -1, Encoding.UTF8 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackString( new byte[] { 0x1 }, -1, Encoding.UTF8 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackString_ByteArray_Int32_Encoding_EncodingIsNull()
 		{
-			Unpacking.UnpackString( new byte[] { 0x1 }, 0, null );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackString( new byte[] { 0x1 }, 0, null ) );
 		}
 
 
@@ -236,20 +239,18 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackString_Stream_1ByteNonUtf8String()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xA1, 0xFF } ) )
 			{
-				var dummy = Unpacking.UnpackString( stream );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( stream ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackString_Stream_Null()
 		{
-			Unpacking.UnpackString( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackString( default( Stream ) ) );
 		}
 
 
@@ -258,7 +259,11 @@ namespace MsgPack
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xA0, 0xFF } ) )
 			{
+#if !NETFX_CORE
 				var result = Unpacking.UnpackString( stream, Encoding.UTF32 );
+#else
+				var result = Unpacking.UnpackString( stream, Encoding.UTF8 );
+#endif
 				Assert.That( stream.Position, Is.EqualTo( 1 ) );
 				Assert.That( result, Is.EqualTo( String.Empty ) );
 			}
@@ -267,40 +272,53 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackString_Stream_Encoding_1Byte_AsIsAndBounded()
 		{
+#if !NETFX_CORE
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x00, 0x00, 0x00, ( byte )'A', 0xFF } ) )
 			{
 				var result = Unpacking.UnpackString( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) );
 				Assert.That( stream.Position, Is.EqualTo( 5 ) );
 				Assert.That( result, Is.EqualTo( "A" ) );
 			}
+#else
+			using ( var stream = new MemoryStream( new byte[] { 0xA2, 0x00, ( byte )'A', 0xFF } ) )
+			{
+				var result = Unpacking.UnpackString( stream, new UnicodeEncoding( bigEndian: true, byteOrderMark: false, throwOnInvalidBytes: true ) );
+				Assert.That( stream.Position, Is.EqualTo( 3 ) );
+				Assert.That( result, Is.EqualTo( "A" ) );
+			}
+#endif
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackString_Stream_Encoding_1ByteNonSpecifiedString()
 		{
 #if MONO
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
 
+#if !NETFX_CORE
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F } ) )
 			{
-				var dummy = Unpacking.UnpackString( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) );
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) );
 			}
+#else
+			using ( var stream = new MemoryStream( new byte[] { 0xA5, 0xF8, 0x88, 0x80, 0x80, 0x80 } ) )
+			{
+				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( stream, new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) ) );
+			}
+#endif
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackString_Stream_Encoding_StreamIsNull()
 		{
-			Unpacking.UnpackString( default( Stream ), Encoding.UTF8 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackString( default( Stream ), Encoding.UTF8 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackString_Stream_Encoding_EncodingIsNull()
 		{
-			Unpacking.UnpackString( new MemoryStream( new byte[] { 0xA1, ( byte )'A' } ), null );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackString( new MemoryStream( new byte[] { 0xA1, ( byte )'A' } ), null ) );
 		}
 
 
@@ -322,6 +340,7 @@ namespace MsgPack
 			Assert.That( readCountExtra, Is.EqualTo( 0 ) );
 		}
 
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestUnpackByteStream_Stream_LengthIsGreaterThanInt32MaxValue_CanReadToEnd()
 		{
@@ -360,6 +379,7 @@ namespace MsgPack
 				File.Delete( filePath );
 			}
 		}
+#endif
 
 		[Test]
 		public void TestUnpackByteStream_Stream_Empty_AsIsAndBounded()
@@ -420,6 +440,7 @@ namespace MsgPack
 				Assert.That( Unpacking.UnpackInt32( stream ), Is.EqualTo( 0x57 ) );
 			}
 		}
+
 		[Test]
 		public void TestUnpackByteStream_Stream_SeekableStream_CanSeekIsTrue()
 		{
@@ -445,10 +466,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackByteStream_Stream_Null()
 		{
-			Unpacking.UnpackByteStream( null );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackByteStream( null ) );
 		}
 
 
@@ -499,23 +519,21 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( DecoderFallbackException ) )]
 		public void TestUnpackCharStream_Stream_1ByteNonUtf8String_ExceptionInReaderOperation()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xA1, 0xFF } ) )
 			{
 				using ( var result = Unpacking.UnpackCharStream( stream ) )
 				{
-					result.Read();
+					Assert.Throws<DecoderFallbackException>( () => result.Read() );
 				}
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackCharStream_Stream_Null()
 		{
-			Unpacking.UnpackCharStream( null );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackCharStream( null ) );
 		}
 
 
@@ -524,7 +542,11 @@ namespace MsgPack
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xA0, 0xFF } ) )
 			{
+#if !NETFX_CORE
 				using ( var result = Unpacking.UnpackCharStream( stream, Encoding.UTF32 ) )
+#else
+				using ( var result = Unpacking.UnpackCharStream( stream, Encoding.UTF8 ) )
+#endif
 				{
 					AssertStringReader( result, 0, String.Empty );
 				}
@@ -537,46 +559,63 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackCharStream_Stream_Encoding_1Byte_AsIsAndBounded()
 		{
+#if !NETFX_CORE
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x00, 0x00, 0x00, ( byte )'A', 0xFF } ) )
+#else
+			using ( var stream = new MemoryStream( new byte[] { 0xA2, 0x00, ( byte )'A', 0xFF } ) )
+#endif
 			{
+#if !NETFX_CORE
 				using ( var result = Unpacking.UnpackCharStream( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) )
 				{
 					AssertStringReader( result, 4, "A" );
 				}
-
+#else
+				using ( var result = Unpacking.UnpackCharStream( stream, new UnicodeEncoding( bigEndian: true, byteOrderMark: false, throwOnInvalidBytes: true ) ) )
+				{
+					AssertStringReader( result, 2, "A" );
+				}
+#endif
 				// Assert is valid position on unerlying stream.
 				Assert.That( Unpacking.UnpackInt32( stream ), Is.EqualTo( -1 ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( DecoderFallbackException ) )]
 		public void TestUnpackCharStream_Stream_Encoding_1ByteNonSpecifiedString_ExceptionInReaderOperation()
 		{
 #if MONO
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
+#if !NETFX_CORE
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F } ) )
 			{
 				using ( var result = Unpacking.UnpackCharStream( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) )
 				{
-					int dummy = result.Read();
+					Assert.Throws<DecoderFallbackException>( () => result.Read() );
 				}
 			}
+#else
+			using ( var stream = new MemoryStream( new byte[] { 0xA5, 0xF8, 0x88, 0x80, 0x80, 0x80 } ) )
+			{
+				using ( var result = Unpacking.UnpackCharStream( stream, new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) ) )
+				{
+					Assert.Throws<DecoderFallbackException>( () => result.Read() );
+				}
+			}
+#endif
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackCharStream_Stream_Encoding_StreamIsNull()
 		{
-			Unpacking.UnpackCharStream( null, Encoding.UTF8 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackCharStream( null, Encoding.UTF8 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackCharStream_Stream_Encoding_EncodingIsNull()
 		{
-			Unpacking.UnpackCharStream( new MemoryStream( new byte[] { 0xA1, ( byte )'A' } ), null );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackCharStream( new MemoryStream( new byte[] { 0xA1, ( byte )'A' } ), null ) );
 		}
 
 
@@ -597,45 +636,39 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackObject_ByteArray_ByteArrayIsNull()
 		{
-			Unpacking.UnpackObject( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackObject( default( byte[] ) ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackObject_ByteArray_ByteArrayIsEmpty()
 		{
-			Unpacking.UnpackObject( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackObject( new byte[ 0 ] ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackObject_ByteArray_Int32_ByteArrayIsNull()
 		{
-			Unpacking.UnpackObject( null, 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackObject( null, 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackObject_ByteArray_Int32_ByteArrayIsEmpty()
 		{
-			Unpacking.UnpackObject( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackObject( new byte[ 0 ], 0 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpackObject_ByteArray_Int32_OffsetIsTooBig()
 		{
-			Unpacking.UnpackObject( new byte[] { 0x1 }, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.UnpackObject( new byte[] { 0x1 }, 1 ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpackObject_ByteArray_Int32_OffsetIsNegative()
 		{
-			Unpacking.UnpackObject( new byte[] { 0x1 }, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.UnpackObject( new byte[] { 0x1 }, -1 ) );
 		}
 
 		[Test]
@@ -781,71 +814,62 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpackObject_Stream_Null()
 		{
-			Unpacking.UnpackObject( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.UnpackObject( default( Stream ) ) );
 		}
 
 
 		// Edge cases
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackInt32_NotNumeric()
 		{
-			Unpacking.UnpackInt32( new byte[] { 0x80 } );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackInt32( new byte[] { 0x80 } ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( UnpackException ) )]
 		public void TestUnpackInt32_Eof()
 		{
-			Unpacking.UnpackInt32( new byte[] { 0xD0 } );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackInt32( new byte[] { 0xD0 } ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( InvalidMessagePackStreamException ) )]
 		public void TestUnpackDictionary_KeyDuplicated()
 		{
-			Unpacking.UnpackDictionary( new byte[] { 0x82, 0x1, 0x0, 0x1, 0x0 } );
+			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackDictionary( new byte[] { 0x82, 0x1, 0x0, 0x1, 0x0 } ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( UnpackException ) )]
 		public void TestUnpackArray_Eof()
 		{
-			Unpacking.UnpackArray( new byte[] { 0x91 } );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackArray( new byte[] { 0x91 } ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( UnpackException ) )]
 		public void TestUnpackBinary_EofInHeader()
 		{
-			Unpacking.UnpackBinary( new byte[] { 0xDA, 0x1 } );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackBinary( new byte[] { 0xDA, 0x1 } ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( UnpackException ) )]
 		public void TestUnpackBinary_EofInBody()
 		{
-			Unpacking.UnpackBinary( new byte[] { 0xA1 } );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackBinary( new byte[] { 0xA1 } ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( UnpackException ) )]
 		public void TestUnpackByteStream_Empty()
 		{
-			Unpacking.UnpackByteStream( new MemoryStream() );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackByteStream( new MemoryStream() ) );
 		}
 
 		[Test]
-		[ExpectedException( typeof( UnpackException ) )]
 		public void TestUnpackByteStream_EofInHeader()
 		{
 			using ( var underlying = new MemoryStream( new byte[] { 0xDA, 0x1 } ) )
 			{
-				var dummy = Unpacking.UnpackByteStream( underlying );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackByteStream( underlying ) );
 			}
 		}
 
@@ -872,10 +896,9 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void TestUnpackByteStream_NotRaw()
 		{
-			Unpacking.UnpackByteStream( new MemoryStream( new byte[] { 0x80 } ) );
+			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackByteStream( new MemoryStream( new byte[] { 0x80 } ) ) );
 		}
 
 		[Test]
@@ -912,32 +935,29 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestUnpackBinaryResultStreamIsNotWriteable_Write_Fail()
 		{
 			using ( var target = CreateStreamForByteStreamTest() )
 			{
-				target.Write( new byte[] { 0x0 }, 0, 1 );
+				Assert.Throws<NotSupportedException>( () => target.Write( new byte[] { 0x0 }, 0, 1 ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestUnpackBinaryResultStreamIsNotWriteable_WriteByte_Fail()
 		{
 			using ( var target = CreateStreamForByteStreamTest() )
 			{
-				target.WriteByte( 0 );
+				Assert.Throws<NotSupportedException>( () => target.WriteByte( 0 ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestUnpackBinaryResultStreamIsNotWriteable_SetLength_Fail()
 		{
 			using ( var target = CreateStreamForByteStreamTest() )
 			{
-				target.SetLength( 1 );
+				Assert.Throws<NotSupportedException>( () => target.SetLength( 1 ) );
 			}
 		}
 
@@ -979,14 +999,13 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( IOException ) )]
 		public void TestSeekableByteStream_Seek_Minus1_Begin_Fail()
 		{
 			using ( var target = CreateStreamForByteStreamTest() )
 			{
 				// Forward.
 				target.ReadByte();
-				target.Seek( -1, SeekOrigin.Begin );
+				Assert.Throws<IOException>( () => target.Seek( -1, SeekOrigin.Begin ) );
 			}
 		}
 
@@ -1015,14 +1034,13 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( IOException ) )]
 		public void TestSeekableByteStream_setPosition_Minus1_Fail()
 		{
 			using ( var target = CreateStreamForByteStreamTest() )
 			{
 				// Forward.
 				target.ReadByte();
-				target.Position = -1;
+				Assert.Throws<IOException>( () => target.Position = -1 );
 			}
 		}
 
@@ -1075,14 +1093,13 @@ namespace MsgPack
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestSeekableByteStream_Seek_1_End_Fail()
 		{
 			using ( var target = CreateStreamForByteStreamTest() )
 			{
 				// Forward.
 				target.ReadByte();
-				target.Seek( 1, SeekOrigin.End );
+				Assert.Throws<NotSupportedException>( () => target.Seek( 1, SeekOrigin.End ) );
 			}
 		}
 
@@ -1100,32 +1117,29 @@ namespace MsgPack
 
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestUnseekableByteStream_Seek()
 		{
 			using ( var target = Unpacking.UnpackByteStream( new WrapperStream( new MemoryStream( new byte[] { 0xA1, 0xFF } ), canSeek: false ) ) )
 			{
-				target.Seek( 0, SeekOrigin.Current );
+				Assert.Throws<NotSupportedException>( () => target.Seek( 0, SeekOrigin.Current ) );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestUnseekableByteStream_getPosition()
 		{
 			using ( var target = Unpacking.UnpackByteStream( new WrapperStream( new MemoryStream( new byte[] { 0xA1, 0xFF } ), canSeek: false ) ) )
 			{
-				var dummy = target.Position;
+				Assert.Throws<NotSupportedException>( () => { var dummy = target.Position; } );
 			}
 		}
 
 		[Test]
-		[ExpectedException( typeof( NotSupportedException ) )]
 		public void TestUnseekableByteStream_setPosition()
 		{
 			using ( var target = Unpacking.UnpackByteStream( new WrapperStream( new MemoryStream( new byte[] { 0xA1, 0xFF } ), canSeek: false ) ) )
 			{
-				target.Position = 0;
+				Assert.Throws<NotSupportedException>( () => target.Position = 0 );
 			}
 		}
 

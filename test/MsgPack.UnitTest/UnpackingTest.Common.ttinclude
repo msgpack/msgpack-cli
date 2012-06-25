@@ -301,19 +301,17 @@ public static class TestData
 
 	public const string ErrorTemplate =
 		@"[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void Test{0}_ByteArray_{1}_Fail()
 		{{{{
-			Unpacking.{0}( {2} );
+			Assert.Throws<MessageTypeException>( () => Unpacking.{0}( {2} ) );
 		}}}}
 
 		[Test]
-		[ExpectedException( typeof( MessageTypeException ) )]
 		public void Test{0}_Stream_{1}_Fail()
 		{{{{
 			using( var buffer = new MemoryStream( {2} ) )
 			{{{{
-				Unpacking.{0}( buffer );
+				Assert.Throws<MessageTypeException>( () => Unpacking.{0}( buffer ) );
 			}}}}
 		}}}}
 
@@ -321,52 +319,45 @@ public static class TestData
 	
 	public const string ArgumentErrorTemplate =
 		@"[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpack{0}_ByteArray_Empty()
 		{{
-			Unpacking.Unpack{0}( new byte[ 0 ] );
+			Assert.Throws<ArgumentException>( () => Unpacking.Unpack{0}( new byte[ 0 ] ) );
 		}}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpack{0}_ByteArray_Null()
 		{{
-			Unpacking.Unpack{0}( default( byte[] ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.Unpack{0}( default( byte[] ) ) );
 		}}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpack{0}_ByteArray_Offset_Null()
 		{{
-			Unpacking.Unpack{0}( default( byte[] ), 0 );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.Unpack{0}( default( byte[] ), 0 ) );
 		}}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentOutOfRangeException ) )]
 		public void TestUnpack{0}_ByteArray_Offset_OffsetIsNegative()
 		{{
-			Unpacking.Unpack{0}( new byte[]{{ 0x1 }}, -1 );
+			Assert.Throws<ArgumentOutOfRangeException>( () => Unpacking.Unpack{0}( new byte[]{{ 0x1 }}, -1 ) );
 		}}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpack{0}_ByteArray_Offset_OffsetIsTooBig()
 		{{
-			Unpacking.Unpack{0}( new byte[]{{ 0x1 }}, 1 );
+			Assert.Throws<ArgumentException>( () => Unpacking.Unpack{0}( new byte[]{{ 0x1 }}, 1 ) );
 		}}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentException ) )]
 		public void TestUnpack{0}_ByteArray_Offset_Empty()
 		{{
-			Unpacking.Unpack{0}( new byte[ 0 ], 0 );
+			Assert.Throws<ArgumentException>( () => Unpacking.Unpack{0}( new byte[ 0 ], 0 ) );
 		}}
 
 		[Test]
-		[ExpectedException( typeof( ArgumentNullException ) )]
 		public void TestUnpack{0}_Stream_Null()
 		{{
-			Unpacking.Unpack{0}( default( Stream ) );
+			Assert.Throws<ArgumentNullException>( () => Unpacking.Unpack{0}( default( Stream ) ) );
 		}}";
 
 	public static readonly string[] ArrayErrorCases = 
