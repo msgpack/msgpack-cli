@@ -350,6 +350,7 @@ namespace MsgPack
 
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
+					Assert.That( subTreeUnpacker.Read(), "Failed to move to first body." );
 					// To be failed
 					Assert.Throws<InvalidOperationException>( () =>
 						{
