@@ -170,7 +170,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						{
 							Entry = item,
 							UnpackedLocal =
-								!EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
+								item.Member != null && !EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
 								? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
 								: null,
 							IsUnpackedLocal = unpackerIL.DeclareLocal( typeof( bool ), "is" + item.Contract.Name + "Unpacked" )
@@ -186,7 +186,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				unpackerIL.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
 				unpackerIL.EmitThrow();
 				unpackerIL.MarkLabel( endIf );
-				if ( items[ i ].UnpackedLocal == null )
+				if ( items[ i ].Entry.Member == null )
+				{
+					// Ignore undefined member -- Nop.
+				}
+				else if ( items[ i ].UnpackedLocal == null )
 				{
 					Emittion.EmitDeserializeCollectionValue( emitter, unpackerIL, 1, result, items[ i ].Entry.Member, items[ i ].Entry.Member.GetMemberValueType(), items[ i ].Entry.Contract.NilImplication );
 				}
@@ -232,7 +236,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						{
 							Entry = item,
 							UnpackedLocal =
-								!EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
+								item.Member != null && !EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
 								? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
 								: null,
 							IsUnpackedLocal = unpackerIL.DeclareLocal( typeof( bool ), "is" + item.Contract.Name + "Unpacked" )
@@ -278,6 +282,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			unpackerIL.EmitAnyStloc( memberName );
 			for ( int i = 0; i < items.Length; i++ )
 			{
+				if ( items[ i ].Entry.Contract.Name == null )
+				{
+					// skip undefined member
+					continue;
+				}
+
 				// TODO: binary comparison
 				unpackerIL.EmitAnyLdloc( memberName );
 				unpackerIL.EmitLdstr( items[ i ].Entry.Contract.Name );

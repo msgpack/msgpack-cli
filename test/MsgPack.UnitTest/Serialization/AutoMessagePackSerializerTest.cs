@@ -338,6 +338,38 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestDataMemberAttributeOrderWithOneBase()
+		{
+			var context = GetSerializationContext();
+			var value = new ComplexTypeWithOneBaseOrder();
+			var target = this.CreateTarget<ComplexTypeWithOneBaseOrder>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, value );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				Assert.That( unpacked.One, Is.EqualTo( value.One ) );
+				Assert.That( unpacked.Two, Is.EqualTo( value.Two ) );
+			}
+		}
+
+		[Test]
+		public void TestDataMemberAttributeOrderWithOneBaseDeserialize()
+		{
+			var context = GetSerializationContext();
+			context.SerializationMethod = SerializationMethod.Array;
+			var target = this.CreateTarget<ComplexTypeWithOneBaseOrder>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				buffer.Write( new byte[] { 0x93, 0xff, 10, 20 } );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				Assert.That( unpacked.One, Is.EqualTo( 10 ) );
+				Assert.That( unpacked.Two, Is.EqualTo( 20 ) );
+			}
+		}
+
+		[Test]
 		public void TestDataMemberAttributeNamedProperties()
 		{
 			var context = GetSerializationContext();
@@ -1121,15 +1153,5 @@ namespace MsgPack.Serialization
 				throw new NotImplementedException();
 			}
 		}
-
-		// TODO: RPC
-		// TCP send -> TCP notify -> UDP send -> UDP notify
-		// 0.1 Async TCP Comm
-		// 0.2 Error
-		// 0.3 IDL
-		// 0.4 UDP
-		// 0.5 Silverlight
-		// 0.6 Extensibility
-		// 0.7 Improve error handling
 	}
 }

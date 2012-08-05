@@ -41,6 +41,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			foreach ( var entry in entries )
 			{
+				if ( entry.Member == null )
+				{
+					// skip undefined member.
+					continue;
+				}
+
 				packerIL.EmitAnyLdarg( 1 );
 				packerIL.EmitLdstr( entry.Contract.Name );
 				packerIL.EmitAnyCall( Metadata._Packer.PackString );

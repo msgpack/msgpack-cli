@@ -41,27 +41,37 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			foreach ( var member in entries )
 			{
-				Emittion.EmitSerializeValue(
-					emitter,
-					packerIL,
-					1,
-					member.Member.GetMemberValueType(),
-					member.Member.Name,
-					member.Contract.NilImplication,
-					il =>
-					{
-						if ( typeof( TObject ).IsValueType )
+				if ( member.Member == null )
+				{
+					// missing member, always nil
+					packerIL.EmitAnyLdarg( 1 );
+					packerIL.EmitAnyCall( Metadata._Packer.PackNull );
+					packerIL.EmitPop();
+				}
+				else
+				{
+					Emittion.EmitSerializeValue(
+						emitter,
+						packerIL,
+						1,
+						member.Member.GetMemberValueType(),
+						member.Member.Name,
+						member.Contract.NilImplication,
+						il =>
 						{
-							il.EmitAnyLdarga( 2 );
-						}
-						else
-						{
-							il.EmitAnyLdarg( 2 );
-						}
+							if ( typeof( TObject ).IsValueType )
+							{
+								il.EmitAnyLdarga( 2 );
+							}
+							else
+							{
+								il.EmitAnyLdarg( 2 );
+							}
 
-						Emittion.EmitLoadValue( il, member.Member );
-					}
-				);
+							Emittion.EmitLoadValue( il, member.Member );
+						}
+					);
+				}
 			}
 
 			packerIL.EmitRet();
