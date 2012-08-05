@@ -230,6 +230,7 @@
     <Compile Include="Serialization\Reflection\TracingILGenerator.conveniences.cs" />
     <Compile Include="Serialization\Reflection\TracingILGenerator.cs" />
     <Compile Include="Serialization\Reflection\TracingILGenerator.emits.cs" />
+    <Compile Include="Serialization\SerializationCompatibilityOptions.cs" />
     <Compile Include="Serialization\SerializationMethod.cs" />
     <Compile Include="Serialization\EmittingSerializers\SerializationMethodGeneratorManager.cs" />
     <Compile Include="Serialization\SerializationMethodGeneratorOption.cs" />

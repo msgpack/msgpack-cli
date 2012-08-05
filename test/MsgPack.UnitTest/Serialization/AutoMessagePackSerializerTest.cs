@@ -354,6 +354,23 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestDataMemberAttributeOrderWithOneBase_ProtoBufCompatible()
+		{
+			var context = GetSerializationContext();
+			context.CompatibilityOptions.OneBoundDataMemberOrder = true;
+			var value = new ComplexTypeWithOneBaseOrder();
+			var target = this.CreateTarget<ComplexTypeWithOneBaseOrder>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, value );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				Assert.That( unpacked.One, Is.EqualTo( value.One ) );
+				Assert.That( unpacked.Two, Is.EqualTo( value.Two ) );
+			}
+		}
+
+		[Test]
 		public void TestDataMemberAttributeOrderWithOneBaseDeserialize()
 		{
 			var context = GetSerializationContext();
@@ -367,6 +384,34 @@ namespace MsgPack.Serialization
 				Assert.That( unpacked.One, Is.EqualTo( 10 ) );
 				Assert.That( unpacked.Two, Is.EqualTo( 20 ) );
 			}
+		}
+
+		[Test]
+		public void TestDataMemberAttributeOrderWithOneBaseDeserialize_ProtoBufCompatible()
+		{
+			var context = GetSerializationContext();
+			context.SerializationMethod = SerializationMethod.Array;
+			context.CompatibilityOptions.OneBoundDataMemberOrder = true;
+			var target = this.CreateTarget<ComplexTypeWithOneBaseOrder>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				buffer.Write( new byte[] { 0x92, 10, 20 } );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				Assert.That( unpacked.One, Is.EqualTo( 10 ) );
+				Assert.That( unpacked.Two, Is.EqualTo( 20 ) );
+			}
+		}
+
+		[Test]
+		public void TestDataMemberAttributeOrderWithZeroBase_ProtoBufCompatible_Fail()
+		{
+			var context = GetSerializationContext();
+			context.SerializationMethod = SerializationMethod.Array;
+			context.CompatibilityOptions.OneBoundDataMemberOrder = true;
+			Assert.Throws<NotSupportedException>(
+				() => this.CreateTarget<ComplexTypeWithOneBaseOrder>( context )
+			);
 		}
 
 		[Test]

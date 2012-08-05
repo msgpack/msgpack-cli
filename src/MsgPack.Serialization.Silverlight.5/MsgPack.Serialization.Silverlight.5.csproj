@@ -326,6 +326,9 @@
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
       <Link>Serialization\ReflectionExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationCompatibilityOptions.cs">
+      <Link>Serialization\SerializationCompatibilityOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>
     </Compile>

@@ -81,6 +81,24 @@ namespace MsgPack.Serialization
 			set { this._emitterFlavor = value; }
 		}
 
+		private readonly SerializationCompatibilityOptions _compatibilityOptions;
+
+		/// <summary>
+		///		Gets the compatibility options.
+		/// </summary>
+		/// <value>
+		///		The <see cref="SerializationCompatibilityOptions"/> which stores compatibility options. This value will not be <c>null</c>.
+		/// </value>
+		public SerializationCompatibilityOptions CompatibilityOptions
+		{
+			get
+			{
+				Contract.Ensures( Contract.Result<SerializationCompatibilityOptions>() != null );
+
+				return this._compatibilityOptions;
+			}
+		}
+
 		private SerializationMethod _serializationMethod;
 
 		/// <summary>
@@ -168,6 +186,7 @@ namespace MsgPack.Serialization
 		{
 			Contract.Requires( serializers != null );
 
+			this._compatibilityOptions = new SerializationCompatibilityOptions();
 			this._serializers = serializers;
 #if SILVERLIGHT
 			this._typeLock = new object();
@@ -198,7 +217,7 @@ namespace MsgPack.Serialization
 				bool lockTaken = false;
 				try
 				{
-					try {}
+					try { }
 					finally
 					{
 #if SILVERLIGHT
