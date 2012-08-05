@@ -37,16 +37,9 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class MapFieldBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
-		private static readonly SerializationContext _defaultContext = CreateContext();
-
-		private static SerializationContext CreateContext()
-		{
-			return new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.FieldBased };
-		}
-
 		protected override SerializationContext GetSerializationContext()
 		{
-			return ReuseContext ? _defaultContext : CreateContext();
+			return new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.FieldBased };
 		}
 
 		protected override MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
@@ -58,17 +51,11 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class ArrayFieldBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
-		private static readonly SerializationContext _defaultContext = CreateContext();
-
-		private static SerializationContext CreateContext()
+		protected override SerializationContext GetSerializationContext()
 		{
 			return new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.FieldBased };
 		}
 
-		protected override SerializationContext GetSerializationContext()
-		{
-			return ReuseContext ? _defaultContext : CreateContext();
-		}
 		protected override MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
 			return new AutoMessagePackSerializer<T>( context, c => new ArrayEmittingSerializerBuilder<T>( c ) );
@@ -78,16 +65,9 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class MapContextBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
-		private static readonly SerializationContext _defaultContext = CreateContext();
-
-		private static SerializationContext CreateContext()
-		{
-			return new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.ContextBased };
-		}
-
 		protected override SerializationContext GetSerializationContext()
 		{
-			return ReuseContext ? _defaultContext : CreateContext();
+			return new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.ContextBased };
 		}
 
 		protected override MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
@@ -99,16 +79,9 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class ArrayContextBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
-		private static readonly SerializationContext _defaultContext = CreateContext();
-
-		private static SerializationContext CreateContext()
-		{
-			return new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ContextBased };
-		}
-
 		protected override SerializationContext GetSerializationContext()
 		{
-			return ReuseContext ? _defaultContext : CreateContext();
+			return new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ContextBased };
 		}
 
 		protected override MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )

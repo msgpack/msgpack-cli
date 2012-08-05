@@ -51,8 +51,6 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE
 		private static bool _traceOn = false;
 #endif
-		protected static bool ReuseContext = true;
-
 		protected abstract SerializationContext GetSerializationContext();
 
 #if !NETFX_CORE
