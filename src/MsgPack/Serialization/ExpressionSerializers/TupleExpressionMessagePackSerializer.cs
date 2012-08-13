@@ -39,7 +39,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		public TupleExpressionMessagePackSerializer( SerializationContext context )
 		{
-			Contract.Assert( typeof( T ).Name.StartsWith( "System.Tuple`", StringComparison.Ordinal ), typeof( T ) + " is not Tuple<...>" );
+			Contract.Assert( typeof( T ).FullName.StartsWith( "System.Tuple`", StringComparison.Ordinal ), typeof( T ) + " is not Tuple<...>" );
 			var flattenTypes = TupleItems.GetTupleItemTypes( typeof( T ) );
 			this._itemSerializers = flattenTypes.Select( t => context.GetSerializer( t ) ).ToArray();
 
