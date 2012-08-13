@@ -201,7 +201,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private static Expression CreateForEachTry( ParameterExpression enumeratorVariable, CollectionTraits traits, Func<Expression, Expression> bodyCreator )
 		{
 			var endLoop = Expression.Label( "END_FOREACH" );
-			var currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" ) ?? Metadata._IEnumerator.Current;
+			var currentProperty =
+				traits.GetEnumeratorMethod.ReturnType == typeof( IDictionaryEnumerator )
+				? traits.GetEnumeratorMethod.ReturnType.GetProperty( "Entry" )
+				: traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" ) ?? Metadata._IEnumerator.Current;
 
 			return
 				Expression.Loop(
