@@ -19,7 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Text;
@@ -34,6 +37,8 @@ namespace MsgPack
 #if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
+	[DebuggerDisplay( "{DebuggerDisplayString}" )]
+	[DebuggerTypeProxy( typeof( MessagePackStringDebuggerProxy ) )]
 	internal sealed class MessagePackString
 	{
 		// TODO: CLOB support?
@@ -41,6 +46,11 @@ namespace MsgPack
 		private string _decoded;
 		private DecoderFallbackException _decodingError;
 		private BinaryType _type;
+
+		private string DebuggerDisplayString
+		{
+			get { return new MessagePackStringDebuggerProxy( this ).Value; }
+		}
 
 		public MessagePackString( string decoded )
 		{
@@ -53,6 +63,15 @@ namespace MsgPack
 		{
 			Contract.Assert( encoded != null );
 			this._encoded = encoded;
+		}
+
+		// Copy constructor for debugger proxy
+		private MessagePackString( MessagePackString other )
+		{
+			this._encoded = other._encoded;
+			this._decoded = other._decoded;
+			this._decodingError = other._decodingError;
+			this._type = other._type;
 		}
 
 		private void EncodeIfNeeded()
@@ -302,6 +321,124 @@ namespace MsgPack
 			Unknwon = 0,
 			String,
 			Blob
+		}
+
+		internal sealed class MessagePackStringDebuggerProxy
+		{
+			private static readonly string[] _elipse = new[] { "..." };
+			private readonly MessagePackString _target;
+			private string _asByteArray;
+
+			public MessagePackStringDebuggerProxy( MessagePackString target )
+			{
+				this._target = new MessagePackString( target );
+			}
+
+			public string Value
+			{
+				get
+				{
+					var asByteArray = Interlocked.CompareExchange( ref this._asByteArray, null, null );
+					if ( asByteArray != null )
+					{
+						return asByteArray;
+					}
+
+					switch ( this._target._type )
+					{
+						case BinaryType.Blob:
+						{
+							return this.AsByteArray;
+						}
+						case BinaryType.String:
+						{
+							var result = this.AsString;
+							if ( result == null )
+							{
+								return this.AsByteArray;
+							}
+							else
+							{
+								return result;
+							}
+						}
+						default:
+						{
+							this._target.DecodeIfNeeded();
+							goto case BinaryType.String;
+						}
+					}
+				}
+			}
+
+			public string AsString
+			{
+				get
+				{
+					var value = this._target.TryGetString();
+					if ( value == null )
+					{
+						return value;
+					}
+
+					if ( !MustBeString( value ) )
+					{
+						this.CreateByteArrayString();
+						return null;
+					}
+
+					return value;
+				}
+			}
+
+			private static bool MustBeString( string value )
+			{
+				foreach ( var c in value.Take( 128 ) )
+				{
+					if ( c < 0x20 && ( c != 0x9 && c != 0xA && c != 0xD ) )
+					{
+						return false;
+					}
+					else if ( 0x7E < c && c < 0xA0 )
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
+
+			public string AsByteArray
+			{
+				get
+				{
+					var value = Interlocked.CompareExchange( ref this._asByteArray, null, null );
+					if ( value == null )
+					{
+						value = this.CreateByteArrayString();
+					}
+
+					return value;
+				}
+			}
+
+			private string CreateByteArrayString()
+			{
+				var bytes = this._target.GetBytes();
+				var buffer = new StringBuilder( ( bytes.Length <= 128 ? bytes.Length * 3 : 128 * 3 + 3 ) + 4 );
+				buffer.Append( '[' );
+
+				foreach ( var b in bytes.Take( 128 ) )
+				{
+					buffer.Append( ' ' );
+					buffer.Append( b.ToString( "X2", CultureInfo.InvariantCulture ) );
+				}
+				buffer.Append( " ]" );
+
+				var value = buffer.ToString();
+				Interlocked.Exchange( ref this._asByteArray, value );
+				return value;
+			}
 		}
 	}
 }

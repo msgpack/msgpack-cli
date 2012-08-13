@@ -41,6 +41,7 @@ namespace MsgPack
 #if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
+	[DebuggerTypeProxy( typeof( DictionaryDebuggerProxy<,> ) )]
 	public partial class MessagePackObjectDictionary :
 		IDictionary<MessagePackObject, MessagePackObject>, IDictionary
 	{
