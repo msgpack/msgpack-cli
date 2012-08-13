@@ -127,6 +127,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							targetParameter,
 							valueParameter
 						).Compile()
+						: UnpackHelpers.IsReadOnlyAppendableCollectionMember( m.Member )
+						? default( Action<T, object> )
 						: Expression.Lambda<Action<T, object>>(
 							Expression.Throw(
 								Expression.New(
