@@ -316,8 +316,6 @@ namespace MsgPack
 		/// </returns>
 		protected abstract bool ReadCore();
 
-		// FIXME: Quota
-
 		/// <summary>
 		///		Gets <see cref="IEnumerator&lt;T&gt;"/> to enumerate <see cref="MessagePackObject"/> from source stream.
 		/// </summary>
