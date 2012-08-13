@@ -44,7 +44,6 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: Expression Based
 	[Timeout( 3000 )]
 	public abstract partial class AutoMessagePackSerializerTest
 	{

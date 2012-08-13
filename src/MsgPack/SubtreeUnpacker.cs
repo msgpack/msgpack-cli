@@ -25,7 +25,6 @@ using System.IO;
 
 namespace MsgPack
 {
-	// FIXME: ReadSubtree life cycle test.
 	// TODO: Expose base subtree unpacker as API
 	/// <summary>
 	///		Defines subtree unpacking unpacker.
