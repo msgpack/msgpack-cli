@@ -299,6 +299,9 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_String.cs">
       <Link>Serialization\Metadata\_String.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_Type.cs">
+      <Link>Serialization\Metadata\_Type.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Unpacker.cs">
       <Link>Serialization\Metadata\_Unpacker.cs</Link>
     </Compile>

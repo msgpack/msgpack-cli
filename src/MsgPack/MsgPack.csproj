@@ -181,6 +181,7 @@
     <Compile Include="Serialization\Metadata\_Nullable`1.cs" />
     <Compile Include="Serialization\Metadata\_KeyValuePair`2.cs" />
     <Compile Include="Serialization\Metadata\_DictionaryEntry.cs" />
+    <Compile Include="Serialization\Metadata\_Type.cs" />
     <Compile Include="Serialization\Metadata\_Unpacker.cs" />
     <Compile Include="Serialization\Metadata\_Packer.cs" />
     <Compile Include="Serialization\FromExpression.ToConstructor.cs">
