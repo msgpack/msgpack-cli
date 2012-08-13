@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	/// <typeparam name="T">The type of element.</typeparam>
 	internal class MapExpressionMessagePackSerializer<T> : MessagePackSerializer<T>
 #if !SILVERLIGHT
-		, IExpressionMessagePackSerializer
+, IExpressionMessagePackSerializer
 #endif
 	{
 		private readonly Func<T, int> _getCount;
@@ -48,7 +48,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private readonly IMessagePackSerializer _keySerializer;
 		private readonly IMessagePackSerializer _valueSerializer;
 		private readonly Action<Packer, T, IMessagePackSerializer, IMessagePackSerializer> _packToCore;
-		private readonly Action<Unpacker, T, IMessagePackSerializer, IMessagePackSerializer, int> _unpackToCore;
+		private readonly Action<Unpacker, T, IMessagePackSerializer, IMessagePackSerializer> _unpackToCore;
 		private readonly Func<int, T> _createInstanceWithCapacity;
 		private readonly Func<T> _createInstance;
 #if !SILVERLIGHT
@@ -61,8 +61,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			Contract.Assert( typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ), typeof( T ) + " is IEnumerable" );
 			Contract.Assert( traits.ElementType == typeof( DictionaryEntry ) || ( traits.ElementType.GetIsGenericType() && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) ), "Element type " + traits.ElementType + " is not KeyValuePair<TKey,TValue>." );
 			this._traits = traits;
-			this._keySerializer = context.GetSerializer( traits.ElementType.GetGenericArguments()[ 0 ] );
-			this._valueSerializer = context.GetSerializer( traits.ElementType.GetGenericArguments()[ 1 ] );
+			this._keySerializer = traits.ElementType.IsGenericType ? context.GetSerializer( traits.ElementType.GetGenericArguments()[ 0 ] ) : context.GetSerializer( typeof( MessagePackObject ) );
+			this._valueSerializer = traits.ElementType.IsGenericType ? context.GetSerializer( traits.ElementType.GetGenericArguments()[ 1 ] ) : context.GetSerializer( typeof( MessagePackObject ) );
 			this._getCount = ExpressionSerializerLogics.CreateGetCount<T>( traits );
 
 			var constructor = ExpressionSerializerLogics.GetCollectionConstructor<T>();
@@ -90,8 +90,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			var objectTreeParameter = Expression.Parameter( typeof( T ), "objectTree" );
 			var keySerializerParameter = Expression.Parameter( typeof( IMessagePackSerializer ), "keySerializer" );
 			var valueSerializerParameter = Expression.Parameter( typeof( IMessagePackSerializer ), "valueSerializer" );
-			var keyType = traits.ElementType.GetGenericArguments()[ 0 ];
-			var valueType = traits.ElementType.GetGenericArguments()[ 1 ];
+			var keyType = traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject );
+			var valueType = traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject );
 			var keySerializerType = typeof( MessagePackSerializer<> ).MakeGenericType( keyType );
 			var valueSerializerType = typeof( MessagePackSerializer<> ).MakeGenericType( valueType );
 
@@ -120,13 +120,17 @@ namespace MsgPack.Serialization.ExpressionSerializers
 										Expression.TypeAs( keySerializerParameter, keySerializerType ),
 										typeof( MessagePackSerializer<> ).MakeGenericType( keyType ).GetMethod( "PackTo" ),
 										packerParameter,
-										Expression.Property( elementVariable, traits.ElementType.GetProperty( "Key" ) )
+										traits.ElementType.IsGenericType
+										? Expression.Property( elementVariable, traits.ElementType.GetProperty( "Key" ) ) as Expression
+										: Expression.Unbox( Expression.Property( elementVariable, traits.ElementType.GetProperty( "Key" ) ), typeof( MessagePackObject ) )
 									),
 									Expression.Call(
 										Expression.TypeAs( valueSerializerParameter, valueSerializerType ),
 										typeof( MessagePackSerializer<> ).MakeGenericType( valueType ).GetMethod( "PackTo" ),
 										packerParameter,
-										Expression.Property( elementVariable, traits.ElementType.GetProperty( "Value" ) )
+										traits.ElementType.IsGenericType
+										? Expression.Property( elementVariable, traits.ElementType.GetProperty( "Value" ) ) as Expression
+										: Expression.Unbox( Expression.Property( elementVariable, traits.ElementType.GetProperty( "Value" ) ), typeof( MessagePackObject ) )
 									)
 								)
 						)
@@ -146,80 +150,39 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			var instanceParameter = Expression.Parameter( typeof( T ), "instance" );
 			var countParamter = Expression.Parameter( typeof( int ), "count" );
 
-			/*
-			 *	for ( int i = 0; i < count; i++ )
-			 *	{
-			 *		if ( !unpacker.Read() )
-			 *		{
-			 *			throw SerializationExceptions.NewMissingItem( i );
-			 *		}
-			 *	
-			 *		T key;
-			 *		if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
-			 *		{
-			 *			key = this.ElementSerializer.UnpackFrom( unpacker );
-			 *		}
-			 *		else
-			 *		{
-			 *			using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-			 *			{
-			 *				key = this.ElementSerializer.UnpackFrom( subtreeUnpacker );
-			 *			}
-			 *		}
-			 *	
-			 *		T value;
-			 *		if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
-			 *		{
-			 *			value = this.ElementSerializer.UnpackFrom( unpacker );
-			 *		}
-			 *		else
-			 *		{
-			 *			using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-			 *			{
-			 *				value = this.ElementSerializer.UnpackFrom( subtreeUnpacker );
-			 *			}
-			 *		}
-			 *		
-			 *		instance.Add( key, value );
-			 *	}
-			 */
-
-			var keyVariable = Expression.Variable( traits.ElementType.GetGenericArguments()[ 0 ], "key" );
-			var valueVariable = Expression.Variable( traits.ElementType.GetGenericArguments()[ 1 ], "value" );
-
-			var unpackToCore =
-				Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer, IMessagePackSerializer, int>>(
-					ExpressionSerializerLogics.For(
-						countParamter,
-						indexVariable =>
-							Expression.Block(
-								new[] { keyVariable, valueVariable },
-								Expression.IfThen(
-									Expression.IsFalse(
-										Expression.Call( unpackerParameter, Metadata._Unpacker.Read )
-									),
-									Expression.Throw(
-										Expression.Call( SerializationExceptions.NewMissingItemMethod, indexVariable )
-									)
-								),
-								Expression.Assign(
-									keyVariable,
-									ExpressionSerializerLogics.CreateUnpackItem( unpackerParameter, typeof( MessagePackSerializer<> ).MakeGenericType( keyType ).GetMethod( "UnpackFrom" ), keySerializerParameter, keySerializerType )
-								),
-								Expression.Assign(
-									valueVariable,
-									ExpressionSerializerLogics.CreateUnpackItem( unpackerParameter, typeof( MessagePackSerializer<> ).MakeGenericType( valueType ).GetMethod( "UnpackFrom" ), valueSerializerParameter, valueSerializerType )
-								),
-								Expression.Call(
-									instanceParameter,
-									traits.AddMethod,
-									keyVariable,
-									valueVariable
-								) as Expression
-							)
-					),
-					unpackerParameter, instanceParameter, keySerializerParameter, valueSerializerParameter, countParamter
-				);
+			Expression<Action<Unpacker, T, IMessagePackSerializer, IMessagePackSerializer>> unpackToCore;
+			if ( traits.ElementType.IsGenericType )
+			{
+				/*
+				 * UnpackHelpers.UnpackMapTo<TKey,TValue>( unpacker, keySerializer, valueSerializer, instance );
+				 */
+				unpackToCore =
+					Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer, IMessagePackSerializer>>(
+						Expression.Call(
+							Metadata._UnpackHelpers.UnpackMapTo_2.MakeGenericMethod( keyType, valueType ),
+							unpackerParameter,
+							Expression.TypeAs( keySerializerParameter, keySerializerType ),
+							Expression.TypeAs( valueSerializerParameter, valueSerializerType ),
+							instanceParameter
+						),
+						 unpackerParameter, instanceParameter, keySerializerParameter, valueSerializerParameter
+					);
+			}
+			else
+			{
+				/*
+				 * UnpackHelpers.UnpackNonGenericMapTo( unpacker, instance );
+				 */
+				unpackToCore =
+					Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer, IMessagePackSerializer>>(
+						Expression.Call(
+							Metadata._UnpackHelpers.UnpackNonGenericMapTo,
+							unpackerParameter,
+							instanceParameter
+						),
+						 unpackerParameter, instanceParameter, keySerializerParameter, valueSerializerParameter
+					);
+			}
 
 #if !SILVERLIGHT
 			if ( context.GeneratorOption == SerializationMethodGeneratorOption.CanDump )
@@ -245,7 +208,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
 		{
-			this._unpackToCore( unpacker, collection, this._keySerializer, this._valueSerializer, UnpackHelpers.GetItemsCount( unpacker ) );
+			this._unpackToCore( unpacker, collection, this._keySerializer, this._valueSerializer );
 		}
 
 #if !SILVERLIGHT
