@@ -38,9 +38,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	// FIXME: Add Expression Based
-	[TestFixture]
-	public class NilImplicationTest
+	public abstract class NilImplicationTest
 	{
 #if !NETFX_CORE
 		private static bool _traceOn = false;
@@ -200,7 +198,7 @@ namespace MsgPack.Serialization
 		}
 
 
-		private static void TestCollectionCore(
+		private void TestCollectionCore(
 			Action<NilImplicationCollectionTestTarget> adjuster,
 			Action<Packer, List<int>, List<int>, List<int>> packing,
 			Func<List<int>> memberDefault = null,
@@ -211,7 +209,7 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				var serializer = MessagePackSerializer.Create<NilImplicationCollectionTestTarget>( new SerializationContext() );
+				var serializer = MessagePackSerializer.Create<NilImplicationCollectionTestTarget>( this.CreateSerializationContext() );
 				var target = new NilImplicationCollectionTestTarget();
 
 				if ( adjuster != null )
@@ -240,6 +238,8 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
+
+		protected abstract SerializationContext CreateSerializationContext();
 				
 		[Test]
 		public void TestMemberDefault_Array_NilToDefault()
@@ -593,6 +593,33 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value1, Is.EqualTo( valueOfValue1 ) );
 				Assert.That( result.Value2, Is.EqualTo( valueOfValue2 ) );
 			}
+		}
+	}
+
+	[TestFixture]
+	public class NilImplicationOnFieldBasedEmittionFlavorTest : NilImplicationTest
+	{
+		protected override SerializationContext CreateSerializationContext()
+		{
+			return new SerializationContext() { EmitterFlavor = EmitterFlavor.FieldBased };
+		}
+	}
+
+	[TestFixture]
+	public class NilImplicationOnContextBasedEmittionFlavorTest : NilImplicationTest
+	{
+		protected override SerializationContext CreateSerializationContext()
+		{
+			return new SerializationContext() { EmitterFlavor = EmitterFlavor.ContextBased };
+		}
+	}
+
+	[TestFixture]
+	public class NilImplicationOnExpressionFlavorTest : NilImplicationTest
+	{
+		protected override SerializationContext CreateSerializationContext()
+		{
+			return new SerializationContext() { EmitterFlavor = EmitterFlavor.ExpressionBased };
 		}
 	}
 }
