@@ -30,6 +30,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 #endif
 using System.Text;
+using MsgPack.Serialization.Metadata;
+using System.Reflection;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -39,7 +41,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	/// <typeparam name="T">The type of element.</typeparam>
 	internal abstract class SequenceExpressionMessagePackSerializer<T> : MessagePackSerializer<T>
 #if !SILVERLIGHT
-		, IExpressionMessagePackSerializer
+, IExpressionMessagePackSerializer
 #endif
 	{
 		private readonly Func<T, int> _getCount;
@@ -53,7 +55,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private readonly IMessagePackSerializer _elementSerializer;
 
 		private readonly Action<Packer, T, IMessagePackSerializer> _packToCore;
-		private readonly Action<Unpacker, T, IMessagePackSerializer, int> _unpackToCore;
+		private readonly Action<Unpacker, T, IMessagePackSerializer> _unpackToCore;
 #if !SILVERLIGHT
 		private readonly Expression _packToCoreExpression;
 		private readonly Expression _unpackToCoreExpression;
@@ -153,38 +155,96 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			var itemVariable = Expression.Variable( traits.ElementType, "item" );
 			var unpackFrom = typeof( MessagePackSerializer<> ).MakeGenericType( traits.ElementType ).GetMethod( "UnpackFrom" );
 
-			var unpackToCore =
-				Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer, int>>(
-					ExpressionSerializerLogics.For(
-						countParamter,
-						indexVariable =>
-							Expression.Block(
-								new[] { itemVariable },
-								Expression.IfThen(
-									Expression.IsFalse(
-										Expression.Call( unpackerParameter, Metadata._Unpacker.Read )
-									),
-									Expression.Throw(
-										Expression.Call( SerializationExceptions.NewMissingItemMethod, indexVariable )
-									)
-								),
-								Expression.Assign(
-									itemVariable,
-									ExpressionSerializerLogics.CreateUnpackItem( unpackerParameter, unpackFrom, elementSerializerParameter, elementSerializerType )
-								),
-								traits.AddMethod == null
-								? Expression.Assign( // Array
-									Expression.ArrayAccess( instanceParameter, indexVariable ),
-									itemVariable
-								) : Expression.Call( // List
+			// FIXME: use UnpackHelper
+			Expression<Action<Unpacker, T, IMessagePackSerializer>> unpackToCore;
+
+			if ( typeof( T ).IsArray )
+			{
+				unpackToCore =
+					Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer>>(
+						Expression.Call(
+							null,
+							_UnpackHelpers.UnpackArrayTo_1.MakeGenericMethod( traits.ElementType ),
+							unpackerParameter,
+							Expression.TypeAs( elementSerializerParameter, typeof( MessagePackSerializer<> ).MakeGenericType( traits.ElementType ) ),
+							instanceParameter
+						),
+						unpackerParameter, instanceParameter, elementSerializerParameter
+					);
+			}
+			else if ( typeof( T ).GetIsGenericType() )
+			{
+				MethodInfo unpackCollectionToMethod;
+				Type delegateType;
+				if ( traits.AddMethod.ReturnType == null || traits.AddMethod.ReturnType == typeof( void ) )
+				{
+					unpackCollectionToMethod = _UnpackHelpers.UnpackCollectionTo_1.MakeGenericMethod( traits.ElementType );
+					delegateType = typeof( Action<> ).MakeGenericType( traits.ElementType );
+				}
+				else
+				{
+					unpackCollectionToMethod = _UnpackHelpers.UnpackCollectionTo_2.MakeGenericMethod( traits.ElementType, traits.AddMethod.ReturnType );
+					delegateType = typeof( Func<,> ).MakeGenericType( traits.ElementType, traits.AddMethod.ReturnType );
+				}
+
+				var itemParameter = Expression.Parameter( traits.ElementType, "item" );
+				unpackToCore =
+					Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer>>(
+						Expression.Call(
+							null,
+							unpackCollectionToMethod,
+							unpackerParameter,
+							Expression.TypeAs( elementSerializerParameter, typeof( MessagePackSerializer<> ).MakeGenericType( traits.ElementType ) ),
+							instanceParameter,
+							Expression.Lambda(
+								delegateType,
+								Expression.Call(
 									instanceParameter,
 									traits.AddMethod,
-									itemVariable
-								) as Expression
+									itemParameter
+								),
+								itemParameter
 							)
-					),
-					unpackerParameter, instanceParameter, elementSerializerParameter, countParamter
-				);
+						),
+						unpackerParameter, instanceParameter, elementSerializerParameter
+					);
+			}
+			else
+			{
+				MethodInfo unpackCollectionToMethod;
+				Type delegateType;
+				if ( traits.AddMethod.ReturnType == null || traits.AddMethod.ReturnType == typeof( void ) )
+				{
+					unpackCollectionToMethod = _UnpackHelpers.UnpackNonGenericCollectionTo;
+					delegateType = typeof( Action<> ).MakeGenericType( traits.ElementType );
+				}
+				else
+				{
+					unpackCollectionToMethod = _UnpackHelpers.UnpackNonGenericCollectionTo_1.MakeGenericMethod( traits.AddMethod.ReturnType );
+					delegateType = typeof( Func<,> ).MakeGenericType( traits.ElementType, traits.AddMethod.ReturnType );
+				}
+
+				var itemParameter = Expression.Parameter( traits.ElementType, "item" );
+				unpackToCore =
+					Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer>>(
+						Expression.Call(
+							null,
+							unpackCollectionToMethod,
+							unpackerParameter,
+							instanceParameter,
+							Expression.Lambda(
+								delegateType,
+								Expression.Call(
+									instanceParameter,
+									traits.AddMethod,
+									itemParameter
+								),
+								itemParameter
+							)
+						),
+						unpackerParameter, instanceParameter, elementSerializerParameter
+					);
+			}
 
 #if !SILVERLIGHT
 			if ( context.GeneratorOption == SerializationMethodGeneratorOption.CanDump )
@@ -203,7 +263,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
 		{
-			this._unpackToCore( unpacker, collection, this._elementSerializer, UnpackHelpers.GetItemsCount( unpacker ) );
+			this._unpackToCore( unpacker, collection, this._elementSerializer );
 		}
 
 #if !SILVERLIGHT
