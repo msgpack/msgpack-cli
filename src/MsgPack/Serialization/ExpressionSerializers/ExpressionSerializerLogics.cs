@@ -20,23 +20,33 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	internal static class ExpressionSerializerLogics
 	{
+		/// <summary>
+		///		Creates a delegate which returns collection count.
+		/// </summary>
+		/// <typeparam name="T">The type of collection element.</typeparam>
+		/// <param name="traits">The traits of the collection.</param>
+		/// <returns>A delegate which returns collection count.</returns>
 		public static Func<T, int> CreateGetCount<T>( CollectionTraits traits )
 		{
 			var targetParameter = Expression.Parameter( typeof( T ), "target" );
 			return Expression.Lambda<Func<T, int>>( CreateGetCountExpression<T>( traits, targetParameter ), targetParameter ).Compile();
 		}
 
+		/// <summary>
+		///		Creates an <see cref="Expression"/> which returns collection count.
+		/// </summary>
+		/// <typeparam name="T">The type of collection element.</typeparam>
+		/// <param name="traits">The traits of the collection.</param>
+		/// <param name="targetParameter">The parameter <see cref="Expression"/> which represents the target collection.</param>
+		/// <returns>An <see cref="Expression"/> which returns collection count.</returns>
 		public static Expression CreateGetCountExpression<T>( CollectionTraits traits, ParameterExpression targetParameter )
 		{
 			Expression body;
@@ -61,13 +71,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		/// <summary>
-		///		Creates <see cref="Expression"/> which represents using statement block.
+		///		Creates an <see cref="Expression"/> which represents using statement block.
 		/// </summary>
 		/// <param name="variableType">The type of variable. It must be assignable to <see cref="IDisposable"/>.</param>
 		/// <param name="expressionType">The type of entire expression. This can be <c>null</c>.</param>
 		/// <param name="right">The right of using declaration .</param>
 		/// <param name="bodyCreator">The body creator. The argument is left of using declaration.</param>
-		/// <returns><see cref="Expression"/> which represents using statement block.</returns>
+		/// <returns>An <see cref="Expression"/> which represents using statement block.</returns>
 		public static Expression Using( Type variableType, Type expressionType, Expression right, Func<Expression, Expression> bodyCreator )
 		{
 			Contract.Requires( typeof( IDisposable ).IsAssignableFrom( variableType ) );
@@ -102,11 +112,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		/// <summary>
-		///		Creates <see cref="Expression"/> which represents index based for block.
+		///		Creates an <see cref="Expression"/> which represents index based for block.
 		/// </summary>
 		/// <param name="count">The count which limits iteration.</param>
 		/// <param name="bodyCreator">The body creator. The argument is <c>i</c> index variable of for loop.</param>
-		/// <returns><see cref="Expression"/> which represents index based for block.</returns>
+		/// <returns>An <see cref="Expression"/> which represents index based for block.</returns>
 		public static Expression For( Expression count, Func<Expression, Expression> bodyCreator )
 		{
 			/*
@@ -143,12 +153,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		/// <summary>
-		///		Creates <see cref="Expression"/> which represents foreach block.
+		///		Creates an <see cref="Expression"/> which represents foreach block.
 		/// </summary>
 		/// <param name="collection">The collection to be enumerated.</param>
 		/// <param name="traits">The traits of the collection.</param>
 		/// <param name="bodyCreator">The body creator. The argument is <c>Current</c> property of the enumerator.</param>
-		/// <returns><see cref="Expression"/> which represents foreach block.</returns>
+		/// <returns>An <see cref="Expression"/> which represents foreach block.</returns>
 		public static Expression ForEach( Expression collection, CollectionTraits traits, Func<Expression, Expression> bodyCreator )
 		{
 			/*
@@ -236,52 +246,29 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		private static readonly Type[] _containsCapacity = new[] { typeof( int ) };
 
+		/// <summary>
+		///		Returns an appropriate <see cref="ConstructorInfo"/> of collection.
+		/// </summary>
+		/// <typeparam name="T">The type of the collection.</typeparam>
+		/// <returns>An appropriate <see cref="ConstructorInfo"/> of collection.</returns>
+		/// <remarks>
+		///		If the collection has <c>.ctor(int capacity)</c>, then it will be returned.
+		///		Otherwise, default constructor will be returned.
+		///		Note that this method cannot determine whether a single <see cref="Int32"/> parameter truely represents 'capacity' or not.
+		/// </remarks>
 		public static ConstructorInfo GetCollectionConstructor<T>()
 		{
 			return typeof( T ).GetConstructor( _containsCapacity ) ?? typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes );
 		}
 
-		[Obsolete]
-		public static Expression CreateUnpackItem( Expression unpackerParameter, Expression itemVariable, MethodInfo unpackFrom, Expression serializerParameter, Type serializerType )
-		{
-			return
-				Expression.IfThenElse(
-					Expression.AndAlso(
-						Expression.IsFalse(
-							Expression.Property( unpackerParameter, Metadata._Unpacker.IsArrayHeader )
-						),
-						Expression.IsFalse(
-							Expression.Property( unpackerParameter, Metadata._Unpacker.IsMapHeader )
-						)
-					),
-					Expression.Assign(
-						itemVariable,
-						Expression.Call(
-							Expression.TypeAs( serializerParameter, serializerType ),
-							unpackFrom,
-							unpackerParameter
-						)
-					),
-					ExpressionSerializerLogics.Using(
-						typeof( Unpacker ),
-						null,
-						Expression.Call(
-							unpackerParameter,
-							Metadata._Unpacker.ReadSubtree
-						),
-						usingVariable =>
-							Expression.Assign(
-								itemVariable,
-								Expression.Call(
-									Expression.TypeAs( serializerParameter, serializerType ),
-									unpackFrom,
-									usingVariable
-								)
-							)
-					)
-				);
-		}
-
+		/// <summary>
+		///		Creates an <see cref="Expression"/> which unpack an item.
+		/// </summary>
+		/// <param name="unpackerParameter">The parameter <see cref="Expression"/> which holds the unpacker.</param>
+		/// <param name="unpackFrom">The target <c>UnpackFrom</c> method of the serializer for item type.</param>
+		/// <param name="serializerParameter">The parameter <see cref="Expression"/> which has <c>UnpackFrom </c>will be invoked.</param>
+		/// <param name="serializerType">The type of the item serializer.</param>
+		/// <returns>An <see cref="Expression"/> which unpack an item.</returns>
 		public static Expression CreateUnpackItem( Expression unpackerParameter, MethodInfo unpackFrom, Expression serializerParameter, Type serializerType )
 		{
 			return
