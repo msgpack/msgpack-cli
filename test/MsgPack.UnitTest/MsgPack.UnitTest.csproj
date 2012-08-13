@@ -187,6 +187,7 @@
     </Compile>
     <Compile Include="Serialization\ComplexType.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContractWithOrder.cs" />
+    <Compile Include="Serialization\ComplexTypeWithOneBaseOrder.cs" />
     <Compile Include="Serialization\ComplexTypeWithoutAnyAttribute.cs" />
     <Compile Include="Serialization\ComplexTypeWithTwoMember.cs" />
     <Compile Include="Serialization\CompositeTest.cs" />
