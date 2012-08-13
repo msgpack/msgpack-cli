@@ -519,9 +519,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 				case NilImplication.Prohibit:
 				{
 					/*
+					 * // for Prohibit
 					 * if( unpacker.Data.Value.IsNil )
 					 * {
 					 *		throw SerializationEceptions.NewProhibitNullException( "..." );
+					 * }
+					 * 
+					 * // for Null, and 
+					 * if( unpacker.Data.Value.IsNil )
+					 * {
+					 *		throw SerializationEceptions.NewReadOnlyMemberItemsMustNotBeNullMethod( "..." );
 					 * }
 					 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
@@ -543,6 +550,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					}
 					else
 					{
+						// Because target member is readonly collection, so the member will not be null if packed value was nil.
 						il.EmitAnyCall( SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNullMethod );
 					}
 					il.EmitThrow();
