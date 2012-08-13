@@ -35,25 +35,54 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		public ListExpressionMessagePackSerializer( SerializationContext context, CollectionTraits traits )
 			: base( context, traits )
 		{
-			var constructor = ExpressionSerializerLogics.GetCollectionConstructor<T>();
-			if ( constructor.GetParameters().Length == 1 )
+			if ( typeof( T ).IsArray )
 			{
-				this._createInstance = null;
-
-				var capacityParameter = Expression.Parameter( typeof( int ), "parameter" );
+				var capacityParameter = Expression.Parameter( typeof( int ), "length" );
 				this._createInstanceWithCapacity =
 					Expression.Lambda<Func<int, T>>(
-						Expression.New( constructor, capacityParameter ),
-						capacityParameter
-					).Compile();
+							Expression.NewArrayBounds( typeof( T ).GetElementType(), capacityParameter ),
+							capacityParameter
+						).Compile();
+				this._createInstance = null;
 			}
-			else
+			else if ( typeof( T ).GetIsValueType() )
 			{
 				this._createInstanceWithCapacity = null;
 				this._createInstance =
 					Expression.Lambda<Func<T>>(
-						Expression.New( constructor )
+						Expression.New( typeof( T ) )
 					).Compile();
+			}
+			else
+			{
+				var constructor = ExpressionSerializerLogics.GetCollectionConstructor<T>();
+				if ( constructor == null )
+				{
+					this._createInstance = () => { throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) ); };
+					this._createInstanceWithCapacity = null;
+				}
+				else
+				{
+					if ( constructor.GetParameters().Length == 1 )
+					{
+						this._createInstance = null;
+
+						var capacityParameter = Expression.Parameter( typeof( int ), "parameter" );
+						this._createInstanceWithCapacity =
+							Expression.Lambda<Func<int, T>>(
+								Expression.New( constructor, capacityParameter ),
+								capacityParameter
+							).Compile();
+					}
+					else
+					{
+						this._createInstanceWithCapacity = null;
+						this._createInstance =
+							Expression.Lambda<Func<T>>(
+								Expression.New( constructor )
+							).Compile();
+					}
+				}
 			}
 		}
 
