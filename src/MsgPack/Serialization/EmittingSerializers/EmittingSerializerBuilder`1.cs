@@ -170,7 +170,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						{
 							Entry = item,
 							UnpackedLocal =
-								item.Member != null && !EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
+								item.Member != null && !UnpackHelpers.IsReadOnlyAppendableCollectionMember( item.Member )
 								? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
 								: null,
 							IsUnpackedLocal = unpackerIL.DeclareLocal( typeof( bool ), "is" + item.Contract.Name + "Unpacked" )
@@ -236,7 +236,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						{
 							Entry = item,
 							UnpackedLocal =
-								item.Member != null && !EmittingSerializerBuilderLogics.IsReadOnlyAppendableCollectionMember( item.Member )
+								item.Member != null && !UnpackHelpers.IsReadOnlyAppendableCollectionMember( item.Member )
 								? unpackerIL.DeclareLocal( item.Member.GetMemberValueType(), item.Contract.Name )
 								: null,
 							IsUnpackedLocal = unpackerIL.DeclareLocal( typeof( bool ), "is" + item.Contract.Name + "Unpacked" )

@@ -816,27 +816,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		#region -- Miscs --
 
-		public static bool IsReadOnlyAppendableCollectionMember( MemberInfo memberInfo )
-		{
-			Contract.Requires( memberInfo != null );
-
-			if ( memberInfo.CanSetValue() )
-			{
-				// Not read only
-				return false;
-			}
-
-			Type memberValueType = memberInfo.GetMemberValueType();
-			if ( memberValueType.IsArray )
-			{
-				// Not appendable
-				return false;
-			}
-
-			CollectionTraits traits = memberValueType.GetCollectionTraits();
-			return traits.CollectionType != CollectionKind.NotCollection && traits.AddMethod != null;
-		}
-
 		private static void EmitLoadTarget( Type targetType, TracingILGenerator il, int parameterIndex )
 		{
 			if ( targetType.IsValueType )

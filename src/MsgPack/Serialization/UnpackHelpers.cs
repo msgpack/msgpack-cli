@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
+using System.Reflection;
 using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization
@@ -526,5 +527,27 @@ namespace MsgPack.Serialization
 			int count = unchecked( ( int )rawItemsCount );
 			return count;
 		}
+
+		internal static bool IsReadOnlyAppendableCollectionMember( MemberInfo memberInfo )
+		{
+			Contract.Requires( memberInfo != null );
+
+			if ( memberInfo.CanSetValue() )
+			{
+				// Not read only
+				return false;
+			}
+
+			Type memberValueType = memberInfo.GetMemberValueType();
+			if ( memberValueType.IsArray )
+			{
+				// Not appendable
+				return false;
+			}
+
+			CollectionTraits traits = memberValueType.GetCollectionTraits();
+			return traits.CollectionType != CollectionKind.NotCollection && traits.AddMethod != null;
+		}
+
 	}
 }
