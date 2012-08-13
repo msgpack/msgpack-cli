@@ -27,6 +27,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
+// FIXME: Unify collection/dictionary handling between emit and expression tree to improve quality and reduce maintenance costs.
+
 namespace MsgPack.Serialization.ExpressionSerializers
 {
 	/// <summary>
@@ -98,7 +100,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._memberSetters =
 				members.Select(
 					m =>
-						CanWrite( m.Member )
+						m.Member.CanSetValue()
 						? Expression.Lambda<Action<T, object>>(
 							Expression.Assign(
 								Expression.PropertyOrField(
@@ -148,20 +150,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							valueParameter
 						).Compile()
 				).ToArray();
-		}
-
-		private static bool CanWrite( MemberInfo member )
-		{
-			PropertyInfo asProperty = member as PropertyInfo;
-			if ( asProperty != null )
-			{
-				return asProperty.CanWrite;
-			}
-			else
-			{
-				var asFieldInfo = member as FieldInfo;
-				return !asFieldInfo.IsInitOnly && !asFieldInfo.IsLiteral;
-			}
 		}
 
 		protected internal override T UnpackFromCore( Unpacker unpacker )
