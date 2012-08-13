@@ -407,7 +407,7 @@ namespace MsgPack.Serialization
 			context.SerializationMethod = SerializationMethod.Array;
 			context.CompatibilityOptions.OneBoundDataMemberOrder = true;
 			Assert.Throws<NotSupportedException>(
-				() => this.CreateTarget<ComplexTypeWithOneBaseOrder>( context )
+				() => this.CreateTarget<ComplexTypeWithTwoMember>( context )
 			);
 		}
 
