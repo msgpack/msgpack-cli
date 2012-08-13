@@ -89,9 +89,17 @@ namespace MsgPack.Serialization
 			else
 			{
 				// ID order.
+
+				Contract.Assert( entries[ 0 ].Contract.Id >= 0 );
+
+				if ( this.Context.CompatibilityOptions.OneBoundDataMemberOrder && entries[ 0 ].Contract.Id == 0 )
+				{
+					throw new NotSupportedException( "Cannot specify order value 0 on DataMemberAttribute when SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder is set to true." );
+				} 
+				
 				var maxId = entries.Max( item => item.Contract.Id );
 				var result = new List<SerializingMember>( maxId + 1 );
-				for ( int source = 0, destination = 0; source < entries.Length; source++, destination++ )
+				for ( int source = 0, destination = this.Context.CompatibilityOptions.OneBoundDataMemberOrder ? 1 : 0; source < entries.Length; source++, destination++ )
 				{
 					Contract.Assert( entries[ source ].Contract.Id >= 0 );
 
