@@ -222,7 +222,30 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					continue;
 				}
 
-				this._memberSetters[ i ]( instance, this.MemberSerializers[ i ].UnpackFrom( unpacker ) );
+				if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						this.UnpackMemberInArray( subtreeUnpacker, instance, i );
+					}
+				}
+				else
+				{
+					this.UnpackMemberInArray( unpacker, instance, i );
+				}
+			}
+		}
+
+		private void UnpackMemberInArray( Unpacker unpacker, T instance, int i )
+		{
+			if ( this._memberSetters[ i ] == null )
+			{
+				// Use null as marker because index mapping cannot be constructed in the constructor.
+				this._memberSerializers[ i ].UnpackTo( unpacker, this._memberGetters[ i ]( instance ) );
+			}
+			else
+			{
+				this._memberSetters[ i ]( instance, this._memberSerializers[ i ].UnpackFrom( unpacker ) );
 			}
 		}
 
@@ -276,7 +299,30 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					}
 				}
 
-				this._memberSetters[ index ]( instance, this.MemberSerializers[ index ].UnpackFrom( unpacker ) );
+				if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+				{
+					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+					{
+						this.UnpackMemberInMap( subtreeUnpacker, instance, index );
+					}
+				}
+				else
+				{
+					this.UnpackMemberInMap( unpacker, instance, index );
+				} 
+			}
+		}
+
+		private void UnpackMemberInMap( Unpacker unpacker, T instance, int index )
+		{
+			if ( this._memberSetters[ index ] == null )
+			{
+				// Use null as marker because index mapping cannot be constructed in the constructor.
+				this._memberSerializers[ index ].UnpackTo( unpacker, this._memberGetters[ index ]( instance ) );
+			}
+			else
+			{
+				this._memberSetters[ index ]( instance, this._memberSerializers[ index ].UnpackFrom( unpacker ) );
 			}
 		}
 
