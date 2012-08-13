@@ -113,10 +113,16 @@ namespace MsgPack.Serialization.ExpressionSerializers
 											null,
 											SerializationExceptions.NewValueTypeCannotBeNull3Method,
 											Expression.Constant( m.Member.Name ),
-											Expression.Quote(
-											Expression.Constant( m.Member.GetMemberValueType() ) ),
-											Expression.Quote(
-											Expression.Constant( m.Member.DeclaringType ) )
+											Expression.Call( // Using RuntimeTypeHandle to avoid WinRT expression tree issue.
+												null,
+												Metadata._Type.GetTypeFromHandle,
+												Expression.Constant( m.Member.GetMemberValueType().TypeHandle )
+											),
+											Expression.Call( // Using RuntimeTypeHandle to avoid WinRT expression tree issue.
+												null,
+												Metadata._Type.GetTypeFromHandle,
+												Expression.Constant( m.Member.DeclaringType.TypeHandle )
+											)
 										),
 										m.Member.GetMemberValueType()
 									),
