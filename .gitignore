@@ -3,8 +3,10 @@
 *.csproj.user
 *.pidb
 *.nupkg
+*.shfbproj_*
 bin/
 Bin/
+Help*/
 lib/
 local/
 obj/
