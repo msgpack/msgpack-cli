@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<ProjectSync>
+  <Project Name="MsgPack.Mono" Base="MsgPack">
+    <Excluding>
+      <Exclude Path="Properties\AssemblyInfo.cs" />
+    </Excluding>
+  </Project>
+  <Project Name="MsgPack.WinRT" Base="MsgPack">
+    <Excluding>
+      <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude Path="Serialization\*" />
+    </Excluding>
+  </Project>
+  <Project Name="MsgPack.Serialization.WinRT" Base="MsgPack">
+    <Excluding>
+      <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude Path="*.cs" />
+      <Exclude Path="Serialization\EmittingSerializers\*" />
+    </Excluding>
+  </Project>
+  <Project Name="MsgPack.Silverlight.4" Base="MsgPack">
+    <Excluding>
+      <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude Path="Serialization\*" />
+    </Excluding>
+  </Project>
+  <Project Name="MsgPack.Serialization.Silverlight.4" Base="MsgPack">
+    <Excluding>
+      <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude Path="*.cs" />
+      <Exclude Path="Serialization\LockRecursionPolicy.cs" />
+      <Exclude Path="Serialization\ReaderWriterLockSlim.cs" />
+      <Exclude Path="Serialization\SourceLevels.cs" />
+      <Exclude Path="Serialization\SourceSwitch.cs" />
+      <Exclude Path="Serialization\TraceEventType.cs" />
+      <Exclude Path="Serialization\TraceSource.cs" />
+    </Excluding>
+  </Project>
+  <Project Name="MsgPack.Silverlight.5" Base="MsgPack.Silverlight.4">
+    <Excluding>
+      <Exclude Path="Properties\AssemblyInfo.cs" />
+    </Excluding>
+  </Project>
+  <Project Name="MsgPack.Serialization.Silverlight.5" Base="MsgPack.Serialization.Silverlight.4">
+    <Excluding>
+      <Exclude Path="Properties\AssemblyInfo.cs" />
+    </Excluding>
+  </Project>
+  <Project Name="MsgPack.WindowsPhone.7.1" Base="MsgPack">
+    <Excluding>
+      <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude Path="Contract.cs" />
+      <Exclude Path="Delegates.cs" />
+      <Exclude Path="Tuple`n.cs" />
+      <Exclude Path="Serialization\*" />
+    </Excluding>
+  </Project>
+  <Project Name="MsgPack.Serialization.WindowsPhone.7.1" Base="MsgPack">
+    <Excluding>
+      <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude Path="*.cs" />
+      <Exclude Path="Serialization\ExpressionSerializers\*" />
+    </Excluding>
+  </Project>
+</ProjectSync>
