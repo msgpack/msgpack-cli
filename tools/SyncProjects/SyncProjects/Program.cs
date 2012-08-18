@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
+using System.Globalization;
 using System.IO;
-using System.Xml;
-using System.Text.RegularExpressions;
-using NDesk.Options;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
+using NDesk.Options;
 
 namespace SyncProjects
 {
 	class Program
 	{
-		private const string _ns = "{http://schemas.microsoft.com/developer/msbuild/2003}";
+		private const string Ns = "{http://schemas.microsoft.com/developer/msbuild/2003}";
 
 		static int Main( string[] args )
 		{
@@ -23,7 +23,7 @@ namespace SyncProjects
 			bool help = false;
 
 			var options =
-				new OptionSet()
+				new OptionSet
 				{
 					{ "d|def=", "File path to synchronization definition. Default: Sync.xml", v => file = v },
 					{ "s|src=", "File path to base directory of source tree. Default: src" + Path.DirectorySeparatorChar, v => sourceBasePath = v },
@@ -55,12 +55,12 @@ namespace SyncProjects
 			}
 		}
 
-		private static readonly XElement _emptyExcludes = new XElement( "Excludes" );
+		private static readonly XElement EmptyExcludes = new XElement( "Excludes" );
 
 		private static void SynchronizeProjects( string syncFilePath, string sourceBasePath, string projectFileExtension )
 		{
 			var sync = XDocument.Load( syncFilePath );
-			if ( sync.Root.Name.LocalName != "ProjectSync" )
+			if ( sync.Root == null || sync.Root.Name.LocalName != "ProjectSync" )
 			{
 				throw new XmlException( "Invalid sync file." );
 			}
@@ -72,30 +72,54 @@ namespace SyncProjects
 						{
 							Name = p.Attribute( "Name" ),
 							Base = p.Attribute( "Base" ),
+							Includes =
+								p.Elements( "Include" )
+								.Select( ToPattern ).Where( ex => ex != null ).ToArray(),
 							Excludes =
-								( p.Element( "Excludes" ) ?? _emptyExcludes )
-								.Elements( "Exclude" )
-								.Select( e => ToExcluding( e ) ).Where( ex => ex != null ).ToArray()
+								p.Elements( "Exclude" )
+								.Select( ToPattern ).Where( ex => ex != null ).ToArray()
 						}
 					) )
 			{
 				var projectFilePath = Path.Combine( sourceBasePath, project.Name.Value, project.Name.Value + projectFileExtension );
-				var projectXml = XDocument.Load( projectFilePath );
-				if ( projectXml.Root.Name.LocalName != "Project" )
+				var projectXml = XDocument.Load( projectFilePath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo );
+				if ( projectXml.Root == null || projectXml.Root.Name.LocalName != "Project" )
 				{
-					throw new XmlException( "Invalid project file :" + projectXml.BaseUri );
+					throw new XmlException( "Invalid project file :" + projectFilePath );
 				}
 
-				var baseProjectXml = XDocument.Load( Path.Combine( sourceBasePath, project.Base.Value, project.Base.Value + projectFileExtension ) );
-				if ( baseProjectXml.Root.Name.LocalName != "Project" )
+				var baseProjectFilePath = Path.Combine( sourceBasePath, project.Base.Value, project.Base.Value + projectFileExtension );
+				var baseProjectXml = XDocument.Load( baseProjectFilePath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo );
+				if ( baseProjectXml.Root == null || baseProjectXml.Root.Name.LocalName != "Project" )
 				{
-					throw new XmlException( "Invalid project file :" + baseProjectXml.BaseUri );
+					throw new XmlException( "Invalid project file :" + baseProjectFilePath );
 				}
 
-				var baseItemGroups = ToItemGroupLookup( baseProjectXml.Root );
+				var relativePath =
+					GetRelativePath(
+						Path.GetDirectoryName( projectFilePath ),
+						Path.GetDirectoryName( baseProjectFilePath )
+					);
 
-				var itemGroups = ToItemGroupLookup( projectXml.Root );
-				foreach ( var itemGroup in itemGroups )
+				var targetItemGroups =
+					baseProjectXml.Root
+					.Elements( Ns + "ItemGroup" )
+					.Select( ig =>
+						{
+							ig.Elements()
+								.Where(
+									e =>
+									e.Attribute( "Include" ) != null
+									&& project.Excludes.Any( ex => Regex.IsMatch( e.Attribute( "Include" ).Value, ex ) )
+								).Remove();
+							return ig;
+						}
+					).Where( ig => ig.Elements().Any() )
+					.Select( e => new ItemGroup( e ) );
+				var baseItemGroups = baseProjectXml.Root.Elements( Ns + "ItemGroup" ).SelectMany( ig => ig.Elements() ).ToLookup( e => e.Name.LocalName );
+
+				var existingItemGroups = projectXml.Root.Elements( Ns + "ItemGroup" ).Where( e => e.Elements().Any() ).Select( e => new ItemGroup( e ) ).ToDictionary( ig => ig.Key );
+				foreach ( var itemGroup in targetItemGroups )
 				{
 					switch ( itemGroup.Key )
 					{
@@ -103,8 +127,27 @@ namespace SyncProjects
 						case "Content":
 						case "None":
 						{
-							// まじめに組みなおさないとダメ。ItemGroup で全部まとめられてしまっている？
-							CopyItemGroup( baseItemGroups[ itemGroup.Key ], itemGroup, project.Excludes );
+							XElement destinationElement;
+							ItemGroup destinationGroup;
+							if ( existingItemGroups.TryGetValue( itemGroup.Key, out destinationGroup ) )
+							{
+								destinationElement = destinationGroup.Element;
+							}
+							else
+							{
+								destinationElement = new XElement( Ns + "ItemGroup" );
+								projectXml.Root.Elements( Ns + "ItemGroup" ).Last().AddAfterSelf( destinationElement );
+								existingItemGroups.Add( itemGroup.Key, new ItemGroup( destinationElement, itemGroup.Key ) );
+							}
+
+							CopyItemGroup(
+								itemGroup.Key,
+								baseItemGroups[ itemGroup.Key ],
+								destinationElement,
+								relativePath,
+								project.Includes,
+								project.Excludes
+							);
 							break;
 						}
 					}
@@ -114,70 +157,177 @@ namespace SyncProjects
 			}
 		}
 
-		private static ILookup<string, XElement> ToItemGroupLookup( XElement projectXml )
+		private static string GetRelativePath( string fromPath, string toPath )
 		{
-			try
+			var fromPathSegments = fromPath.Split( DirectorySeparators, StringSplitOptions.RemoveEmptyEntries );
+			var toPathSegments = toPath.Split( DirectorySeparators, StringSplitOptions.RemoveEmptyEntries );
+			var sameTo = 0;
+			for ( ; sameTo < fromPathSegments.Length && sameTo < toPathSegments.Length; sameTo++ )
 			{
-				return projectXml.Elements( _ns + "ItemGroup" ).SelectMany( ig => ig.Elements() ).ToLookup( e => e.Name.LocalName );
+				if ( !fromPathSegments[ sameTo ].Equals( toPathSegments[ sameTo ], StringComparison.OrdinalIgnoreCase ) )
+				{
+					break;
+				}
 			}
-			catch ( InvalidOperationException ex )
+
+			return String.Join( Path.DirectorySeparatorChar.ToString( CultureInfo.InvariantCulture ), Enumerable.Repeat( "..", fromPathSegments.Length - sameTo ).Concat( toPathSegments.Skip( sameTo ) ) );
+		}
+
+		private class ItemGroup
+		{
+			public readonly XElement Element;
+			public readonly string Key;
+
+			public ItemGroup( XElement newItemGroup, string key )
 			{
-				throw new XmlException( "Unexpected <ItemGroup> grouping. " + String.Join( ", ", projectXml.Elements( _ns + "ItemGroup" ).SelectMany( e => e.Elements() ).Select( e => e.Name.LocalName ).Distinct() ), ex );
+				this.Element = newItemGroup;
+				this.Key = key;
+			}
+
+			public ItemGroup( XElement itemGroup )
+			{
+				this.Element = itemGroup;
+				try
+				{
+					this.Key = itemGroup.Elements().Select( e => e.Name.LocalName ).Distinct().Single();
+				}
+				catch ( InvalidOperationException )
+				{
+					var lineInfo = ( ( itemGroup ) as IXmlLineInfo ?? NullXmlLineInfo.Instance );
+					throw new InvalidOperationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"ItemGroup at line {0} of xml file '{1}' contains hetro genious children [{2}].",
+							lineInfo.LineNumber,
+							itemGroup.Document.BaseUri,
+							String.Join( ", ", itemGroup.Elements().Select( e => e.Name.LocalName ).Distinct() )
+						)
+					);
+				}
 			}
 		}
 
-		private static void CopyItemGroup( XElement sourceItemGroup, XElement destinationItemGroup, IEnumerable<string> excluding )
+		private sealed class NullXmlLineInfo : IXmlLineInfo
+		{
+			public static readonly NullXmlLineInfo Instance = new NullXmlLineInfo();
+
+			public bool HasLineInfo()
+			{
+				return false;
+			}
+
+			public int LineNumber
+			{
+				get { return -1; }
+			}
+
+			public int LinePosition
+			{
+				get { return -1; }
+			}
+		}
+
+		private static IEnumerable<ItemGroup> ToItemGroups( XContainer projectXml )
+		{
+			return projectXml.Elements( Ns + "ItemGroup" ).Select( e => new ItemGroup( e ) );
+		}
+
+		// TODO: remarks.xml がなぜかだめ
+		private static void CopyItemGroup( string elementName, IEnumerable<XElement> sourceItems, XElement destinationItemGroup, string relativePath, IEnumerable<string> includings, IEnumerable<string> excludings )
 		{
 			var remaining =
-				destinationItemGroup.Elements()
-				.Where( e => excluding.Any( ex => Regex.IsMatch( e.Attribute( "Include" ).Value, ex ) ) )
-				.Select( e => new XElement( e ) )
+				destinationItemGroup.Elements( Ns + elementName )
+				.Where( e =>
+					e.Attribute( "Include" ) != null &&
+					excludings.Any( excludes =>
+						Regex.IsMatch( e.Attribute( "Include" ).Value, excludes )
+					)
+				).Select( e => new XElement( e ) )
+				.ToArray();
+			var appendings =
+				sourceItems
+				.Where( e =>
+					e.Attribute( "Include" ) != null &&
+					includings.Any( includes =>
+						Regex.IsMatch( e.Attribute( "Include" ).Value, includes )
+					)
+				).Select( e => CreateCopyingElement( relativePath, e ) )
 				.ToArray();
 
-			destinationItemGroup.RemoveNodes();
-			destinationItemGroup.Add( remaining );
+			destinationItemGroup.Elements( Ns + elementName ).Remove();
 
-			foreach ( var copying in
-				sourceItemGroup.Elements()
-				.Where( e => !excluding.Any( ex => Regex.IsMatch( e.Attribute( "Include" ).Value, ex ) ) ) )
+			var adding = new Dictionary<string, XElement>();
+
+			foreach ( var item in
+				remaining.Concat(
+					sourceItems.Where( e =>
+						e.Attribute( "Include" ) != null &&
+						!excludings.Any( ex =>
+							Regex.IsMatch( e.Attribute( "Include" ).Value, ex )
+						)
+					).Select( copying =>
+						CreateCopyingElement( relativePath, copying )
+					)
+				).Concat( appendings ) )
 			{
-				if ( copying.Element( _ns + "Link" ) != null )
+				var itemPath = item.Attribute( "Include" ).Value;
+				if ( !adding.ContainsKey( itemPath ) )
 				{
-					destinationItemGroup.Add( new XElement( copying ) );
-				}
-				else
-				{
-					destinationItemGroup.Add( new XElement( copying.Name, copying.Attribute( "Include" ), new XElement( _ns + "Link", Path.GetFileName( copying.Attribute( "Include" ).Value ) ) ) );
+					adding.Add( itemPath, item );
 				}
 			}
+
+			// To stable order, sort with their "display path".
+			destinationItemGroup.Add(
+				adding.OrderBy( kv =>
+					( kv.Value.Element( "Link" ) == null ? kv.Key : kv.Value.Element( "Link" ).Value ),
+					StringComparer.OrdinalIgnoreCase
+				).Select( kv => kv.Value )
+			);
 		}
 
-		private static readonly char[] _directorySeparators = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
-		private static readonly string _directorySeparatorPattern =
+		private static XElement CreateCopyingElement( string relativePath, XElement copying )
+		{
+			return
+				copying.Element( Ns + "Link" ) != null
+				? new XElement( copying )
+				: new XElement(
+					copying.Name,
+					new XAttribute(
+						"Include",
+						Path.Combine( relativePath, copying.Attribute( "Include" ).Value )
+						),
+					new XElement( Ns + "Link", copying.Attribute( "Include" ).Value )
+				);
+		}
+
+		private static readonly char[] DirectorySeparators = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+		private static readonly string DirectorySeparatorPattern =
 			"(" + Regex.Escape( Path.AltDirectorySeparatorChar.ToString() ) + "|" + Regex.Escape( Path.DirectorySeparatorChar.ToString() ) + ")";
 
-		private static string ToExcluding( XElement xml )
+		private static string ToPattern( XElement xml )
 		{
-			var name = xml.Attribute( "Name" );
+			var file = xml.Attribute( "File" );
 			var path = xml.Attribute( "Path" );
-			if ( name == null && path == null )
+			if ( file == null && path == null )
 			{
 				return null;
 			}
 
-			if ( name == null )
+			if ( file == null )
 			{
 				return
 					"^" +
 					String.Join(
-						_directorySeparatorPattern,
-						path.Value.Split( _directorySeparators, StringSplitOptions.RemoveEmptyEntries ).Select( segment => ToRegex( segment ) )
+						DirectorySeparatorPattern,
+						path.Value.Split( DirectorySeparators, StringSplitOptions.RemoveEmptyEntries ).Select( ToRegex )
 					) +
 					"$";
 			}
 			else
 			{
-				return _directorySeparatorPattern + Regex.Escape( ToRegex( name.Value ) ) + "$";
+				var filePattern = ToRegex( ( file.Value ) );
+				return "(^" + filePattern + "|" + DirectorySeparatorPattern + filePattern + ")$";
 			}
 		}
 
