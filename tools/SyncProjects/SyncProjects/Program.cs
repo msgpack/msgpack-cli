@@ -13,30 +13,7 @@ namespace SyncProjects
 {
 	class Program
 	{
-		/*
-		 * 		現状：
-			.NET 4 -> Mono ＝すべて
-			.NET 4.5 -> Mono ＝すべて
-			.NET 4 -> SL4/SL5 = 分割、すべて
-			.NET 4 -> WinRT = 分割、Emitting 以外
-			.NET 4 -> WP7.5 = 分割、Expression 以外
-		パターンファイル
-			<ProjectSync
-				>
-				<Project 
-					Name = "..."
-					>
-					<Excludes>
-						<Exclude Path="Properties\AssemblyInfo.cs" />
-						<Exclude Name="*.tt" />
-
-			ItemGroup の Compile, Content, None 子要素をコピーする。Link があれば、丸ごと。そうでなければ、Link を生成する。
-			出力は Include 属性のアルファベット順とする。
-			Compile、Content、None それぞれで ItemGroup を作る。
-		 * 
-		 * 
-		 * 
-		 */
+		private const string _ns = "{http://schemas.microsoft.com/developer/msbuild/2003}";
 
 		static int Main( string[] args )
 		{
@@ -78,6 +55,8 @@ namespace SyncProjects
 			}
 		}
 
+		private static readonly XElement _emptyExcludes = new XElement( "Excludes" );
+
 		private static void SynchronizeProjects( string syncFilePath, string sourceBasePath, string projectFileExtension )
 		{
 			var sync = XDocument.Load( syncFilePath );
@@ -87,14 +66,14 @@ namespace SyncProjects
 			}
 
 			foreach ( var project in
-				sync.Elements( "Project" )
+				sync.Root.Elements( "Project" )
 					.Select( p =>
 						new
 						{
 							Name = p.Attribute( "Name" ),
 							Base = p.Attribute( "Base" ),
 							Excludes =
-								p.Element( "Excludes" )
+								( p.Element( "Excludes" ) ?? _emptyExcludes )
 								.Elements( "Exclude" )
 								.Select( e => ToExcluding( e ) ).Where( ex => ex != null ).ToArray()
 						}
@@ -124,7 +103,8 @@ namespace SyncProjects
 						case "Content":
 						case "None":
 						{
-							CopyItemGroup( baseItemGroups[ itemGroup.Key ], itemGroup.Value, project.Excludes );
+							// まじめに組みなおさないとダメ。ItemGroup で全部まとめられてしまっている？
+							CopyItemGroup( baseItemGroups[ itemGroup.Key ], itemGroup, project.Excludes );
 							break;
 						}
 					}
@@ -134,15 +114,15 @@ namespace SyncProjects
 			}
 		}
 
-		private static IDictionary<string, XElement> ToItemGroupLookup( XElement projectXml )
+		private static ILookup<string, XElement> ToItemGroupLookup( XElement projectXml )
 		{
 			try
 			{
-				return projectXml.Elements( "ItemGroup" ).ToDictionary( ig => ig.Elements().Distinct().Single().Name.LocalName, ig => ig );
+				return projectXml.Elements( _ns + "ItemGroup" ).SelectMany( ig => ig.Elements() ).ToLookup( e => e.Name.LocalName );
 			}
 			catch ( InvalidOperationException ex )
 			{
-				throw new XmlException( "Unexpected <ItemGroup> grouping.", ex );
+				throw new XmlException( "Unexpected <ItemGroup> grouping. " + String.Join( ", ", projectXml.Elements( _ns + "ItemGroup" ).SelectMany( e => e.Elements() ).Select( e => e.Name.LocalName ).Distinct() ), ex );
 			}
 		}
 
@@ -161,13 +141,13 @@ namespace SyncProjects
 				sourceItemGroup.Elements()
 				.Where( e => !excluding.Any( ex => Regex.IsMatch( e.Attribute( "Include" ).Value, ex ) ) ) )
 			{
-				if ( copying.Element( "Link" ) != null )
+				if ( copying.Element( _ns + "Link" ) != null )
 				{
 					destinationItemGroup.Add( new XElement( copying ) );
 				}
 				else
 				{
-					destinationItemGroup.Add( new XElement( copying.Name, copying.Attribute( "Include" ), new XElement( "Link", Path.GetFileName( copying.Attribute( "Include" ).Value ) ) ) );
+					destinationItemGroup.Add( new XElement( copying.Name, copying.Attribute( "Include" ), new XElement( _ns + "Link", Path.GetFileName( copying.Attribute( "Include" ).Value ) ) ) );
 				}
 			}
 		}
