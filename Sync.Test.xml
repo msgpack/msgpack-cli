@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<ProjectSync>
+  <Project Name="MsgPack.UnitTest.Mono" Base="MsgPack.UnitTest">
+    <Exclude Path="Properties\AssemblyInfo.cs" />
+    <Exclude File="*.config" />
+    <Exclude File="*.json" />
+    <Exclude File="*.mpac" />
+    <Exclude File="*.ps1" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+  </Project>
+  <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">
+    <Exclude Path="Properties\AssemblyInfo.cs" />
+    <Exclude File="*.config" />
+    <Exclude File="*.json" />
+    <Exclude File="*.mpac" />
+    <Exclude File="*.pfx" />
+    <Exclude File="*.ps1" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+  </Project>
+</ProjectSync>

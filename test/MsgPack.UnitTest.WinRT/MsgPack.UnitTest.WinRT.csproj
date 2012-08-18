@@ -124,6 +124,12 @@
     <Compile Include="..\MsgPack.UnitTest\EqualsTest.cs">
       <Link>EqualsTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ExceptionTest.cs">
+      <Link>ExceptionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\GenericExceptionTester.cs">
+      <Link>GenericExceptionTester.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Image.cs">
       <Link>Image.cs</Link>
     </Compile>
@@ -174,6 +180,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Objects.cs">
       <Link>MessagePackObjectTest.Objects.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.RuntimeSerialization.cs">
+      <Link>MessagePackObjectTest.RuntimeSerialization.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Strings.cs">
       <Link>MessagePackObjectTest.Strings.cs</Link>
@@ -226,6 +235,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithNonSerialized.cs">
       <Link>Serialization\ComplexTypeWithNonSerialized.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithOneBaseOrder.cs">
+      <Link>Serialization\ComplexTypeWithOneBaseOrder.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithoutAnyAttribute.cs">
       <Link>Serialization\ComplexTypeWithoutAnyAttribute.cs</Link>
     </Compile>
@@ -249,6 +261,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
       <Link>Serialization\IVerifiable`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
       <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
@@ -298,15 +313,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs">
       <Link>Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.Cases.cs">
-      <Link>Serialization\VersioningTest.Cases.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.cs">
-      <Link>Serialization\VersioningTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTestTarget.cs">
-      <Link>Serialization\VersioningTestTarget.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\_SetUpFixture.cs">
       <Link>Serialization\_SetUpFixture.cs</Link>
     </Compile>
@@ -315,6 +321,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
       <Link>TestRandom.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TestSuite.cs">
+      <Link>TestSuite.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.cs">
       <Link>UnpackerTest.cs</Link>
