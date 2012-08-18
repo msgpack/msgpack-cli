@@ -11,6 +11,7 @@ using NDesk.Options;
 
 namespace SyncProjects
 {
+	// TODO: This tool might not work for Empty destination projects.
 	class Program
 	{
 		private const string Ns = "{http://schemas.microsoft.com/developer/msbuild/2003}";
@@ -127,6 +128,7 @@ namespace SyncProjects
 						case "Content":
 						case "None":
 						{
+							// If there are no <ItemGroup> for current type, then create new type and register it to the document and bookkeeping.
 							XElement destinationElement;
 							ItemGroup destinationGroup;
 							if ( existingItemGroups.TryGetValue( itemGroup.Key, out destinationGroup ) )
@@ -136,7 +138,9 @@ namespace SyncProjects
 							else
 							{
 								destinationElement = new XElement( Ns + "ItemGroup" );
+								// insert to the destination DOM
 								projectXml.Root.Elements( Ns + "ItemGroup" ).Last().AddAfterSelf( destinationElement );
+								// bookkeeping
 								existingItemGroups.Add( itemGroup.Key, new ItemGroup( destinationElement, itemGroup.Key ) );
 							}
 
@@ -157,6 +161,115 @@ namespace SyncProjects
 			}
 		}
 
+		private static IEnumerable<ItemGroup> ToItemGroups( XContainer projectXml )
+		{
+			return projectXml.Elements( Ns + "ItemGroup" ).Select( e => new ItemGroup( e ) );
+		}
+
+		private static void CopyItemGroup( string elementName, IEnumerable<XElement> sourceItems, XElement destinationItemGroup, string relativePath, IEnumerable<string> includings, IEnumerable<string> excludings )
+		{
+			var remaining =
+				destinationItemGroup.Elements( Ns + elementName )
+				.Where( e =>
+					e.Attribute( "Include" ) != null &&
+					excludings.Any( excludes =>
+						Regex.IsMatch( e.Attribute( "Include" ).Value, excludes )
+					)
+				).Select( e => new XElement( e ) )
+				.ToArray();
+
+			var appendings =
+				sourceItems
+				.Where( e =>
+					e.Attribute( "Include" ) != null &&
+					includings.Any( includes =>
+						Regex.IsMatch( e.Attribute( "Include" ).Value, includes )
+					)
+				).Select( e => CreateCopyingElement( relativePath, e ) )
+				.ToArray();
+
+			destinationItemGroup.Elements( Ns + elementName ).Remove();
+
+			var adding = new Dictionary<string, XElement>();
+
+			foreach ( var item in
+				sourceItems.Where( e =>
+					e.Attribute( "Include" ) != null &&
+					!excludings.Any( ex =>
+						Regex.IsMatch( e.Attribute( "Include" ).Value, ex )
+					)
+				).Select( copying =>
+					CreateCopyingElement( relativePath, copying )
+				).Concat( remaining ).Concat( appendings ) )
+			{
+				var itemPath = item.Attribute( "Include" ).Value;
+				if ( !adding.ContainsKey( itemPath ) )
+				{
+					adding.Add( itemPath, item );
+				}
+			}
+
+			// To stable order, sort with their "display path".
+			destinationItemGroup.Add(
+				adding.OrderBy( kv =>
+					( kv.Value.Element( "Link" ) == null ? kv.Key : kv.Value.Element( "Link" ).Value ),
+					StringComparer.OrdinalIgnoreCase
+				).Select( kv => kv.Value )
+			);
+		}
+
+		private static XElement CreateCopyingElement( string relativePath, XElement copying )
+		{
+			return
+				copying.Element( Ns + "Link" ) != null
+				? new XElement( copying )
+				: new XElement(
+					copying.Name,
+					new XAttribute(
+						"Include",
+						Path.Combine( relativePath, copying.Attribute( "Include" ).Value )
+						),
+					new XElement( Ns + "Link", copying.Attribute( "Include" ).Value )
+				);
+		}
+
+		#region String Utlities
+
+		private static readonly char[] DirectorySeparators = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+		private static readonly string DirectorySeparatorPattern =
+			"(" + Regex.Escape( Path.AltDirectorySeparatorChar.ToString() ) + "|" + Regex.Escape( Path.DirectorySeparatorChar.ToString() ) + ")";
+
+		private static string ToPattern( XElement xml )
+		{
+			var file = xml.Attribute( "File" );
+			var path = xml.Attribute( "Path" );
+			if ( file == null && path == null )
+			{
+				return null;
+			}
+
+			if ( file == null )
+			{
+				return
+					"^" +
+					String.Join(
+						DirectorySeparatorPattern,
+						path.Value.Split( DirectorySeparators, StringSplitOptions.RemoveEmptyEntries ).Select( ToRegex )
+					) +
+					"$";
+			}
+			else
+			{
+				var filePattern = ToRegex( ( file.Value ) );
+				return "(^" + filePattern + "|" + DirectorySeparatorPattern + filePattern + ")$";
+			}
+		}
+
+		private static string ToRegex( string wildcard )
+		{
+			return Regex.Escape( wildcard ).Replace( "\\*", ".*" ).Replace( "\\?", "." );
+		}
+
 		private static string GetRelativePath( string fromPath, string toPath )
 		{
 			var fromPathSegments = fromPath.Split( DirectorySeparators, StringSplitOptions.RemoveEmptyEntries );
@@ -172,6 +285,8 @@ namespace SyncProjects
 
 			return String.Join( Path.DirectorySeparatorChar.ToString( CultureInfo.InvariantCulture ), Enumerable.Repeat( "..", fromPathSegments.Length - sameTo ).Concat( toPathSegments.Skip( sameTo ) ) );
 		}
+
+		#endregion
 
 		private class ItemGroup
 		{
@@ -227,113 +342,5 @@ namespace SyncProjects
 			}
 		}
 
-		private static IEnumerable<ItemGroup> ToItemGroups( XContainer projectXml )
-		{
-			return projectXml.Elements( Ns + "ItemGroup" ).Select( e => new ItemGroup( e ) );
-		}
-
-		// TODO: remarks.xml がなぜかだめ
-		private static void CopyItemGroup( string elementName, IEnumerable<XElement> sourceItems, XElement destinationItemGroup, string relativePath, IEnumerable<string> includings, IEnumerable<string> excludings )
-		{
-			var remaining =
-				destinationItemGroup.Elements( Ns + elementName )
-				.Where( e =>
-					e.Attribute( "Include" ) != null &&
-					excludings.Any( excludes =>
-						Regex.IsMatch( e.Attribute( "Include" ).Value, excludes )
-					)
-				).Select( e => new XElement( e ) )
-				.ToArray();
-			var appendings =
-				sourceItems
-				.Where( e =>
-					e.Attribute( "Include" ) != null &&
-					includings.Any( includes =>
-						Regex.IsMatch( e.Attribute( "Include" ).Value, includes )
-					)
-				).Select( e => CreateCopyingElement( relativePath, e ) )
-				.ToArray();
-
-			destinationItemGroup.Elements( Ns + elementName ).Remove();
-
-			var adding = new Dictionary<string, XElement>();
-
-			foreach ( var item in
-				remaining.Concat(
-					sourceItems.Where( e =>
-						e.Attribute( "Include" ) != null &&
-						!excludings.Any( ex =>
-							Regex.IsMatch( e.Attribute( "Include" ).Value, ex )
-						)
-					).Select( copying =>
-						CreateCopyingElement( relativePath, copying )
-					)
-				).Concat( appendings ) )
-			{
-				var itemPath = item.Attribute( "Include" ).Value;
-				if ( !adding.ContainsKey( itemPath ) )
-				{
-					adding.Add( itemPath, item );
-				}
-			}
-
-			// To stable order, sort with their "display path".
-			destinationItemGroup.Add(
-				adding.OrderBy( kv =>
-					( kv.Value.Element( "Link" ) == null ? kv.Key : kv.Value.Element( "Link" ).Value ),
-					StringComparer.OrdinalIgnoreCase
-				).Select( kv => kv.Value )
-			);
-		}
-
-		private static XElement CreateCopyingElement( string relativePath, XElement copying )
-		{
-			return
-				copying.Element( Ns + "Link" ) != null
-				? new XElement( copying )
-				: new XElement(
-					copying.Name,
-					new XAttribute(
-						"Include",
-						Path.Combine( relativePath, copying.Attribute( "Include" ).Value )
-						),
-					new XElement( Ns + "Link", copying.Attribute( "Include" ).Value )
-				);
-		}
-
-		private static readonly char[] DirectorySeparators = new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
-		private static readonly string DirectorySeparatorPattern =
-			"(" + Regex.Escape( Path.AltDirectorySeparatorChar.ToString() ) + "|" + Regex.Escape( Path.DirectorySeparatorChar.ToString() ) + ")";
-
-		private static string ToPattern( XElement xml )
-		{
-			var file = xml.Attribute( "File" );
-			var path = xml.Attribute( "Path" );
-			if ( file == null && path == null )
-			{
-				return null;
-			}
-
-			if ( file == null )
-			{
-				return
-					"^" +
-					String.Join(
-						DirectorySeparatorPattern,
-						path.Value.Split( DirectorySeparators, StringSplitOptions.RemoveEmptyEntries ).Select( ToRegex )
-					) +
-					"$";
-			}
-			else
-			{
-				var filePattern = ToRegex( ( file.Value ) );
-				return "(^" + filePattern + "|" + DirectorySeparatorPattern + filePattern + ")$";
-			}
-		}
-
-		private static string ToRegex( string wildcard )
-		{
-			return Regex.Escape( wildcard ).Replace( "\\*", ".*" ).Replace( "\\?", "." );
-		}
 	}
 }
