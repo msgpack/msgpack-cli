@@ -287,6 +287,8 @@
     <Compile Include="Unpacker.cs" />
     <Compile Include="UnpackException.cs" />
     <Compile Include="StreamingUnpacker.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
@@ -314,8 +316,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Unpacking.Others.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="MessagePackObject.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObject.cs</LastGenOutput>
