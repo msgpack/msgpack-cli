@@ -4,6 +4,7 @@
 *.pidb
 *.nupkg
 *.shfbproj_*
+_Resharper.*/
 bin/
 Bin/
 Help*/
