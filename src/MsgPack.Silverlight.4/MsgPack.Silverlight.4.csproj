@@ -257,6 +257,11 @@
       <Link>MsgPack.snk</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\MsgPack\remarks.xml">
+      <Link>remarks.xml</Link>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

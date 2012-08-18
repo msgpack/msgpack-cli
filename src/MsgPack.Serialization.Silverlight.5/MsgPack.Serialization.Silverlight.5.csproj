@@ -311,6 +311,9 @@
     <Compile Include="..\MsgPack\Serialization\NilImplication.cs">
       <Link>Serialization\NilImplication.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
+      <Link>Serialization\ReflectionExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs">
       <Link>Serialization\Reflection\GenericTypeExtensions.cs</Link>
     </Compile>
@@ -325,9 +328,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.emits.cs">
       <Link>Serialization\Reflection\TracingILGenerator.emits.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
-      <Link>Serialization\ReflectionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationCompatibilityOptions.cs">
       <Link>Serialization\SerializationCompatibilityOptions.cs</Link>
