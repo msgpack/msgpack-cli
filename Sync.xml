@@ -3,17 +3,20 @@
   <Project Name="MsgPack.Mono" Base="MsgPack">
     <Excluding>
       <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude File="*.tt" />
     </Excluding>
   </Project>
   <Project Name="MsgPack.WinRT" Base="MsgPack">
     <Excluding>
       <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude File="*.tt" />
       <Exclude Path="Serialization\*" />
     </Excluding>
   </Project>
   <Project Name="MsgPack.Serialization.WinRT" Base="MsgPack">
     <Excluding>
       <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude File="*.tt" />
       <Exclude Path="*.cs" />
       <Exclude Path="Serialization\EmittingSerializers\*" />
     </Excluding>
@@ -21,12 +24,14 @@
   <Project Name="MsgPack.Silverlight.4" Base="MsgPack">
     <Excluding>
       <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude File="*.tt" />
       <Exclude Path="Serialization\*" />
     </Excluding>
   </Project>
   <Project Name="MsgPack.Serialization.Silverlight.4" Base="MsgPack">
     <Excluding>
       <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude File="*.tt" />
       <Exclude Path="*.cs" />
       <Exclude Path="Serialization\LockRecursionPolicy.cs" />
       <Exclude Path="Serialization\ReaderWriterLockSlim.cs" />
@@ -44,11 +49,13 @@
   <Project Name="MsgPack.Serialization.Silverlight.5" Base="MsgPack.Serialization.Silverlight.4">
     <Excluding>
       <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude File="*.tt" />
     </Excluding>
   </Project>
   <Project Name="MsgPack.WindowsPhone.7.1" Base="MsgPack">
     <Excluding>
       <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude File="*.tt" />
       <Exclude Path="Contract.cs" />
       <Exclude Path="Delegates.cs" />
       <Exclude Path="Tuple`n.cs" />
@@ -58,6 +65,7 @@
   <Project Name="MsgPack.Serialization.WindowsPhone.7.1" Base="MsgPack">
     <Excluding>
       <Exclude Path="Properties\AssemblyInfo.cs" />
+      <Exclude File="*.tt" />
       <Exclude Path="*.cs" />
       <Exclude Path="Serialization\ExpressionSerializers\*" />
     </Excluding>
