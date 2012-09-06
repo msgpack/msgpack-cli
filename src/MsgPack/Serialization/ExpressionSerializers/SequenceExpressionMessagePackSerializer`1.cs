@@ -26,12 +26,9 @@ using System.IO;
 using System.Linq;
 #endif
 using System.Linq.Expressions;
-#if NETFX_CORE
 using System.Reflection;
-#endif
 using System.Text;
 using MsgPack.Serialization.Metadata;
-using System.Reflection;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {

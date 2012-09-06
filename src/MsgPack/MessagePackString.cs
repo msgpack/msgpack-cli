@@ -393,8 +393,9 @@ namespace MsgPack
 
 			private static bool MustBeString( string value )
 			{
-				foreach ( var c in value.Take( 128 ) )
+				for ( int i = 0; i < 128 && i < value.Length; i++ )
 				{
+					var c = value[ i ];
 					if ( c < 0x20 && ( c != 0x9 && c != 0xA && c != 0xD ) )
 					{
 						return false;

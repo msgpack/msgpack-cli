@@ -34,6 +34,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
+#if !NETFX_CORE
 	[TestFixture]
 	public class MapFieldBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
@@ -89,4 +90,5 @@ namespace MsgPack.Serialization
 			return new AutoMessagePackSerializer<T>( context, c => new ArrayEmittingSerializerBuilder<T>( c ) );
 		}
 	}
+#endif
 }

@@ -37,6 +37,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
+#if !NETFX_CORE
 	[TestFixture]
 	public class TestSuite
 	{
@@ -67,4 +68,5 @@ namespace MsgPack
 			pac.SequenceEqual( pac_compact, EqualityComparer<MessagePackObject>.Default );
 		}
 	}
+#endif
 }

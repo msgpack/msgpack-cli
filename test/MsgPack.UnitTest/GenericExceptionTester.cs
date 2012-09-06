@@ -20,9 +20,17 @@
 
 using System;
 using System.IO;
+#if NETFX_CORE
+using System.Linq;
+#endif
 using System.Linq.Expressions;
+#if NETFX_CORE
+using System.Reflection;
+#endif
 #if !NETFX_CORE
 using System.Runtime.Serialization.Formatters.Binary;
+#else
+using System.Runtime.Serialization;
 #endif
 using System.Security;
 #if !NETFX_CORE
@@ -45,9 +53,13 @@ namespace MsgPack
 	///		Test suite for standard exception constructors, properties, and serialization.
 	/// </summary>
 	/// <typeparam name="T">Target exception type.</typeparam>
-	public sealed class GenericExceptionTester<T> : MarshalByRefObject
+	public sealed class GenericExceptionTester<T> 
+#if !NETFX_CORE
+		: MarshalByRefObject
+#endif
 		where T : Exception
 	{
+		private static readonly Type[] _emptyTypes = new Type[ 0 ];
 		private static readonly Type[] _messageConstructorParameterTypes = new[] { typeof( string ) };
 		private static readonly Type[] _innerExceptionConstructorParameterTypes = new[] { typeof( string ), typeof( Exception ) };
 
@@ -68,17 +80,29 @@ namespace MsgPack
 		{
 			try
 			{
-				this._defaultConstructor = Expression.Lambda<Func<T>>( Expression.New( typeof( T ).GetConstructor( Type.EmptyTypes ) ) ).Compile();
+#if !NETFX_CORE
+				this._defaultConstructor = Expression.Lambda<Func<T>>( Expression.New( typeof( T ).GetConstructor( _emptyTypes ) ) ).Compile();
+#else
+				this._defaultConstructor = Expression.Lambda<Func<T>>( Expression.New( typeof( T ).GetTypeInfo().DeclaredConstructors.Single( c => c.GetParameters().Length == 0 ) ) ).Compile();
+#endif
 				var message = Expression.Parameter( typeof( string ), "message" );
 				var innerException = Expression.Parameter( typeof( Exception ), "innerException" );
 				this._messageConstructor =
 					Expression.Lambda<Func<string, T>>(
+#if !NETFX_CORE
 						Expression.New( typeof( T ).GetConstructor( _messageConstructorParameterTypes ), message ),
+#else
+						Expression.New( typeof( T ).GetTypeInfo().DeclaredConstructors.Single( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( _messageConstructorParameterTypes ) ), message ),
+#endif
 						message
 					).Compile();
 				this._innerExceptionConstructor =
 					Expression.Lambda<Func<string, Exception, T>>(
+#if !NETFX_CORE
 						Expression.New( typeof( T ).GetConstructor( _innerExceptionConstructorParameterTypes ), message, innerException ),
+#else
+						Expression.New( typeof( T ).GetTypeInfo().DeclaredConstructors.Single( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( _innerExceptionConstructorParameterTypes ) ), message, innerException ),
+#endif
 						message,
 						innerException
 					).Compile();
@@ -177,17 +201,25 @@ namespace MsgPack
 
 		private void TestSerialization()
 		{
+#if !NETFX_CORE
 			Assert.That( typeof( T ), Is.BinarySerializable );
-
+#endif
 			var innerMessage = Guid.NewGuid().ToString();
 			var message = Guid.NewGuid().ToString();
 			var target = this._innerExceptionConstructor( message, new Exception( innerMessage ) );
 			using ( var buffer = new MemoryStream() )
 			{
+#if !NETFX_CORE
 				var serializer = new BinaryFormatter();
 				serializer.Serialize( buffer, target );
 				buffer.Position = 0;
 				var deserialized = serializer.Deserialize( buffer ) as T;
+#else
+				var serializer = new DataContractSerializer( typeof( MessagePackObject ) );
+				serializer.WriteObject( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.ReadObject( buffer ) as T;
+#endif
 				Assert.That( deserialized, Is.Not.Null );
 				Assert.That( deserialized.Message, Is.EqualTo( target.Message ) );
 				Assert.That( deserialized.InnerException, Is.Not.Null.And.TypeOf( typeof( Exception ) ) );
@@ -195,6 +227,7 @@ namespace MsgPack
 			}
 		}
 
+#if !NETFX_CORE
 		private void TestSerializationOnPartialTrust()
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
@@ -282,5 +315,6 @@ namespace MsgPack
 			var assemblyName = type.Assembly.GetName();
 			return new StrongName( new StrongNamePublicKeyBlob( assemblyName.GetPublicKey() ), assemblyName.Name, assemblyName.Version );
 		}
+#endif
 	}
 }

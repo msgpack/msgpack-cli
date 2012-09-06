@@ -61,8 +61,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			Contract.Assert( typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ), typeof( T ) + " is IEnumerable" );
 			Contract.Assert( traits.ElementType == typeof( DictionaryEntry ) || ( traits.ElementType.GetIsGenericType() && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) ), "Element type " + traits.ElementType + " is not KeyValuePair<TKey,TValue>." );
 			this._traits = traits;
-			this._keySerializer = traits.ElementType.IsGenericType ? context.GetSerializer( traits.ElementType.GetGenericArguments()[ 0 ] ) : context.GetSerializer( typeof( MessagePackObject ) );
-			this._valueSerializer = traits.ElementType.IsGenericType ? context.GetSerializer( traits.ElementType.GetGenericArguments()[ 1 ] ) : context.GetSerializer( typeof( MessagePackObject ) );
+			this._keySerializer = traits.ElementType.GetIsGenericType() ? context.GetSerializer( traits.ElementType.GetGenericArguments()[ 0 ] ) : context.GetSerializer( typeof( MessagePackObject ) );
+			this._valueSerializer = traits.ElementType.GetIsGenericType() ? context.GetSerializer( traits.ElementType.GetGenericArguments()[ 1 ] ) : context.GetSerializer( typeof( MessagePackObject ) );
 			this._getCount = ExpressionSerializerLogics.CreateGetCount<T>( traits );
 
 			var constructor = ExpressionSerializerLogics.GetCollectionConstructor<T>();
@@ -90,8 +90,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			var objectTreeParameter = Expression.Parameter( typeof( T ), "objectTree" );
 			var keySerializerParameter = Expression.Parameter( typeof( IMessagePackSerializer ), "keySerializer" );
 			var valueSerializerParameter = Expression.Parameter( typeof( IMessagePackSerializer ), "valueSerializer" );
-			var keyType = traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject );
-			var valueType = traits.ElementType.IsGenericType ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject );
+			var keyType = traits.ElementType.GetIsGenericType() ? traits.ElementType.GetGenericArguments()[ 0 ] : typeof( MessagePackObject );
+			var valueType = traits.ElementType.GetIsGenericType() ? traits.ElementType.GetGenericArguments()[ 1 ] : typeof( MessagePackObject );
 			var keySerializerType = typeof( MessagePackSerializer<> ).MakeGenericType( keyType );
 			var valueSerializerType = typeof( MessagePackSerializer<> ).MakeGenericType( valueType );
 
@@ -120,7 +120,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 										Expression.TypeAs( keySerializerParameter, keySerializerType ),
 										typeof( MessagePackSerializer<> ).MakeGenericType( keyType ).GetMethod( "PackTo" ),
 										packerParameter,
-										traits.ElementType.IsGenericType
+										traits.ElementType.GetIsGenericType()
 										? Expression.Property( elementVariable, traits.ElementType.GetProperty( "Key" ) ) as Expression
 										: Expression.Unbox( Expression.Property( elementVariable, traits.ElementType.GetProperty( "Key" ) ), typeof( MessagePackObject ) )
 									),
@@ -128,7 +128,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 										Expression.TypeAs( valueSerializerParameter, valueSerializerType ),
 										typeof( MessagePackSerializer<> ).MakeGenericType( valueType ).GetMethod( "PackTo" ),
 										packerParameter,
-										traits.ElementType.IsGenericType
+										traits.ElementType.GetIsGenericType()
 										? Expression.Property( elementVariable, traits.ElementType.GetProperty( "Value" ) ) as Expression
 										: Expression.Unbox( Expression.Property( elementVariable, traits.ElementType.GetProperty( "Value" ) ), typeof( MessagePackObject ) )
 									)
@@ -151,7 +151,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			var countParamter = Expression.Parameter( typeof( int ), "count" );
 
 			Expression<Action<Unpacker, T, IMessagePackSerializer, IMessagePackSerializer>> unpackToCore;
-			if ( traits.ElementType.IsGenericType )
+			if ( traits.ElementType.GetIsGenericType() )
 			{
 				/*
 				 * UnpackHelpers.UnpackMapTo<TKey,TValue>( unpacker, keySerializer, valueSerializer, instance );

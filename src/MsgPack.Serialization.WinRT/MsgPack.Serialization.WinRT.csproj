@@ -228,9 +228,6 @@
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\TupleExpressionMessagePackSerializer.cs">
       <Link>Serialization\ExpressionSerializers\TupleExpressionMessagePackSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\ExtensionObjectHandler.cs">
-      <Link>Serialization\ExtensionObjectHandler.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\FromExpression.cs">
       <Link>Serialization\FromExpression.cs</Link>
     </Compile>
@@ -242,9 +239,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\IdentifierUtility.cs">
       <Link>Serialization\IdentifierUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\IMessagePackExtensibleObject.cs">
-      <Link>Serialization\IMessagePackExtensibleObject.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\IMessagePackSerializer.cs">
       <Link>Serialization\IMessagePackSerializer.cs</Link>
@@ -282,8 +276,14 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_SerializationContext.cs">
       <Link>Serialization\Metadata\_SerializationContext.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_Type.cs">
+      <Link>Serialization\Metadata\_Type.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Unpacker.cs">
       <Link>Serialization\Metadata\_Unpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_UnpackHelpers.cs">
+      <Link>Serialization\Metadata\_UnpackHelpers.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\NilImplication.cs">
       <Link>Serialization\NilImplication.cs</Link>
@@ -296,6 +296,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs">
       <Link>Serialization\Reflection\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationCompatibilityOptions.cs">
+      <Link>Serialization\SerializationCompatibilityOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>

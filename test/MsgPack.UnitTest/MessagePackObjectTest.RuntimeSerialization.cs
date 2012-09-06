@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+#if !NETFX_CORE
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -170,3 +171,4 @@ namespace MsgPack
 		}
 	}
 }
+#endif // #if !NETFX_CORE
