@@ -128,7 +128,9 @@ namespace MsgPack
 			this.TestMessageConstructor_WithNull_SetToDefaultMessage();
 			this.TestInnerExceptionConstructor_WithMessageAndInnerException_SetToMessageAndInnerException();
 			this.TestInnerExceptionConstructor_Null_SetToDefaultMessageAndNullInnerException();
+#if !NETFX_CORE
 			this.TestSerialization();
+#endif
 		}
 
 		private void TestDefaultConstructor()
@@ -199,27 +201,19 @@ namespace MsgPack
 			}
 		}
 
+#if !NETFX_CORE
 		private void TestSerialization()
 		{
-#if !NETFX_CORE
 			Assert.That( typeof( T ), Is.BinarySerializable );
-#endif
 			var innerMessage = Guid.NewGuid().ToString();
 			var message = Guid.NewGuid().ToString();
 			var target = this._innerExceptionConstructor( message, new Exception( innerMessage ) );
 			using ( var buffer = new MemoryStream() )
 			{
-#if !NETFX_CORE
 				var serializer = new BinaryFormatter();
 				serializer.Serialize( buffer, target );
 				buffer.Position = 0;
 				var deserialized = serializer.Deserialize( buffer ) as T;
-#else
-				var serializer = new DataContractSerializer( typeof( MessagePackObject ) );
-				serializer.WriteObject( buffer, target );
-				buffer.Position = 0;
-				var deserialized = serializer.ReadObject( buffer ) as T;
-#endif
 				Assert.That( deserialized, Is.Not.Null );
 				Assert.That( deserialized.Message, Is.EqualTo( target.Message ) );
 				Assert.That( deserialized.InnerException, Is.Not.Null.And.TypeOf( typeof( Exception ) ) );
@@ -227,7 +221,6 @@ namespace MsgPack
 			}
 		}
 
-#if !NETFX_CORE
 		private void TestSerializationOnPartialTrust()
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
