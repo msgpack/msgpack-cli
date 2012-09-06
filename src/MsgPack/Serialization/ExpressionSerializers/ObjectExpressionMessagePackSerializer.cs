@@ -107,7 +107,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 									targetParameter,
 									m.Member.Name
 								),
-								m.Member.GetMemberValueType().GetIsValueType()
+								m.Member.GetMemberValueType().GetIsValueType() && Nullable.GetUnderlyingType( m.Member.GetMemberValueType() ) == null 
 								? Expression.Condition(
 									Expression.ReferenceEqual( valueParameter, Expression.Constant( null ) ),
 									Expression.Throw(
