@@ -38,7 +38,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.DateTime UnpackFromCore( Unpacker unpacker )
 		{
-			return MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ); 
+			try
+			{
+				return MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ); 
+			}
+			catch( ArgumentException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
 		}
 	}
 
@@ -51,7 +62,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.DateTimeOffset UnpackFromCore( Unpacker unpacker )
 		{
-			return MessagePackConvert.ToDateTimeOffset( unpacker.Data.Value.AsInt64() ); 
+			try
+			{
+				return MessagePackConvert.ToDateTimeOffset( unpacker.Data.Value.AsInt64() ); 
+			}
+			catch( ArgumentException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
 		}
 	}
 
@@ -104,7 +126,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Char UnpackFromCore( Unpacker unpacker )
 		{
-			return ( System.Char ) unpacker.Data.Value.AsUInt16(); 
+			try
+			{
+				return ( System.Char ) unpacker.Data.Value.AsUInt16(); 
+			}
+			catch( ArgumentException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
 		}
 	}
 
@@ -117,7 +150,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Decimal UnpackFromCore( Unpacker unpacker )
 		{
-			return System.Decimal.Parse( unpacker.Data.Value.AsString(), CultureInfo.InvariantCulture ); 
+			try
+			{
+				return System.Decimal.Parse( unpacker.Data.Value.AsString(), CultureInfo.InvariantCulture ); 
+			}
+			catch( ArgumentException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
 		}
 	}
 
@@ -150,7 +194,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Guid UnpackFromCore( Unpacker unpacker )
 		{
-			return new System.Guid( unpacker.Data.Value.AsBinary() ); 
+			try
+			{
+				return new System.Guid( unpacker.Data.Value.AsBinary() ); 
+			}
+			catch( ArgumentException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
 		}
 	}
 
@@ -372,7 +427,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override  System.Numerics.BigInteger UnpackFromCore( Unpacker unpacker )
 		{
-			return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); 
+			try
+			{
+				return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); 
+			}
+			catch( ArgumentException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
 		}
 	}
 #endif // !WINDOWS_PHONE

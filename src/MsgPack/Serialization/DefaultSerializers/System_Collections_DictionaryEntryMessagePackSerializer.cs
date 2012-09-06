@@ -65,7 +65,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
-				switch ( unpacker.Data.Value.AsString() )
+				switch ( unpacker.Data.Value.DeserializeAsString() )
 				{
 					case "Key":
 					{

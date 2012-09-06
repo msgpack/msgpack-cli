@@ -32,7 +32,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected internal sealed override string UnpackFromCore( Unpacker unpacker )
 		{
 			var result = unpacker.Data.Value;
-			return result.IsNil ? null : result.AsString();
+			return result.IsNil ? null : result.DeserializeAsString();
 		}
 	}
 }

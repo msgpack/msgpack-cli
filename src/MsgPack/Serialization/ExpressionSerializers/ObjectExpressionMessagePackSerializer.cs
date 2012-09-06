@@ -107,7 +107,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 									targetParameter,
 									m.Member.Name
 								),
-								m.Member.GetMemberValueType().GetIsValueType() && Nullable.GetUnderlyingType( m.Member.GetMemberValueType() ) == null 
+								m.Member.GetMemberValueType().GetIsValueType() && Nullable.GetUnderlyingType( m.Member.GetMemberValueType() ) == null
 								? Expression.Condition(
 									Expression.ReferenceEqual( valueParameter, Expression.Constant( null ) ),
 									Expression.Throw(
@@ -241,7 +241,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			while ( unpacker.Read() )
 			{
-				var memberName = unpacker.Data.Value.AsString();
+				var memberName = GetMemberName( unpacker );
 				int index;
 				if ( !this._indexMap.TryGetValue( memberName, out index ) )
 				{
@@ -297,7 +297,19 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				else
 				{
 					this.UnpackMemberInMap( unpacker, instance, index );
-				} 
+				}
+			}
+		}
+
+		private static string GetMemberName( Unpacker unpacker )
+		{
+			try
+			{
+				return unpacker.Data.Value.AsString();
+			}
+			catch ( InvalidOperationException ex )
+			{
+				throw new InvalidMessagePackStreamException( "Cannot get a member name from stream.", ex );
 			}
 		}
 

@@ -34,7 +34,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			T value;
 #if !WINDOWS_PHONE
-			if ( !Enum.TryParse( unpacker.Data.Value.AsString(), out value ) )
+			if ( !Enum.TryParse( unpacker.Data.Value.DeserializeAsString(), out value ) )
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.Data.Value.AsString(), typeof( T ) ) );
 			}

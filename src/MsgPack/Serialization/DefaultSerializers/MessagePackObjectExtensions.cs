@@ -19,21 +19,29 @@
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
+using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class System_UriMessagePackSerializer : MessagePackSerializer<Uri>
+	internal static class MessagePackObjectExtensions
 	{
-		public System_UriMessagePackSerializer() { }
-
-		protected internal sealed override void PackToCore( Packer packer, Uri objectTree )
+		/// <summary>
+		///		Invokes <see cref="MessagePackObject.AsString()"/> in deserializaton manner.
+		/// </summary>
+		/// <param name="source"><see cref="MessagePackObject"/>.</param>
+		/// <returns>A deserialized value.</returns>
+		/// <exception cref="SerializationException"><paramref name="source"/> is not expected type.</exception>
+		public static string DeserializeAsString( this MessagePackObject source )
 		{
-			packer.PackString( objectTree.ToString() );
-		}
-
-		protected internal sealed override Uri UnpackFromCore( Unpacker unpacker )
-		{
-			return new Uri( unpacker.Data.Value.DeserializeAsString() );
+			try
+			{
+				return source.AsString();
+			}
+			catch ( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
 		}
 	}
 }

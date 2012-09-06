@@ -65,7 +65,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			while ( unpacker.Read() )
 			{
-				var key = unpacker.Data.Value.AsString();
+				var key = unpacker.Data.Value.DeserializeAsString();
 				if ( !unpacker.Read() )
 				{
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
@@ -80,7 +80,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					while ( valuesUnpacker.Read() )
 					{
-						result.Add( key, unpacker.Data.Value.AsString() );
+						result.Add( key, unpacker.Data.Value.DeserializeAsString() );
 					}
 				}
 			}

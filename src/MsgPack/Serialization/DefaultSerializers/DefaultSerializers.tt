@@ -284,7 +284,18 @@ foreach( var ctor in ctors )
 	if ( __workArounds.ContainsKey( __type ) )
 	{
 #>
-			<#= __workArounds[ __type ].UnpackCode #>
+			try
+			{
+				<#= __workArounds[ __type ].UnpackCode #>
+			}
+			catch( ArgumentException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
+			catch( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
 <#
 	}
 	else if ( __type.IsPrimitive )

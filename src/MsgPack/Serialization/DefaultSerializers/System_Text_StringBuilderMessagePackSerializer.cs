@@ -35,7 +35,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			// NOTE: More efficient?
 			var result = unpacker.Data.Value;
-			return result.IsNil ? null : new StringBuilder( result.AsString() );
+			return result.IsNil ? null : new StringBuilder( result.DeserializeAsString() );
 		}
 	}
 }
