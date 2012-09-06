@@ -23,10 +23,11 @@ using System.Linq;
 
 #if !MSTEST
 using NUnit.Framework;
+using System.Runtime.Serialization;
 #else
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
-using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
@@ -39,46 +40,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Array_FieldBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
-		}
-
-
-		[Test]
-		public void TestExtraField_MessagePackMemberExtensible_Array_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_MessagePackMemberExtensible_Array_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_DataContractExtensible_Array_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_DataContractExtensible_Array_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_PlainExtensible_Array_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_PlainExtensible_Array_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
 		}
 
 		[Test]
@@ -90,52 +52,14 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Array_FieldBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
 		}
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_ContextBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
-		}
-
-
-		[Test]
-		public void TestExtraField_MessagePackMemberExtensible_Array_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_MessagePackMemberExtensible_Array_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_DataContractExtensible_Array_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_DataContractExtensible_Array_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_PlainExtensible_Array_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_PlainExtensible_Array_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased );
+			// TODO: is it OK?
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
 		}
 
 		[Test]
@@ -147,52 +71,14 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Array_ContextBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
 		}
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_ExpressionBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
-		}
-
-
-		[Test]
-		public void TestExtraField_MessagePackMemberExtensible_Array_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_MessagePackMemberExtensible_Array_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_DataContractExtensible_Array_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_DataContractExtensible_Array_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_PlainExtensible_Array_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_PlainExtensible_Array_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased );
+			// TODO: is it OK?
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
 		}
 
 		[Test]
@@ -204,52 +90,14 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Array_ExpressionBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
 		}
 
 		[Test]
 		public void TestExtraField_NotExtensible_Map_FieldBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased ) );
-		}
-
-
-		[Test]
-		public void TestExtraField_MessagePackMemberExtensible_Map_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_MessagePackMemberExtensible_Map_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_DataContractExtensible_Map_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_DataContractExtensible_Map_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_PlainExtensible_Map_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_PlainExtensible_Map_FieldBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased );
+			// TODO: is it OK?
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased ) );
 		}
 
 		[Test]
@@ -261,7 +109,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Map_FieldBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.FieldBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.FieldBased ) );
 		}
 
 		[Test]
@@ -273,46 +121,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Map_ContextBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
-		}
-
-
-		[Test]
-		public void TestExtraField_MessagePackMemberExtensible_Map_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_MessagePackMemberExtensible_Map_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_DataContractExtensible_Map_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_DataContractExtensible_Map_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_PlainExtensible_Map_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_PlainExtensible_Map_ContextBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
 		}
 
 		[Test]
@@ -324,7 +133,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Map_ContextBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
 		}
 
 		[Test]
@@ -336,46 +145,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Map_ExpressionBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased ) );
-		}
-
-
-		[Test]
-		public void TestExtraField_MessagePackMemberExtensible_Map_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_MessagePackMemberExtensible_Map_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<MessagePackMemberExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_DataContractExtensible_Map_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_DataContractExtensible_Map_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<DataContractExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased );
-		}
-
-
-		[Test]
-		public void TestExtraField_PlainExtensible_Map_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_PlainExtensible_Map_ExpressionBased_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<PlainExtensibleVersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased ) );
 		}
 
 		[Test]
@@ -387,7 +157,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Map_ExpressionBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.ExpressionBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.ExpressionBased ) );
 		}
 
 		[Test]
@@ -395,5 +165,15 @@ namespace MsgPack.Serialization
 		{
 			TestFieldSwappedCore( EmitterFlavor.ExpressionBased );
 		}
+	}
+
+	public class VersioningTestTarget
+	{
+		[MessagePackMember( 0 )]
+		public Int32 Field1 { get; set; }
+		[MessagePackMember( 1 )]
+		public Int32 Field2 { get; set; }
+		[MessagePackMember( 2 )]
+		public String Field3 { get; set; }
 	}
 }

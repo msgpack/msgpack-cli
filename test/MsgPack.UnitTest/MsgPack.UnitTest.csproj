@@ -213,6 +213,12 @@
     <Compile Include="Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs" />
     <Compile Include="Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs" />
     <Compile Include="Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs" />
+    <Compile Include="Serialization\VersioningTest.Cases.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VersioningTest.Cases.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\VersioningTest.cs" />
     <Compile Include="Serialization\_SetUpFixture.cs" />
     <Compile Include="Serialization\ComplexTypeWithNonSerialized.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContract.cs" />
@@ -380,6 +386,10 @@
     <None Include="Serialization\AutoMessagePackSerializerTest.Types.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AutoMessagePackSerializerTest.Types.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\VersioningTest.Cases.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VersioningTest.Cases.cs</LastGenOutput>
     </None>
     <None Include="TestRandom.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -6,6 +6,7 @@
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Collections.ObjectModel" #>
+<#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Numerics" #>
 <#@ import namespace="System.Reflection" #>
@@ -144,6 +145,7 @@ foreach( var __method in new []{ "Array", "Map" } )
 		}
 
 <#
+/*
 		foreach( var __targetType in new [] { "MessagePackMember", "DataContract", "Plain" } )
 		{
 #>
@@ -162,6 +164,7 @@ foreach( var __method in new []{ "Array", "Map" } )
 
 <#
 		}
+*/
 #>
 		[Test]
 		public void TestMissingField_<#= __method #>_<#= __flavor #>Based_MissingIsTreatedAsNil()
@@ -190,4 +193,50 @@ foreach( var __method in new []{ "Array", "Map" } )
 }
 #>
 	}
+
+<#
+foreach( var __targetType in
+	new [] 
+	{ 
+		Tuple.Create( string.Empty, default( string ), "[MessagePackMember( {0} )]" ),
+		//Tuple.Create( "MessagePackMember", default( string ), "[MessagePackMember( {0} )]" ),
+		//Tuple.Create( "DataContract", "[DataContract]", "[DataMember( Order = {0} )]" ),
+		//Tuple.Create( "Plain", default( string ), default ( string ) )
+	}
+)
+{
+	if( __targetType.Item2 != null )
+	{
+#>
+	<#= __targetType.Item2 #>
+<#
+	}
+#>
+	public class <#= __targetType.Item1 #>VersioningTestTarget
+	{
+<#
+	foreach (var __member in 
+		new []
+		{
+			Tuple.Create( 0, "Field1", "Int32" ),
+			Tuple.Create( 1, "Field2", "Int32" ),
+			Tuple.Create( 2, "Field3", "String" ),
+		}
+	)
+	{
+		if( __targetType.Item3 != null )
+		{
+#>
+		<#= String.Format( CultureInfo.InvariantCulture, __targetType.Item3, __member.Item1 ) #>
+<#
+		}
+#>
+		public <#= __member.Item3 #> <#= __member.Item2 #> { get; set; }
+<#
+	}
+#>
+	}
+<#
+}
+#>
 }
