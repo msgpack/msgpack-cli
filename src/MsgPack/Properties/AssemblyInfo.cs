@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010 FUJIWARA, Yusuke
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,10 +25,10 @@ using System.Security;
 [assembly: AssemblyTitle( "MessagePack for CLI(.NET/Mono)" )]
 [assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library." )]
 [assembly: AssemblyConfiguration( "Beta" )]
-[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010" )]
+[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2012" )]
 
 // TODO: use script. Major = Informational-Major, Minor = Informational-Minor, Build = Epoc days from 2010/1/1, Revision = Epoc minutes from 00:00:00
-[assembly: AssemblyFileVersion( "0.2.0.0" )]
+[assembly: AssemblyFileVersion( "0.3.0.0" )]
 
 [assembly: SecurityRules( SecurityRuleSet.Level2, SkipVerificationInFullTrust = true )]
 [assembly: AllowPartiallyTrustedCallers]

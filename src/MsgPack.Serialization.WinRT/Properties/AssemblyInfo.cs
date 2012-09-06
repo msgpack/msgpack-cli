@@ -24,7 +24,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle( "MessagePack for WinRT" )]
 [assembly: AssemblyDescription( "MessagePack for WinRT packing/unpacking serialization library." )]
 [assembly: AssemblyConfiguration( "Experimental" )]
-[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2012" )]
+[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2012" )]
 
 // TODO: use script. Major = Informational-Major, Minor = Informational-Minor, Build = Epoc days from 2010/1/1, Revision = Epoc minutes from 00:00:00
 [assembly: AssemblyFileVersion( "0.3.0.0" )]
