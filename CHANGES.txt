@@ -8,4 +8,22 @@ Release 0.1 - 2011/1/4
   * Buffered Unpacker APIs (Unpacker class) are implemented.
   * Unbuffered Unpacker APIs (Unpacking class) are implemented.
 
-See project wiki for roadmap.
+Release 0.2 - 2012/6/19
+
+  FEATURES
+  * Geneneric Serializer is implemented. (See MessagePackSerializer.Create<T>().)
+  * Redesign basic APIs.
+  * Support Mono, Silverlight, WP 7.1 (experimental).
+  * RPC (See https://github.com/yfakariya/msgpack-rpc-cli/)
+
+Release 0.3 - T.B.D.
+
+  FEATURES
+  * Improve protobuf-net compatibility.
+  * Add non-generic overload for MessagePackSerializer.Create().
+  * Support WinRT (experimental, .NET Fx core only, that is, WinMD is not supported yet).
+  * Add SerialializerGenerator which provides capability to generate pre-built serializer assembly.
+
+  BUG FIXES
+  * Fix 'sparse' declaration (i.e. field ids are not continuous on the objects' MessagePackDataMember attribute) causes deserialization error.
+  * Fix synchronization related error.
