@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 	public static class MessagePackSerializer
 	{
 		/// <summary>
-		///		Creates new <see cref="MessagePackSerializer{T}"/> instance with new <see cref="SerializationContext"/>.
+		///		Creates new <see cref="MessagePackSerializer{T}"/> instance with <see cref="SerializationContext.Default"/>.
 		/// </summary>
 		/// <typeparam name="T">Target type.</typeparam>
 		/// <returns>
@@ -47,7 +47,7 @@ namespace MsgPack.Serialization
 		/// </returns>
 		public static MessagePackSerializer<T> Create<T>()
 		{
-			return MessagePackSerializer.Create<T>( new SerializationContext() );
+			return MessagePackSerializer.Create<T>( SerializationContext.Default );
 		}
 
 		/// <summary>

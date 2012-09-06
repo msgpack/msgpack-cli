@@ -41,6 +41,19 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationContext
 	{
+		private static readonly SerializationContext _default = new SerializationContext();
+
+		/// <summary>
+		///		Gets the default instance.
+		/// </summary>
+		/// <value>
+		///		The default <see cref="SerializationContext"/> instance.
+		/// </value>
+		public static SerializationContext Default
+		{
+			get { return _default; }
+		}
+
 		private readonly SerializerRepository _serializers;
 #if SILVERLIGHT
 		private readonly object _typeLock;
