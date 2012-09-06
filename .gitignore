@@ -5,6 +5,7 @@
 *.nupkg
 *.shfbproj_*
 _Resharper.*/
+_UpgradeReport_*/
 bin/
 Bin/
 Help*/
