@@ -75,10 +75,13 @@ namespace SyncProjects
 							Base = p.Attribute( "Base" ),
 							Includes =
 								p.Elements( "Include" )
-								.Select( ToPattern ).Where( ex => ex != null ).ToArray(),
+								.Select( ToPattern ).Where( pattern => pattern != null ).ToArray(),
 							Excludes =
 								p.Elements( "Exclude" )
-								.Select( ToPattern ).Where( ex => ex != null ).ToArray()
+								.Select( ToPattern ).Where( pattern => pattern != null ).ToArray(),
+							Preserves =
+								p.Elements( "Preserve" )
+								.Select( ToPattern ).Where( pattern => pattern != null ).ToArray()
 						}
 					) )
 			{
@@ -111,7 +114,11 @@ namespace SyncProjects
 								.Where(
 									e =>
 									e.Attribute( "Include" ) != null
-									&& project.Excludes.Any( ex => Regex.IsMatch( e.Attribute( "Include" ).Value, ex ) )
+									&& project.Excludes.Any( excludes =>
+										e.Element( Ns + "Link" ) != null
+										? Regex.IsMatch( e.Element( Ns + "Link" ).Value, excludes )
+										: Regex.IsMatch( e.Attribute( "Include" ).Value, excludes )
+									)
 								).Remove();
 							return ig;
 						}
@@ -150,7 +157,8 @@ namespace SyncProjects
 								destinationElement,
 								relativePath,
 								project.Includes,
-								project.Excludes
+								project.Excludes,
+								project.Preserves
 							);
 							break;
 						}
@@ -166,14 +174,16 @@ namespace SyncProjects
 			return projectXml.Elements( Ns + "ItemGroup" ).Select( e => new ItemGroup( e ) );
 		}
 
-		private static void CopyItemGroup( string elementName, IEnumerable<XElement> sourceItems, XElement destinationItemGroup, string relativePath, IEnumerable<string> includings, IEnumerable<string> excludings )
+		private static void CopyItemGroup( string elementName, IEnumerable<XElement> sourceItems, XElement destinationItemGroup, string relativePath, IEnumerable<string> includings, IEnumerable<string> excludings, IEnumerable<string> preservings )
 		{
 			var remaining =
 				destinationItemGroup.Elements( Ns + elementName )
 				.Where( e =>
 					e.Attribute( "Include" ) != null &&
-					excludings.Any( excludes =>
-						Regex.IsMatch( e.Attribute( "Include" ).Value, excludes )
+					preservings.Any( preserves =>
+						e.Element( Ns + "Link" ) != null
+						? Regex.IsMatch( e.Element( Ns + "Link" ).Value, preserves )
+						: Regex.IsMatch( e.Attribute( "Include" ).Value, preserves )
 					)
 				).Select( e => new XElement( e ) )
 				.ToArray();
@@ -195,9 +205,16 @@ namespace SyncProjects
 			foreach ( var item in
 				sourceItems.Where( e =>
 					e.Attribute( "Include" ) != null &&
-					!excludings.Any( ex =>
-						Regex.IsMatch( e.Attribute( "Include" ).Value, ex )
-					)
+					!excludings.Any( excludes =>
+						e.Element( Ns + "Link" ) != null
+						? Regex.IsMatch( e.Element( Ns + "Link" ).Value, excludes )
+						: Regex.IsMatch( e.Attribute( "Include" ).Value, excludes )
+					) &&
+					!preservings.Any( preserves =>
+						e.Element( Ns + "Link" ) != null
+						? Regex.IsMatch( e.Element( Ns + "Link" ).Value, preserves )
+						: Regex.IsMatch( e.Attribute( "Include" ).Value, preserves )
+					) 
 				).Select( copying =>
 					CreateCopyingElement( relativePath, copying )
 				).Concat( remaining ).Concat( appendings ) )
@@ -254,18 +271,24 @@ namespace SyncProjects
 					"^" +
 					String.Join(
 						DirectorySeparatorPattern,
-						path.Value.Split( DirectorySeparators, StringSplitOptions.RemoveEmptyEntries ).Select( ToRegex )
+						path.Value.Split( DirectorySeparators, StringSplitOptions.RemoveEmptyEntries ).Select( ToPathRegex )
 					) +
 					"$";
 			}
 			else
 			{
-				var filePattern = ToRegex( ( file.Value ) );
+				var filePattern = ToFileRegex( ( file.Value ) );
 				return "(^" + filePattern + "|" + DirectorySeparatorPattern + filePattern + ")$";
 			}
 		}
 
-		private static string ToRegex( string wildcard )
+		private static string ToPathRegex( string wildcard )
+		{
+			// Wildcard in path should not contain directory separator.
+			return Regex.Escape( wildcard ).Replace( "\\*\\*", ".*" ).Replace( "\\*", @"[^\\]*" ).Replace( "\\?", @"[^\\]" );
+		}
+
+		private static string ToFileRegex( string wildcard )
 		{
 			return Regex.Escape( wildcard ).Replace( "\\*", ".*" ).Replace( "\\?", "." );
 		}
