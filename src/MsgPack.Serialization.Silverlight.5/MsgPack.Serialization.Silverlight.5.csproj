@@ -122,6 +122,9 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MessagePackObjectExtensions.cs">
+      <Link>Serialization\DefaultSerializers\MessagePackObjectExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>
     </Compile>
@@ -217,6 +220,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionSerializerLogics.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionSerializerLogics.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\IExpressionMessagePackSerializer.cs">
+      <Link>Serialization\ExpressionSerializers\IExpressionMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ListExpressionMessagePackSerializer`1.cs">
       <Link>Serialization\ExpressionSerializers\ListExpressionMessagePackSerializer`1.cs</Link>
