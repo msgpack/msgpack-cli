@@ -45,7 +45,8 @@ namespace MsgPack.Serialization
 		{
 			PropertyInfo asProperty = source as PropertyInfo;
 			FieldInfo asField = source as FieldInfo;
-			return asProperty != null ? ( asProperty.CanWrite && asProperty.GetSetMethod() != null ) : !asField.IsInitOnly;
+			// GetSetMethod() on WinRT is not compabitle with CLR. CLR returns null but WinRT returns non-null for non-public setter.
+			return asProperty != null ? ( asProperty.CanWrite && asProperty.GetSetMethod() != null && asProperty.GetSetMethod().IsPublic ) : !asField.IsInitOnly;
 		}
 
 		public static CollectionTraits GetCollectionTraits( this Type source )
