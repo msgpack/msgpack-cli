@@ -66,7 +66,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._getCount = ExpressionSerializerLogics.CreateGetCount<T>( traits );
 
 			var constructor = ExpressionSerializerLogics.GetCollectionConstructor<T>();
-			if ( constructor.GetParameters().Length == 1 )
+
+			if ( constructor == null )
+			{
+				this._createInstance = () => { throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) ); };
+				this._createInstanceWithCapacity = null;
+			}
+			else if ( constructor.GetParameters().Length == 1 )
 			{
 				this._createInstance = null;
 
