@@ -270,6 +270,9 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_MessagePackObject.cs">
       <Link>Serialization\Metadata\_MessagePackObject.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_MessagePackSerializer.cs">
+      <Link>Serialization\Metadata\_MessagePackSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_NotImplementedException.cs">
       <Link>Serialization\Metadata\_NotImplementedException.cs</Link>
     </Compile>

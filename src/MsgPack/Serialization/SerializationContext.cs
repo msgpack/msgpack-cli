@@ -24,13 +24,11 @@ using System.Collections.Concurrent;
 #endif
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Threading;
 #if NETFX_CORE
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-#endif
-#if SILVERLIGHT
-using System.Threading;
 #endif
 
 namespace MsgPack.Serialization
@@ -41,7 +39,7 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationContext
 	{
-		private static readonly SerializationContext _default = new SerializationContext();
+		private static SerializationContext _default = new SerializationContext();
 
 		/// <summary>
 		///		Gets the default instance.
@@ -52,6 +50,14 @@ namespace MsgPack.Serialization
 		public static SerializationContext Default
 		{
 			get { return _default; }
+		}
+
+		/// <summary>
+		///		Resets the <see cref="Default"/> instance to brand new object.
+		/// </summary>
+		internal static void ResetDefault()
+		{
+			Interlocked.Exchange( ref _default, new SerializationContext() );
 		}
 
 		private readonly SerializerRepository _serializers;
