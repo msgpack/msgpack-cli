@@ -4,8 +4,10 @@
 *.pidb
 *.nupkg
 *.shfbproj_*
+*.vshost.exe
 _Resharper.*/
 _UpgradeReport_*/
+UpgradeLog.*
 bin/
 Bin/
 Help*/
@@ -17,3 +19,4 @@ Index.dat
 Storage.dat
 test-results/
 TestResult/
+TestResults/
