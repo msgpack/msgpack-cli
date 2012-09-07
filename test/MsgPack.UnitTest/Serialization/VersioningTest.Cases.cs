@@ -20,6 +20,7 @@
 
 using System;
 using System.Linq;
+using System.Runtime.Serialization;
 
 #if !MSTEST
 using NUnit.Framework;
@@ -39,7 +40,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Array_FieldBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
 		}
 
 		[Test]
@@ -51,13 +52,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Array_FieldBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
 		}
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_ContextBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
 		}
 
 		[Test]
@@ -69,13 +70,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Array_ContextBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
 		}
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_ExpressionBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
 		}
 
 		[Test]
@@ -87,13 +88,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Array_ExpressionBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
 		}
 
 		[Test]
 		public void TestExtraField_NotExtensible_Map_FieldBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased ) );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased ) );
 		}
 
 		[Test]
@@ -105,7 +106,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Map_FieldBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.FieldBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.FieldBased ) );
 		}
 
 		[Test]
@@ -117,7 +118,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Map_ContextBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
 		}
 
 		[Test]
@@ -129,7 +130,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Map_ContextBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
 		}
 
 		[Test]
@@ -141,7 +142,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Map_ExpressionBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased ) );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased ) );
 		}
 
 		[Test]
@@ -153,7 +154,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestFieldInvalidType_Map_ExpressionBased_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.ExpressionBased ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Map, EmitterFlavor.ExpressionBased ) );
 		}
 
 		[Test]

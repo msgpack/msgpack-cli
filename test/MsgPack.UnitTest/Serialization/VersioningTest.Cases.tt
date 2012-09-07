@@ -116,6 +116,7 @@ var __fields =
 
 using System;
 using System.Linq;
+using System.Runtime.Serialization;
 
 #if !MSTEST
 using NUnit.Framework;
@@ -141,7 +142,7 @@ foreach( var __method in new []{ "Array", "Map" } )
 		[Test]
 		public void TestExtraField_NotExtensible_<#= __method #>_<#= __flavor #>Based_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based ) );
+			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based ) );
 		}
 
 <#
@@ -175,7 +176,7 @@ foreach( var __method in new []{ "Array", "Map" } )
 		[Test]
 		public void TestFieldInvalidType_<#= __method #>_<#= __flavor #>Based_Fail()
 		{
-			Assert.Throws<InvalidMessagePackStreamException>( () => TestFieldInvalidTypeCore( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based ) );
+			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based ) );
 		}
 <#
 		if ( __method == "Map" )
