@@ -39,6 +39,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 			for ( int i = 0; i < this.MemberSerializers.Length; i++ )
 			{
+				if( this.MemberNames[i]==null )
+				{
+					// Skip missing member.
+					continue;
+				}
+
 				packer.PackString( this.MemberNames[ i ] );
 				this.MemberSerializers[ i ].PackTo( packer, this.MemberGetters[ i ]( objectTree ) );
 			}
