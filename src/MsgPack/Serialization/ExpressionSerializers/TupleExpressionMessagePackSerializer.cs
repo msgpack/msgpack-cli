@@ -118,7 +118,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			for ( int depth = tupleTypeList.Count - 1; 0 <= depth; depth-- )
 			{
 				var constructor = tupleTypeList[ depth ].GetConstructors().Single();
-				var args = itemExpressions.Skip( depth * 7 ).Take( Math.Max( constructor.GetParameters().Length, 7 ) );
+				var args = itemExpressions.Skip( depth * 7 ).Take( Math.Min( constructor.GetParameters().Length, 7 ) );
 				if ( right != null )
 				{
 					args = args.Concat( new[] { right } );
