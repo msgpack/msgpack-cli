@@ -22,6 +22,7 @@ using System;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
+using MsgPack.Serialization.ExpressionSerializers;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -91,4 +92,31 @@ namespace MsgPack.Serialization
 		}
 	}
 #endif
+	[TestFixture]
+	public class MapExpressionBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
+	{
+		protected override SerializationContext GetSerializationContext()
+		{
+			return new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.ExpressionBased };
+		}
+
+		protected override MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
+		{
+			return new AutoMessagePackSerializer<T>( context, c => new ExpressionSerializerBuilder<T>( c ) );
+		}
+	}
+
+	[TestFixture]
+	public class ArrayExpressionBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
+	{
+		protected override SerializationContext GetSerializationContext()
+		{
+			return new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ExpressionBased };
+		}
+
+		protected override MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
+		{
+			return new AutoMessagePackSerializer<T>( context, c => new ExpressionSerializerBuilder<T>( c ) );
+		}
+	}
 }
