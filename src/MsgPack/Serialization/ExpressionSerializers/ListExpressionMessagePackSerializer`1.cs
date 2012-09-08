@@ -53,6 +53,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						Expression.New( typeof( T ) )
 					).Compile();
 			}
+			else if ( typeof( T ).IsAbstract )
+			{
+				this._createInstance = () => { throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( T ) ); };
+				this._createInstanceWithCapacity = null;
+
+			}
 			else
 			{
 				var constructor = ExpressionSerializerLogics.GetCollectionConstructor<T>();
