@@ -197,6 +197,8 @@ namespace MsgPack.Serialization
 						Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( targetType )
 						) as Func<SerializationContext, IMessagePackSerializer>;
 
+				Contract.Assert( factory != null );
+
 				lock ( _syncRoot )
 				{
 					_creatorCache[ targetType ] = factory;
@@ -215,103 +217,6 @@ namespace MsgPack.Serialization
 				);
 #endif
 			return factory( context );
-		}
-
-		/// <summary>
-		///		Gets a <see cref="MessagePackSerializer{T}"/> instance stored in <see cref="SerializationContext.Default"/>.
-		///		If a serializer for <typeparamref name="T"/> is not stored, <see cref="Create{T}()"/> will be called automatically.
-		/// </summary>
-		/// <typeparam name="T">Target type.</typeparam>
-		/// <returns>
-		///		New <see cref="MessagePackSerializer{T}"/> instance to serialize/deserialize the object tree which the top is <typeparamref name="T"/>.
-		/// </returns>
-		public static MessagePackSerializer<T> Get<T>()
-		{
-			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-
-			return Get<T>( SerializationContext.Default );
-		}
-
-		/// <summary>
-		///		Gets a <see cref="MessagePackSerializer{T}"/> instance stored in the specified <see cref="SerializationContext"/>.
-		///		If a serializer for <typeparamref name="T"/> is not stored, <see cref="Create{T}(SerializationContext)"/> will be called automatically.
-		/// </summary>
-		/// <typeparam name="T">Target type.</typeparam>
-		/// <param name="context">
-		///		<see cref="SerializationContext"/> to store known/created serializers.
-		/// </param>
-		/// <returns>
-		///		New <see cref="MessagePackSerializer{T}"/> instance to serialize/deserialize the object tree which the top is <typeparamref name="T"/>.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="context"/> is <c>null</c>.
-		/// </exception>
-		public static MessagePackSerializer<T> Get<T>( SerializationContext context )
-		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-
-			return context.GetSerializer<T>();
-		}
-
-		/// <summary>
-		///		Gets a <see cref="IMessagePackSerializer"/> instance stored in <see cref="SerializationContext.Default"/>.
-		///		If a serializer for <paramref name="targetType"/> is not stored, <see cref="Create(Type)"/> will be called automatically.
-		/// </summary>
-		/// <param name="targetType">Target type.</param>
-		/// <returns>
-		///		A new <see cref="IMessagePackSerializer"/> instance to serialize/deserialize the object tree which the top is <paramref name="targetType"/> type.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="targetType"/> is <c>null</c>.
-		/// </exception>
-		/// <remarks>
-		///		To avoid boxing and strongly typed API is prefered, use <see cref="Get{T}()"/> instead when possible.
-		/// </remarks>
-		public static IMessagePackSerializer Get( Type targetType )
-		{
-			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
-
-			return Get( targetType, SerializationContext.Default );
-		}
-
-		/// <summary>
-		///		Gets a <see cref="IMessagePackSerializer"/> instance stored in the specified <see cref="SerializationContext"/>.
-		///		If a serializer for <paramref name="targetType"/> is not stored, <see cref="Create(Type,SerializationContext)"/> will be called automatically.
-		/// </summary>
-		/// <param name="targetType">Target type.</param>
-		/// <param name="context">
-		///		<see cref="SerializationContext"/> to store known/created serializers.
-		/// </param>
-		/// <returns>
-		///		A new <see cref="IMessagePackSerializer"/> instance to serialize/deserialize the object tree which the top is <paramref name="targetType"/> type.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="targetType"/> is <c>null</c>.
-		///		Or, <paramref name="context"/> is <c>null</c>.
-		/// </exception>
-		/// <remarks>
-		///		To avoid boxing and strongly typed API is prefered, use <see cref="Get{T}(SerializationContext)"/> instead when possible.
-		/// </remarks>
-		public static IMessagePackSerializer Get( Type targetType, SerializationContext context )
-		{
-			if ( targetType == null )
-			{
-				throw new ArgumentNullException( "targetType" );
-			}
-
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
-
-			return context.GetSerializer( targetType );
 		}
 	}
 }

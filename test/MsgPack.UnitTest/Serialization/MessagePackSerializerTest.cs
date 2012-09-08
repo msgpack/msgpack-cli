@@ -38,7 +38,8 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
-			SerializationContext.ResetDefault();
+			// Reset Default
+			SerializationContext.Default = new SerializationContext();
 		}
 
 		[Test]
@@ -126,116 +127,6 @@ namespace MsgPack.Serialization
 		public void TestCreate_WithContext_ContextIsNull_Fail()
 		{
 			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Create( typeof( int ), null ) );
-		}
-
-
-
-		[Test]
-		public void TestGet1_WithoutContext_SameInstance()
-		{
-			var first = MessagePackSerializer.Get<int>();
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Get<int>();
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.SameAs( second ) );
-		}
-
-		[Test]
-		public void TestGet1_WithoutContext_SameAsContextStored()
-		{
-			var first = MessagePackSerializer.Get<int>();
-			Assert.That( first, Is.Not.Null );
-			var second = SerializationContext.Default.GetSerializer<int>();
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.SameAs( second ) );
-		}
-
-		[Test]
-		public void TestGet1_WithContext_SameInstance()
-		{
-			var context = new SerializationContext();
-			var first = MessagePackSerializer.Get<int>( context );
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Get<int>( context );
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.SameAs( second ) );
-		}
-
-		[Test]
-		public void TestGet1_WithContext_SameAsContextStored()
-		{
-			var context = new SerializationContext();
-			var first = MessagePackSerializer.Get<int>( context );
-			Assert.That( first, Is.Not.Null );
-			var second = context.GetSerializer<int>();
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.SameAs( second ) );
-		}
-
-		[Test]
-		public void TestGet1_WithContext_Null_Fail()
-		{
-			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get<int>( null ) );
-		}
-
-		[Test]
-		public void TestGet_WithoutContext_SameInstance()
-		{
-			var first = MessagePackSerializer.Get( typeof( int ) );
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Get( typeof( int ) );
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.SameAs( second ) );
-		}
-
-		[Test]
-		public void TestGet_WithoutContext_SameTypeAsGet1()
-		{
-			var first = MessagePackSerializer.Get( typeof( int ) );
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Get<int>();
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
-		}
-
-		[Test]
-		public void TestGet_WithContext_SameInstance()
-		{
-			var context = new SerializationContext();
-			var first = MessagePackSerializer.Get( typeof( int ), context );
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Get( typeof( int ), context );
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.SameAs( second ) );
-		}
-
-		[Test]
-		public void TestGet_WithContext_SameTypeAsGet1()
-		{
-			var context = new SerializationContext();
-			var first = MessagePackSerializer.Get( typeof( int ), context );
-			Assert.That( first, Is.Not.Null );
-			var second = MessagePackSerializer.Get<int>( context );
-			Assert.That( second, Is.Not.Null );
-			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
-		}
-
-		[Test]
-		public void TestGet_WithoutContext_TypeIsNull_Fail()
-		{
-			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get( null ) );
-		}
-
-		[Test]
-		public void TestGet_WithContext_TypeIsNull_Fail()
-		{
-			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get( null, new SerializationContext() ) );
-		}
-
-		[Test]
-		public void TestGet_WithContext_ContextIsNull_Fail()
-		{
-			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get( typeof( int ), null ) );
 		}
 	}
 }

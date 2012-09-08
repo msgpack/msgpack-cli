@@ -42,22 +42,24 @@ namespace MsgPack.Serialization
 		private static SerializationContext _default = new SerializationContext();
 
 		/// <summary>
-		///		Gets the default instance.
+		///		Gets or sets the default instance.
 		/// </summary>
 		/// <value>
 		///		The default <see cref="SerializationContext"/> instance.
 		/// </value>
+		/// <exception cref="ArgumentNullException">The setting value is <c>null</c>.</exception>
 		public static SerializationContext Default
 		{
-			get { return _default; }
-		}
+			get { return Interlocked.CompareExchange( ref  _default, null, null ); }
+			set
+			{
+				if( value == null )
+				{
+					throw new ArgumentNullException( "value" );
+				}
 
-		/// <summary>
-		///		Resets the <see cref="Default"/> instance to brand new object.
-		/// </summary>
-		internal static void ResetDefault()
-		{
-			Interlocked.Exchange( ref _default, new SerializationContext() );
+				Interlocked.Exchange( ref _default, value );
+			}
 		}
 
 		private readonly SerializerRepository _serializers;
