@@ -169,9 +169,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							unpackerParameter,
 							Expression.TypeAs( keySerializerParameter, keySerializerType ),
 							Expression.TypeAs( valueSerializerParameter, valueSerializerType ),
-							instanceParameter
+							Expression.TypeAs( instanceParameter, typeof( IDictionary<,> ).MakeGenericType( keyType, valueType ) )
 						),
-						 unpackerParameter, instanceParameter, keySerializerParameter, valueSerializerParameter
+						unpackerParameter, instanceParameter, keySerializerParameter, valueSerializerParameter
 					);
 			}
 			else
@@ -184,7 +184,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						Expression.Call(
 							Metadata._UnpackHelpers.UnpackNonGenericMapTo,
 							unpackerParameter,
-							instanceParameter
+							Expression.TypeAs( instanceParameter, typeof( IDictionary ) )
 						),
 						 unpackerParameter, instanceParameter, keySerializerParameter, valueSerializerParameter
 					);
