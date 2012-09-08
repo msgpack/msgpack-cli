@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 #if NETFX_CORE
@@ -192,7 +193,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							unpackCollectionToMethod,
 							unpackerParameter,
 							Expression.TypeAs( elementSerializerParameter, typeof( MessagePackSerializer<> ).MakeGenericType( traits.ElementType ) ),
-							instanceParameter,
+							Expression.TypeAs( instanceParameter, typeof( IEnumerable<> ).MakeGenericType( traits.ElementType ) ),
 							Expression.Lambda(
 								delegateType,
 								Expression.Call(
@@ -228,7 +229,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							null,
 							unpackCollectionToMethod,
 							unpackerParameter,
-							instanceParameter,
+							Expression.TypeAs( instanceParameter, typeof( IEnumerable ) ),
 							Expression.Lambda(
 								delegateType,
 								Expression.Call(

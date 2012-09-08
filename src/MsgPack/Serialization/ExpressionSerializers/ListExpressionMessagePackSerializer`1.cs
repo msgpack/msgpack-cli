@@ -45,14 +45,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						).Compile();
 				this._createInstance = null;
 			}
-			else if ( typeof( T ).GetIsValueType() )
-			{
-				this._createInstanceWithCapacity = null;
-				this._createInstance =
-					Expression.Lambda<Func<T>>(
-						Expression.New( typeof( T ) )
-					).Compile();
-			}
 			else if ( typeof( T ).IsAbstract )
 			{
 				this._createInstance = () => { throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( T ) ); };
