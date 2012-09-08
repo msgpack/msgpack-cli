@@ -156,19 +156,26 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						).Compile()
 						: UnpackHelpers.IsReadOnlyAppendableCollectionMember( m.Member )
 						? default( Action<T, object> )
-						: Expression.Lambda<Action<T, object>>(
-							Expression.Throw(
-								Expression.New(
-									Metadata._NotImplementedException.ctor_String,
-									Expression.Constant(
-										String.Format( CultureInfo.CurrentCulture, "Cannot handle read only member '{0}'.", m.Member )
-									)
-								)
-							),
-							targetParameter,
-							valueParameter
-						).Compile()
+						: ThrowGetOnlyMemberIsInvalid( m.Member )
 				).ToArray();
+		}
+
+		private static Action<T, object> ThrowGetOnlyMemberIsInvalid( MemberInfo member )
+		{
+			var asProperty = member as PropertyInfo;
+			if ( asProperty != null )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot set value to '{0}.{1}' property.", asProperty.DeclaringType, asProperty.Name ) );
+			}
+			else
+			{
+				Contract.Assert( member is FieldInfo, member.ToString() + ":" + member.MemberType );
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture, "Cannot set value to '{0}.{1}' field.", member.DeclaringType, member.Name
+					)
+				);
+			}
 		}
 
 		protected internal override T UnpackFromCore( Unpacker unpacker )
