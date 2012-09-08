@@ -22,6 +22,7 @@
 <#@ assembly Name="System.Core" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
 <#
 var __typeName = "MessagePackObject";
 var __types = 
@@ -38,6 +39,8 @@ var __types =
 		{ typeof( ulong ), 9 },
 		{ typeof( float ), 0x10 | 1 },
 		{ typeof( double ), 0x10 | 2 },
+		{ typeof( string ), 0x10 | 3 },
+		{ typeof( byte[] ), 0x10 | 4 },
 	};
 Func<Type, bool> __IsNotCLSCompliant =
 	type =>
@@ -47,15 +50,6 @@ Func<Type, bool> __IsNotCLSCompliant =
 			|| type == typeof( ushort )
 			|| type == typeof( uint )
 			|| type == typeof( ulong );
-	};
-Func<Type, bool> __IsExplicitConversionRequired =
-	type =>
-	{
-		return 
-			type == typeof( sbyte )
-			|| type == typeof( short )
-			|| type == typeof( int )
-			|| type == typeof( long );
 	};
 #>
 #region -- License Terms --
@@ -100,7 +94,7 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <see cref="<#= t.Name #>"/> instance.
+		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance.
 		/// </summary>
 <#
 if( __IsNotCLSCompliant( t ) )
@@ -112,63 +106,9 @@ if( __IsNotCLSCompliant( t ) )
 #>
 		public <#= __typeName #>( <#= t.Name #> value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
-			this = new <#= __typeName #>();
 <#
-//			this._as t.Name = value;
+	this.GenerateConstructor( __typeName, "this", t );
 #>
-<# 
-	if( t == typeof ( bool ) )
-	{
-#>
-			this._value = value ? ( ulong )1 : 0;
-<#
-	}
-	else if( __IsExplicitConversionRequired( t ) )
-	{
-#>
-			this._value = unchecked( ( ulong )value );
-<#
-	}
-	else if ( t == typeof( float ) )
-	{
-#>
-			var bytes = BitConverter.GetBytes( value );
-			unchecked
-			{
-#pragma warning disable 0675
-				if( BitConverter.IsLittleEndian )
-				{
-					this._value |=  ( ulong )( bytes[ 3 ] << 24 );
-					this._value |=  ( ulong )( bytes[ 2 ] << 16 );
-					this._value |=  ( ulong )( bytes[ 1 ] << 8 );
-					this._value |=  bytes[ 0 ];
-				}
-				else
-				{
-					this._value |=  ( ulong )( bytes[ 0 ] << 24 );
-					this._value |=  ( ulong )( bytes[ 1 ] << 16 );
-					this._value |=  ( ulong )( bytes[ 2 ] << 8 );
-					this._value |=  bytes[ 3 ];
-				}
-#pragma warning restore 0675
-			}
-<#
-	}
-	else if ( t == typeof( double ) )
-	{
-#>
-			this._value = unchecked( ( ulong )BitConverter.DoubleToInt64Bits( value ) );
-<#
-	}
-	else
-	{
-#>
-			this._value = value;
-<#
-	}
-#>
-			this._handleOrTypeCode = _<#= t.Name.ToLowerInvariant() #>TypeCode;
 		}
 <#
 }
@@ -183,9 +123,9 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Convert this instance to <see cref="<#= t.Name #>"/> instance.
+		///		Convert this instance to <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance.
 		/// </summary>
-		/// <returns><see cref="<#= t.Name #>"/> instance corresponds to this instance.</returns>
+		/// <returns><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance corresponds to this instance.</returns>
 <#
 if( __IsNotCLSCompliant( t ) )
 {
@@ -194,9 +134,11 @@ if( __IsNotCLSCompliant( t ) )
 <#
 }
 #>
-		public <#= t.Name #> As<#= t.Name #>()
+		public <#= t.Name #> As<#= t == typeof( byte[] ) ? "Binary" : t.Name #>()
 		{
-			return ( <#= t.Name #> )this;
+<#
+	this.GenerateAsT( "this", t, false );
+#>
 		}
 <#
 }
@@ -212,9 +154,9 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Convert <see cref="<#= t.Name #>"/> instance to <see cref="<#= __typeName #>"/> instance.
+		///		Convert <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #>instance to <see cref="<#= __typeName #>"/> instance.
 		/// </summary>
-		/// <param name="value"><see cref="<#= t.Name #>"/> instance.</param>
+		/// <param name="value"><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance.</param>
 		/// <returns><see cref="<#=  __typeName #>"/> instance corresponds to <paramref name="value"/>.</returns>
 <#
 if( __IsNotCLSCompliant( t ) )
@@ -226,7 +168,11 @@ if( __IsNotCLSCompliant( t ) )
 #>
 		public static implicit operator <#= __typeName #>( <#= t.Name #> value )
 		{
-			return new <#= __typeName #>( value );
+			<#= __typeName #> result;
+<#
+	this.GenerateConstructor( __typeName, "result", t );
+#>
+			return result;
 		}
 <#
 }
@@ -238,234 +184,22 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Convert this instance to <see cref="<#= t.Name #>"/> instance.
+		///		Convert this instance to <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance.
 		/// </summary>
 		/// <param name="value"><see cref="<#= __typeName #>"/> instance.</param>
-		/// <returns><see cref="<#= t.Name #>"/> instance corresponds to <paramref name="value"/>.</returns>
+		/// <returns><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance corresponds to <paramref name="value"/>.</returns>
 <#
-if( __IsNotCLSCompliant( t ) )
-{
+	if( __IsNotCLSCompliant( t ) )
+	{
 #>
 		[CLSCompliant( false )]
 <#
-}
+	}
 #>
 		public static explicit operator <#= t.Name #>( <#= __typeName #> value )
 		{
 <#
-	if( t.IsValueType )
-	{
-#>
-			if( value.IsNil )
-			{
-				ThrowCannotBeNilAs<#= "<" + t.Name  + ">" #>();
-			}
-<#
-	}
-
-	if ( t == typeof( bool ) )
-	{
-#>
-			var typeCode = value._handleOrTypeCode as ValueTypeCode;
-			if( typeCode == null || typeCode.TypeCode != MessagePackValueTypeCode.Boolean )
-			{
-				ThrowInvalidTypeAs<bool>( value );
-			}
-			
-			return value._value != 0;
-<#
-	}
-	else if ( t == typeof( float ) )
-	{
-#>
-			var typeCode = value._handleOrTypeCode as ValueTypeCode;
-			if( typeCode == null )
-			{
-				ThrowInvalidTypeAs<float>( value );
-			}
-			
-			if( typeCode.IsInteger )
-			{
-				if( typeCode.IsSigned )
-				{
-					return ( float )( unchecked( ( long )value._value ) );
-				}
-				else
-				{
-					return ( float )value._value;
-				}
-			}
-			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
-			{
-				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
-			}
-			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
-			{
-				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
-			}
-			else
-			{
-				ThrowInvalidTypeAs<float>( value );
-				return default( float ); // never reached
-			}
-<#
-	}
-	else if ( t == typeof( double ) )
-	{
-#>
-			var typeCode = value._handleOrTypeCode as ValueTypeCode;
-			if( typeCode == null )
-			{
-				ThrowInvalidTypeAs<double>( value );
-			}
-			
-			if( typeCode.IsInteger )
-			{
-				if( typeCode.IsSigned )
-				{
-					return ( double )( unchecked( ( long )value._value ) );
-				}
-				else
-				{
-					return ( double )value._value;
-				}
-			}
-			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
-			{
-				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
-			}
-			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
-			{
-				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
-			}
-			else
-			{
-				ThrowInvalidTypeAs<double>( value );
-				return default( double ); // never reached
-			}
-<#
-	}
-	else if ( t.Name[ 0 ] == 'U' )
-	{
-#>
-			var typeCode = value._handleOrTypeCode as ValueTypeCode;
-			if( typeCode == null )
-			{
-				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
-			}
-			
-			if( typeCode.IsInteger )
-			{
-<#
-		if ( t == typeof( UInt64 ) )
-		{
-#>
-				if( typeCode.IsSigned )
-				{
-					if( Int64.MaxValue < value._value )
-					{
-						// Negative.
-						ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
-					}
-				}
-
-				return value._value;
-<#
-		}
-		else
-		{
-#>
-				const ulong maxValue = unchecked( ( ulong )<#= t.Name #>.MaxValue );
-				
-				if( maxValue < value._value )
-				{
-					// Overflow or negative.
-					ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
-				}
-
-				return unchecked( ( <#= t.Name #> )value._value );
-<#
-		}
-#>
-			}
-			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
-			{
-				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
-			}
-			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
-			{
-				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
-			}
-			else
-			{
-				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
-				return default( <#= t.Name #> ); // never reached
-			}
-<#
-	}
-	else
-	{
-#>
-			var typeCode = value._handleOrTypeCode as ValueTypeCode;
-			if( typeCode == null )
-			{
-				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
-			}
-			
-			if( typeCode.IsInteger )
-			{
-				if( typeCode.IsSigned )
-				{
-<#
-		if ( t == typeof( Int64 ) )
-		{
-#>
-					return unchecked( ( long )value._value );
-<#
-		}
-		else
-		{
-#>
-					const long minValue = ( long )<#= t.Name #>.MinValue;
-					const long maxValue = ( long )<#= t.Name #>.MaxValue;
-					
-					long asInt64 = unchecked( ( long )value._value );
-					if( asInt64 < minValue || maxValue < asInt64 )
-					{
-						ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
-					}
-
-					return unchecked( ( <#= t.Name #> )asInt64 );
-<#
-		}
-#>
-				}
-				else
-				{
-					const ulong maxValue = unchecked( ( ulong )<#= t.Name #>.MaxValue );
-					if( maxValue < value._value )
-					{
-						ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
-					}
-					
-					return ( <#= t.Name #> )value._value;
-				}
-			}
-			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
-			{
-				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )value._value ) );
-			}
-			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
-			{
-				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( value._value ), 0 );
-			}
-			else
-			{
-				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( value );
-				return default( <#= t.Name #> ); // never reached
-			}
-<#
-	}
+	this.GenerateAsT( "value", t, true );
 #>
 		}
 <#
@@ -475,3 +209,350 @@ if( __IsNotCLSCompliant( t ) )
 		#endregion -- Conversion Operator Overloads --
 	}
 }
+<#+
+private static bool IsExplicitConversionRequired( Type type )
+{
+	return 
+		type == typeof( sbyte )
+		|| type == typeof( short )
+		|| type == typeof( int )
+		|| type == typeof( long );
+}
+
+private void GenerateConstructor( string typeName, string val, Type t )
+{
+#>
+			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			<#= val #> = new <#= typeName #>();
+<#+ 
+	if( t == typeof( byte[] ) )
+	{
+#>
+			if ( value == null )
+			{
+				<#= val #>._handleOrTypeCode = null;
+			}
+			else
+			{
+				<#= val #>._handleOrTypeCode = new MessagePackString( value );
+			}
+<#+
+		return;
+	}
+	else if( t == typeof( string ) )
+	{
+#>
+			if ( value == null )
+			{
+				<#= val #>._handleOrTypeCode = null;
+			}
+			else
+			{
+				<#= val #>._handleOrTypeCode = new MessagePackString( value );
+			}
+<#+
+		return;
+	}
+	else if( t == typeof( bool ) )
+	{
+#>
+			<#= val #>._value = value ? ( ulong )1 : 0;
+<#+ 
+	}
+	else if( IsExplicitConversionRequired( t ) )
+	{
+#>
+			<#= val #>._value = unchecked( ( ulong )value );
+<#+ 
+	}
+	else if ( t == typeof( float ) )
+	{
+#>
+			var bytes = BitConverter.GetBytes( value );
+			unchecked
+			{
+#pragma warning disable 0675
+				if( BitConverter.IsLittleEndian )
+				{
+					<#= val #>._value |=  ( ulong )( bytes[ 3 ] << 24 );
+					<#= val #>._value |=  ( ulong )( bytes[ 2 ] << 16 );
+					<#= val #>._value |=  ( ulong )( bytes[ 1 ] << 8 );
+					<#= val #>._value |=  bytes[ 0 ];
+				}
+				else
+				{
+					<#= val #>._value |=  ( ulong )( bytes[ 0 ] << 24 );
+					<#= val #>._value |=  ( ulong )( bytes[ 1 ] << 16 );
+					<#= val #>._value |=  ( ulong )( bytes[ 2 ] << 8 );
+					<#= val #>._value |=  bytes[ 3 ];
+				}
+#pragma warning restore 0675
+			}
+<#+ 
+	}
+	else if ( t == typeof( double ) )
+	{
+#>
+			<#= val #>._value = unchecked( ( ulong )BitConverter.DoubleToInt64Bits( value ) );
+<#+ 
+	}
+	else
+	{
+#>
+			<#= val #>._value = value;
+<#+ 
+	}
+#>
+			<#= val #>._handleOrTypeCode = _<#= t.Name.ToLowerInvariant() #>TypeCode;
+<#+
+} // GenerateConstructor
+
+private void GenerateAsT( string val, Type t, bool passParameterName )
+{
+	if( t.IsValueType )
+	{
+#>
+			if( <#= val #>.IsNil )
+			{
+				ThrowCannotBeNilAs<#= "<" + t.Name  + ">" #>();
+			}
+<#+
+	}
+
+	if ( t == typeof( byte[] ) )
+	{
+#>
+			VerifyUnderlyingType<MessagePackString>( <#= val #>, <#= passParameterName ? "\"" + val + "\"" : "null" #>  );
+
+			if( <#= val #>._handleOrTypeCode == null )
+			{
+				// nil
+				return null;
+			}
+
+			var asString = <#= val #>._handleOrTypeCode as MessagePackString;
+			Contract.Assert( asString != null );
+			return asString.GetBytes();
+<#+
+	}
+	else if ( t == typeof( string ) )
+	{
+#>
+			VerifyUnderlyingType<MessagePackString>( <#= val #>, <#= passParameterName ? "\"" + val + "\"" : "null" #> );
+
+			if( <#= val #>._handleOrTypeCode == null )
+			{
+				// nil
+				return null;
+			}
+
+			var asString = <#= val #>._handleOrTypeCode as MessagePackString;
+			Contract.Assert( asString != null );
+			return asString.GetString();
+<#+
+	}
+	else if ( t == typeof( bool ) )
+	{
+#>
+			var typeCode = <#= val #>._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null || typeCode.TypeCode != MessagePackValueTypeCode.Boolean )
+			{
+				ThrowInvalidTypeAs<bool>( <#= val #> );
+			}
+			
+			return <#= val #>._value != 0;
+<#+
+	}
+	else if ( t == typeof( float ) )
+	{
+#>
+			var typeCode = <#= val #>._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<float>( <#= val #> );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					return ( float )( unchecked( ( long )<#= val #>._value ) );
+				}
+				else
+				{
+					return ( float )<#= val #>._value;
+				}
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )<#= val #>._value ) );
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( <#= val #>._value ), 0 );
+			}
+			else
+			{
+				ThrowInvalidTypeAs<float>( <#= val #> );
+				return default( float ); // never reached
+			}
+<#+
+	}
+	else if ( t == typeof( double ) )
+	{
+#>
+			var typeCode = <#= val #>._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<double>( <#= val #> );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+					return ( double )( unchecked( ( long )<#= val #>._value ) );
+				}
+				else
+				{
+					return ( double )<#= val #>._value;
+				}
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )<#= val #>._value ) );
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( <#= val #>._value ), 0 );
+			}
+			else
+			{
+				ThrowInvalidTypeAs<double>( <#= val #> );
+				return default( double ); // never reached
+			}
+<#+
+	}
+	else if ( t.Name[ 0 ] == 'U' )
+	{
+#>
+			var typeCode = <#= val #>._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( <#= val #> );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+<#+
+		if ( t == typeof( UInt64 ) )
+		{
+#>
+				if( typeCode.IsSigned )
+				{
+					if( Int64.MaxValue < <#= val #>._value )
+					{
+						// Negative.
+						ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( <#= val #> );
+					}
+				}
+
+				return <#= val #>._value;
+<#+
+		}
+		else
+		{
+#>
+				const ulong maxValue = unchecked( ( ulong )<#= t.Name #>.MaxValue );
+				
+				if( maxValue < <#= val #>._value )
+				{
+					// Overflow or negative.
+					ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( <#= val #> );
+				}
+
+				return unchecked( ( <#= t.Name #> )<#= val #>._value );
+<#+
+		}
+#>
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )<#= val #>._value ) );
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( <#= val #>._value ), 0 );
+			}
+			else
+			{
+				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( <#= val #> );
+				return default( <#= t.Name #> ); // never reached
+			}
+<#+
+	}
+	else
+	{
+#>
+			var typeCode = <#= val #>._handleOrTypeCode as ValueTypeCode;
+			if( typeCode == null )
+			{
+				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( <#= val #> );
+			}
+			
+			if( typeCode.IsInteger )
+			{
+				if( typeCode.IsSigned )
+				{
+<#+
+		if ( t == typeof( Int64 ) )
+		{
+#>
+					return unchecked( ( long )<#= val #>._value );
+<#+
+		}
+		else
+		{
+#>
+					const long minValue = ( long )<#= t.Name #>.MinValue;
+					const long maxValue = ( long )<#= t.Name #>.MaxValue;
+					
+					long asInt64 = unchecked( ( long )<#= val #>._value );
+					if( asInt64 < minValue || maxValue < asInt64 )
+					{
+						ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( <#= val #> );
+					}
+
+					return unchecked( ( <#= t.Name #> )asInt64 );
+<#+
+		}
+#>
+				}
+				else
+				{
+					const ulong maxValue = unchecked( ( ulong )<#= t.Name #>.MaxValue );
+					if( maxValue < <#= val #>._value )
+					{
+						ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( <#= val #> );
+					}
+					
+					return ( <#= t.Name #> )<#= val #>._value;
+				}
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				return ( <#= t.Name #> )BitConverter.Int64BitsToDouble( unchecked( ( long )<#= val #>._value ) );
+			}
+			else if( typeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				return ( <#= t.Name #> )BitConverter.ToSingle( BitConverter.GetBytes( <#= val #>._value ), 0 );
+			}
+			else
+			{
+				ThrowInvalidTypeAs<#= "<" + t.Name + ">" #>( <#= val #> );
+				return default( <#= t.Name #> ); // never reached
+			}
+<#+
+	}
+}
+#>

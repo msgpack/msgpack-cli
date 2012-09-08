@@ -62,7 +62,7 @@ namespace MsgPack
 
 		#region -- Type Code Fields & Properties --
 
-		private readonly object _handleOrTypeCode;
+		private object _handleOrTypeCode;
 
 		/// <summary>
 		///		Get whether this instance represents nil.
@@ -73,28 +73,11 @@ namespace MsgPack
 			get { return this._handleOrTypeCode == null; }
 		}
 
-		private readonly ulong _value;
+		private ulong _value;
 
 		#endregion -- Type Code Fields & Properties --
 
 		#region -- Constructors --
-
-		/// <summary>
-		///		Initializes a new instance wraps <see cref="String"/>.
-		/// </summary>
-		public MessagePackObject( string value )
-		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
-			this = new MessagePackObject();
-			if ( value == null )
-			{
-				this._handleOrTypeCode = null;
-			}
-			else
-			{
-				this._handleOrTypeCode = new MessagePackString( value );
-			}
-		}
 
 		/// <summary>
 		///		Initializes a new instance wraps <see cref="IList&lt;MessagePackObject&gt;"/>.
@@ -195,24 +178,7 @@ namespace MsgPack
 				}
 			}
 		}
-
-		/// <summary>
-		///		Initializes a new instance wraps raw byte array.
-		/// </summary>
-		public MessagePackObject( byte[] value )
-		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
-			this = new MessagePackObject();
-			if ( value == null )
-			{
-				this._handleOrTypeCode = null;
-			}
-			else
-			{
-				this._handleOrTypeCode = new MessagePackString( value );
-			}
-		}
-
+		
 		/// <summary>
 		///		Initializes a new instance wraps <see cref="MessagePackString"/>.
 		/// </summary>
@@ -1098,31 +1064,6 @@ namespace MsgPack
 		#region -- Primitive Type Conversion Methods --
 
 		/// <summary>
-		///		Get underlying value as raw byte.
-		/// </summary>
-		/// <returns>Underlying raw binary.</returns>
-		public byte[] AsBinary()
-		{
-			if ( this.IsNil )
-			{
-				return null;
-			}
-
-			VerifyUnderlyingType<byte[]>( this, null );
-
-			return ( this._handleOrTypeCode as MessagePackString ).GetBytes();
-		}
-
-		/// <summary>
-		///		Gets underlying value as UTF8 string.
-		/// </summary>
-		/// <returns>Underlying raw binary.</returns>
-		public string AsString()
-		{
-			return this.AsStringUtf8();
-		}
-
-		/// <summary>
 		///		Gets the underlying value as string encoded with specified <see cref="Encoding"/>.
 		/// </summary>
 		/// <returns>
@@ -1587,26 +1528,6 @@ namespace MsgPack
 		#region -- Conversion Operator Overloads --
 
 		/// <summary>
-		///		Convert raw byte array to <see cref="MessagePackObject"/> instance.
-		/// </summary>
-		/// <param name="value">Raw byte array.</param>
-		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
-		public static implicit operator MessagePackObject( byte[] value )
-		{
-			return new MessagePackObject( value );
-		}
-
-		/// <summary>
-		///		Convert string to <see cref="MessagePackObject"/> instance using UTF-8 encoding.
-		/// </summary>
-		/// <param name="value">String.</param>
-		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
-		public static implicit operator MessagePackObject( string value )
-		{
-			return new MessagePackObject( value );
-		}
-
-		/// <summary>
 		///		Convert <see cref="MessagePackObject"/>[] instance to <see cref="MessagePackObject"/> instance.
 		/// </summary>
 		/// <param name="value"><see cref="MessagePackObject"/>[] instance.</param>
@@ -1614,29 +1535,6 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( MessagePackObject[] value )
 		{
 			return new MessagePackObject( value, false );
-		}
-
-		/// <summary>
-		///		Convert this instance to byte array.
-		/// </summary>
-		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
-		/// <returns>Raw byte array of <paramref name="value"/>.</returns>
-		public static explicit operator byte[]( MessagePackObject value )
-		{
-			VerifyUnderlyingType<MessagePackString>( value, "value" );
-
-			return ( value._handleOrTypeCode as MessagePackString ).GetBytes();
-		}
-
-		/// <summary>
-		///		Convert this instance to UTF-8 string.
-		/// </summary>
-		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
-		/// <returns>Raw byte array of <paramref name="value"/>.</returns>
-		public static explicit operator string( MessagePackObject value )
-		{
-			var asBytes = ( byte[] )value;
-			return Encoding.UTF8.GetString( asBytes, 0, asBytes.Length );
 		}
 
 		#endregion -- Conversion Operator Overloads --
