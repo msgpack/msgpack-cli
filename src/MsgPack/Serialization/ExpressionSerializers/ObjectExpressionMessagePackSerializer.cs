@@ -71,7 +71,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		private readonly Func<T> _createInstance;
 
-		// FIXME: Value type handling
 		protected ObjectExpressionMessagePackSerializer( SerializationContext context, SerializingMember[] members )
 		{
 			this._createInstance =
