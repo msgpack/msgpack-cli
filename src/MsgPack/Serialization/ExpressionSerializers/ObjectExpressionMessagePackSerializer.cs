@@ -49,7 +49,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			get { return this._memberGetters; }
 		}
 
-		private readonly Action<T, object>[] _memberSetters;
+		private readonly MemberSetter[] _memberSetters;
 
 		private readonly IMessagePackSerializer[] _memberSerializers;
 
@@ -71,6 +71,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		private readonly Func<T> _createInstance;
 
+		// FIXME: Value type handling
 		protected ObjectExpressionMessagePackSerializer( SerializationContext context, SerializingMember[] members )
 		{
 			this._createInstance =
@@ -110,20 +111,21 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						).Compile()
 				).ToArray();
 			var valueParameter = Expression.Parameter( typeof( object ), "value" );
+			var refTargetParameter = Expression.Parameter( typeof( T ).MakeByRefType(), "target" );
 			this._memberSetters =
 				members.Select(
 					m =>
 						m.Member == null
-						? Expression.Lambda<Action<T, object>>(
+						? Expression.Lambda<MemberSetter>(
 							Expression.Empty(),
-							targetParameter,
+							refTargetParameter,
 							valueParameter
 							).Compile()
 						: m.Member.CanSetValue()
-						? Expression.Lambda<Action<T, object>>(
+						? Expression.Lambda<MemberSetter>(
 							Expression.Assign(
 								Expression.PropertyOrField(
-									targetParameter,
+									refTargetParameter,
 									m.Member.Name
 								),
 								m.Member.GetMemberValueType().GetIsValueType() && Nullable.GetUnderlyingType( m.Member.GetMemberValueType() ) == null
@@ -151,16 +153,16 @@ namespace MsgPack.Serialization.ExpressionSerializers
 								) as Expression
 								: Expression.Convert( valueParameter, m.Member.GetMemberValueType() )
 							),
-							targetParameter,
+							refTargetParameter,
 							valueParameter
 						).Compile()
 						: UnpackHelpers.IsReadOnlyAppendableCollectionMember( m.Member )
-						? default( Action<T, object> )
+						? default( MemberSetter )
 						: ThrowGetOnlyMemberIsInvalid( m.Member )
 				).ToArray();
 		}
 
-		private static Action<T, object> ThrowGetOnlyMemberIsInvalid( MemberInfo member )
+		private static MemberSetter ThrowGetOnlyMemberIsInvalid( MemberInfo member )
 		{
 			var asProperty = member as PropertyInfo;
 			if ( asProperty != null )
@@ -190,17 +192,17 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			var instance = this._createInstance();
 			if ( unpacker.IsArrayHeader )
 			{
-				this.UnpackFromArray( unpacker, instance );
+				this.UnpackFromArray( unpacker, ref instance );
 			}
 			else
 			{
-				this.UnpackFromMap( unpacker, instance );
+				this.UnpackFromMap( unpacker, ref instance );
 			}
 
 			return instance;
 		}
 
-		private void UnpackFromArray( Unpacker unpacker, T instance )
+		private void UnpackFromArray( Unpacker unpacker, ref T instance )
 		{
 			for ( int i = 0; i < this.MemberSerializers.Length; i++ )
 			{
@@ -220,7 +222,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ i ] );
 							}
 
-							this._memberSetters[ i ]( instance, null );
+							this._memberSetters[ i ]( ref instance, null );
 							break;
 						}
 						case NilImplication.MemberDefault:
@@ -240,17 +242,17 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				{
 					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
 					{
-						this.UnpackMemberInArray( subtreeUnpacker, instance, i );
+						this.UnpackMemberInArray( subtreeUnpacker, ref instance, i );
 					}
 				}
 				else
 				{
-					this.UnpackMemberInArray( unpacker, instance, i );
+					this.UnpackMemberInArray( unpacker, ref instance, i );
 				}
 			}
 		}
 
-		private void UnpackMemberInArray( Unpacker unpacker, T instance, int i )
+		private void UnpackMemberInArray( Unpacker unpacker, ref T instance, int i )
 		{
 			if ( this._memberSetters[ i ] == null )
 			{
@@ -259,11 +261,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 			else
 			{
-				this._memberSetters[ i ]( instance, this._memberSerializers[ i ].UnpackFrom( unpacker ) );
+				this._memberSetters[ i ]( ref instance, this._memberSerializers[ i ].UnpackFrom( unpacker ) );
 			}
 		}
 
-		private void UnpackFromMap( Unpacker unpacker, T instance )
+		private void UnpackFromMap( Unpacker unpacker, ref T instance )
 		{
 			while ( unpacker.Read() )
 			{
@@ -299,7 +301,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
 							}
 
-							this._memberSetters[ index ]( instance, null );
+							this._memberSetters[ index ]( ref instance, null );
 							continue;
 						}
 						case NilImplication.MemberDefault:
@@ -317,12 +319,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				{
 					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
 					{
-						this.UnpackMemberInMap( subtreeUnpacker, instance, index );
+						this.UnpackMemberInMap( subtreeUnpacker, ref instance, index );
 					}
 				}
 				else
 				{
-					this.UnpackMemberInMap( unpacker, instance, index );
+					this.UnpackMemberInMap( unpacker, ref instance, index );
 				}
 			}
 		}
@@ -339,7 +341,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
-		private void UnpackMemberInMap( Unpacker unpacker, T instance, int index )
+		private void UnpackMemberInMap( Unpacker unpacker, ref T instance, int index )
 		{
 			if ( this._memberSetters[ index ] == null )
 			{
@@ -348,7 +350,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 			else
 			{
-				this._memberSetters[ index ]( instance, this._memberSerializers[ index ].UnpackFrom( unpacker ) );
+				this._memberSetters[ index ]( ref instance, this._memberSerializers[ index ].UnpackFrom( unpacker ) );
 			}
 		}
 
@@ -466,5 +468,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
+		protected delegate void MemberSetter( ref T target, object memberValue );
 	}
 }
