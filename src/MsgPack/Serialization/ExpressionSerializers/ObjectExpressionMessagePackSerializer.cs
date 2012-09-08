@@ -20,11 +20,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 
 // FIXME: Unify collection/dictionary handling between emit and expression tree to improve quality and reduce maintenance costs.
@@ -71,21 +73,32 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected ObjectExpressionMessagePackSerializer( SerializationContext context, SerializingMember[] members )
 		{
-			this._createInstance = Expression.Lambda<Func<T>>( Expression.New( typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes ) ) ).Compile();
-			this._memberSerializers = members.Select( m => context.GetSerializer( m.Member.GetMemberValueType() ) ).ToArray();
+			this._createInstance =
+				Expression.Lambda<Func<T>>(
+					typeof( T ).IsValueType
+					? Expression.Default( typeof( T ) ) as Expression
+					: Expression.New( typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes ) )
+				).Compile();
+			this._memberSerializers = members.Select( m => m.Member == null ? NullSerializer.Instance : context.GetSerializer( m.Member.GetMemberValueType() ) ).ToArray();
 			this._indexMap =
 				members
-				.Zip( Enumerable.Range( 0, members.Length ), ( m, i ) => new KeyValuePair<MemberInfo, int>( m.Member, i ) )
-				.ToDictionary( kv => kv.Key.Name, kv => kv.Value );
+				.Zip( Enumerable.Range( 0, members.Length ), ( m, i ) => new KeyValuePair<SerializingMember, int>( m, i ) )
+				.Where( kv => kv.Key.Member != null )
+				.ToDictionary( kv => kv.Key.Contract.Name, kv => kv.Value );
 
 			var targetParameter = Expression.Parameter( typeof( T ), "target" );
-			this._isCollection = members.Select( m => m.Member.GetMemberValueType().GetCollectionTraits() ).Select( t => t.CollectionType != CollectionKind.NotCollection ).ToArray();
+			this._isCollection = members.Select( m => m.Member == null ? CollectionTraits.NotCollection : m.Member.GetMemberValueType().GetCollectionTraits() ).Select( t => t.CollectionType != CollectionKind.NotCollection ).ToArray();
 			this._nilImplications = members.Select( m => m.Contract.NilImplication ).ToArray();
 			this._memberNames = members.Select( m => m.Contract.Name ).ToArray();
 			this._memberGetters =
 				members.Select(
 					m =>
-						Expression.Lambda<Func<T, object>>(
+						m.Member == null
+						? Expression.Lambda<Func<T, object>>(
+							Expression.Constant( null ),
+							targetParameter
+							).Compile()
+						: Expression.Lambda<Func<T, object>>(
 							Expression.Convert(
 								Expression.PropertyOrField(
 									targetParameter,
@@ -100,7 +113,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._memberSetters =
 				members.Select(
 					m =>
-						m.Member.CanSetValue()
+						m.Member == null
+						? Expression.Lambda<Action<T, object>>(
+							Expression.Empty(),
+							targetParameter,
+							valueParameter
+							).Compile()
+						: m.Member.CanSetValue()
 						? Expression.Lambda<Action<T, object>>(
 							Expression.Assign(
 								Expression.PropertyOrField(
@@ -375,5 +394,70 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 #endif
+
+		private sealed class NullSerializer : IMessagePackSerializer
+		{
+			public static readonly NullSerializer Instance = new NullSerializer();
+
+			private NullSerializer()
+			{
+			}
+
+			public void PackTo( Packer packer, object objectTree )
+			{
+				if ( packer == null )
+				{
+					throw new ArgumentNullException( "packer" );
+				}
+
+				Contract.EndContractBlock();
+
+				packer.PackNull();
+			}
+
+			public object UnpackFrom( Unpacker unpacker )
+			{
+				if ( unpacker == null )
+				{
+					throw new ArgumentNullException( "unpacker" );
+				}
+
+				Contract.Ensures( Contract.Result<object>() == null );
+
+				if ( !unpacker.Data.HasValue )
+				{
+					throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
+				}
+
+				// Always returns null.
+				return null;
+			}
+
+			public void UnpackTo( Unpacker unpacker, object collection )
+			{
+				if ( unpacker == null )
+				{
+					throw new ArgumentNullException( "unpacker" );
+				}
+
+				if ( collection == null )
+				{
+					throw new ArgumentNullException( "collection" );
+				}
+
+				if ( !( collection is T ) )
+				{
+					throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
+				}
+
+				if ( !unpacker.Data.HasValue )
+				{
+					throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
+				}
+
+				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported by '{0}'.", this.GetType() ) );
+			}
+		}
+
 	}
 }
