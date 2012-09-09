@@ -109,7 +109,7 @@ namespace MsgPack
 
 			var avg = 0.0;
 			Random random = new Random();
-			var sb = new StringBuilder( 1000 * 1000 * 200 );
+			var sb = new StringBuilder( 1000 * 1000 * 20 );
 			var sw = Stopwatch.StartNew();
 			// small size string
 			for ( int i = 0; i < 100; i++ )
