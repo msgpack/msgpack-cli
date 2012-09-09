@@ -265,7 +265,7 @@ namespace MsgPack
 			return false;
 		}
 
-		// FIXME: Quota
+		// FIXME: Quota & Depth checking?
 
 		/// <summary>
 		///		Determins this instance is in tail of all data sources.
