@@ -504,45 +504,6 @@ namespace MsgPack.Serialization
 			);
 		}
 
-		// FIXME: Array and element count less/more expected. Map and missing
-		[Test]
-		public void TestElelementMissingInTheFirstPlace_Array_Fail()
-		{
-			using ( var buffer = new MemoryStream() )
-			{
-				using ( var packer = Packer.Create( buffer, false ) )
-				{
-					packer.PackArrayHeader( 1 );
-					packer.PackString( "123" );
-				}
-
-				buffer.Position = 0;
-
-				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( new SerializationContext() { SerializationMethod = SerializationMethod.Array } );
-				Assert.Throws<SerializationException>( () => target.Unpack( buffer ) );
-			}
-		}
-
-		[Test]
-		public void TestElelementTooManyInTheFirstPlace_Array_Fail()
-		{
-			using ( var buffer = new MemoryStream() )
-			{
-				using ( var packer = Packer.Create( buffer, false ) )
-				{
-					packer.PackArrayHeader( 3 );
-					packer.PackString( "123" );
-					packer.PackString( "234" );
-					packer.PackString( "345" );
-				}
-
-				buffer.Position = 0;
-
-				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( new SerializationContext() { SerializationMethod = SerializationMethod.Array } );
-				Assert.Throws<SerializationException>( () =>target.Unpack( buffer ) );
-			}
-		}
-
 		[Test]
 		public void TestElelementMissingInTheFirstPlace_Map_MissingMembersAreSkipped()
 		{

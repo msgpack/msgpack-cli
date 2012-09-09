@@ -181,12 +181,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
-			// FIXME: Redesign missing element handling
-			if ( unpacker.IsArrayHeader && unpacker.ItemsCount != this._memberSerializers.Length )
-			{
-				throw SerializationExceptions.NewUnexpectedArrayLength( this._memberSerializers.Length, unchecked( ( int )unpacker.ItemsCount ) );
-			}
-
 			// Assume subtree unpacker
 			var instance = this._createInstance();
 			if ( unpacker.IsArrayHeader )
@@ -203,50 +197,67 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		private void UnpackFromArray( Unpacker unpacker, ref T instance )
 		{
+			int unpacked = 0;
+			int itemsCount = checked( ( int )unpacker.ItemsCount );
 			for ( int i = 0; i < this.MemberSerializers.Length; i++ )
 			{
-				if ( !unpacker.Read() )
+				if ( unpacked == itemsCount )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
-				}
-
-				if ( unpacker.Data.Value.IsNil )
-				{
-					switch ( this._nilImplications[ i ] )
-					{
-						case NilImplication.Null:
-						{
-							if ( this._memberSetters[ i ] == null )
-							{
-								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ i ] );
-							}
-
-							this._memberSetters[ i ]( ref instance, null );
-							break;
-						}
-						case NilImplication.MemberDefault:
-						{
-							break;
-						}
-						case NilImplication.Prohibit:
-						{
-							throw SerializationExceptions.NewNullIsProhibited( this._memberNames[ i ] );
-						}
-					}
-
-					continue;
-				}
-
-				if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
-				{
-					using ( var subtreeUnpacker = unpacker.ReadSubtree() )
-					{
-						this.UnpackMemberInArray( subtreeUnpacker, ref instance, i );
-					}
+					// It is OK to avoid skip missing member because default NilImplication is MemberDefault so it is harmless.
+					this.HandleNilImplication( ref instance, i );
 				}
 				else
 				{
-					this.UnpackMemberInArray( unpacker, ref instance, i );
+					if ( !unpacker.Read() )
+					{
+						throw SerializationExceptions.NewUnexpectedEndOfStream();
+					}
+
+					if ( unpacker.Data.Value.IsNil )
+					{
+						this.HandleNilImplication( ref instance, i );
+					}
+					else
+					{
+						if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+						{
+							using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+							{
+								this.UnpackMemberInArray( subtreeUnpacker, ref instance, i );
+							}
+						}
+						else
+						{
+							this.UnpackMemberInArray( unpacker, ref instance, i );
+						}
+					}
+
+					unpacked++;
+				}
+			}
+		}
+
+		private void HandleNilImplication( ref T instance, int index )
+		{
+			switch ( this._nilImplications[ index ] )
+			{
+				case NilImplication.Null:
+				{
+					if ( this._memberSetters[ index ] == null )
+					{
+						throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
+					}
+
+					this._memberSetters[ index ]( ref instance, null );
+					break;
+				}
+				case NilImplication.MemberDefault:
+				{
+					break;
+				}
+				case NilImplication.Prohibit:
+				{
+					throw SerializationExceptions.NewNullIsProhibited( this._memberNames[ index ] );
 				}
 			}
 		}

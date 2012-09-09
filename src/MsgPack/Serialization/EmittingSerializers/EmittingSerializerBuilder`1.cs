@@ -136,32 +136,33 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static void EmitUnpackMembersFromArray( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
 		{
 			/*
-			 *	if( unpacker.ItemsCount != N )
-			 *	{
-			 *		throw SerializationExceptions.NewUnexpectedArrayLength( N, unpacker.ItemsCount );
-			 *	}
-			 *	
-			 *	if( !unpacker.Read() )
-			 *	{
-			 *		throw SerializationExceptions.NewUnexpectedEndOfStreamMethod();
-			 *	}
+			 *  int unpacked = 0;
+			 *  int itemsCount = unpacker.ItemsCount;
 			 * 
-			 *	local1 = this._serializer1.Unpack
+			 *  :
+			 *  if( unpacked == itemsCount )
+			 *  {
+			 *		HandleNilImplication(...);
+			 *  }
+			 *  else
+			 *  {
+			 *		if( !unpacker.Read() )
+			 *		{
+			 *			throw SerializationExceptions.NewUnexpectedEndOfStreamMethod();
+			 *		}
+			 *		
+			 *		local1 = this._serializer1.Unpack
+			 *		unpacked++;
+			 *	}
 			 *	:
 			 */
 
+			// TODO: Supports ExtensionObject like round-tripping.
+
+			var itemsCount = unpackerIL.DeclareLocal( typeof( int ), "itemsCount" );
+			var unpacked = unpackerIL.DeclareLocal( typeof( int ), "unpacked" );
 			Emittion.EmitGetUnpackerItemsCountAsInt32( unpackerIL, 1 );
-			unpackerIL.EmitAnyLdc_I4( entries.Length );
-			var endIf0 = unpackerIL.DefineLabel( "END_IF" );
-			unpackerIL.EmitCeq();
-			unpackerIL.EmitBrtrue_S( endIf0 );
-			unpackerIL.EmitAnyLdc_I4( entries.Length );
-			unpackerIL.EmitAnyLdarg( 1 );
-			unpackerIL.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-			unpackerIL.EmitConv_I4();
-			unpackerIL.EmitAnyCall( SerializationExceptions.NewUnexpectedArrayLengthMethod );
-			unpackerIL.EmitThrow();
-			unpackerIL.MarkLabel( endIf0 );
+			unpackerIL.EmitAnyStloc( itemsCount );
 
 			var items =
 				entries.Select(
@@ -179,6 +180,23 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			for ( int i = 0; i < items.Length; i++ )
 			{
+				var endIf0 = unpackerIL.DefineLabel( "END_IF" );
+				var else0 = unpackerIL.DefineLabel( "ELSE" );
+
+				unpackerIL.EmitAnyLdloc( unpacked );
+				unpackerIL.EmitAnyLdloc( itemsCount );
+				unpackerIL.EmitBlt( else0 );
+				// Just skip for missing memeber.
+				if ( items[ i ].Entry.Member != null )
+				{
+					// Respect nil implication.
+					Emittion.EmitNilImplication( unpackerIL, 1, items[ i ].Entry.Contract.Name, items[ i ].Entry.Contract.NilImplication, endIf0 );
+				}
+
+				unpackerIL.EmitBr( endIf0 );
+
+				unpackerIL.MarkLabel( else0 );
+
 				unpackerIL.EmitAnyLdarg( 1 );
 				unpackerIL.EmitAnyCall( Metadata._Unpacker.Read );
 				var endIf = unpackerIL.DefineLabel( "END_IF" );
@@ -198,6 +216,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 				{
 					Emittion.EmitDeserializeValue( emitter, unpackerIL, 1, items[ i ].UnpackedLocal, items[ i ].IsUnpackedLocal, items[ i ].Entry.Member.Name, items[ i ].Entry.Contract.NilImplication, null );
 				}
+
+				unpackerIL.EmitAnyLdloc( unpacked );
+				unpackerIL.EmitLdc_I4_1();
+				unpackerIL.EmitAdd();
+				unpackerIL.EmitAnyStloc( unpacked );
+
+				unpackerIL.MarkLabel( endIf0 );
 			}
 
 			foreach ( var item in items )
@@ -225,6 +250,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				Emittion.EmitStoreValue( unpackerIL, item.Entry.Member );
 				unpackerIL.MarkLabel( endIf );
 			}
+
 		}
 
 		private static void EmitUnpackMembersFromMap( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )

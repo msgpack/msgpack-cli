@@ -40,7 +40,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Array_FieldBased_Fail()
 		{
-			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
+			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.FieldBased );
 		}
 
 		[Test]
@@ -58,7 +58,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Array_ContextBased_Fail()
 		{
-			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
+			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ContextBased );
 		}
 
 		[Test]
@@ -76,7 +76,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Array_ExpressionBased_Fail()
 		{
-			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
+			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Array, EmitterFlavor.ExpressionBased );
 		}
 
 		[Test]
@@ -94,7 +94,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Map_FieldBased_Fail()
 		{
-			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased ) );
+			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.FieldBased );
 		}
 
 		[Test]
@@ -118,7 +118,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Map_ContextBased_Fail()
 		{
-			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased ) );
+			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ContextBased );
 		}
 
 		[Test]
@@ -142,7 +142,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExtraField_NotExtensible_Map_ExpressionBased_Fail()
 		{
-			Assert.Throws<SerializationException>( () => TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased ) );
+			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.Map, EmitterFlavor.ExpressionBased );
 		}
 
 		[Test]
