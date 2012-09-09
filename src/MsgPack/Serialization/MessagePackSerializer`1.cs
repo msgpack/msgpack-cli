@@ -291,11 +291,6 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
 			}
 
-			if ( unpacker.Data.Value.IsNil )
-			{
-				return;
-			}
-
 			this.UnpackToCore( unpacker, ( T )collection );
 		}
 	}
