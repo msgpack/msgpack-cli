@@ -29,6 +29,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
+using System.Text;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
@@ -757,6 +758,54 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Test]
+		public void TestPackable_PackToMessageUsed()
+		{
+			var serializer = this.CreateTarget<JustPackable>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new JustPackable();
+				value.Int32Field = 1;
+				serializer.Pack( stream, value );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'A' } ) );
+				stream.Position = 0;
+				Assert.Throws<SerializationException>( () => serializer.Unpack( stream ), "Round-trip should not be succeeded." );
+			}
+		}
+
+		[Test]
+		public void TestUnpackable_UnpackFromMessageUsed()
+		{
+			var context = GetSerializationContext();
+			var serializer = this.CreateTarget<JustUnpackable>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new JustUnpackable();
+				value.Int32Field = 1;
+				serializer.Pack( stream, value );
+				Assert.That( stream.ToArray(), Is.EqualTo( ( context.SerializationMethod == SerializationMethod.Array ? new byte[] { 0x91, 0x1 } : new byte[] { 0x81, 0xAA }.Concat( Encoding.UTF8.GetBytes( "Int32Field" ) ).Concat( new byte[] { 0x1 } ) ).ToArray() ) );
+				stream.SetLength( 0 );
+				stream.Write( new byte[] { 0x91, 0xA1, ( byte )'A' }, 0, 3 );
+				Assert.Throws<SerializationException>( () => serializer.Unpack( stream ), "Round-trip should not be succeeded." );
+			}
+		}
+
+		[Test]
+		public void TestPackableAndUnpackable_PackToMessageAndUnpackFromMessageUsed()
+		{
+			var serializer = this.CreateTarget<PackableUnpackable>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new PackableUnpackable();
+				value.Int32Field = 1;
+				serializer.Pack( stream, value );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'A' } ) );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Int32Field, Is.EqualTo( default( int ) ), "Round-trip should not be succeeded." );
+			}
+		}
+
 		// FIXME: init-only field, get-only property, Value type which implements IList<T> and has .ctor(int), Enumerator class which explicitly implements IEnumerator
 
 		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
@@ -1197,6 +1246,53 @@ namespace MsgPack.Serialization
 			public bool Remove( KeyValuePair<TKey, TValue> item )
 			{
 				throw new NotImplementedException();
+			}
+		}
+
+		public class JustPackable : IPackable
+		{
+			public const string Dummy = "A";
+
+			public int Int32Field { get; set; }
+
+			public void PackToMessage( Packer packer, PackingOptions options )
+			{
+				packer.PackArrayHeader( 1 );
+				packer.PackString( Dummy );
+			}
+		}
+
+		public class JustUnpackable : IUnpackable
+		{
+			public const string Dummy = "A";
+
+			public int Int32Field { get; set; }
+
+			public void UnpackFromMessage( Unpacker unpacker )
+			{
+				Assert.That( unpacker.IsArrayHeader );
+				var value = unpacker.UnpackSubtree();
+				Assert.That( value.Value.AsList()[ 0 ] == Dummy, "{0} != \"[{1}]\"", value.Value, Dummy );
+			}
+		}
+
+		public class PackableUnpackable : IPackable, IUnpackable
+		{
+			public const string Dummy = "A";
+
+			public int Int32Field { get; set; }
+
+			public void PackToMessage( Packer packer, PackingOptions options )
+			{
+				packer.PackArrayHeader( 1 );
+				packer.PackString( Dummy );
+			}
+
+			public void UnpackFromMessage( Unpacker unpacker )
+			{
+				Assert.That( unpacker.IsArrayHeader );
+				var value = unpacker.UnpackSubtree();
+				Assert.That( value.Value.AsList()[ 0 ] == Dummy, "{0} != \"[{1}]\"", value.Value, Dummy );
 			}
 		}
 	}

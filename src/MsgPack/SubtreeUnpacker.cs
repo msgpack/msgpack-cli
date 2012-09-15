@@ -55,6 +55,7 @@ namespace MsgPack
 		public sealed override MessagePackObject? Data
 		{
 			get { return this._root.Data; }
+			protected set { this._root.InternalSetData( value ); }
 		}
 
 #if DEBUG

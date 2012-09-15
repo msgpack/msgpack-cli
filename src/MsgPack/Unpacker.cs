@@ -47,6 +47,7 @@ namespace MsgPack
 		public abstract MessagePackObject? Data
 		{
 			get;
+			protected set;
 		}
 
 		/// <summary>
@@ -397,9 +398,79 @@ namespace MsgPack
 
 		#endregion -- Streaming API --
 
+		/// <summary>
+		///		Gets current item or collection as single <see cref="MessagePackObject"/> from the stream.
+		/// </summary>
+		/// <returns>
+		///		A read item or collection from the stream.
+		///		Or <c>null</c> when stream is ended.
+		/// </returns>
+		public MessagePackObject? ReadItem()
+		{
+			if ( !this.Read() )
+			{
+				return null;
+			}
+
+			this.UnpackSubtree();
+
+			return this.Data;
+		}
+
+		/// <summary>
+		///		Unpacks current subtree and returns subtree root as array or map.
+		/// </summary>
+		/// <returns>
+		///		An unpacked array or map when current position is array or map header.
+		///		<c>null</c> when current position is not array nor map header.
+		/// </returns>
+		public MessagePackObject? UnpackSubtree()
+		{
+			if ( this.IsArrayHeader )
+			{
+				var array = new MessagePackObject[ checked( ( int )this.Data.Value.AsUInt32() ) ];
+				using ( var subTreeReader = this.ReadSubtree() )
+				{
+					for ( int i = 0; i < array.Length; i++ )
+					{
+						var item = subTreeReader.ReadItem();
+						Contract.Assert( item.HasValue );
+						array[ i ] = item.Value;
+					}
+				}
+
+				this.Data = new MessagePackObject( array, true );
+			}
+			else if ( this.IsMapHeader )
+			{
+				var capacity = checked( ( int )this.Data.Value.AsUInt32() );
+				var map = new MessagePackObjectDictionary( capacity );
+				using ( var subTreeReader = this.ReadSubtree() )
+				{
+					for ( int i = 0; i < capacity; i++ )
+					{
+						var key = subTreeReader.ReadItem();
+						var value = subTreeReader.ReadItem();
+
+						Contract.Assert( key.HasValue );
+						Contract.Assert( value.HasValue );
+						map.Add( key.Value, value.Value );
+					}
+				}
+
+				this.Data = new MessagePackObject( map, true );
+			}
+			else
+			{
+				return null;
+			}
+
+			return this.Data;
+		}
+
 		#region -- Feeding API --
 
-		// TODO: Feeding API might be useless...
+		// FIXME: Remove feeding API 
 
 		/// <summary>
 		///		Feeds new data source.

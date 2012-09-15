@@ -68,7 +68,27 @@ namespace MsgPack.Serialization.EmittingSerializers
 					var packerIL = emitter.GetPackToMethodILGenerator();
 					try
 					{
-						this.EmitPackMembers( emitter, packerIL, entries );
+						if ( typeof( IPackable ).IsAssignableFrom( typeof( TObject ) ) )
+						{
+							if ( typeof( TObject ).IsValueType )
+							{
+								packerIL.EmitAnyLdarga( 2 );
+							}
+							else
+							{
+								packerIL.EmitAnyLdarg( 2 );
+							}
+
+							packerIL.EmitAnyLdarg( 1 );
+							packerIL.EmitLdnull();
+
+							packerIL.EmitCall( typeof( TObject ).GetInterfaceMap( typeof( IPackable ) ).TargetMethods.Single() );
+							packerIL.EmitRet();
+						}
+						else
+						{
+							this.EmitPackMembers( emitter, packerIL, entries );
+						}
 					}
 					finally
 					{
@@ -82,7 +102,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 						var result = unpackerIL.DeclareLocal( typeof( TObject ), "result" );
 						Emittion.EmitConstruction( unpackerIL, result, null );
 
-						EmitUnpackMembers( emitter, unpackerIL, entries, result );
+						if ( typeof( IUnpackable ).IsAssignableFrom( typeof( TObject ) ) )
+						{
+							if ( typeof( TObject ).GetIsValueType() )
+							{
+								unpackerIL.EmitAnyLdloca( result );
+							}
+							else
+							{
+								unpackerIL.EmitAnyLdloc( result );
+							}
+
+							unpackerIL.EmitAnyLdarg( 1 );
+							unpackerIL.EmitCall( typeof( TObject ).GetInterfaceMap( typeof( IUnpackable ) ).TargetMethods.Single() );
+						}
+						else
+						{
+							EmitUnpackMembers( emitter, unpackerIL, entries, result );
+						}
 
 						unpackerIL.EmitAnyLdloc( result );
 						unpackerIL.EmitRet();

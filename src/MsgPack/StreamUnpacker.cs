@@ -61,9 +61,6 @@ namespace MsgPack
 		/// </summary>
 		private DataSource _currentSource;
 
-		/// <summary>
-		///		Last unpacked data or null.
-		/// </summary>
 		private MessagePackObject? _data;
 
 		/// <summary>
@@ -75,6 +72,12 @@ namespace MsgPack
 		public sealed override MessagePackObject? Data
 		{
 			get { return this._data; }
+			protected set{ this._data = value; }
+		}
+
+		internal void InternalSetData(MessagePackObject? value)
+		{
+			this._data = value;
 		}
 
 		/// <summary>

@@ -26,6 +26,7 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _Unpacker
 	{
 		public static readonly MethodInfo Read = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
+		public static readonly MethodInfo UnpackSubtree = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackSubtree() );
 		public static readonly MethodInfo ReadSubtree = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.ReadSubtree() );
 		public static readonly PropertyInfo Data = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.Data );
 		public static readonly PropertyInfo ItemsCount = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.ItemsCount );

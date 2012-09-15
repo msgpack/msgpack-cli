@@ -33,7 +33,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		public MapFormatObjectExpressionMessagePackSerializer( SerializationContext context, SerializingMember[] members )
 			: base( context, members ) { }
 
-		protected internal override void PackToCore( Packer packer, T objectTree )
+		protected override void PackToCoreOverride( Packer packer, T objectTree )
 		{
 			packer.PackMapHeader( this.MemberSerializers.Length );
 

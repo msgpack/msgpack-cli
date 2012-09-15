@@ -70,34 +70,79 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private readonly Dictionary<string, int> _indexMap;
 
 		private readonly Func<T> _createInstance;
+		private readonly Action<T, Packer, PackingOptions> _packToMessage;
+		private readonly UnpackFromMessageInvocation _unpackFromMessage;
 
 		protected ObjectExpressionMessagePackSerializer( SerializationContext context, SerializingMember[] members )
 		{
 			this._createInstance =
 				Expression.Lambda<Func<T>>(
-					typeof( T ).IsValueType
-					? Expression.Default( typeof( T ) ) as Expression
-					: Expression.New( typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes ) )
-				).Compile();
-			this._memberSerializers = members.Select( m => m.Member == null ? NullSerializer.Instance : context.GetSerializer( m.Member.GetMemberValueType() ) ).ToArray();
-			this._indexMap =
-				members
-				.Zip( Enumerable.Range( 0, members.Length ), ( m, i ) => new KeyValuePair<SerializingMember, int>( m, i ) )
-				.Where( kv => kv.Key.Member != null )
-				.ToDictionary( kv => kv.Key.Contract.Name, kv => kv.Value );
+					typeof( T ).GetIsValueType()
+						? Expression.Default( typeof( T ) ) as Expression
+						: Expression.New( typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes ) )
+					).Compile();
+			var isPackable = typeof( IPackable ).IsAssignableFrom( typeof( T ) );
+			var isUnpackable = typeof( IUnpackable ).IsAssignableFrom( typeof( T ) );
 
 			var targetParameter = Expression.Parameter( typeof( T ), "target" );
-			this._isCollection = members.Select( m => m.Member == null ? CollectionTraits.NotCollection : m.Member.GetMemberValueType().GetCollectionTraits() ).Select( t => t.CollectionType != CollectionKind.NotCollection ).ToArray();
-			this._nilImplications = members.Select( m => m.Contract.NilImplication ).ToArray();
-			this._memberNames = members.Select( m => m.Contract.Name ).ToArray();
-			this._memberGetters =
-				members.Select(
-					m =>
+
+			if ( isPackable && isUnpackable )
+			{
+				this._memberSerializers = null;
+				this._indexMap = null;
+				this._isCollection = null;
+				this._nilImplications = null;
+				this._memberNames = null;
+			}
+			else
+			{
+				this._memberSerializers =
+					members.Select(
+						m => m.Member == null ? NullSerializer.Instance : context.GetSerializer( m.Member.GetMemberValueType() ) ).ToArray
+						(
+
+						);
+				this._indexMap =
+					members
+						.Zip( Enumerable.Range( 0, members.Length ), ( m, i ) => new KeyValuePair<SerializingMember, int>( m, i ) )
+						.Where( kv => kv.Key.Member != null )
+						.ToDictionary( kv => kv.Key.Contract.Name, kv => kv.Value );
+
+				this._isCollection =
+					members.Select(
+						m => m.Member == null ? CollectionTraits.NotCollection : m.Member.GetMemberValueType().GetCollectionTraits() ).
+						Select( t => t.CollectionType != CollectionKind.NotCollection ).ToArray();
+				this._nilImplications = members.Select( m => m.Contract.NilImplication ).ToArray();
+				this._memberNames = members.Select( m => m.Contract.Name ).ToArray();
+			}
+
+			if ( isPackable )
+			{
+				var packerParameter = Expression.Parameter( typeof( Packer ), "packer" );
+				var optionsParameter = Expression.Parameter( typeof( PackingOptions ), "options" );
+				this._packToMessage =
+					Expression.Lambda<Action<T, Packer, PackingOptions>>(
+						Expression.Call(
+							targetParameter,
+							typeof( T ).GetInterfaceMap( typeof( IPackable ) ).TargetMethods.Single(),
+							packerParameter,
+							optionsParameter
+						),
+						targetParameter, packerParameter, optionsParameter
+					).Compile();
+				this._memberGetters = null;
+			}
+			else
+			{
+				this._packToMessage = null;
+				this._memberGetters =
+					members.Select(
+						m =>
 						m.Member == null
 						? Expression.Lambda<Func<T, object>>(
 							Expression.Constant( null ),
 							targetParameter
-							).Compile()
+								).Compile()
 						: Expression.Lambda<Func<T, object>>(
 							Expression.Convert(
 								Expression.PropertyOrField(
@@ -108,18 +153,38 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							),
 							targetParameter
 						).Compile()
-				).ToArray();
-			var valueParameter = Expression.Parameter( typeof( object ), "value" );
+					).ToArray();
+			}
+
 			var refTargetParameter = Expression.Parameter( typeof( T ).MakeByRefType(), "target" );
-			this._memberSetters =
-				members.Select(
-					m =>
+			if ( isUnpackable )
+			{
+				var unpackerParameter = Expression.Parameter( typeof( Unpacker ), "unpacker" );
+				this._unpackFromMessage =
+					Expression.Lambda<UnpackFromMessageInvocation>(
+						Expression.Call(
+							refTargetParameter,
+							typeof( T ).GetInterfaceMap( typeof( IUnpackable ) ).TargetMethods.Single(),
+							unpackerParameter
+						),
+						refTargetParameter, unpackerParameter
+					).Compile();
+				this._memberSetters = null;
+			}
+			else
+			{
+				this._unpackFromMessage = null;
+
+				var valueParameter = Expression.Parameter( typeof( object ), "value" );
+				this._memberSetters =
+					members.Select(
+						m =>
 						m.Member == null
 						? Expression.Lambda<MemberSetter>(
 							Expression.Empty(),
 							refTargetParameter,
 							valueParameter
-							).Compile()
+						).Compile()
 						: m.Member.CanSetValue()
 						? Expression.Lambda<MemberSetter>(
 							Expression.Assign(
@@ -127,7 +192,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 									refTargetParameter,
 									m.Member.Name
 								),
-								m.Member.GetMemberValueType().GetIsValueType() && Nullable.GetUnderlyingType( m.Member.GetMemberValueType() ) == null
+								m.Member.GetMemberValueType().GetIsValueType() &&
+								Nullable.GetUnderlyingType( m.Member.GetMemberValueType() ) == null
 								? Expression.Condition(
 									Expression.ReferenceEqual( valueParameter, Expression.Constant( null ) ),
 									Expression.Throw(
@@ -159,6 +225,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						? default( MemberSetter )
 						: ThrowGetOnlyMemberIsInvalid( m.Member )
 				).ToArray();
+			}
 		}
 
 		private static MemberSetter ThrowGetOnlyMemberIsInvalid( MemberInfo member )
@@ -170,7 +237,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 			else
 			{
-				Contract.Assert( member is FieldInfo, member.ToString() + ":" + member.MemberType );
+				Contract.Assert( member is FieldInfo, member.ToString() + ":" + member.GetType() );
 				throw new SerializationException(
 					String.Format(
 						CultureInfo.CurrentCulture, "Cannot set value to '{0}.{1}' field.", member.DeclaringType, member.Name
@@ -179,17 +246,39 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
+		protected internal sealed override void PackToCore( Packer packer, T objectTree )
+		{
+			if ( this._packToMessage != null )
+			{
+				this._packToMessage( objectTree, packer, null );
+			}
+			else
+			{
+				this.PackToCoreOverride( packer, objectTree );
+			}
+		}
+
+		protected abstract void PackToCoreOverride( Packer packer, T objectTree );
+
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
 			// Assume subtree unpacker
 			var instance = this._createInstance();
-			if ( unpacker.IsArrayHeader )
+
+			if ( this._unpackFromMessage != null )
 			{
-				this.UnpackFromArray( unpacker, ref instance );
+				this._unpackFromMessage( ref instance, unpacker );
 			}
 			else
 			{
-				this.UnpackFromMap( unpacker, ref instance );
+				if ( unpacker.IsArrayHeader )
+				{
+					this.UnpackFromArray( unpacker, ref instance );
+				}
+				else
+				{
+					this.UnpackFromMap( unpacker, ref instance );
+				}
 			}
 
 			return instance;
@@ -478,6 +567,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
+		private delegate void UnpackFromMessageInvocation( ref T target, Unpacker value );
 		protected delegate void MemberSetter( ref T target, object memberValue );
 	}
 }
