@@ -541,8 +541,163 @@ namespace MsgPack
 				Assert.That( target.IsMapHeader, Is.False );
 				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
 			}
-		}	
-		
+		}
+
+		[Test]
+		public void TestReadData_OneScalar_AsScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = target.ReadItem();
+				Assert.That( result.HasValue );
+				Assert.That( result.Value == 1, result.Value.ToString() );
+				Assert.That( target.ReadItem(), Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestReadData_TwoScalar_AsTwoScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result1 = target.ReadItem();
+				Assert.That( result1.HasValue );
+				Assert.That( result1.Value == 1, result1.Value.ToString() );
+
+				var result2 = target.ReadItem();
+				Assert.That( result2.HasValue );
+				Assert.That( result2.Value == 2, result2.Value.ToString() );
+
+				Assert.That( target.ReadItem(), Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestReadData_Empty_Null()
+		{
+			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = target.ReadItem();
+				Assert.That( result.HasValue, Is.False );
+			}
+		}
+
+		[Test]
+		public void TestReadData_Array_AsSingleArray()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = target.ReadItem();
+				Assert.That( result.HasValue );
+				var array = result.Value.AsList();
+				Assert.That( array.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( array[ 0 ] == 1, result.Value.ToString() );
+				Assert.That( array[ 1 ] == 2, result.Value.ToString() );
+				Assert.That( target.ReadItem(), Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestReadData_Map_AsSingleMap()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x82, 0x1, 0x2, 0x3, 0x4 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = target.ReadItem();
+				Assert.That( result.HasValue );
+				var map = result.Value.AsDictionary();
+				Assert.That( map.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( map[ 1 ] == 2, result.Value.ToString() );
+				Assert.That( map[ 3 ] == 4, result.Value.ToString() );
+				Assert.That( target.ReadItem(), Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestReadData_ArrayFollowingScalar_AsSingleArrayAndScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2, 0x3 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = target.ReadItem();
+				Assert.That( result.HasValue );
+				var array = result.Value.AsList();
+				Assert.That( array.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( array[ 0 ] == 1, result.Value.ToString() );
+				Assert.That( array[ 1 ] == 2, result.Value.ToString() );
+
+				var scalar = target.ReadItem();
+				Assert.That( scalar.HasValue );
+				Assert.That( scalar.Value == 3, result.Value.ToString() );
+				Assert.That( target.ReadItem(), Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestReadData_MapFollowingScalar_AsSingleMapAndScalar()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x82, 0x1, 0x2, 0x3, 0x4, 0x5 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = target.ReadItem();
+				Assert.That( result.HasValue );
+				var map = result.Value.AsDictionary();
+				Assert.That( map.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( map[ 1 ] == 2, result.Value.ToString() );
+				Assert.That( map[ 3 ] == 4, result.Value.ToString() );
+
+				var scalar = target.ReadItem();
+				Assert.That( scalar.HasValue );
+				Assert.That( scalar.Value == 5, result.Value.ToString() );
+				Assert.That( target.ReadItem(), Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestReadData_ArrayOfArray_AsSingleArray()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x92, 11, 12, 0x92, 21, 22 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = target.ReadItem();
+				Assert.That( result.HasValue );
+				var array = result.Value.AsList();
+				Assert.That( array.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( array[ 0 ].IsArray, result.Value.ToString() );
+				Assert.That( array[ 0 ].AsList()[ 0 ] == 11, result.Value.ToString() );
+				Assert.That( array[ 0 ].AsList()[ 1 ] == 12, result.Value.ToString() );
+				Assert.That( array[ 1 ].IsArray, result.Value.ToString() );
+				Assert.That( array[ 1 ].AsList()[ 0 ] == 21, result.Value.ToString() );
+				Assert.That( array[ 1 ].AsList()[ 1 ] == 22, result.Value.ToString() );
+				Assert.That( target.ReadItem(), Is.Null );
+			}
+		}
+
+
+		[Test]
+		public void TestReadData_MapOfMap_AsSingleMap()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x82, 1, 0x82, 11, 1, 12, 2, 2, 0x82, 21, 1, 22, 2 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				var result = target.ReadItem();
+				Assert.That( result.HasValue );
+				var map = result.Value.AsDictionary();
+				Assert.That( map.Count, Is.EqualTo( 2 ), result.Value.ToString() );
+				Assert.That( map[ 1 ].IsMap, result.Value.ToString() );
+				Assert.That( map[ 1 ].AsDictionary()[ 11 ] == 1, result.Value.ToString() );
+				Assert.That( map[ 1 ].AsDictionary()[ 12 ] == 2, result.Value.ToString() );
+				Assert.That( map[ 2 ].IsMap, result.Value.ToString() );
+				Assert.That( map[ 2 ].AsDictionary()[ 21 ] == 1, result.Value.ToString() );
+				Assert.That( map[ 2 ].AsDictionary()[ 22 ] == 2, result.Value.ToString() );
+				Assert.That( target.ReadItem(), Is.Null );
+			}
+		}
+
 		// TODO: Consider remove Feeding API and Create()
 	}
 }

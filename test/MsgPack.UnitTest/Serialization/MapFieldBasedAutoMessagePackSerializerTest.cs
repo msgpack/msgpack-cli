@@ -39,6 +39,11 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class MapFieldBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
+		protected override bool CanDumpAssembly
+		{
+			get { return true; }
+		}
+
 		protected override SerializationContext GetSerializationContext()
 		{
 			return new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.FieldBased };
@@ -53,6 +58,11 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class ArrayFieldBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
+		protected override bool CanDumpAssembly
+		{
+			get { return true; }
+		}
+
 		protected override SerializationContext GetSerializationContext()
 		{
 			return new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.FieldBased };

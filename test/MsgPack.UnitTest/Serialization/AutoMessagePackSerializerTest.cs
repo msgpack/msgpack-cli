@@ -76,7 +76,7 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
-			if ( _traceOn )
+			if ( _traceOn && this.CanDumpAssembly )
 			{
 				try
 				{
@@ -89,6 +89,10 @@ namespace MsgPack.Serialization
 			}
 		}
 #endif
+		protected virtual bool CanDumpAssembly
+		{
+			get { return false; }
+		}
 
 		protected abstract MessagePackSerializer<T> CreateTarget<T>( SerializationContext context );
 
