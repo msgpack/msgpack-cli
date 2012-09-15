@@ -43,22 +43,17 @@ namespace MsgPack
 			pk.Pack( size );
 		}
 
-		public void UnpackFromMessage( MessagePackObject messagePackObject )
+		public void UnpackFromMessage( Unpacker unpacker )
 		{
-		
-			if (! messagePackObject.IsTypeOf<IList<MessagePackObject>>().GetValueOrDefault() )
+			if ( !unpacker.IsArrayHeader || unpacker.Data.Value.AsInt32() != 5 )
 			{
-				throw new ArgumentException(messagePackObject.UnderlyingType.ToString());
+				throw new ArgumentException( "Must be 5 element array." );
 			}
 
-			var asList = messagePackObject.AsList();
-			if ( asList.Count != 5 )
-			{
-				throw new ArgumentException();
-			}
+			var asList = unpacker.UnpackSubtree().Value.AsList();
 
 			uri = asList[ 0 ].AsString();
-			title = asList[ 1].AsString();
+			title = asList[ 1 ].AsString();
 			width = asList[ 2 ].AsInt32();
 			height = asList[ 3 ].AsInt32();
 			size = asList[ 4 ].AsInt32();
@@ -75,7 +70,7 @@ namespace MsgPack
 
 		public bool Equals( Image obj )
 		{
-			return 
+			return
 				uri == obj.uri &&
 				title == obj.title &&
 				width == obj.width &&

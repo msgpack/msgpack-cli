@@ -54,7 +54,11 @@ namespace MsgPack
 
 			Image dst = new Image();
 			buffer.Seek( 0L, SeekOrigin.Begin );
-			dst.UnpackFromMessage( Unpacking.UnpackObject( buffer ) );
+			using ( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.That( unpacker.Read() );
+				dst.UnpackFromMessage( unpacker );
+			}
 
 			Assert.AreEqual( src, dst );
 		}

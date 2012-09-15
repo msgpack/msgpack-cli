@@ -19,22 +19,21 @@
 #endregion -- License Terms --
 
 using System;
+using System.Runtime.Serialization;
 
 namespace MsgPack
 {
 	/// <summary>
-	///		Define interface for object which can be deserialzed from MessagePack object.
+	///		Defines interface for object which can be deserialzed from MessagePack object.
 	/// </summary>
 	public interface IUnpackable
 	{
 		/// <summary>
-		///		Restore object state from specified <see cref="MessagePackObject"/>.
+		///		Restore object state from specified <see cref="Unpacker"/>.
 		/// </summary>
-		/// <param name="messagePackObject"><see cref="MessagePackObject"/>.</param>
-		/// <remarks>
-		///		It is reasonable that you provide constructor which accept one <see cref="MessagePackObject"/> 
-		///		and implement same feature as this method.
-		/// </remarks>
-		void UnpackFromMessage( MessagePackObject messagePackObject );
+		/// <param name="unpacker"><see cref="Unpacker"/>.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="unpacker"/> is <c>null</c>.</exception>
+		/// <exception cref="SerializationException">Cannot restore state from the stream.</exception>
+		void UnpackFromMessage( Unpacker unpacker );
 	}
 }
