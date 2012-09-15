@@ -297,16 +297,6 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Feeds new data source.
-		/// </summary>
-		/// <param name="stream">New data source to feed. This will not be <c>null</c>.</param>
-		/// <param name="ownsStream">If <paramref name="stream"/> should be disposed in this instance then true.</param>
-		protected sealed override void FeedCore( Stream stream, bool ownsStream )
-		{
-			this._successorSources.Enqueue( new DataSource( stream, ownsStream ) );
-		}
-
-		/// <summary>
 		///		Encapselates Stream and ownership information.
 		/// </summary>
 		private struct DataSource

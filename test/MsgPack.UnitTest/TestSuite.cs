@@ -41,31 +41,40 @@ namespace MsgPack
 	[TestFixture]
 	public class TestSuite
 	{
-		private static void FeedFile( Unpacker pac, String path )
+		private static void FeedFile( Stream stream, String path )
 		{
-			var input = new FileStream( path, FileMode.Open );
-			byte[] buffer = new byte[ 64 * 1024 ];
-			while ( true )
+			long original = stream.Position;
+			using ( var input = new FileStream( path, FileMode.Open ) )
 			{
-				int count = input.Read( buffer, 0, buffer.Length );
-				if ( count <= 0 )
+				byte[] buffer = new byte[ 64 * 1024 ];
+				while ( true )
 				{
-					break;
+					int count = input.Read( buffer, 0, buffer.Length );
+					if ( count <= 0 )
+					{
+						break;
+					}
+					stream.Write( buffer, 0, count );
 				}
-				pac.Feed( buffer );
 			}
+
+			stream.Position = original;
 		}
 
 		[Test]
 		public void Run()
 		{
-			Unpacker pac = Unpacker.Create();
-			Unpacker pac_compact = Unpacker.Create();
+			using ( var pacStream = new MemoryStream() )
+			using ( var pacCompactStream = new MemoryStream() )
+			{
+				Unpacker pac = Unpacker.Create( pacStream );
+				Unpacker pac_compact = Unpacker.Create( pacCompactStream );
 
-			FeedFile( pac, "." + Path.DirectorySeparatorChar + "cases.mpac" );
-			FeedFile( pac_compact, "." + Path.DirectorySeparatorChar + "cases_compact.mpac" );
+				FeedFile( pacStream, "." + Path.DirectorySeparatorChar + "cases.mpac" );
+				FeedFile( pacCompactStream, "." + Path.DirectorySeparatorChar + "cases_compact.mpac" );
 
-			pac.SequenceEqual( pac_compact, EqualityComparer<MessagePackObject>.Default );
+				pac.SequenceEqual( pac_compact, EqualityComparer<MessagePackObject>.Default );
+			}
 		}
 	}
 #endif

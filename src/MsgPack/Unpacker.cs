@@ -468,57 +468,6 @@ namespace MsgPack
 			return this.Data;
 		}
 
-		#region -- Feeding API --
-
-		// FIXME: Remove feeding API 
-
-		/// <summary>
-		///		Feeds new data source.
-		/// </summary>
-		/// <param name="newData">New data source to feed.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="newData"/> is null.</exception>
-		internal void Feed( IEnumerable<byte> newData )
-		{
-			if ( newData == null )
-			{
-				throw new ArgumentNullException( "newData" );
-			}
-
-			Contract.EndContractBlock();
-
-			this.FeedCore( new EnumerableStream( newData ), true );
-		}
-
-		/// <summary>
-		///		Feeds new data source.
-		/// </summary>
-		/// <param name="stream">New data source to feed.</param>
-		/// <param name="ownsStream">If <paramref name="stream"/> should be disposed in this instance then true.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
-		internal void Feed( Stream stream, bool ownsStream )
-		{
-			if ( stream == null )
-			{
-				throw new ArgumentNullException( "stream" );
-			}
-
-			Contract.EndContractBlock();
-
-			this.FeedCore( stream, ownsStream );
-		}
-
-		/// <summary>
-		///		Feeds new data source.
-		/// </summary>
-		/// <param name="stream">New data source to feed. This will not be <c>null</c>.</param>
-		/// <param name="ownsStream">If <paramref name="stream"/> should be disposed in this instance then true.</param>
-		protected virtual void FeedCore( Stream stream, bool ownsStream )
-		{
-			throw new NotSupportedException();
-		}
-
-		#endregion -- Feeding API --
-
 		private enum UnpackerMode
 		{
 			Unknown = 0,
