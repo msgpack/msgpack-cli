@@ -63,7 +63,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( IsTraceEnabled )
 			{
 				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethod );
+				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._packToMethod );
 			}
 
 			return new TracingILGenerator( this._packToMethod, this.Trace );
