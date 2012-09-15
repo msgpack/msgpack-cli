@@ -134,7 +134,7 @@ namespace MsgPack.Serialization
 			var filtered = members.Where( item => Attribute.IsDefined( item, typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #else
 			var members =
-				typeof( TObject ).GetRuntimeFields().OfType<MemberInfo>().Concat( typeof( TObject ).GetRuntimeProperties() );
+				typeof( TObject ).GetRuntimeFields().Where( f => f.IsPublic && !f.IsStatic ).OfType<MemberInfo>().Concat( typeof( TObject ).GetRuntimeProperties().Where( p => p.GetMethod != null && p.GetMethod.IsPublic && !p.GetMethod.IsStatic ) );
 			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #endif
 

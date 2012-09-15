@@ -944,7 +944,7 @@ namespace MsgPack.Serialization
 			var elementType = x.GetType().GetTypeInfo().GenericTypeArguments[ 0 ];
 			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( elementType );
 			Assert.That(
-				( bool )type.GetRuntimeMethod( "Equals", new[] { elementType, elementType } ).Invoke( Activator.CreateInstance( type ), new[] { x, y } ),
+				( bool )type.GetRuntimeMethod( "Equals", new[] { x.GetType(), x.GetType() } ).Invoke( Activator.CreateInstance( type ), new[] { x, y } ),
 				"Expected:{1}{0}Actual :{2}",
 				Environment.NewLine,
 				x,
