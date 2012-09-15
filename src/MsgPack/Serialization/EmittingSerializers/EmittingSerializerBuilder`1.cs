@@ -112,6 +112,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static void EmitUnpackMembers( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
 		{
 			/*
+			 * #if T is IUnpackable
+			 *  result.UnpackFromMessage( unpacker );
+			 * #else
 			 *	if( unpacker.IsArrayHeader )
 			 *	{
 			 *		...
@@ -120,7 +123,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			 *	{
 			 *		...
 			 *	}
+			 * #endif
 			 */
+
 			unpackerIL.EmitAnyLdarg( 1 );
 			unpackerIL.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
 			var @else = unpackerIL.DefineLabel( "ELSE" );
