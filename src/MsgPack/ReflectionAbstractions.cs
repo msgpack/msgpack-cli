@@ -57,6 +57,15 @@ namespace MsgPack
 #endif
 		}
 
+		public static bool GetIsAbstract( this Type source )
+		{
+#if NETFX_CORE
+			return source.GetTypeInfo().IsAbstract;
+#else
+			return source.IsAbstract;
+#endif
+		}
+
 		public static bool GetIsGenericType( this Type source )
 		{
 #if NETFX_CORE
