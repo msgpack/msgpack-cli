@@ -41,7 +41,7 @@ namespace MsgPack
 		/// <summary>
 		///		Actual unpackaging strategy.
 		/// </summary>
-		private readonly StreamingUnpacker _unpacker = new StreamingUnpacker();
+		private readonly StreamingUnpacker2 _unpacker = new StreamingUnpacker2();
 
 		/// <summary>
 		///		If current position MAY be in tail of source then true, otherwise false.
@@ -224,13 +224,13 @@ namespace MsgPack
 			return this.ReadCore();
 		}
 
-		private StreamingUnpacker _skipper;
+		private StreamingUnpacker2 _skipper;
 
 		protected sealed override long? SkipCore()
 		{
 			if ( this._skipper == null )
 			{
-				this._skipper = new StreamingUnpacker();
+				this._skipper = new StreamingUnpacker2();
 			}
 
 			if ( this.Read( this._skipper, UnpackingMode.SkipSubtree ) )
@@ -249,7 +249,7 @@ namespace MsgPack
 			return this.SkipCore();
 		}
 
-		private bool Read( StreamingUnpacker unpacker, UnpackingMode unpackingMode )
+		private bool Read( StreamingUnpacker2 unpacker, UnpackingMode unpackingMode )
 		{
 			while ( !this.IsInStreamTail() )
 			{

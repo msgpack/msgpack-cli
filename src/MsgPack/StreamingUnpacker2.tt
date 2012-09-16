@@ -1,0 +1,857 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#
+var __typeName = "StreamingUnpacker2";
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace MsgPack
+{
+	// This file generated from <#= __typeName #>.Nullable.tt T4Template.
+	// Do not modify this file. Edit <#= __typeName #>.Nullable.tt instead.
+
+
+	internal sealed partial class <#= __typeName #>
+	{
+		public MessagePackObject? Unpack( Stream source, UnpackingMode unpackingMode )
+		{
+			// Continue 
+			if( this._scalarBufferPosition >= 0 )
+			{
+<#	
+	PushIndent( 4 );
+	WriteContinueScalarUnpacking( true );
+	PopIndent();
+#>
+			}
+			else if(  this._blobBuffer != null )
+			{
+<# 	
+	PushIndent( 4 );
+	WriteContinueBlobUnpacking( true );
+	PopIndent();
+#>
+			}
+
+			// Header or scalar
+			for( var b = source.ReadByte(); b >= 0; b = source.ReadByte() )
+			{
+<#
+	PushIndent( 4 );
+	WriteClearEmptyCollectionState();
+	PopIndent();
+#>
+				this._readByteLength ++;
+
+				if ( b < 0x80 )
+				{
+					this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
+<#
+	PushIndent( 5 );
+	WriteDirectReturnIfIsNotSkippingCollection( "_positiveIntegers[ b ]" );
+	PopIndent();
+#>
+				}
+
+				if ( b >= 0xE0 )
+				{
+					this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
+<#
+	PushIndent( 5 );
+	WriteDirectReturnIfIsNotSkippingCollection( "_negativeIntegers[ b - 0xE0 ]" );
+	PopIndent();
+#>
+				}
+
+				switch ( b )
+				{
+					case 0x80:
+					{
+						this._collectionHeaderKind = CollectionHeaderKind.Map;
+<#
+	PushIndent( 6 );
+	WritePushEmptyContextCollectionIfIsNotInRoot( "Map" );
+	WriteDirectReturnIfIsNotSkippingCollection( "_emptyMap" );
+	PopIndent();
+#>
+						break;
+					}
+					case 0x90:
+					{
+						this._collectionHeaderKind = CollectionHeaderKind.Array;
+<#
+	PushIndent( 6 );
+	WritePushEmptyContextCollectionIfIsNotInRoot( "Array" );
+	WriteDirectReturnIfIsNotSkippingCollection( "_emptyArray" );
+	PopIndent();
+#>
+						break;
+					}
+					case 0xA0:
+					{
+						this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
+<#
+	PushIndent( 6 );
+	WriteDirectReturnIfIsNotSkippingCollection( "_emptyRaw" );
+	PopIndent();
+#>
+						break;
+					}
+					case MessagePackCode.TrueValue:
+					{
+						this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
+<#
+	PushIndent( 6 );
+	WriteDirectReturnIfIsNotSkippingCollection( "_true" );
+	PopIndent();
+#>
+						break;
+					}
+					case MessagePackCode.FalseValue:
+					{
+						this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
+<#
+	PushIndent( 6 );
+	WriteDirectReturnIfIsNotSkippingCollection( "_false" );
+	PopIndent();
+#>
+						break;
+					}
+					case MessagePackCode.NilValue:
+					{
+						this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
+<#
+	PushIndent( 6 );
+	WriteDirectReturnIfIsNotSkippingCollection( "MessagePackObject.Nil" );
+	PopIndent();
+#>
+						break;
+					}
+				}
+
+				if ( b < 0x90 )
+				{
+					// map
+<# 
+	PushIndent( 5 );
+	WritePushFixedContextCollection( "Map", "( b & 0xF )" );
+	WriteReturnIfIsNotSkippingCollection( "( b & 0xF )" );
+	PopIndent();
+#>
+				}
+				else if ( b < 0xA0 )
+				{
+					// array
+<# 
+	PushIndent( 5 );
+	WritePushFixedContextCollection( "Array", "( b & 0xF )" );
+	WriteReturnIfIsNotSkippingCollection( "( b & 0xF )" );
+	PopIndent();
+#>
+				}
+				else if ( b < 0xC0 )
+				{
+					// raw
+					this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
+<# 
+	PushIndent( 5 );
+	WriteStartBlobUnpacking( "b - 0xA0" );
+	PopIndent();
+#>
+				}
+				else
+				{
+					// variable scalars & collections
+					switch( b )
+					{
+						case 0xDC: // array16
+						{
+<# 
+	PushIndent( 7 );
+	WriteStartScalarUnpacking( "ScalarKind.ArrayLength16", "Array" );
+	PopIndent();
+#>
+							break;
+						}
+						case 0xDD: // array32
+						{
+<# 
+	PushIndent( 7 );
+	WriteStartScalarUnpacking( "ScalarKind.ArrayLength32", "Array" );
+	PopIndent();
+#>
+							break;
+						}
+						case 0xDE: // map16
+						{
+<# 
+	PushIndent( 7 );
+	WriteStartScalarUnpacking( "ScalarKind.MapLength16", "Map" );
+	PopIndent();
+#>
+							break;
+						}
+						case 0xDF: // map32
+						{
+<# 
+	PushIndent( 7 );
+	WriteStartScalarUnpacking( "ScalarKind.MapLength32", "Map" );
+	PopIndent();
+#>
+							break;
+						}
+						default:
+						{
+							this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
+<# 
+	PushIndent( 7 );
+	WriteStartScalarUnpacking( "_scalarKinds[ b - 0xC0 ]", null );
+	PopIndent();
+#>
+							break;
+						}
+					}
+				}
+				
+			} // for 
+
+			// stream ends
+			return null;
+		}
+	}
+}
+<#+
+
+// ---- Utilities ---
+
+private void PushIndent( int level )
+{
+	PushIndent( new String( '\t', level ) );
+}
+
+// ---- MACROS ----
+
+private void WriteStartScalarUnpacking( string kindExpression, string collectionKind )
+{
+#>
+
+#region StartScalarUnpacking
+<#+
+	this.WriteUnpackScalarCore( kindExpression, collectionKind, null, "( ( int )" + kindExpression + " ) & 0xF", false );
+#>
+#endregion StartScalarUnpacking
+
+<#+
+}
+
+private void WriteContinueScalarUnpacking( bool shouldClearEmptyCollectionState )
+{
+#>
+
+#region ContinueScalarUnpacking
+<#+ WriteUnpackScalarCore( "this._scalarKind", null, "this._scalarBufferPosition", "( ( ( int )this._scalarKind ) & 0xF ) - this._scalarBufferPosition", shouldClearEmptyCollectionState ); #>
+#endregion ContinueScalarUnpacking
+
+<#+
+}
+
+private void WriteUnpackScalarCore( string kindExpression, string collectionKind, string offsetExpression, string lengthExpression, bool shouldClearEmptyCollectionState )
+{
+	if( offsetExpression == null )
+	{
+		// first
+#>
+this._scalarKind = <#= kindExpression #>;
+<#+
+		if( collectionKind != null )
+		{
+			WritePushContextCollection( collectionKind );
+		}
+	}
+#>
+var scalarReadBytes = source.Read( this._scalarBuffer, <#= offsetExpression ?? "0" #>, <#= lengthExpression #> );
+<#+
+	if( shouldClearEmptyCollectionState )
+	{
+#>
+if( scalarReadBytes > 0 )
+{
+	this._readByteLength += scalarReadBytes;
+<#+
+		PushIndent( 1 );
+		WriteClearEmptyCollectionState();
+		PopIndent();
+#>
+}
+<#+
+	}
+#>
+if( scalarReadBytes < ( <#= lengthExpression #> ) )
+{
+	// Must wait extra bytes, book keep states.
+	this._scalarBufferPosition += scalarReadBytes;
+	return null;
+}
+else
+{
+	// Whole blob bytes are read.
+<#+
+	if( offsetExpression != null )
+	{
+#>
+	// Reset buffer.
+	this._scalarBufferPosition = 0;
+<#+
+	}
+#>
+	switch( this._scalarKind )
+	{
+		case ScalarKind.RawLength16:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( 2 ); 
+	PopIndent();
+#>
+			ushort length = BitConverter.ToUInt16( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteStartBlobUnpacking( "length" ); 
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.RawLength32:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( 4 );
+	PopIndent();
+#>
+			uint length = BitConverter.ToUInt32( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteEnsure32Bytes( "length" );
+	WriteStartBlobUnpacking( "unchecked( ( int )length )" );
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.ArrayLength16:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( 2 );
+	PopIndent();
+#>
+			ushort length = BitConverter.ToUInt16( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer();
+	PopIndent();
+#>
+			this._currentCollectionState.SetItemsCount( length );
+			this._collectionHeaderKind = CollectionHeaderKind.Array;
+<#+
+	PushIndent( 3 );
+	WriteReturnIfIsNotSkippingCollection( "this._currentCollectionState.ItemsCount" );
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.MapLength16:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( 2 );
+	PopIndent();
+#>
+			ushort length = BitConverter.ToUInt16( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer();
+	PopIndent();
+#>
+			this._currentCollectionState.SetItemsCount( length );
+			this._collectionHeaderKind = CollectionHeaderKind.Map;
+<#+
+	PushIndent( 3 );
+	WriteReturnIfIsNotSkippingCollection( "this._currentCollectionState.ItemsCount" );
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.ArrayLength32:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( 4 );
+	PopIndent();
+#>
+			uint length = BitConverter.ToUInt32( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer();
+	WriteEnsure32Bytes( "length" );
+	PopIndent();
+#>
+			this._currentCollectionState.SetItemsCount( unchecked( ( int )length ) );
+			this._collectionHeaderKind = CollectionHeaderKind.Array;
+<#+
+	PushIndent( 3 );
+	WriteReturnIfIsNotSkippingCollection( "this._currentCollectionState.ItemsCount" );
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.MapLength32:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( 4 );
+	PopIndent();
+#>
+			uint length = BitConverter.ToUInt32( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer();
+	WriteEnsure32Bytes( "length" );
+	PopIndent();
+#>
+			this._currentCollectionState.SetItemsCount( unchecked( ( int )length ) );
+			this._collectionHeaderKind = CollectionHeaderKind.Map;
+<#+
+	PushIndent( 3 );
+	WriteReturnIfIsNotSkippingCollection( "this._currentCollectionState.ItemsCount" );
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.Float32:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( 4 );
+	WriteTryPopContextCollection();
+	PopIndent();
+#>
+			var value = BitConverter.ToSingle( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer(); 
+	WriteReturnIfIsNotSkippingCollection( "value" );
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.Float64:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( 8 );
+	WriteTryPopContextCollection();
+	PopIndent();
+ #>
+			var value = BitConverter.ToDouble( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer();
+	WriteReturnIfIsNotSkippingCollection( "value" );
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.Int8:
+		{
+<#+
+	PushIndent( 3 );
+	WriteTryPopContextCollection();
+	PopIndent();
+#>
+			var value = unchecked( ( sbyte )this._scalarBuffer[ 0 ] );
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer();
+	WriteReturnIfIsNotSkippingCollection( "value" );
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.UInt8:
+		{
+<#+
+	PushIndent( 3 );
+	WriteTryPopContextCollection();
+	PopIndent();
+#>
+			var value = this._scalarBuffer[ 0 ];
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer();
+	WriteReturnIfIsNotSkippingCollection( "value" );
+	PopIndent();
+#>
+			break;
+		}
+<#+
+	foreach( var bits in new [] { 16, 32, 64 } )
+	{
+#>
+		case ScalarKind.Int<#= bits #>:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( bits / 8 );
+	WriteTryPopContextCollection();
+	PopIndent();
+#>
+			var value = BitConverter.ToInt<#= bits #>( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer();
+	WriteReturnIfIsNotSkippingCollection( "value" );
+	PopIndent();
+#>
+			break;
+		}
+		case ScalarKind.UInt<#= bits #>:
+		{
+<#+
+	PushIndent( 3 );
+	WriteSwapScalarBufferIfLittleEndian( bits / 8 );
+	WriteTryPopContextCollection();
+	PopIndent();
+#>
+			var value = BitConverter.ToUInt<#= bits #>( this._scalarBuffer, 0 );
+<#+
+	PushIndent( 3 );
+	WriteClearScalarBuffer();
+	WriteReturnIfIsNotSkippingCollection( "value" );
+	PopIndent();
+#>
+			break;
+		}
+<#+
+	}
+#>
+	} // switch <#= kindExpression #> 
+}
+<#+
+}
+
+private void WriteClearScalarBuffer()
+{
+#>
+
+#region ClearScalarBuffer
+this._scalarBufferPosition = 0;
+#endregion ClearScalarBuffer
+
+<#+
+}
+
+private void WriteAssembleInteger( string targetVariable, string sourceVariable, int size )
+{
+	var type = size == 1 ? "Byte" : "UInt" + ( size * 8 ).ToString( CultureInfo.InvariantCulture );
+#>
+#pragma warning disable 0675
+				if( BitConverter.IsLittleEndian )
+				{
+<#+
+	for( int i = 0; i < size; i++ )
+	{
+		if( i < size - 1 )
+		{
+#>
+					<#= targetVariable #> |=  ( <#= type #> )( <#= sourceVariable #>[ <#= size - 1 - i #> ] << <#= 8 * ( size - 1 - i ) #> );
+<#+
+		}
+		else
+		{
+#>
+					<#= targetVariable #> |=  <#= sourceVariable #>[ <#= size - 1 - i #> ];
+<#+
+		}
+	}
+#>
+				}
+				else
+				{
+<#+
+	for( int i = 0; i < size; i++ )
+	{
+		if( i < size - 1 )
+		{
+#>
+					<#= targetVariable #> |=  ( <#= type #> )( <#= sourceVariable #>[ <#= i #> ] << <#= 8 * ( size - 1 - i ) #> );
+<#+
+		}
+		else
+		{
+#>
+					<#= targetVariable #> |=  <#= sourceVariable #>[ <#= i #> ];
+<#+
+		}
+	}
+#>
+				}
+#pragma warning restore 0675
+<#+
+}
+
+private void WriteSwapScalarBufferIfLittleEndian( int size )
+{
+#>
+
+#region SwapScalarBufferIfLittleEndian
+if( BitConverter.IsLittleEndian )
+{
+	byte temp;
+<#+
+	for( int i = 0; i < size / 2; i++ )
+	{
+#>
+	temp = this._scalarBuffer[ <#= i #> ];
+	this._scalarBuffer[ <#= i #> ] = this._scalarBuffer[ <#= size - i - 1 #> ];
+	this._scalarBuffer[ <#= size - i - 1 #> ] = temp;
+<#+ 
+	}
+#>
+}
+#endregion SwapScalarBufferIfLittleEndian
+
+<#+
+}
+
+private void WriteEnsure32Bytes( string variable )
+{
+#>
+
+#region Ensure32Bytes
+if( <#= variable #> > Int32.MaxValue )
+{
+	throw new NotSupportedException( "MessagePack for CLI cannot handle a collection which stores more than Int32.MaxValue items." );
+}
+#endregion Ensure32Bytes
+
+<#+
+}
+
+private void WriteStartBlobUnpacking( string lengthExpression )
+{
+#>
+
+#region StartBlobUnpacking
+<#+
+	this.WriteUnpackBlobCore( null, lengthExpression, false );
+#>
+#endregion StartBlobUnpacking
+
+<#+
+}
+
+private void WriteContinueBlobUnpacking( bool shouldClearEmptyCollectionState )
+{
+#>
+
+#region ContinueBlobUnpacking
+<#+
+	this.WriteUnpackBlobCore( "this._blobBufferPosition", "this._blobBuffer.Length - this._blobBufferPosition", shouldClearEmptyCollectionState );
+#>
+#endregion ContinueBlobUnpacking
+
+<#+
+}
+
+private void WriteUnpackBlobCore( string offsetExpression, string lengthExpression, bool shouldClearEmptyCollectionState )
+{
+#>
+var blobLength = <#= lengthExpression #>;
+<#+
+	if( offsetExpression == null )
+	{
+		// first.
+#>
+var blob = new byte[ blobLength ];
+<#+
+	}
+	else
+	{
+		// continue
+#>
+var blob = this._blobBuffer;
+<#+
+	}
+#>
+
+var blobReadBytes = source.Read( blob, <#= offsetExpression ?? "0" #>, blobLength );
+
+<#+
+	if( shouldClearEmptyCollectionState )
+	{
+#>
+if( blobReadBytes > 0 )
+{
+	this._readByteLength += blobReadBytes;
+<#+
+		PushIndent( 1 );
+		WriteClearEmptyCollectionState();
+		PopIndent();
+#>
+}
+<#+
+	}
+#>
+
+if( blobReadBytes < blobLength )
+{
+	// Must wait extra bytes, book keep states.
+	this._blobBuffer = blob;
+	this._blobBufferPosition += blobReadBytes;
+
+	return null;
+}
+else
+{
+	// Whole blob bytes are read.
+<#+
+	if( offsetExpression != null )
+	{
+#>
+	// Reset buffer.
+	this._blobBuffer = null;
+	this._blobBufferPosition = 0;
+<#+
+	}
+
+	PushIndent( 1 );
+	WriteTryPopContextCollection();
+	WriteReturnIfIsNotSkippingCollection( "blob" );
+	PopIndent();
+#>
+}
+<#+
+}
+
+private void WritePushFixedContextCollection( string type, string sizeExpression )
+{
+#>
+
+#region PushFixedContextCollection
+var newCollectionState = CollectionUnpackingState.Fixed<#= type #>( <#= sizeExpression #> );
+this._collectionHeaderKind = CollectionHeaderKind.<#= type #>;
+this._currentCollectionState = newCollectionState;
+this._collectionStates.Push( newCollectionState );
+#endregion PushFixedContextCollection
+
+<#+
+}
+
+private void WritePushEmptyContextCollectionIfIsNotInRoot( string type )
+{
+#>
+
+#region PushEmptyContextCollectionIfIsNotInRoot
+if( this._currentCollectionState != null )
+{
+	var newCollectionState = CollectionUnpackingState.Fixed<#= type #>( 0 );
+	this._collectionHeaderKind = CollectionHeaderKind.<#= type #>;
+	this._currentCollectionState = newCollectionState;
+	this._collectionStates.Push( newCollectionState );
+}
+#endregion PushEmptyContextCollectionIfIsNotInRoot
+
+<#+
+}
+
+
+private void WritePushContextCollection( string type )
+{
+#>
+
+#region PushContextCollection
+var newCollectionState = CollectionUnpackingState.<#= type #>();
+this._collectionHeaderKind = CollectionHeaderKind.<#= type #>;
+this._currentCollectionState = newCollectionState;
+this._collectionStates.Push( newCollectionState );
+#endregion PushContextCollection
+
+<#+
+}
+
+private void WriteTryPopContextCollection()
+{
+#>
+
+#region TryPopContextCollection
+if( this._currentCollectionState != null )
+{
+	if( this._currentCollectionState.IncrementUnpacked() )
+	{
+		this._collectionStates.Pop();
+		this._currentCollectionState = this._collectionStates.Count == 0 ? null : this._collectionStates.Peek();
+
+		if( unpackingMode == UnpackingMode.SkipSubtree )
+		{
+			var readByteLenth = this._readByteLength;
+			this._readByteLength = 0;
+			return new MessagePackObject( readByteLength );
+		}
+	}
+}
+#endregion TryPopContextCollection
+
+<#+
+}
+
+private void WriteClearEmptyCollectionState()
+{
+	// Just call TryPopContextCollection.
+	WriteTryPopContextCollection();
+}
+
+private void WriteReturnIfIsNotSkippingCollection( string expression )
+{
+	WriteDirectReturnIfIsNotSkippingCollection( "new MessagePackObject( " + expression + " )" );
+}
+
+private void WriteDirectReturnIfIsNotSkippingCollection( string directExpression )
+{
+#>
+if( ( this._currentCollectionState == null && this._collectionHeaderKind == CollectionHeaderKind.NotCollection ) || unpackingMode == UnpackingMode.PerEntry )
+{
+	return <#= directExpression #>;
+}
+
+// retry loop.
+<#+
+}
+#>
