@@ -228,7 +228,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				unpackerIL.EmitAnyLdloc( unpacked );
 				unpackerIL.EmitAnyLdloc( itemsCount );
 				unpackerIL.EmitBlt( else0 );
-				// Just skip for missing memeber.
+				// Just skip for shorten member.
 				if ( items[ i ].Entry.Member != null )
 				{
 					// Respect nil implication.

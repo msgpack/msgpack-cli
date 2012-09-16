@@ -433,10 +433,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 			int unpackerArgumentIndex,
 			string memberName,
 			NilImplication nilImplication,
-			Label endOfDeserialization 
+			Label endOfDeserialization
 		)
 		{
-			switch( nilImplication )
+			switch ( nilImplication )
 			{
 				case NilImplication.MemberDefault:
 				{
@@ -657,7 +657,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( il != null );
 			Contract.Requires( target != null );
 			Contract.Requires( initialCountLoadingEmitter != null );
-			
+
 			// TODO: For collection, supports .ctor(IEnumerable<> other)
 
 			if ( target.LocalType.IsArray )
