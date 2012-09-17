@@ -3,10 +3,12 @@
   <Project Name="MsgPack.Mono" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
   </Project>
   <Project Name="MsgPack.WinRT" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
     <Exclude Path="Serialization\*" />
     <Exclude Path="Serialization\**\*" />
     <Exclude Path="PackerUnpackerExtensions.cs" />
@@ -15,6 +17,7 @@
   <Project Name="MsgPack.Serialization.WinRT" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
     <Exclude Path="*.cs" />
     <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
@@ -33,6 +36,7 @@
   <Project Name="MsgPack.Silverlight.4" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
     <Exclude Path="Serialization\*" />
     <Exclude Path="Serialization\**\*" />
     <Exclude Path="PackerUnpackerExtensions.cs" />
@@ -43,6 +47,7 @@
   <Project Name="MsgPack.Serialization.Silverlight.4" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
     <Exclude Path="*.cs" />
     <Exclude Path="*.xml" />
     <Preserve Path="Serialization\LockRecursionPolicy.cs" />
@@ -69,6 +74,7 @@
     <Exclude Path="Serialization\**\*" />
     <Exclude File="*.snk" />
     <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
     <Preserve Path="Contract.cs" />
     <Preserve Path="Delegates.cs" />
     <Preserve Path="HashSet`1.cs" />
@@ -83,6 +89,7 @@
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.snk" />
     <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
     <Exclude Path="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
     <Exclude Path="Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs" />
     <Exclude Path="Serialization\ExpressionSerializers\*" />
