@@ -20,53 +20,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace MsgPack
 {
-	partial class UnpackingStreamingUnpacker : StreamingUnpacker2
+	partial class SkippingStreamingUnpacker : StreamingUnpacker2
 	{
-		private static readonly MessagePackObject[] _positiveIntegers =
-			Enumerable.Range( 0, 0x80 ).Select( i => new MessagePackObject( ( byte )i ) ).ToArray();
-		private static readonly MessagePackObject[] _negativeIntegers =
-			Enumerable.Range( -32, 32 ).Select( i => new MessagePackObject( ( sbyte )i ) ).ToArray();
-		private static readonly MessagePackObject _emptyRaw = new MessagePackObject( new byte[ 0 ] );
-		private static readonly MessagePackObject _true = new MessagePackObject( true );
-		private static readonly MessagePackObject _false = new MessagePackObject( false );
+		private static readonly MessagePackObject _one = new MessagePackObject( 1 );
 
-		#region -- Collection States --
+		#region -- Length --
 
-		private CollectionHeaderKind _collectionHeaderKind;
+		private long _readByteLength;
+		private static readonly byte[] _dummyBuffer = new byte[ 64 * 1024 ];
 
-		private enum CollectionHeaderKind
-		{
-			NotCollection = 0,
-			Array,
-			Map
-		}
-
-		public bool IsInArrayHeader
-		{
-			get { return this._collectionHeaderKind == CollectionHeaderKind.Array; }
-		}
-
-		public bool IsInMapHeader
-		{
-			get { return this._collectionHeaderKind == CollectionHeaderKind.Map; }
-		}
-
-		private uint? _collectionItemsCount;
-
-		public uint UnpackingItemsCount
-		{
-			get
-			{
-				return this._collectionItemsCount ?? ( this._currentCollectionState == null ? 0 : this._currentCollectionState.UnpackingItemsCount );
-			}
-		}
-
-		#endregion -- Collection States --
-
+		#endregion
 
 		#region -- Scalar Buffer --
 
@@ -139,8 +108,7 @@ namespace MsgPack
 
 		#region -- Blob Buffer --
 
-		private byte[] _blobBuffer;
-		private int _blobBufferPosition;
+		private long _remainingBlob = -1;
 
 		#endregion
 	}

@@ -258,6 +258,17 @@
     <Compile Include="Serialization\MessagePackSerializer.cs" />
     <Compile Include="Serialization\UnpackHelpers.cs" />
     <Compile Include="SetOperation.cs" />
+    <Compile Include="SkippingStreamingUnpacker.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SkippingStreamingUnpacker.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StreamingUnpacker2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StreamingUnpacker2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StreamingUnpacker2.States.cs" />
     <Compile Include="StreamPacker.cs" />
     <Compile Include="StreamUnpacker.cs" />
     <Compile Include="SubtreeUnpacker.cs" />
@@ -289,6 +300,7 @@
     <Compile Include="Unpacker.cs" />
     <Compile Include="UnpackException.cs" />
     <Compile Include="StreamingUnpacker.cs" />
+    <Compile Include="SkippingStreamingUnpacker.States.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack.snk">
@@ -309,6 +321,17 @@
     <None Include="Serialization\SerializerRepository.defaults.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SerializerRepository.defaults.cs</LastGenOutput>
+    </None>
+    <None Include="SkippingStreamingUnpacker.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SkippingStreamingUnpacker.cs</LastGenOutput>
+    </None>
+    <None Include="StreamingUnpacker2.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamingUnpacker2.cs</LastGenOutput>
+    </None>
+    <None Include="StreamingUnpackerBase.ttinclude">
+      <LastGenOutput>StreamingUnpackerBase.cs</LastGenOutput>
     </None>
     <None Include="Unpacking.Numerics.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

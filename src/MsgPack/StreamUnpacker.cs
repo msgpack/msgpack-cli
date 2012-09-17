@@ -41,7 +41,7 @@ namespace MsgPack
 		/// <summary>
 		///		Actual unpackaging strategy.
 		/// </summary>
-		private readonly StreamingUnpacker2 _unpacker = new StreamingUnpacker2();
+		private readonly UnpackingStreamingUnpacker _unpacker = new UnpackingStreamingUnpacker();
 
 		/// <summary>
 		///		If current position MAY be in tail of source then true, otherwise false.
@@ -206,7 +206,7 @@ namespace MsgPack
 		/// </returns>
 		protected sealed override bool ReadCore()
 		{
-			return this.Read( this._unpacker, UnpackingMode.PerEntry );
+			return this.Read( this._unpacker );
 		}
 
 		/// <summary>
@@ -224,16 +224,16 @@ namespace MsgPack
 			return this.ReadCore();
 		}
 
-		private StreamingUnpacker2 _skipper;
+		private SkippingStreamingUnpacker _skipper;
 
 		protected sealed override long? SkipCore()
 		{
 			if ( this._skipper == null )
 			{
-				this._skipper = new StreamingUnpacker2();
+				this._skipper = new SkippingStreamingUnpacker();
 			}
 
-			if ( this.Read( this._skipper, UnpackingMode.SkipSubtree ) )
+			if ( this.Read( this._skipper ) )
 			{
 				this._skipper = null;
 				return this._data.Value.AsInt64();
@@ -249,11 +249,11 @@ namespace MsgPack
 			return this.SkipCore();
 		}
 
-		private bool Read( StreamingUnpacker2 unpacker, UnpackingMode unpackingMode )
+		private bool Read( StreamingUnpacker2 unpacker )
 		{
 			while ( !this.IsInStreamTail() )
 			{
-				var data = unpacker.Unpack( this._currentSource.Stream, unpackingMode );
+				var data = unpacker.Unpack( this._currentSource.Stream );
 				if ( data != null )
 				{
 					this._data = data;
@@ -317,5 +317,10 @@ namespace MsgPack
 				this.OwnsStream = ownsStream;
 			}
 		}
+	}
+
+	internal abstract class StreamingUnpacker2
+	{
+		public abstract MessagePackObject? Unpack( Stream source );
 	}
 }

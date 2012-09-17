@@ -28,7 +28,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -45,7 +44,7 @@ PopIndent();
 
 private string TypeName
 {
-	get { return "UnpackingStreamingUnpacker"; }
+	get { return "SkippingStreamingUnpacker"; }
 }
 
 private string IsInScalarUnpackingExpression
@@ -55,21 +54,17 @@ private string IsInScalarUnpackingExpression
 
 private string IsInBlobUnpackingExpression
 {
-	get { return "this._blobBuffer != null"; }
+	get { return "this._remainingBlob >= 0"; }
 }
 
 private void OnUnpacking()
 {
-#>
-this._collectionItemsCount = null;
-<#+
 }
 
 private void OnReadNextByte( string sourceExpression, string valueExpression )
 {
 #>
-var <#= valueExpression #> = <#= sourceExpression #>.ReadByte();
-if(  <#= valueExpression #> >= 0 )
+for( var <#= valueExpression #> = <#= sourceExpression #>.ReadByte(); <#= valueExpression #> >= 0; <#= valueExpression #> = <#= sourceExpression #>.ReadByte() )
 <#+
 }
 
@@ -78,7 +73,6 @@ private void OnStartUnpackingScalar( string kindExpression, CollectionKind colle
 #>
 
 #region StartScalarUnpacking
-this._collectionHeaderKind = CollectionHeaderKind.<#= collectionKind #>;
 this._scalarKind = <#= kindExpression #>;
 this._scalarBufferPosition = 0;
 <#+
@@ -87,22 +81,21 @@ this._scalarBufferPosition = 0;
 		WritePushContextCollection( collectionKind );
 	}
 
-	this.WriteUnpackScalarCore( kindExpression, collectionKind, bits, "0", "( ( int )" + kindExpression + " ) & 0xF" );
+	WriteUnpackScalarCore( kindExpression, collectionKind, bits, "0", "( ( int )" + kindExpression + " ) & 0xF" );
 #>
 #endregion StartScalarUnpacking
 
+break;
 <#+
 }
 
 private void OnContinueUnpackingScalar()
 {
+	WriteClearEmptyCollectionState( null );
 #>
 
 #region ContinueScalarUnpacking
-<#+
-	WriteClearEmptyCollectionState( null );
-	WriteUnpackScalarCore( "this._scalarKind", CollectionKind.NotCollection, 0, "this._scalarBufferPosition", "( ( ( int )this._scalarKind ) & 0xF ) - this._scalarBufferPosition" );
-#>
+<#+ WriteUnpackScalarCore( "this._scalarKind", CollectionKind.NotCollection, 0, "this._scalarBufferPosition", "( ( ( int )this._scalarKind ) & 0xF ) - this._scalarBufferPosition" ); #>
 #endregion ContinueScalarUnpacking
 
 <#+
@@ -112,6 +105,7 @@ private void WriteUnpackScalarCore( string kindExpression, CollectionKind collec
 {
 #>
 var scalarReadBytes = source.Read( this._scalarBuffer, <#= offsetExpression #>, <#= lengthExpression #> );
+this._readByteLength += scalarReadBytes;
 if( scalarReadBytes < ( <#= lengthExpression #> ) )
 {
 	// Must wait extra bytes, book keep states.
@@ -122,6 +116,8 @@ else
 {
 	// Whole scalar bytes are read.
 <#+
+	WriteClearScalarBuffer();
+
 	switch( collectionKind )
 	{
 		case CollectionKind.Array:
@@ -150,6 +146,7 @@ else
 			OnStartUnpackingBlob( "length" ); 
 			PopIndent();
 #>
+			break;
 		}
 		case ScalarKind.RawLength32:
 		{
@@ -161,10 +158,10 @@ else
 			uint length = BitConverter.ToUInt32( this._scalarBuffer, 0 );
 <#+
 			PushIndent( 3 );
-			WriteEnsureLengthIsInt32( "length" );
-			OnStartUnpackingBlob( "unchecked( ( int )length )" ); 
+			OnStartUnpackingBlob( "length" ); 
 			PopIndent();
 #>
+			break;
 		}
 		case ScalarKind.ArrayLength16:
 		{
@@ -173,6 +170,7 @@ else
 			WriteHandleCollectionLength( CollectionKind.Array, 16 );
 			PopIndent();
 #>
+			break;
 		}
 		case ScalarKind.MapLength16:
 		{
@@ -181,14 +179,16 @@ else
 			WriteHandleCollectionLength( CollectionKind.Map, 16 );
 			PopIndent();
 #>
+			break;
 		}
 		case ScalarKind.ArrayLength32:
 		{
 <#+
-	PushIndent( 3 );
-	WriteHandleCollectionLength( CollectionKind.Array, 32 );
-	PopIndent();
+			PushIndent( 3 );
+			WriteHandleCollectionLength( CollectionKind.Array, 32 );
+			PopIndent();
 #>
+			break;
 		}
 		case ScalarKind.MapLength32:
 		{
@@ -197,103 +197,30 @@ else
 			WriteHandleCollectionLength( CollectionKind.Map, 32 );
 			PopIndent();
 #>
+			break;
 		}
 		case ScalarKind.Float32:
-		{
-<#+
-			PushIndent( 3 );
-			WriteSwapScalarBufferIfLittleEndian( 4 );
-			PopIndent();
-#>
-			var value = BitConverter.ToSingle( this._scalarBuffer, 0 );
-<#+
-			PushIndent( 3 );
-			WriteClearScalarBuffer(); 
-			WriteTryPopContextCollection( null );
-			PopIndent();
-#>
-			return new MessagePackObject( value );
-		}
 		case ScalarKind.Float64:
-		{
-<#+
-			PushIndent( 3 );
-			WriteSwapScalarBufferIfLittleEndian( 8 );
-			PopIndent();
- #>
-			var value = BitConverter.ToDouble( this._scalarBuffer, 0 );
-<#+
-			PushIndent( 3 );
-			WriteClearScalarBuffer();
-			WriteTryPopContextCollection( null );
-			PopIndent();
-#>
-			return new MessagePackObject( value );
-		}
 		case ScalarKind.Int8:
-		{
-			var value = unchecked( ( sbyte )this._scalarBuffer[ 0 ] );
-<#+
-			PushIndent( 3 );
-			WriteClearScalarBuffer();
-			WriteTryPopContextCollection( null );
-			PopIndent();
-#>
-			return new MessagePackObject( value );
-		}
 		case ScalarKind.UInt8:
-		{
-			var value = this._scalarBuffer[ 0 ];
-<#+
-			PushIndent( 3 );
-			WriteClearScalarBuffer();
-			WriteTryPopContextCollection( null );
-			PopIndent();
-#>
-			return new MessagePackObject( value );
-		}
 <#+
 			foreach( var integerBits in new [] { 16, 32, 64 } )
 			{
 #>
 		case ScalarKind.Int<#= integerBits.ToString( CultureInfo.InvariantCulture ) #>:
-		{
-<#+
-				PushIndent( 3 );
-				WriteSwapScalarBufferIfLittleEndian( integerBits / 8 );
-				PopIndent();
-#>
-			var value = BitConverter.ToInt<#= integerBits.ToString( CultureInfo.InvariantCulture ) #>( this._scalarBuffer, 0 );
-<#+
-				PushIndent( 3 );
-				WriteClearScalarBuffer();
-				WriteTryPopContextCollection( null );
-				PopIndent();
-#>
-			return new MessagePackObject( value );
-		}
 		case ScalarKind.UInt<#= integerBits.ToString( CultureInfo.InvariantCulture ) #>:
-		{
-<#+
-				PushIndent( 3 );
-				WriteSwapScalarBufferIfLittleEndian( integerBits / 8 );
-				PopIndent();
-#>
-			var value = BitConverter.ToUInt<#= integerBits.ToString( CultureInfo.InvariantCulture ) #>( this._scalarBuffer, 0 );
-<#+
-				PushIndent( 3 );
-				WriteClearScalarBuffer();
-				WriteTryPopContextCollection( null );
-				PopIndent();
-#>
-			return new MessagePackObject( value );
-		}
 <#+
 			}
 #>
-		default:
 		{
-			throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "Unknown scalar '{0}'.", this._scalarKind ) );
+<#+
+			PushIndent( 3 );
+			WriteClearScalarBuffer();
+			WriteReturnLengthIfRoot( WriteReturnLength );
+			WriteTryPopContextCollection( () => WriteReturnLengthIfRoot( WriteReturnLength ) );
+			PopIndent();
+#>
+			break;
 		}
 	} // switch <#= kindExpression #> 
 <#+
@@ -307,16 +234,12 @@ else
 
 private void WriteHandleCollectionLength( CollectionKind kind, int bits )
 {
-WriteSwapScalarBufferIfLittleEndian( bits / 8 );
+	WriteSwapScalarBufferIfLittleEndian( bits / 8 );
 #>
 var length = BitConverter.ToUInt<#= bits.ToString( CultureInfo.InvariantCulture ) #>( this._scalarBuffer, 0 );
-<#+
-WriteClearScalarBuffer();
-WriteTryPopContextCollection( null );
-#>
 this._currentCollectionState.SetItemsCount( length );
-return new MessagePackObject( length );
 <#+
+	WriteReturnLengthIfEmpty( "length", () => WritePopContextCollection( WriteReturnLength ) );
 }
 
 private void WriteClearScalarBuffer()
@@ -359,13 +282,9 @@ private void OnStartUnpackingBlob( string lengthExpression )
 #>
 
 #region StartBlobUnpacking
+this._remainingBlob = <#= lengthExpression #>;
 <#+
-	WriteClearScalarBuffer();
-#>
-this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
-var blob = new byte[ <#= lengthExpression #> ];
-<#+
-	WriteUnpackBlobCore( "0", lengthExpression );
+	this.WriteUnpackBlobCore( lengthExpression );
 #>
 #endregion StartBlobUnpacking
 
@@ -377,26 +296,33 @@ private void OnContinueUnpackingBlob()
 #>
 
 #region ContinueBlobUnpacking
-var blob = this._blobBuffer;
 <#+
 	WriteClearEmptyCollectionState( null );
-	WriteUnpackBlobCore( "this._blobBufferPosition", "this._blobBuffer.Length - this._blobBufferPosition" );
+	this.WriteUnpackBlobCore( "this._remainingBlob" );
 #>
 #endregion ContinueBlobUnpacking
 
 <#+
 }
 
-private void WriteUnpackBlobCore( string offsetExpression, string lengthExpression )
+private void WriteUnpackBlobCore( string lengthExpression )
 {
 #>
-var blobReadBytes = source.Read( blob, <#= offsetExpression #>, <#= lengthExpression #> );
+long blobReadBytes = 0;
+int recentRead;
+int reading;
+do
+{
+	reading  = _dummyBuffer.Length < <#= lengthExpression #> ? _dummyBuffer.Length : unchecked( ( int )<#= lengthExpression #> );
+	recentRead = source.Read( _dummyBuffer, 0, reading );
+	blobReadBytes += recentRead;
+} while ( recentRead == reading && blobReadBytes < <#= lengthExpression #>);
 
-if( blobReadBytes < <#= lengthExpression #> )
+this._readByteLength += blobReadBytes;
+if( blobReadBytes < this._remainingBlob )
 {
 	// Must wait extra bytes, book keep states.
-	this._blobBuffer = blob;
-	this._blobBufferPosition += blobReadBytes;
+	this._remainingBlob -= blobReadBytes;
 
 	return null;
 }
@@ -404,110 +330,108 @@ else
 {
 	// Whole blob bytes are read.
 	// Reset buffer.
-	this._blobBuffer = null;
-	this._blobBufferPosition = 0;
-
+	this._remainingBlob = -1;
 <#+
 	PushIndent( 1 );
 	WriteTryPopContextCollection( null );
+	WriteReturnLengthIfRoot( WriteReturnLength );
 	PopIndent();
 #>
-	return new MessagePackObject( blob );
 }
-<#+
-}
-
-private void OnUnpackedEmptyCollectionHeader( CollectionKind type )
-{
-#>
-this._collectionHeaderKind = CollectionHeaderKind.<#= type #>;
-<#+
-	WriteTryPopContextCollection( null );
-#>
-this._collectionItemsCount = 0;
-return _positiveIntegers[ 0 ];
-<#+
-}
-
-private void OnUnpackedPositiveTinyInteger( string value )
-{
-#>
-this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
-<#+
-	WriteTryPopContextCollection( null );
-#>
-return _positiveIntegers[ <#= value #> ];
-<#+
-}
-
-private void OnUnpackedNegativeTinyInteger( string value )
-{
-#>
-this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
-<#+
-	WriteTryPopContextCollection( null );
-#>
-return _negativeIntegers[ <#= value #> - 0xE0 ];
-<#+
-}
-
-private void OnUnpackedEmptyRawHeader()
-{
-#>
-this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
-<#+
-	WriteTryPopContextCollection( null );
-#>
-return _emptyRaw;
-<#+
-}
-
-private void OnUnpackedConstantValue( ConstantValue value )
-{
-#>
-this._collectionHeaderKind = CollectionHeaderKind.NotCollection;
-<#+
-	WriteTryPopContextCollection( null );
-
-	switch( value )
-	{
-		case ConstantValue.Nil:
-		{
-#>
-return MessagePackObject.Nil;
-<#+
-			break;
-		}
-		case ConstantValue.True:
-		{
-#>
-return _true;
-<#+
-			break;
-		}
-		case ConstantValue.False:
-		{
-#>
-return _false;
-<#+
-			break;
-		}
-	}
-}
-
-private void OnUnpackedTinyCollectionLength( string lengthExpression, CollectionKind kind )
-{
-#>
-this._collectionHeaderKind = CollectionHeaderKind.<#= kind #>;
-<#+
-	WritePushFixedContextCollection( kind, lengthExpression );
-#>
-return _positiveIntegers[ <#= lengthExpression #> ];
 <#+
 }
 
 private void OnReadByteFromStream( string valueExpression )
 {
-	// nop
+#>
+this._readByteLength++;
+<#+
+}
+
+private void OnUnpackedPositiveTinyInteger( string valueExpression )
+{
+	OnTiny();
+}
+
+private void OnUnpackedNegativeTinyInteger( string valueExpression )
+{
+	OnTiny();
+}
+
+private void OnUnpackedEmptyCollectionHeader( CollectionKind kind )
+{
+	OnTiny();
+}
+
+private void OnUnpackedEmptyRawHeader()
+{
+	OnTiny();
+}
+
+private void OnUnpackedConstantValue( ConstantValue kind )
+{
+	OnTiny();
+}
+
+private void OnUnpackedTinyCollectionLength( string lengthExpression, CollectionKind kind )
+{
+	WritePushFixedContextCollection( kind, lengthExpression );
+}
+
+private void OnTiny()
+{
+	WriteTryPopContextCollection( null );
+	WriteReturnLengthIfRoot( WriteReturnLength );
+#>
+continue;
+<#+
+}
+
+private void OnCollectionItemsFilled()
+{
+	WriteReturnLengthIfRoot( WriteReturnLength );
+}
+
+private void WriteReturnLengthIfEmpty( string lengthExpression, Action returnStatementWriter )
+{
+#>
+if( <#= lengthExpression #> == 0 )
+{
+	if( this._collectionStates.Count == 1 )
+	{
+		// Top of stack must be empty which is pushed just now, so we can return tiny length safely.
+<#+
+	PushIndent( 2 );
+	returnStatementWriter();
+	PopIndent();
+#>
+	}
+}
+<#+
+}
+
+private void WriteReturnLengthIfRoot( Action returnStatementWriter )
+{
+#>
+if( this._currentCollectionState == null )
+{
+<#+
+	PushIndent( 1 );
+	returnStatementWriter();
+	PopIndent();
+#>
+}
+<#+
+}
+
+private void WriteReturnLength()
+{
+#>
+#region Returnlength
+var readLength = this._readByteLength;
+this._readByteLength = 0;
+return new MessagePackObject( readLength );
+#endregion ReturnLength
+<#+
 }
 #>

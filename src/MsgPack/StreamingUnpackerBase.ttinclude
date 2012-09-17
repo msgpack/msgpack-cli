@@ -1,0 +1,384 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+public void WriteUnpacker()
+{
+#>
+	// This file generated from <#= TypeName #>.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit <#= TypeName #>..tt and StreamingUnapkcerBase.ttinclude instead.
+
+
+	internal sealed partial class <#= TypeName #>
+	{
+		#region -- Collection States --
+		
+		private CollectionUnpackingState _currentCollectionState;
+		private readonly Stack<CollectionUnpackingState> _collectionStates = new Stack<CollectionUnpackingState>( 4 );
+
+		private sealed class CollectionUnpackingState
+		{
+			private uint _itemsCount;
+
+			public uint ItemsCount
+			{
+				get { return this._itemsCount; }
+			}
+
+			public void SetItemsCount( uint value )
+			{
+				this._itemsCount = this._isMap ? value * 2 : value;
+			}
+
+			public uint UnpackingItemsCount
+			{
+				get { return ( this._isMap ? this._itemsCount / 2 : this._itemsCount ); }
+			}
+
+			private uint _unpacked;
+
+			public bool IncrementUnpacked()
+			{
+				return ( ++this._unpacked ) == this.ItemsCount;
+			}
+
+			private readonly bool _isMap;
+
+			private CollectionUnpackingState( int itemsCount, bool isMap )
+			{
+				this._isMap = isMap;
+				this.SetItemsCount( unchecked( ( uint )itemsCount ) );
+			}
+
+			public static CollectionUnpackingState Array()
+			{
+				return new CollectionUnpackingState( -1, false );
+			}
+
+			public static CollectionUnpackingState FixedArray( int count )
+			{
+				return new CollectionUnpackingState( count, false );
+			}
+
+			public static CollectionUnpackingState Map()
+			{
+				return new CollectionUnpackingState( -1, true );
+			}
+
+			public static CollectionUnpackingState FixedMap( int count )
+			{
+				return new CollectionUnpackingState( count, true );
+			}
+		}
+
+		#endregion -- Collection States --
+
+		public override MessagePackObject? Unpack( Stream source)
+		{
+<#+
+	PushIndent( 3 );
+	OnUnpacking();
+	PopIndent();
+#>
+			// Continue 
+			if( <#= IsInScalarUnpackingExpression #> )
+			{
+<#+
+	PushIndent( 4 );
+	OnContinueUnpackingScalar();
+	PopIndent();
+#>
+			}
+			else if(  <#= IsInBlobUnpackingExpression #> )
+			{
+<#+
+	PushIndent( 4 );
+	OnContinueUnpackingBlob();
+	PopIndent();
+#>
+			}
+
+			// Header or scalar
+<#+
+	PushIndent( 3 );
+	OnReadNextByte( "source", "b" );
+	PopIndent();
+#>
+			{
+<#+
+	PushIndent( 4 );
+	OnReadByteFromStream( "b" );
+	PopIndent();
+#>
+
+				if ( b < 0x80 )
+				{
+<#+
+	PushIndent( 5 );
+	OnUnpackedPositiveTinyInteger( "b" );
+	PopIndent();
+#>
+				}
+
+				if ( b >= 0xE0 )
+				{
+<#+
+	PushIndent( 5 );
+	OnUnpackedNegativeTinyInteger( "b" );
+	PopIndent();
+#>
+				}
+
+				switch ( b )
+				{
+					case 0x80:
+					{
+<#+
+	PushIndent( 6 );
+	OnUnpackedEmptyCollectionHeader( CollectionKind.Map );
+	PopIndent();
+#>
+					}
+					case 0x90:
+					{
+<#+
+	PushIndent( 6 );
+	OnUnpackedEmptyCollectionHeader( CollectionKind.Array );
+	PopIndent();
+#>
+					}
+					case 0xA0:
+					{
+<#+
+	PushIndent( 6 );
+	OnUnpackedEmptyRawHeader();
+	PopIndent();
+#>
+					}
+					case MessagePackCode.TrueValue:
+					{
+<#+
+	PushIndent( 6 );
+	OnUnpackedConstantValue( ConstantValue.True );
+	PopIndent();
+#>
+					}
+					case MessagePackCode.FalseValue:
+					{
+<#+
+	PushIndent( 6 );
+	OnUnpackedConstantValue( ConstantValue.False );
+	PopIndent();
+#>
+					}
+					case MessagePackCode.NilValue:
+					{
+<#+
+	PushIndent( 6 );
+	OnUnpackedConstantValue( ConstantValue.Nil );
+	PopIndent();
+#>
+					}
+				}
+
+				if ( b < 0x90 )
+				{
+					// map
+<#+
+	PushIndent( 5 );
+	OnUnpackedTinyCollectionLength( "( b & 0xF )", CollectionKind.Map );
+	PopIndent();
+#>
+				}
+				else if ( b < 0xA0 )
+				{
+					// array
+<#+
+	PushIndent( 5 );
+	OnUnpackedTinyCollectionLength( "( b & 0xF )", CollectionKind.Array );
+	PopIndent();
+#>
+				}
+				else if ( b < 0xC0 )
+				{
+					// raw
+<#+
+	PushIndent( 5 );
+	OnStartUnpackingBlob( "b - 0xA0" );
+	PopIndent();
+#>
+				}
+				else
+				{
+					// variable scalars & collections
+					switch( b )
+					{
+						case 0xDC: // array16
+						{
+<#+
+	PushIndent( 7 );
+	OnStartUnpackingScalar( "ScalarKind.ArrayLength16", CollectionKind.Array, 16 );
+	PopIndent();
+#>
+						}
+						case 0xDD: // array32
+						{
+<#+
+	PushIndent( 7 );
+	OnStartUnpackingScalar( "ScalarKind.ArrayLength32", CollectionKind.Array, 32 );
+	PopIndent();
+#>
+						}
+						case 0xDE: // map16
+						{
+<#+
+	PushIndent( 7 );
+	OnStartUnpackingScalar( "ScalarKind.MapLength16", CollectionKind.Map, 16 );
+	PopIndent();
+#>
+						}
+						case 0xDF: // map32
+						{
+<#+
+	PushIndent( 7 );
+	OnStartUnpackingScalar( "ScalarKind.MapLength32", CollectionKind.Map, 32 );
+	PopIndent();
+#>
+						}
+						default:
+						{
+<#+
+	PushIndent( 7 );
+	OnStartUnpackingScalar( "_scalarKinds[ b - 0xC0 ]", CollectionKind.NotCollection, 0 );
+	PopIndent();
+#>
+						}
+					}
+				}
+				
+			} // for 
+
+			// stream ends
+			return null;
+		}
+	}
+}
+<#+
+}
+
+// ---- Utilities ---
+
+public void PushIndent( int level )
+{
+	PushIndent( new String( '\t', level ) );
+}
+
+// ---- Common Macros ----
+
+public void WriteEnsureLengthIsInt32( string variable )
+{
+#>
+
+#region EnsureLengthIsInt32
+if( <#= variable #> > Int32.MaxValue )
+{
+	throw new MessageNotSupportedException( "MessagePack for CLI cannot handle a collection which stores more than Int32.MaxValue items." );
+}
+#endregion EnsureLengthIsInt32
+
+<#+
+}
+
+public void WritePushFixedContextCollection( CollectionKind type, string sizeExpression )
+{
+#>
+
+#region PushFixedContextCollection
+var newCollectionState = CollectionUnpackingState.Fixed<#= type #>( <#= sizeExpression #> );
+this._currentCollectionState = newCollectionState;
+this._collectionStates.Push( newCollectionState );
+#endregion PushFixedContextCollection
+
+<#+
+}
+
+public void WritePushContextCollection( CollectionKind type )
+{
+#>
+
+#region PushContextCollection
+var newCollectionState = CollectionUnpackingState.<#= type #>();
+this._currentCollectionState = newCollectionState;
+this._collectionStates.Push( newCollectionState );
+#endregion PushContextCollection
+
+<#+
+}
+
+public void WriteTryPopContextCollection( Action onCollectionItemsFilled )
+{
+#>
+
+#region TryPopContextCollection
+while( this._currentCollectionState != null && this._currentCollectionState.IncrementUnpacked() )
+{
+<#+
+	PushIndent( 1 );
+	WritePopContextCollection( onCollectionItemsFilled );
+	PopIndent();
+#>
+}
+#endregion TryPopContextCollection
+
+<#+
+}
+
+public void WritePopContextCollection( Action onCollectionItemsFilled )
+{
+#>
+this._collectionStates.Pop();
+this._currentCollectionState = this._collectionStates.Count == 0 ? null : this._collectionStates.Peek();
+<#+
+	if( onCollectionItemsFilled != null )
+	{
+		onCollectionItemsFilled();
+	}
+}
+
+public void WriteClearEmptyCollectionState( Action onCollectionItemsFilled )
+{
+#>
+
+#region ClearEmptyCollectionState
+if( this._currentCollectionState != null )
+{
+	if( this._currentCollectionState.UnpackingItemsCount == 0 )
+	{
+<#+
+	PushIndent( 2 );
+	WritePopContextCollection( onCollectionItemsFilled );
+	PopIndent();
+#>
+	}
+}
+#endregion ClearEmptyCollectionState
+
+<#+
+}
+
+public enum CollectionKind
+{
+	Array,
+	Map,
+	NotCollection
+}
+
+public enum ConstantValue
+{
+	True,
+	False,
+	Nil
+}
+
+#>
