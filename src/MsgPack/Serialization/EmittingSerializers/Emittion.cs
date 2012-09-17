@@ -356,7 +356,87 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( valueType ).GetMethod( "PackTo" ) );
 		}
 
-		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, LocalBuilder isUnpacked, string memberName, NilImplication nilImplication, Action<TracingILGenerator, int> customUnpackerReading )
+		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder result, MemberInfo member, string memberName, NilImplication nilImplication, Action<TracingILGenerator, int> customUnpackerReading )
+		{
+			Contract.Requires( emitter != null );
+			Contract.Requires( il != null );
+			Contract.Requires( unpackerArgumentIndex >= 0 );
+			Contract.Requires( result != null );
+			Contract.Requires( member != null );
+
+			if ( customUnpackerReading != null )
+			{
+				customUnpackerReading( il, unpackerArgumentIndex );
+			}
+
+			var endOfDeserialization = il.DefineLabel( "END_OF_DESERIALIZATION" );
+			if ( memberName != null )
+			{
+				EmitNilImplication( il, unpackerArgumentIndex, memberName, nilImplication, endOfDeserialization );
+			}
+
+			/*
+			 * 
+			 * if( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+			 * {
+			 *		valueN = GET_SERIALIZER.UnpackFrom( unpacker );
+			 * }
+			 * else
+			 * {
+			 *		using( var subtreeUnpacker = unpacker.ReadSubtree )
+			 *		{
+			 *			valueN = GET_SERIALIZER.UnpackFrom( unpacker );
+			 *		}
+			 * }
+			 * 
+			 * isValueNUnpacked = true;
+			 * END_OF_DESERIALIZATION:
+			 */
+
+			var then = il.DefineLabel( "THEN" );
+			var endIf = il.DefineLabel( "END_IF" );
+			var value = il.DeclareLocal( member.GetMemberValueType(), "value" );
+			var serializerGetter = emitter.RegisterSerializer( value.LocalType );
+
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
+			il.EmitBrtrue_S( then );
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
+			il.EmitBrtrue_S( then );
+			// else
+			serializerGetter( il, 0 );
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( value.LocalType ).GetMethod( "UnpackFrom" ) );
+			il.EmitAnyStloc( value );
+			il.EmitBr_S( endIf );
+			// then
+			var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
+			il.MarkLabel( then );
+			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
+			serializerGetter( il, 0 );
+			il.EmitAnyLdloc( subtreeUnpacker );
+			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( value.LocalType ).GetMethod( "UnpackFrom" ) );
+			il.EmitAnyStloc( value );
+			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
+			il.MarkLabel( endIf );
+
+			if ( result.LocalType.IsValueType )
+			{
+				il.EmitAnyLdloca( result );
+			}
+			else
+			{
+				il.EmitAnyLdloc( result );
+			}
+
+			il.EmitAnyLdloc( value );
+			Emittion.EmitStoreValue( il, member );
+
+			il.MarkLabel( endOfDeserialization );
+		}
+
+		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, NilImplication nilImplication, Action<TracingILGenerator, int> customUnpackerReading )
 		{
 			Contract.Requires( emitter != null );
 			Contract.Requires( il != null );
@@ -369,10 +449,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 
 			var endOfDeserialization = il.DefineLabel( "END_OF_DESERIALIZATION" );
-			if ( memberName != null )
-			{
-				EmitNilImplication( il, unpackerArgumentIndex, memberName, nilImplication, endOfDeserialization );
-			}
 
 			/*
 			 * 
@@ -418,12 +494,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitAnyStloc( value );
 			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
 			il.MarkLabel( endIf );
-
-			if ( isUnpacked != null )
-			{
-				il.EmitLdc_I4_1();
-				il.EmitAnyStloc( isUnpacked );
-			}
 
 			il.MarkLabel( endOfDeserialization );
 		}
@@ -561,7 +631,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					}
 					else
 					{
-						// Because target member is readonly collection, so the member will not be null if packed value was nil.
+						// Because result member is readonly collection, so the member will not be null if packed value was nil.
 						il.EmitAnyCall( SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNullMethod );
 					}
 					il.EmitThrow();
@@ -579,7 +649,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			 * 
 			 *	using( var subtreeUnpacker = unpacker.ReadSubtree() )
 			 *	{
-			 *		GET_SERIALIZER.UnpackTo( unpacker, target ) )
+			 *		GET_SERIALIZER.UnpackTo( unpacker, result ) )
 			 *	}
 			 *	
 			 *	END_OF_DESERIALIZATION:

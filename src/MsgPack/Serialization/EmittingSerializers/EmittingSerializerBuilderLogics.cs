@@ -788,7 +788,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				for ( ; i < itemTypes.Count; i++ )
 				{
 					itemLocals[ i ] = il.DeclareLocal( itemTypes[ i ], "item" + i );
-					Emittion.EmitDeserializeValue( emitter, il, 1, itemLocals[ i ], null, null, NilImplication.MemberDefault, unpackerReading );
+					Emittion.EmitDeserializeValue( emitter, il, 1, itemLocals[ i ], NilImplication.MemberDefault, unpackerReading );
 				}
 
 				foreach ( var item in itemLocals )
