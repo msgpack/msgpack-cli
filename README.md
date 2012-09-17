@@ -7,7 +7,12 @@ This library can be used from ALL CLS compliant languages such as C#, F#, Visual
 
 ## Documentation
 
-See [wiki](https://github.com/yfakariya/msgpack/wiki)
+See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
+
+## Installation
+
+* You can get binary drops from NuGet (currently, pre-release only).
+  * There are NO distribution packages other than NuGet, so you have to build your own drops for Mono.
 
 ## How to build
 
