@@ -263,12 +263,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SkippingStreamingUnpacker.tt</DependentUpon>
     </Compile>
-    <Compile Include="StreamingUnpacker2.cs">
+    <Compile Include="UnpackingStreamingUnpacker.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StreamingUnpacker2.tt</DependentUpon>
+      <DependentUpon>UnpackingStreamingUnpacker.tt</DependentUpon>
     </Compile>
-    <Compile Include="StreamingUnpacker2.States.cs" />
+    <Compile Include="UnpackingStreamingUnpacker.States.cs" />
     <Compile Include="StreamPacker.cs" />
     <Compile Include="StreamUnpacker.cs" />
     <Compile Include="SubtreeUnpacker.cs" />
@@ -299,7 +299,6 @@
     <Compile Include="UnpackingResult.cs" />
     <Compile Include="Unpacker.cs" />
     <Compile Include="UnpackException.cs" />
-    <Compile Include="StreamingUnpacker.cs" />
     <Compile Include="SkippingStreamingUnpacker.States.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -326,9 +325,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SkippingStreamingUnpacker.cs</LastGenOutput>
     </None>
-    <None Include="StreamingUnpacker2.tt">
+    <None Include="UnpackingStreamingUnpacker.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StreamingUnpacker2.cs</LastGenOutput>
+      <LastGenOutput>UnpackingStreamingUnpacker.cs</LastGenOutput>
     </None>
     <None Include="StreamingUnpackerBase.ttinclude">
       <LastGenOutput>StreamingUnpackerBase.cs</LastGenOutput>

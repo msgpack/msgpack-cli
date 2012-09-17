@@ -434,15 +434,6 @@
     <Compile Include="..\MsgPack\SkippingStreamingUnpacker.States.cs">
       <Link>SkippingStreamingUnpacker.States.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\StreamingUnpacker.cs">
-      <Link>StreamingUnpacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\StreamingUnpacker2.cs">
-      <Link>StreamingUnpacker2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\StreamingUnpacker2.States.cs">
-      <Link>StreamingUnpacker2.States.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\StreamPacker.cs">
       <Link>StreamPacker.cs</Link>
     </Compile>
@@ -484,6 +475,12 @@
     </Compile>
     <Compile Include="..\MsgPack\UnpackingStream.cs">
       <Link>UnpackingStream.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackingStreamingUnpacker.cs">
+      <Link>UnpackingStreamingUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackingStreamingUnpacker.States.cs">
+      <Link>UnpackingStreamingUnpacker.States.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
