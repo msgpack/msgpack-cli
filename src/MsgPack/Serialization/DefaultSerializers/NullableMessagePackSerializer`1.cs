@@ -197,14 +197,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 			var il = emitter.GetUnpackFromMethodILGenerator();
 			try
 			{
-				// FIXME: Comment
 				/*
 				 * if( unpacker.Data.Value.IsNil )
 				 * {
 				 *		return default( T );
 				 * }
 				 * 
-				 * return context.UnmarshalFrom<T>( packer, value );
+				 * return context.Get<T>().Unpack( unpacker );
 				 */
 				var mayBeNullData = il.DeclareLocal( typeof( MessagePackObject? ), "mayBeNullData" );
 				var data = il.DeclareLocal( typeof( MessagePackObject ), "data" );
