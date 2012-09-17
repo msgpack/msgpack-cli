@@ -18,12 +18,18 @@ Release 0.2 - 2012/6/19
 
 Release 0.3 - T.B.D.
 
+  BREAKING CHANGES
+  * Unpacker.Feed is removed. Use Unpacker.Create(Stream) and feed data to the passing Stream instead of Unpacker.
+  * IUnpackable.UnpackFromMessage now takes Unpacker instead of MessagePackObject to be symmetric as IPackable and improve custom unpacking performance.
+
   FEATURES
   * Improve protobuf-net compatibility.
   * Add non-generic overload for MessagePackSerializer.Create().
   * Support WinRT (experimental, .NET Fx core only, that is, WinMD is not supported yet).
   * Add SerialializerGenerator which provides capability to generate pre-built serializer assembly.
+  * Unpacker.ReadItem/UnpackSubtree makes easy to unpack collection as MessagePackObject.
 
   BUG FIXES
   * Fix 'sparse' declaration (i.e. field ids are not continuous on the objects' MessagePackDataMember attribute) causes deserialization error.
   * Fix synchronization related error.
+  * Serializers respects IPackable/IUnpackable.
