@@ -45,6 +45,31 @@ namespace MsgPack.Serialization
 	/// <seealso cref="Unpacking"/>
 	public abstract class MessagePackSerializer<T> : IMessagePackSerializer
 	{
+		private static readonly bool _isNullable = JudgeNullable();
+
+		private static bool JudgeNullable()
+		{
+			if ( !typeof( T ).GetIsValueType() )
+			{
+				// reference type.
+				return true;
+			}
+
+			if ( typeof( T ) == typeof( MessagePackObject ) )
+			{
+				// can be MPO.Nil.
+				return true;
+			}
+
+			if ( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
+			{
+				// Nullable<T>
+				return true;
+			}
+
+			return false;
+		}
+
 		/// <summary>
 		///		Serialize specified object to the <see cref="Stream"/>.
 		/// </summary>
@@ -144,18 +169,17 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
 			}
 
-			if ( typeof( T ) != typeof( MessagePackObject ) && unpacker.Data.Value.IsNil )
+			if ( unpacker.Data.GetValueOrDefault().IsNil )
 			{
-				if ( typeof( T ).GetIsValueType() )
+				if ( _isNullable )
 				{
-					if ( !( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
-					{
-						throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
-					}
+					// null
+					return default( T );
 				}
-
-				// null
-				return default( T );
+				else
+				{
+					throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
+				}
 			}
 
 			return this.UnpackFromCore( unpacker );
