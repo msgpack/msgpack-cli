@@ -67,7 +67,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._typeBuilder =
 				host.DefineType(
 					typeName,
-					TypeAttributes.Sealed | TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.AutoLayout | TypeAttributes.BeforeFieldInit,
+					TypeAttributes.Sealed | TypeAttributes.Public | TypeAttributes.UnicodeClass | TypeAttributes.AutoLayout | TypeAttributes.BeforeFieldInit,
 					typeof( MessagePackSerializer<> ).MakeGenericType( targetType )
 				);
 
@@ -76,7 +76,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._packMethodBuilder =
 				this._typeBuilder.DefineMethod(
 					"PackToCore",
-					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final,
+					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
 					CallingConventions.HasThis,
 					typeof( void ),
 					new Type[] { typeof( Packer ), targetType }
@@ -85,7 +85,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._unpackFromMethodBuilder =
 				this._typeBuilder.DefineMethod(
 					"UnpackFromCore",
-					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final,
+					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
 					CallingConventions.HasThis,
 					targetType,
 					UnpackFromCoreParameterTypes
