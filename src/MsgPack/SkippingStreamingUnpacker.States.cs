@@ -26,7 +26,7 @@ using System.Text;
 
 namespace MsgPack
 {
-	partial class SkippingStreamingUnpacker : StreamingUnpacker2
+	partial class SkippingStreamingUnpacker : StreamingUnpacker
 	{
 		private static readonly MessagePackObject _one = new MessagePackObject( 1 );
 

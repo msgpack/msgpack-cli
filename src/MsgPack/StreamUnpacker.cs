@@ -52,11 +52,6 @@ namespace MsgPack
 		private bool _mayInTail;
 
 		/// <summary>
-		///		Queue of successors of data source.
-		/// </summary>
-		private readonly Queue<DataSource> _successorSources = new Queue<DataSource>();
-
-		/// <summary>
 		///		Current data source.
 		/// </summary>
 		private DataSource _currentSource;
@@ -123,7 +118,7 @@ namespace MsgPack
 				return this._unpacker.UnpackingItemsCount;
 			}
 		}
-		
+
 		/// <summary>
 		///		Gets the underlying stream to handle direct API.
 		/// </summary>
@@ -171,16 +166,6 @@ namespace MsgPack
 				source.Stream.Dispose();
 				this._currentSource = default( DataSource );
 			}
-
-			foreach ( var successor in this._successorSources.ToArray() )
-			{
-				if ( successor.Stream != null && successor.OwnsStream )
-				{
-					successor.Stream.Dispose();
-				}
-			}
-
-			this._successorSources.Clear();
 
 			base.Dispose( disposing );
 		}
@@ -249,7 +234,7 @@ namespace MsgPack
 			return this.SkipCore();
 		}
 
-		private bool Read( StreamingUnpacker2 unpacker )
+		private bool Read( StreamingUnpacker unpacker )
 		{
 			while ( !this.IsInStreamTail() )
 			{
@@ -287,13 +272,7 @@ namespace MsgPack
 				return false;
 			}
 
-			if ( this._successorSources.Count == 0 )
-			{
-				return true;
-			}
-
-			this._currentSource = this._successorSources.Dequeue();
-			return false;
+			return true;
 		}
 
 		/// <summary>
@@ -319,7 +298,7 @@ namespace MsgPack
 		}
 	}
 
-	internal abstract class StreamingUnpacker2
+	internal abstract class StreamingUnpacker
 	{
 		public abstract MessagePackObject? Unpack( Stream source );
 	}

@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace MsgPack
 {
-	partial class UnpackingStreamingUnpacker : StreamingUnpacker2
+	partial class UnpackingStreamingUnpacker : StreamingUnpacker
 	{
 		private static readonly MessagePackObject[] _positiveIntegers =
 			Enumerable.Range( 0, 0x80 ).Select( i => new MessagePackObject( ( byte )i ) ).ToArray();
