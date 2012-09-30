@@ -132,28 +132,41 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					break;
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Byte ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 1 );
-			if( read == 1 )
-			{
-				var resultValue = BigEndianBinary.ToByte( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -190,28 +203,41 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					break;
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Byte ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 1 );
-			if( read == 1 )
-			{
-				var resultValue = BigEndianBinary.ToByte( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -249,28 +275,41 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					break;
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( SByte ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 1 );
-			if( read == 1 )
-			{
-				var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -315,28 +354,41 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					break;
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( SByte ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 1 );
-			if( read == 1 )
-			{
-				var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -374,30 +426,73 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					break;
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Int16 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 2 );
-			if( read == 2 )
-			{
-				var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -442,30 +537,73 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					break;
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Int16 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 2 );
-			if( read == 2 )
-			{
-				var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -495,30 +633,73 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					break;
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( UInt16 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 2 );
-			if( read == 2 )
-			{
-				var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -555,30 +736,73 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					break;
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( UInt16 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 2 );
-			if( read == 2 )
-			{
-				var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -616,33 +840,121 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
 				{
-					break;
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Int32 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 4 );
-			if( read == 4 )
-			{
-				var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -687,33 +999,121 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
 				{
-					break;
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Int32 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 4 );
-			if( read == 4 )
-			{
-				var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -743,33 +1143,121 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
 				{
-					break;
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( UInt32 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 4 );
-			if( read == 4 )
-			{
-				var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -806,33 +1294,121 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
 				{
-					break;
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( UInt32 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 4 );
-			if( read == 4 )
-			{
-				var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -870,36 +1446,169 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real64:
 				{
-					break;
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Int64 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 8 );
-			if( read == 8 )
-			{
-				var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -944,36 +1653,169 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real64:
 				{
-					break;
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Int64 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 8 );
-			if( read == 8 )
-			{
-				var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -1003,36 +1845,169 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real64:
 				{
-					break;
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( UInt64 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 8 );
-			if( read == 8 )
-			{
-				var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -1069,36 +2044,169 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real64:
 				{
-					break;
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( UInt64 ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 8 );
-			if( read == 8 )
-			{
-				var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -1136,36 +2244,169 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real64:
 				{
-					break;
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Single ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 4 );
-			if( read == 4 )
-			{
-				var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -1210,36 +2451,169 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real64:
 				{
-					break;
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Single ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 4 );
-			if( read == 4 )
-			{
-				var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -1277,36 +2651,169 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real64:
 				{
-					break;
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Double ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 8 );
-			if( read == 8 )
-			{
-				var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 
@@ -1351,36 +2858,169 @@ namespace MsgPack
 			switch( header )
 			{
 				case MessagePackCode.SignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.SignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt8:
+				{
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt16:
+				{
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.UnsignedInt64:
+				{
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real32:
+				{
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+				}
 				case MessagePackCode.Real64:
 				{
-					break;
+					var read = source.Read( buffer, 0, 8 );
+					if( read == 8 )
+					{
+						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
+						this._collectionType = CollectionType.None;
+						this._itemsCount = 0;
+						result = resultValue;
+						return true;
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
 				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( Double ), header, MessagePackCode.ToString( header ) ) );
 				}
-			}
-			
-			var read = source.Read( buffer, 0, 8 );
-			if( read == 8 )
-			{
-				var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				result = resultValue;
-				return true;
-			}
-			else
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 			}
 		}
 

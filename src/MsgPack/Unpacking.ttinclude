@@ -130,46 +130,65 @@ if( header == MessagePackCode.NilValue )
 switch( header )
 {
 <#+
-foreach( var code in 
+foreach( var entry in 
 	Enumerable.Repeat( "SignedInt", 4 ).Zip( ( new []{ 8, 16, 32, 64 } ).Select( i => i.ToString( CultureInfo.InvariantCulture ) ), ( l, r ) => l + r )
 	.Concat(
 		Enumerable.Repeat( "UnsignedInt", 4 ).Zip( ( new []{ 8, 16, 32, 64 } ).Select( i => i.ToString( CultureInfo.InvariantCulture ) ), ( l, r ) => l + r )
 	).Concat(
 		Enumerable.Repeat( "Real", 2 ).Zip( ( new []{ 32, 64 } ).Select( i => i.ToString( CultureInfo.InvariantCulture ) ), ( l, r ) => l + r )
+	).Zip(
+		new []
+		{
+			typeof( sbyte ), typeof( short ), typeof( int ), typeof( long ),
+			typeof( byte ), typeof( ushort ), typeof( uint ), typeof( ulong ),
+			typeof( float ), typeof( double )
+		},
+		( Code, CodeType ) => new { Code, CodeType }
 	)
 )
 {
-	if( CanConvertTo( type, code ) )
+	if( CanConvertTo( type, entry.Code ) )
 	{
 #>
-	case MessagePackCode.<#= code #>:
+	case MessagePackCode.<#= entry.Code #>:
+	{
+		var read = source.Read( buffer, 0, <#= Marshal.SizeOf( entry.CodeType ).ToString( CultureInfo.InvariantCulture ) #> );
+		if( read == <#= Marshal.SizeOf( entry.CodeType ).ToString( CultureInfo.InvariantCulture ) #> )
+		{
 <#+
-	}
-}
+		if( entry.CodeType != type )
+		{
+			// Overflow checking
 #>
-	{
-		break;
-	}
-	default:
-	{
-		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, typeof( <#= type.Name #> ), header, MessagePackCode.ToString( header ) ) );
-	}
-}
+			var resultValue = checked( ( <#= type.Name #> )BigEndianBinary.To<#= entry.CodeType.Name #>( buffer, 0 ) );
+<#+
+		}
+		else
+		{
+#>
+			var resultValue = BigEndianBinary.To<#= entry.CodeType.Name #>( buffer, 0 );
+<#+
+		}
 
-var read = source.Read( buffer, 0, <#= Marshal.SizeOf( type ).ToString( CultureInfo.InvariantCulture  ) #> );
-if( read == <#= Marshal.SizeOf( type ).ToString( CultureInfo.InvariantCulture  ) #> )
-{
-	var resultValue = BigEndianBinary.To<#= type.Name #>( buffer, 0 );
-<#+
-		this.PushIndent( 1 );
+		this.PushIndent( 3 );
 		this.OnReturnScalar( "resultValue" );
 		this.WriteReturn( "resultValue" );
 		this.PopIndent();
 #>
+		}
+		else
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+	}
+<#+
+	}
 }
-else
-{
-	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+#>
+	default:
+	{
+		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, typeof( <#= type.Name #> ), header, MessagePackCode.ToString( header ) ) );
+	}
 }
 <#+
 }
