@@ -1,0 +1,292 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\Core.ttinclude" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+
+namespace MsgPack
+{
+	// This file was generated from Unpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit Unpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	partial class Unpacker
+	{
+<#
+foreach( var type in
+	new []
+	{ 
+		typeof( bool ), 
+		typeof( byte ), typeof( sbyte ),
+		typeof( short ), typeof( ushort ),
+		typeof( int ), typeof( uint ),
+		typeof( long ), typeof( ulong ),
+		typeof( float ), typeof( double ),
+	}
+)
+{
+#>
+		/// <summary>
+		///		Reads next <see cref="<#= type.Name #>" /> value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The <see cref="<#= type.Name #>" /> value read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the <see cref="<#= type.Name #>" /> type.
+		/// </exception>
+<#
+	if( IsCLSCompliant( type ) )
+	{
+#>
+		[CLSCompliant( false )]
+<#
+	}
+#>
+		public virtual bool Read<#= type.Name #>( out <#= type.Name #> result )
+		{
+			if( !this.Read() )
+			{
+				result = default( <#= type.Name #> );
+				return false;
+			}
+
+			result = this.Data.Value.As<#= type.Name #>();
+			return true;
+		}
+
+		/// <summary>
+		///		Reads next nullable <see cref="<#= type.Name #>" /> value from current stream.
+		///	</summary>
+		/// <returns>
+		///		The nullable <see cref="<#= type.Name #>" /> value read from current data source successfully.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the nullable <see cref="<#= type.Name #>" /> type.
+		/// </exception>
+<#
+	if( IsCLSCompliant( type ) )
+	{
+#>
+		[CLSCompliant( false )]
+<#
+	}
+#>
+		public virtual bool ReadNullable<#= type.Name #>( out <#= type.Name #>? result )
+		{
+			if( !this.Read() )
+			{
+				result = null;
+				return false;
+			}
+
+			result = this.Data.Value.IsNil ? default( <#= type.Name #>? ) : this.Data.Value.As<#= type.Name #>();
+			return true;
+		}
+
+<#
+}
+#>
+
+		/// <summary>
+		///		Reads next array length value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The array length read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not an array.
+		/// </exception>
+		public virtual bool ReadArrayLength( out long result )
+		{
+			if( !this.Read())
+			{
+				result = 0;
+				return false;
+			}
+
+			if( !this.IsArrayHeader )
+			{
+				throw new MessageTypeException( "Not in map header." );
+			}
+
+			result = this.Data.Value.AsInt64();
+			return true;
+		}
+
+		/// <summary>
+		///		Reads next map length value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The map length read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a map.
+		/// </exception>
+		public virtual bool ReadMapLength( out long result )
+		{
+			if( !this.Read())
+			{
+				result = 0;
+				return false;
+			}
+
+			if( !this.IsMapHeader )
+			{
+				throw new MessageTypeException( "Not in map header." );
+			}
+
+			result = this.Data.Value.AsInt64();
+			return true;
+		}
+
+		/// <summary>
+		///		Reads next byte array value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The byte array read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a raw.
+		/// </exception>
+		public virtual bool  ReadBinary( out byte[] result )
+		{
+			if( !this.Read() )
+			{
+				result = null;
+				return false;
+			}
+
+			result = this.Data.Value.AsBinary();
+			return true;
+		}
+
+		/// <summary>
+		///		Reads next utf-8 encoded string value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The decoded utf-8 encoded string read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a raw.
+		/// </exception>
+		public virtual bool ReadString( out string result )
+		{
+			if( !this.Read() )
+			{
+				result = null;
+				return false;
+			}
+
+			result = this.Data.Value.AsString();
+			return true;
+		}
+
+		/// <summary>
+		///		Reads next value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The <see cref="MessagePackObject"/> which represents a value read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		public virtual bool ReadObject( out MessagePackObject result )
+		{
+			if( !this.Read() )
+			{
+				result = default( MessagePackObject );
+				return false;
+			}
+
+			result = this.Data.Value;
+			return true;
+		}
+	}
+}
+<#+
+private bool IsCLSCompliant( Type type )
+{
+	switch( Type.GetTypeCode( type ) )
+	{
+		case TypeCode.SByte:
+		case TypeCode.UInt16:
+		case TypeCode.UInt32:
+		case TypeCode.UInt64:
+		{
+			return true;
+		}
+		default:
+		{
+			return true;
+		}
+	}
+}
+#>

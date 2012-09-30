@@ -1,0 +1,613 @@
+﻿<#@ include file="..\Core.ttinclude" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#+
+const string StreamEndMessage = "\"Stream unexpectedly ends.\"";
+const string TypeErrorMessage = "\"Cannot convert '{0}' type value from type '{2}'(0x{1:X}).\"";
+
+/// <summary>
+///		Writes unpack code.
+/// </summary>
+/// <param name="type">Unpacking primitive scalar type.</param>
+private void WriteUnpack( Type type )
+{
+	var nullableUnderlying  = Nullable.GetUnderlyingType( type );
+	WriteUnpackCore( nullableUnderlying ?? type, nullableUnderlying != null );
+}
+
+private void WriteUnpackCore( Type type, bool isNullable )
+{
+#>
+Contract.Assert( source != null );
+Contract.Assert( buffer != null );
+
+var header = source.ReadByte();
+if( header < 0 )
+{
+<#+
+	this.OnFailedToReadHeader( type.Name );
+#>
+}
+
+<#+
+	if( type == typeof( bool ) )
+	{
+#>
+		switch( header )
+		{
+			case 0xC3:
+			{
+<#+
+		this.PushIndent( 4 );
+		this.OnReturnScalar( "true" );
+		this.WriteReturn( "true" );
+		this.PopIndent();
+#>
+			}
+			case 0xC2:
+			{
+<#+
+		this.PushIndent( 4 );
+		this.OnReturnScalar( "false" );
+		this.WriteReturn( "false" );
+		this.PopIndent();
+#>
+			}
+			default:
+			{
+				throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, typeof( bool ), header, MessagePackCode.ToString( header ) ) );
+			}
+		}
+<#+
+		return;
+	}
+	else if( type == typeof( sbyte ) )
+	{
+#>
+if( header < 0x80 )
+{
+	var resultValue = unchecked( ( sbyte )header );
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar( "resultValue" );
+		this.WriteReturn( "resultValue" );
+		this.PopIndent();
+#>
+}
+<#+
+	}
+	else
+	{
+#>
+if( header < 0x80 )
+{
+	var resultValue = unchecked( ( byte )header );
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar( "resultValue" );
+		this.WriteReturn( "resultValue" );
+		this.PopIndent();
+#>
+}
+<#+
+	}
+#>
+
+<#+
+	if( type != typeof( byte ) && type.Name[ 0 ] != 'U' )
+	{
+#>
+if( header >= 0xE0 )
+{
+	var resultValue = unchecked( ( sbyte )header );
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar( "resultValue" );
+		this.WriteReturn( "resultValue" );
+		this.PopIndent();
+#>
+}
+<#+
+	}
+
+	if( isNullable )
+	{
+#>
+if( header == MessagePackCode.NilValue )
+{
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar( "null" );
+		this.WriteReturn( "null" );
+		this.PopIndent();
+#>
+}
+<#+
+	} 
+#>
+
+switch( header )
+{
+<#+
+foreach( var code in 
+	Enumerable.Repeat( "SignedInt", 4 ).Zip( ( new []{ 8, 16, 32, 64 } ).Select( i => i.ToString( CultureInfo.InvariantCulture ) ), ( l, r ) => l + r )
+	.Concat(
+		Enumerable.Repeat( "UnsignedInt", 4 ).Zip( ( new []{ 8, 16, 32, 64 } ).Select( i => i.ToString( CultureInfo.InvariantCulture ) ), ( l, r ) => l + r )
+	).Concat(
+		Enumerable.Repeat( "Real", 2 ).Zip( ( new []{ 32, 64 } ).Select( i => i.ToString( CultureInfo.InvariantCulture ) ), ( l, r ) => l + r )
+	)
+)
+{
+	if( CanConvertTo( type, code ) )
+	{
+#>
+	case MessagePackCode.<#= code #>:
+<#+
+	}
+}
+#>
+	{
+		break;
+	}
+	default:
+	{
+		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, typeof( <#= type.Name #> ), header, MessagePackCode.ToString( header ) ) );
+	}
+}
+
+var read = source.Read( buffer, 0, <#= Marshal.SizeOf( type ).ToString( CultureInfo.InvariantCulture  ) #> );
+if( read == <#= Marshal.SizeOf( type ).ToString( CultureInfo.InvariantCulture  ) #> )
+{
+	var resultValue = BigEndianBinary.To<#= type.Name #>( buffer, 0 );
+<#+
+		this.PushIndent( 1 );
+		this.OnReturnScalar( "resultValue" );
+		this.WriteReturn( "resultValue" );
+		this.PopIndent();
+#>
+}
+else
+{
+	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+}
+<#+
+}
+
+/// <summary>
+///		Writes unpack raw to byte array logic.
+/// </summary>
+/// <param name="allocationWriter">A delegate which takes allocation size expression and offset variable name, and returns byte array allocation expression.</param>
+private void WriteUnpackByteArray( Func<string, string, string> allocationWriter  )
+{
+	WriteUnpackRawLength( "System.Byte[]" );
+#>
+int contentBufferOffset = 0;
+var resultValue = <#= allocationWriter( "size", "contentBufferOffset" ) #>;
+<#+
+	WriteUnpackRawContent( "resultValue", "contentBufferOffset", "size" );
+}
+
+/// <summary>
+///		Writes unpack code.
+/// </summary>
+private void WriteUnpackString()
+{
+#>
+Contract.Assert( encoding != null );
+<#+
+	WriteUnpackRawLength( typeof( String ).FullName );
+#>
+var decoder = encoding.GetDecoder();
+var bytes = new byte[ 64 * 1024 ];
+var chars = new char[ 16 * 1024 ];
+var stringBuffer = new StringBuilder();
+int bytesRead;
+do
+{
+    bytesRead = source.Read( bytes, 0, 64 * 1024 );
+
+    bool isCompleted = false;
+    int bytesOffset = 0;
+
+    while( !isCompleted )
+    {
+		int bytesUsed;
+		int charsUsed;
+        bool flush = ( bytesRead == 0 );
+        decoder.Convert(
+			bytes, 
+			bytesOffset,
+			bytesRead - bytesOffset,
+			chars,
+			0,
+			16 * 1024,
+			( bytesRead == 0 ), // flush when last read.
+            out bytesUsed,
+			out charsUsed,
+			out isCompleted
+		);
+	
+		stringBuffer.Append( chars, 0, charsUsed );
+        bytesOffset += bytesUsed;
+    }
+} while( bytesRead > 0 );
+
+var resultValue = stringBuffer.ToString();
+<#+
+}
+
+private void WriteUnpackRawLength( string typeName )
+{
+#>
+Contract.Assert( source != null );
+Contract.Assert( buffer != null );
+
+var header = source.ReadByte();
+if( header < 0 )
+{
+	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+}
+
+int size;
+switch( header )
+{
+	case MessagePackCode.Raw16: 
+	{
+		if( source.Read( buffer, 0, 2 ) < 2 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+
+		size = BigEndianBinary.ToUInt16( buffer, 0 );
+		break;
+	}
+	case MessagePackCode.Raw32:
+	{
+		if( source.Read( buffer, 0, 4 ) < 4 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+
+		var unsingedSize = BigEndianBinary.ToUInt32( buffer, 0 );
+		if( unsingedSize > Int32.MaxValue )
+		{
+<#+
+	this.PushIndent( 3 );
+	this.WriteTooLargeException();
+	this.PopIndent();
+#>
+		}
+
+		size = unchecked( ( int )unsingedSize );
+		break;
+	}
+	default:
+	{
+		if( MessagePackCode.MinimumFixedRaw <= header && header <= MessagePackCode.MaximumFixedRaw )
+		{
+			size = ( header & 0x1F );
+			break;
+		}
+
+		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, "<#= typeName #>", header, MessagePackCode.ToString( header ) ) );
+	}
+}// switch
+<#+
+}
+
+private void WriteUnpackRawContent( string bufferVariable, string bufferOffsetVariable, string lengthVariable )
+{
+#>
+#region UnpackRawContent
+
+var bytesRead = source.Read( <#= bufferVariable #>, <#= bufferOffsetVariable #>, <#= lengthVariable #> );
+if( bytesRead < <#= lengthVariable #> )
+{
+	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+}
+
+#endregion UnpackRawContent
+<#+
+}
+
+/// <summary>
+///		Writes MessagePackObject unpacking code.
+/// </summary>
+private void WriteUnpackObject()
+{
+#>
+Contract.Assert( source != null );
+Contract.Assert( buffer != null );
+
+var header = source.ReadByte();
+if( header < 0 )
+{
+<#+
+	this.PushIndent( 1 );
+	this.OnFailedToReadHeader( "MessagePackObject" );
+	this.PopIndent();
+#>
+}
+
+switch( header )
+{
+	case MessagePackCode.NilValue:
+	{
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "MessagePackObject.Nil" );
+	this.WriteReturn( "MessagePackObject.Nil" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.TrueValue:
+	{
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "Unpacking.TrueValue" );
+	this.WriteReturn( "Unpacking.TrueValue" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.FalseValue:
+	{
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "Unpacking.FalseValue" );
+	this.WriteReturn( "Unpacking.FalseValue" );
+	this.PopIndent();
+#>
+	}
+}
+
+if( header < 0x80 )
+{
+<#+
+	this.PushIndent( 1 );
+	this.OnReturnScalarObject( "Unpacking.PositiveIntegers[ header ]" );
+	this.WriteReturn( "Unpacking.PositiveIntegers[ header ]" );
+	this.PopIndent();
+#>
+}
+else if( header >= 0xE0 )
+{
+<#+
+	this.PushIndent( 1 );
+	this.OnReturnScalarObject( "Unpacking.NegativeIntegers[ header - 0xE0 ]" );
+	this.WriteReturn( "Unpacking.NegativeIntegers[ header - 0xE0 ]" );
+	this.PopIndent();
+#>
+}
+
+switch( header & 0xF0 )
+{
+	case 0x80:
+	{
+		var size = header & 0xF;
+<#+
+	this.PushIndent( 2 );
+	this.OnIsMap( "size" );
+	this.WriteReturn( "Unpacking.PositiveIntegers[ size ]" );
+	this.PopIndent();
+#>
+	}
+	case 0x90:
+	{
+		var size = header & 0xF;
+<#+
+	this.PushIndent( 2 );
+	this.OnIsArray( "size" );
+	this.WriteReturn( "Unpacking.PositiveIntegers[ size ]" );
+	this.PopIndent();
+#>
+	}
+	case 0xA0:
+	case 0xB0:
+	{
+		var size = header & 0x1F;
+		var resultValue = new byte[ size ];
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackRawContent( "resultValue", "0", "size" );
+	this.PopIndent();
+#>
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue" ) #>;
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "resultMpoValue" );
+	this.WriteReturn( "resultMpoValue" );
+	this.PopIndent();
+#>
+	}
+}
+
+switch( header )
+{
+<#+
+foreach( var entry in 
+	Enumerable.Repeat( "SignedInt", 4 ).Zip( ( new []{ 8, 16, 32, 64 } ).Select( i => i.ToString( CultureInfo.InvariantCulture ) ), ( l, r ) => l + r )
+	.Concat(
+		Enumerable.Repeat( "UnsignedInt", 4 ).Zip( ( new []{ 8, 16, 32, 64 } ).Select( i => i.ToString( CultureInfo.InvariantCulture ) ), ( l, r ) => l + r )
+	).Concat(
+		Enumerable.Repeat( "Real", 2 ).Zip( ( new []{ 32, 64 } ).Select( i => i.ToString( CultureInfo.InvariantCulture ) ), ( l, r ) => l + r )
+	).Zip(
+		new [] 
+		{
+			typeof( sbyte ), typeof( short ), typeof( int ), typeof( long ),
+			typeof( byte ), typeof( ushort ), typeof( uint ), typeof( ulong ),
+			typeof( float ), typeof( double )
+		},
+		( Code, Type ) => new { Code, Type }
+	)
+)
+{
+#>
+	case MessagePackCode.<#= entry.Code #>:
+	{
+		<#= entry.Type.Name #> resultValue;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( entry.Type, "resultValue" );
+	this.OnReturnScalarObject( "resultValue" );
+	this.WriteReturn( "resultValue" );
+	this.PopIndent();
+#>
+	}
+<#+
+}
+#>
+	case MessagePackCode.Raw16:
+	{
+		ushort length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( ushort ), "length" );
+	this.PopIndent();
+#>
+		var resultValue = new byte[ length ];
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackRawContent( "resultValue", "0", "length" );
+	this.PopIndent();
+#>
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue" ) #>;
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "resultMpoValue" );
+	this.WriteReturn( "resultMpoValue" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.Raw32:
+	{
+		uint length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( uint ), "length" );
+	this.PopIndent();
+#>
+		if( length > Int32.MaxValue )
+		{
+<#+
+	this.PushIndent( 3 );
+	this.WriteTooLargeException();
+	this.PopIndent();
+#>
+		}
+
+		var size = unchecked( ( int )length );
+		var resultValue = new byte[ size ];
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackRawContent( "resultValue", "0", "size" );
+	this.PopIndent();
+#>
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue" ) #>;
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "resultMpoValue" );
+	this.WriteReturn( "resultMpoValue" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.Array16:
+	{
+		ushort length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( ushort ), "length" );
+	this.OnIsArray( "length" );
+	this.WriteReturn( "length" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.Array32:
+	{
+		uint length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( uint ), "length" );
+	this.OnIsArray( "length" );
+	this.WriteReturn( "( long )length" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.Map16:
+	{
+		ushort length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( ushort ), "length" );
+	this.OnIsMap( "length" );
+	this.WriteReturn( "length" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.Map32:
+	{
+		uint length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( uint ), "length" );
+	this.OnIsMap( "length" );
+	this.WriteReturn( "( long )length" );
+	this.PopIndent();
+#>
+	}
+	default:
+	{
+		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
+	}
+}
+<#+
+}
+
+private string CreateNewMessagePackString( string resultVariable )
+{
+	return "new MessagePackObject( new MessagePackString( " + resultVariable + " ) )";
+}
+
+private void WriteUnpackScalar( Type type, string resultVariable )
+{
+#>
+#region UnpackScalar
+
+var read = source.Read( buffer, 0, <#= Marshal.SizeOf( type ).ToString( CultureInfo.InvariantCulture ) #> );
+if( read == <#= Marshal.SizeOf( type ).ToString( CultureInfo.InvariantCulture ) #> )
+{
+	<#= resultVariable #> = BigEndianBinary.To<#= type.Name #>( buffer, 0 );
+}
+else
+{
+	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+}
+
+#endregion UnpackScalar
+<#+
+}
+
+private void WriteTooLargeException()
+{
+#>
+throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+<#+
+}
+
+private bool CanConvertTo( Type destination, String source )
+{
+	int size = Int32.Parse( System.Text.RegularExpressions.Regex.Match( source, "(?<Size>[0-9]+)$" ).Groups[ "Size" ].Value );
+	switch( Type.GetTypeCode( destination ) )
+	{
+		case TypeCode.Single:
+		case TypeCode.Double:
+		{
+			return true;
+		}
+		default:
+		{
+			return System.Runtime.InteropServices.Marshal.SizeOf( destination ) >= size / 8;
+		}
+	}
+}
+#>

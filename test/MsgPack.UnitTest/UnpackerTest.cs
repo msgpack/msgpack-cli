@@ -424,46 +424,6 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestSkip_UnderReading()
-		{
-			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
-			{
-				Assert.That( target.Read(), Is.False, "Precondition" );
-				Assert.Throws<InvalidOperationException>( () => target.Skip() );
-			}
-		}
-
-		[Test]
-		public void TestGetEnumerator_UnderReading()
-		{
-			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
-			{
-				Assert.That( target.Read(), Is.False, "Precondition" );
-				Assert.Throws<InvalidOperationException>( () =>
-					{
-						foreach ( var item in target )
-						{
-
-						}
-					}
-				);
-			}
-		}
-
-		[Test]
-		public void TestReadSubtree_UnderReading()
-		{
-			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
-			{
-				Assert.That( target.Read(), Is.False, "Precondition" );
-				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
-			}
-		}
-
-		[Test]
 		public void TestRead_UnderEnumerating()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )

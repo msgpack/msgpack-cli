@@ -131,7 +131,6 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
 		///		</para>
 		///	</remarks>
-		
 		public static Byte UnpackByte( Stream source )
 		{
 			ValidateStream( source );
@@ -260,7 +259,6 @@ namespace MsgPack
 		///		</para>
 		///	</remarks>
 		[CLSCompliant( false )]
-		
 		public static SByte UnpackSByte( Stream source )
 		{
 			ValidateStream( source );
@@ -386,7 +384,6 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
 		///		</para>
 		///	</remarks>
-		
 		public static Int16 UnpackInt16( Stream source )
 		{
 			ValidateStream( source );
@@ -515,7 +512,6 @@ namespace MsgPack
 		///		</para>
 		///	</remarks>
 		[CLSCompliant( false )]
-		
 		public static UInt16 UnpackUInt16( Stream source )
 		{
 			ValidateStream( source );
@@ -641,7 +637,6 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
 		///		</para>
 		///	</remarks>
-		
 		public static Int32 UnpackInt32( Stream source )
 		{
 			ValidateStream( source );
@@ -770,7 +765,6 @@ namespace MsgPack
 		///		</para>
 		///	</remarks>
 		[CLSCompliant( false )]
-		
 		public static UInt32 UnpackUInt32( Stream source )
 		{
 			ValidateStream( source );
@@ -896,7 +890,6 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
 		///		</para>
 		///	</remarks>
-		
 		public static Int64 UnpackInt64( Stream source )
 		{
 			ValidateStream( source );
@@ -1025,7 +1018,6 @@ namespace MsgPack
 		///		</para>
 		///	</remarks>
 		[CLSCompliant( false )]
-		
 		public static UInt64 UnpackUInt64( Stream source )
 		{
 			ValidateStream( source );
@@ -1151,7 +1143,6 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
 		///		</para>
 		///	</remarks>
-		
 		public static Single UnpackSingle( Stream source )
 		{
 			ValidateStream( source );
@@ -1277,7 +1268,6 @@ namespace MsgPack
 		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
 		///		</para>
 		///	</remarks>
-		
 		public static Double UnpackDouble( Stream source )
 		{
 			ValidateStream( source );

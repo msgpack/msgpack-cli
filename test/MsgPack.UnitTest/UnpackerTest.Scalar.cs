@@ -28,7 +28,7 @@ using NUnit.Framework;
 #else
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
-using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
@@ -38,6 +38,7 @@ namespace MsgPack
 	[TestFixture]
 	public partial class PackerTest_Scalar
 	{
+		// FIXME: Direct reading and direct/MPO mixing cases.
 		[Test]
 		public void TestUnpackInt64MinValue()
 		{

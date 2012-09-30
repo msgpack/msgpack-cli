@@ -831,7 +831,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackInt32_Eof()
 		{
-			Assert.Throws<UnpackException>( () => Unpacking.UnpackInt32( new byte[] { 0xD0 } ) );
+			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackInt32( new byte[] { 0xD0 } ) );
 		}
 
 		[Test]
@@ -849,13 +849,13 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackBinary_EofInHeader()
 		{
-			Assert.Throws<UnpackException>( () => Unpacking.UnpackBinary( new byte[] { 0xDA, 0x1 } ) );
+			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackBinary( new byte[] { 0xDA, 0x1 } ) );
 		}
 
 		[Test]
 		public void TestUnpackBinary_EofInBody()
 		{
-			Assert.Throws<UnpackException>( () => Unpacking.UnpackBinary( new byte[] { 0xA1 } ) );
+			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackBinary( new byte[] { 0xA1 } ) );
 		}
 
 		[Test]

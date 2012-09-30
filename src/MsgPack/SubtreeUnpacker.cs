@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.IO;
 
 namespace MsgPack
 {
@@ -29,9 +28,9 @@ namespace MsgPack
 	/// <summary>
 	///		Defines subtree unpacking unpacker.
 	/// </summary>
-	internal sealed class SubtreeUnpacker : Unpacker
+	internal sealed partial class SubtreeUnpacker : Unpacker
 	{
-		private readonly StreamUnpacker _root;
+		private readonly ItemsUnpacker _root;
 		private readonly SubtreeUnpacker _parent;
 		private readonly Stack<bool> _isMap;
 		private readonly Stack<long> _unpacked;
@@ -65,9 +64,9 @@ namespace MsgPack
 		}
 #endif
 
-		public SubtreeUnpacker( StreamUnpacker parent ) : this( parent, null ) { }
+		public SubtreeUnpacker( ItemsUnpacker parent ) : this( parent, null ) { }
 
-		private SubtreeUnpacker( StreamUnpacker root, SubtreeUnpacker parent )
+		private SubtreeUnpacker( ItemsUnpacker root, SubtreeUnpacker parent )
 		{
 			Contract.Assert( root != null );
 			Contract.Assert( root.IsArrayHeader || root.IsMapHeader );
@@ -115,7 +114,7 @@ namespace MsgPack
 			// Ends current collection.
 			this._unpacked.Pop();
 			this._unpacked.Push( this._itemsCount.Peek() );
-			this.DicardCompletedStacks();
+			this.DiscardCompletedStacks();
 		}
 
 		protected sealed override Unpacker ReadSubtreeCore()
@@ -135,7 +134,7 @@ namespace MsgPack
 
 		protected sealed override bool ReadCore()
 		{
-			this.DicardCompletedStacks();
+			this.DiscardCompletedStacks();
 
 			if ( this._itemsCount.Count == 0 )
 			{
@@ -169,7 +168,7 @@ namespace MsgPack
 
 		protected sealed override long? SkipCore()
 		{
-			this.DicardCompletedStacks();
+			this.DiscardCompletedStacks();
 
 			if ( this._itemsCount.Count == 0 )
 			{
@@ -185,7 +184,7 @@ namespace MsgPack
 			return result;
 		}
 
-		private void DicardCompletedStacks()
+		private void DiscardCompletedStacks()
 		{
 			if ( this._itemsCount.Count == 0 )
 			{

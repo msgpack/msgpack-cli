@@ -1,0 +1,452 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\Core.ttinclude" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Text;
+
+namespace MsgPack
+{
+	// This file was generated from ItemsUnpacker.Skipping.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit ItemsUnpacker.Skipping.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	partial class ItemsUnpacker
+	{
+		private static readonly byte[] DummyBufferForSkipping = new byte[ 64 * 1024 ];
+		private readonly Stack<uint> _remainingCollections = new Stack<uint>( 4 );
+
+		protected sealed override long? SkipCore()
+		{
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+			Contract.Assert( source != null );
+			Contract.Assert( buffer != null );
+
+			long remainingItems = -1;
+			long skipped = 0;
+			Stack<long> remainingCollections = null;
+			do
+			{
+				var header = source.ReadByte();
+				if ( header < 0 )
+				{
+					return null;
+				}
+
+				switch ( header )
+				{
+					case MessagePackCode.NilValue:
+					case MessagePackCode.TrueValue:
+					case MessagePackCode.FalseValue:
+					{
+						skipped += 1;
+<#
+this.PushIndent( 6 );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+				}
+
+				if ( header < 0x80 )
+				{
+					skipped += 1;
+<#
+this.PushIndent( 5 );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+					continue;
+				}
+				else if ( header >= 0xE0 )
+				{
+					skipped += 1;
+<#
+this.PushIndent( 5 );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+					continue;
+				}
+
+				switch ( header & 0xF0 )
+				{
+					case 0x80:
+					{
+						var size = header & 0xF;
+						skipped += 1;
+						if( size == 0 )
+						{
+<#
+this.PushIndent( 6 );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						}
+						else
+						{
+<#
+this.PushIndent( 6 );
+this.WritePushCollection( "size * 2" );
+this.PopIndent();
+#>
+						}
+
+						continue;
+					}
+					case 0x90:
+					{
+						var size = header & 0xF;
+						skipped += 1;
+						if( size == 0 )
+						{
+<#
+this.PushIndent( 6 );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						}
+						else
+						{
+<#
+this.PushIndent( 6 );
+this.WritePushCollection( "size" );
+this.PopIndent();
+#>
+						}
+
+						continue;
+					}
+					case 0xA0:
+					case 0xB0:
+					{
+						var size = header & 0x1F;
+						skipped += 1;
+<#
+this.PushIndent( 6 );
+this.WriteDrainValue( "size" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+				}
+
+				switch ( header )
+				{
+					case MessagePackCode.SignedInt8:
+					case MessagePackCode.UnsignedInt8:
+					{
+						skipped += 1;
+<#
+this.PushIndent( 6 );
+this.WriteTryPopCollection();
+this.WriteDrainValue( "1" );
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.SignedInt16:
+					case MessagePackCode.UnsignedInt16:
+					{
+						skipped += 1;
+<#
+this.PushIndent( 6 );
+this.WriteTryPopCollection();
+this.WriteDrainValue( "2" );
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.SignedInt32:
+					case MessagePackCode.UnsignedInt32:
+					case MessagePackCode.Real32:
+					{
+						skipped += 1;
+<#
+this.PushIndent( 6 );
+this.WriteTryPopCollection();
+this.WriteDrainValue( "4" );
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.SignedInt64:
+					case MessagePackCode.UnsignedInt64:
+					case MessagePackCode.Real64:
+					{
+						skipped += 1;
+<#
+this.PushIndent( 6 );
+this.WriteTryPopCollection();
+this.WriteDrainValue( "8" );
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.Raw16:
+					{
+						skipped += 1;
+						ushort length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackLength( 2, "length" );
+this.WriteDrainValue( "length" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.Raw32:
+					{
+						skipped += 1;
+						uint length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackLength( 4, "length" );
+this.WriteDrainValue( "length" );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						continue;
+					}
+					case MessagePackCode.Array16:
+					{
+						skipped += 1;
+						ushort length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackLength( 2, "length" );
+this.PopIndent();
+#>
+						if( length == 0 )
+						{
+<#
+this.PushIndent( 7 );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						}
+						else
+						{
+<#
+this.PushIndent( 7 );
+this.WritePushCollection( "length" );
+this.PopIndent();
+#>
+						}
+
+						continue;
+					}
+					case MessagePackCode.Array32:
+					{
+						skipped += 1;
+						uint length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackLength( 4, "length" );
+this.PopIndent();
+#>
+						if( length == 0 )
+						{
+<#
+this.PushIndent( 7 );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						}
+						else
+						{
+<#
+this.PushIndent( 7 );
+this.WritePushCollection( "length" );
+this.PopIndent();
+#>
+						}
+
+						continue;
+					}
+					case MessagePackCode.Map16:
+					{
+						skipped += 1;
+						ushort length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackLength( 2, "length" );
+this.PopIndent();
+#>
+						if( length == 0 )
+						{
+<#
+this.PushIndent( 7 );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						}
+						else
+						{
+<#
+this.PushIndent( 7 );
+this.WritePushCollection( "length * 2" );
+this.PopIndent();
+#>
+						}
+
+						continue;
+					}
+					case MessagePackCode.Map32:
+					{
+						skipped += 1;
+						uint length;
+<#
+this.PushIndent( 6 );
+this.WriteUnpackLength( 4, "length" );
+this.PopIndent();
+#>
+						if( length == 0 )
+						{
+<#
+this.PushIndent( 7 );
+this.WriteTryPopCollection();
+this.PopIndent();
+#>
+						}
+						else
+						{
+<#
+this.PushIndent( 7 );
+this.WritePushCollection( "length * 2" );
+this.PopIndent();
+#>
+						}
+
+						continue;
+					}
+					default:
+					{
+						throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
+					}
+				}
+			} while ( remainingItems > 0 );
+
+			return skipped;
+		}
+	}
+}
+<#+
+private void WritePushCollection( string sizeVariable )
+{
+#>
+#region PushContextCollection
+
+if( remainingItems >= 0 )
+{
+	if( remainingCollections == null )
+	{
+		remainingCollections = new Stack<long>( 4 );
+	}
+	
+	remainingCollections.Push( remainingItems );
+}
+
+remainingItems = <#= sizeVariable #>;
+
+#endregion PushContextCollection
+<#+
+}
+
+private void WriteTryPopCollection()
+{
+#>
+#region TryPopContextCollection
+
+remainingItems--;
+
+if( remainingCollections != null )
+{
+	while ( remainingItems == 0 && remainingCollections.Count > 0 )
+	{
+		if( remainingCollections.Count == 0 )
+		{
+			break;
+		}
+
+		remainingItems = remainingCollections.Pop();
+		remainingItems--;
+	}
+}
+
+#endregion TryPopContextCollection
+<#+
+}
+
+private void WriteDrainValue( string sizeVariable )
+{
+#>
+#region DrainValue
+
+long bytesRead = 0;
+while( <#= sizeVariable #> > bytesRead )
+{
+	var remaining = ( <#= sizeVariable #> - bytesRead );
+	var reading = remaining > DummyBufferForSkipping.Length ? DummyBufferForSkipping.Length : unchecked( ( int )remaining );
+	bytesRead += source.Read( DummyBufferForSkipping, 0, reading );
+	if ( bytesRead < reading )
+	{
+		return null;
+	}
+}
+
+skipped += bytesRead;
+
+#endregion DrainValue
+<#+
+}
+
+private void WriteUnpackLength( int size, string lengthVariable )
+{
+#>
+var read = source.Read( buffer, 0, <#= size.ToString( CultureInfo.InvariantCulture ) #> );
+if ( read == <#= size.ToString( CultureInfo.InvariantCulture ) #> )
+{
+	<#= lengthVariable #> = BigEndianBinary.ToUInt<#= ( size * 8 ).ToString( CultureInfo.InvariantCulture ) #>( buffer, 0 );
+	skipped += <#= size #>;
+}
+else
+{
+	return null;
+}
+<#+
+}
+#>

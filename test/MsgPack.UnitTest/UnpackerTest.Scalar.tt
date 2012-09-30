@@ -122,6 +122,7 @@ namespace MsgPack
 	[TestFixture]
 	public partial class PackerTest_Scalar
 	{
+		// FIXME: Direct reading and direct/MPO mixing cases.
 <#
 foreach( var __testCase in __integers )
 {

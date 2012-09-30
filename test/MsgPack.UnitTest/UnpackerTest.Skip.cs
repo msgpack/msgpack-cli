@@ -66,20 +66,6 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestSkip_PartialScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xD2, 0x1, 0x2, 0x3 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				stream.Feed( 0x4 );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
 		public void TestSkip_ContinuousScalar_ReportedSeparately()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xD2, 0x1, 0x2, 0x3, 0x4, 0x1 } ) )
@@ -116,20 +102,6 @@ namespace MsgPack
 			using ( var stream = new MemoryStream( new byte[] { 0xDB, 0x0, 0x0, 0x0, 0x1, ( byte )'A' } ) )
 			using ( var target = Unpacker.Create( stream, false ) )
 			{
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
-		public void TestSkip_PartialRawAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xA4, ( byte )'A', ( byte )'B', ( byte )'C' } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				stream.Feed( ( byte )'D' );
 				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
 			}
 		}
@@ -182,70 +154,7 @@ namespace MsgPack
 			using ( var stream = new MemoryStream() )
 			using ( var target = Unpacker.Create( stream, false ) )
 			{
-				stream.Feed( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				stream.Feed( 0x4 );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
-		public void TestSkip_PartialItemArrayScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				var feeding = new byte[] { 0xD2, 0x1, 0x2, 0x3, 0x4 };
-				stream.Feed( feeding );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
-		public void TestSkip_PartialItemContentArrayScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				var feeding = new byte[] { 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 };
-				stream.Feed( feeding );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
-		public void TestSkip_OnlyHeaderArrayScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				var feeding = new byte[] { 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 };
-				stream.Feed( feeding );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
-		public void TestSkip_PartialHeaderArrayScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xDD, 0x0, 0x0 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				var feeding = new byte[] { 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 };
-				stream.Feed( feeding );
+				stream.Feed( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 } );
 				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
 			}
 		}
@@ -318,89 +227,11 @@ namespace MsgPack
 			using ( var stream = new MemoryStream() )
 			using ( var target = Unpacker.Create( stream, false ) )
 			{
-				stream.Feed( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				stream.Feed( 0x2 );
+				stream.Feed( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 } );
 				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
 			}
 		}
-
-		[Test]
-		public void TestSkip_PartialItemMapScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				var feeding = new byte[] { 0xD0, 0x2, 0xD0, 0x2 };
-				stream.Feed( feeding );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
-		public void TestSkip_PartialKeyValueMapScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				var feeding = new byte[] { 0xD0, 0x2 };
-				stream.Feed( feeding );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
-		public void TestSkip_PartialItemContentMapScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD1, 0x1 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				var feeding = new byte[] { 0x2 };
-				stream.Feed( feeding );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
-		public void TestSkip_OnlyHeaderMapScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xDE, 0x0, 0x2 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				var feeding = new byte[] { 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 };
-				stream.Feed( feeding );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
-		[Test]
-		public void TestSkip_PartialHeaderMapScalarAndFeed_NullAndAsIs()
-		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
-			{
-				stream.Feed( new byte[] { 0xDE, 0x0 } );
-				Assert.That( target.Skip(), Is.Null );
-				// Feed
-				var feeding = new byte[] { 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 };
-				stream.Feed( feeding );
-				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
-			}
-		}
-
+		
 		[Test]
 		public void TestSkip_CotinuousMap_ReportsSeparately()
 		{

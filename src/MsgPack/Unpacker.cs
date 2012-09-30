@@ -37,9 +37,9 @@ namespace MsgPack
 		#region -- Properties --
 
 		/// <summary>
-		///		Get last unpacked data.
+		///		Gets a last unpacked data.
 		/// </summary>
-		/// <value>Last unpacked data or null.</value>
+		/// <value>A last unpacked data or null.</value>
 		/// <remarks>
 		///		If you use any of directory APIs (methods which return non-<see cref="MessagePackObject"/>), 
 		///		then this property to be invalidated.
@@ -158,15 +158,6 @@ namespace MsgPack
 		#region -- Factories --
 
 		/// <summary>
-		///		 Creates the new <see cref="Unpacker"/> with internal buffer which has default size.
-		/// </summary>
-		/// <returns><see cref="Unpacker"/> instance.</returns>
-		public static Unpacker Create()
-		{
-			return new StreamUnpacker();
-		}
-
-		/// <summary>
 		///		 Creates the new <see cref="Unpacker"/> from specified stream.
 		/// </summary>
 		/// <param name="stream">The stream to be unpacked. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
@@ -187,7 +178,7 @@ namespace MsgPack
 		/// <returns><see cref="Unpacker"/> instance.</returns>
 		public static Unpacker Create( Stream stream, bool ownsStream )
 		{
-			return new StreamUnpacker( stream, ownsStream );
+			return new ItemsUnpacker( stream, ownsStream );
 		}
 
 		#endregion -- Factories --

@@ -112,6 +112,12 @@
     <Compile Include="IPackable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ItemsUnpacker.cs" />
+    <Compile Include="ItemsUnpacker.Unpacking.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ItemsUnpacker.Unpacking.tt</DependentUpon>
+    </Compile>
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -258,19 +264,7 @@
     <Compile Include="Serialization\MessagePackSerializer.cs" />
     <Compile Include="Serialization\UnpackHelpers.cs" />
     <Compile Include="SetOperation.cs" />
-    <Compile Include="SkippingStreamingUnpacker.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SkippingStreamingUnpacker.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UnpackingStreamingUnpacker.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UnpackingStreamingUnpacker.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UnpackingStreamingUnpacker.States.cs" />
     <Compile Include="StreamPacker.cs" />
-    <Compile Include="StreamUnpacker.cs" />
     <Compile Include="SubtreeUnpacker.cs" />
     <Compile Include="TupleItems.cs" />
     <Compile Include="Unpacking.cs">
@@ -299,11 +293,29 @@
     <Compile Include="UnpackingResult.cs" />
     <Compile Include="Unpacker.cs" />
     <Compile Include="UnpackException.cs" />
-    <Compile Include="SkippingStreamingUnpacker.States.cs" />
+    <Compile Include="Unpacker.Unpacking.cs">
+      <DependentUpon>Unpacker.Unpacking.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ItemsUnpacker.Skipping.cs">
+      <DependentUpon>ItemsUnpacker.Skipping.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SubtreeUnpacker.Unpacking.cs">
+      <DependentUpon>SubtreeUnpacker.Unpacking.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
+    </None>
+    <None Include="ItemsUnpacker.Unpacking.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ItemsUnpacker.Unpacking.cs</LastGenOutput>
     </None>
     <None Include="Serialization\DefaultSerializers\DefaultSerializers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -321,17 +333,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SerializerRepository.defaults.cs</LastGenOutput>
     </None>
-    <None Include="SkippingStreamingUnpacker.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SkippingStreamingUnpacker.cs</LastGenOutput>
-    </None>
-    <None Include="UnpackingStreamingUnpacker.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>UnpackingStreamingUnpacker.cs</LastGenOutput>
-    </None>
-    <None Include="StreamingUnpackerBase.ttinclude">
-      <LastGenOutput>StreamingUnpackerBase.cs</LastGenOutput>
-    </None>
     <None Include="Unpacking.Numerics.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Unpacking.Numerics.cs</LastGenOutput>
@@ -348,6 +349,19 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Packer.Nullable.cs</LastGenOutput>
     </None>
+    <None Include="Unpacker.Unpacking.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Unpacker.Unpacking.cs</LastGenOutput>
+    </None>
+    <None Include="ItemsUnpacker.Skipping.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ItemsUnpacker.Skipping.cs</LastGenOutput>
+    </None>
+    <None Include="SubtreeUnpacker.Unpacking.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SubtreeUnpacker.Unpacking.cs</LastGenOutput>
+    </None>
+    <None Include="Unpacking.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

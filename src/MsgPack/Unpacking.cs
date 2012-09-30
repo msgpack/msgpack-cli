@@ -20,8 +20,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace MsgPack
 {
@@ -40,6 +41,23 @@ namespace MsgPack
 	/// <seealso cref="Unpacker"/>
 	public static partial class Unpacking
 	{
+		internal static readonly MessagePackObject[] PositiveIntegers =
+			Enumerable.Range( 0, 0x80 ).Select( i => new MessagePackObject( unchecked( ( byte )i ) ) ).ToArray();
+		internal static readonly MessagePackObject[] NegativeIntegers =
+			Enumerable.Range( 0, 0x20 ).Select( i => new MessagePackObject( unchecked( ( sbyte )( -32 + i ) ) ) ).ToArray();
+
+		internal static readonly MessagePackObject TrueValue = true;
+		internal static readonly MessagePackObject FalseValue = false;
+
+		internal static readonly MessagePackObject?[] NullablePositiveIntegers =
+			Enumerable.Range( 0, 0x80 ).Select( i => new MessagePackObject?( unchecked( ( byte )i ) ) ).ToArray();
+		internal static readonly MessagePackObject?[] NullableNegativeIntegers =
+			Enumerable.Range( 0, 0x20 ).Select( i => new MessagePackObject?( unchecked( ( sbyte )( -32 + i ) ) ) ).ToArray();
+
+		internal static readonly MessagePackObject? NullableTrueValue = true;
+		internal static readonly MessagePackObject? NullableFalseValue = false;
+		internal static readonly MessagePackObject? NullableNilValue = MessagePackObject.Nil;
+
 		private static void ValidateByteArray( byte[] source, int offset )
 		{
 			if ( source == null )

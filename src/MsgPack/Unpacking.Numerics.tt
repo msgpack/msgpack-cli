@@ -206,7 +206,6 @@ foreach( var __type in __numericTypes )
 <#
 	}
 #>
-		
 		public static <#= __type.Name #> Unpack<#= __type.Name #>( Stream source )
 		{
 			ValidateStream( source );

@@ -49,5 +49,112 @@ namespace MsgPack
 		public const int MaximumFixedRaw = 0xbf;
 		public const int Raw16 = 0xda;
 		public const int Raw32 = 0xdb;
+
+		public static string ToString( int code )
+		{
+			if( code < 0x80)
+			{
+				return "PositiveFixNum";
+			}
+			else if( code >= 0xE0)
+			{
+				return "NegativeFixNum";
+			}
+
+			switch( code )
+			{
+				case 0xC0:
+				{
+					return "Nil";
+				}
+				case 0xC3:
+				{
+					return "True";
+				}
+				case 0xD0:
+				{
+					return "SingnedInt8";
+				}
+				case 0xCC:
+				{
+					return "UnsignedInt8";
+				}
+				case 0xD1:
+				{
+					return "SignedInt16";
+				}
+				case 0xCD:
+				{
+					return "UnsignedInt16";
+				}
+				case 0xD2:
+				{
+					return "SignedInt32";
+				}
+				case 0xCE:
+				{
+					return "UnsignedInt32";
+				}
+				case 0xD3:
+				{
+					return "SignedInt64";
+				}
+				case 0xCF:
+				{
+					return "UnsignedInt64";
+				}
+				case 0xCA:
+				{
+					return "Real32";
+				}
+				case 0xCB:
+				{
+					return "Real64";
+				}
+				case 0xDC:
+				{
+					return "Array16";
+				}
+				case 0xDD:
+				{
+					return "Array32";
+				}
+				case 0xDE:
+				{
+					return "Map16";
+				}
+				case 0xDF:
+				{
+					return "Map32";
+				}
+				case 0xDA:
+				{
+					return "Raw16";
+				}
+				case 0xDB:
+				{
+					return "Raw32";
+				}
+			}
+
+			switch( ( code & 0xF0))
+			{
+				case 0x80:
+				{
+					return "FixedMap";
+				}
+				case 0x90:
+				{
+					return "FixedArray";
+				}
+				case 0xA0:
+				case 0xB0:
+				{
+					return "FixedRaw";
+				}
+			}
+
+			return "Unknown";
+		}
 	}
 }

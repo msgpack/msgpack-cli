@@ -1,0 +1,174 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="Unpacking.ttinclude" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Text;
+
+namespace MsgPack
+{
+	// This file was generated from ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	partial class ItemsUnpacker
+	{
+<#
+foreach( var type in
+	new []
+	{ 
+		typeof( bool ), 
+		typeof( byte ), typeof( sbyte ),
+		typeof( short ), typeof( ushort ),
+		typeof( int ), typeof( uint ),
+		typeof( long ), typeof( ulong ),
+		typeof( float ), typeof( double ),
+	}
+)
+{
+#>
+		public override bool Read<#= type.Name #>( out <#= type.Name #> result )
+		{
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+<#
+	this.PushIndent( 3 );
+	this.WriteUnpack( type );
+	this.PopIndent();
+#>
+		}
+
+		public override bool ReadNullable<#= type.Name #>( out <#= type.Name #>? result )
+		{
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+<#
+	this.PushIndent( 3 );
+	this.WriteUnpack( typeof( Nullable<> ).MakeGenericType( type ) );
+	this.PopIndent();
+#>
+		}
+
+<#
+}
+#>
+		public override bool ReadBinary( out byte[] result )
+		{
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+<#
+	this.PushIndent( 3 );
+	this.WriteUnpackByteArray( ( size, offset )=> "new byte[ size ]" );
+	this.OnReturnScalar( "resultValue" );
+	this.PopIndent();
+#>
+			result = resultValue;
+			return true;
+		}
+
+		public override bool ReadString( out string result )
+		{
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+			var encoding = Encoding.UTF8;
+<#
+	this.PushIndent( 3 );
+	this.WriteUnpackString();
+	this.OnReturnScalar( "resultValue" );
+	this.PopIndent();
+#>
+			result = resultValue;
+			return true;
+		}
+
+		public override bool ReadObject( out MessagePackObject result )
+		{
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+<#
+	this.PushIndent( 3 );
+	this.WriteUnpackObject();
+	this.PopIndent();
+#>
+		}
+	}
+}
+<#+
+private void OnFailedToReadHeader( string typeName )
+{
+#>
+result = default( <#= typeName #> );
+return false;
+<#+
+}
+
+private void OnReturnScalar( string resultVariable )
+{
+#>
+this._collectionType = CollectionType.None;
+this._itemsCount = 0;
+<#+
+}
+
+private void OnReturnScalarObject( string resultVariable )
+{
+#>
+this._collectionType = CollectionType.None;
+this._itemsCount = 0;
+this.Data = <#= resultVariable #>;
+<#+
+}
+
+private void OnIsArray( string sizeVariable )
+{
+#>
+this._collectionType = CollectionType.Array;
+this._itemsCount = <#= sizeVariable #>;
+this.Data = <#= sizeVariable #>;
+<#+
+}
+
+private void OnIsMap( string sizeVariable )
+{
+#>
+this._collectionType = CollectionType.Map;
+this._itemsCount = <#= sizeVariable #>;
+this.Data = <#= sizeVariable #>;
+<#+
+}
+
+private void WriteReturn( string valueVariable )
+{
+#>
+result = <#= valueVariable #>;
+return true;
+<#+
+}
+#>
