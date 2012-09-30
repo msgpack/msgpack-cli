@@ -164,6 +164,14 @@ this.Data = <#= sizeVariable #>;
 <#+
 }
 
+private void OnNilRawValue()
+{
+#>
+result = null;
+return true;
+<#+
+}
+
 private void WriteReturn( string valueVariable )
 {
 #>

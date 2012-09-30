@@ -271,6 +271,14 @@ if( header < 0 )
 int size;
 switch( header )
 {
+	case MessagePackCode.NilValue:
+	{
+<#+
+	this.PushIndent( 2 );
+	this.OnNilRawValue();
+	this.PopIndent();
+#>
+	}
 	case MessagePackCode.Raw16: 
 	{
 		if( source.Read( buffer, 0, 2 ) < 2 )

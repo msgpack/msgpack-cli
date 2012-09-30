@@ -3040,6 +3040,11 @@ namespace MsgPack
 			int size;
 			switch( header )
 			{
+				case MessagePackCode.NilValue:
+				{
+					result = null;
+					return true;
+				}
 				case MessagePackCode.Raw16: 
 				{
 					if( source.Read( buffer, 0, 2 ) < 2 )
@@ -3112,6 +3117,11 @@ namespace MsgPack
 			int size;
 			switch( header )
 			{
+				case MessagePackCode.NilValue:
+				{
+					result = null;
+					return true;
+				}
 				case MessagePackCode.Raw16: 
 				{
 					if( source.Read( buffer, 0, 2 ) < 2 )
