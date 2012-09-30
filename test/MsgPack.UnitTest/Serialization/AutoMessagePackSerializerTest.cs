@@ -165,22 +165,9 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestComplexObject_Field()
+		public void TestComplexObject()
 		{
-			this.TestComplexObjectCore( GetSerializationContextField() );
-		}
-
-		[Test]
-		public void TestComplexObject_Context()
-		{
-			this.TestComplexObjectCore( GetSerializationContextContext() );
-		}
-
-
-		[Test]
-		public void TestComplexObject_Expression()
-		{
-			this.TestComplexObjectCore( GetSerializationContextExpression() );
+			this.TestComplexObjectCore( this.GetSerializationContext() );
 		}
 
 		private void TestComplexObjectCore( SerializationContext context )
@@ -191,21 +178,9 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestComplexTypeWithoutAnyAttribute_Field()
+		public void TestComplexTypeWithoutAnyAttribute()
 		{
-			this.TestComplexTypeWithoutAnyAttribute( GetSerializationContextField() );
-		}
-
-		[Test]
-		public void TestComplexTypeWithoutAnyAttribute_Context()
-		{
-			this.TestComplexTypeWithoutAnyAttribute( GetSerializationContextContext() );
-		}
-
-		[Test]
-		public void TestComplexTypeWithoutAnyAttribute_Expression()
-		{
-			this.TestComplexTypeWithoutAnyAttribute( GetSerializationContextExpression() );
+			this.TestComplexTypeWithoutAnyAttribute( this.GetSerializationContext() );
 		}
 
 		private void TestComplexTypeWithoutAnyAttribute( SerializationContext context )
@@ -216,21 +191,9 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestTypeWithMissingMessagePackMemberAttributeMember_Field()
+		public void TestTypeWithMissingMessagePackMemberAttributeMember()
 		{
-			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( GetSerializationContextField() );
-		}
-
-		[Test]
-		public void TestTypeWithMissingMessagePackMemberAttributeMember_Context()
-		{
-			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( GetSerializationContextContext() );
-		}
-
-		[Test]
-		public void TestTypeWithMissingMessagePackMemberAttributeMember_Expression()
-		{
-			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( GetSerializationContextExpression() );
+			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( this.GetSerializationContext() );
 		}
 
 		private void TestTypeWithMissingMessagePackMemberAttributeMemberCore( SerializationContext context )
@@ -252,21 +215,9 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestComplexObjectTypeWithDataContract_Field()
+		public void TestComplexObjectTypeWithDataContract()
 		{
-			this.TestComplexObjectTypeWithDataContractCore( GetSerializationContextField() );
-		}
-
-		[Test]
-		public void TestComplexObjectTypeWithDataContract_Context()
-		{
-			this.TestComplexObjectTypeWithDataContractCore( GetSerializationContextContext() );
-		}
-
-		[Test]
-		public void TestComplexObjectTypeWithDataContract_Expression()
-		{
-			this.TestComplexObjectTypeWithDataContractCore( GetSerializationContextExpression() );
+			this.TestComplexObjectTypeWithDataContractCore( this.GetSerializationContext() );
 		}
 
 		private void TestComplexObjectTypeWithDataContractCore( SerializationContext context )
@@ -282,21 +233,9 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestComplexTypeWithDataContractWithOrder_Field()
+		public void TestComplexTypeWithDataContractWithOrder()
 		{
-			this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContextField() );
-		}
-
-		[Test]
-		public void TestComplexTypeWithDataContractWithOrder_Context()
-		{
-			this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContextContext() );
-		}
-
-		[Test]
-		public void TestComplexTypeWithDataContractWithOrder_Expresion()
-		{
-			this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContextExpression() );
+			this.TestComplexTypeWithDataContractWithOrderCore( this.GetSerializationContext() );
 		}
 
 		private void TestComplexTypeWithDataContractWithOrderCore( SerializationContext context )
@@ -312,21 +251,9 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestComplexObjectTypeWithNonSerialized_Field()
+		public void TestComplexObjectTypeWithNonSerialized()
 		{
-			this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContextField() );
-		}
-
-		[Test]
-		public void TestComplexObjectTypeWithNonSerialized_Context()
-		{
-			this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContextContext() );
-		}
-
-		[Test]
-		public void TestComplexObjectTypeWithNonSerialized_Expression()
-		{
-			this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContextExpression() );
+			this.TestComplexObjectTypeWithNonSerializedCore( this.GetSerializationContext() );
 		}
 
 		private void TestComplexObjectTypeWithNonSerializedCore( SerializationContext context )

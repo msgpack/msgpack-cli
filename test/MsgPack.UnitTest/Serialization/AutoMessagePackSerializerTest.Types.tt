@@ -145,40 +145,37 @@ namespace MsgPack.Serialization
 	partial class AutoMessagePackSerializerTest
 	{
 <#
-
-foreach( var __flavor in __flavors )
+// Root
+foreach( Tuple<Object, string, string, bool> __item in __fields )
 {
-	// Root
-	foreach( Tuple<Object, string, string, bool> __item in __fields )
+	String __typeName;
+	if( __item.Item1 is Type )
 	{
-		String __typeName;
-		if( __item.Item1 is Type )
-		{
-			__typeName = ToTypeName( __item.Item1 as Type );
-		}
-		else
-		{
-			__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
-		}
+		__typeName = ToTypeName( __item.Item1 as Type );
+	}
+	else
+	{
+		__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
+	}
 
-		var __asType = __item.Item1 as Type;
-		if( __asType != null && __desktopOnly.Contains( __asType ) )
-		{
+	var __asType = __item.Item1 as Type;
+	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	{
 #>
 #if !NETFX_CORE && !SILVERLIGHT
 <#
-		}
+	}
 #>
 		[Test]
-		public void Test<#= ToFieldName( __item ) + __flavor #>()
+		public void Test<#= ToFieldName( __item ) #>()
 		{
-			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, this.GetSerializationContext<#= __flavor #>() );
+			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, this.GetSerializationContext() );
 		}
 		
 		[Test]
-		public void Test<#= ToFieldName( __item ) + __flavor #>Array()
+		public void Test<#= ToFieldName( __item ) #>Array()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray(), this.GetSerializationContext<#= __flavor #>() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray(), this.GetSerializationContext() );
 		}
 		
 <#
@@ -186,69 +183,59 @@ foreach( var __flavor in __flavors )
 	{
 #>
 		[Test]
-		public void Test<#= ToFieldName( __item ) + __flavor #>Null()
+		public void Test<#= ToFieldName( __item ) #>Null()
 		{
-			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ), this.GetSerializationContext<#= __flavor #>() );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ), this.GetSerializationContext() );
 		}
 		
 		[Test]
-		public void Test<#= ToFieldName( __item ) + __flavor #>ArrayNull()
+		public void Test<#= ToFieldName( __item ) #>ArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ), this.GetSerializationContext<#= __flavor #>() );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ), this.GetSerializationContext() );
 		}	
 		
 <#
-		}
+	}
 
-		if( __asType != null && __desktopOnly.Contains( __asType ) )
-		{
+	if( __asType != null && __desktopOnly.Contains( __asType ) )
+	{
 #>
 #endif
 <#
-		}
 	}
+}
 	// In object
 #>
 		[Test]
-		public void TestComplexTypeGeneratedEnclosure_<#= __flavor #>()
+		public void TestComplexTypeGeneratedEnclosure()
 		{
 			var target = new ComplexTypeGeneratedEnclosure();
 			target.Initialize();
-			this.TestCoreWithVerifiable( target, this.GetSerializationContext<#= __flavor #>() );
+			this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
 		}
 		
 		[Test]
-		public void TestComplexTypeGeneratedEnclosureArray_<#= __flavor #>()
+		public void TestComplexTypeGeneratedEnclosureArray()
 		{
-			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext<#= __flavor #>() );
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
 		}
 		
 <#
 	// In nested object
 #>
 		[Test]
-		public void TestComplexTypeGenerated_<#= __flavor #>()
+		public void TestComplexTypeGenerated()
 		{
 			var target = new ComplexTypeGenerated();
 			target.Initialize();
-			this.TestCoreWithVerifiable( target, this.GetSerializationContext<#= __flavor #>() );
+			this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
 		}
 		
 		[Test]
-		public void TestComplexTypeGeneratedArray_<#= __flavor #>()
+		public void TestComplexTypeGeneratedArray()
 		{
-			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext<#= __flavor #>() );
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
 		}
-
-		private SerializationContext GetSerializationContext<#= __flavor #>()
-		{
-			var result = this.GetSerializationContext();
-			result.EmitterFlavor = EmitterFlavor.<#= __flavor #>Based;
-			return result;
-		}
-<#
-}
-#>
 
 		private void TestCoreWithAutoVerify<T>( T value, SerializationContext context )
 		{
