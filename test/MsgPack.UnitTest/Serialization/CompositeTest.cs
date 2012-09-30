@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics;
 using System.IO;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
@@ -40,6 +41,37 @@ namespace MsgPack.Serialization
 	public class CompositeTest
 	{
 #if !NETFX_CORE
+		private static bool _traceOn = false;
+
+		[SetUp]
+		public void SetUp()
+		{
+			if ( _traceOn )
+			{
+				Tracer.Emit.Listeners.Clear();
+				Tracer.Emit.Switch.Level = SourceLevels.All;
+				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+			}
+
+			SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanDump;
+		}
+
+		[TearDown]
+		public void TearDown()
+		{
+			if ( _traceOn )
+			{
+				try
+				{
+					DefaultSerializationMethodGeneratorManager.DumpTo();
+				}
+				finally
+				{
+					DefaultSerializationMethodGeneratorManager.Refresh();
+				}
+			}
+		}
+
 		[Test]
 		public void TestArrayFieldBased()
 		{
