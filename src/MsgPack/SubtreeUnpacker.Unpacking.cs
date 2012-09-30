@@ -30,138 +30,948 @@ namespace MsgPack
 	{
 		public override bool ReadBoolean( out Boolean result )
 		{
-			return this._root.ReadBoolean( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Boolean );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeBoolean( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableBoolean( out Boolean? result )
 		{
-			return this._root.ReadNullableBoolean( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Boolean? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableBoolean( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadByte( out Byte result )
 		{
-			return this._root.ReadByte( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Byte );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeByte( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableByte( out Byte? result )
 		{
-			return this._root.ReadNullableByte( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Byte? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableByte( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadSByte( out SByte result )
 		{
-			return this._root.ReadSByte( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( SByte );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeSByte( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableSByte( out SByte? result )
 		{
-			return this._root.ReadNullableSByte( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( SByte? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableSByte( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadInt16( out Int16 result )
 		{
-			return this._root.ReadInt16( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Int16 );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeInt16( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableInt16( out Int16? result )
 		{
-			return this._root.ReadNullableInt16( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Int16? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableInt16( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadUInt16( out UInt16 result )
 		{
-			return this._root.ReadUInt16( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( UInt16 );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeUInt16( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableUInt16( out UInt16? result )
 		{
-			return this._root.ReadNullableUInt16( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( UInt16? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableUInt16( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadInt32( out Int32 result )
 		{
-			return this._root.ReadInt32( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Int32 );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeInt32( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableInt32( out Int32? result )
 		{
-			return this._root.ReadNullableInt32( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Int32? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableInt32( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadUInt32( out UInt32 result )
 		{
-			return this._root.ReadUInt32( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( UInt32 );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeUInt32( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableUInt32( out UInt32? result )
 		{
-			return this._root.ReadNullableUInt32( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( UInt32? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableUInt32( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadInt64( out Int64 result )
 		{
-			return this._root.ReadInt64( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Int64 );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeInt64( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableInt64( out Int64? result )
 		{
-			return this._root.ReadNullableInt64( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Int64? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableInt64( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadUInt64( out UInt64 result )
 		{
-			return this._root.ReadUInt64( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( UInt64 );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeUInt64( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableUInt64( out UInt64? result )
 		{
-			return this._root.ReadNullableUInt64( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( UInt64? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableUInt64( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadSingle( out Single result )
 		{
-			return this._root.ReadSingle( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Single );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeSingle( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableSingle( out Single? result )
 		{
-			return this._root.ReadNullableSingle( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Single? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableSingle( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadDouble( out Double result )
 		{
-			return this._root.ReadDouble( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Double );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeDouble( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadNullableDouble( out Double? result )
 		{
-			return this._root.ReadNullableDouble( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Double? );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeNullableDouble( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 
 		public override bool ReadArrayLength( out long result )
 		{
-			return this._root.ReadArrayLength( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Int64 );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeArrayLength( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadMapLength( out long result )
 		{
-			return this._root.ReadMapLength( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Int64 );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeMapLength( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadBinary( out byte[] result )
 		{
-			return this._root.ReadBinary( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( Byte[] );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeBinary( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadString( out string result )
 		{
-			return this._root.ReadString( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( String );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeString( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 
 		public override bool ReadObject( out MessagePackObject result )
 		{
-			return this._root.ReadObject( out result );
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( MessagePackObject );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeObject( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
 		}
 	}
 }

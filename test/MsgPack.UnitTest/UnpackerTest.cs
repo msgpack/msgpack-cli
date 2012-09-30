@@ -680,5 +680,61 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( str ) );
 			}
 		}
+
+		[Test]
+		public void TestRead_EmptyArray_RecognizeEmptyArray()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x90, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Read() );
+				Assert.That( target.IsArrayHeader );
+				Assert.That( target.Data.Value == 0, target.Data.Value.ToString() );
+				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadArrayLength_EmptyArray_RecognizeEmptyArray()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x90, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				long result;
+				Assert.That( target.ReadArrayLength( out result ) );
+				Assert.That( target.IsArrayHeader );
+				Assert.That( result, Is.EqualTo( 0 ) );
+				Assert.That( target.Data.Value == 0, target.Data.Value.ToString() );
+				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public void TestRead_EmptyMap_RecognizeEmptyMap()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x80, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.That( target.Read() );
+				Assert.That( target.IsMapHeader );
+				Assert.That( target.Data.Value == 0, target.Data.Value.ToString() );
+				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadMapLength_EmptyMap_RecognizeEmptyMap()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x80, 0x1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				long result;
+				Assert.That( target.ReadMapLength( out result ) );
+				Assert.That( target.IsMapHeader );
+				Assert.That( result, Is.EqualTo( 0 ) );
+				Assert.That( target.Data.Value == 0, target.Data.Value.ToString() );
+				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
+			}
+		}
 	}
 }

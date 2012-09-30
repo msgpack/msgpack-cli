@@ -278,11 +278,7 @@ namespace MsgPack
 		/// </exception>
 		public bool Read()
 		{
-			this.VerifyMode( UnpackerMode.Streaming );
-			if ( this._isSubtreeReading )
-			{
-				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
-			}
+			this.EnsureNotInSubtreeMode();
 
 			bool result = this.ReadCore();
 			if ( result && !this.IsArrayHeader && !this.IsMapHeader )
@@ -291,6 +287,15 @@ namespace MsgPack
 			}
 
 			return result;
+		}
+
+		internal void EnsureNotInSubtreeMode()
+		{
+			this.VerifyMode( UnpackerMode.Streaming );
+			if( this._isSubtreeReading )
+			{
+				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
+			}
 		}
 
 		private void SetStable()

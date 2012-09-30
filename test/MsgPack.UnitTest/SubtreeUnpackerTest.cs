@@ -161,5 +161,118 @@ namespace MsgPack
 				}
 			}
 		}
+
+		[Test]
+		public void TestDispose_Tail_AsIs()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x91, 0x2, 0x3 } ) )
+			using ( var root = Unpacker.Create( buffer ) )
+			{
+				int lastValue;
+				Assert.That( root.ReadInt32( out lastValue ) );
+				Assert.That( lastValue, Is.EqualTo( 1 ) );
+
+				long length;
+				Assert.That( root.ReadArrayLength( out length ) );
+				Assert.That( length, Is.EqualTo( 1 ) );
+
+				using ( var subtree = root.ReadSubtree() )
+				{
+					Assert.That( subtree.ReadInt32( out lastValue ) );
+					Assert.That( lastValue, Is.EqualTo( 2 ) );
+				}
+
+				Assert.That( root.ReadInt32( out lastValue ) );
+				Assert.That( lastValue, Is.EqualTo( 3 ) );
+			}
+		}
+
+		[Test]
+		public void TestDispose_NotTail_Drained()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x92, 0x2, 0x3, 0x4 } ) )
+			using ( var root = Unpacker.Create( buffer ) )
+			{
+				int lastValue;
+				Assert.That( root.ReadInt32( out lastValue ) );
+				Assert.That( lastValue, Is.EqualTo( 1 ) );
+
+				long length;
+				Assert.That( root.ReadArrayLength( out length ) );
+				Assert.That( length, Is.EqualTo( 2 ) );
+
+				using ( var subtree = root.ReadSubtree() )
+				{
+					Assert.That( subtree.ReadInt32( out lastValue ) );
+					Assert.That( lastValue, Is.EqualTo( 2 ) );
+				}
+
+				Assert.That( root.ReadInt32( out lastValue ) );
+				Assert.That( lastValue, Is.EqualTo( 4 ) );
+			}
+		}
+
+
+		[Test]
+		public void TestDispose_TailNested_AsIs()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x91, 0x91, 0x2, 0x3 } ) )
+			using ( var root = Unpacker.Create( buffer ) )
+			{
+				int lastValue;
+				Assert.That( root.ReadInt32( out lastValue ) );
+				Assert.That( lastValue, Is.EqualTo( 1 ) );
+
+				long length;
+				Assert.That( root.ReadArrayLength( out length ) );
+				Assert.That( length, Is.EqualTo( 1 ) );
+
+				using ( var subtree = root.ReadSubtree() )
+				{
+					Assert.That( subtree.ReadArrayLength( out length ) );
+					Assert.That( length, Is.EqualTo( 1 ) );
+
+					using ( var subsubtree = root.ReadSubtree() )
+					{
+						Assert.That( subsubtree.ReadInt32( out lastValue ) );
+						Assert.That( lastValue, Is.EqualTo( 2 ) );
+					}
+				}
+
+				Assert.That( root.ReadInt32( out lastValue ) );
+				Assert.That( lastValue, Is.EqualTo( 3 ) );
+			}
+		}
+
+		[Test]
+		public void TestDispose_NotTailNested_Drained()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x92, 0x92, 0x2, 0x3, 0x4, 0x5 } ) )
+			using ( var root = Unpacker.Create( buffer ) )
+			{
+				int lastValue;
+				Assert.That( root.ReadInt32( out lastValue ) );
+				Assert.That( lastValue, Is.EqualTo( 1 ) );
+
+				long length;
+				Assert.That( root.ReadArrayLength( out length ) );
+				Assert.That( length, Is.EqualTo( 2 ) );
+
+				using ( var subtree = root.ReadSubtree() )
+				{
+					Assert.That( subtree.ReadArrayLength( out length ) );
+					Assert.That( length, Is.EqualTo( 2 ) );
+
+					using ( var subsubtree = root.ReadSubtree() )
+					{
+						Assert.That( subsubtree.ReadInt32( out lastValue ) );
+						Assert.That( lastValue, Is.EqualTo( 2 ) );
+					}
+				}
+
+				Assert.That( root.ReadInt32( out lastValue ) );
+				Assert.That( lastValue, Is.EqualTo( 5 ) );
+			}
+		}
 	}
 }

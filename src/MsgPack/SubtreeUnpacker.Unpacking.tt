@@ -53,12 +53,20 @@ foreach( var type in
 #>
 		public override bool Read<#= type.Name #>( out <#= type.Name #> result )
 		{
-			return this._root.Read<#= type.Name #>( out result );
+<#
+	this.PushIndent( 3 );
+	this.WriteRead( type.Name, type.Name );
+	this.PopIndent();
+#>
 		}
 
 		public override bool ReadNullable<#= type.Name #>( out <#= type.Name #>? result )
 		{
-			return this._root.ReadNullable<#= type.Name #>( out result );
+<#
+	this.PushIndent( 3 );
+	this.WriteRead( "Nullable" + type.Name, type.Name + "?" );
+	this.PopIndent();
+#>
 		}
 
 <#
@@ -67,27 +75,85 @@ foreach( var type in
 
 		public override bool ReadArrayLength( out long result )
 		{
-			return this._root.ReadArrayLength( out result );
+<#
+this.PushIndent( 3 );
+this.WriteRead( "ArrayLength", "Int64"  );
+this.PopIndent();
+#>
 		}
 
 		public override bool ReadMapLength( out long result )
 		{
-			return this._root.ReadMapLength( out result );
+<#
+this.PushIndent( 3 );
+this.WriteRead( "MapLength", "Int64" );
+this.PopIndent();
+#>
 		}
 
 		public override bool ReadBinary( out byte[] result )
 		{
-			return this._root.ReadBinary( out result );
+<#
+this.PushIndent( 3 );
+this.WriteRead( "Binary", "Byte[]" );
+this.PopIndent();
+#>
 		}
 
 		public override bool ReadString( out string result )
 		{
-			return this._root.ReadString( out result );
+<#
+this.PushIndent( 3 );
+this.WriteRead( "String", "String" );
+this.PopIndent();
+#>
 		}
 
 		public override bool ReadObject( out MessagePackObject result )
 		{
-			return this._root.ReadObject( out result );
+<#
+this.PushIndent( 3 );
+this.WriteRead( "Object", "MessagePackObject" );
+this.PopIndent();
+#>
 		}
 	}
 }
+<#+
+private void WriteRead( string typeName, string fullTypeName )
+{
+#>
+this.DiscardCompletedStacks();
+
+if ( this._itemsCount.Count == 0 )
+{
+	result = default( <#= fullTypeName #> );
+	return false;
+}
+
+if ( !this._root.ReadSubtree<#= typeName #>( out result ) )
+{
+	return false;
+}
+
+if ( this._root.IsArrayHeader )
+{
+	this._itemsCount.Push( this._root.ItemsCount );
+	this._unpacked.Push( 0 );
+	this._isMap.Push( false );
+}
+else if ( this._root.IsMapHeader )
+{
+	this._itemsCount.Push( this._root.ItemsCount * 2 );
+	this._unpacked.Push( 0 );
+	this._isMap.Push( true );
+}
+else
+{
+	this._unpacked.Push( this._unpacked.Pop() + 1 );
+}
+
+return true;
+<#+
+}
+#>

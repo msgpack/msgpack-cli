@@ -99,7 +99,7 @@ namespace MsgPack
 		protected override bool ReadCore()
 		{
 			MessagePackObject value;
-			var success = this.ReadObject( out value );
+			var success = this.ReadSubtreeObject( out value );
 			if ( success )
 			{
 				this.Data = value;

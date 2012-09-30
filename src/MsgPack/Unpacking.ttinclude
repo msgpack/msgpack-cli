@@ -26,7 +26,9 @@ var header = source.ReadByte();
 if( header < 0 )
 {
 <#+
+	this.PushIndent( 1 );
 	this.OnFailedToReadHeader( type.Name );
+	this.PopIndent();
 #>
 }
 
@@ -34,31 +36,31 @@ if( header < 0 )
 	if( type == typeof( bool ) )
 	{
 #>
-		switch( header )
-		{
-			case 0xC3:
-			{
+switch( header )
+{
+	case 0xC3:
+	{
 <#+
-		this.PushIndent( 4 );
+		this.PushIndent( 2 );
 		this.OnReturnScalar( "true" );
 		this.WriteReturn( "true" );
 		this.PopIndent();
 #>
-			}
-			case 0xC2:
-			{
+	}
+	case 0xC2:
+	{
 <#+
-		this.PushIndent( 4 );
+		this.PushIndent( 2 );
 		this.OnReturnScalar( "false" );
 		this.WriteReturn( "false" );
 		this.PopIndent();
 #>
-			}
-			default:
-			{
-				throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, typeof( bool ), header, MessagePackCode.ToString( header ) ) );
-			}
-		}
+	}
+	default:
+	{
+		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, typeof( bool ), header, MessagePackCode.ToString( header ) ) );
+	}
+}
 <#+
 		return;
 	}
@@ -298,8 +300,8 @@ switch( header )
 			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
 		}
 
-		var unsingedSize = BigEndianBinary.ToUInt32( buffer, 0 );
-		if( unsingedSize > Int32.MaxValue )
+		var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
+		if( unsignedSize > Int32.MaxValue )
 		{
 <#+
 	this.PushIndent( 3 );
@@ -308,7 +310,7 @@ switch( header )
 #>
 		}
 
-		size = unchecked( ( int )unsingedSize );
+		size = unchecked( ( int )unsignedSize );
 		break;
 	}
 	default:
@@ -620,6 +622,158 @@ private void WriteTooLargeException()
 {
 #>
 throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+<#+
+}
+
+/// <summary>
+///		Writes array length unpacking.
+/// <summary>
+private void WriteUnpackArrayLength()
+{
+#>
+Contract.Assert( source != null );
+Contract.Assert( buffer != null );
+
+var header = source.ReadByte();
+if( header < 0 )
+{
+	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+}
+
+switch( header )
+{
+	case MessagePackCode.Array16: 
+	{
+		if( source.Read( buffer, 0, 2 ) < 2 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+
+		result = BigEndianBinary.ToUInt16( buffer, 0 );
+<#+
+	this.PushIndent( 2 );
+	this.OnIsArray( "result" );
+	this.WriteReturn( "result" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.Array32:
+	{
+		if( source.Read( buffer, 0, 4 ) < 4 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+
+		var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
+		if( unsignedSize > Int32.MaxValue )
+		{
+<#+
+	this.PushIndent( 3 );
+	this.WriteTooLargeException();
+	this.PopIndent();
+#>
+		}
+
+		result = unsignedSize;
+<#+
+	this.PushIndent( 2 );
+	this.OnIsArray( "result" );
+	this.WriteReturn( "result" );
+	this.PopIndent();
+#>
+	}
+	default:
+	{
+		if( MessagePackCode.MinimumFixedArray <= header && header <= MessagePackCode.MaximumFixedArray )
+		{
+			result = header & 0xF;
+<#+
+	this.PushIndent( 2 );
+	this.OnIsArray( "result" );
+	this.WriteReturn( "result" );
+	this.PopIndent();
+#>
+		}
+
+		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, "array header", header, MessagePackCode.ToString( header ) ) );
+	}
+}// switch
+<#+
+}
+
+/// <summary>
+///		Writes map length unpacking.
+/// <summary>
+private void WriteUnpackMapLength()
+{
+#>
+Contract.Assert( source != null );
+Contract.Assert( buffer != null );
+
+var header = source.ReadByte();
+if( header < 0 )
+{
+	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+}
+
+switch( header )
+{
+	case MessagePackCode.Map16: 
+	{
+		if( source.Read( buffer, 0, 2 ) < 2 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+
+		result = BigEndianBinary.ToUInt16( buffer, 0 );
+<#+
+	this.PushIndent( 2 );
+	this.OnIsMap( "result" );
+	this.WriteReturn( "result" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.Map32:
+	{
+		if( source.Read( buffer, 0, 4 ) < 4 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+
+		var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
+		if( unsignedSize > Int32.MaxValue )
+		{
+<#+
+	this.PushIndent( 3 );
+	this.WriteTooLargeException();
+	this.PopIndent();
+#>
+		}
+
+		result = unsignedSize;
+<#+
+	this.PushIndent( 2 );
+	this.OnIsMap( "result" );
+	this.WriteReturn( "result" );
+	this.PopIndent();
+#>
+	}
+	default:
+	{
+		if( MessagePackCode.MinimumFixedMap <= header && header <= MessagePackCode.MaximumFixedMap )
+		{
+			result = header & 0xF;
+<#+
+	this.PushIndent( 2 );
+	this.OnIsMap( "result" );
+	this.WriteReturn( "result" );
+	this.PopIndent();
+#>
+		}
+
+		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, "map header", header, MessagePackCode.ToString( header ) ) );
+	}
+}// switch
 <#+
 }
 

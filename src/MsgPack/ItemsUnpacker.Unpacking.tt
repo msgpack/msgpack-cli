@@ -41,6 +41,8 @@ namespace MsgPack
 	partial class ItemsUnpacker
 	{
 <#
+this.PushIndent( 2 );
+
 foreach( var type in
 	new []
 	{ 
@@ -53,74 +55,103 @@ foreach( var type in
 	}
 )
 {
-#>
-		public override bool Read<#= type.Name #>( out <#= type.Name #> result )
-		{
-			var source = this._stream;
-			var buffer = this._scalarBuffer;
-<#
-	this.PushIndent( 3 );
-	this.WriteUnpack( type );
-	this.PopIndent();
-#>
-		}
+	this.WriteReadBody( type.Name, type.Name, false, () => this.WriteUnpack( type ) );
+	this.WriteReadBody( type.Name, type.Name, true, () => this.WriteUnpack( type ) );
 
-		public override bool ReadNullable<#= type.Name #>( out <#= type.Name #>? result )
-		{
-			var source = this._stream;
-			var buffer = this._scalarBuffer;
-<#
-	this.PushIndent( 3 );
-	this.WriteUnpack( typeof( Nullable<> ).MakeGenericType( type ) );
-	this.PopIndent();
-#>
-		}
-
-<#
+	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", false, () => this.WriteUnpack( typeof( Nullable<> ).MakeGenericType( type ) ) );
+	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", true, () => this.WriteUnpack( typeof( Nullable<> ).MakeGenericType( type ) ) );
 }
-#>
-		public override bool ReadBinary( out byte[] result )
-		{
-			var source = this._stream;
-			var buffer = this._scalarBuffer;
-<#
-	this.PushIndent( 3 );
-	this.WriteUnpackByteArray( ( size, offset )=> "new byte[ size ]" );
-	this.OnReturnScalar( "resultValue" );
-	this.PopIndent();
-#>
-			result = resultValue;
-			return true;
-		}
 
-		public override bool ReadString( out string result )
-		{
-			var source = this._stream;
-			var buffer = this._scalarBuffer;
-			var encoding = Encoding.UTF8;
-<#
-	this.PushIndent( 3 );
-	this.WriteUnpackString();
-	this.OnReturnScalar( "resultValue" );
-	this.PopIndent();
-#>
-			result = resultValue;
-			return true;
-		}
+this.WriteReadBody( "Binary", "Byte[]", false, 
+	() => 
+	{ 
+		this.WriteUnpackByteArray( ( size, offset )=> "new byte[ size ]" );
+		this.OnReturnScalar( "resultValue" );
+		this.WriteReturnBody();
+	}
+);
+this.WriteReadBody( "Binary", "Byte[]", true, 
+	() => 
+	{ 
+		this.WriteUnpackByteArray( ( size, offset )=> "new byte[ size ]" );
+		this.OnReturnScalar( "resultValue" );
+		this.WriteReturnBody();
+	}
+);
 
-		public override bool ReadObject( out MessagePackObject result )
-		{
-			var source = this._stream;
-			var buffer = this._scalarBuffer;
-<#
-	this.PushIndent( 3 );
-	this.WriteUnpackObject();
-	this.PopIndent();
+this.WriteReadBody( "String", "String", false, 
+	() => 
+	{ 
+		this.WriteEncodingDeclaration();
+		this.WriteUnpackString();
+		this.OnReturnScalar( "resultValue" );
+		this.WriteReturnBody();
+	}
+);
+this.WriteReadBody( "String", "String", true, 
+	() => 
+	{ 
+		this.WriteEncodingDeclaration();
+		this.WriteUnpackString();
+		this.OnReturnScalar( "resultValue" );
+		this.WriteReturnBody();
+	}
+);
+
+this.WriteReadBody( "Object", "MessagePackObject", false, this.WriteUnpackObject );
+this.WriteReadBody( "Object", "MessagePackObject", true, this.WriteUnpackObject );
+
+this.WriteReadBody( "ArrayLength", "Int64", false, this.WriteUnpackArrayLength );
+this.WriteReadBody( "ArrayLength", "Int64", true, this.WriteUnpackArrayLength );
+
+this.WriteReadBody( "MapLength", "Int64", false, this.WriteUnpackMapLength );
+this.WriteReadBody( "MapLength", "Int64", true, this.WriteUnpackMapLength );
+
+this.PopIndent();
 #>
-		}
 	}
 }
 <#+
+private void WriteReadBody( string typeName, string fullTypeName, bool isForSubtree, Action bodyWriter )
+{
+#>
+<#= isForSubtree ? "internal" : "public override" #> bool Read<#= isForSubtree ? "Subtree" : String.Empty #><#= typeName #>( out <#= fullTypeName #> result )
+{
+<#+
+	if( !isForSubtree )
+	{
+#>
+	this.EnsureNotInSubtreeMode();
+<#+
+	}
+#>
+	var source = this._stream;
+	var buffer = this._scalarBuffer;
+<#+
+	this.PushIndent( 1 );
+	bodyWriter();
+	this.PopIndent();
+#>
+}
+
+<#+
+}
+
+private void WriteEncodingDeclaration()
+{
+#>
+var encoding = Encoding.UTF8;
+<#+
+}
+
+private void WriteReturnBody()
+{
+#>
+result = resultValue;
+return true;
+<#+
+}
+
 private void OnFailedToReadHeader( string typeName )
 {
 #>
@@ -174,8 +205,13 @@ return true;
 
 private void WriteReturn( string valueVariable )
 {
+	if( valueVariable != "result" )
+	{
 #>
 result = <#= valueVariable #>;
+<#+
+	}
+#>
 return true;
 <#+
 }

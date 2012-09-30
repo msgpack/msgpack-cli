@@ -641,7 +641,7 @@ namespace MsgPack
 		/// </exception>
 		public virtual bool ReadArrayLength( out long result )
 		{
-			if( !this.Read())
+			if( !this.Read() )
 			{
 				result = 0;
 				return false;
