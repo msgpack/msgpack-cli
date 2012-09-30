@@ -35,6 +35,9 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
+	// This file was generated from UnpackerTest.Scalar.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit UnpackerTest.Scalar.tt and StreamingUnapkcerBase.ttinclude instead.
+
 	[TestFixture]
 	public partial class PackerTest_Scalar
 	{
