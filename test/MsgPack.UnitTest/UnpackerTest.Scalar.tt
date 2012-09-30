@@ -128,7 +128,7 @@ foreach( var __testCase in __integers )
 {
 #>
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>()
+		public void TestUnpack<#= __testCase.Item1 #>_Read()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -136,10 +136,33 @@ foreach( var __testCase in __integers )
 				Assert.IsTrue( unpacker.Read() );
 				var result = unpacker.Data;
 				Assert.IsTrue( result.HasValue );
-				Assert.AreEqual( ( <#= __testCase.Item4 #> )result.Value, <#= __testCase.Item2 #> );
+				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
 		}
-		
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __testCase.Item4.Name #>()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				<#= __testCase.Item4.Name #> result;
+				Assert.IsTrue( unpacker.Read<#= __testCase.Item4.Name #>( out result ) );
+				Assert.That( result, Is.EqualTo(<#= __testCase.Item2 #> ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_ReadNullable<#= __testCase.Item4.Name #>()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				<#= __testCase.Item4.Name #>? result;
+				Assert.IsTrue( unpacker.ReadNullable<#= __testCase.Item4.Name #>( out result ) );
+				Assert.That( result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
+			}
+		}		
 <#
 }
 
@@ -147,7 +170,7 @@ foreach( var __testCase in __reals )
 {
 #>
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>()
+		public void TestUnpack<#= __testCase.Item1 #>_Read()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
@@ -155,10 +178,33 @@ foreach( var __testCase in __reals )
 				Assert.IsTrue( unpacker.Read() );
 				var result = unpacker.Data;
 				Assert.IsTrue( result.HasValue );
-				Assert.IsTrue( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
+				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
 			}
 		}
-		
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __testCase.Item3.Name #>()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				<#= __testCase.Item3.Name #> result;
+				Assert.IsTrue( unpacker.Read<#= __testCase.Item3.Name #>( out result ) );
+				Assert.That( <#= __testCase.Item4 #> result ) );
+			}
+		}	
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_ReadNullable<#= __testCase.Item3.Name #>()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				<#= __testCase.Item3.Name #>? result;
+				Assert.IsTrue( unpacker.ReadNullable<#= __testCase.Item3.Name #>( out result ) );
+				Assert.That( <#= __testCase.Item4 #> result.Value ) );
+			}
+		}		
 <#
 }
 #>
