@@ -20,6 +20,8 @@
 
 using System;
 using System.IO;
+using System.Linq;
+using System.Text;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -658,6 +660,25 @@ namespace MsgPack
 			}
 		}
 
-		// TODO: Consider remove Feeding API and Create()
+		[Test]
+		public void TestReadString_Clob()
+		{
+			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( Char.ConvertFromUtf32 ) );
+			var encoded = Encoding.UTF8.GetBytes( str );
+			using ( var buffer =
+				new MemoryStream(
+					new byte[] { MessagePackCode.Raw32 }.Concat(
+						BitConverter.IsLittleEndian ? BitConverter.GetBytes( encoded.Length ).Reverse() : BitConverter.GetBytes( encoded.Length )
+					).Concat( encoded )
+					.ToArray()
+				)
+			)
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				string result;
+				Assert.That( target.ReadString( out result ) );
+				Assert.That( result, Is.EqualTo( str ) );
+			}
+		}
 	}
 }
