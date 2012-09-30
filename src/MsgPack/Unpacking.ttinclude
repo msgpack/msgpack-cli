@@ -218,29 +218,31 @@ Contract.Assert( encoding != null );
 	WriteUnpackRawLength( typeof( String ).FullName );
 #>
 var decoder = encoding.GetDecoder();
-var bytes = new byte[ 64 * 1024 ];
-var chars = new char[ 16 * 1024 ];
+int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
+var bytes = new byte[ chunkSize ];
+var chars = new char[ chunkSize ];
 var stringBuffer = new StringBuilder();
-int bytesRead;
+var remaining = size;
 do
 {
-    bytesRead = source.Read( bytes, 0, 64 * 1024 );
+	var reading = ( remaining > bytes.Length ) ? bytes.Length : remaining;
+    var bytesRead = source.Read( bytes, 0, reading );
+	remaining -= bytesRead;
 
-    bool isCompleted = false;
-    int bytesOffset = 0;
+    var isCompleted = false;
+    var bytesOffset = 0;
 
     while( !isCompleted )
     {
 		int bytesUsed;
 		int charsUsed;
-        bool flush = ( bytesRead == 0 );
         decoder.Convert(
 			bytes, 
 			bytesOffset,
 			bytesRead - bytesOffset,
 			chars,
 			0,
-			16 * 1024,
+			chars.Length,
 			( bytesRead == 0 ), // flush when last read.
             out bytesUsed,
 			out charsUsed,
@@ -250,7 +252,7 @@ do
 		stringBuffer.Append( chars, 0, charsUsed );
         bytesOffset += bytesUsed;
     }
-} while( bytesRead > 0 );
+} while( remaining > 0 );
 
 var resultValue = stringBuffer.ToString();
 <#+
