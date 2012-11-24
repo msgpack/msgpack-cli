@@ -109,7 +109,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( IsTraceEnabled )
 			{
 				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._packMethodBuilder );
+				this.Trace.WriteLine( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._packMethodBuilder );
 			}
 
 			return new TracingILGenerator( this._packMethodBuilder, this.Trace, this._isDebuggable );
@@ -127,7 +127,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( IsTraceEnabled )
 			{
 				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethodBuilder );
+				this.Trace.WriteLine( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._unpackFromMethodBuilder );
 			}
 
 			return new TracingILGenerator( this._unpackFromMethodBuilder, this.Trace, this._isDebuggable );
@@ -144,7 +144,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( IsTraceEnabled )
 			{
 				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackToMethodBuilder );
+				this.Trace.WriteLine( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._unpackToMethodBuilder );
 			}
 
 			if ( this._unpackToMethodBuilder == null )
