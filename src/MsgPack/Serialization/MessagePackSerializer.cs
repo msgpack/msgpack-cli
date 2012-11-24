@@ -161,7 +161,6 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
-
 #if NETFX_CORE
 			var factory =
 				_creatorCache.GetOrAdd(
@@ -173,8 +172,9 @@ namespace MsgPack.Serialization
 						return
 							Expression.Lambda<Func<SerializationContext, IMessagePackSerializer>>(
 								Expression.Call(
-									contextParameter,
-									Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type )
+									null,
+									Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type ),
+									contextParameter
 								),
 								contextParameter
 							).Compile();
