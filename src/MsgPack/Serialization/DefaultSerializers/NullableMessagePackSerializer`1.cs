@@ -65,7 +65,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #elif NETFX_CORE
 			: this( context, EmitterFlavor.ExpressionBased )
 #else
-			: this( context, EmitterFlavor.FieldBased )
+			: this( context, context.EmitterFlavor )
 #endif
 		{ }
 
