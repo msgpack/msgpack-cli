@@ -36,6 +36,8 @@ namespace MsgPack.Serialization
 
 		public static Type GetMemberValueType( this MemberInfo source )
 		{
+			Contract.Requires( source != null );
+
 			PropertyInfo asProperty = source as PropertyInfo;
 			FieldInfo asField = source as FieldInfo;
 			return asProperty != null ? asProperty.PropertyType : asField.FieldType;
