@@ -59,7 +59,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly Func<Unpacker, IMessagePackSerializer, T> _unpackFromCore;
 		private readonly IMessagePackSerializer _underlyingTypeSerializer;
 #endif
-		public NullableMessagePackSerializer( SerializationContext context ) 
+		public NullableMessagePackSerializer( SerializationContext context )
 #if WINDOWS_PHONE
 			: this( context, EmitterFlavor.ContextBased )
 #elif NETFX_CORE
@@ -67,7 +67,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #else
 			: this( context, EmitterFlavor.FieldBased )
 #endif
-		{}
+		{ }
 
 		internal NullableMessagePackSerializer( SerializationContext context, EmitterFlavor emitterFlavor )
 		{
@@ -192,6 +192,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif
 
 #if !NETFX_CORE
+
 		private static void CreateUnpacking( SerializerEmitter emitter )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
