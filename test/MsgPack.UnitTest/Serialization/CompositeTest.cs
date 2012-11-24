@@ -75,41 +75,41 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestArrayFieldBased()
 		{
-			TestCore( EmitterFlavor.FieldBased, c => new ArrayEmittingSerializerBuilder<DirectoryItem>( c ) );
+			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Array, c => new ArrayEmittingSerializerBuilder<DirectoryItem>( c ) );
 		}
 
 		[Test]
 		public void TestMapFieldBased()
 		{
-			TestCore( EmitterFlavor.FieldBased, c => new MapEmittingSerializerBuilder<DirectoryItem>( c ) );
+			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, c => new MapEmittingSerializerBuilder<DirectoryItem>( c ) );
 		}
 
 		[Test]
 		public void TestArrayContextBased()
 		{
-			TestCore( EmitterFlavor.ContextBased, c => new ArrayEmittingSerializerBuilder<DirectoryItem>( c ) );
+			TestCore( EmitterFlavor.ContextBased, SerializationMethod.Array, c => new ArrayEmittingSerializerBuilder<DirectoryItem>( c ) );
 		}
 
 		[Test]
 		public void TestMapContextBased()
 		{
-			TestCore( EmitterFlavor.ContextBased, c => new MapEmittingSerializerBuilder<DirectoryItem>( c ) );
+			TestCore( EmitterFlavor.ContextBased, SerializationMethod.Map, c => new MapEmittingSerializerBuilder<DirectoryItem>( c ) );
 		}
 #endif
 
 		[Test]
 		public void TestArrayExpressionBased()
 		{
-			TestCore( EmitterFlavor.ExpressionBased, c => new ExpressionSerializerBuilder<DirectoryItem>( c ) );
+			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Array, c => new ExpressionSerializerBuilder<DirectoryItem>( c ) );
 		}
 
 		[Test]
 		public void TestMapExpressionBased()
 		{
-			TestCore( EmitterFlavor.ExpressionBased, c => new ExpressionSerializerBuilder<DirectoryItem>( c ) );
+			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Map, c => new ExpressionSerializerBuilder<DirectoryItem>( c ) );
 		}
 
-		private static void TestCore( EmitterFlavor emittingFlavor, Func<SerializationContext, SerializerBuilder<DirectoryItem>> builderProvider )
+		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, Func<SerializationContext, SerializerBuilder<DirectoryItem>> builderProvider )
 		{
 			var root = new DirectoryItem() { Name = "/" };
 			root.Directories =
@@ -125,7 +125,7 @@ namespace MsgPack.Serialization
 				};
 			root.Files = new FileItem[ 0 ];
 
-			var serializer = new AutoMessagePackSerializer<DirectoryItem>( new SerializationContext() { EmitterFlavor = emittingFlavor, GeneratorOption = SerializationMethodGeneratorOption.CanDump }, builderProvider );
+			var serializer = new AutoMessagePackSerializer<DirectoryItem>( new SerializationContext() { EmitterFlavor = emittingFlavor, SerializationMethod = serializationMethod, GeneratorOption = SerializationMethodGeneratorOption.CanDump }, builderProvider );
 			using ( var memoryStream = new MemoryStream() )
 			{
 				serializer.Pack( memoryStream, root );
