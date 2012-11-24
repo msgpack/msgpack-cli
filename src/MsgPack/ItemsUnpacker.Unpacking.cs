@@ -6049,7 +6049,8 @@ namespace MsgPack
 			var header = source.ReadByte();
 			if( header < 0 )
 			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+				result = null;
+				return false;
 			}
 			
 			int size;
@@ -6124,7 +6125,8 @@ namespace MsgPack
 			var header = source.ReadByte();
 			if( header < 0 )
 			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+				result = null;
+				return false;
 			}
 			
 			int size;
@@ -6202,7 +6204,8 @@ namespace MsgPack
 			var header = source.ReadByte();
 			if( header < 0 )
 			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+				result = null;
+				return false;
 			}
 			
 			int size;
@@ -6306,7 +6309,8 @@ namespace MsgPack
 			var header = source.ReadByte();
 			if( header < 0 )
 			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+				result = null;
+				return false;
 			}
 			
 			int size;
