@@ -225,6 +225,7 @@ namespace MsgPack
 		///	</returns>
 		///	<exception cref="InvalidOperationException">
 		///		This unpacker is not positioned on the header of array nor map.
+		///		Or this unpacker already returned <see cref="Unpacker"/> for subtree and it has not been closed yet.
 		///	</exception>
 		///	<remarks>
 		///		While subtree unpacker is used, this instance will be 'locked' (called 'subtree' mode) and be unavailable.
@@ -237,6 +238,11 @@ namespace MsgPack
 			if ( !this.IsArrayHeader && !this.IsMapHeader )
 			{
 				throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
+			}
+
+			if ( this._isSubtreeReading )
+			{
+				throw new InvalidOperationException( "Unpacker is already in 'Subtree' mode." );
 			}
 
 			var subtreeReader = this.ReadSubtreeCore();

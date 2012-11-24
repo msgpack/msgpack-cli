@@ -212,6 +212,29 @@ namespace MsgPack
 			}
 		}
 
+		[Test]
+		public void TestReadSubtree_Twice_Error()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x91, 0x91, 0x2, 0x3 } ) )
+			using ( var root = Unpacker.Create( buffer ) )
+			{
+				int lastValue;
+				Assert.That( root.ReadInt32( out lastValue ) );
+				Assert.That( lastValue, Is.EqualTo( 1 ) );
+
+				long length;
+				Assert.That( root.ReadArrayLength( out length ) );
+				Assert.That( length, Is.EqualTo( 1 ) );
+
+				using ( var subtree = root.ReadSubtree() )
+				{
+					Assert.That( subtree.ReadArrayLength( out length ) );
+					Assert.That( length, Is.EqualTo( 1 ) );
+
+					Assert.Throws<InvalidOperationException>( () => root.ReadSubtree() );
+				}
+			}
+		}
 
 		[Test]
 		public void TestDispose_TailNested_AsIs()
