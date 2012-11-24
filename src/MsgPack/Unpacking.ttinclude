@@ -201,7 +201,7 @@ foreach( var entry in
 /// <param name="allocationWriter">A delegate which takes allocation size expression and offset variable name, and returns byte array allocation expression.</param>
 private void WriteUnpackByteArray( Func<string, string, string> allocationWriter  )
 {
-	WriteUnpackRawLength( "System.Byte[]" );
+	WriteUnpackRawLength( "System.Byte[]", "result" );
 #>
 int contentBufferOffset = 0;
 var resultValue = <#= allocationWriter( "size", "contentBufferOffset" ) #>;
@@ -217,7 +217,7 @@ private void WriteUnpackString()
 #>
 Contract.Assert( encoding != null );
 <#+
-	WriteUnpackRawLength( typeof( String ).FullName );
+	WriteUnpackRawLength( typeof( String ).FullName, "result" );
 #>
 var decoder = encoding.GetDecoder();
 int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
@@ -260,7 +260,7 @@ var resultValue = stringBuffer.ToString();
 <#+
 }
 
-private void WriteUnpackRawLength( string typeName )
+private void WriteUnpackRawLength( string typeName, string resultVariable )
 {
 #>
 Contract.Assert( source != null );
@@ -269,7 +269,8 @@ Contract.Assert( buffer != null );
 var header = source.ReadByte();
 if( header < 0 )
 {
-	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+	<#= resultVariable #> = null;
+	return false;
 }
 
 int size;
