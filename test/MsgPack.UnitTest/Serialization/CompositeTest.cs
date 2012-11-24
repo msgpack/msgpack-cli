@@ -154,11 +154,29 @@ namespace MsgPack.Serialization
 		public string Name { get; set; }
 	}
 
-	public sealed class FileItem : FileSystemItem { }
+	public sealed class FileItem : FileSystemItem
+	{
+		public override string ToString()
+		{
+			return String.Format( CultureInfo.InvariantCulture, "FileItem {{ Path = \"{0}\" }}", this.Name ?? "(null)" );
+		}
+	}
 
 	public sealed class DirectoryItem : FileSystemItem
 	{
 		public FileItem[] Files { get; set; }
 		public DirectoryItem[] Directories { get; set; }
+
+		public override string ToString()
+		{
+			return
+				String.Format(
+					CultureInfo.InvariantCulture,
+					"DirecgtoryItem {{ Path = \"{0}\", Directories = {1}, Files = {2} }}",
+					this.Name ?? "(null)",
+					this.Directories == null ? "(null)" : this.Directories.Length.ToString( CultureInfo.InvariantCulture ),
+					this.Files == null ? "(null)" : this.Files.Length.ToString( CultureInfo.InvariantCulture )
+				);
+		}
 	}
 }
