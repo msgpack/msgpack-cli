@@ -1,0 +1,101 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ Assembly Name="System.Windows.Forms.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+Type[] _valueTypes =
+	new []
+	{
+		typeof( sbyte ), typeof( short ), typeof( int ), typeof( long ),
+		typeof( byte ), typeof( ushort ), typeof( uint ), typeof( ulong ),
+		typeof( float ), typeof( double ),
+		typeof( bool )
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
+
+namespace MsgPack.Serialization.Metadata
+{
+	// This file was generated from _Unpacker.Read.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit _Unpacker.Read.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	partial class _Unpacker
+	{
+		private static readonly Dictionary<Type,MethodInfo> _directReadMethods;
+
+<#
+foreach( var type in _valueTypes )
+{
+#>
+		public static readonly MethodInfo Read<#= type.Name #>;
+		public static readonly MethodInfo ReadNullable<#= type.Name #>;
+<#
+}
+#>
+		public static readonly MethodInfo ReadString;
+		public static readonly MethodInfo ReadBinary;
+		public static readonly MethodInfo ReadObject;
+
+		static _Unpacker()
+		{
+			var directReadMethods = new Dictionary<Type, MethodInfo>( <#= _valueTypes.Length * 2 + 3 #> );
+<#
+foreach( var type in _valueTypes )
+{
+	// NOTE: Allways use nullable version for nil implication.
+#>
+			
+			Read<#= type.Name #> = typeof( Unpacker ).GetMethod( "Read<#= type.Name #>" );
+			ReadNullable<#= type.Name #> = typeof( Unpacker ).GetMethod( "ReadNullable<#= type.Name #>" );
+			directReadMethods.Add( typeof( <#= type.FullName #> ), ReadNullable<#= type.Name #> );
+			directReadMethods.Add( typeof( <#= type.FullName #>? ), ReadNullable<#= type.Name #> );
+<#
+}
+#>
+			ReadString = typeof( Unpacker ).GetMethod( "ReadString" );
+			directReadMethods.Add( typeof( string ), ReadString );
+			ReadBinary = typeof( Unpacker ).GetMethod( "ReadBinary" );
+			directReadMethods.Add( typeof( byte[] ), ReadBinary );
+			ReadObject = typeof( Unpacker ).GetMethod( "ReadObject" );
+			directReadMethods.Add( typeof( MessagePackObject ), ReadObject );
+
+			Interlocked.Exchange( ref _directReadMethods, directReadMethods );
+		}
+
+		public static MethodInfo GetDirectReadMethod( Type type )
+		{
+			MethodInfo result;
+			_directReadMethods.TryGetValue( type, out result );
+			return result;
+		}
+	}
+}

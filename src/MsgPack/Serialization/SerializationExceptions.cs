@@ -107,6 +107,29 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
+		///		<see cref="MethodInfo"/> of <see cref="NewTypeCannotDeserialize(Type,String,Exception)"/> method.
+		/// </summary>
+		internal static readonly MethodInfo NewTypeCannotDeserialize3Method = FromExpression.ToMethod( ( Type type, string memberName, Exception inner ) => NewTypeCannotDeserialize( type, memberName, inner ) );
+
+		/// <summary>
+		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Returns new exception to notify that value type cannot deserialize.
+		/// </summary>
+		/// <param name="type">The target type.</param>
+		/// <param name="memberName">The name of deserializing member.</param>
+		/// <param name="inner">The inner exception.</param>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static Exception NewTypeCannotDeserialize( Type type, string memberName, Exception inner )
+		{
+			Contract.Requires( type != null );
+			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
+			Contract.Requires( inner != null );
+			Contract.Ensures( Contract.Result<Exception>() != null );
+
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{1}' of type '{0}'.", type, memberName ), inner );
+		}
+
+		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewMissingItem"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewMissingItemMethod = FromExpression.ToMethod( ( int index ) => NewMissingItem( index ) );
@@ -381,6 +404,30 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<Exception>() != null );
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The MessagePack stream is invalid. Expected array length is {0}, but actual is {1}.", expectedLength, actualLength ) );
+		}
+
+		/// <summary>
+		///		<see cref="MethodInfo"/> of <see cref="NewFailedToDeserializeMember"/> method.
+		/// </summary>
+		internal static readonly MethodInfo NewFailedToDeserializeMemberMethod =
+			FromExpression.ToMethod( ( Type targetType, string memberName, Exception inner ) => NewFailedToDeserializeMember( targetType, memberName, inner ) );
+
+		/// <summary>
+		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
+		///		Returns new exception to notify that it is failed to deserialize member.
+		/// </summary>
+		/// <param name="targetType">Deserializing type.</param>
+		/// <param name="memberName">The name of the deserializing member.</param>
+		/// <param name="inner">The exception which caused current error.</param>
+		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
+		public static Exception NewFailedToDeserializeMember( Type targetType, string memberName, Exception inner )
+		{
+			Contract.Requires( targetType != null );
+			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
+			Contract.Requires( inner != null );
+			Contract.Ensures( Contract.Result<Exception>() != null );
+
+			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{0}' of type '{1}'.", memberName, targetType ), inner );
 		}
 	}
 }

@@ -226,7 +226,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.EmitBr_S( endMethod );
 
 				il.MarkLabel( endIf );
-				Emittion.EmitDeserializeValue( emitter, il, 1, value, NilImplication.MemberDefault, null );
+
+				// Just invoke Unpack without direct unpacking nor subtree reading...
+				// Unpacker must locate in first value of non-null value-type object.
+				Emittion.EmitUnpackFrom( emitter, il, value, 1 );
 				il.EmitAnyLdloc( value );
 				il.EmitAnyCall( _nullableTImplicitOperator );
 				il.EmitAnyStloc( result );

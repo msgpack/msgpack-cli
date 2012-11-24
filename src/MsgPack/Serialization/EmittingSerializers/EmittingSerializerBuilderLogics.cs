@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -729,20 +730,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 				 *			throw SerializationExceptions.NewMissingItem(0);
 				 *		}
 				 *		
-				 *		T1 item1;
-				 *		if (!unpacker.IsArrayHeader && !unpacker.IsMapHeader)
-				 *		{
-				 *			item1 = this._serializer0.UnpackFrom(unpacker);
-				 *		}
-				 *		else
-				 *		{
-				 *			using (Unpacker subtreeUnpacker = unpacker.ReadSubtree())
-				 *			{
-				 *				item1 = this._serializer0.UnpackFrom(subtreeUnpacker);
-				 *			}
-				 *		}
+				 *		DESERIALIZE_VALUE
 				 *		
-				 *		if (!unpacker.Read())
 				 *			:
 				 *		
 				 *		return new Tuple<...>( item1, ... , new Tuple<...>(...)...);
@@ -770,30 +759,39 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitThrow();
 				il.MarkLabel( endIf1 );
 
-				LocalBuilder[] itemLocals = new LocalBuilder[ itemTypes.Count ];
-				int i = 0;
-				Action<TracingILGenerator, int> unpackerReading =
-					( il1, unpacker ) =>
-					{
-						il1.EmitAnyLdarg( unpacker );
-						il1.EmitAnyCall( Metadata._Unpacker.Read );
-						var endIf0 = il1.DefineLabel( "END_IF0" );
-						il1.EmitBrtrue_S( endIf0 );
-						il1.EmitAnyLdc_I4( i );
-						il1.EmitAnyCall( SerializationExceptions.NewMissingItemMethod );
-						il1.EmitThrow();
-						il1.MarkLabel( endIf0 );
-					};
+				var itemLocals = new LocalBuilder[ itemTypes.Count ];
+				var useDummyNullables = new bool[ itemTypes.Count ];
 
-				for ( ; i < itemTypes.Count; i++ )
+				for ( int i = 0; i < itemTypes.Count; i++ )
 				{
-					itemLocals[ i ] = il.DeclareLocal( itemTypes[ i ], "item" + i );
-					Emittion.EmitDeserializeValue( emitter, il, 1, itemLocals[ i ], NilImplication.MemberDefault, unpackerReading );
+					if ( itemTypes[ i ] != typeof( MessagePackObject ) &&
+						itemTypes[ i ].GetIsValueType() &&
+						Nullable.GetUnderlyingType( itemTypes[ i ] ) == null )
+					{
+						// Use temporary nullable value for nil implication.
+						itemLocals[ i ] = il.DeclareLocal( typeof( Nullable<> ).MakeGenericType( itemTypes[ i ] ), "value" );
+						useDummyNullables[ i ] = true;
+					}
+					else
+					{
+						itemLocals[ i ] = il.DeclareLocal( itemTypes[ i ], "value" );
+					}
+
+					// Tuple member should be NilImplication.MemberDefault.
+					Emittion.EmitDeserializeValueWithoutNilImplication( emitter, il, 1, itemLocals[ i ], typeof( Tuple ), "Item" + ( i ).ToString( CultureInfo.InvariantCulture ) );
 				}
 
-				foreach ( var item in itemLocals )
+				for ( int i = 0; i < itemLocals.Length; i++ )
 				{
-					il.EmitAnyLdloc( item );
+					if ( useDummyNullables[ i ] )
+					{
+						il.EmitAnyLdloca( itemLocals[ i ] );
+						il.EmitGetProperty( typeof( Nullable<> ).MakeGenericType( itemTypes[ i ] ).GetProperty( "Value" ) );
+					}
+					else
+					{
+						il.EmitAnyLdloc( itemLocals[ i ] );
+					}
 				}
 
 				var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );

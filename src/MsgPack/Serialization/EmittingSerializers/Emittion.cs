@@ -31,7 +31,8 @@ using MsgPack.Serialization.Reflection;
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	// FIXME : comment
-	internal static class Emittion
+	// FIXME : local-variable sharing
+	internal static partial class Emittion
 	{
 		private static readonly Type[] _ctor_Int32_ParameterTypes = new[] { typeof( int ) };
 
@@ -356,24 +357,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( valueType ).GetMethod( "PackTo" ) );
 		}
 
-		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder result, MemberInfo member, string memberName, NilImplication nilImplication, Action<TracingILGenerator, int> customUnpackerReading )
+		/// <summary>
+		/// Emits the deserialize value.
+		/// </summary>
+		/// <param name="emitter">The emitter.</param>
+		/// <param name="il">The il generator.</param>
+		/// <param name="unpackerArgumentIndex">Index of the unpacker argument.</param>
+		/// <param name="result">The result local variable which represents the result of deserialization.</param>
+		/// <param name="member">The metadata for nil implication. Specify <c>null</c> if nil implication is not needed.</param>
+		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder result, SerializingMember member )
 		{
 			Contract.Requires( emitter != null );
 			Contract.Requires( il != null );
 			Contract.Requires( unpackerArgumentIndex >= 0 );
 			Contract.Requires( result != null );
-			Contract.Requires( member != null );
-
-			if ( customUnpackerReading != null )
-			{
-				customUnpackerReading( il, unpackerArgumentIndex );
-			}
 
 			var endOfDeserialization = il.DefineLabel( "END_OF_DESERIALIZATION" );
-			if ( memberName != null )
-			{
-				EmitNilImplication( il, unpackerArgumentIndex, memberName, nilImplication, endOfDeserialization );
-			}
 
 			/*
 			 * 
@@ -392,34 +391,21 @@ namespace MsgPack.Serialization.EmittingSerializers
 			 * isValueNUnpacked = true;
 			 * END_OF_DESERIALIZATION:
 			 */
+			LocalBuilder value;
+			bool useDummyNullableValue = false;
+			if ( member.Member.GetMemberValueType().GetIsValueType() &&
+				Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
+			{
+				// Use temporary nullable value for nil implication.
+				value = il.DeclareLocal( typeof( Nullable<> ).MakeGenericType( member.Member.GetMemberValueType() ), "value" );
+				useDummyNullableValue = true;
+			}
+			else
+			{
+				value = il.DeclareLocal( member.Member.GetMemberValueType(), "value" );
+			}
 
-			var then = il.DefineLabel( "THEN" );
-			var endIf = il.DefineLabel( "END_IF" );
-			var value = il.DeclareLocal( member.GetMemberValueType(), "value" );
-			var serializerGetter = emitter.RegisterSerializer( value.LocalType );
-
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
-			il.EmitBrtrue_S( then );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
-			il.EmitBrtrue_S( then );
-			// else
-			serializerGetter( il, 0 );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( value.LocalType ).GetMethod( "UnpackFrom" ) );
-			il.EmitAnyStloc( value );
-			il.EmitBr_S( endIf );
-			// then
-			var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
-			il.MarkLabel( then );
-			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
-			serializerGetter( il, 0 );
-			il.EmitAnyLdloc( subtreeUnpacker );
-			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( value.LocalType ).GetMethod( "UnpackFrom" ) );
-			il.EmitAnyStloc( value );
-			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
-			il.MarkLabel( endIf );
+			EmitDeserializeValueCore( emitter, il, unpackerArgumentIndex, value, result.LocalType, member, member.Contract.Name, endOfDeserialization );
 
 			if ( result.LocalType.IsValueType )
 			{
@@ -430,23 +416,36 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitAnyLdloc( result );
 			}
 
-			il.EmitAnyLdloc( value );
-			Emittion.EmitStoreValue( il, member );
+			if ( useDummyNullableValue )
+			{
+				il.EmitAnyLdloca( value );
+				il.EmitGetProperty( typeof( Nullable<> ).MakeGenericType( member.Member.GetMemberValueType() ).GetProperty( "Value" ) );
+			}
+			else
+			{
+				il.EmitAnyLdloc( value );
+			}
+
+			EmitStoreValue( il, member.Member );
 
 			il.MarkLabel( endOfDeserialization );
 		}
 
-		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, NilImplication nilImplication, Action<TracingILGenerator, int> customUnpackerReading )
+		/// <summary>
+		///		Emits deserializing value instructions.
+		/// </summary>
+		/// <param name="emitter">The emitter.</param>
+		/// <param name="il">The il generator.</param>
+		/// <param name="unpackerArgumentIndex">Index of the unpacker argument.</param>
+		/// <param name="value">The value local variable which stores unpacked value.</param>
+		/// <param name="targetType">The type of deserialzing type.</param>
+		/// <param name="memberName">The name of the member.</param>
+		public static void EmitDeserializeValueWithoutNilImplication( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Type targetType, string memberName )
 		{
 			Contract.Requires( emitter != null );
 			Contract.Requires( il != null );
 			Contract.Requires( unpackerArgumentIndex >= 0 );
 			Contract.Requires( value != null );
-
-			if ( customUnpackerReading != null )
-			{
-				customUnpackerReading( il, unpackerArgumentIndex );
-			}
 
 			var endOfDeserialization = il.DefineLabel( "END_OF_DESERIALIZATION" );
 
@@ -468,34 +467,135 @@ namespace MsgPack.Serialization.EmittingSerializers
 			 * END_OF_DESERIALIZATION:
 			 */
 
-			var then = il.DefineLabel( "THEN" );
-			var endIf = il.DefineLabel( "END_IF" );
-			var serializerGetter = emitter.RegisterSerializer( value.LocalType );
-
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
-			il.EmitBrtrue_S( then );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
-			il.EmitBrtrue_S( then );
-			// else
-			serializerGetter( il, 0 );
-			il.EmitAnyLdarg( unpackerArgumentIndex );
-			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( value.LocalType ).GetMethod( "UnpackFrom" ) );
-			il.EmitAnyStloc( value );
-			il.EmitBr_S( endIf );
-			// then
-			var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
-			il.MarkLabel( then );
-			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
-			serializerGetter( il, 0 );
-			il.EmitAnyLdloc( subtreeUnpacker );
-			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( value.LocalType ).GetMethod( "UnpackFrom" ) );
-			il.EmitAnyStloc( value );
-			EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
-			il.MarkLabel( endIf );
+			// Nil implication is not needed.
+			EmitDeserializeValueCore( emitter, il, unpackerArgumentIndex, value, targetType, null, memberName, endOfDeserialization );
 
 			il.MarkLabel( endOfDeserialization );
+		}
+
+		/// <summary>
+		/// Emits the deserialize value.
+		/// </summary>
+		/// <param name="emitter">The emitter.</param>
+		/// <param name="il">The il generator.</param>
+		/// <param name="unpackerArgumentIndex">Index of the unpacker argument.</param>
+		/// <param name="value">The value local variable which stores unpacked value.</param>
+		/// <param name="targetType">The type of deserialzing type.</param>
+		/// <param name="member">The metadata for nil implication. Specify <c>null</c> if nil implication is not needed.</param>
+		/// <param name="memberName">The name of the member.</param>
+		/// <param name="endOfDeserialization">The end of deserialization label for nil implication.</param>
+		private static void EmitDeserializeValueCore( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Type targetType, SerializingMember? member, string memberName, Label endOfDeserialization )
+		{
+			var directUnpacking = Metadata._Unpacker.GetDirectReadMethod( value.LocalType );
+			if ( directUnpacking != null && ( member == null || !UnpackHelpers.IsReadOnlyAppendableCollectionMember( member.Value.Member ) ) )
+			{
+				var isSuccess = il.DeclareLocal( typeof( bool ), "isSuccess" );
+				il.BeginExceptionBlock();
+				il.EmitAnyLdarg( unpackerArgumentIndex );
+				il.EmitAnyLdloca( value );
+				il.EmitAnyCall( directUnpacking );
+				il.EmitAnyStloc( isSuccess );
+				il.BeginCatchBlock( typeof( MessageTypeException ) );
+				var ex = il.DeclareLocal( typeof( MessageTypeException ), "ex" );
+				il.EmitAnyStloc( ex );
+				il.EmitTypeOf( targetType );
+				il.EmitLdstr( memberName );
+				il.EmitAnyLdloc( ex );
+				il.EmitAnyCall( SerializationExceptions.NewFailedToDeserializeMemberMethod );
+				il.EmitThrow();
+				il.EndExceptionBlock();
+				var endIf0 = il.DefineLabel( "END_IF" );
+				il.EmitAnyLdloc( isSuccess );
+				il.EmitBrtrue_S( endIf0 );
+				il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
+				il.EmitThrow();
+				il.MarkLabel( endIf0 );
+				if ( member != null )
+				{
+					// If null, nil implication is NOT needed.
+					EmitNilImplicationForPrimitive( il, member.Value, value, endOfDeserialization );
+				}
+			}
+			else
+			{
+				EmitGeneralRead( il, unpackerArgumentIndex );
+				if ( member != null )
+				{
+					// If null, nil implication is NOT needed.
+					EmitNilImplication(
+						il,
+						unpackerArgumentIndex,
+						member.Value.Contract.Name,
+						member.Value.Contract.NilImplication,
+						endOfDeserialization
+					);
+				}
+
+				var thenIffCollection = il.DefineLabel( "THEN_IF_COLLECTION" );
+				var endIfCollection = il.DefineLabel( "END_IF_COLLECTION" );
+
+				/*
+				 *	if( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				 *	{
+				 *		value = GET_SERIALIZER().UnpackFrom( unpacker );
+				 *	}
+				 *	else
+				 *	{
+				 *		using( var subtreeUnpacker = unpacker.ReadSubtree() )
+				 *		{
+				 *			value = GET_SERIALIZER().UnpackFrom( subtreeUnpacker );
+				 *		}
+				 *	}
+				 */
+
+				il.EmitAnyLdarg( unpackerArgumentIndex );
+				il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
+				il.EmitAnyLdarg( unpackerArgumentIndex );
+				il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
+				il.EmitOr();
+				il.EmitBrtrue_S( thenIffCollection );
+				EmitUnpackFrom( emitter, il, value, unpackerArgumentIndex );
+				il.EmitBr_S( endIfCollection );
+				var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
+				il.MarkLabel( thenIffCollection );
+				EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
+				EmitUnpackFrom( emitter, il, value, subtreeUnpacker );
+				EmitUnpackerEndReadSubtree( il, subtreeUnpacker );
+				il.MarkLabel( endIfCollection );
+			}
+
+		}
+
+		/// <summary>
+		///		Emits unpacking method with flavor specific getter.
+		/// </summary>
+		/// <param name="emitter">SerializerEmitter which knows the emittion flavor.</param>
+		/// <param name="il">The il generator.</param>
+		/// <param name="result">A variable wich stores unpacked result.</param>
+		/// <param name="unpackerIndex">The argument index which stores current Unpacker.</param>
+		public static void EmitUnpackFrom( SerializerEmitter emitter, TracingILGenerator il, LocalBuilder result, int unpackerIndex )
+		{
+			var serializerGetter = emitter.RegisterSerializer( result.LocalType );
+			serializerGetter( il, 0 );
+			il.EmitAnyLdarg( unpackerIndex );
+			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( result.LocalType ).GetMethod( "UnpackFrom" ) );
+			il.EmitAnyStloc( result );
+		}
+
+		/// <summary>
+		///		Emits unpacking method with flavor specific getter.
+		/// </summary>
+		/// <param name="emitter">SerializerEmitter which knows the emittion flavor.</param>
+		/// <param name="il">The il generator.</param>
+		/// <param name="result">A variable wich stores unpacked result.</param>
+		/// <param name="unpacker">The local variable which stores current Unpacker.</param>
+		public static void EmitUnpackFrom( SerializerEmitter emitter, TracingILGenerator il, LocalBuilder result, LocalBuilder unpacker )
+		{
+			var serializerGetter = emitter.RegisterSerializer( result.LocalType );
+			serializerGetter( il, 0 );
+			il.EmitAnyLdloc( unpacker );
+			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( result.LocalType ).GetMethod( "UnpackFrom" ) );
+			il.EmitAnyStloc( result );
 		}
 
 		public static void EmitNilImplication(
@@ -558,6 +658,90 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 					break;
 				}
+			}
+		}
+
+		private static void EmitNilImplicationForPrimitive( TracingILGenerator il, SerializingMember member, LocalBuilder value, Label endOfDeserialization )
+		{
+			var endIf = il.DefineLabel( "END_IF_NULL" );
+			EmitCompareNull( il, value, endIf );
+
+			switch ( member.Contract.NilImplication )
+			{
+				case NilImplication.MemberDefault:
+				{
+					/*
+					 * if( value == null )
+					 * {
+					 *		// Skip current.
+					 *		goto END_OF_DESERIALIZATION;
+					 * }
+					 */
+					il.EmitBr( endOfDeserialization );
+					break;
+				}
+				case NilImplication.Null:
+				{
+					// Throw exception for non-nullable value type.
+					// Nop for nullables.
+					if ( member.Member.GetMemberValueType().GetIsValueType()
+						&& Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
+					{
+						/*
+						 * if( value == null )
+						 * {
+						 *		throw SerializationEceptions.NewValueTypeCannotBeNull( "...", typeof( MEMBER ), typeof( TYPE ) );
+						 * }
+						 */
+						il.EmitLdstr( member.Contract.Name );
+						il.EmitLdtoken( member.Member.GetMemberValueType() );
+						il.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
+						il.EmitLdtoken( member.Member.DeclaringType );
+						il.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
+						il.EmitAnyCall( SerializationExceptions.NewValueTypeCannotBeNull3Method );
+						il.EmitThrow();
+					}
+
+					break;
+				}
+				case NilImplication.Prohibit:
+				{
+					/*
+					 * if( value == null )
+					 * {
+					 *		throw SerializationEceptions.NewProhibitNullException( "..." );
+					 * }
+					 */
+					il.EmitLdstr( member.Contract.Name );
+					il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+					il.EmitThrow();
+					break;
+				}
+			}
+
+			il.MarkLabel( endIf );
+		}
+
+		private static void EmitCompareNull( TracingILGenerator il, LocalBuilder value, Label targetIfNotNull )
+		{
+			if ( value.LocalType == typeof( MessagePackObject ) )
+			{
+				il.EmitAnyLdloca( value );
+				il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
+				il.EmitBrfalse_S( targetIfNotNull );
+			}
+			else if ( value.LocalType.GetIsValueType() )
+			{
+				Contract.Assert( Nullable.GetUnderlyingType( value.LocalType ) != null, value.LocalType.FullName );
+				il.EmitAnyLdloca( value );
+				il.EmitGetProperty( value.LocalType.GetProperty( "HasValue" ) );
+				il.EmitBrtrue_S( targetIfNotNull );
+			}
+			else // ref type
+			{
+				il.EmitAnyLdloc( value );
+				il.EmitLdnull();
+				il.EmitBne_Un_S( targetIfNotNull );
 			}
 		}
 
@@ -774,6 +958,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			il.EmitNewobj( ctor );
 			il.EmitAnyStloc( target );
+		}
+
+		/// <summary>
+		///		Emits reading next item operation from the unpacker.
+		/// </summary>
+		/// <param name="il">Writng IL generator.</param>
+		/// <param name="unpackerArgumentIndex">The index of the Unpacker argument.</param>
+		public static void EmitGeneralRead( TracingILGenerator il, int unpackerArgumentIndex )
+		{
+			il.EmitAnyLdarg( unpackerArgumentIndex );
+			il.EmitAnyCall( Metadata._Unpacker.Read );
+			var endIf = il.DefineLabel( "END_IF" );
+			il.EmitBrtrue_S( endIf );
+			il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
+			il.EmitThrow();
+			il.MarkLabel( endIf );
 		}
 	}
 }

@@ -314,6 +314,9 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_Unpacker.cs">
       <Link>Serialization\Metadata\_Unpacker.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_Unpacker.Read.cs">
+      <Link>Serialization\Metadata\_Unpacker.Read.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_UnpackHelpers.cs">
       <Link>Serialization\Metadata\_UnpackHelpers.cs</Link>
     </Compile>

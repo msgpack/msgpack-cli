@@ -228,6 +228,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FromExpression.ToMethod.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\Metadata\_Unpacker.Read.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_Unpacker.Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\Metadata\_UnpackHelpers.cs" />
     <Compile Include="Serialization\Metadata\_NotImplementedException.cs" />
     <Compile Include="Serialization\NilImplication.cs" />
@@ -328,6 +333,10 @@
     <None Include="Serialization\FromExpression.ToMethod.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FromExpression.ToMethod.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\Metadata\_Unpacker.Read.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>_Unpacker.Read.cs</LastGenOutput>
     </None>
     <None Include="Serialization\SerializerRepository.defaults.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

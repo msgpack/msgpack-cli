@@ -23,7 +23,7 @@ using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
 {
-	internal static class _Unpacker
+	internal static partial class _Unpacker
 	{
 		public static readonly MethodInfo Read = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
 		public static readonly MethodInfo UnpackSubtree = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackSubtree() );
