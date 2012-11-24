@@ -549,5 +549,22 @@ namespace MsgPack.Serialization
 			return traits.CollectionType != CollectionKind.NotCollection && traits.AddMethod != null;
 		}
 
+		/// <summary>
+		///		Ensures the boxed type is not null thus it cannot be unboxing.
+		/// </summary>
+		/// <typeparam name="T">The type of the member.</typeparam>
+		/// <param name="boxed">The boxed deserializing value.</param>
+		/// <param name="name">The name of the member.</param>
+		/// <param name="targetType">The type of the target.</param>
+		/// <returns>The unboxed value.</returns>
+		public static T ConvertWithEnsuringNotNull<T>( object boxed, string name, Type targetType )
+		{
+			if ( typeof( T ).GetIsValueType() && boxed == null && Nullable.GetUnderlyingType( typeof( T ) ) == null )
+			{
+				throw SerializationExceptions.NewValueTypeCannotBeNull( name, typeof( T ), targetType );
+			}
+
+			return ( T )boxed;
+		}
 	}
 }

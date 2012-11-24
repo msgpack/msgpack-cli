@@ -192,31 +192,16 @@ namespace MsgPack.Serialization.ExpressionSerializers
 									refTargetParameter,
 									m.Member.Name
 								),
-								m.Member.GetMemberValueType().GetIsValueType() &&
-								Nullable.GetUnderlyingType( m.Member.GetMemberValueType() ) == null
-								? Expression.Condition(
-									Expression.ReferenceEqual( valueParameter, Expression.Constant( null ) ),
-									Expression.Throw(
-										Expression.Call(
-											null,
-											SerializationExceptions.NewValueTypeCannotBeNull3Method,
-											Expression.Constant( m.Member.Name ),
-											Expression.Call( // Using RuntimeTypeHandle to avoid WinRT expression tree issue.
-												null,
-												Metadata._Type.GetTypeFromHandle,
-												Expression.Constant( m.Member.GetMemberValueType().TypeHandle )
-											),
-											Expression.Call( // Using RuntimeTypeHandle to avoid WinRT expression tree issue.
-												null,
-												Metadata._Type.GetTypeFromHandle,
-												Expression.Constant( m.Member.DeclaringType.TypeHandle )
-											)
-										),
-										m.Member.GetMemberValueType()
-									),
-									Expression.Convert( valueParameter, m.Member.GetMemberValueType() )
-								) as Expression
-								: Expression.Convert( valueParameter, m.Member.GetMemberValueType() )
+								Expression.Call(
+									Metadata._UnpackHelpers.ConvertWithEnsuringNotNull_1Method.MakeGenericMethod(m.Member.GetMemberValueType()),
+									valueParameter,
+									Expression.Constant(m.Member.Name),
+									Expression.Call( // Using RuntimeTypeHandle to avoid WinRT expression tree issue.
+										null,
+										Metadata._Type.GetTypeFromHandle,
+										Expression.Constant( m.Member.DeclaringType.TypeHandle )
+									)
+								)
 							),
 							refTargetParameter,
 							valueParameter
