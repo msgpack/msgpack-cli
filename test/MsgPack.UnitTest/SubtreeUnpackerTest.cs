@@ -232,7 +232,7 @@ namespace MsgPack
 					Assert.That( subtree.ReadArrayLength( out length ) );
 					Assert.That( length, Is.EqualTo( 1 ) );
 
-					using ( var subsubtree = root.ReadSubtree() )
+					using ( var subsubtree = subtree.ReadSubtree() )
 					{
 						Assert.That( subsubtree.ReadInt32( out lastValue ) );
 						Assert.That( lastValue, Is.EqualTo( 2 ) );
@@ -263,7 +263,7 @@ namespace MsgPack
 					Assert.That( subtree.ReadArrayLength( out length ) );
 					Assert.That( length, Is.EqualTo( 2 ) );
 
-					using ( var subsubtree = root.ReadSubtree() )
+					using ( var subsubtree = subtree.ReadSubtree() )
 					{
 						Assert.That( subsubtree.ReadInt32( out lastValue ) );
 						Assert.That( lastValue, Is.EqualTo( 2 ) );
