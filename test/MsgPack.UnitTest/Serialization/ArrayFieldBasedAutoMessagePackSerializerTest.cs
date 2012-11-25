@@ -22,6 +22,7 @@ using System;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
+using MsgPack.Serialization.ExpressionSerializers;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -36,7 +37,7 @@ namespace MsgPack.Serialization
 {
 #if !NETFX_CORE
 	[TestFixture]
-	public class MapFieldBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
+	public class ArrayFieldBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
 		protected override bool CanDumpAssembly
 		{
@@ -45,12 +46,12 @@ namespace MsgPack.Serialization
 
 		protected override SerializationContext GetSerializationContext()
 		{
-			return new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.FieldBased };
+			return new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.FieldBased };
 		}
 
 		protected override MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
-			return new AutoMessagePackSerializer<T>( context, c => new MapEmittingSerializerBuilder<T>( c ) );
+			return new AutoMessagePackSerializer<T>( context, c => new ArrayEmittingSerializerBuilder<T>( c ) );
 		}
 	}
 #endif

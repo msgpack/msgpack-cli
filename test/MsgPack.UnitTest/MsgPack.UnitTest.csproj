@@ -178,6 +178,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\AddOnlyCollection`1.cs" />
+    <Compile Include="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs" />
+    <Compile Include="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
+    <Compile Include="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs" />
     <Compile Include="Serialization\ArraySegmentEqualityComparer`1.cs" />
     <Compile Include="Serialization\AutoMessagePackSerializerTest.cs" />
     <Compile Include="Serialization\AutoMessagePackSerializerTest.Types.cs">
@@ -196,6 +199,8 @@
     <Compile Include="Serialization\FromExpressionTest.cs" />
     <Compile Include="Serialization\IVerifiable.cs" />
     <Compile Include="Serialization\IVerifiable`1.cs" />
+    <Compile Include="Serialization\MapContextBasedAutoMessagePackSerializerTest.cs" />
+    <Compile Include="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs" />
     <Compile Include="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs" />
     <Compile Include="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
     <Compile Include="Serialization\MessagePackMemberAttributeTest.cs" />

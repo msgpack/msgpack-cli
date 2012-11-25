@@ -22,6 +22,7 @@ using System;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
+using MsgPack.Serialization.ExpressionSerializers;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -36,16 +37,11 @@ namespace MsgPack.Serialization
 {
 #if !NETFX_CORE
 	[TestFixture]
-	public class MapFieldBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
+	public class MapContextBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
-		protected override bool CanDumpAssembly
-		{
-			get { return true; }
-		}
-
 		protected override SerializationContext GetSerializationContext()
 		{
-			return new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.FieldBased };
+			return new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.ContextBased };
 		}
 
 		protected override MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )

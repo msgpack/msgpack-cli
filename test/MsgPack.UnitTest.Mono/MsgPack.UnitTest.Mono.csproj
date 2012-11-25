@@ -154,6 +154,15 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs">
       <Link>Serialization\AddOnlyCollection`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs">
       <Link>Serialization\ArraySegmentEqualityComparer`1.cs</Link>
     </Compile>
@@ -201,6 +210,12 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
       <Link>Serialization\IVerifiable`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapContextBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\MapContextBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs</Link>
@@ -252,6 +267,12 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs">
       <Link>Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.Cases.cs">
+      <Link>Serialization\VersioningTest.Cases.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.cs">
+      <Link>Serialization\VersioningTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\_SetUpFixture.cs">
       <Link>Serialization\_SetUpFixture.cs</Link>
