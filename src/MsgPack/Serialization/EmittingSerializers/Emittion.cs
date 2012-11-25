@@ -755,6 +755,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( memberType != null );
 
 			var endOfDeserialization = il.DefineLabel( "END_OF_DESERIALIZATION" );
+
+			EmitGeneralRead( il, unpackerArgumentIndex );
+
 			switch ( nilImplication )
 			{
 				case NilImplication.MemberDefault:

@@ -240,7 +240,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				else if ( UnpackHelpers.IsReadOnlyAppendableCollectionMember( entries[ i ].Member ) )
 				{
-					Emittion.EmitGeneralRead( unpackerIL, 1 );
 					Emittion.EmitDeserializeCollectionValue(
 						emitter,
 						unpackerIL,
