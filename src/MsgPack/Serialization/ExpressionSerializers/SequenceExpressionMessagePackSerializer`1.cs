@@ -150,9 +150,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			 *	}
 			 */
 
-			var itemVariable = Expression.Variable( traits.ElementType, "item" );
-			var unpackFrom = typeof( MessagePackSerializer<> ).MakeGenericType( traits.ElementType ).GetMethod( "UnpackFrom" );
-
 			// FIXME: use UnpackHelper
 			Expression<Action<Unpacker, T, IMessagePackSerializer>> unpackToCore;
 
