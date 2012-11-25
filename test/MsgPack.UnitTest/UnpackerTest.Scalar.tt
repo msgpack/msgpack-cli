@@ -103,10 +103,8 @@ var __reals =
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
+using System.Linq;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -130,6 +128,7 @@ namespace MsgPack
 foreach( var __testCase in __integers )
 {
 #>
+
 		[Test]
 		public void TestUnpack<#= __testCase.Item1 #>_Read()
 		{
@@ -142,36 +141,36 @@ foreach( var __testCase in __integers )
 				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
 		}
+<#
+	foreach( var __variation in
+		new []
+		{
+			new { IsNullable = false },
+			new { IsNullable = true },
+		}
+	)
+	{
+#>
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __testCase.Item4.Name #>()
+		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				<#= __testCase.Item4.Name #> result;
-				Assert.IsTrue( unpacker.Read<#= __testCase.Item4.Name #>( out result ) );
-				Assert.That( result, Is.EqualTo(<#= __testCase.Item2 #> ) );
+				<#= __testCase.Item4.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
+				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>( out result ) );
+				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
 		}
-
-		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_ReadNullable<#= __testCase.Item4.Name #>()
-		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __testCase.Item4.Name #>? result;
-				Assert.IsTrue( unpacker.ReadNullable<#= __testCase.Item4.Name #>( out result ) );
-				Assert.That( result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
-			}
-		}		
 <#
+	}
 }
 
 foreach( var __testCase in __reals )
 {
 #>
+
 		[Test]
 		public void TestUnpack<#= __testCase.Item1 #>_Read()
 		{
@@ -184,31 +183,30 @@ foreach( var __testCase in __reals )
 				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
 			}
 		}
-
-		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __testCase.Item3.Name #>()
-		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __testCase.Item3.Name #> result;
-				Assert.IsTrue( unpacker.Read<#= __testCase.Item3.Name #>( out result ) );
-				Assert.That( <#= __testCase.Item4 #> result ) );
-			}
-		}	
-
-		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_ReadNullable<#= __testCase.Item3.Name #>()
-		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __testCase.Item3.Name #>? result;
-				Assert.IsTrue( unpacker.ReadNullable<#= __testCase.Item3.Name #>( out result ) );
-				Assert.That( <#= __testCase.Item4 #> result.Value ) );
-			}
-		}		
 <#
+	foreach( var __variation in
+		new []
+		{
+			new { IsNullable = false },
+			new { IsNullable = true },
+		}
+	)
+	{
+#>
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				<#= __testCase.Item3.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
+				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>( out result ) );
+				Assert.That( <#= __testCase.Item4 #> result<#= __variation.IsNullable ? ".Value" : String.Empty #> ) );
+			}
+		}
+<#
+	}
 }
 #>
 	}

@@ -19,10 +19,8 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
+using System.Linq;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -42,6 +40,7 @@ namespace MsgPack
 	public partial class PackerTest_Scalar
 	{
 		// FIXME: Direct reading and direct/MPO mixing cases.
+
 		[Test]
 		public void TestUnpackInt64MinValue_Read()
 		{
@@ -63,7 +62,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-9223372036854775808 ) );
+				Assert.That( result, Is.EqualTo( -9223372036854775808 ) );
 			}
 		}
 
@@ -77,7 +76,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -9223372036854775808 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackInt32MinValueMinusOne_Read()
 		{
@@ -99,7 +99,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-2147483649 ) );
+				Assert.That( result, Is.EqualTo( -2147483649 ) );
 			}
 		}
 
@@ -113,7 +113,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -2147483649 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackInt32MinValue_Read()
 		{
@@ -135,7 +136,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-2147483648 ) );
+				Assert.That( result, Is.EqualTo( -2147483648 ) );
 			}
 		}
 
@@ -149,7 +150,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -2147483648 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackInt16MinValueMinusOne_Read()
 		{
@@ -171,7 +173,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-32769 ) );
+				Assert.That( result, Is.EqualTo( -32769 ) );
 			}
 		}
 
@@ -185,7 +187,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -32769 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackInt16MinValue_Read()
 		{
@@ -207,7 +210,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-32768 ) );
+				Assert.That( result, Is.EqualTo( -32768 ) );
 			}
 		}
 
@@ -221,7 +224,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -32768 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSByteMinValueMinusOne_Read()
 		{
@@ -243,7 +247,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-129 ) );
+				Assert.That( result, Is.EqualTo( -129 ) );
 			}
 		}
 
@@ -257,7 +261,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -129 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSByteMinValue_Read()
 		{
@@ -279,7 +284,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-128 ) );
+				Assert.That( result, Is.EqualTo( -128 ) );
 			}
 		}
 
@@ -293,7 +298,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -128 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackNegativeFixNumMinValueMinusOne_Read()
 		{
@@ -315,7 +321,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-33 ) );
+				Assert.That( result, Is.EqualTo( -33 ) );
 			}
 		}
 
@@ -329,7 +335,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -33 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackNegativeFixNumMinValue_Read()
 		{
@@ -351,7 +358,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-32 ) );
+				Assert.That( result, Is.EqualTo( -32 ) );
 			}
 		}
 
@@ -365,7 +372,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -32 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackMinusOne_Read()
 		{
@@ -387,7 +395,7 @@ namespace MsgPack
 			{
 				Int64 result;
 				Assert.IsTrue( unpacker.ReadInt64( out result ) );
-				Assert.That( result, Is.EqualTo(-1 ) );
+				Assert.That( result, Is.EqualTo( -1 ) );
 			}
 		}
 
@@ -401,7 +409,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( -1 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackZero_Read()
 		{
@@ -423,7 +432,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(0 ) );
+				Assert.That( result, Is.EqualTo( 0 ) );
 			}
 		}
 
@@ -437,7 +446,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 0 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackPlusOne_Read()
 		{
@@ -459,7 +469,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(1 ) );
+				Assert.That( result, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -473,7 +483,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 1 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackPositiveFixNumMaxValue_Read()
 		{
@@ -495,7 +506,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(127 ) );
+				Assert.That( result, Is.EqualTo( 127 ) );
 			}
 		}
 
@@ -509,7 +520,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 127 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackPositiveFixNumMaxValuePlusOne_Read()
 		{
@@ -531,7 +543,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(128 ) );
+				Assert.That( result, Is.EqualTo( 128 ) );
 			}
 		}
 
@@ -545,7 +557,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 128 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackByteMaxValue_Read()
 		{
@@ -567,7 +580,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(255 ) );
+				Assert.That( result, Is.EqualTo( 255 ) );
 			}
 		}
 
@@ -581,7 +594,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 255 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackByteMaxValuePlusOne_Read()
 		{
@@ -603,7 +617,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(256 ) );
+				Assert.That( result, Is.EqualTo( 256 ) );
 			}
 		}
 
@@ -617,7 +631,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 256 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackUInt16MaxValue_Read()
 		{
@@ -639,7 +654,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(65535 ) );
+				Assert.That( result, Is.EqualTo( 65535 ) );
 			}
 		}
 
@@ -653,7 +668,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 65535 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackUInt16MaxValuePlusOne_Read()
 		{
@@ -675,7 +691,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(65536 ) );
+				Assert.That( result, Is.EqualTo( 65536 ) );
 			}
 		}
 
@@ -689,7 +705,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 65536 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackUInt32MaxValue_Read()
 		{
@@ -711,7 +728,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(4294967295 ) );
+				Assert.That( result, Is.EqualTo( 4294967295 ) );
 			}
 		}
 
@@ -725,7 +742,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 4294967295 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackUInt32MaxValuePlusOne_Read()
 		{
@@ -747,7 +765,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(4294967296 ) );
+				Assert.That( result, Is.EqualTo( 4294967296 ) );
 			}
 		}
 
@@ -761,7 +779,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 4294967296 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackUInt64MaxValue_Read()
 		{
@@ -783,7 +802,7 @@ namespace MsgPack
 			{
 				UInt64 result;
 				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
-				Assert.That( result, Is.EqualTo(18446744073709551615 ) );
+				Assert.That( result, Is.EqualTo( 18446744073709551615 ) );
 			}
 		}
 
@@ -797,7 +816,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
 				Assert.That( result.Value, Is.EqualTo( 18446744073709551615 ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSingleMinValue_Read()
 		{
@@ -821,7 +841,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( Single.MinValue.Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSingleMinValue_ReadNullableSingle()
@@ -833,7 +853,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( Single.MinValue.Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSingleMaxValue_Read()
 		{
@@ -857,7 +878,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( Single.MaxValue.Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSingleMaxValue_ReadNullableSingle()
@@ -869,7 +890,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( Single.MaxValue.Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSingleEpsilon_Read()
 		{
@@ -893,7 +915,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( Single.Epsilon.Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSingleEpsilon_ReadNullableSingle()
@@ -905,7 +927,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( Single.Epsilon.Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSinglePositiveZero_Read()
 		{
@@ -929,7 +952,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( ( 0.0f ).Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSinglePositiveZero_ReadNullableSingle()
@@ -941,7 +964,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( ( 0.0f ).Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSingleNegativeZero_Read()
 		{
@@ -965,7 +989,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( ( -0.0f ).Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSingleNegativeZero_ReadNullableSingle()
@@ -977,7 +1001,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( ( -0.0f ).Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSingleNaNPositiveMinValue_Read()
 		{
@@ -1001,7 +1026,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( Single.IsNaN( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSingleNaNPositiveMinValue_ReadNullableSingle()
@@ -1013,7 +1038,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSingleNaNPositiveMaxValue_Read()
 		{
@@ -1037,7 +1063,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( Single.IsNaN( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSingleNaNPositiveMaxValue_ReadNullableSingle()
@@ -1049,7 +1075,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSingleNaNNegativeMinValue_Read()
 		{
@@ -1073,7 +1100,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( Single.IsNaN( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSingleNaNNegativeMinValue_ReadNullableSingle()
@@ -1085,7 +1112,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSingleNaNNegativeMaxValue_Read()
 		{
@@ -1109,7 +1137,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( Single.IsNaN( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSingleNaNNegativeMaxValue_ReadNullableSingle()
@@ -1121,7 +1149,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( Single.IsNaN( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSingleNegativeInfinity_Read()
 		{
@@ -1145,7 +1174,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( Single.IsNegativeInfinity( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSingleNegativeInfinity_ReadNullableSingle()
@@ -1157,7 +1186,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( Single.IsNegativeInfinity( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackSinglePositiveInfinity_Read()
 		{
@@ -1181,7 +1211,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadSingle( out result ) );
 				Assert.That( Single.IsPositiveInfinity( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackSinglePositiveInfinity_ReadNullableSingle()
@@ -1193,7 +1223,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
 				Assert.That( Single.IsPositiveInfinity( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoubleMinValue_Read()
 		{
@@ -1217,7 +1248,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( Double.MinValue.Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoubleMinValue_ReadNullableDouble()
@@ -1229,7 +1260,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.MinValue.Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoubleMaxValue_Read()
 		{
@@ -1253,7 +1285,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( Double.MaxValue.Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoubleMaxValue_ReadNullableDouble()
@@ -1265,7 +1297,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.MaxValue.Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoubleEpsilon_Read()
 		{
@@ -1289,7 +1322,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( Double.Epsilon.Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoubleEpsilon_ReadNullableDouble()
@@ -1301,7 +1334,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.Epsilon.Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoublePositiveZero_Read()
 		{
@@ -1325,7 +1359,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( ( 0.0 ).Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoublePositiveZero_ReadNullableDouble()
@@ -1337,7 +1371,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( ( 0.0 ).Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoubleNegativeZero_Read()
 		{
@@ -1361,7 +1396,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( ( -0.0 ).Equals( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoubleNegativeZero_ReadNullableDouble()
@@ -1373,7 +1408,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( ( -0.0 ).Equals( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoubleNaNPositiveMinValue_Read()
 		{
@@ -1397,7 +1433,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( Double.IsNaN( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoubleNaNPositiveMinValue_ReadNullableDouble()
@@ -1409,7 +1445,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoubleNaNPositiveMaxValue_Read()
 		{
@@ -1433,7 +1470,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( Double.IsNaN( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoubleNaNPositiveMaxValue_ReadNullableDouble()
@@ -1445,7 +1482,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoubleNaNNegativeMinValue_Read()
 		{
@@ -1469,7 +1507,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( Double.IsNaN( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoubleNaNNegativeMinValue_ReadNullableDouble()
@@ -1481,7 +1519,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoubleNaNNegativeMaxValue_Read()
 		{
@@ -1505,7 +1544,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( Double.IsNaN( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoubleNaNNegativeMaxValue_ReadNullableDouble()
@@ -1517,7 +1556,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.IsNaN( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoubleNegativeInfinity_Read()
 		{
@@ -1541,7 +1581,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( Double.IsNegativeInfinity( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoubleNegativeInfinity_ReadNullableDouble()
@@ -1553,7 +1593,8 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.IsNegativeInfinity( result.Value ) );
 			}
-		}		
+		}
+
 		[Test]
 		public void TestUnpackDoublePositiveInfinity_Read()
 		{
@@ -1577,7 +1618,7 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadDouble( out result ) );
 				Assert.That( Double.IsPositiveInfinity( result ) );
 			}
-		}	
+		}
 
 		[Test]
 		public void TestUnpackDoublePositiveInfinity_ReadNullableDouble()
@@ -1589,6 +1630,6 @@ namespace MsgPack
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.IsPositiveInfinity( result.Value ) );
 			}
-		}		
+		}
 	}
 }
