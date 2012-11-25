@@ -202,7 +202,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						),
 						ExpressionSerializerLogics.CreateUnpackItem(
 							unpackerParameter,
-							itemSerializerTypes[ number ].GetMethod( "UnpackFrom" ),
+							Metadata._UnpackHelpers.InvokeUnpackFrom_1Method.MakeGenericMethod( flattenTypes[ number ] ),
 							Expression.ArrayIndex(
 								itemSerializersParameter,
 								Expression.Constant( number )

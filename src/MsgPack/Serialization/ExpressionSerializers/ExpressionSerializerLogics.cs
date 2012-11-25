@@ -281,7 +281,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							Expression.Property( unpackerParameter, Metadata._Unpacker.IsMapHeader )
 						)
 					),
-					Expression.Call(
+					unpackFrom.IsStatic
+					? Expression.Call(
+						null,
+						unpackFrom,
+						Expression.TypeAs( serializerParameter, serializerType ),
+						unpackerParameter
+					) : Expression.Call(
 						Expression.TypeAs( serializerParameter, serializerType ),
 						unpackFrom,
 						unpackerParameter
@@ -294,7 +300,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							Metadata._Unpacker.ReadSubtree
 						),
 						usingVariable =>
-							Expression.Call(
+							unpackFrom.IsStatic
+							? Expression.Call(
+								null,
+								unpackFrom,
+								Expression.TypeAs( serializerParameter, serializerType ),
+								usingVariable
+							) : Expression.Call(
 								Expression.TypeAs( serializerParameter, serializerType ),
 								unpackFrom,
 								usingVariable

@@ -578,7 +578,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var serializerGetter = emitter.RegisterSerializer( result.LocalType );
 			serializerGetter( il, 0 );
 			il.EmitAnyLdarg( unpackerIndex );
-			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( result.LocalType ).GetMethod( "UnpackFrom" ) );
+			il.EmitAnyCall( Metadata._UnpackHelpers.InvokeUnpackFrom_1Method.MakeGenericMethod( result.LocalType ) );
 			il.EmitAnyStloc( result );
 		}
 
@@ -594,7 +594,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var serializerGetter = emitter.RegisterSerializer( result.LocalType );
 			serializerGetter( il, 0 );
 			il.EmitAnyLdloc( unpacker );
-			il.EmitAnyCall( typeof( MessagePackSerializer<> ).MakeGenericType( result.LocalType ).GetMethod( "UnpackFrom" ) );
+			il.EmitAnyCall( Metadata._UnpackHelpers.InvokeUnpackFrom_1Method.MakeGenericMethod( result.LocalType ) );
 			il.EmitAnyStloc( result );
 		}
 

@@ -557,6 +557,7 @@ namespace MsgPack.Serialization
 		/// <param name="name">The name of the member.</param>
 		/// <param name="targetType">The type of the target.</param>
 		/// <returns>The unboxed value.</returns>
+		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static T ConvertWithEnsuringNotNull<T>( object boxed, string name, Type targetType )
 		{
 			if ( typeof( T ).GetIsValueType() && boxed == null && Nullable.GetUnderlyingType( typeof( T ) ) == null )
@@ -565,6 +566,19 @@ namespace MsgPack.Serialization
 			}
 
 			return ( T )boxed;
+		}
+
+		/// <summary>
+		///		Invokes <see cref="MessagePackSerializer{T}.UnpackFromCore"/> FAMANDASM method directly.
+		/// </summary>
+		/// <typeparam name="T">The type of deserializing object.</typeparam>
+		/// <param name="serializer">The invocation target <see cref="MessagePackSerializer{T}"/>.</param>
+		/// <param name="unpacker">The unpacker to be passed to the method.</param>
+		/// <returns>A deserialized value.</returns>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static T InvokeUnpackFrom<T>( MessagePackSerializer<T> serializer, Unpacker unpacker )
+		{
+			return serializer.UnpackFromCore( unpacker );
 		}
 	}
 }

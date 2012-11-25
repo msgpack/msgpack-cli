@@ -269,11 +269,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 						Expression.Default( typeof( T ) ),
 						Expression.Convert(
 							Expression.Call(
+								null,
+								Metadata._UnpackHelpers.InvokeUnpackFrom_1Method.MakeGenericMethod( underlyingType ),
 								Expression.TypeAs( 
 									serializerParameter,
 									serializerType
 								),
-								serializerType.GetRuntimeMethods().Single( m => m.Name == "UnpackFrom" ),
 								unpackerParameter
 							),
 							typeof( T ),

@@ -43,5 +43,7 @@ namespace MsgPack.Serialization.Metadata
 			FromExpression.ToMethod( ( Unpacker unpacker, IDictionary dictionary ) => UnpackHelpers.UnpackMapTo( unpacker, dictionary ) );
 		public static readonly MethodInfo ConvertWithEnsuringNotNull_1Method =
 			typeof( UnpackHelpers ).GetMethod( "ConvertWithEnsuringNotNull" );
+		public static readonly MethodInfo InvokeUnpackFrom_1Method =
+			typeof( UnpackHelpers ).GetMethod( "InvokeUnpackFrom" );
 	}
 }
