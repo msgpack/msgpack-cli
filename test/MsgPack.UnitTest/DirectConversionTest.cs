@@ -186,6 +186,7 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 30000 )]
 		public void TestArray()
 		{
 			var emptyList = new List<int>();
@@ -261,7 +262,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		[Timeout( 10000 )]
+		[Timeout( 30000 )]
 		public void TestMap()
 		{
 			var emptyMap = new Dictionary<int, int>();
