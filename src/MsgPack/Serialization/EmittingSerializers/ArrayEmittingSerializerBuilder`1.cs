@@ -34,6 +34,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override void EmitPackMembers( SerializerEmitter emitter, TracingILGenerator packerIL, SerializingMember[] entries )
 		{
+			var localHolder = new LocalVariableHolder( packerIL );
 			packerIL.EmitAnyLdarg( 1 );
 			packerIL.EmitAnyLdc_I4( entries.Length );
 			packerIL.EmitAnyCall( Metadata._Packer.PackArrayHeader );
@@ -69,7 +70,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 							}
 
 							Emittion.EmitLoadValue( il, member.Member );
-						}
+						},
+						localHolder
 					);
 				}
 			}

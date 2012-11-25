@@ -257,7 +257,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="il">IL generator.</param>
 		/// <param name="unpackerArgumentIndex">Argument index of the unpacker.</param>
-		public static void EmitGetUnpackerItemsCountAsInt32( TracingILGenerator il, int unpackerArgumentIndex )
+		/// <param name="localHolder">The <see cref="LocalVariableHolder"/> which holds shared local variable information.</param>
+		public static void EmitGetUnpackerItemsCountAsInt32( TracingILGenerator il, int unpackerArgumentIndex, LocalVariableHolder localHolder )
 		{
 			Contract.Requires( il != null );
 			Contract.Requires( unpackerArgumentIndex >= 0 );
@@ -280,29 +281,40 @@ namespace MsgPack.Serialization.EmittingSerializers
 			 * 
 			 *	... unchecked( ( int )rawItemsCount );
 			 */
-			var rawItemsCount = il.DeclareLocal( typeof( long ), "rawItemsCount" );
-
+			il.EmitAnyLdloca( localHolder.RawItemsCount );
+			il.EmitInitobj( typeof( long ) );
 			il.BeginExceptionBlock();
 			il.EmitAnyLdarg( unpackerArgumentIndex );
 			il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
-			il.EmitAnyStloc( rawItemsCount );
+			il.EmitAnyStloc( localHolder.RawItemsCount );
 			il.BeginCatchBlock( typeof( InvalidOperationException ) );
 			il.EmitAnyCall( SerializationExceptions.NewIsIncorrectStreamMethod );
 			il.EmitThrow();
 			il.EndExceptionBlock();
 
-			il.EmitAnyLdloc( rawItemsCount );
+			il.EmitAnyLdloc( localHolder.RawItemsCount );
 			il.EmitLdc_I8( Int32.MaxValue );
 			var endIf = il.DefineLabel();
 			il.EmitBle_S( endIf );
 			il.EmitAnyCall( SerializationExceptions.NewIsTooLargeCollectionMethod );
 			il.EmitThrow();
 			il.MarkLabel( endIf );
-			il.EmitAnyLdloc( rawItemsCount );
+			il.EmitAnyLdloc( localHolder.RawItemsCount );
 			il.EmitConv_I4();
 		}
 
-		public static void EmitSerializeValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, string memberName, NilImplication nilImplication, Action<TracingILGenerator> loadValueEmitter )
+		/// <summary>
+		///		Emits the serializing value instructions.
+		/// </summary>
+		/// <param name="emitter">The emitter.</param>
+		/// <param name="il">The il generator.</param>
+		/// <param name="packerArgumentIndex">Index of the packer argument.</param>
+		/// <param name="valueType">Type of the current member value.</param>
+		/// <param name="memberName">Name of the current member.</param>
+		/// <param name="nilImplication">The nil implication of the current member.</param>
+		/// <param name="loadValueEmitter">The delegate which emits case specific value loading instructions.</param>
+		/// <param name="localHolder">The <see cref="LocalVariableHolder"/> which holds shared local variable information.</param>
+		public static void EmitSerializeValue( SerializerEmitter emitter, TracingILGenerator il, int packerArgumentIndex, Type valueType, string memberName, NilImplication nilImplication, Action<TracingILGenerator> loadValueEmitter, LocalVariableHolder localHolder )
 		{
 			Contract.Requires( emitter != null );
 			Contract.Requires( il != null );
@@ -315,7 +327,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			 * NULL_PROHIBIT_HANDLING
 			 * GET_SERIALIZER.PackTo( packer, serializingValue );
 			 */
-			var value = il.DeclareLocal( valueType, "serializingValue" );
+			var value = localHolder.GetSerializingValue( valueType );
 			loadValueEmitter( il );
 			il.EmitAnyStloc( value );
 			if ( memberName != null && nilImplication == NilImplication.Prohibit )
@@ -365,7 +377,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <param name="unpackerArgumentIndex">Index of the unpacker argument.</param>
 		/// <param name="result">The result local variable which represents the result of deserialization.</param>
 		/// <param name="member">The metadata for nil implication. Specify <c>null</c> if nil implication is not needed.</param>
-		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder result, SerializingMember member )
+		/// <param name="localHolder">The <see cref="LocalVariableHolder"/> which holds shared local variable information.</param>
+		public static void EmitDeserializeValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder result, SerializingMember member, LocalVariableHolder localHolder )
 		{
 			Contract.Requires( emitter != null );
 			Contract.Requires( il != null );
@@ -397,15 +410,27 @@ namespace MsgPack.Serialization.EmittingSerializers
 				Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
 			{
 				// Use temporary nullable value for nil implication.
-				value = il.DeclareLocal( typeof( Nullable<> ).MakeGenericType( member.Member.GetMemberValueType() ), "value" );
+				value = localHolder.GetDeserializedValue(
+					typeof( Nullable<> ).MakeGenericType( member.Member.GetMemberValueType() ) );
 				useDummyNullableValue = true;
 			}
 			else
 			{
-				value = il.DeclareLocal( member.Member.GetMemberValueType(), "value" );
+				value = localHolder.GetDeserializedValue( member.Member.GetMemberValueType() );
 			}
 
-			EmitDeserializeValueCore( emitter, il, unpackerArgumentIndex, value, result.LocalType, member, member.Contract.Name, endOfDeserialization );
+			if ( value.LocalType.GetIsValueType() )
+			{
+				il.EmitAnyLdloca( value );
+				il.EmitInitobj( value.LocalType );
+			}
+			else
+			{
+				il.EmitLdnull();
+				il.EmitAnyStloc( value );
+			}
+
+			EmitDeserializeValueCore( emitter, il, unpackerArgumentIndex, value, result.LocalType, member, member.Contract.Name, endOfDeserialization, localHolder );
 
 			if ( result.LocalType.IsValueType )
 			{
@@ -440,7 +465,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <param name="value">The value local variable which stores unpacked value.</param>
 		/// <param name="targetType">The type of deserialzing type.</param>
 		/// <param name="memberName">The name of the member.</param>
-		public static void EmitDeserializeValueWithoutNilImplication( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Type targetType, string memberName )
+		/// <param name="localHolder">The <see cref="LocalVariableHolder"/> which holds shared local variable information.</param>
+		public static void EmitDeserializeValueWithoutNilImplication( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Type targetType, string memberName, LocalVariableHolder localHolder )
 		{
 			Contract.Requires( emitter != null );
 			Contract.Requires( il != null );
@@ -468,7 +494,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			 */
 
 			// Nil implication is not needed.
-			EmitDeserializeValueCore( emitter, il, unpackerArgumentIndex, value, targetType, null, memberName, endOfDeserialization );
+			EmitDeserializeValueCore( emitter, il, unpackerArgumentIndex, value, targetType, null, memberName, endOfDeserialization, localHolder );
 
 			il.MarkLabel( endOfDeserialization );
 		}
@@ -484,19 +510,23 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <param name="member">The metadata for nil implication. Specify <c>null</c> if nil implication is not needed.</param>
 		/// <param name="memberName">The name of the member.</param>
 		/// <param name="endOfDeserialization">The end of deserialization label for nil implication.</param>
-		private static void EmitDeserializeValueCore( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Type targetType, SerializingMember? member, string memberName, Label endOfDeserialization )
+		/// <param name="localHolder">The <see cref="LocalVariableHolder"/> which holds shared local variable information.</param>
+		private static void EmitDeserializeValueCore( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder value, Type targetType, SerializingMember? member, string memberName, Label endOfDeserialization, LocalVariableHolder localHolder )
 		{
 			var directUnpacking = Metadata._Unpacker.GetDirectReadMethod( value.LocalType );
 			if ( directUnpacking != null && ( member == null || !UnpackHelpers.IsReadOnlyAppendableCollectionMember( member.Value.Member ) ) )
 			{
-				var isSuccess = il.DeclareLocal( typeof( bool ), "isSuccess" );
+				var isSuccess = localHolder.IsDeserializationSucceeded;
+				il.EmitLdc_I4_0();
+				il.EmitAnyStloc( isSuccess );
+
 				il.BeginExceptionBlock();
 				il.EmitAnyLdarg( unpackerArgumentIndex );
 				il.EmitAnyLdloca( value );
 				il.EmitAnyCall( directUnpacking );
 				il.EmitAnyStloc( isSuccess );
 				il.BeginCatchBlock( typeof( MessageTypeException ) );
-				var ex = il.DeclareLocal( typeof( MessageTypeException ), "ex" );
+				var ex = localHolder.GetCatchedException( typeof( MessageTypeException ) );
 				il.EmitAnyStloc( ex );
 				il.EmitTypeOf( targetType );
 				il.EmitLdstr( memberName );
@@ -527,7 +557,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 						unpackerArgumentIndex,
 						member.Value.Contract.Name,
 						member.Value.Contract.NilImplication,
-						endOfDeserialization
+						endOfDeserialization,
+						localHolder
 					);
 				}
 
@@ -556,7 +587,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitBrtrue_S( thenIffCollection );
 				EmitUnpackFrom( emitter, il, value, unpackerArgumentIndex );
 				il.EmitBr_S( endIfCollection );
-				var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
+				var subtreeUnpacker = localHolder.SubtreeUnpacker;
 				il.MarkLabel( thenIffCollection );
 				EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
 				EmitUnpackFrom( emitter, il, value, subtreeUnpacker );
@@ -598,18 +629,29 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitAnyStloc( result );
 		}
 
+		/// <summary>
+		///		Emits the nil implication.
+		/// </summary>
+		/// <param name="il">The il generator.</param>
+		/// <param name="unpackerArgumentIndex">Index of the unpacker argument.</param>
+		/// <param name="memberName">Name of the deserializing member.</param>
+		/// <param name="nilImplication">The nil implication.</param>
+		/// <param name="endOfDeserialization">The label to the end of deserialization.</param>
+		/// <param name="localHolder">The <see cref="LocalVariableHolder"/> which holds shared local variable information.</param>
 		public static void EmitNilImplication(
 			TracingILGenerator il,
 			int unpackerArgumentIndex,
 			string memberName,
 			NilImplication nilImplication,
-			Label endOfDeserialization
+			Label endOfDeserialization,
+			LocalVariableHolder localHolder
 		)
 		{
 			switch ( nilImplication )
 			{
 				case NilImplication.MemberDefault:
 				{
+					// TODO: This should be empty for extra items.
 					/*
 						 * if( unpacker.Data.Value.IsNil )
 						 * {
@@ -619,11 +661,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 						 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
 					il.EmitGetProperty( Metadata._Unpacker.Data );
-					var data = il.DeclareLocal( typeof( MessagePackObject? ), "data" );
+					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
 					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = il.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+					var dataValue = localHolder.UnpackedDataValue;
 					il.EmitAnyStloc( dataValue );
 					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
@@ -641,11 +683,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 						 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
 					il.EmitGetProperty( Metadata._Unpacker.Data );
-					var data = il.DeclareLocal( typeof( MessagePackObject? ), "data" );
+					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
 					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = il.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+					var dataValue = localHolder.UnpackedDataValue;
 					il.EmitAnyStloc( dataValue );
 					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
@@ -745,7 +787,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		public static void EmitDeserializeCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType, NilImplication nilImplication )
+		/// <summary>
+		/// Emits the deserialize collection value.
+		/// </summary>
+		/// <param name="emitter">The emitter.</param>
+		/// <param name="il">The il generator.</param>
+		/// <param name="unpackerArgumentIndex">Index of the unpacker argument.</param>
+		/// <param name="target">The target collection variable.</param>
+		/// <param name="member">The deserializing member metadata which holds the collection.</param>
+		/// <param name="memberType">Type of the deserializing member.</param>
+		/// <param name="nilImplication">The nil implication.</param>
+		/// <param name="localHolder">The <see cref="LocalVariableHolder"/> which holds shared local variable information.</param>
+		public static void EmitDeserializeCollectionValue( SerializerEmitter emitter, TracingILGenerator il, int unpackerArgumentIndex, LocalBuilder target, MemberInfo member, Type memberType, NilImplication nilImplication, LocalVariableHolder localHolder )
 		{
 			Contract.Requires( emitter != null );
 			Contract.Requires( il != null );
@@ -753,6 +806,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( target != null );
 			Contract.Requires( member != null );
 			Contract.Requires( memberType != null );
+			Contract.Requires( localHolder != null );
 
 			var endOfDeserialization = il.DefineLabel( "END_OF_DESERIALIZATION" );
 
@@ -771,11 +825,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
 					il.EmitGetProperty( Metadata._Unpacker.Data );
-					var data = il.DeclareLocal( typeof( MessagePackObject? ), "data" );
+					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
 					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = il.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+					var dataValue = localHolder.UnpackedDataValue;
 					il.EmitAnyStloc( dataValue );
 					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
@@ -801,11 +855,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
 					il.EmitGetProperty( Metadata._Unpacker.Data );
-					var data = il.DeclareLocal( typeof( MessagePackObject? ), "data" );
+					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
 					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = il.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+					var dataValue = localHolder.UnpackedDataValue;
 					il.EmitAnyStloc( dataValue );
 					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
@@ -856,7 +910,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitAnyCall( SerializationExceptions.NewStreamDoesNotContainCollectionForMemberMethod );
 			il.EmitThrow();
 			// then
-			var subtreeUnpacker = il.DeclareLocal( typeof( Unpacker ), "subtreeUnpacker" );
+			var subtreeUnpacker = localHolder.SubtreeUnpacker;
 			il.MarkLabel( endIf );
 			EmitUnpackerBeginReadSubtree( il, unpackerArgumentIndex, subtreeUnpacker );
 			serializerGetter( il, 0 );

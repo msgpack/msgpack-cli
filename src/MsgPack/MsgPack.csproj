@@ -152,6 +152,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\DefaultSerializers\MessagePackObjectExtensions.cs" />
     <Compile Include="Serialization\EmittingSerializers\ArrayEmittingSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\LocalVariableHolder.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ArrayFormatObjectExpressionMessagePackSerializer.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ArrayMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CallbackMessagePackSerializer`1.cs" />

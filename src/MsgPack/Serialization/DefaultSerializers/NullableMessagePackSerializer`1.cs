@@ -133,7 +133,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 					{
 						il0.EmitAnyLdarga( 2 );
 						il.EmitGetProperty( _nullableTValueProperty );
-					}
+					},
+					new LocalVariableHolder( il )
 				);
 
 				il.MarkLabel( endMethod );

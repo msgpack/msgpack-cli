@@ -55,6 +55,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static void CreatePackArrayProceduresCore( Type targetType, SerializerEmitter emitter, CollectionTraits traits )
 		{
 			var il = emitter.GetPackToMethodILGenerator();
+			var localHolder = new LocalVariableHolder( il );
 			try
 			{
 				// Array
@@ -68,7 +69,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 * 		this._serializer.PackTo( packer, collection[ i ] );
 					 * }
 					 */
-					var length = il.DeclareLocal( typeof( int ), "length" );
+					var length = localHolder.PackingCollectionCount;
 					il.EmitAnyLdarg( 2 );
 					il.EmitLdlen();
 					il.EmitAnyStloc( length );
@@ -80,7 +81,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 						il,
 						length,
 						( il0, i ) =>
-						{
 							Emittion.EmitSerializeValue(
 								emitter,
 								il0,
@@ -93,9 +93,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 									il1.EmitAnyLdarg( 2 );
 									il1.EmitAnyLdloc( i );
 									il1.EmitLdelem( traits.ElementType );
-								}
-							);
-						}
+								},
+								localHolder
+							)
 					);
 				}
 				else if ( traits.CountProperty == null )
@@ -108,11 +108,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 * 		this._serializer.PackTo( packer, array[ i ] );
 					 * }
 					 */
-					var array = il.DeclareLocal( traits.ElementType.MakeArrayType(), "array" );
+					var array = localHolder.GetSerializingCollection( traits.ElementType.MakeArrayType() );
 					EmitLoadTarget( targetType, il, 2 );
 					il.EmitAnyCall( Metadata._Enumerable.ToArray1Method.MakeGenericMethod( traits.ElementType ) );
 					il.EmitAnyStloc( array );
-					var length = il.DeclareLocal( typeof( int ), "length" );
+					var length = localHolder.PackingCollectionCount;
 					il.EmitAnyLdloc( array );
 					il.EmitLdlen();
 					il.EmitAnyStloc( length );
@@ -124,7 +124,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 						il,
 						length,
 						( il0, i ) =>
-						{
 							Emittion.EmitSerializeValue(
 								emitter,
 								il0,
@@ -137,9 +136,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 									il1.EmitAnyLdloc( array );
 									il1.EmitAnyLdloc( i );
 									il1.EmitLdelem( traits.ElementType );
-								}
-							);
-						}
+								},
+								localHolder
+							)
 					);
 				}
 				else
@@ -152,11 +151,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 * 		this._serializer.PackTo( packer, array[ i ] );
 					 * }
 					 */
-					var collection = il.DeclareLocal( targetType, "collection" );
+					var collection = localHolder.GetSerializingCollection( targetType );
 					// This instruction always ldarg, not to be ldarga
 					il.EmitAnyLdarg( 2 );
 					il.EmitAnyStloc( collection );
-					var count = il.DeclareLocal( typeof( int ), "count" );
+					var count = localHolder.PackingCollectionCount;
 					EmitLoadTarget( targetType, il, 2 );
 					il.EmitGetProperty( traits.CountProperty );
 					il.EmitAnyStloc( count );
@@ -169,7 +168,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 						traits,
 						collection,
 						( il0, getCurrentEmitter ) =>
-						{
 							Emittion.EmitSerializeValue(
 								emitter,
 								il0,
@@ -177,9 +175,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 								traits.ElementType,
 								null,
 								NilImplication.MemberDefault,
-								_ => getCurrentEmitter()
-							);
-						}
+								_ => getCurrentEmitter(),
+								localHolder
+							)
 					);
 				}
 				il.EmitRet();
@@ -199,6 +197,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static void CreateArrayUnpackFrom( Type targetType, SerializerEmitter emitter, CollectionTraits traits )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
+			var localHolder = new LocalVariableHolder( il );
 			try
 			{
 				if ( targetType.IsInterface || targetType.IsAbstract )
@@ -227,12 +226,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitAnyCall( SerializationExceptions.NewIsNotArrayHeaderMethod );
 				il.EmitThrow();
 				il.MarkLabel( endIf );
-				var collection = il.DeclareLocal( targetType, "collection" );
+				var collection = localHolder.GetDeserializingCollection( targetType );
 				// Emit newobj, newarr, or call ValueType..ctor()
 				Emittion.EmitConstruction(
 					il,
 					collection,
-					il0 => Emittion.EmitGetUnpackerItemsCountAsInt32( il0, 1 )
+					il0 => Emittion.EmitGetUnpackerItemsCountAsInt32( il0, 1, localHolder )
 				);
 
 				EmitInvokeArrayUnpackToHelper( targetType, emitter, traits, il, 1, il0 => il0.EmitAnyLdloc( collection ) );
@@ -390,6 +389,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static void CreateMapPack( Type targetType, SerializerEmitter emiter, CollectionTraits traits )
 		{
 			var il = emiter.GetPackToMethodILGenerator();
+			var localHolder = new LocalVariableHolder( il );
 			try
 			{
 
@@ -403,14 +403,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 				 * 	}
 				 */
 
-				var collection = il.DeclareLocal( targetType, "collection" );
-				var item = il.DeclareLocal( traits.ElementType, "item" );
+				var collection = localHolder.GetSerializingCollection( targetType );
+				var item = localHolder.GetSerializingCollectionItem( traits.ElementType );
 				var keyProperty = traits.ElementType.GetProperty( "Key" );
 				var valueProperty = traits.ElementType.GetProperty( "Value" );
 				// This instruction is always ldarg, not to be ldarga.
 				il.EmitAnyLdarg( 2 );
 				il.EmitAnyStloc( collection );
-				var count = il.DeclareLocal( typeof( int ), "count" );
+				var count = localHolder.PackingCollectionCount;
 				EmitLoadTarget( targetType, il, collection );
 				il.EmitGetProperty( traits.CountProperty );
 				il.EmitAnyStloc( count );
@@ -441,7 +441,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 								{
 									il1.EmitAnyLdloca( item );
 									il1.EmitGetProperty( keyProperty );
-								}
+								},
+								localHolder
 							);
 
 							Emittion.EmitSerializeValue(
@@ -455,7 +456,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 								{
 									il1.EmitAnyLdloca( item );
 									il1.EmitGetProperty( valueProperty );
-								}
+								},
+								localHolder
 							);
 						}
 						else
@@ -475,7 +477,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 									il0.EmitAnyLdloca( item );
 									il0.EmitGetProperty( Metadata._DictionaryEntry.Key );
 									il0.EmitUnbox_Any( typeof( MessagePackObject ) );
-								}
+								},
+								localHolder
 							);
 
 							Emittion.EmitSerializeValue(
@@ -490,7 +493,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 									il0.EmitAnyLdloca( item );
 									il0.EmitGetProperty( Metadata._DictionaryEntry.Value );
 									il0.EmitUnbox_Any( typeof( MessagePackObject ) );
-								}
+								},
+								localHolder
 							);
 						}
 					}
@@ -512,6 +516,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static void CreateMapUnpackFrom( Type targetType, SerializerEmitter emitter, CollectionTraits traits )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
+			var localHolder = new LocalVariableHolder( il );
 			try
 			{
 				/*
@@ -541,11 +546,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitThrow();
 				il.MarkLabel( endIf );
 
-				var collection = il.DeclareLocal( targetType, "collection" );
+				var collection = localHolder.GetDeserializingCollection( targetType );
 				Emittion.EmitConstruction(
 					il,
 					collection,
-					il0 => Emittion.EmitGetUnpackerItemsCountAsInt32( il0, 1 )
+					il0 => Emittion.EmitGetUnpackerItemsCountAsInt32( il0, 1, localHolder )
 				);
 
 				EmitInvokeMapUnpackToHelper( targetType, emitter, traits, il, 1, il0 => il0.EmitAnyLdloc( collection ) );
@@ -641,6 +646,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static void CreateTuplePack( SerializerEmitter emiter, Type tupleType, IList<Type> itemTypes, Action<TracingILGenerator, LocalBuilder> loadTupleEmitter )
 		{
 			var il = emiter.GetPackToMethodILGenerator();
+			var localHolder = new LocalVariableHolder( il );
 			try
 			{
 				/*
@@ -691,7 +697,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 							Contract.Assert( itemn != null, tupleTypeList[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i );
 #endif
 							il0.EmitGetProperty( itemn );
-						}
+						},
+						localHolder
 					);
 				}
 				il.EmitRet();
@@ -710,6 +717,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static void CreateTupleUnpackFrom( SerializerEmitter emitter, IList<Type> itemTypes )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
+			var localHolder = new LocalVariableHolder( il );
 			try
 			{
 				/*
@@ -746,8 +754,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitThrow();
 				il.MarkLabel( endIf );
 
-				var itemsCount = il.DeclareLocal( typeof( int ), "itemsCount" );
-				Emittion.EmitGetUnpackerItemsCountAsInt32( il, 1 );
+				var itemsCount = localHolder.ItemsCount;
+				Emittion.EmitGetUnpackerItemsCountAsInt32( il, 1, localHolder );
 				il.EmitAnyLdc_I4( itemTypes.Count );
 				il.EmitAnyStloc( itemsCount );
 				il.EmitAnyLdloc( itemsCount );
@@ -769,16 +777,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 						Nullable.GetUnderlyingType( itemTypes[ i ] ) == null )
 					{
 						// Use temporary nullable value for nil implication.
-						itemLocals[ i ] = il.DeclareLocal( typeof( Nullable<> ).MakeGenericType( itemTypes[ i ] ), "value" );
+						itemLocals[ i ] = il.DeclareLocal( typeof( Nullable<> ).MakeGenericType( itemTypes[ i ] ), "item" + i.ToString( CultureInfo.InvariantCulture ) );
 						useDummyNullables[ i ] = true;
 					}
 					else
 					{
-						itemLocals[ i ] = il.DeclareLocal( itemTypes[ i ], "value" );
+						itemLocals[ i ] = il.DeclareLocal( itemTypes[ i ], "item" + i.ToString( CultureInfo.InvariantCulture ) );
 					}
 
 					// Tuple member should be NilImplication.MemberDefault.
-					Emittion.EmitDeserializeValueWithoutNilImplication( emitter, il, 1, itemLocals[ i ], typeof( Tuple ), "Item" + ( i ).ToString( CultureInfo.InvariantCulture ) );
+					Emittion.EmitDeserializeValueWithoutNilImplication( emitter, il, 1, itemLocals[ i ], typeof( Tuple ), "Item" + ( i ).ToString( CultureInfo.InvariantCulture ), localHolder );
 				}
 
 				for ( int i = 0; i < itemLocals.Length; i++ )

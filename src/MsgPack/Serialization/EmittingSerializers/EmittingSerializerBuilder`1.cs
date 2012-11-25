@@ -164,19 +164,21 @@ namespace MsgPack.Serialization.EmittingSerializers
 			 * #endif
 			 */
 
+			var localHolder = new LocalVariableHolder( unpackerIL );
+
 			unpackerIL.EmitAnyLdarg( 1 );
 			unpackerIL.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
 			var @else = unpackerIL.DefineLabel( "ELSE" );
 			var endif = unpackerIL.DefineLabel( "END_IF" );
 			unpackerIL.EmitBrfalse( @else );
-			EmitUnpackMembersFromArray( emitter, unpackerIL, entries, result );
+			EmitUnpackMembersFromArray( emitter, unpackerIL, entries, result, localHolder );
 			unpackerIL.EmitBr( endif );
 			unpackerIL.MarkLabel( @else );
-			EmitUnpackMembersFromMap( emitter, unpackerIL, entries, result );
+			EmitUnpackMembersFromMap( emitter, unpackerIL, entries, result, localHolder );
 			unpackerIL.MarkLabel( endif );
 		}
 
-		private static void EmitUnpackMembersFromArray( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
+		private static void EmitUnpackMembersFromArray( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result, LocalVariableHolder localHolder )
 		{
 			/*
 			 *  int unpacked = 0;
@@ -209,9 +211,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			// TODO: Supports ExtensionObject like round-tripping.
 
-			var itemsCount = unpackerIL.DeclareLocal( typeof( int ), "itemsCount" );
+			var itemsCount = localHolder.ItemsCount;
 			var unpacked = unpackerIL.DeclareLocal( typeof( int ), "unpacked" );
-			Emittion.EmitGetUnpackerItemsCountAsInt32( unpackerIL, 1 );
+			Emittion.EmitGetUnpackerItemsCountAsInt32( unpackerIL, 1, localHolder );
 			unpackerIL.EmitAnyStloc( itemsCount );
 
 			for ( int i = 0; i < entries.Length; i++ )
@@ -226,7 +228,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				if ( entries[ i ].Member != null )
 				{
 					// Respect nil implication.
-					Emittion.EmitNilImplication( unpackerIL, 1, entries[ i ].Contract.Name, entries[ i ].Contract.NilImplication, endIf0 );
+					Emittion.EmitNilImplication( unpackerIL, 1, entries[ i ].Contract.Name, entries[ i ].Contract.NilImplication, endIf0, localHolder );
 				}
 
 				unpackerIL.EmitBr( endIf0 );
@@ -247,7 +249,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 						result,
 						entries[ i ].Member,
 						entries[ i ].Member.GetMemberValueType(),
-						entries[ i ].Contract.NilImplication );
+						entries[ i ].Contract.NilImplication,
+						localHolder 
+					);
 				}
 				else
 				{
@@ -256,7 +260,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 						unpackerIL,
 						1,
 						result,
-						entries[ i ]
+						entries[ i ],
+						localHolder
 					);
 				}
 
@@ -269,7 +274,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		private static void EmitUnpackMembersFromMap( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result )
+		private static void EmitUnpackMembersFromMap( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result, LocalVariableHolder localHolder )
 		{
 			/*
 			 *		var memberName = unpacker.Data.AsString();
@@ -288,14 +293,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var beginLoop = unpackerIL.DefineLabel( "BEGIN_LOOP" );
 			var endLoop = unpackerIL.DefineLabel( "END_LOOP" );
 			unpackerIL.MarkLabel( beginLoop );
-			var memberName = unpackerIL.DeclareLocal( typeof( string ), "memberName" );
+			var memberName = localHolder.MemberName;
 			unpackerIL.EmitAnyLdarg( 1 );
 			unpackerIL.EmitAnyLdloca( memberName );
 			unpackerIL.EmitAnyCall( Metadata._Unpacker.ReadString );
 			unpackerIL.EmitBrfalse( endLoop );
 
-			var data = unpackerIL.DeclareLocal( typeof( MessagePackObject? ), "data" );
-			var dataValue = unpackerIL.DeclareLocal( typeof( MessagePackObject ), "dataValue" );
+			var data = localHolder.UnpackedData;
+			var dataValue = localHolder.UnpackedDataValue;
 			for ( int i = 0; i < entries.Length; i++ )
 			{
 				if ( entries[ i ].Contract.Name == null )
@@ -328,7 +333,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 						result,
 						entries[ i ].Member,
 						entries[ i ].Member.GetMemberValueType(),
-						entries[ i ].Contract.NilImplication
+						entries[ i ].Contract.NilImplication,
+						localHolder
 					);
 				}
 				else
@@ -338,7 +344,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 						unpackerIL,
 						1,
 						result,
-						entries[ i ]
+						entries[ i ],
+						localHolder
 					);
 				}
 

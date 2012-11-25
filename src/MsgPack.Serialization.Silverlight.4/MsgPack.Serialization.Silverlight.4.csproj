@@ -177,6 +177,9 @@
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs">
       <Link>Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\LocalVariableHolder.cs">
+      <Link>Serialization\EmittingSerializers\LocalVariableHolder.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs">
       <Link>Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs</Link>
     </Compile>
