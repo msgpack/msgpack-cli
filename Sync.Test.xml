@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <ProjectSync>
   <Project Name="MsgPack.UnitTest.Mono" Base="MsgPack.UnitTest">
-    <Exclude Path="Properties\AssemblyInfo.cs" />
-    <Exclude File="*.config" />
-    <Exclude File="*.json" />
-    <Exclude File="*.mpac" />
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
   <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">
-    <Exclude Path="Properties\AssemblyInfo.cs" />
-    <Exclude File="*.config" />
-    <Exclude File="*.json" />
-    <Exclude File="*.mpac" />
-    <Exclude File="*.pfx" />
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Preserve File="*.pfx" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />

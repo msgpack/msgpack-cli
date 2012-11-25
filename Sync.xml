@@ -94,7 +94,6 @@
     <Exclude Path="Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs" />
     <Exclude Path="Serialization\ExpressionSerializers\*" />
     <Exclude Path="Serialization\Metadata\_NotImplementedException.cs" />
-    <Exclude Path="Serialization\Metadata\_Type.cs" />
     <Preserve Path="Serialization\LockRecursionPolicy.cs" />
     <Preserve Path="Serialization\ReaderWriterLockSlim.cs" />
     <Exclude Path="Serialization\SerializerGenerator.cs" />
