@@ -33,6 +33,9 @@ Release 0.3 - T.B.D.
   * Add SerialializerGenerator which provides capability to generate pre-built serializer assembly.
   * Unpacker.ReadItem/UnpackSubtree makes easy to unpack collection as MessagePackObject.
 
+  IMPROVEMENTS
+  * Improve unpacking performance.
+
   BUG FIXES
   * Fix 'sparse' declaration (i.e. field ids are not continuous on the objects' MessagePackDataMember attribute) causes deserialization error.
   * Fix synchronization related error.
