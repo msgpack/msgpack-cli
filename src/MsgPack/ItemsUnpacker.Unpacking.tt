@@ -173,7 +173,7 @@ private void OnReturnScalarObject( string resultVariable )
 #>
 this._collectionType = CollectionType.None;
 this._itemsCount = 0;
-this.Data = <#= resultVariable #>;
+this._data = <#= resultVariable #>;
 <#+
 }
 
@@ -182,7 +182,7 @@ private void OnIsArray( string sizeVariable )
 #>
 this._collectionType = CollectionType.Array;
 this._itemsCount = <#= sizeVariable #>;
-this.Data = <#= sizeVariable #>;
+this._data = <#= sizeVariable #>;
 <#+
 }
 
@@ -191,7 +191,7 @@ private void OnIsMap( string sizeVariable )
 #>
 this._collectionType = CollectionType.Map;
 this._itemsCount = <#= sizeVariable #>;
-this.Data = <#= sizeVariable #>;
+this._data = <#= sizeVariable #>;
 <#+
 }
 

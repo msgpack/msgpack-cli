@@ -33,16 +33,17 @@ namespace MsgPack
 		private readonly byte[] _scalarBuffer = new byte[ 8 ];
 		private long _itemsCount;
 		private CollectionType _collectionType;
+		private MessagePackObject? _data;
 
 		public override MessagePackObject? Data
 		{
-			get;
-			protected set;
+			get { return this._data; }
+			protected set { this._data = value; }
 		}
 
 		internal void InternalSetData( MessagePackObject? value )
 		{
-			this.Data = value;
+			this._data = value;
 		}
 
 		public override bool IsArrayHeader
@@ -102,7 +103,7 @@ namespace MsgPack
 			var success = this.ReadSubtreeObject( out value );
 			if ( success )
 			{
-				this.Data = value;
+				this._data = value;
 				return true;
 			}
 			else

@@ -223,7 +223,7 @@ var decoder = encoding.GetDecoder();
 int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
 var bytes = new byte[ chunkSize ];
 var chars = new char[ chunkSize ];
-var stringBuffer = new StringBuilder();
+var stringBuffer = new StringBuilder( size );
 var remaining = size;
 do
 {

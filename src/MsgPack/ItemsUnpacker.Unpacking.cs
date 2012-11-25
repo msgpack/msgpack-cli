@@ -6257,7 +6257,7 @@ namespace MsgPack
 			int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
 			var bytes = new byte[ chunkSize ];
 			var chars = new char[ chunkSize ];
-			var stringBuffer = new StringBuilder();
+			var stringBuffer = new StringBuilder( size );
 			var remaining = size;
 			do
 			{
@@ -6362,7 +6362,7 @@ namespace MsgPack
 			int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
 			var bytes = new byte[ chunkSize ];
 			var chars = new char[ chunkSize ];
-			var stringBuffer = new StringBuilder();
+			var stringBuffer = new StringBuilder( size );
 			var remaining = size;
 			do
 			{
@@ -6423,7 +6423,7 @@ namespace MsgPack
 				{
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = MessagePackObject.Nil;
+					this._data = MessagePackObject.Nil;
 					result = MessagePackObject.Nil;
 					return true;
 				}
@@ -6431,7 +6431,7 @@ namespace MsgPack
 				{
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = Unpacking.TrueValue;
+					this._data = Unpacking.TrueValue;
 					result = Unpacking.TrueValue;
 					return true;
 				}
@@ -6439,7 +6439,7 @@ namespace MsgPack
 				{
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = Unpacking.FalseValue;
+					this._data = Unpacking.FalseValue;
 					result = Unpacking.FalseValue;
 					return true;
 				}
@@ -6449,7 +6449,7 @@ namespace MsgPack
 			{
 				this._collectionType = CollectionType.None;
 				this._itemsCount = 0;
-				this.Data = Unpacking.PositiveIntegers[ header ];
+				this._data = Unpacking.PositiveIntegers[ header ];
 				result = Unpacking.PositiveIntegers[ header ];
 				return true;
 			}
@@ -6457,7 +6457,7 @@ namespace MsgPack
 			{
 				this._collectionType = CollectionType.None;
 				this._itemsCount = 0;
-				this.Data = Unpacking.NegativeIntegers[ header - 0xE0 ];
+				this._data = Unpacking.NegativeIntegers[ header - 0xE0 ];
 				result = Unpacking.NegativeIntegers[ header - 0xE0 ];
 				return true;
 			}
@@ -6469,7 +6469,7 @@ namespace MsgPack
 					var size = header & 0xF;
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = size;
-					this.Data = size;
+					this._data = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -6478,7 +6478,7 @@ namespace MsgPack
 					var size = header & 0xF;
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = size;
-					this.Data = size;
+					this._data = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -6499,7 +6499,7 @@ namespace MsgPack
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultMpoValue;
+					this._data = resultMpoValue;
 					result = resultMpoValue;
 					return true;
 				}
@@ -6525,7 +6525,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6547,7 +6547,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6569,7 +6569,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6591,7 +6591,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6613,7 +6613,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6635,7 +6635,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6657,7 +6657,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6679,7 +6679,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6701,7 +6701,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6723,7 +6723,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -6756,7 +6756,7 @@ namespace MsgPack
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultMpoValue;
+					this._data = resultMpoValue;
 					result = resultMpoValue;
 					return true;
 				}
@@ -6795,7 +6795,7 @@ namespace MsgPack
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultMpoValue;
+					this._data = resultMpoValue;
 					result = resultMpoValue;
 					return true;
 				}
@@ -6817,7 +6817,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = length;
-					this.Data = length;
+					this._data = length;
 					result = length;
 					return true;
 				}
@@ -6839,7 +6839,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = length;
-					this.Data = length;
+					this._data = length;
 					result = ( long )length;
 					return true;
 				}
@@ -6861,7 +6861,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = length;
-					this.Data = length;
+					this._data = length;
 					result = length;
 					return true;
 				}
@@ -6883,7 +6883,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = length;
-					this.Data = length;
+					this._data = length;
 					result = ( long )length;
 					return true;
 				}
@@ -6914,7 +6914,7 @@ namespace MsgPack
 				{
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = MessagePackObject.Nil;
+					this._data = MessagePackObject.Nil;
 					result = MessagePackObject.Nil;
 					return true;
 				}
@@ -6922,7 +6922,7 @@ namespace MsgPack
 				{
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = Unpacking.TrueValue;
+					this._data = Unpacking.TrueValue;
 					result = Unpacking.TrueValue;
 					return true;
 				}
@@ -6930,7 +6930,7 @@ namespace MsgPack
 				{
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = Unpacking.FalseValue;
+					this._data = Unpacking.FalseValue;
 					result = Unpacking.FalseValue;
 					return true;
 				}
@@ -6940,7 +6940,7 @@ namespace MsgPack
 			{
 				this._collectionType = CollectionType.None;
 				this._itemsCount = 0;
-				this.Data = Unpacking.PositiveIntegers[ header ];
+				this._data = Unpacking.PositiveIntegers[ header ];
 				result = Unpacking.PositiveIntegers[ header ];
 				return true;
 			}
@@ -6948,7 +6948,7 @@ namespace MsgPack
 			{
 				this._collectionType = CollectionType.None;
 				this._itemsCount = 0;
-				this.Data = Unpacking.NegativeIntegers[ header - 0xE0 ];
+				this._data = Unpacking.NegativeIntegers[ header - 0xE0 ];
 				result = Unpacking.NegativeIntegers[ header - 0xE0 ];
 				return true;
 			}
@@ -6960,7 +6960,7 @@ namespace MsgPack
 					var size = header & 0xF;
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = size;
-					this.Data = size;
+					this._data = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -6969,7 +6969,7 @@ namespace MsgPack
 					var size = header & 0xF;
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = size;
-					this.Data = size;
+					this._data = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -6990,7 +6990,7 @@ namespace MsgPack
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultMpoValue;
+					this._data = resultMpoValue;
 					result = resultMpoValue;
 					return true;
 				}
@@ -7016,7 +7016,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7038,7 +7038,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7060,7 +7060,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7082,7 +7082,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7104,7 +7104,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7126,7 +7126,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7148,7 +7148,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7170,7 +7170,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7192,7 +7192,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7214,7 +7214,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultValue;
+					this._data = resultValue;
 					result = resultValue;
 					return true;
 				}
@@ -7247,7 +7247,7 @@ namespace MsgPack
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultMpoValue;
+					this._data = resultMpoValue;
 					result = resultMpoValue;
 					return true;
 				}
@@ -7286,7 +7286,7 @@ namespace MsgPack
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
-					this.Data = resultMpoValue;
+					this._data = resultMpoValue;
 					result = resultMpoValue;
 					return true;
 				}
@@ -7308,7 +7308,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = length;
-					this.Data = length;
+					this._data = length;
 					result = length;
 					return true;
 				}
@@ -7330,7 +7330,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = length;
-					this.Data = length;
+					this._data = length;
 					result = ( long )length;
 					return true;
 				}
@@ -7352,7 +7352,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = length;
-					this.Data = length;
+					this._data = length;
 					result = length;
 					return true;
 				}
@@ -7374,7 +7374,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = length;
-					this.Data = length;
+					this._data = length;
 					result = ( long )length;
 					return true;
 				}
@@ -7411,7 +7411,7 @@ namespace MsgPack
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 				}
 				case MessagePackCode.Array32:
@@ -7430,7 +7430,7 @@ namespace MsgPack
 					result = unsignedSize;
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 				}
 				default:
@@ -7440,7 +7440,7 @@ namespace MsgPack
 						result = header & 0xF;
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 					}
 			
@@ -7474,7 +7474,7 @@ namespace MsgPack
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 				}
 				case MessagePackCode.Array32:
@@ -7493,7 +7493,7 @@ namespace MsgPack
 					result = unsignedSize;
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 				}
 				default:
@@ -7503,7 +7503,7 @@ namespace MsgPack
 						result = header & 0xF;
 					this._collectionType = CollectionType.Array;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 					}
 			
@@ -7538,7 +7538,7 @@ namespace MsgPack
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 				}
 				case MessagePackCode.Map32:
@@ -7557,7 +7557,7 @@ namespace MsgPack
 					result = unsignedSize;
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 				}
 				default:
@@ -7567,7 +7567,7 @@ namespace MsgPack
 						result = header & 0xF;
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 					}
 			
@@ -7601,7 +7601,7 @@ namespace MsgPack
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 				}
 				case MessagePackCode.Map32:
@@ -7620,7 +7620,7 @@ namespace MsgPack
 					result = unsignedSize;
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 				}
 				default:
@@ -7630,7 +7630,7 @@ namespace MsgPack
 						result = header & 0xF;
 					this._collectionType = CollectionType.Map;
 					this._itemsCount = result;
-					this.Data = result;
+					this._data = result;
 					return true;
 					}
 			
