@@ -967,12 +967,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			Contract.Requires( il != null );
 			Contract.Requires( target != null );
-			Contract.Requires( initialCountLoadingEmitter != null );
 
 			// TODO: For collection, supports .ctor(IEnumerable<> other)
 
 			if ( target.LocalType.IsArray )
 			{
+				Contract.Assert( initialCountLoadingEmitter != null );
 				initialCountLoadingEmitter( il );
 				il.EmitNewarr( target.LocalType.GetElementType() );
 				il.EmitAnyStloc( target );
