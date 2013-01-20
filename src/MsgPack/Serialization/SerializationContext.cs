@@ -64,7 +64,7 @@ namespace MsgPack.Serialization
 
 		private readonly SerializerRepository _serializers;
 #if SILVERLIGHT || NETFX_35
-		private readonly object _typeLock;
+		private readonly HashSet<Type> _typeLock;
 #else
 		private readonly ConcurrentDictionary<Type, object> _typeLock;
 #endif
@@ -210,7 +210,7 @@ namespace MsgPack.Serialization
 			this._compatibilityOptions = new SerializationCompatibilityOptions();
 			this._serializers = serializers;
 #if SILVERLIGHT || NETFX_35
-			this._typeLock = new object();
+			this._typeLock = new HashSet<Type>();
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
 #endif
@@ -242,13 +242,16 @@ namespace MsgPack.Serialization
 					finally
 					{
 #if SILVERLIGHT || NETFX_35
-						lockTaken = Monitor.TryEnter( this._typeLock );
+						lock( this._typeLock )
+						{
+							lockTaken = this._typeLock.Add( typeof( T ) );
+						}
 #else
 						lockTaken = this._typeLock.TryAdd( typeof( T ), null );
 #endif
 					}
 
-					if ( !lockTaken )
+					if( !lockTaken )
 					{
 						return new LazyDelegatingMessagePackSerializer<T>( this );
 					}
@@ -257,10 +260,13 @@ namespace MsgPack.Serialization
 				}
 				finally
 				{
-					if ( lockTaken )
+					if( lockTaken )
 					{
 #if SILVERLIGHT || NETFX_35
-						Monitor.Exit( this._typeLock );
+						lock( this._typeLock )
+						{
+							this._typeLock.Remove( typeof( T ) );
+						}
 #else
 						object dummy;
 						this._typeLock.TryRemove( typeof( T ), out dummy );
