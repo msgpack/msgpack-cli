@@ -354,12 +354,15 @@
     </None>
     <None Include="..\MsgPack.UnitTest\cases.json">
       <Link>cases.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\MsgPack.UnitTest\cases.mpac">
       <Link>cases.mpac</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\MsgPack.UnitTest\cases_compact.mpac">
       <Link>cases_compact.mpac</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
