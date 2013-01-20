@@ -13,6 +13,15 @@
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs" />
+    <Preserve Path="Dummies\System.Threading.Tasks\Task.cs" />
+    <Preserve Path="Dummies\System.Threading.Tasks\TaskFactory.cs" />
+    <Preserve Path="Mono\System\AggregateException.cs" />
+    <Preserve Path="Mono\System\Threading\AtomicBoolean.cs" />
+    <Preserve Path="Mono\System\Threading\Barrier.cs" />
+    <Preserve Path="Mono\System\Threading\BarrierPostPhaseException.cs" />
+    <Preserve Path="Mono\System\Threading\CountdownEvent.cs" />
+    <Preserve Path="Mono\System\Threading\ManualResetEventSlim.cs" />
+    <Preserve Path="Mono\System\Threading\SpinWait.cs" />
     <Preserve File="*.config" />
     <Preserve File="*.json" />
     <Preserve File="*.mpac" />
