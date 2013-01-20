@@ -575,6 +575,7 @@ namespace MsgPack.Serialization
 		}
 	}
 
+#if !NETFX_35
 	[TestFixture]
 	public class NilImplicationOnExpressionFlavorTest : NilImplicationTest
 	{
@@ -583,4 +584,5 @@ namespace MsgPack.Serialization
 			return new SerializationContext() { EmitterFlavor = EmitterFlavor.ExpressionBased };
 		}
 	}
+#endif
 }

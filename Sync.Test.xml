@@ -9,6 +9,17 @@
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
+  <Project Name="MsgPack.UnitTest.Net35" Base="MsgPack.UnitTest">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs" />
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Exclude File="*.ps1" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+  </Project>
   <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve File="*.config" />

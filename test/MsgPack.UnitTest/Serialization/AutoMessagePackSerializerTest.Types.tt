@@ -43,6 +43,7 @@ var __fields =
 		new Tuple<Object, string, string, bool>( typeof( BigInteger ), String.Empty, "new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue", true ),
 		new Tuple<Object, string, string, bool>( typeof( Complex ), String.Empty, "new Complex( 1.3, 2.4 )", true ),
 		new Tuple<Object, string, string, bool>( typeof( DictionaryEntry ), String.Empty, "new DictionaryEntry( new MessagePackObject( \"Key\" ), new MessagePackObject( \"Value\" ) )", true ),
+		new Tuple<Object, string, string, bool>( typeof( KeyValuePair<String, DateTimeOffset> ), String.Empty, "new KeyValuePair<String, DateTimeOffset>( \"Key\", DateTimeOffset.UtcNow )", true ),
 		new Tuple<Object, string, string, bool>( typeof( KeyValuePair<String, Complex> ), String.Empty, "new KeyValuePair<String, Complex>( \"Key\", new Complex( 1.3, 2.4 ) )", true ),
 		new Tuple<Object, string, string, bool>( typeof( String ), String.Empty, "\"StringValue\"", true ),
 		new Tuple<Object, string, string, bool>( typeof( Byte[] ), String.Empty, "new Byte[]{ 1, 2, 3, 4 }", true ),
@@ -99,6 +100,21 @@ var __desktopOnly =
 		typeof( ArrayList ),
 		typeof( Hashtable )
 	};
+
+var __notInNet35 =
+	new HashSet<String>()
+	{
+		ToTypeName( new Tuple<String, String[]>( typeof( ObservableCollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ) ),
+		ToTypeName( new Tuple<String, String[]>( typeof( ISet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ) ),
+		ToTypeName( typeof( ISet<Object> ) ),
+		ToTypeName( typeof( ObservableCollection<object> ) ),
+		ToTypeName( typeof( ISet<DateTime> ) ),
+		ToTypeName( typeof( ObservableCollection<DateTime> ) ),
+		ToTypeName( typeof( KeyValuePair<string, Complex> ) ),
+		ToTypeName( new Tuple<String, String[]>( typeof( Tuple<,,,> ).FullName, new [] { "System.Int32", "System.String", "MsgPack.MessagePackObject", "System.Object" } ) ),
+		ToTypeName( typeof( BigInteger ) ),
+		ToTypeName( typeof( Complex ) ),
+	};
 #>
 #region -- License Terms --
 //
@@ -127,7 +143,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+#if !NETFX_35
 using System.Numerics;
+#endif
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 #if !MSTEST
@@ -165,6 +183,12 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 #if !NETFX_CORE && !SILVERLIGHT
 <#
 	}
+	else if( __notInNet35.Contains( __typeName ) )
+	{
+#>
+#if !NETFX_35
+<#
+	}
 #>
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>()
@@ -200,7 +224,13 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	if( __asType != null && __desktopOnly.Contains( __asType ) )
 	{
 #>
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
+<#
+	}
+	else if( __notInNet35.Contains( __typeName ) )
+	{
+#>
+#endif // !NETFX_35
 <#
 	}
 }
@@ -344,6 +374,12 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 #if !NETFX_CORE && !SILVERLIGHT
 <#
 	}
+	else if( __notInNet35.Contains( __typeName ) )
+	{
+#>
+#if !NETFX_35
+<#
+	}
 #>
 		private <#= __typeName #> _<#= ToFieldName( __item ) #><#= __item.Item4 ? String.Empty : " = " + GetSimpleInitializer( __item ) #>;
 		
@@ -363,7 +399,13 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	if( __asType != null && __desktopOnly.Contains( __asType ) )
 	{
 #>
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
+<#
+	}
+	else if( __notInNet35.Contains( __typeName ) )
+	{
+#>
+#endif // !NETFX_35
 <#
 	}
 }
@@ -374,11 +416,26 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 <#
 foreach( Tuple<Object, string, string, bool> __item in __fields )
 {
+	String __typeName;
+	if( __item.Item1 is Type )
+	{
+		__typeName = ToTypeName( __item.Item1 as Type );
+	}
+	else
+	{
+		__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
+	}
 	var __asType = __item.Item1 as Type;
 	if( __asType != null && __desktopOnly.Contains( __asType ) )
 	{
 #>
 #if !NETFX_CORE && !SILVERLIGHT
+<#
+	}
+	else if( __notInNet35.Contains( __typeName ) )
+	{
+#>
+#if !NETFX_35
 <#
 	}
 #>
@@ -387,7 +444,13 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	if( __asType != null && __desktopOnly.Contains( __asType ) )
 	{
 #>
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
+<#
+	}
+	else if( __notInNet35.Contains( __typeName ) )
+	{
+#>
+#endif // !NETFX_35
 <#
 	}
 }
@@ -406,11 +469,26 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 <#
 foreach( Tuple<Object, string, string, bool> __item in __fields )
 {
+	String __typeName;
+	if( __item.Item1 is Type )
+	{
+		__typeName = ToTypeName( __item.Item1 as Type );
+	}
+	else
+	{
+		__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
+	}
 	var __asType = __item.Item1 as Type;
 	if( __asType != null && __desktopOnly.Contains( __asType ) )
 	{
 #>
 #if !NETFX_CORE && !SILVERLIGHT
+<#
+	}
+	else if( __notInNet35.Contains( __typeName ) )
+	{
+#>
+#if !NETFX_35
 <#
 	}
 #>
@@ -422,10 +500,15 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 #endif
 <#
 	}
+	else if( __notInNet35.Contains( __typeName ) )
+	{
+#>
+#endif // !NETFX_35
+<#
+	}
 }
 #>		
 		}
-
 	}
 }
 <#+

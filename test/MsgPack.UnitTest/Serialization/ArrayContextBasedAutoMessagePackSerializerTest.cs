@@ -22,7 +22,6 @@ using System;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
-using MsgPack.Serialization.ExpressionSerializers;
 #if !MSTEST
 using NUnit.Framework;
 #else

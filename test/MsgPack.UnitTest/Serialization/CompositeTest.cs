@@ -25,7 +25,9 @@ using System.IO;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
+#if !NETFX_35
 using MsgPack.Serialization.ExpressionSerializers;
+#endif
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -98,6 +100,7 @@ namespace MsgPack.Serialization
 		}
 #endif
 
+#if !NETFX_35
 		[Test]
 		public void TestArrayExpressionBased()
 		{
@@ -109,6 +112,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Map, c => new ExpressionSerializerBuilder<DirectoryItem>( c ) );
 		}
+#endif
 
 		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, Func<SerializationContext, SerializerBuilder<DirectoryItem>> builderProvider )
 		{

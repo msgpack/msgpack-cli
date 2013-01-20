@@ -19,9 +19,19 @@
 #endregion -- License Terms --
 
 using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Resources;
 
-namespace System
-{
-	// This file generated from Delegates.tt T4Template.
-	// Do not modify this file. Edit Delegates.tt instead.
-}
+[assembly: AssemblyTitle( "Unit test of MessagePack for CLI" )]
+[assembly: AssemblyDescription( "Unit test of MessagePack CLI binding (.NET 3.5)" )]
+[assembly: AssemblyConfiguration( "Develop" )]
+[assembly: AssemblyProduct( "MessagePack" )]
+[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2013" )]
+
+[assembly: ComVisible( false )]
+[assembly: CLSCompliant( true )]
+[assembly: NeutralResourcesLanguage( "en-US" )]
+[assembly: AssemblyVersion( "1.0.0.0" )]
+[assembly: AssemblyFileVersion( "0.1.0.0" )]
+[assembly: AssemblyInformationalVersion( "0.1" )]

@@ -137,6 +137,12 @@ foreach( var __method in new []{ "Array", "Map" } )
 {
 	foreach( var __flavor in new [] { "Field", "Context", "Expression" } )
 	{
+		if ( __flavor == "Expression" )
+		{
+#>
+#if !NETFX_35
+<#
+		}
 #>
 
 		[Test]
@@ -145,28 +151,6 @@ foreach( var __method in new []{ "Array", "Map" } )
 			TestExtraFieldCore<VersioningTestTarget>( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based );
 		}
 
-<#
-/*
-		foreach( var __targetType in new [] { "MessagePackMember", "DataContract", "Plain" } )
-		{
-#>
-
-		[Test]
-		public void TestExtraField_<#= __targetType #>Extensible_<#= __method #>_<#= __flavor #>Based_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldCore<#= "<" + __targetType #>ExtensibleVersioningTestTarget>( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based );
-		}
-
-		[Test]
-		public void TestExtraFieldRoundTrip_<#= __targetType #>Extensible_<#= __method #>_<#= __flavor #>Based_ExtraIsStoredAsExtensionData()
-		{
-			TestExtraFieldRoundTripCore<#= "<" + __targetType #>ExtensibleVersioningTestTarget>( SerializationMethod.<#= __method #>, EmitterFlavor.<#= __flavor #>Based );
-		}
-
-<#
-		}
-*/
-#>
 		[Test]
 		public void TestMissingField_<#= __method #>_<#= __flavor #>Based_MissingIsTreatedAsNil()
 		{
@@ -188,6 +172,13 @@ foreach( var __method in new []{ "Array", "Map" } )
 		{
 			TestFieldSwappedCore( EmitterFlavor.<#= __flavor #>Based );
 		}
+<#
+		}
+
+		if ( __flavor == "Expression" )
+		{
+#>
+#endif // !NETFX_35
 <#
 		}
 	}

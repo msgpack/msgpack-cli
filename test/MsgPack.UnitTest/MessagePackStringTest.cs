@@ -163,7 +163,7 @@ namespace MsgPack
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 			var evidence = new Evidence();
-#if MONO
+#if MONO || NETFX_35
 #pragma warning disable 0612
 			// TODO: patching
 			// currently, Mono does not declare AddHostEvidence
@@ -192,7 +192,7 @@ namespace MsgPack
 			}
 		}
 		
-#if MONO
+#if MONO || NETFX_35
 		private static PermissionSet GetDefaultInternetZoneSandbox()
 		{
 			var permissions = new PermissionSet( PermissionState.None );
@@ -211,6 +211,9 @@ namespace MsgPack
 			permissions.AddPermission(
 				new SecurityPermission(
 					SecurityPermissionFlag.Execution
+#if NETFX_35
+					| SecurityPermissionFlag.SkipVerification
+#endif
 				)
 			);
 			permissions.AddPermission(

@@ -72,7 +72,7 @@ foreach( Type __func in __funcs )
 	if ( __notAvailableOnWP )
 	{
 #>
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !NETFX_35
 <#
 	}
 #>

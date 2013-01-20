@@ -98,7 +98,11 @@ namespace MsgPack
 			var sw = Stopwatch.StartNew();
 			var avg = 0.0;
 			Random random = new Random();
+#if !SKIP_LARGE_TEST && !NETFX_35
 			var sb = new StringBuilder( 1000 * 1000 * 200 );
+#else
+			var sb = new StringBuilder( 1000 * 200 );
+#endif
 			// small size string
 			for ( int i = 0; i < 100; i++ )
 			{
@@ -132,7 +136,7 @@ namespace MsgPack
 			sw.Stop();
 			Console.WriteLine( "Medium String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 			sw.Reset();
-#if !SKIP_LARGE_TEST
+#if !SKIP_LARGE_TEST && !NETFX_35
 			sw.Start();
 
 			avg = 0.0;

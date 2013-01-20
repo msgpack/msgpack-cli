@@ -152,6 +152,7 @@ namespace MsgPack
 			Console.WriteLine( "Medium String ({1:#,###.0} chars): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 		}
 
+#if !NETFX_35
 		[Test]
 		[Timeout( 3000000 )]
 		[Explicit]
@@ -227,6 +228,7 @@ namespace MsgPack
 			sw.Stop();
 			Console.WriteLine( "Medium String (Non-ASCII) ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 		}
+#endif
 
 		private static void TestStringStrict( String val )
 		{
@@ -524,9 +526,9 @@ namespace MsgPack
 				sw.Restart();
 				Console.WriteLine( "utf-8[0x{0:x}]", count );
 				var output = new MemoryStream();
-				Packer.Create( output ).Pack( String.Join( String.Empty, Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ) ) );
+				Packer.Create( output ).Pack( String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ) );
 				Assert.AreEqual(
-					String.Join( String.Empty, Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ) ),
+					String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ),
 					UnpackOne( output ).AsString()
 				);
 				sw.Stop();

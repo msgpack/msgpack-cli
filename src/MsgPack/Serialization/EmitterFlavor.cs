@@ -38,11 +38,12 @@ namespace MsgPack.Serialization
 		///		It is default.
 		/// </summary>
 		FieldBased,
-
+#if !NETFX_35
 		/// <summary>
 		///		Uses expression tree to (de)serialization.
 		///		It may have more overhead but is available in WinRT.
 		/// </summary>
 		ExpressionBased,
+#endif
 	}
 }

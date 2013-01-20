@@ -413,7 +413,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public sealed override MessagePackSerializer<TObject> CreateTupleSerializer()
 		{
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || NETFX_35
 			throw new PlatformNotSupportedException();
 #else
 			using ( var emitter = EmittingSerializerBuilderLogics.CreateTupleSerializerCore( typeof( TObject ), this._emitterFlavor ) )

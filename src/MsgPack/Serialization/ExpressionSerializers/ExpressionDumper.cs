@@ -28,6 +28,7 @@ using  System.Reflection;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
+#if !NETFX_35
 	/// <summary>
 	///		Takes text dump for expression tree supporting block expression etc.
 	/// </summary>
@@ -1140,4 +1141,5 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 	}
+#endif
 }

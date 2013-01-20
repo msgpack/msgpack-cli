@@ -19,7 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_35
 using System.Collections.Concurrent;
 #endif
 using System.Collections.Generic;
@@ -63,7 +63,7 @@ namespace MsgPack.Serialization
 		}
 
 		private readonly SerializerRepository _serializers;
-#if SILVERLIGHT
+#if SILVERLIGHT || NETFX_35
 		private readonly object _typeLock;
 #else
 		private readonly ConcurrentDictionary<Type, object> _typeLock;
@@ -209,7 +209,7 @@ namespace MsgPack.Serialization
 
 			this._compatibilityOptions = new SerializationCompatibilityOptions();
 			this._serializers = serializers;
-#if SILVERLIGHT
+#if SILVERLIGHT || NETFX_35
 			this._typeLock = new object();
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
@@ -241,7 +241,7 @@ namespace MsgPack.Serialization
 					try { }
 					finally
 					{
-#if SILVERLIGHT
+#if SILVERLIGHT || NETFX_35
 						lockTaken = Monitor.TryEnter( this._typeLock );
 #else
 						lockTaken = this._typeLock.TryAdd( typeof( T ), null );
@@ -259,7 +259,7 @@ namespace MsgPack.Serialization
 				{
 					if ( lockTaken )
 					{
-#if SILVERLIGHT
+#if SILVERLIGHT || NETFX_35
 						Monitor.Exit( this._typeLock );
 #else
 						object dummy;

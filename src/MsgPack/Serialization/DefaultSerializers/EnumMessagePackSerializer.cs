@@ -33,7 +33,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			where T : struct
 		{
 			T value;
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !NETFX_35
 			if ( !Enum.TryParse( unpacker.Data.Value.DeserializeAsString(), out value ) )
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.Data.Value.AsString(), typeof( T ) ) );

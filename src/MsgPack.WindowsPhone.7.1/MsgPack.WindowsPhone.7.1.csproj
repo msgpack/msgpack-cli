@@ -56,6 +56,15 @@
     <Compile Include="..\CommonAssemblyInfo.Pack.cs">
       <Link>Properties\CommonAssemblyInfo.Pack.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.Net35\Contract.cs">
+      <Link>Contract.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.Net35\Delegates.cs">
+      <Link>Contract.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.Net35\Tuple`n.cs">
+      <Link>Tuple`n.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.Silverlight.4\SilverlightExtensions.cs">
       <Link>SilverlightExtensions.cs</Link>
     </Compile>
@@ -212,28 +221,7 @@
     <Compile Include="..\MsgPack\Validation.cs">
       <Link>Validation.cs</Link>
     </Compile>
-    <Compile Include="Contract.cs" />
-    <Compile Include="Delegates.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Delegates.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tuple`n.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Tuple`n.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Delegates.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Delegates.cs</LastGenOutput>
-    </None>
-    <None Include="Tuple`n.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Tuple`n.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

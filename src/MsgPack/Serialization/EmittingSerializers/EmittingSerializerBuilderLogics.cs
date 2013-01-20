@@ -615,7 +615,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		#endregion -- Maps --
 
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !NETFX_35
 		#region -- Tuples --
 
 		public static SerializerEmitter CreateTupleSerializerCore( Type tupleType, EmitterFlavor emitterFlavor )
@@ -818,7 +818,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		#endregion -- Tuples --
-#endif
+#endif // !WINDOWS_PHONE && !NETFX_35
 
 		#region -- Miscs --
 

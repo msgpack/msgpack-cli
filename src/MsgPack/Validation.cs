@@ -37,8 +37,10 @@ namespace MsgPack
 	{
 		public static void ValidateBuffer<T>( T[] byteArray, int offset, long length, string nameOfByteArray, string nameOfLength, bool validateBufferSize )
 		{
+#if  !NETFX_35
 			Contract.Assume( !String.IsNullOrWhiteSpace( nameOfByteArray ) );
 			Contract.Assume( !String.IsNullOrWhiteSpace( nameOfLength ) );
+#endif
 
 			if ( byteArray == null )
 			{

@@ -134,7 +134,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 					AppDomain.CurrentDomain.DefineDynamicAssembly(
 						new AssemblyName( assemblyName ),
 #if !SILVERLIGHT
-					isDebuggable ? AssemblyBuilderAccess.RunAndSave : ( isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run )
+						isDebuggable
+						? AssemblyBuilderAccess.RunAndSave
+#if !NETFX_35
+						: ( isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run )
+#else
+						: AssemblyBuilderAccess.Run
+#endif
 #else
 						AssemblyBuilderAccess.Run 
 #endif
@@ -184,7 +190,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new object[] { 8 }
 				)
 			);
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_35
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
 					typeof( System.Security.SecurityRulesAttribute ).GetConstructor( new[] { typeof( System.Security.SecurityRuleSet ) } ),

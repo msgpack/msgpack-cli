@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <ProjectSync>
+  <Project Name="MsgPack.Net35" Base="MsgPack">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\ExpressionSerializers\*" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+    <Preserve Path="Contract.cs" />
+    <Preserve Path="NetFXCompabiblities.cs" />
+    <Preserve Path="Tuple`n.cs" />
+    <Exclude Path="TupleItems.cs" />
+  </Project>
   <Project Name="MsgPack.Mono" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />

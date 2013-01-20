@@ -62,7 +62,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		public override MessagePackSerializer<TObject> CreateTupleSerializer()
 		{
+#if WINDOWS_PHONE
+			throw new PlatformNotSupportedException();
+#else
 			return new TupleExpressionMessagePackSerializer<TObject>( this.Context );
+#endif
 		}
 	}
 }

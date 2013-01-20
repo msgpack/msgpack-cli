@@ -167,7 +167,11 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( resource != null );
 			Contract.Assert( resourceKey != null );
+#if !NETFX_35
 			Contract.Assert( !String.IsNullOrWhiteSpace( resourceKey ) );
+#else
+			Contract.Assert( !String.IsNullOrEmpty( resourceKey ) );
+#endif
 			Contract.Assert( argumentLoadingEmitters != null );
 			Contract.Assert( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
 
@@ -225,7 +229,11 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( resource != null );
 			Contract.Assert( resourceKey != null );
+#if !NETFX_35
 			Contract.Assert( !String.IsNullOrWhiteSpace( resourceKey ) );
+#else
+			Contract.Assert( !String.IsNullOrEmpty( resourceKey ) );
+#endif
 			Contract.Assert( argumentLoadingEmitters != null );
 			Contract.Assert( Contract.ForAll( argumentLoadingEmitters, item => item != null ) );
 

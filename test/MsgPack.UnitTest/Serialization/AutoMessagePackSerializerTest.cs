@@ -442,6 +442,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !NETFX_35
 		[Test]
 		public void TestTuple1()
 		{
@@ -516,6 +517,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( expected ) );
 			}
 		}
+#endif
 
 		[Test]
 		public void TestEmptyBytes()
@@ -817,7 +819,7 @@ namespace MsgPack.Serialization
 				var actuals = ( IDictionary )actual;
 				foreach ( DictionaryEntry entry in ( ( IDictionary )expected ) )
 				{
-					Assert.That( actuals.Contains( entry.Key ), "'{0}' is not in '[{1}]'", entry.Key, String.Join( ", ", actuals.Keys.OfType<object>() ) );
+					Assert.That( actuals.Contains( entry.Key ), "'{0}' is not in '[{1}]'", entry.Key, String.Join( ", ", actuals.Keys.OfType<object>().Select( o => o == null ? String.Empty : o.ToString() ).ToArray() ) );
 					Verify( entry.Value, actuals[ entry.Key ] );
 				}
 				return;
@@ -835,6 +837,7 @@ namespace MsgPack.Serialization
 				return;
 			}
 
+#if !NETFX_35
 			if ( expected is IStructuralEquatable )
 			{
 				Assert.That(
@@ -848,6 +851,7 @@ namespace MsgPack.Serialization
 				);
 				return;
 			}
+#endif
 
 			if ( expected is FILETIME )
 			{
@@ -866,8 +870,12 @@ namespace MsgPack.Serialization
 			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 #endif
 			{
+#if !NETFX_35
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
 				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
+#else
+				Assert.Inconclusive( ".NET 3.5 does not support dynamic." );
+#endif
 				return;
 			}
 

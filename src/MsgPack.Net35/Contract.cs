@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace System.Diagnostics.Contracts
 {
@@ -28,34 +29,75 @@ namespace System.Diagnostics.Contracts
 	/// </summary>
 	internal static class Contract
 	{
+		private static readonly object _contractFailedLock = new object();
+		private static EventHandler<ContractFailedEventArgs> _contractFailed;
+
+		public static event EventHandler<ContractFailedEventArgs> ContractFailed
+		{
+			add
+			{
+				lock ( _contractFailedLock )
+				{
+					_contractFailed += value;
+				}
+			}
+			remove
+			{
+				lock ( _contractFailedLock )
+				{
+					_contractFailed -= value;
+				}
+			}
+		}
+
+		private static void AssertCore( bool condition, string message )
+		{
+			if ( !condition )
+			{
+				var handler = Interlocked.CompareExchange( ref _contractFailed, null, null );
+				if ( handler != null )
+				{
+					var e = new ContractFailedEventArgs();
+					handler( null, e );
+
+					if ( e.IsUnwined )
+					{
+						throw new Exception( message );
+					}
+				}
+
+				Debug.Assert( condition, message );
+			}
+		}
+
 		[Conditional( "DEBUG" )]
 		public static void Assert( bool condition )
 		{
-			Debug.Assert( condition );
+			AssertCore( condition, "Assert failed." );
 		}
 
 		[Conditional( "DEBUG" )]
 		public static void Assert( bool condition, string message )
 		{
-			Debug.Assert( condition, message );
+			AssertCore( condition, message );
 		}
 
 		[Conditional( "DEBUG" )]
 		public static void Assume( bool condition )
 		{
-			Debug.Assert( condition );
+			AssertCore( condition, "Assume failed." );
 		}
 
 		[Conditional( "DEBUG" )]
 		public static void Assume( bool condition, string message )
 		{
-			Debug.Assert( condition, message );
+			AssertCore( condition, message );
 		}
 
 		[Conditional( "DEBUG" )]
 		public static void Requires( bool condition )
 		{
-			Debug.Assert( condition, "Precondition failed." );
+			AssertCore( condition, "Precondition failed." );
 		}
 
 		[Conditional( "NEVER_COMPILED" )]
@@ -111,5 +153,15 @@ namespace System.Diagnostics.Contracts
 	internal sealed class ContractClassForAttribute : Attribute
 	{
 		public ContractClassForAttribute( Type typeContractsAreFor ) { }
+	}
+
+	internal sealed class ContractFailedEventArgs : EventArgs
+	{
+		internal bool IsUnwined { get; private set; }
+
+		public void SetUnwind()
+		{
+			this.IsUnwined = true;
+		}
 	}
 }

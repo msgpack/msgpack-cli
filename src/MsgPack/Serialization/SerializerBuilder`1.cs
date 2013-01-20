@@ -238,5 +238,4 @@ namespace MsgPack.Serialization
 			return null;
 		}
 	}
-
 }

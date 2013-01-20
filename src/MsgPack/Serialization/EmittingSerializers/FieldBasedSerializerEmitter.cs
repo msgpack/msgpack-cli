@@ -57,12 +57,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( targetType != null );
 
 			string typeName =
+#if !NETFX_35
 				String.Join(
-				Type.Delimiter.ToString(),
-				typeof( SerializerEmitter ).Namespace,
-				"Generated",
-				IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" + sequence
-			);
+					Type.Delimiter.ToString(),
+					typeof( SerializerEmitter ).Namespace,
+					"Generated",
+					IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" + sequence
+				);
+#else
+				String.Join(
+					Type.Delimiter.ToString(),
+					new string[]
+					{
+						typeof( SerializerEmitter ).Namespace,
+						"Generated",
+						IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" + sequence
+					}
+				);
+#endif
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}", typeName );
 			this._typeBuilder =
 				host.DefineType(
@@ -175,7 +187,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public sealed override MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
 		{
-			var contextParameter = Expression.Parameter( typeof( SerializationContext ) );
+			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			return
 				Expression.Lambda<Func<SerializationContext, MessagePackSerializer<T>>>(
 					Expression.New(

@@ -160,6 +160,12 @@ var __tuples =
 	.GetTypes()
 	.Where( type => type.IsGenericType && type.Namespace == typeof( Tuple<> ).Namespace && type.Name == "Tuple" )
 	.ToArray();
+var __notInNet35s =
+	new HashSet<Type>()
+	{
+		typeof( System.Numerics.BigInteger ),
+		typeof( System.Numerics.Complex ),
+	};
 var __notInSLs =
 	new HashSet<Type>()
 	{
@@ -199,7 +205,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !NETFX_35
 using System.Numerics;
 #endif
 using System.Reflection;
@@ -231,37 +237,93 @@ foreach( Type __type in __structTypes )
 		continue;
 	}
 	
-	if( __notInSLs.Contains( __type ) )
-	{
-#>
-#if !SILVERLIGHT && !NETFX_CORE
-<#
-	}
-	
 	if( __notInWPs.Contains( __type ) )
 	{
 #>
 #if !WINDOWS_PHONE
 <#
 	}
-#>
-			dictionary.Add( typeof( <#= __type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
-<#
 
 	if( __notInSLs.Contains( __type ) )
 	{
 #>
-#endif
+#if !SILVERLIGHT && !NETFX_CORE
+<#
+	}
+
+	if( __notInSLs.Contains( __type ) )
+	{
+#>
+#if !SILVERLIGHT
+<#
+	}
+
+	if( __notInNet35s.Contains( __type ) )
+	{
+#>
+#if !NETFX_35
+<#
+	}
+#>
+			dictionary.Add( typeof( <#= __type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
+<#
+
+	if( __notInWPs.Contains( __type ) )
+	{
+#>
+#endif // !WINDOWS_PHONE
+<#
+	}
+
+	if( __notInSLs.Contains( __type ) )
+	{
+#>
+#endif // !SILVERLIGHT && !NETFX_CORE
+<#
+	}
+
+	if( __notInSLs.Contains( __type ) )
+	{
+#>
+#endif // !SILVERLIGHT
+<#
+	}
+
+	if( __notInNet35s.Contains( __type ) )
+	{
+#>
+#endif // !NETFX_35
 <#
 	}
 }
 
 foreach( Type __type in __classTypes )
 {
+	if( __notInWPs.Contains( __type ) )
+	{
+#>
+#if !WINDOWS_PHONE
+<#
+	}
+
 	if( __notInSLs.Contains( __type ) )
 	{
 #>
 #if !SILVERLIGHT && !NETFX_CORE
+<#
+	}
+
+	if( __notInSLs.Contains( __type ) )
+	{
+#>
+#if !SILVERLIGHT
+<#
+	}
+
+	if( __notInNet35s.Contains( __type ) )
+	{
+#>
+#if !NETFX_35
 <#
 	}
 	
@@ -277,18 +339,32 @@ foreach( Type __type in __classTypes )
 			dictionary.Add( typeof( <#= ToCSharpTypeToken( __type ) #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer() );
 <#
 	}
-	
+
 	if( __notInWPs.Contains( __type ) )
 	{
 #>
 #endif // !WINDOWS_PHONE
 <#
 	}
-	
+
+	if( __notInSLs.Contains( __type ) )
+	{
+#>
+#endif // !SILVERLIGHT && !NETFX_CORE
+<#
+	}
+
 	if( __notInSLs.Contains( __type ) )
 	{
 #>
 #endif // !SILVERLIGHT
+<#
+	}
+
+	if( __notInNet35s.Contains( __type ) )
+	{
+#>
+#endif // !NETFX_35
 <#
 	}
 }
