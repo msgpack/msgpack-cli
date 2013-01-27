@@ -39,7 +39,9 @@ namespace System
 			return new Tuple<T1, T2, T3, T4>( item1, item2, item3, item4 );
 		}
 	}
+#if !WINDOWS_PHONE
 	[Serializable]
+#endif
 	internal class Tuple<T1, T2>
 	{
 		private readonly T1 _item1;
@@ -73,7 +75,9 @@ namespace System
 			return buffer.ToString();
 		}
 	}
+#if !WINDOWS_PHONE
 	[Serializable]
+#endif
 	internal class Tuple<T1, T2, T3, T4>
 	{
 		private readonly T1 _item1;

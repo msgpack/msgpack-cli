@@ -7,7 +7,10 @@
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
     <Preserve Path="Contract.cs" />
-    <Preserve Path="NetFXCompabiblities.cs" />
+    <Preserve Path="Delegates.tt" />
+    <Preserve Path="Delegates.cs" />
+    <Preserve Path="NetFxCompatibilities.cs" />
+    <Preserve Path="Tuple`n.tt" />
     <Preserve Path="Tuple`n.cs" />
     <Exclude Path="TupleItems.cs" />
   </Project>
@@ -79,24 +82,21 @@
   <Project Name="MsgPack.Serialization.Silverlight.5" Base="MsgPack.Serialization.Silverlight.4">
     <Preserve Path="Properties\AssemblyInfo.cs" />
   </Project>
-  <Project Name="MsgPack.WindowsPhone.7.1" Base="MsgPack">
+  <Project Name="MsgPack.WindowsPhone.7.1" Base="MsgPack.Net35">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\*" />
     <Exclude Path="Serialization\**\*" />
     <Exclude File="*.snk" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
-    <Preserve Path="Contract.cs" />
-    <Preserve Path="Delegates.cs" />
     <Preserve Path="HashSet`1.cs" />
     <Exclude Path="..\MsgPack.Silverlight.4\SilverlightExtensions.cs" />
+    <Exclude Path="NetFxCompatibilities.cs" />
     <Exclude Path="PackerUnpackerExtensions.cs" />
-    <Include Path="ReflectionAbstractions.cs" />
     <Preserve Path="SilverlightExtensions.cs" />
-    <Preserve Path="Tuple`n.cs" />
     <Exclude Path="TupleItems.cs" />
   </Project>
-  <Project Name="MsgPack.Serialization.WindowsPhone.7.1" Base="MsgPack">
+  <Project Name="MsgPack.Serialization.WindowsPhone.7.1" Base="MsgPack.Net35">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.snk" />
     <Exclude File="*.tt" />
@@ -114,11 +114,12 @@
     <Preserve Path="Serialization\TraceSource.cs" />
     <Exclude Path="*.cs" />
     <Exclude Path="*.xml" />
-    <Preserve Path="Contract.cs" />
+    <Include Path="Contract.cs" />
     <Preserve Path="HashSet`1.cs" />
-    <Include Path="PackerUnpackerExtensions.cs" />
+    <Exclude Path="NetFxCompatibilities.cs" />
+    <Include Path="..\MsgPack\PackerUnpackerExtensions.cs" />
     <Preserve Path="ReflectionAbstractions.cs" />
     <Preserve Path="SilverlightExtensions.cs" />
-    <Preserve Path="Tuple`n.cs" />
+    <Include Path="Tuple`n.cs" />
   </Project>
 </ProjectSync>
