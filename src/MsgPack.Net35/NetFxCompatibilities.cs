@@ -27,7 +27,7 @@ namespace MsgPack
 	/// <summary>
 	///		Defines extension methods to achieve compatiblity between .NET 3.5 and .NET 4.0.
 	/// </summary>
-	internal static class NetFXCompabiblities
+	internal static class NetFxCompatibilities
 	{
 		public static void Clear( this StringBuilder source )
 		{
