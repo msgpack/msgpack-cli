@@ -182,6 +182,7 @@
     <Compile Include="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
     <Compile Include="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs" />
     <Compile Include="Serialization\ArraySegmentEqualityComparer`1.cs" />
+    <Compile Include="Serialization\ByteArraySegmentStreamTest.cs" />
     <Compile Include="Serialization\AutoMessagePackSerializerTest.cs" />
     <Compile Include="Serialization\AutoMessagePackSerializerTest.Types.cs">
       <AutoGen>True</AutoGen>

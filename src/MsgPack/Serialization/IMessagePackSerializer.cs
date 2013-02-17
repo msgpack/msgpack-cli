@@ -42,7 +42,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		The type of <paramref name="objectTree"/> is not serializable etc.
 		/// </exception>
-		[SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification="'objectTree' does not mean System.Object." )]
+		[SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
 		void PackTo( Packer packer, object objectTree );
 
 		/// <summary>
@@ -54,6 +54,12 @@ namespace MsgPack.Serialization
 		///		<paramref name="unpacker"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
 		/// <exception cref="NotSupportedException">
@@ -74,6 +80,12 @@ namespace MsgPack.Serialization
 		///		<paramref name="collection"/> is not compatible for this serializer.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
+		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
 		/// <exception cref="NotSupportedException">
