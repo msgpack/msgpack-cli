@@ -21,6 +21,9 @@
 using System;
 using System.Globalization;
 using System.IO;
+#if NETFX_CORE
+using System.Reflection;
+#endif
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
@@ -44,7 +47,13 @@ namespace MsgPack.Serialization
 	public abstract class MessagePackSerializer<T> : IMessagePackSerializer
 	{
 		private static readonly bool _isNullable = JudgeNullable();
+#if !SILVERLIGHT
+#if !NETFX_CORE
 		private static readonly string _memoryStreamExceptionSourceName = typeof( MemoryStream ).Assembly.GetName().Name;
+#else
+		private static readonly string _memoryStreamExceptionSourceName = typeof( MemoryStream ).GetTypeInfo().Assembly.GetName().Name;
+#endif
+#endif
 
 		private static bool JudgeNullable()
 		{
@@ -371,6 +380,7 @@ namespace MsgPack.Serialization
 				}
 				catch ( NotSupportedException ex )
 				{
+#if !SILVERLIGHT
 					if ( ex.Source == _memoryStreamExceptionSourceName )
 					{
 						throw new SerializationException( "Buffer is to small.", ex );
@@ -379,6 +389,9 @@ namespace MsgPack.Serialization
 					{
 						throw;
 					}
+#else
+						throw new SerializationException( "Buffer is to small.", ex );
+#endif
 				}
 
 				int used = unchecked( ( int )( stream.Position - initialPosition ) );
@@ -450,7 +463,7 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public T Unpack( ref ArraySegment<byte> buffer )
 		{
-			if( buffer.Array == null )
+			if ( buffer.Array == null )
 			{
 				throw new ArgumentException( "buffer does not contain valid array.", "buffer" );
 			}

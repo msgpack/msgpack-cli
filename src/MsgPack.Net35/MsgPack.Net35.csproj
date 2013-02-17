@@ -157,6 +157,9 @@
     <Compile Include="..\MsgPack\Serialization\AutoMessagePackSerializer`1.cs">
       <Link>Serialization\AutoMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ByteArraySegmentStream.cs">
+      <Link>Serialization\ByteArraySegmentStream.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CallbackMessagePackSerializer`1.cs">
       <Link>Serialization\CallbackMessagePackSerializer`1.cs</Link>
     </Compile>
