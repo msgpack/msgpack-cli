@@ -150,7 +150,6 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\ByteArraySegmentStream.cs" />
     <Compile Include="Serialization\DefaultSerializers\MessagePackObjectExtensions.cs" />
     <Compile Include="Serialization\EmittingSerializers\ArrayEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\LocalVariableHolder.cs" />
@@ -177,6 +176,7 @@
     <Compile Include="Serialization\ExpressionSerializers\TupleExpressionMessagePackSerializer.cs" />
     <Compile Include="Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
+    <Compile Include="Serialization\IMessagePackSingleObjectSerializer.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\MessagePackMemberAttribute.cs" />

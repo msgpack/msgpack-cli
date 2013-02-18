@@ -350,371 +350,110 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		// byte[] Pack();
+		// byte[] PackSingleObject(T);
 
 		[Test]
-		public void TestPack_ReturningByteArray()
+		public void TestPackSingleObject_Normal_Success()
 		{
 			var target = CreateTarget<TimeSpan>();
 			var value = TimeSpan.FromTicks( 12345 );
 			var expected = GetBytes( target, value );
-			var actual = target.Pack( value );
+			var actual = target.PackSingleObject( value );
 			Assert.That( actual, Is.EqualTo( expected ) );
 		}
 
-		// int Pack(byte[], T);
+		// T UnpackSingleObject(byte[])
 
 		[Test]
-		public void TestPack_FillingByteArray_Exact_Success()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new byte[ expected.Length ];
-			var used = target.Pack( buffer, value );
-			Assert.That( buffer, Is.EqualTo( expected ) );
-			Assert.That( used, Is.EqualTo( expected.Length ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArray_Longer_RemainingIsPreserved()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = Enumerable.Repeat( ( byte )( 0xC6 ), expected.Length + 1 ).ToArray();
-			var used = target.Pack( buffer, value );
-			Assert.That( buffer.Take( expected.Length ).ToArray(), Is.EqualTo( expected ) );
-			Assert.That( used, Is.EqualTo( expected.Length ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArray_Shorter_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new byte[ expected.Length - 1 ];
-			Assert.Throws<SerializationException>( () => target.Pack( buffer, value ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArray_Null_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			Assert.Throws<ArgumentNullException>( () => target.Pack( default( byte[] ), value ) );
-		}
-
-		// int Pack(byte[], int, T);
-
-		[Test]
-		public void TestPack_FillingByteArrayWithOffset_Exact_0_Success()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new byte[ expected.Length ];
-			var used = target.Pack( buffer, 0, value );
-			Assert.That( buffer, Is.EqualTo( expected ) );
-			Assert.That( used, Is.EqualTo( expected.Length ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArrayWithOffset_Exact_1_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new byte[ expected.Length ];
-			Assert.Throws<SerializationException>( () => target.Pack( buffer, 1, value ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArrayWithOffset_0_Longer_RemainingIsPreserved()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = Enumerable.Repeat( ( byte )( 0xC6 ), expected.Length + 1 ).ToArray();
-			var used = target.Pack( buffer, 0, value );
-			Assert.That( buffer.Take( expected.Length ).ToArray(), Is.EqualTo( expected ) );
-			Assert.That( used, Is.EqualTo( expected.Length ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArrayWithOffset_1_Longer_RemainingIsPreserved()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = Enumerable.Repeat( ( byte )( 0xC6 ), expected.Length + 1 ).ToArray();
-			var used = target.Pack( buffer, 1, value );
-			Assert.That( buffer.Skip( 1 ).ToArray(), Is.EqualTo( expected ) );
-			Assert.That( used, Is.EqualTo( expected.Length ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArrayWithOffset_Shorter_0_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new byte[ expected.Length - 1 ];
-			Assert.Throws<SerializationException>( () => target.Pack( buffer, 0, value ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArrayWithOffset_Shorter_1_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new byte[ expected.Length - 1 ];
-			Assert.Throws<SerializationException>( () => target.Pack( buffer, 1, value ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArrayWithOffset_Null_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			Assert.Throws<ArgumentNullException>( () => target.Pack( null, 0, value ) );
-		}
-
-		[Test]
-		public void TestPack_FillingByteArrayWithOffset_NegativeOffset_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			Assert.Throws<ArgumentOutOfRangeException>( () => target.Pack( new byte[ 16 ], -1, value ) );
-		}
-
-
-		// int Pack(ArraySegment<byte>, T);
-
-		[Test]
-		public void TestPack_ArraySegment_Exact_0_Success()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new ArraySegment<byte>( new byte[ expected.Length ] );
-			var used = target.Pack( buffer, value );
-			Assert.That( buffer, Is.EqualTo( expected ) );
-			Assert.That( used.Array, Is.SameAs( buffer.Array ) );
-			Assert.That( used.Offset, Is.EqualTo( expected.Length ) );
-			Assert.That( used.Count, Is.EqualTo( 0 ) );
-		}
-
-		[Test]
-		public void TestPack_ArraySegment_Exact_1_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new ArraySegment<byte>( new byte[ expected.Length ], 1, expected.Length - 1 );
-			Assert.Throws<SerializationException>( () => target.Pack( buffer, value ) );
-		}
-
-		[Test]
-		public void TestPack_ArraySegment_Offset0_Longer_RemainingIsPreserved()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new ArraySegment<byte>( Enumerable.Repeat( ( byte )( 0xC6 ), expected.Length + 1 ).ToArray() );
-			var used = target.Pack( buffer, value );
-			Assert.That( buffer.Array.Take( expected.Length ).ToArray(), Is.EqualTo( expected ) );
-			Assert.That( used.Offset, Is.EqualTo( expected.Length ) );
-			Assert.That( used.Count, Is.EqualTo( 1 ) );
-		}
-
-		[Test]
-		public void TestPack_ArraySegment_Offset1_Longer_RemainingIsPreserved()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new ArraySegment<byte>( Enumerable.Repeat( ( byte )( 0xC6 ), expected.Length + 1 ).ToArray(), 1, expected.Length );
-			var used = target.Pack( buffer, value );
-			Assert.That( buffer.Array.Skip( 1 ).ToArray(), Is.EqualTo( expected ) );
-			Assert.That( used.Offset, Is.EqualTo( expected.Length + 1 ) );
-			Assert.That( used.Count, Is.EqualTo( 0 ) );
-		}
-
-		[Test]
-		public void TestPack_ArraySegment_Shorter_Offset0_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new ArraySegment<byte>( new byte[ expected.Length - 1 ] );
-			Assert.Throws<SerializationException>( () => target.Pack( buffer, value ) );
-		}
-
-		[Test]
-		public void TestPack_ArraySegment_Shorter_Offset1_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
-			var buffer = new ArraySegment<byte>( new byte[ expected.Length - 1 ], 1, expected.Length - 2 );
-			Assert.Throws<SerializationException>( () => target.Pack( buffer, value ) );
-		}
-
-		[Test]
-		public void TestPack_ArraySegment_Default_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			Assert.Throws<ArgumentException>( () => target.Pack( default( ArraySegment<byte> ), value ) );
-		}
-
-		// T Unpack(byte[], ref int)
-
-		[Test]
-		public void TestUnpack_ByteArrayWithOffset_Exact_0_Success()
+		public void TestUnpackSingleObject_Success()
 		{
 			var target = CreateTarget<TimeSpan>();
 			var expected = TimeSpan.FromTicks( 12345 );
 			var input = GetBytes( target, expected );
-			var offset = 0;
-			var actual = target.Unpack( input, ref offset );
+			var actual = target.UnpackSingleObject( input );
 			Assert.That( actual, Is.EqualTo( expected ) );
-			Assert.That( offset, Is.EqualTo( input.Length ) );
 		}
 
 		[Test]
-		public void TestUnpack_ByteArrayWithOffset_Extra_0_NotAMatter()
+		public void TestUnpackSingleObject_HasExtra_NotAMatter()
 		{
 			var target = CreateTarget<TimeSpan>();
 			var expected = TimeSpan.FromTicks( 12345 );
 			var input = GetBytes( target, expected );
-			var offset = 0;
-			var actual = target.Unpack( input.Concat( new byte[] { 0x1 } ).ToArray(), ref offset );
+			var actual = target.UnpackSingleObject( input.Concat( new byte[] { 0x1 } ).ToArray() );
 			Assert.That( actual, Is.EqualTo( expected ) );
-			Assert.That( offset, Is.EqualTo( input.Length ) );
 		}
 
 		[Test]
-		public void TestUnpack_ByteArrayWithOffset_Extra_1_Success()
+		public void TestUnpackSingleObject_Fail()
 		{
 			var target = CreateTarget<TimeSpan>();
 			var expected = TimeSpan.FromTicks( 12345 );
 			var input = GetBytes( target, expected );
-			var offset = 1;
-			var actual = target.Unpack( new byte[] { 0x1 }.Concat( input ).ToArray(), ref offset );
+			Assert.Throws<InvalidMessagePackStreamException>( () => target.UnpackSingleObject( input.Take( input.Length - 1 ).ToArray() ) );
+		}
+
+		[Test]
+		public void TestUnpackSingleObject_Null_Fail()
+		{
+			var target = CreateTarget<TimeSpan>();
+			Assert.Throws<ArgumentNullException>( () => target.UnpackSingleObject( default( byte[] ) ) );
+		}
+
+
+		// byte[] IMessagePackSingleObjectSerializer.PackSingleObject(object);
+
+		[Test]
+		public void TestIMessagePackSingleObjectSerializer_PackSingleObject_Normal_Success()
+		{
+			var target = CreateTarget<TimeSpan>();
+			var value = TimeSpan.FromTicks( 12345 );
+			var expected = GetBytes( target, value );
+			IMessagePackSingleObjectSerializer iface = target;
+			var actual = iface.PackSingleObject( value );
 			Assert.That( actual, Is.EqualTo( expected ) );
-			Assert.That( offset, Is.EqualTo( input.Length + 1 ) );
 		}
 
 		[Test]
-		public void TestUnpack_ByteArrayWithOffset_Shorten_0_Fail()
+		public void TestIMessagePackSingleObjectSerializer_PackSingleObject_InvalidType_Fail()
+		{
+			var target = CreateTarget<TimeSpan>();
+			var value = TimeSpan.FromTicks( 12345 );
+			var expected = GetBytes( target, value );
+			IMessagePackSingleObjectSerializer iface = target;
+			Assert.Throws<ArgumentException>( () => iface.PackSingleObject( value.ToString() ) );
+		}
+
+		[Test]
+		public void TestIMessagePackSingleObjectSerializer_PackSingleObject_ValueTypeButNull_Fail()
+		{
+			var target = CreateTarget<TimeSpan>();
+			var value = TimeSpan.FromTicks( 12345 );
+			var expected = GetBytes( target, value );
+			IMessagePackSingleObjectSerializer iface = target;
+			Assert.Throws<ArgumentException>( () => iface.PackSingleObject( null ) );
+		}
+
+		[Test]
+		public void TestIMessagePackSingleObjectSerializer_PackSingleObject_ReferenceTypeNull_AsNil()
+		{
+			var target = CreateTarget<string>();
+			IMessagePackSingleObjectSerializer iface = target;
+			var result = iface.PackSingleObject( null );
+			Assert.That( result, Is.EqualTo( new byte[] { 0xC0 } ) );// nil
+		}
+
+		// object IMessagePackSingleObjectSerializer.UnpackSingleObject(byte[])
+
+		[Test]
+		public void TestIMessagePackSingleObjectSerializer_UnpackSingleObject_Success()
 		{
 			var target = CreateTarget<TimeSpan>();
 			var expected = TimeSpan.FromTicks( 12345 );
 			var input = GetBytes( target, expected );
-			var offset = 0;
-			Assert.Throws<InvalidMessagePackStreamException>( () => target.Unpack( input.Take( input.Length - 1 ).ToArray(), ref offset ) );
-		}
-
-		[Test]
-		public void TestUnpack_ByteArrayWithOffset_Exact_1_Fail()
-		{
-			var target = CreateTarget<UInt32>();
-			var expected = _invalidHeaderValue;
-			var input = GetBytes( target, expected );
-			var offset = 1;
-			Assert.Throws<MessageTypeException>( () => target.Unpack( input, ref offset ) );
-		}
-
-		[Test]
-		public void TestUnpack_ByteArrayWithOffset_Null_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var offset = 0;
-			Assert.Throws<ArgumentNullException>( () => target.Unpack( default( byte[] ), ref offset ) );
-		}
-
-		[Test]
-		public void TestUnpack_ByteArrayWithOffset_Negative_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var expected = TimeSpan.FromTicks( 12345 );
-			var input = GetBytes( target, expected );
-			var offset = -1;
-			Assert.Throws<ArgumentOutOfRangeException>( () => target.Unpack( input, ref offset ) );
-		}
-
-		// T Unpack(ref ArraySegment<byte>)
-
-		[Test]
-		public void TestUnpack_ArraySegment_Exact_0_Success()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var expected = TimeSpan.FromTicks( 12345 );
-			var input = GetBytes( target, expected );
-			var buffer = new ArraySegment<byte>( input );
-			var actual = target.Unpack( ref buffer );
+			IMessagePackSingleObjectSerializer iface = target;
+			var actual = target.UnpackSingleObject( input );
 			Assert.That( actual, Is.EqualTo( expected ) );
-			Assert.That( buffer.Array, Is.SameAs( input ) );
-			Assert.That( buffer.Offset, Is.EqualTo( input.Length ) );
-			Assert.That( buffer.Count, Is.EqualTo( 0 ) );
-		}
-
-		[Test]
-		public void TestUnpack_ArraySegment_Extra_Offset0_NotAMatter()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var expected = TimeSpan.FromTicks( 12345 );
-			var input = GetBytes( target, expected );
-			var buffer = new ArraySegment<byte>( input.Concat( new byte[] { 0x1 } ).ToArray(), 0, input.Length + 1 );
-			var actual = target.Unpack( ref buffer );
-			Assert.That( actual, Is.EqualTo( expected ) );
-			Assert.That( buffer.Offset, Is.EqualTo( input.Length ) );
-			Assert.That( buffer.Count, Is.EqualTo( 1 ) );
-		}
-
-		[Test]
-		public void TestUnpack_ArraySegment_Extra_Offset1_Success()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var expected = TimeSpan.FromTicks( 12345 );
-			var input = GetBytes( target, expected );
-			var buffer = new ArraySegment<byte>( new byte[] { 0x1 }.Concat( input ).ToArray(), 1, input.Length );
-			var actual = target.Unpack( ref  buffer );
-			Assert.That( actual, Is.EqualTo( expected ) );
-			Assert.That( buffer.Offset, Is.EqualTo( input.Length + 1 ) );
-			Assert.That( buffer.Count, Is.EqualTo( 0 ) );
-		}
-
-		[Test]
-		public void TestUnpack_ArraySegment_Shorten_Offset0_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var expected = TimeSpan.FromTicks( 12345 );
-			var input = GetBytes( target, expected );
-			var buffer = new ArraySegment<byte>( input, 0, input.Length - 1 );
-			Assert.Throws<InvalidMessagePackStreamException>( () => target.Unpack( ref buffer ) );
-		}
-
-		[Test]
-		public void TestUnpack_ArraySegment_Exact_Offset1_Fail()
-		{
-			var target = CreateTarget<UInt32>();
-			var expected = _invalidHeaderValue;
-			var input = GetBytes( target, expected );
-			var buffer = new ArraySegment<byte>( input, 1, input.Length - 1 );
-			Assert.Throws<MessageTypeException>( () => target.Unpack( ref buffer ) );
-		}
-
-		[Test]
-		public void TestUnpack_ArraySegment_Default_Fail()
-		{
-			var target = CreateTarget<TimeSpan>();
-			var buffer = default( ArraySegment<byte> );
-			Assert.Throws<ArgumentException>( () => target.Unpack( ref buffer ) );
 		}
 
 		private static byte[] GetBytes<T>( MessagePackSerializer<T> target, T value )

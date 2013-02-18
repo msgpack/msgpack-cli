@@ -44,7 +44,7 @@ namespace MsgPack.Serialization
 	/// </remarks>
 	/// <seealso cref="Unpacker"/>
 	/// <seealso cref="Unpacking"/>
-	public abstract class MessagePackSerializer<T> : IMessagePackSerializer
+	public abstract class MessagePackSerializer<T> : IMessagePackSerializer, IMessagePackSingleObjectSerializer
 	{
 		private static readonly bool _isNullable = JudgeNullable();
 #if !SILVERLIGHT
@@ -289,7 +289,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="SerializationException">
 		///		<typeparamref name="T"/> is not serializable etc.
 		/// </exception>
-		public byte[] Pack( T objectTree )
+		public byte[] PackSingleObject( T objectTree )
 		{
 			using ( var buffer = new MemoryStream() )
 			{
@@ -299,153 +299,12 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Serialize specified object to the specified buffer.
+		///		Deserialize a single object from the array of <see cref="Byte"/> which contains a serialized object.
 		/// </summary>
 		/// <param name="buffer">An array of <see cref="Byte"/> serialized value to be stored.</param>
-		/// <param name="objectTree">Object to be serialized.</param>
 		/// <returns>A bytes of serialized binary.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="buffer"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="SerializationException">
-		///		<paramref name="buffer"/> is too small.
-		///		<typeparamref name="T"/> is not serializable etc.
-		/// </exception>
-		/// <remarks>
-		///		This overload is equivalant to <see cref="Pack(Byte[], int, T)"/> with offset is 0.
-		/// </remarks>
-		public int Pack( byte[] buffer, T objectTree )
-		{
-			return this.Pack( buffer, 0, objectTree );
-		}
-
-		/// <summary>
-		///		Serialize specified object to the specified buffer.
-		/// </summary>
-		/// <param name="buffer">An array of <see cref="Byte"/> serialized value to be stored.</param>
-		/// <param name="offset">An offset of the <paramref name="buffer"/> to be used.</param>
-		/// <param name="objectTree">Object to be serialized.</param>
-		/// <returns>A bytes of serialized binary.</returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="buffer"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="offset"/> is negative.
-		/// </exception>
-		/// <exception cref="SerializationException">
-		///		<paramref name="buffer"/> is too small to the specified <paramref name="offset"/> and <paramref name="objectTree"/>.
-		///		<typeparamref name="T"/> is not serializable etc.
-		/// </exception>
-		public int Pack( byte[] buffer, int offset, T objectTree )
-		{
-			if ( buffer == null )
-			{
-				throw new ArgumentNullException( "buffer" );
-			}
-
-			return this.Pack( new ArraySegment<byte>( buffer, offset, buffer.Length - offset ), objectTree ).Offset - offset;
-		}
-
-		/// <summary>
-		///		Serialize specified object to the specified buffer.
-		/// </summary>
-		/// <param name="buffer">An <see cref="ArraySegment{T}"/> of <see cref="Byte"/> serialized value to be stored.</param>
-		/// <param name="objectTree">Object to be serialized.</param>
-		/// <returns>A new <see cref="ArraySegment{T}"/> which points next position of used region.</returns>
-		/// <exception cref="ArgumentException">
-		///		<paramref name="buffer"/> does not have non-null array.
-		/// </exception>
-		/// <exception cref="SerializationException">
-		///		<paramref name="buffer"/> is too small.
-		///		<typeparamref name="T"/> is not serializable etc.
-		/// </exception>
-		/// <remarks>
-		///		The returning value reflects used bytes length, 
-		///		it means its <see cref="ArraySegment{T}.Offset"/> will be incremented by used bytes length,
-		///		and its <see cref="ArraySegment{T}.Count"/> will be decremented by used bytes length,
-		/// </remarks>
-		public ArraySegment<byte> Pack( ArraySegment<byte> buffer, T objectTree )
-		{
-			if ( buffer.Array == null )
-			{
-				throw new ArgumentException( "buffer does not contain valid array.", "buffer" );
-			}
-
-			using ( var stream = new MemoryStream( buffer.Array, buffer.Offset, buffer.Count, true ) )
-			{
-				long initialPosition = stream.Position;
-				try
-				{
-					this.Pack( stream, objectTree );
-				}
-				catch ( NotSupportedException ex )
-				{
-#if !SILVERLIGHT
-					if ( ex.Source == _memoryStreamExceptionSourceName )
-					{
-						throw new SerializationException( "Buffer is to small.", ex );
-					}
-					else
-					{
-						throw;
-					}
-#else
-						throw new SerializationException( "Buffer is to small.", ex );
-#endif
-				}
-
-				int used = unchecked( ( int )( stream.Position - initialPosition ) );
-				return new ArraySegment<byte>( buffer.Array, buffer.Offset + used, buffer.Count - used );
-			}
-		}
-
-		/// <summary>
-		///		Deserialize object from the array of <see cref="Byte"/>.
-		/// </summary>
-		/// <param name="buffer">An array of <see cref="Byte"/> serialized value to be stored.</param>
-		/// <param name="offset">
-		///		An offset of the <paramref name="buffer"/> to be used. 
-		///		This value will be updated to reflect used bytes length.
-		/// </param>
-		/// <returns>A bytes of serialized binary.</returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="buffer"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="offset"/> is negative.
-		/// </exception>
-		/// <exception cref="SerializationException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="MessageTypeException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		/// <exception cref="InvalidMessagePackStreamException">
-		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
-		/// </exception>
-		public T Unpack( byte[] buffer, ref int offset )
-		{
-			if ( buffer == null )
-			{
-				throw new ArgumentNullException( "buffer" );
-			}
-
-			var arraySegment = new ArraySegment<byte>( buffer, offset, buffer.Length - offset );
-			var result = this.Unpack( ref arraySegment );
-			offset = arraySegment.Offset;
-			return result;
-		}
-
-		/// <summary>
-		///		Serialize specified object to the specified buffer.
-		/// </summary>
-		/// <param name="buffer">
-		///		An <see cref="ArraySegment{T}"/> of <see cref="Byte"/> serialized value to be stored.
-		///		This value will be updated to reflect used bytes length.
-		/// </param>
-		/// <returns>A new <see cref="ArraySegment{T}"/> which points next position of used region.</returns>
-		/// <exception cref="ArgumentException">
-		///		<paramref name="buffer"/> does not have non-null array.
 		/// </exception>
 		/// <exception cref="SerializationException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
@@ -457,24 +316,24 @@ namespace MsgPack.Serialization
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
 		/// <remarks>
-		///		The returning value reflects used bytes length, 
-		///		it means its <see cref="ArraySegment{T}.Offset"/> will be incremented by used bytes length,
-		///		and its <see cref="ArraySegment{T}.Count"/> will be decremented by used bytes length,
+		///		<para>
+		///			This method assumes that <paramref name="buffer"/> contains single serialized object dedicatedly,
+		///			so this method does not return any information related to actual consumed bytes.
+		///		</para>
+		///		<para>
+		///			This method is a counter part of <see cref="PackSingleObject"/>.
+		///		</para>
 		/// </remarks>
-		public T Unpack( ref ArraySegment<byte> buffer )
+		public T UnpackSingleObject( byte[] buffer )
 		{
-			if ( buffer.Array == null )
+			if ( buffer == null )
 			{
-				throw new ArgumentException( "buffer does not contain valid array.", "buffer" );
+				throw new ArgumentNullException( "buffer" );
 			}
 
-			using ( var stream = new ByteArraySegmentStream( buffer ) )
+			using ( var stream = new MemoryStream( buffer ) )
 			{
-				long initialPosition = stream.Position;
-				var result = this.Unpack( stream );
-				int used = unchecked( ( int )( stream.Position - initialPosition ) );
-				buffer = new ArraySegment<byte>( buffer.Array, buffer.Offset + used, buffer.Count - used );
-				return result;
+				return this.Unpack( stream );
 			}
 		}
 
@@ -539,6 +398,22 @@ namespace MsgPack.Serialization
 			}
 
 			this.UnpackToCore( unpacker, ( T )collection );
+		}
+
+		byte[] IMessagePackSingleObjectSerializer.PackSingleObject( object objectTree )
+		{
+			if ( ( typeof( T ).GetIsValueType() && !( objectTree is T ) )
+				|| ( ( objectTree != null && !( objectTree is T ) ) ) )
+			{
+				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree == null ? "(null)" : objectTree.GetType().FullName, typeof( T ) ), "objectTree" );
+			}
+
+			return this.PackSingleObject( ( T )objectTree );
+		}
+
+		object IMessagePackSingleObjectSerializer.UnpackSingleObject( byte[] buffer )
+		{
+			return this.UnpackSingleObject( buffer );
 		}
 	}
 }
