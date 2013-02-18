@@ -172,9 +172,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\AutoMessagePackSerializerTest.Types.cs">
       <Link>Serialization\AutoMessagePackSerializerTest.Types.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ByteArraySegmentStreamTest.cs">
-      <Link>Serialization\ByteArraySegmentStreamTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexType.cs">
       <Link>Serialization\ComplexType.cs</Link>
     </Compile>

@@ -157,9 +157,6 @@
     <Compile Include="..\MsgPack\Serialization\AutoMessagePackSerializer`1.cs">
       <Link>Serialization\AutoMessagePackSerializer`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\ByteArraySegmentStream.cs">
-      <Link>Serialization\ByteArraySegmentStream.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\CallbackMessagePackSerializer`1.cs">
       <Link>Serialization\CallbackMessagePackSerializer`1.cs</Link>
     </Compile>
@@ -282,6 +279,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\IMessagePackSerializer.cs">
       <Link>Serialization\IMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\IMessagePackSingleObjectSerializer.cs">
+      <Link>Serialization\IMessagePackSingleObjectSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
