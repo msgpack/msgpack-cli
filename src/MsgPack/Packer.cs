@@ -79,8 +79,8 @@ namespace MsgPack
 		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
 		/// <remarks>
-		///		 You can specify any derived <see cref="Stream"/> class like <see cref="FileStream"/>, <see cref="MemoryStream"/>,
-		///		 NetworkStream, <see cref="UnmanagedMemoryStream"/>, or so.
+		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
+		///		 NetworkStream, UnmanagedMemoryStream, or so.
 		/// </remarks>
 		public static Packer Create( Stream stream )
 		{
@@ -98,8 +98,8 @@ namespace MsgPack
 		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
 		/// <remarks>
-		///		 You can specify any derived <see cref="Stream"/> class like <see cref="FileStream"/>, <see cref="MemoryStream"/>,
-		///		 NetworkStream, <see cref="UnmanagedMemoryStream"/>, or so.
+		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
+		///		 NetworkStream, UnmanagedMemoryStream, or so.
 		/// </remarks>
 		public static Packer Create( Stream stream, bool ownsStream )
 		{

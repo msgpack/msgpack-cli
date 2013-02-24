@@ -94,6 +94,7 @@
     <Exclude Path="NetFxCompatibilities.cs" />
     <Exclude Path="PackerUnpackerExtensions.cs" />
     <Preserve Path="SilverlightExtensions.cs" />
+    <Exclude Path="Tuple`n.cs" />
     <Exclude Path="TupleItems.cs" />
   </Project>
   <Project Name="MsgPack.Serialization.WindowsPhone.7.1" Base="MsgPack.Net35">

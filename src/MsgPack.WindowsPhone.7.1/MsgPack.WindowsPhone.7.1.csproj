@@ -62,9 +62,6 @@
     <Compile Include="..\MsgPack.Net35\Delegates.cs">
       <Link>Delegates.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.Net35\Tuple`n.cs">
-      <Link>Tuple`n.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.Silverlight.4\SilverlightExtensions.cs">
       <Link>SilverlightExtensions.cs</Link>
     </Compile>
