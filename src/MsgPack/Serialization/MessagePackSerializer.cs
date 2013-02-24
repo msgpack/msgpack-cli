@@ -107,10 +107,10 @@ namespace MsgPack.Serialization
 		}
 
 #if !SILVERLIGHT && !NETFX_35
-		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSerializer>>();
+		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
 #else
 		private static readonly object _syncRoot = new object();
-		private static readonly Dictionary<Type, Func<SerializationContext, IMessagePackSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, IMessagePackSerializer>>();
+		private static readonly Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
 #endif
 
 		/// <summary>
@@ -118,7 +118,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="targetType">Target type.</param>
 		/// <returns>
-		///		New <see cref="IMessagePackSerializer"/> instance to serialize/deserialize the object tree which the top is <paramref name="targetType"/>.
+		///		New <see cref="IMessagePackSingleObjectSerializer"/> instance to serialize/deserialize the object tree which the top is <paramref name="targetType"/>.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="targetType"/> is <c>null</c>.
@@ -126,7 +126,7 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		To avoid boxing and strongly typed API is prefered, use <see cref="Create{T}()"/> instead when possible.
 		/// </remarks>
-		public static IMessagePackSerializer Create( Type targetType )
+		public static IMessagePackSingleObjectSerializer Create( Type targetType )
 		{
 			return MessagePackSerializer.Create( targetType, SerializationContext.Default );
 		}
@@ -139,7 +139,7 @@ namespace MsgPack.Serialization
 		///		<see cref="SerializationContext"/> to store known/created serializers.
 		/// </param>
 		/// <returns>
-		///		New <see cref="IMessagePackSerializer"/> instance to serialize/deserialize the object tree which the top is <paramref name="targetType"/>.
+		///		New <see cref="IMessagePackSingleObjectSerializer"/> instance to serialize/deserialize the object tree which the top is <paramref name="targetType"/>.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="targetType"/> is <c>null</c>.
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		To avoid boxing and strongly typed API is prefered, use <see cref="Create{T}(SerializationContext)"/> instead when possible.
 		/// </remarks>
-		public static IMessagePackSerializer Create( Type targetType, SerializationContext context )
+		public static IMessagePackSingleObjectSerializer Create( Type targetType, SerializationContext context )
 		{
 			if ( targetType == null )
 			{
@@ -170,7 +170,7 @@ namespace MsgPack.Serialization
 						var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 						// Utilize covariance of delegate.
 						return
-							Expression.Lambda<Func<SerializationContext, IMessagePackSerializer>>(
+							Expression.Lambda<Func<SerializationContext, IMessagePackSingleObjectSerializer>>(
 								Expression.Call(
 									null,
 									Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type ),
@@ -181,7 +181,7 @@ namespace MsgPack.Serialization
 					}
 				);
 #elif SILVERLIGHT || NETFX_35
-			Func<SerializationContext, IMessagePackSerializer> factory;
+			Func<SerializationContext, IMessagePackSingleObjectSerializer> factory;
 
 			lock ( _syncRoot )
 			{
@@ -193,9 +193,9 @@ namespace MsgPack.Serialization
 				// Utilize covariance of delegate.
 				factory =
 					Delegate.CreateDelegate(
-						typeof( Func<SerializationContext, IMessagePackSerializer> ),
+						typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
 						Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( targetType )
-						) as Func<SerializationContext, IMessagePackSerializer>;
+						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>;
 
 				Contract.Assert( factory != null );
 
@@ -211,9 +211,9 @@ namespace MsgPack.Serialization
 					type =>
 						// Utilize covariance of delegate.
 						Delegate.CreateDelegate(
-							typeof( Func<SerializationContext, IMessagePackSerializer> ),
+							typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
 							Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type )
-						) as Func<SerializationContext, IMessagePackSerializer>
+						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>
 				);
 #endif
 			return factory( context );

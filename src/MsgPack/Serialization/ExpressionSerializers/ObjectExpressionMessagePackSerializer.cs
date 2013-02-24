@@ -193,9 +193,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 									m.Member.Name
 								),
 								Expression.Call(
-									Metadata._UnpackHelpers.ConvertWithEnsuringNotNull_1Method.MakeGenericMethod(m.Member.GetMemberValueType()),
+									Metadata._UnpackHelpers.ConvertWithEnsuringNotNull_1Method.MakeGenericMethod( m.Member.GetMemberValueType() ),
 									valueParameter,
-									Expression.Constant(m.Member.Name),
+									Expression.Constant( m.Member.Name ),
 									Expression.Call( // Using RuntimeTypeHandle to avoid WinRT expression tree issue.
 										null,
 										Metadata._Type.GetTypeFromHandle,
@@ -488,7 +488,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 #endif
 
-		private sealed class NullSerializer : IMessagePackSerializer
+		private sealed class NullSerializer : IMessagePackSingleObjectSerializer
 		{
 			public static readonly NullSerializer Instance = new NullSerializer();
 
@@ -549,6 +549,25 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				}
 
 				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported by '{0}'.", this.GetType() ) );
+			}
+
+			public byte[] PackSingleObject( object objectTree )
+			{
+				using ( var stream = new MemoryStream( ) )
+				using ( var packer = Packer.Create( stream ) )
+				{
+					this.PackTo( packer, objectTree );
+					return stream.ToArray();
+				}
+			}
+
+			public object UnpackSingleObject( byte[] buffer )
+			{
+				using ( var stream = new MemoryStream( buffer ) )
+				using ( var unpacker = Unpacker.Create( stream ) )
+				{
+					return this.UnpackFrom( unpacker );
+				}
 			}
 		}
 

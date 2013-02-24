@@ -226,7 +226,7 @@ namespace MsgPack.Serialization
 		///		Else the new instance will be created.
 		/// </returns>
 		/// <remarks>
-		///		This method automatically register new instance via <see cref="M:SerializationRepository.Register{T}"/>.
+		///		This method automatically register new instance via <see cref="M:SerializationRepository.Register{T}(MessagePackSerializer{T})"/>.
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>()
 		{
@@ -288,7 +288,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="targetType">Type of the serialization target.</param>
 		/// <returns>
-		///		<see cref="IMessagePackSerializer"/>.
+		///		<see cref="IMessagePackSingleObjectSerializer"/>.
 		///		If there is exiting one, returns it.
 		///		Else the new instance will be created.
 		/// </returns>
@@ -299,7 +299,7 @@ namespace MsgPack.Serialization
 		///		Although <see cref="GetSerializer{T}"/> is preferred,
 		///		this method can be used from non-generic type or methods.
 		/// </remarks>
-		public IMessagePackSerializer GetSerializer( Type targetType )
+		public IMessagePackSingleObjectSerializer GetSerializer( Type targetType )
 		{
 			if ( targetType == null )
 			{
@@ -315,26 +315,26 @@ namespace MsgPack.Serialization
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
 
-			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, IMessagePackSerializer>> _cache =
-				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, IMessagePackSerializer>>();
+			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _cache =
+				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
 
 			private SerializerGetter() { }
 
-			public IMessagePackSerializer Get( SerializationContext context, Type targetType )
+			public IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType )
 			{
-				Func<SerializationContext, IMessagePackSerializer> func;
+				Func<SerializationContext, IMessagePackSingleObjectSerializer> func;
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
 #if !NETFX_CORE
 					func =
 						Delegate.CreateDelegate(
-							typeof( Func<SerializationContext, IMessagePackSerializer> ),
+							typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
 							typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
-						) as Func<SerializationContext, IMessagePackSerializer>;
+						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>;
 #else
 					var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 					func =
-						Expression.Lambda<Func<SerializationContext, IMessagePackSerializer>>(
+						Expression.Lambda<Func<SerializationContext, IMessagePackSingleObjectSerializer>>(
 							Expression.Call(
 								null,
 								typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetRuntimeMethods().Single( m => m.Name == "Get" ),
@@ -376,7 +376,7 @@ namespace MsgPack.Serialization
 			}
 #endif
 
-			public static IMessagePackSerializer Get( SerializationContext context )
+			public static IMessagePackSingleObjectSerializer Get( SerializationContext context )
 			{
 				return _func( context );
 			}

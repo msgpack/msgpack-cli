@@ -25,7 +25,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Defines non-generic message pack serializer interface for byte array which contains a single object.
 	/// </summary>
-	public interface IMessagePackSingleObjectSerializer
+	public interface IMessagePackSingleObjectSerializer : IMessagePackSerializer
 	{
 
 		/// <summary>
