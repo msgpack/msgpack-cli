@@ -314,9 +314,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 				// Is it current member?
 				unpackerIL.EmitAnyLdloc( memberName );
 				unpackerIL.EmitLdstr( entries[ i ].Contract.Name );
-				unpackerIL.EmitAnyCall( Metadata._String.op_Inequality );
+				unpackerIL.EmitAnyCall( Metadata._String.op_Equality );
 				var endIfCurrentMember = unpackerIL.DefineLabel( "END_IF_MEMBER_" + i );
-				unpackerIL.EmitBrtrue( endIfCurrentMember );
+				unpackerIL.EmitBrfalse( endIfCurrentMember );
 
 				// Deserialize value
 				if ( entries[ i ].Member == null )
