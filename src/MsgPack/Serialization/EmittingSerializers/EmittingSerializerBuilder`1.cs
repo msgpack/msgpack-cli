@@ -355,7 +355,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 				unpackerIL.MarkLabel( endIfCurrentMember );
 			}
 
-			// TODO: Handle unknown member.
+			// Drain next value with unpacker.Read()
+			unpackerIL.EmitAnyLdarg(1);
+			unpackerIL.EmitCallvirt( Metadata._Unpacker.Read );
+			unpackerIL.EmitPop();
 			unpackerIL.EmitBr( beginLoop );
 			unpackerIL.MarkLabel( endLoop );
 		}

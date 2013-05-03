@@ -22,6 +22,7 @@ using System;
 using System.IO;
 #if !MSTEST
 using NUnit.Framework;
+using MsgPack.Serialization.EmittingSerializers;
 #else
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
@@ -211,7 +212,7 @@ namespace MsgPack.Serialization
 				packer.Pack( "Field2" );
 				packer.Pack( -1 );
 				packer.Pack( "Extra" );
-				packer.PackNull();
+				packer.Pack( 2 ); // Issue6 
 
 				stream.Position = 0;
 
