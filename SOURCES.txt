@@ -2,6 +2,8 @@ For a bit of incompatibility, there are some 'specialized' projects as following
 
 MsgPack.sln: Visual Studio solution file for .NET Framework build.
 	MsgPack.csproj: Project for full CLR (.NET 4 Client Profile)
+	MsgPack.Net35.csproj: Project for full CLR (.NET 3.5)
+	MsgPack.WinRT.csproj: Project for WinRT compatible .NET lib. (experimental)
 	MsgPack.Silverlight.4.csproj: Project for Silverlight4, contains only core (manual) packing/unpacking.
 	MsgPack.Silverlight.Serialization.4.csproj: Project for Silverlight4, contains typed serializers and their infrastructures.
 	MsgPack.Silverlight.5.csproj: Project for Silverlight5, it is similar to MsgPack.Silverlight.4.csproj.
