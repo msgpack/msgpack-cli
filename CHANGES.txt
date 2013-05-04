@@ -48,3 +48,13 @@ Release 0.3.1 - 2013/5/4
 
   BUG FIXES
   * [issue6] Fix deserializing from a map which contains unknown member causes MessageTypeException.
+
+Release 0.3.2 - T.B.D.
+
+  FEATURES
+  * Support safe deserialization for the stream which contains new types of MsgPack spec.
+
+Release 0.4 - T.B.D.
+
+  FEATURES
+  * Support binary types, string8 types, and extension types of MsgPack spec.
