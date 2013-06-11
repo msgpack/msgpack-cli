@@ -228,7 +228,17 @@
     <Compile Include="Serialization\ComplexTypeWithNonSerialized.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContract.cs" />
     <Compile Include="SubtreeUnpackerTest.cs" />
+    <Compile Include="Unpacker.Ext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Unpacker.Ext.tt</DependentUpon>
+    </Compile>
     <Compile Include="UnpackerTest.cs" />
+    <Compile Include="UnpackerTest.Raw.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackerTest.Raw.tt</DependentUpon>
+    </Compile>
     <Compile Include="UnpackerTest.Scalar.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -399,6 +409,14 @@
     <None Include="TestRandom.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TestRandom.cs</LastGenOutput>
+    </None>
+    <None Include="Unpacker.Ext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Unpacker.Ext.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackerTest.Raw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackerTest.Raw.cs</LastGenOutput>
     </None>
     <None Include="UnpackerTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

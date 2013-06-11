@@ -1,0 +1,236 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#
+
+var testSituations =
+	new []
+	{
+		// Suffix, Type, Unit Value Expression, Expected Value Expression Format, Can be Str
+		Tuple.Create( "String", "String", "'A'", "new String( {0}, {1} )", true ),
+		Tuple.Create( "Binary", "Byte[]", "0xFF", "Enumerable.Repeat( {0}, {1} ).ToArray()", false )
+	};
+var strVariations =
+	new []
+	{
+		// Label, Length, Header Bytes,
+		Tuple.Create( "FixStr", 0, "0xA0" ),
+		Tuple.Create( "FixStr", 1, "0xA1" ),
+		Tuple.Create( "FixStr", 0x1F, "0xBF" ),
+		Tuple.Create( "Str8", 0, "0xD9, 0" ),
+		Tuple.Create( "Str8", 1, "0xD9, 1" ),
+		Tuple.Create( "Str8", 0x1F, "0xD9, 0x1F" ),
+		Tuple.Create( "Str8", 0x20, "0xD9, 0x20" ),
+		Tuple.Create( "Str8", 0xFF, "0xD9, 0xFF" ),
+		Tuple.Create( "Str16", 0, "0xDA, 0, 0" ),
+		Tuple.Create( "Str16", 1, "0xDA, 0, 1" ),
+		Tuple.Create( "Str16", 0x1F, "0xDA, 0, 0x1F" ),
+		Tuple.Create( "Str16", 0x20, "0xDA, 0, 0x20" ),
+		Tuple.Create( "Str16", 0xFF, "0xDA, 0, 0xFF" ),
+		Tuple.Create( "Str16", 0x100, "0xDA, 1, 0" ),
+		Tuple.Create( "Str16", 0xFFFF, "0xDA, 0xFF, 0xFF" ),
+		Tuple.Create( "Str32", 0, "0xDB, 0, 0, 0, 0" ),
+		Tuple.Create( "Str32", 1, "0xDB, 0, 0, 0, 1" ),
+		Tuple.Create( "Str32", 0x1F, "0xDB, 0, 0, 0, 0x1F" ),
+		Tuple.Create( "Str32", 0x20, "0xDB, 0, 0, 0, 0x20" ),
+		Tuple.Create( "Str32", 0xFF, "0xDB, 0, 0, 0, 0xFF" ),
+		Tuple.Create( "Str32", 0x100, "0xDB, 0, 0, 1, 0" ),
+		Tuple.Create( "Str32", 0xFFFF, "0xDB, 0, 0, 0xFF, 0xFF" ),
+		Tuple.Create( "Str32", 0x10000, "0xDB, 0, 1, 0, 0" ),
+	};
+
+var binVariations =
+	new []
+	{
+		// Label, Length, Header Bytes,
+		Tuple.Create( "Bin8", 0, "0xC4, 0" ),
+		Tuple.Create( "Bin8", 1, "0xC4, 1" ),
+		Tuple.Create( "Bin8", 0x1F, "0xC4, 0x1F" ),
+		Tuple.Create( "Bin8", 0x20, "0xC4, 0x20" ),
+		Tuple.Create( "Bin8", 0xFF, "0xC4, 0xFF" ),
+		Tuple.Create( "Bin16", 0, "0xC5, 0, 0" ),
+		Tuple.Create( "Bin16", 1, "0xC5, 0, 1" ),
+		Tuple.Create( "Bin16", 0x1F, "0xC5, 0, 0x1F" ),
+		Tuple.Create( "Bin16", 0x20, "0xC5, 0, 0x20" ),
+		Tuple.Create( "Bin16", 0xFF, "0xC5, 0, 0xFF" ),
+		Tuple.Create( "Bin16", 0x100, "0xC5, 1, 0" ),
+		Tuple.Create( "Bin16", 0xFFFF, "0xC5, 0xFF, 0xFF" ),
+		Tuple.Create( "Bin32", 0, "0xC6, 0, 0, 0, 0" ),
+		Tuple.Create( "Bin32", 1, "0xC6, 0, 0, 0, 1" ),
+		Tuple.Create( "Bin32", 0x1F, "0xC6, 0, 0, 0, 0x1F" ),
+		Tuple.Create( "Bin32", 0x20, "0xC6, 0, 0, 0, 0x20" ),
+		Tuple.Create( "Bin32", 0xFF, "0xC6, 0, 0, 0, 0xFF" ),
+		Tuple.Create( "Bin32", 0x100, "0xC6, 0, 0, 1, 0" ),
+		Tuple.Create( "Bin32", 0xFFFF, "0xC6, 0, 0, 0xFF, 0xFF" ),
+		Tuple.Create( "Bin32", 0x10000, "0xC6, 0, 1, 0, 0" ),
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+using System.Linq;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// This file was generated from UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	[TestFixture]
+	public partial class PackerTest_Raw
+	{
+<#
+foreach( var testSituation in testSituations )
+{
+	foreach( var testCase in strVariations )
+	{
+		PutTest( testSituation, testCase );
+	}
+
+	if ( testSituation.Item5 )
+	{
+		// can be bin stream.
+		foreach( var testCase in binVariations )
+		{
+			PutTest( testSituation, testCase );
+		}
+	}
+}
+#>
+	}
+}
+<#+
+private void PutTest( Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string> testCase )
+{
+	// FIXME: too short data, too long data
+	var readDataMethodPrefix = "TestUnpack" + testCase.Item1 + testCase.Item2 + "_As" + testSituation.Item1 + "_Read_";
+	PutTestMethod( readDataMethodPrefix + "JustLength_Success", testSituation, testCase, 0, PutTestUnpackDataBody );
+	PutTestMethod( readDataMethodPrefix + "TooShort_Fail", testSituation, testCase, -1, PutTestUnpackDataBody );
+	PutTestMethod( readDataMethodPrefix + "HasExtra_NoProblem", testSituation, testCase, 1, PutTestUnpackDataBody );
+
+	var readDirectMethodPrefix = "TestUnpack" + testCase.Item1 + testCase.Item2 + "_Read" + testSituation.Item1 + "_";
+	PutTestMethod( readDirectMethodPrefix + "JustLength_Success", testSituation, testCase, 0, PutTestUnpackDirectBody );
+	PutTestMethod( readDirectMethodPrefix + "TooShort_Fail", testSituation, testCase, -1, PutTestUnpackDirectBody );
+	PutTestMethod( readDirectMethodPrefix + "HasExtra_NoProblem", testSituation, testCase, 1, PutTestUnpackDirectBody );
+}
+
+private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string expectedValue, bool success )
+{
+	if ( success )
+	{
+#>
+				Assert.IsTrue( unpacker.Read() );
+				var result = unpacker.Data;
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( <#= testSituation.Item2 #> )result.Value, Is.EqualTo( <#= expectedValue #> ) );
+<#+
+	}
+	else
+	{
+#>
+				Assert.IsFalse( unpacker.Read() );
+<#+
+	}
+}
+
+private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string expectedValue, bool success )
+{
+#>
+				<#= testSituation.Item2 #> result;
+<#+
+	if ( success )
+	{
+#>
+				Assert.IsTrue( unpacker.Read<#= testSituation.Item1 #>( out result ) );
+				Assert.That( result, Is.EqualTo( <#= expectedValue #> ) );
+<#+
+	}
+	else
+	{
+#>
+				Assert.IsFalse( unpacker.Read<#= testSituation.Item1 #>( out result ) );
+<#+
+	}
+}
+
+private void PutTestMethod( string methodName, Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string> testCase, int valueLengthAjustument, Action<Tuple<string, string, string, string, bool>, string, bool> putTestBody )
+{
+	var adjustedValueLength = testCase.Item2 + valueLengthAjustument;
+	if ( adjustedValueLength < 0 )
+	{
+		// Never occurred situation.
+		return;
+	}
+
+	var expectedValue = String.Format( CultureInfo.InvariantCulture, testSituation.Item4, testSituation.Item3, testCase.Item2 );
+#>
+
+		[Test]
+		public void <#= methodName #>()
+		{
+			using( var buffer =
+				new MemoryStream( 
+					new byte[] { <#= testCase.Item3 #> }
+					.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+<#+
+				putTestBody( testSituation, expectedValue, valueLengthAjustument >= 0 );
+#>
+			}
+		}
+<#+
+}
+#>

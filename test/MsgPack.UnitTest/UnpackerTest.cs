@@ -736,5 +736,15 @@ namespace MsgPack
 				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
 			}
 		}
+
+		[Test]
+		public void TestInvalidHeader_MessageTypeException()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0xC1 } ) )
+			using ( var target = Unpacker.Create( buffer ) )
+			{
+				Assert.Throws<UnassignedMessageTypeException>( () => target.Read() );
+			}
+		}
 	}
 }

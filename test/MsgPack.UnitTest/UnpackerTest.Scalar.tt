@@ -31,6 +31,7 @@
 var __integers =
 	new Tuple<string, BigInteger, string, Type>[]
 	{
+		// Label, Expected Value, byte array, Exepected Type
 		Tuple.Create( "Int64MinValue", new BigInteger( Int64.MinValue ), "new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( long ) ),
 		Tuple.Create( "Int32MinValueMinusOne", new BigInteger( ( long )Int32.MinValue - 1L ), "new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF }", typeof( long )),
 		Tuple.Create( "Int32MinValue", new BigInteger( Int32.MinValue ), "new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 }", typeof( long ) ),
@@ -57,6 +58,7 @@ var __integers =
 var __reals =
 	new Tuple<string, string, Type, string>[]
 	{
+		// Label, byte array, Exepected Type, Testing Expression
 		Tuple.Create( "SingleMinValue", "new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MinValue.Equals(" ),
 		Tuple.Create( "SingleMaxValue", "new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MaxValue.Equals(" ),
 		Tuple.Create( "SingleEpsilon", "new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 }", typeof( float ), "Single.Epsilon.Equals(" ),
@@ -117,8 +119,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	// This file was generated from UnpackerTest.Scalar.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit UnpackerTest.Scalar.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from UnpackerTest.Scalar.tt T4Template.
+	// Do not modify this file. Edit UnpackerTest.Scalar.tt instead.
 
 	[TestFixture]
 	public partial class PackerTest_Scalar

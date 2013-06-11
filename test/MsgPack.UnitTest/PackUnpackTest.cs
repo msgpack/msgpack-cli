@@ -560,5 +560,17 @@ namespace MsgPack
 				Assert.That( item.AsString(), Is.EqualTo( "1" ) );
 			}
 		}
+
+		//[Test]
+		//public void TestPackerUnpackerCapabilities()
+		//{
+		//	// for 0.4
+		//	using ( var stream = new MemoryStream() )
+		//	using( var packer = Packer.Create( stream ) )
+		//	{
+		//		Assert.That(
+		//			packer.Compatibilities, Is.EqualTo( PackingCompatibilities.UnpackBinaryType | PackingCompatibilities.UnpackFixRaw8 ) );
+		//	}
+		//}
 	}
 }
