@@ -135,7 +135,7 @@ private void PutTestUnpackDataBody( string typeCodeVariable, int actualValueLeng
 {
 #>
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 <#+
 	return;
 

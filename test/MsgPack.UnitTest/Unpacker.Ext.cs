@@ -53,7 +53,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -87,7 +87,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -149,7 +149,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -166,7 +166,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -183,7 +183,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -245,7 +245,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -262,7 +262,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -279,7 +279,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -341,7 +341,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -358,7 +358,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -375,7 +375,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -437,7 +437,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -454,7 +454,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -471,7 +471,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -533,7 +533,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -550,7 +550,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -597,7 +597,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -614,7 +614,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -631,7 +631,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -693,7 +693,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -710,7 +710,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -727,7 +727,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -789,7 +789,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -806,7 +806,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -823,7 +823,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -885,7 +885,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -902,7 +902,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -949,7 +949,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -966,7 +966,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -983,7 +983,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1045,7 +1045,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1062,7 +1062,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1079,7 +1079,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1141,7 +1141,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1158,7 +1158,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1175,7 +1175,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1237,7 +1237,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1254,7 +1254,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1271,7 +1271,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1333,7 +1333,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1350,7 +1350,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1367,7 +1367,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1429,7 +1429,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1446,7 +1446,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1493,7 +1493,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1510,7 +1510,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1527,7 +1527,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1589,7 +1589,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1606,7 +1606,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1623,7 +1623,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1685,7 +1685,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1702,7 +1702,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1719,7 +1719,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1781,7 +1781,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1798,7 +1798,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1815,7 +1815,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1877,7 +1877,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1894,7 +1894,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1911,7 +1911,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1973,7 +1973,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -1990,7 +1990,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 
@@ -2007,7 +2007,7 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<NotImplementedException>( ()=> unpacker.Read() );
+				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
 			}
 		}
 

@@ -6908,7 +6908,7 @@ namespace MsgPack
 				case MessagePackCode.Ext16:
 				case MessagePackCode.Ext32:
 				{
-					throw new NotImplementedException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
+					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
 				}
 				default:
 				{
@@ -7413,7 +7413,7 @@ namespace MsgPack
 				case MessagePackCode.Ext16:
 				case MessagePackCode.Ext32:
 				{
-					throw new NotImplementedException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
+					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
 				}
 				default:
 				{
