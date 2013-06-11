@@ -37,8 +37,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -74,8 +76,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -112,8 +116,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -149,8 +155,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -187,8 +195,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -251,8 +261,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -316,8 +328,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -387,8 +401,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -459,8 +475,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -531,8 +549,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -604,8 +624,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -683,8 +705,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -763,8 +787,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -867,8 +893,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -972,8 +1000,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1083,8 +1113,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1195,8 +1227,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1291,8 +1325,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1388,8 +1424,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1491,8 +1529,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1595,8 +1635,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1747,8 +1789,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1900,8 +1944,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2059,8 +2105,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2219,8 +2267,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2363,8 +2413,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2508,8 +2560,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2659,8 +2713,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2811,8 +2867,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3011,8 +3069,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3212,8 +3272,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3419,8 +3481,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3627,8 +3691,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3819,8 +3885,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4012,8 +4080,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4211,8 +4281,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4411,8 +4483,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4611,8 +4685,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4812,8 +4888,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5019,8 +5097,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5227,8 +5307,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5427,8 +5509,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5628,8 +5712,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5835,8 +5921,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6043,8 +6131,11 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#region UnpackRawLength
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6098,6 +6189,8 @@ namespace MsgPack
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "System.Byte[]", header, MessagePackCode.ToString( header ) ) );
 				}
 			}// switch
+			#endregion UnpackRawLength
+			#region UnpackByteArray
 			int contentBufferOffset = 0;
 			var resultValue = new byte[ size ];
 			#region UnpackRawContent
@@ -6109,6 +6202,7 @@ namespace MsgPack
 			}
 			
 			#endregion UnpackRawContent
+			#endregion UnpackByteArray
 			this._collectionType = CollectionType.None;
 			this._itemsCount = 0;
 			result = resultValue;
@@ -6119,8 +6213,11 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#region UnpackRawLength
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6174,6 +6271,8 @@ namespace MsgPack
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "System.Byte[]", header, MessagePackCode.ToString( header ) ) );
 				}
 			}// switch
+			#endregion UnpackRawLength
+			#region UnpackByteArray
 			int contentBufferOffset = 0;
 			var resultValue = new byte[ size ];
 			#region UnpackRawContent
@@ -6197,9 +6296,14 @@ namespace MsgPack
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
 			var encoding = Encoding.UTF8;
+			#if DEBUG
 			Contract.Assert( encoding != null );
+			#endif
+			#region UnpackRawLength
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6253,6 +6357,8 @@ namespace MsgPack
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "System.String", header, MessagePackCode.ToString( header ) ) );
 				}
 			}// switch
+			#endregion UnpackRawLength
+			#region UnpackString
 			var decoder = encoding.GetDecoder();
 			int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
 			var bytes = new byte[ chunkSize ];
@@ -6297,6 +6403,7 @@ namespace MsgPack
 			} while( remaining > 0 );
 			
 			var resultValue = stringBuffer.ToString();
+			#endregion UnpackString
 			this._collectionType = CollectionType.None;
 			this._itemsCount = 0;
 			result = resultValue;
@@ -6308,9 +6415,14 @@ namespace MsgPack
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
 			var encoding = Encoding.UTF8;
+			#if DEBUG
 			Contract.Assert( encoding != null );
+			#endif
+			#region UnpackRawLength
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6364,6 +6476,8 @@ namespace MsgPack
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "System.String", header, MessagePackCode.ToString( header ) ) );
 				}
 			}// switch
+			#endregion UnpackRawLength
+			#region UnpackString
 			var decoder = encoding.GetDecoder();
 			int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
 			var bytes = new byte[ chunkSize ];
@@ -6408,6 +6522,7 @@ namespace MsgPack
 			} while( remaining > 0 );
 			
 			var resultValue = stringBuffer.ToString();
+			#endregion UnpackString
 			this._collectionType = CollectionType.None;
 			this._itemsCount = 0;
 			result = resultValue;
@@ -6419,8 +6534,10 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6924,8 +7041,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -7430,8 +7549,11 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#region UnpackArrayLength
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -7487,14 +7609,18 @@ namespace MsgPack
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "array header", header, MessagePackCode.ToString( header ) ) );
 				}
 			}// switch
+			#endregion UnpackArrayLength
 		}
 		
 		internal bool ReadSubtreeArrayLength( out Int64 result )
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#region UnpackArrayLength
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -7550,6 +7676,7 @@ namespace MsgPack
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "array header", header, MessagePackCode.ToString( header ) ) );
 				}
 			}// switch
+			#endregion UnpackArrayLength
 		}
 		
 		public override bool ReadMapLength( out Int64 result )
@@ -7557,8 +7684,11 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#region UnpackMapLength
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -7614,14 +7744,18 @@ namespace MsgPack
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "map header", header, MessagePackCode.ToString( header ) ) );
 				}
 			}// switch
+			#endregion UnpackMapLength
 		}
 		
 		internal bool ReadSubtreeMapLength( out Int64 result )
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+			#region UnpackMapLength
+			#if DEBUG
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+			#endif
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -7677,6 +7811,7 @@ namespace MsgPack
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "map header", header, MessagePackCode.ToString( header ) ) );
 				}
 			}// switch
+			#endregion UnpackMapLength
 		}
 		
 	}

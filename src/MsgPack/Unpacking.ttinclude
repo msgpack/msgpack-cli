@@ -19,8 +19,10 @@ private void WriteUnpack( Type type )
 private void WriteUnpackCore( Type type, bool isNullable )
 {
 #>
+#if DEBUG
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
+#endif
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -203,10 +205,14 @@ private void WriteUnpackByteArray( Func<string, string, string> allocationWriter
 {
 	WriteUnpackRawLength( "System.Byte[]", "result" );
 #>
+#region UnpackByteArray
 int contentBufferOffset = 0;
 var resultValue = <#= allocationWriter( "size", "contentBufferOffset" ) #>;
 <#+
 	WriteUnpackRawContent( "resultValue", "contentBufferOffset", "size" );
+#>
+#endregion UnpackByteArray
+<#+
 }
 
 /// <summary>
@@ -215,10 +221,13 @@ var resultValue = <#= allocationWriter( "size", "contentBufferOffset" ) #>;
 private void WriteUnpackString()
 {
 #>
+#if DEBUG
 Contract.Assert( encoding != null );
+#endif
 <#+
 	WriteUnpackRawLength( typeof( String ).FullName, "result" );
 #>
+#region UnpackString
 var decoder = encoding.GetDecoder();
 int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
 var bytes = new byte[ chunkSize ];
@@ -263,14 +272,18 @@ do
 } while( remaining > 0 );
 
 var resultValue = stringBuffer.ToString();
+#endregion UnpackString
 <#+
 }
 
 private void WriteUnpackRawLength( string typeName, string resultVariable )
 {
 #>
+#region UnpackRawLength
+#if DEBUG
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
+#endif
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -331,6 +344,7 @@ switch( header )
 		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, "<#= typeName #>", header, MessagePackCode.ToString( header ) ) );
 	}
 }// switch
+#endregion UnpackRawLength
 <#+
 }
 
@@ -355,8 +369,10 @@ if( bytesRead < <#= lengthVariable #> )
 private void WriteUnpackObject()
 {
 #>
+#if DEBUG
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
+#endif
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -652,8 +668,11 @@ throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large
 private void WriteUnpackArrayLength()
 {
 #>
+#region UnpackArrayLength
+#if DEBUG
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
+#endif
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -719,6 +738,7 @@ switch( header )
 		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, "array header", header, MessagePackCode.ToString( header ) ) );
 	}
 }// switch
+#endregion UnpackArrayLength
 <#+
 }
 
@@ -728,8 +748,11 @@ switch( header )
 private void WriteUnpackMapLength()
 {
 #>
+#region UnpackMapLength
+#if DEBUG
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
+#endif
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -795,6 +818,7 @@ switch( header )
 		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, "map header", header, MessagePackCode.ToString( header ) ) );
 	}
 }// switch
+#endregion UnpackMapLength
 <#+
 }
 
