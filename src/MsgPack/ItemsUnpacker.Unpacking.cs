@@ -6263,6 +6263,12 @@ namespace MsgPack
 			{
 				var reading = ( remaining > bytes.Length ) ? bytes.Length : remaining;
 			    var bytesRead = source.Read( bytes, 0, reading );
+				if ( bytesRead == 0 )
+				{
+					result = null;
+					return false;
+				}
+			
 				remaining -= bytesRead;
 			
 			    var isCompleted = false;
@@ -6368,6 +6374,12 @@ namespace MsgPack
 			{
 				var reading = ( remaining > bytes.Length ) ? bytes.Length : remaining;
 			    var bytesRead = source.Read( bytes, 0, reading );
+				if ( bytesRead == 0 )
+				{
+					result = null;
+					return false;
+				}
+			
 				remaining -= bytesRead;
 			
 			    var isCompleted = false;
