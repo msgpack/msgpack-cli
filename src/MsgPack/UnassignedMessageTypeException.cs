@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,36 +24,36 @@ using System.Runtime.Serialization;
 namespace MsgPack
 {
 	/// <summary>
-	///		Represents unpacking error when message type is unknown or unavailable.
+	///		Represents unpacking error when message type is not valid because 0xC1 will never be assigned.
 	/// </summary>
 #if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
-	public class MessageTypeException : Exception
+	public sealed class UnassignedMessageTypeException : MessageTypeException
 	{
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with the default error message.
+		///		Initializes a new instance of the <see cref="UnassignedMessageTypeException"/> class with the default error message.
 		/// </summary>
-		public MessageTypeException() : this( null ) { }
+		public UnassignedMessageTypeException() : this( null ) { }
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with a specified error message.
+		///		Initializes a new instance of the <see cref="UnassignedMessageTypeException"/> class with a specified error message.
 		/// </summary>
 		/// <param name="message">The message that describes the error. </param>
-		public MessageTypeException( string message ) : this( message, null ) { }
+		public UnassignedMessageTypeException( string message ) : this( message, null ) { }
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception. 
+		///		Initializes a new instance of the <see cref="MessageTypeUnassignedMessageTypeExceptionException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception. 
 		/// </summary>
 		/// <param name="message">The error message that explains the reason for the exception. </param>
 		/// <param name="inner">
 		///		The exception that is the cause of the current exception, or a <c>null</c> if no inner exception is specified.
 		/// </param>
-		public MessageTypeException( string message, Exception inner ) : base( message ?? "Invalid message type.", inner ) { }
+		public UnassignedMessageTypeException( string message, Exception inner ) : base( message ?? "Invalid message type.", inner ) { }
 
 #if !SILVERLIGHT && !NETFX_CORE
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with serialized data.
+		///		Initializes a new instance of the <see cref="UnassignedMessageTypeException"/> class with serialized data.
 		/// </summary>
 		/// <param name="info">
 		///		The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.
@@ -66,7 +66,7 @@ namespace MsgPack
 		/// <exception cref="SerializationException">
 		///		The class name is <c>null</c> or <see cref="P:HResult"/> is zero (0).
 		///	</exception>
-		protected MessageTypeException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
+		private UnassignedMessageTypeException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
 #endif
 	}
 }

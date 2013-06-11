@@ -595,7 +595,10 @@ foreach( var entry in
 	}
 	default:
 	{
-		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
+#if DEBUG
+		Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
+#endif
+		throw new UnassignedMessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
 	}
 }
 <#+

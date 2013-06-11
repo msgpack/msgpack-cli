@@ -315,6 +315,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="UnassignedMessageTypeException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack.snk">

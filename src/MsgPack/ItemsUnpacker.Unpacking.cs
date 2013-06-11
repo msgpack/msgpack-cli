@@ -4,7 +4,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -6901,7 +6901,10 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
+			#if DEBUG
+					Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
+			#endif
+					throw new UnassignedMessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
 				}
 			}
 		}
@@ -7392,7 +7395,10 @@ namespace MsgPack
 				}
 				default:
 				{
-					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
+			#if DEBUG
+					Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
+			#endif
+					throw new UnassignedMessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
 				}
 			}
 		}
