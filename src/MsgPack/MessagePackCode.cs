@@ -49,6 +49,14 @@ namespace MsgPack
 		public const int MaximumFixedRaw = 0xbf;
 		public const int Raw16 = 0xda;
 		public const int Raw32 = 0xdb;
+		public const int Ext8 = 0xc7;
+		public const int Ext16 = 0xc8;
+		public const int Ext32 = 0xc9;
+		public const int FixExt1 = 0xd4;
+		public const int FixExt2 = 0xd5;
+		public const int FixExt4 = 0xd6;
+		public const int FixExt8 = 0xd7;
+		public const int FixExt16 = 0xd8;
 
 		public static string ToString( int code )
 		{

@@ -6899,6 +6899,17 @@ namespace MsgPack
 					result = ( long )length;
 					return true;
 				}
+				case MessagePackCode.FixExt1:
+				case MessagePackCode.FixExt2:
+				case MessagePackCode.FixExt4:
+				case MessagePackCode.FixExt8:
+				case MessagePackCode.FixExt16:
+				case MessagePackCode.Ext8:
+				case MessagePackCode.Ext16:
+				case MessagePackCode.Ext32:
+				{
+					throw new NotImplementedException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
+				}
 				default:
 				{
 			#if DEBUG
@@ -7392,6 +7403,17 @@ namespace MsgPack
 					this._data = length;
 					result = ( long )length;
 					return true;
+				}
+				case MessagePackCode.FixExt1:
+				case MessagePackCode.FixExt2:
+				case MessagePackCode.FixExt4:
+				case MessagePackCode.FixExt8:
+				case MessagePackCode.FixExt16:
+				case MessagePackCode.Ext8:
+				case MessagePackCode.Ext16:
+				case MessagePackCode.Ext32:
+				{
+					throw new NotImplementedException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
 				}
 				default:
 				{
