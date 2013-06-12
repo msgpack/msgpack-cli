@@ -458,6 +458,9 @@
     <Compile Include="..\MsgPack\TupleItems.cs">
       <Link>TupleItems.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\UnassignedMessageTypeException.cs">
+      <Link>UnassignedMessageTypeException.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Unpacker.cs">
       <Link>Unpacker.cs</Link>
     </Compile>
