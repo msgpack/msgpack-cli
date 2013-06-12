@@ -206,6 +206,13 @@ private void WriteUnpackByteArray( Func<string, string, string> allocationWriter
 	WriteUnpackRawLength( "System.Byte[]", "result" );
 #>
 #region UnpackByteArray
+
+if ( size == 0 )
+{
+	result = Binary.Empty;
+	return true;
+}
+
 int contentBufferOffset = 0;
 var resultValue = <#= allocationWriter( "size", "contentBufferOffset" ) #>;
 <#+
@@ -228,6 +235,13 @@ Contract.Assert( encoding != null );
 	WriteUnpackRawLength( typeof( String ).FullName, "result" );
 #>
 #region UnpackString
+
+if ( size == 0 )
+{
+	result = String.Empty;
+	return true;
+}
+
 var decoder = encoding.GetDecoder();
 int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
 var bytes = new byte[ chunkSize ];
@@ -240,8 +254,7 @@ do
     var bytesRead = source.Read( bytes, 0, reading );
 	if ( bytesRead == 0 )
 	{
-		result = null;
-		return false;
+		throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
 	}
 
 	remaining -= bytesRead;

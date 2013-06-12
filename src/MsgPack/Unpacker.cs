@@ -282,6 +282,9 @@ namespace MsgPack
 		/// <exception cref="InvalidOperationException">
 		///		This instance is in 'subtree' mode.
 		/// </exception>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		The underying stream unexpectedly ended.
+		/// </exception>
 		public bool Read()
 		{
 			this.EnsureNotInSubtreeMode();

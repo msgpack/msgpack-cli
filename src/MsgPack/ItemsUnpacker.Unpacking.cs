@@ -6191,6 +6191,13 @@ namespace MsgPack
 			}// switch
 			#endregion UnpackRawLength
 			#region UnpackByteArray
+			
+			if ( size == 0 )
+			{
+				result = Binary.Empty;
+				return true;
+			}
+			
 			int contentBufferOffset = 0;
 			var resultValue = new byte[ size ];
 			#region UnpackRawContent
@@ -6273,6 +6280,13 @@ namespace MsgPack
 			}// switch
 			#endregion UnpackRawLength
 			#region UnpackByteArray
+			
+			if ( size == 0 )
+			{
+				result = Binary.Empty;
+				return true;
+			}
+			
 			int contentBufferOffset = 0;
 			var resultValue = new byte[ size ];
 			#region UnpackRawContent
@@ -6359,6 +6373,13 @@ namespace MsgPack
 			}// switch
 			#endregion UnpackRawLength
 			#region UnpackString
+			
+			if ( size == 0 )
+			{
+				result = String.Empty;
+				return true;
+			}
+			
 			var decoder = encoding.GetDecoder();
 			int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
 			var bytes = new byte[ chunkSize ];
@@ -6371,8 +6392,7 @@ namespace MsgPack
 			    var bytesRead = source.Read( bytes, 0, reading );
 				if ( bytesRead == 0 )
 				{
-					result = null;
-					return false;
+					throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 				}
 			
 				remaining -= bytesRead;
@@ -6478,6 +6498,13 @@ namespace MsgPack
 			}// switch
 			#endregion UnpackRawLength
 			#region UnpackString
+			
+			if ( size == 0 )
+			{
+				result = String.Empty;
+				return true;
+			}
+			
 			var decoder = encoding.GetDecoder();
 			int chunkSize = size > 16 * 1024 ? 16 * 1024 : size;
 			var bytes = new byte[ chunkSize ];
@@ -6490,8 +6517,7 @@ namespace MsgPack
 			    var bytesRead = source.Read( bytes, 0, reading );
 				if ( bytesRead == 0 )
 				{
-					result = null;
-					return false;
+					throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 				}
 			
 				remaining -= bytesRead;

@@ -41,7 +41,7 @@ namespace MsgPack
 	{
 
 		[Test]
-		public void TestUnpackFixStr0_AsString_Read_JustLength_Success()
+		public void TestUnpackFixStr_0_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -59,7 +59,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr0_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackFixStr_0_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -77,7 +77,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr0_ReadString_JustLength_Success()
+		public void TestUnpackFixStr_0_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -94,7 +94,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr0_ReadString_HasExtra_NoProblem()
+		public void TestUnpackFixStr_0_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -111,7 +111,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_AsString_Read_JustLength_Success()
+		public void TestUnpackFixStr_1_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -129,7 +129,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_AsString_Read_TooShort_Fail()
+		public void TestUnpackFixStr_1_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -139,12 +139,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackFixStr_1_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -162,7 +162,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_ReadString_JustLength_Success()
+		public void TestUnpackFixStr_1_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -179,7 +179,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_ReadString_TooShort_Fail()
+		public void TestUnpackFixStr_1_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -190,12 +190,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_ReadString_HasExtra_NoProblem()
+		public void TestUnpackFixStr_1_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -212,7 +212,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_AsString_Read_JustLength_Success()
+		public void TestUnpackFixStr_31_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -230,7 +230,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_AsString_Read_TooShort_Fail()
+		public void TestUnpackFixStr_31_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -240,12 +240,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackFixStr_31_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -263,7 +263,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_ReadString_JustLength_Success()
+		public void TestUnpackFixStr_31_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -280,7 +280,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_ReadString_TooShort_Fail()
+		public void TestUnpackFixStr_31_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -291,12 +291,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_ReadString_HasExtra_NoProblem()
+		public void TestUnpackFixStr_31_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -313,7 +313,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr80_AsString_Read_JustLength_Success()
+		public void TestUnpackStr8_0_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -331,7 +331,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr80_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_0_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -349,7 +349,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr80_ReadString_JustLength_Success()
+		public void TestUnpackStr8_0_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -366,7 +366,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr80_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr8_0_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -383,7 +383,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr81_AsString_Read_JustLength_Success()
+		public void TestUnpackStr8_1_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -401,7 +401,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr81_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr8_1_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -411,12 +411,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr81_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_1_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -434,7 +434,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr81_ReadString_JustLength_Success()
+		public void TestUnpackStr8_1_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -451,7 +451,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr81_ReadString_TooShort_Fail()
+		public void TestUnpackStr8_1_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -462,12 +462,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr81_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr8_1_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -484,7 +484,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr831_AsString_Read_JustLength_Success()
+		public void TestUnpackStr8_31_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -502,7 +502,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr831_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr8_31_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -512,12 +512,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr831_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_31_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -535,7 +535,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr831_ReadString_JustLength_Success()
+		public void TestUnpackStr8_31_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -552,7 +552,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr831_ReadString_TooShort_Fail()
+		public void TestUnpackStr8_31_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -563,12 +563,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr831_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr8_31_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -585,7 +585,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr832_AsString_Read_JustLength_Success()
+		public void TestUnpackStr8_32_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -603,7 +603,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr832_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr8_32_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -613,12 +613,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr832_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_32_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -636,7 +636,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr832_ReadString_JustLength_Success()
+		public void TestUnpackStr8_32_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -653,7 +653,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr832_ReadString_TooShort_Fail()
+		public void TestUnpackStr8_32_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -664,12 +664,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr832_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr8_32_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -686,7 +686,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr8255_AsString_Read_JustLength_Success()
+		public void TestUnpackStr8_255_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -704,7 +704,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr8255_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr8_255_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -714,12 +714,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr8255_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_255_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -737,7 +737,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr8255_ReadString_JustLength_Success()
+		public void TestUnpackStr8_255_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -754,7 +754,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr8255_ReadString_TooShort_Fail()
+		public void TestUnpackStr8_255_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -765,12 +765,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr8255_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr8_255_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -787,7 +787,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr160_AsString_Read_JustLength_Success()
+		public void TestUnpackStr16_0_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -805,7 +805,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr160_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_0_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -823,7 +823,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr160_ReadString_JustLength_Success()
+		public void TestUnpackStr16_0_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -840,7 +840,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr160_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr16_0_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -857,7 +857,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr161_AsString_Read_JustLength_Success()
+		public void TestUnpackStr16_1_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -875,7 +875,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr161_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr16_1_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -885,12 +885,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr161_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_1_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -908,7 +908,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr161_ReadString_JustLength_Success()
+		public void TestUnpackStr16_1_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -925,7 +925,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr161_ReadString_TooShort_Fail()
+		public void TestUnpackStr16_1_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -936,12 +936,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr161_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr16_1_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -958,7 +958,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1631_AsString_Read_JustLength_Success()
+		public void TestUnpackStr16_31_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -976,7 +976,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1631_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr16_31_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -986,12 +986,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1631_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_31_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1009,7 +1009,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1631_ReadString_JustLength_Success()
+		public void TestUnpackStr16_31_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1026,7 +1026,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1631_ReadString_TooShort_Fail()
+		public void TestUnpackStr16_31_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1037,12 +1037,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1631_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr16_31_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1059,7 +1059,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1632_AsString_Read_JustLength_Success()
+		public void TestUnpackStr16_32_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1077,7 +1077,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1632_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr16_32_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1087,12 +1087,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1632_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_32_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1110,7 +1110,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1632_ReadString_JustLength_Success()
+		public void TestUnpackStr16_32_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1127,7 +1127,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1632_ReadString_TooShort_Fail()
+		public void TestUnpackStr16_32_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1138,12 +1138,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1632_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr16_32_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1160,7 +1160,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16255_AsString_Read_JustLength_Success()
+		public void TestUnpackStr16_255_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1178,7 +1178,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16255_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr16_255_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1188,12 +1188,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr16255_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_255_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1211,7 +1211,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16255_ReadString_JustLength_Success()
+		public void TestUnpackStr16_255_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1228,7 +1228,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16255_ReadString_TooShort_Fail()
+		public void TestUnpackStr16_255_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1239,12 +1239,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr16255_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr16_255_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1261,7 +1261,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16256_AsString_Read_JustLength_Success()
+		public void TestUnpackStr16_256_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1279,7 +1279,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16256_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr16_256_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1289,12 +1289,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr16256_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_256_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1312,7 +1312,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16256_ReadString_JustLength_Success()
+		public void TestUnpackStr16_256_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1329,7 +1329,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16256_ReadString_TooShort_Fail()
+		public void TestUnpackStr16_256_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1340,12 +1340,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr16256_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr16_256_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1362,7 +1362,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_AsString_Read_JustLength_Success()
+		public void TestUnpackStr16_65535_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1380,7 +1380,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr16_65535_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1390,12 +1390,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_65535_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1413,7 +1413,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_ReadString_JustLength_Success()
+		public void TestUnpackStr16_65535_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1430,7 +1430,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_ReadString_TooShort_Fail()
+		public void TestUnpackStr16_65535_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1441,12 +1441,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr16_65535_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1463,7 +1463,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr320_AsString_Read_JustLength_Success()
+		public void TestUnpackStr32_0_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1481,7 +1481,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr320_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_0_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1499,7 +1499,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr320_ReadString_JustLength_Success()
+		public void TestUnpackStr32_0_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1516,7 +1516,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr320_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr32_0_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1533,7 +1533,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr321_AsString_Read_JustLength_Success()
+		public void TestUnpackStr32_1_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1551,7 +1551,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr321_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr32_1_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1561,12 +1561,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr321_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_1_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1584,7 +1584,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr321_ReadString_JustLength_Success()
+		public void TestUnpackStr32_1_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1601,7 +1601,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr321_ReadString_TooShort_Fail()
+		public void TestUnpackStr32_1_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1612,12 +1612,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr321_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr32_1_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1634,7 +1634,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3231_AsString_Read_JustLength_Success()
+		public void TestUnpackStr32_31_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1652,7 +1652,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3231_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr32_31_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1662,12 +1662,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3231_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_31_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1685,7 +1685,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3231_ReadString_JustLength_Success()
+		public void TestUnpackStr32_31_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1702,7 +1702,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3231_ReadString_TooShort_Fail()
+		public void TestUnpackStr32_31_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1713,12 +1713,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3231_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr32_31_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1735,7 +1735,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3232_AsString_Read_JustLength_Success()
+		public void TestUnpackStr32_32_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1753,7 +1753,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3232_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr32_32_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1763,12 +1763,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3232_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_32_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1786,7 +1786,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3232_ReadString_JustLength_Success()
+		public void TestUnpackStr32_32_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1803,7 +1803,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3232_ReadString_TooShort_Fail()
+		public void TestUnpackStr32_32_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1814,12 +1814,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3232_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr32_32_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1836,7 +1836,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32255_AsString_Read_JustLength_Success()
+		public void TestUnpackStr32_255_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1854,7 +1854,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32255_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr32_255_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1864,12 +1864,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr32255_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_255_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1887,7 +1887,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32255_ReadString_JustLength_Success()
+		public void TestUnpackStr32_255_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1904,7 +1904,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32255_ReadString_TooShort_Fail()
+		public void TestUnpackStr32_255_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1915,12 +1915,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr32255_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr32_255_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1937,7 +1937,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32256_AsString_Read_JustLength_Success()
+		public void TestUnpackStr32_256_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1955,7 +1955,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32256_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr32_256_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1965,12 +1965,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr32256_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_256_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -1988,7 +1988,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32256_ReadString_JustLength_Success()
+		public void TestUnpackStr32_256_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2005,7 +2005,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32256_ReadString_TooShort_Fail()
+		public void TestUnpackStr32_256_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2016,12 +2016,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr32256_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr32_256_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2038,7 +2038,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_AsString_Read_JustLength_Success()
+		public void TestUnpackStr32_65535_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2056,7 +2056,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr32_65535_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2066,12 +2066,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_65535_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2089,7 +2089,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_ReadString_JustLength_Success()
+		public void TestUnpackStr32_65535_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2106,7 +2106,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_ReadString_TooShort_Fail()
+		public void TestUnpackStr32_65535_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2117,12 +2117,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr32_65535_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2139,7 +2139,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_AsString_Read_JustLength_Success()
+		public void TestUnpackStr32_65536_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2157,7 +2157,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_AsString_Read_TooShort_Fail()
+		public void TestUnpackStr32_65536_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2167,12 +2167,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_65536_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2190,7 +2190,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_ReadString_JustLength_Success()
+		public void TestUnpackStr32_65536_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2207,7 +2207,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_ReadString_TooShort_Fail()
+		public void TestUnpackStr32_65536_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2218,12 +2218,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_ReadString_HasExtra_NoProblem()
+		public void TestUnpackStr32_65536_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2240,7 +2240,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin80_AsString_Read_JustLength_Success()
+		public void TestUnpackBin8_0_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2258,7 +2258,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin80_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin8_0_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2276,7 +2276,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin80_ReadString_JustLength_Success()
+		public void TestUnpackBin8_0_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2293,7 +2293,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin80_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin8_0_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2310,7 +2310,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin81_AsString_Read_JustLength_Success()
+		public void TestUnpackBin8_1_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2328,7 +2328,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin81_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin8_1_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2338,12 +2338,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin81_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin8_1_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2361,7 +2361,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin81_ReadString_JustLength_Success()
+		public void TestUnpackBin8_1_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2378,7 +2378,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin81_ReadString_TooShort_Fail()
+		public void TestUnpackBin8_1_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2389,12 +2389,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin81_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin8_1_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2411,7 +2411,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin831_AsString_Read_JustLength_Success()
+		public void TestUnpackBin8_31_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2429,7 +2429,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin831_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin8_31_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2439,12 +2439,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin831_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin8_31_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2462,7 +2462,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin831_ReadString_JustLength_Success()
+		public void TestUnpackBin8_31_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2479,7 +2479,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin831_ReadString_TooShort_Fail()
+		public void TestUnpackBin8_31_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2490,12 +2490,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin831_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin8_31_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2512,7 +2512,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin832_AsString_Read_JustLength_Success()
+		public void TestUnpackBin8_32_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2530,7 +2530,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin832_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin8_32_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2540,12 +2540,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin832_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin8_32_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2563,7 +2563,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin832_ReadString_JustLength_Success()
+		public void TestUnpackBin8_32_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2580,7 +2580,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin832_ReadString_TooShort_Fail()
+		public void TestUnpackBin8_32_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2591,12 +2591,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin832_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin8_32_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2613,7 +2613,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin8255_AsString_Read_JustLength_Success()
+		public void TestUnpackBin8_255_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2631,7 +2631,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin8255_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin8_255_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2641,12 +2641,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin8255_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin8_255_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2664,7 +2664,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin8255_ReadString_JustLength_Success()
+		public void TestUnpackBin8_255_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2681,7 +2681,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin8255_ReadString_TooShort_Fail()
+		public void TestUnpackBin8_255_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2692,12 +2692,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin8255_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin8_255_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2714,7 +2714,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin160_AsString_Read_JustLength_Success()
+		public void TestUnpackBin16_0_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2732,7 +2732,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin160_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin16_0_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2750,7 +2750,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin160_ReadString_JustLength_Success()
+		public void TestUnpackBin16_0_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2767,7 +2767,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin160_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin16_0_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2784,7 +2784,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin161_AsString_Read_JustLength_Success()
+		public void TestUnpackBin16_1_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2802,7 +2802,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin161_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin16_1_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2812,12 +2812,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin161_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin16_1_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2835,7 +2835,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin161_ReadString_JustLength_Success()
+		public void TestUnpackBin16_1_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2852,7 +2852,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin161_ReadString_TooShort_Fail()
+		public void TestUnpackBin16_1_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2863,12 +2863,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin161_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin16_1_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2885,7 +2885,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1631_AsString_Read_JustLength_Success()
+		public void TestUnpackBin16_31_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2903,7 +2903,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1631_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin16_31_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2913,12 +2913,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin1631_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin16_31_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2936,7 +2936,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1631_ReadString_JustLength_Success()
+		public void TestUnpackBin16_31_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2953,7 +2953,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1631_ReadString_TooShort_Fail()
+		public void TestUnpackBin16_31_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2964,12 +2964,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin1631_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin16_31_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -2986,7 +2986,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1632_AsString_Read_JustLength_Success()
+		public void TestUnpackBin16_32_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3004,7 +3004,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1632_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin16_32_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3014,12 +3014,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin1632_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin16_32_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3037,7 +3037,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1632_ReadString_JustLength_Success()
+		public void TestUnpackBin16_32_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3054,7 +3054,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1632_ReadString_TooShort_Fail()
+		public void TestUnpackBin16_32_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3065,12 +3065,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin1632_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin16_32_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3087,7 +3087,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin16255_AsString_Read_JustLength_Success()
+		public void TestUnpackBin16_255_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3105,7 +3105,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin16255_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin16_255_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3115,12 +3115,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin16255_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin16_255_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3138,7 +3138,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin16255_ReadString_JustLength_Success()
+		public void TestUnpackBin16_255_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3155,7 +3155,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin16255_ReadString_TooShort_Fail()
+		public void TestUnpackBin16_255_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3166,12 +3166,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin16255_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin16_255_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3188,7 +3188,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin16256_AsString_Read_JustLength_Success()
+		public void TestUnpackBin16_256_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3206,7 +3206,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin16256_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin16_256_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3216,12 +3216,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin16256_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin16_256_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3239,7 +3239,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin16256_ReadString_JustLength_Success()
+		public void TestUnpackBin16_256_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3256,7 +3256,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin16256_ReadString_TooShort_Fail()
+		public void TestUnpackBin16_256_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3267,12 +3267,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin16256_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin16_256_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3289,7 +3289,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1665535_AsString_Read_JustLength_Success()
+		public void TestUnpackBin16_65535_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3307,7 +3307,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1665535_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin16_65535_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3317,12 +3317,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin1665535_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin16_65535_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3340,7 +3340,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1665535_ReadString_JustLength_Success()
+		public void TestUnpackBin16_65535_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3357,7 +3357,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin1665535_ReadString_TooShort_Fail()
+		public void TestUnpackBin16_65535_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3368,12 +3368,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin1665535_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin16_65535_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3390,7 +3390,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin320_AsString_Read_JustLength_Success()
+		public void TestUnpackBin32_0_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3408,7 +3408,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin320_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin32_0_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3426,7 +3426,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin320_ReadString_JustLength_Success()
+		public void TestUnpackBin32_0_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3443,7 +3443,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin320_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin32_0_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3460,7 +3460,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin321_AsString_Read_JustLength_Success()
+		public void TestUnpackBin32_1_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3478,7 +3478,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin321_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin32_1_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3488,12 +3488,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin321_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin32_1_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3511,7 +3511,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin321_ReadString_JustLength_Success()
+		public void TestUnpackBin32_1_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3528,7 +3528,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin321_ReadString_TooShort_Fail()
+		public void TestUnpackBin32_1_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3539,12 +3539,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin321_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin32_1_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3561,7 +3561,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3231_AsString_Read_JustLength_Success()
+		public void TestUnpackBin32_31_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3579,7 +3579,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3231_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin32_31_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3589,12 +3589,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin3231_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin32_31_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3612,7 +3612,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3231_ReadString_JustLength_Success()
+		public void TestUnpackBin32_31_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3629,7 +3629,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3231_ReadString_TooShort_Fail()
+		public void TestUnpackBin32_31_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3640,12 +3640,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin3231_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin32_31_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3662,7 +3662,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3232_AsString_Read_JustLength_Success()
+		public void TestUnpackBin32_32_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3680,7 +3680,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3232_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin32_32_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3690,12 +3690,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin3232_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin32_32_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3713,7 +3713,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3232_ReadString_JustLength_Success()
+		public void TestUnpackBin32_32_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3730,7 +3730,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3232_ReadString_TooShort_Fail()
+		public void TestUnpackBin32_32_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3741,12 +3741,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin3232_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin32_32_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3763,7 +3763,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin32255_AsString_Read_JustLength_Success()
+		public void TestUnpackBin32_255_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3781,7 +3781,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin32255_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin32_255_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3791,12 +3791,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin32255_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin32_255_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3814,7 +3814,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin32255_ReadString_JustLength_Success()
+		public void TestUnpackBin32_255_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3831,7 +3831,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin32255_ReadString_TooShort_Fail()
+		public void TestUnpackBin32_255_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3842,12 +3842,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin32255_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin32_255_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3864,7 +3864,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin32256_AsString_Read_JustLength_Success()
+		public void TestUnpackBin32_256_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3882,7 +3882,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin32256_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin32_256_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3892,12 +3892,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin32256_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin32_256_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3915,7 +3915,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin32256_ReadString_JustLength_Success()
+		public void TestUnpackBin32_256_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3932,7 +3932,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin32256_ReadString_TooShort_Fail()
+		public void TestUnpackBin32_256_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3943,12 +3943,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin32256_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin32_256_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3965,7 +3965,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3265535_AsString_Read_JustLength_Success()
+		public void TestUnpackBin32_65535_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3983,7 +3983,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3265535_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin32_65535_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -3993,12 +3993,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin3265535_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin32_65535_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4016,7 +4016,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3265535_ReadString_JustLength_Success()
+		public void TestUnpackBin32_65535_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4033,7 +4033,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3265535_ReadString_TooShort_Fail()
+		public void TestUnpackBin32_65535_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4044,12 +4044,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin3265535_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin32_65535_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4066,7 +4066,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3265536_AsString_Read_JustLength_Success()
+		public void TestUnpackBin32_65536_AsString_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4084,7 +4084,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3265536_AsString_Read_TooShort_Fail()
+		public void TestUnpackBin32_65536_AsString_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4094,12 +4094,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin3265536_AsString_Read_HasExtra_NoProblem()
+		public void TestUnpackBin32_65536_AsString_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4117,7 +4117,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3265536_ReadString_JustLength_Success()
+		public void TestUnpackBin32_65536_ReadString_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4134,7 +4134,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackBin3265536_ReadString_TooShort_Fail()
+		public void TestUnpackBin32_65536_ReadString_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4145,12 +4145,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				String result;
-				Assert.IsFalse( unpacker.ReadString( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackBin3265536_ReadString_HasExtra_NoProblem()
+		public void TestUnpackBin32_65536_ReadString_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4167,7 +4167,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr0_AsBinary_Read_JustLength_Success()
+		public void TestUnpackFixStr_0_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4185,7 +4185,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr0_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackFixStr_0_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4203,7 +4203,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr0_ReadBinary_JustLength_Success()
+		public void TestUnpackFixStr_0_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4220,7 +4220,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr0_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackFixStr_0_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4237,7 +4237,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_AsBinary_Read_JustLength_Success()
+		public void TestUnpackFixStr_1_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4255,7 +4255,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackFixStr_1_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4265,12 +4265,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackFixStr_1_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4288,7 +4288,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_ReadBinary_JustLength_Success()
+		public void TestUnpackFixStr_1_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4305,7 +4305,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_ReadBinary_TooShort_Fail()
+		public void TestUnpackFixStr_1_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4316,12 +4316,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackFixStr1_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackFixStr_1_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4338,7 +4338,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_AsBinary_Read_JustLength_Success()
+		public void TestUnpackFixStr_31_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4356,7 +4356,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackFixStr_31_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4366,12 +4366,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackFixStr_31_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4389,7 +4389,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_ReadBinary_JustLength_Success()
+		public void TestUnpackFixStr_31_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4406,7 +4406,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_ReadBinary_TooShort_Fail()
+		public void TestUnpackFixStr_31_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4417,12 +4417,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackFixStr31_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackFixStr_31_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4439,7 +4439,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr80_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr8_0_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4457,7 +4457,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr80_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_0_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4475,7 +4475,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr80_ReadBinary_JustLength_Success()
+		public void TestUnpackStr8_0_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4492,7 +4492,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr80_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr8_0_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4509,7 +4509,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr81_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr8_1_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4527,7 +4527,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr81_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr8_1_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4537,12 +4537,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr81_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_1_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4560,7 +4560,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr81_ReadBinary_JustLength_Success()
+		public void TestUnpackStr8_1_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4577,7 +4577,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr81_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr8_1_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4588,12 +4588,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr81_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr8_1_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4610,7 +4610,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr831_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr8_31_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4628,7 +4628,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr831_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr8_31_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4638,12 +4638,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr831_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_31_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4661,7 +4661,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr831_ReadBinary_JustLength_Success()
+		public void TestUnpackStr8_31_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4678,7 +4678,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr831_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr8_31_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4689,12 +4689,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr831_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr8_31_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4711,7 +4711,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr832_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr8_32_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4729,7 +4729,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr832_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr8_32_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4739,12 +4739,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr832_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_32_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4762,7 +4762,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr832_ReadBinary_JustLength_Success()
+		public void TestUnpackStr8_32_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4779,7 +4779,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr832_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr8_32_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4790,12 +4790,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr832_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr8_32_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4812,7 +4812,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr8255_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr8_255_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4830,7 +4830,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr8255_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr8_255_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4840,12 +4840,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr8255_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr8_255_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4863,7 +4863,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr8255_ReadBinary_JustLength_Success()
+		public void TestUnpackStr8_255_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4880,7 +4880,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr8255_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr8_255_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4891,12 +4891,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr8255_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr8_255_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4913,7 +4913,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr160_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr16_0_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4931,7 +4931,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr160_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_0_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4949,7 +4949,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr160_ReadBinary_JustLength_Success()
+		public void TestUnpackStr16_0_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4966,7 +4966,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr160_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr16_0_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -4983,7 +4983,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr161_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr16_1_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5001,7 +5001,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr161_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr16_1_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5011,12 +5011,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr161_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_1_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5034,7 +5034,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr161_ReadBinary_JustLength_Success()
+		public void TestUnpackStr16_1_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5051,7 +5051,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr161_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr16_1_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5062,12 +5062,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr161_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr16_1_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5084,7 +5084,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1631_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr16_31_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5102,7 +5102,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1631_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr16_31_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5112,12 +5112,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1631_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_31_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5135,7 +5135,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1631_ReadBinary_JustLength_Success()
+		public void TestUnpackStr16_31_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5152,7 +5152,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1631_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr16_31_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5163,12 +5163,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1631_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr16_31_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5185,7 +5185,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1632_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr16_32_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5203,7 +5203,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1632_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr16_32_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5213,12 +5213,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1632_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_32_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5236,7 +5236,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1632_ReadBinary_JustLength_Success()
+		public void TestUnpackStr16_32_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5253,7 +5253,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1632_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr16_32_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5264,12 +5264,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1632_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr16_32_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5286,7 +5286,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16255_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr16_255_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5304,7 +5304,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16255_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr16_255_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5314,12 +5314,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr16255_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_255_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5337,7 +5337,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16255_ReadBinary_JustLength_Success()
+		public void TestUnpackStr16_255_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5354,7 +5354,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16255_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr16_255_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5365,12 +5365,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr16255_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr16_255_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5387,7 +5387,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16256_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr16_256_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5405,7 +5405,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16256_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr16_256_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5415,12 +5415,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr16256_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_256_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5438,7 +5438,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16256_ReadBinary_JustLength_Success()
+		public void TestUnpackStr16_256_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5455,7 +5455,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr16256_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr16_256_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5466,12 +5466,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr16256_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr16_256_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5488,7 +5488,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr16_65535_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5506,7 +5506,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr16_65535_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5516,12 +5516,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr16_65535_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5539,7 +5539,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_ReadBinary_JustLength_Success()
+		public void TestUnpackStr16_65535_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5556,7 +5556,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr16_65535_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5567,12 +5567,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr1665535_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr16_65535_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5589,7 +5589,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr320_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr32_0_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5607,7 +5607,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr320_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_0_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5625,7 +5625,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr320_ReadBinary_JustLength_Success()
+		public void TestUnpackStr32_0_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5642,7 +5642,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr320_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr32_0_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5659,7 +5659,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr321_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr32_1_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5677,7 +5677,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr321_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr32_1_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5687,12 +5687,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr321_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_1_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5710,7 +5710,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr321_ReadBinary_JustLength_Success()
+		public void TestUnpackStr32_1_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5727,7 +5727,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr321_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr32_1_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5738,12 +5738,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr321_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr32_1_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5760,7 +5760,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3231_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr32_31_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5778,7 +5778,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3231_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr32_31_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5788,12 +5788,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3231_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_31_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5811,7 +5811,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3231_ReadBinary_JustLength_Success()
+		public void TestUnpackStr32_31_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5828,7 +5828,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3231_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr32_31_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5839,12 +5839,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3231_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr32_31_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5861,7 +5861,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3232_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr32_32_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5879,7 +5879,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3232_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr32_32_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5889,12 +5889,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3232_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_32_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5912,7 +5912,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3232_ReadBinary_JustLength_Success()
+		public void TestUnpackStr32_32_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5929,7 +5929,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3232_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr32_32_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5940,12 +5940,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3232_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr32_32_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5962,7 +5962,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32255_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr32_255_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5980,7 +5980,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32255_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr32_255_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -5990,12 +5990,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr32255_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_255_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6013,7 +6013,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32255_ReadBinary_JustLength_Success()
+		public void TestUnpackStr32_255_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6030,7 +6030,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32255_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr32_255_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6041,12 +6041,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr32255_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr32_255_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6063,7 +6063,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32256_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr32_256_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6081,7 +6081,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32256_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr32_256_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6091,12 +6091,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr32256_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_256_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6114,7 +6114,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32256_ReadBinary_JustLength_Success()
+		public void TestUnpackStr32_256_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6131,7 +6131,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr32256_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr32_256_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6142,12 +6142,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr32256_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr32_256_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6164,7 +6164,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr32_65535_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6182,7 +6182,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr32_65535_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6192,12 +6192,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_65535_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6215,7 +6215,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_ReadBinary_JustLength_Success()
+		public void TestUnpackStr32_65535_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6232,7 +6232,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr32_65535_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6243,12 +6243,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3265535_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr32_65535_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6265,7 +6265,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_AsBinary_Read_JustLength_Success()
+		public void TestUnpackStr32_65536_AsBinary_Read_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6283,7 +6283,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_AsBinary_Read_TooShort_Fail()
+		public void TestUnpackStr32_65536_AsBinary_Read_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6293,12 +6293,12 @@ namespace MsgPack
 			)
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_AsBinary_Read_HasExtra_NoProblem()
+		public void TestUnpackStr32_65536_AsBinary_Read_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6316,7 +6316,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_ReadBinary_JustLength_Success()
+		public void TestUnpackStr32_65536_ReadBinary_JustLength_Success()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6333,7 +6333,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_ReadBinary_TooShort_Fail()
+		public void TestUnpackStr32_65536_ReadBinary_TooShort_Fail()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -6344,12 +6344,12 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Byte[] result;
-				Assert.IsFalse( unpacker.ReadBinary( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
 			}
 		}
 
 		[Test]
-		public void TestUnpackStr3265536_ReadBinary_HasExtra_NoProblem()
+		public void TestUnpackStr32_65536_ReadBinary_HasExtra_NoProblem()
 		{
 			using( var buffer =
 				new MemoryStream( 
