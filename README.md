@@ -23,9 +23,17 @@ See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
     1. If you want to build unit test assemblies, install NuGet and then restore NUnit packages.
 2. Run:
 
-    msbuild MsgPack.csproj
+    msbuild MsgPack.sln
 
-Or open MsgPack.sln in your IDE and run build command in it.
+  Or (for .NET 3.5 drops, Silverlight 4 drops, and Silverlight 5 drops):
+
+    msbuild MsgPack.compats.sln
+
+  Or (for Windows Phone 7.1 drops):
+
+    msbuild MsgPack.wp7.sln
+
+Or open one of above solution files in your IDE and run build command in it.
 
 ### For Mono
 
