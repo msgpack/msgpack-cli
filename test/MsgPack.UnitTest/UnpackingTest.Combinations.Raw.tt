@@ -72,6 +72,58 @@ namespace MsgPack
 	public 	partial class UnpackingTest_Combinations_Raw
 	{
 <#
+foreach( var __testCase in TestData.StringValues )
+{
+	for( int __i = 0; __i < __testCase.Item3.Length; __i++ )
+	{
+		var __expression = __testCase.Item3[ __i ];
+		var __byteLength = __testCase.Item4[ __i ];
+#>
+		[Test]
+		public void TestUnpackBinaryFromString_ByteArray_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			var result = Unpacking.UnpackBinary( <#= __expression #> );
+			Assert.AreEqual( <#= __byteLength #>, result.ReadCount );
+			Assert.AreEqual( <#= __testCase.Item2 #>, result.Value.Length );
+			Assert.That( result.Value, Is.All.EqualTo( ( byte )'a' ) );
+		}
+
+		[Test]
+		public void TestUnpackBinaryFromString_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
+			{
+				var result = Unpacking.UnpackBinary( buffer );
+				Assert.AreEqual( <#= __byteLength #>, buffer.Position );
+				Assert.AreEqual( <#= __testCase.Item2 #>, result.Length );
+				Assert.That( result, Is.All.EqualTo( ( byte )'a' ) );
+			}
+		}
+		
+		[Test]
+		public void TestUnpackString_ByteArray_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			var result = Unpacking.UnpackString( <#= __expression #> );
+			Assert.AreEqual( <#= __byteLength #>, result.ReadCount );
+			Assert.AreEqual( <#= __testCase.Item2 #>, result.Value.Length );
+			Assert.That( result.Value, Is.All.EqualTo( 'a' ) );
+		}
+
+		[Test]
+		public void TestUnpackString_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		{
+			using ( var buffer = new MemoryStream( <#= __expression #> ) )
+			{
+				var result = Unpacking.UnpackString( buffer );
+				Assert.AreEqual( <#= __byteLength #>, buffer.Position );
+				Assert.AreEqual( <#= __testCase.Item2 #>, result.Length );
+				Assert.That( result, Is.All.EqualTo( 'a' ) );
+			}
+		}
+<#
+	}
+}
+
 foreach( var __testCase in TestData.BinaryValues )
 {
 	for( int __i = 0; __i < __testCase.Item3.Length; __i++ )
@@ -80,7 +132,7 @@ foreach( var __testCase in TestData.BinaryValues )
 		var __byteLength = __testCase.Item4[ __i ];
 #>
 		[Test]
-		public void TestUnpackBinary_ByteArray_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		public void TestUnpackBinaryFromBinary_ByteArray_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
 		{
 			var result = Unpacking.UnpackBinary( <#= __expression #> );
 			Assert.AreEqual( <#= __byteLength #>, result.ReadCount );
@@ -89,7 +141,7 @@ foreach( var __testCase in TestData.BinaryValues )
 		}
 
 		[Test]
-		public void TestUnpackBinary_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
+		public void TestUnpackBinaryFromBinary_Stream_<#= __testCase.Item1 #>_As<#= ToValueId( __expression ) #>_AsIs()
 		{
 			using ( var buffer = new MemoryStream( <#= __expression #> ) )
 			{

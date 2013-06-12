@@ -260,34 +260,74 @@ public static class TestData
 ";
 
 	// Label, ItemCount, Expressions, ByteLengthes
-	public static Tuple<string, string, string[], int[]>[] BinaryValues =
+	public static Tuple<string, string, string[], int[]>[] StringValues =
 		new Tuple<string, string, string[], int[]>[]
 		{
 			Tuple.Create( "FixRaw0Value", "0", new [] { 
 				"new byte[] { 0xA0 }",
+				"new byte[] { 0xD9, 0x00 }",
 				"new byte[] { 0xDA, 0x00, 0x00 }",
 				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x00 }",
-			}, new [] { 1, 3, 5 } ),
+			}, new [] { 1, 2, 3, 5 } ),
 			Tuple.Create( "FixRaw1Value", "0x1", new [] { 
-				"new byte[] { 0xA1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()",
-				"new byte[] { 0xDA, 0x00, 0x01 }.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()",
-				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x01 }.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()",
-			}, new [] { 1 + 1, 3 + 1, 5 + 1 } ),
+				"new byte[] { 0xA1 }.Concat( Enumerable.Repeat( ( byte )'a', 1 ) ).ToArray()",
+				"new byte[] { 0xD9, 0x01 }.Concat( Enumerable.Repeat( ( byte )'a', 1 ) ).ToArray()",
+				"new byte[] { 0xDA, 0x00, 0x01 }.Concat( Enumerable.Repeat( ( byte )'a', 1 ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x01 }.Concat( Enumerable.Repeat( ( byte )'a', 1 ) ).ToArray()",
+			}, new [] { 1 + 1, 2 + 1, 3 + 1, 5 + 1 } ),
 			Tuple.Create( "FixRawMaxValue", "0x1F", new [] { 
-				"new byte[] { 0xBF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x1F ) ).ToArray()",
-				"new byte[] { 0xDA, 0x00, 0x1F }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x1F ) ).ToArray()",
-				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x1F }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x1F ) ).ToArray()",
-			}, new [] { 1 + 0x1F , 3 + 0x1F , 5 + 0x1F } ),
-			Tuple.Create( "Raw16MinValue", "0x20", new [] { 
-				"new byte[] { 0xDA, 0x00, 0x20 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x20 ) ).ToArray()",
-				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x20 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x20 ) ).ToArray()",
-			}, new [] { 3 + 0x20 , 5 + 0x20 } ),
+				"new byte[] { 0xBF }.Concat( Enumerable.Repeat( ( byte )'a', 0x1F ) ).ToArray()",
+				"new byte[] { 0xD9, 0x1F }.Concat( Enumerable.Repeat( ( byte )'a', 0x1F ) ).ToArray()",
+				"new byte[] { 0xDA, 0x00, 0x1F }.Concat( Enumerable.Repeat( ( byte )'a', 0x1F ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x1F }.Concat( Enumerable.Repeat( ( byte )'a', 0x1F ) ).ToArray()",
+			}, new [] { 1 + 0x1F , 2 + 0x1F, 3 + 0x1F , 5 + 0x1F } ),
+			Tuple.Create( "Str8MinValue", "0x20", new [] { 
+				"new byte[] { 0xD9, 0x20 }.Concat( Enumerable.Repeat( ( byte )'a', 0x20 ) ).ToArray()",
+				"new byte[] { 0xDA, 0x00, 0x20 }.Concat( Enumerable.Repeat( ( byte )'a', 0x20 ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0x20 }.Concat( Enumerable.Repeat( ( byte )'a', 0x20 ) ).ToArray()",
+			}, new [] { 2 + 0x20, 3 + 0x20 , 5 + 0x20 } ),
+			Tuple.Create( "Str8MaxValue", "0xFF", new [] { 
+				"new byte[] { 0xD9, 0xFF }.Concat( Enumerable.Repeat( ( byte )'a', 0xFF ) ).ToArray()",
+				"new byte[] { 0xDA, 0x00, 0xFF }.Concat( Enumerable.Repeat( ( byte )'a', 0xFF ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x00, 0xFF }.Concat( Enumerable.Repeat( ( byte )'a', 0xFF ) ).ToArray()",
+			}, new [] { 2 + 0xFF, 3 + 0xFF, 5 + 0xFF } ),
+			Tuple.Create( "Raw16MinValue", "0x100", new [] { 
+				"new byte[] { 0xDA, 0x01, 0x00 }.Concat( Enumerable.Repeat( ( byte )'a', 0x100 ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0x01, 0x00 }.Concat( Enumerable.Repeat( ( byte )'a', 0x100 ) ).ToArray()",
+			}, new [] { 3 + 0x100 , 5 + 0x100 } ),
 			Tuple.Create( "Raw16MaxValue", "0xFFFF", new [] { 
-				"new byte[] { 0xDA, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0xFFFF ) ).ToArray()",
-				"new byte[] { 0xDB, 0x00, 0x00, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0xFFFF ) ).ToArray()",
+				"new byte[] { 0xDA, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )'a', 0xFFFF ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x00, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )'a', 0xFFFF ) ).ToArray()",
 			}, new [] { 3 + 0xFFFF, 5 + 0xFFFF } ),
 			Tuple.Create( "Raw32MinValue", "0x10000", new [] { 
-				"new byte[] { 0xDB, 0x00, 0x01, 0x00, 0x00 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x10000 ) ).ToArray()",
+				"new byte[] { 0xDB, 0x00, 0x01, 0x00, 0x00 }.Concat( Enumerable.Repeat( ( byte )'a', 0x10000 ) ).ToArray()",
+			}, new [] { 5 + 0x10000 } ),
+		};
+
+	// Label, ItemCount, Expressions, ByteLengthes
+	public static Tuple<string, string, string[], int[]>[] BinaryValues =
+		new Tuple<string, string, string[], int[]>[]
+		{
+			Tuple.Create( "Bin8MinValue", "0x00", new [] { 
+				"new byte[] { 0xC4, 0x00 }",
+				"new byte[] { 0xC5, 0x00, 0x00 }",
+				"new byte[] { 0xC6, 0x00, 0x00, 0x00, 0x00 }",
+			}, new [] { 2, 3, 5 } ),
+			Tuple.Create( "Bin8MaxValue", "0xFF", new [] { 
+				"new byte[] { 0xC4, 0xFF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0xFF ) ).ToArray()",
+				"new byte[] { 0xC5, 0x00, 0xFF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0xFF ) ).ToArray()",
+				"new byte[] { 0xC6, 0x00, 0x00, 0x00, 0xFF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0xFF ) ).ToArray()",
+			}, new [] { 2 + 0xFF, 3 + 0xFF, 5 + 0xFF } ),
+			Tuple.Create( "Bin16MinValue", "0x100", new [] { 
+				"new byte[] { 0xC5, 0x01, 0x00 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x100 ) ).ToArray()",
+				"new byte[] { 0xC6, 0x00, 0x00, 0x01, 0x00 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x100 ) ).ToArray()",
+			}, new [] { 3 + 0x100 , 5 + 0x100 } ),
+			Tuple.Create( "Bin16MaxValue", "0xFFFF", new [] { 
+				"new byte[] { 0xC5, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0xFFFF ) ).ToArray()",
+				"new byte[] { 0xC6, 0x00, 0x00, 0xFF, 0xFF }.Concat( Enumerable.Repeat( ( byte )0xFF, 0xFFFF ) ).ToArray()",
+			}, new [] { 3 + 0xFFFF, 5 + 0xFFFF } ),
+			Tuple.Create( "Bin32MinValue", "0x10000", new [] { 
+				"new byte[] { 0xC6, 0x00, 0x01, 0x00, 0x00 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0x10000 ) ).ToArray()",
 			}, new [] { 5 + 0x10000 } ),
 		};
 
@@ -374,6 +414,13 @@ public static class TestData
 			)
 		).ToArray();
 	
+	public static readonly string[] StringErrorCases = 
+		StringValues.SelectMany( tuple =>
+			tuple.Item3.Select( expression =>
+				String.Format( CultureInfo.InvariantCulture, ErrorTemplate, "{0}", tuple.Item1, EscapeFormatString( expression ) )
+			)
+		).ToArray();
+	
 	public static readonly string[] BinaryErrorCases = 
 		BinaryValues.SelectMany( tuple =>
 			tuple.Item3.Select( expression =>
@@ -442,6 +489,22 @@ public static string ToValueId( string expression )
 	{
 		switch( codeValue )
 		{
+			case 0xC4:
+			{
+				return "Bin8";
+			}
+			case 0xC5:
+			{
+				return "Bin16";
+			}
+			case 0xC6:
+			{
+				return "Bin32";
+			}
+			case 0xD9:
+			{
+				return "Str8";
+			}
 			case 0xDA:
 			{
 				return "Raw16";
