@@ -47,8 +47,12 @@ namespace MsgPack
 		public const int Map32 = 0xdf;
 		public const int MinimumFixedRaw = 0xa0;
 		public const int MaximumFixedRaw = 0xbf;
+		public const int Str8 = 0xd9;
 		public const int Raw16 = 0xda;
 		public const int Raw32 = 0xdb;
+		public const int Bin8 = 0xc4;
+		public const int Bin16 = 0xc5;
+		public const int Bin32 = 0xc6;
 		public const int Ext8 = 0xc7;
 		public const int Ext16 = 0xc8;
 		public const int Ext32 = 0xc9;

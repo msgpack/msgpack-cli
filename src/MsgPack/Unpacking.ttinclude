@@ -316,6 +316,18 @@ switch( header )
 	this.PopIndent();
 #>
 	}
+	case MessagePackCode.Bin8: 
+	case MessagePackCode.Str8: 
+	{
+		size = source.ReadByte();
+		if( size < 0 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+
+		break;
+	}
+	case MessagePackCode.Bin16: 
 	case MessagePackCode.Raw16: 
 	{
 		if( source.Read( buffer, 0, 2 ) < 2 )
@@ -326,6 +338,7 @@ switch( header )
 		size = BigEndianBinary.ToUInt16( buffer, 0 );
 		break;
 	}
+	case MessagePackCode.Bin32:
 	case MessagePackCode.Raw32:
 	{
 		if( source.Read( buffer, 0, 4 ) < 4 )
@@ -524,6 +537,30 @@ foreach( var entry in
 <#+
 }
 #>
+	case MessagePackCode.Bin8:
+	case MessagePackCode.Str8:
+	{
+		byte length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( byte ), "length" );
+	this.PopIndent();
+#>
+		var resultValue = new byte[ length ];
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackRawContent( "resultValue", "0", "length" );
+	this.PopIndent();
+#>
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue" ) #>;
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "resultMpoValue" );
+	this.WriteReturn( "resultMpoValue" );
+	this.PopIndent();
+#>
+	}
+	case MessagePackCode.Bin16:
 	case MessagePackCode.Raw16:
 	{
 		ushort length;
@@ -546,6 +583,7 @@ foreach( var entry in
 	this.PopIndent();
 #>
 	}
+	case MessagePackCode.Bin32:
 	case MessagePackCode.Raw32:
 	{
 		uint length;
