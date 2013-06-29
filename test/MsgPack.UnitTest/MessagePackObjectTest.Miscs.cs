@@ -110,6 +110,16 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestToString_ExtendedTypeObject_AsIs()
+		{
+			var mpeto = new MessagePackExtendedTypeObject( 123, new byte[] {1, 2, 3} );
+			Assert.AreEqual(
+				mpeto.ToString(),
+				new MessagePackObject( mpeto ).ToString()
+			);
+		}
+
+		[Test]
 		public void TestToString_AllPossibleTypes_Success()
 		{
 #if MONO

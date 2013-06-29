@@ -279,5 +279,30 @@ namespace MsgPack
 			var other = new MessagePackObject( "ABC" );
 			Assert.IsFalse( target.Equals( other ) );
 		}
+
+		[Test]
+		public void TestEquality_ValueEqual()
+		{
+			foreach ( var testCase in
+				new[]
+				{
+					Tuple.Create( 0, 0, new byte[] {1}, new byte[] {1}, true ),
+					Tuple.Create( 0, 1, new byte[] {1}, new byte[] {1}, false ),
+					Tuple.Create( 0, 0, new byte[] {1}, new byte[] {1, 2}, false ),
+					Tuple.Create( 0, 0, new byte[] {1}, new byte[] {2}, false ),
+				} )
+			{
+				checked
+				{
+					MessagePackObject left = new MessagePackExtendedTypeObject( ( byte )testCase.Item1, testCase.Item3 );
+					MessagePackObject right = new MessagePackExtendedTypeObject( ( byte )testCase.Item2, testCase.Item4 );
+
+					Assert.That( left.Equals( right ), Is.EqualTo( testCase.Item5 ), "IEquatable.Equals" );
+					Assert.That( left.Equals( ( object )right ), Is.EqualTo( testCase.Item5 ), "Equals" );
+					Assert.That( left == right, Is.EqualTo( testCase.Item5 ), "==" );
+					Assert.That( left != right, Is.EqualTo( !testCase.Item5 ), "!=" );
+				}
+			}
+		}
 	}
 }

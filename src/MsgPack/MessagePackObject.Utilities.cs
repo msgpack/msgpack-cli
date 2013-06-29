@@ -470,7 +470,7 @@ namespace MsgPack
 
 			{
 				var asMps = this._handleOrTypeCode as MessagePackString;
-				if( asMps != null )
+				if ( asMps != null )
 				{
 					return asMps.GetHashCode();
 				}
@@ -500,7 +500,7 @@ namespace MsgPack
 				{
 					unchecked
 					{
-						return new MessagePackExtendedTypeObject( ( byte ) this._value, asExtendedTypeObjectBody ).GetHashCode();
+						return new MessagePackExtendedTypeObject( ( byte )this._value, asExtendedTypeObjectBody ).GetHashCode();
 					}
 				}
 			}
@@ -763,6 +763,15 @@ namespace MsgPack
 
 						return;
 					}
+				}
+			}
+
+			{
+				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
+				if ( asExtendedTypeObjectBody != null )
+				{
+					new MessagePackExtendedTypeObject( ( byte )this._value, asExtendedTypeObjectBody ).ToString( buffer, isJson );
+					return;
 				}
 			}
 
@@ -1428,6 +1437,10 @@ namespace MsgPack
 			{
 				return new MessagePackObject( asDictionary, false );
 			}
+			else if ( boxedValue is MessagePackExtendedTypeObject )
+			{
+				return new MessagePackObject( ( MessagePackExtendedTypeObject )boxedValue );
+			}
 
 			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not supported.", boxedValue.GetType() ) );
 		}
@@ -1458,16 +1471,22 @@ namespace MsgPack
 					return asBinary.UnsafeGetBuffer();
 				}
 
+				var asList = this._handleOrTypeCode as IList<MessagePackObject>;
+				if ( asList != null )
+				{
+					return asList;
+				}
+
 				var asDictionary = this._handleOrTypeCode as IDictionary<MessagePackObject, MessagePackObject>;
 				if ( asDictionary != null )
 				{
 					return asDictionary;
 				}
 
-				var asList = this._handleOrTypeCode as IList<MessagePackObject>;
-				if ( asList != null )
+				var asExtendedTypeObject = this._handleOrTypeCode as byte[];
+				if ( asExtendedTypeObject != null )
 				{
-					return asList;
+					return new MessagePackExtendedTypeObject( unchecked( ( byte ) this._value ), asExtendedTypeObject );
 				}
 
 				Contract.Assert( false, "Unknwon type:" + this._handleOrTypeCode );
