@@ -103,6 +103,7 @@
     <Compile Include="GenericExceptionTester.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="MessagePackConvertTest.cs" />
+    <Compile Include="MessagePackExtendedTypeObjectTest.cs" />
     <Compile Include="MessagePackObjectDictionaryTest.cs" />
     <Compile Include="MessagePackObjectTest.Conversion.cs">
       <AutoGen>True</AutoGen>
