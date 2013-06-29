@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Text;
 
 namespace MsgPack
 {
@@ -116,7 +117,44 @@ namespace MsgPack
 			this._body = body;
 		}
 
-		// No string representation.
+		/// <summary>
+		///		Returns a <see cref="System.String" /> that represents this instance.
+		/// </summary>
+		/// <returns>
+		///		A <see cref="System.String" /> that represents this instance.
+		/// </returns>
+		public override string ToString()
+		{
+			if( this._body == null )
+			{
+				return String.Empty;
+			}
+
+			var buffer = new StringBuilder( 7 + this._body.Length * 2 );
+			this.ToString( buffer, false );
+			return buffer.ToString();
+		}
+
+		internal void ToString( StringBuilder buffer, bool isJson )
+		{
+			if ( this._body == null )
+			{
+				return;
+			}
+
+			if ( isJson )
+			{
+				buffer.Append( "{ \"TypeCode\":" ).Append( this._typeCode ).Append( ", \"Body\":\"" );
+				Binary.ToHexString( this._body, buffer );
+				buffer.Append( '"' );
+			}
+			else
+			{
+				buffer.Append( "[" ).Append( this._body ).Append( "]" );
+				Binary.ToHexString( this._body, buffer );
+			}
+
+		}
 
 		/// <summary>
 		///		Returns a hash code for this instance.
@@ -159,12 +197,12 @@ namespace MsgPack
 		/// </returns>
 		public override bool Equals( object obj )
 		{
-			if( !( obj is MessagePackExtendedTypeObject ) )
+			if ( !( obj is MessagePackExtendedTypeObject ) )
 			{
 				return false;
 			}
 
-			return this.Equals((MessagePackExtendedTypeObject) obj );
+			return this.Equals( ( MessagePackExtendedTypeObject )obj );
 		}
 
 		/// <summary>
@@ -176,24 +214,24 @@ namespace MsgPack
 		/// </returns>
 		public bool Equals( MessagePackExtendedTypeObject other )
 		{
-			if( this._typeCode != other._typeCode )
+			if ( this._typeCode != other._typeCode )
 			{
 				return false;
 			}
 
-			if( Object.ReferenceEquals( this._body, other._body ) )
+			if ( Object.ReferenceEquals( this._body, other._body ) )
 			{
 				return true;
 			}
 
-			if( this._body.Length != other._body.Length )
+			if ( this._body.Length != other._body.Length )
 			{
 				return false;
 			}
 
-			for( int i = 0; i < this._body.Length; i++ )
+			for ( int i = 0; i < this._body.Length; i++ )
 			{
-				if( this._body[ i ] != other._body[ i ] )
+				if ( this._body[ i ] != other._body[ i ] )
 				{
 					return false;
 				}
@@ -210,7 +248,7 @@ namespace MsgPack
 		/// <returns>
 		///   <c>true</c> if the specified <see cref="MessagePackExtendedTypeObject" />s are equal; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool operator  ==( MessagePackExtendedTypeObject left, MessagePackExtendedTypeObject right )
+		public static bool operator ==( MessagePackExtendedTypeObject left, MessagePackExtendedTypeObject right )
 		{
 			return left.Equals( right );
 		}

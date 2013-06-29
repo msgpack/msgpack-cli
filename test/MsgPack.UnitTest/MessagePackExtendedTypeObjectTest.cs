@@ -158,5 +158,17 @@ namespace MsgPack
 		{
 			Assert.That( default( MessagePackExtendedTypeObject ).GetHashCode(), Is.EqualTo( 0 ) );
 		}
+
+		[Test]
+		public void TestToString()
+		{
+			Assert.That( new MessagePackExtendedTypeObject( 1, new byte[] {1} ).ToString(), Is.Not.Null.And.Not.Empty );
+		}
+
+		[Test]
+		public void TestToString_Null()
+		{
+			Assert.That( default( MessagePackExtendedTypeObject ).ToString(), Is.Not.Null.And.Empty );
+		}
 	}
 }
