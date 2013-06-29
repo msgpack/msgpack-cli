@@ -757,7 +757,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a raw.
 		/// </exception>
-		public virtual bool  ReadBinary( out byte[] result )
+		public virtual bool ReadBinary( out byte[] result )
 		{
 			if( !this.Read() )
 			{

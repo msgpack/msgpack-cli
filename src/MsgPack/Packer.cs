@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -249,7 +248,7 @@ namespace MsgPack
 		#region -- Int8 --
 
 		/// <summary>
-		///		Pack <see cref="SByte"/> value to current stream.
+		///		Packs <see cref="SByte"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="SByte"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -275,7 +274,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Try pack <see cref="SByte"/> value to current stream strictly.
+		///		Try packs <see cref="SByte"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="SByte"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -296,7 +295,7 @@ namespace MsgPack
 		#region -- UInt8 --
 
 		/// <summary>
-		///		Pack <see cref="Byte"/> value to current stream.
+		///		Packs <see cref="Byte"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="Byte"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -321,7 +320,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Try pack <see cref="Byte"/> value to current stream strictly.
+		///		Try packs <see cref="Byte"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="Byte"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -342,7 +341,7 @@ namespace MsgPack
 		#region -- Int16 --
 
 		/// <summary>
-		///		Pack <see cref="Int16"/> value to current stream.
+		///		Packs <see cref="Int16"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="Int16"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -372,7 +371,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Try pack <see cref="Int16"/> value to current stream strictly.
+		///		Try packs <see cref="Int16"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="Int16"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -397,7 +396,7 @@ namespace MsgPack
 		#region -- UInt16 --
 
 		/// <summary>
-		///		Pack <see cref="UInt16"/> value to current stream.
+		///		Packs <see cref="UInt16"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="UInt16"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -428,7 +427,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Try pack <see cref="UInt16"/> value to current stream strictly.
+		///		Try packs <see cref="UInt16"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="UInt16"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -454,7 +453,7 @@ namespace MsgPack
 		#region -- Int32 --
 
 		/// <summary>
-		///		Pack <see cref="Int32"/> value to current stream.
+		///		Packs <see cref="Int32"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="Int32"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -489,7 +488,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Try pack <see cref="Int32"/> value to current stream strictly.
+		///		Try packs <see cref="Int32"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="Int32"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -516,7 +515,7 @@ namespace MsgPack
 		#region -- UInt32 --
 
 		/// <summary>
-		///		Pack <see cref="UInt32"/> value to current stream.
+		///		Packs <see cref="UInt32"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="UInt32"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -553,7 +552,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Try pack <see cref="UInt32"/> value to current stream strictly.
+		///		Try packs <see cref="UInt32"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="UInt32"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -581,7 +580,7 @@ namespace MsgPack
 		#region -- Int64 --
 
 		/// <summary>
-		///		Pack <see cref="Int64"/> value to current stream.
+		///		Packs <see cref="Int64"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="Int64"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -621,7 +620,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Try pack <see cref="Int64"/> value to current stream strictly.
+		///		Try packs <see cref="Int64"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="Int64"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -647,7 +646,7 @@ namespace MsgPack
 		#region -- UInt64 --
 
 		/// <summary>
-		///		Pack <see cref="UInt64"/> value to current stream.
+		///		Packs <see cref="UInt64"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="UInt64"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -688,7 +687,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Try pack <see cref="UInt64"/> value to current stream strictly.
+		///		Try packs <see cref="UInt64"/> value to current stream strictly.
 		/// </summary>
 		/// <param name="value">Maybe <see cref="UInt64"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -715,7 +714,7 @@ namespace MsgPack
 		#region -- Single --
 
 		/// <summary>
-		///		Pack <see cref="Single"/> value to current stream.
+		///		Packs <see cref="Single"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="Single"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -753,7 +752,7 @@ namespace MsgPack
 		#region -- Double --
 
 		/// <summary>
-		///		Pack <see cref="Double"/> value to current stream.
+		///		Packs <see cref="Double"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="Double"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -786,7 +785,7 @@ namespace MsgPack
 		#region -- Boolean --
 
 		/// <summary>
-		///		Pack <see cref="Boolean"/> value to current stream.
+		///		Packs <see cref="Boolean"/> value to current stream.
 		/// </summary>
 		/// <param name="value"><see cref="Boolean"/> value.</param>
 		/// <returns>This instance.</returns>
@@ -987,7 +986,7 @@ namespace MsgPack
 		#region -- Raw --
 
 		/// <summary>
-		///		Pack specified byte stream to current stream.
+		///		Packs specified byte stream to current stream.
 		/// </summary>
 		/// <param name="value">Source bytes its size is not known.</param>
 		/// <returns>This instance.</returns>
@@ -1002,7 +1001,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack specified byte stream to current stream.
+		///		Packs specified byte stream to current stream.
 		/// </summary>
 		/// <param name="value">Source bytes its size is known.</param>
 		/// <returns>This instance.</returns>
@@ -1025,7 +1024,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack specified byte array to current stream.
+		///		Packs specified byte array to current stream.
 		/// </summary>
 		/// <param name="value">Source byte array.</param>
 		/// <returns>This instance.</returns>
@@ -1095,7 +1094,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack specified byte array to current stream without any header.
+		///		Packs specified byte array to current stream without any header.
 		/// </summary>
 		/// <param name="value">Source byte array.</param>
 		/// <returns>This instance.</returns>
@@ -1183,7 +1182,7 @@ namespace MsgPack
 		#region -- String --
 
 		/// <summary>
-		///		Pack specified char stream to current stream with UTF-8 <see cref="Encoding"/>.
+		///		Packs specified char stream to current stream with UTF-8 <see cref="Encoding"/>.
 		/// </summary>
 		/// <param name="value">Source chars its size is not known.</param>
 		/// <returns>This instance.</returns>
@@ -1195,7 +1194,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack specified string to current stream with UTF-8 <see cref="Encoding"/>.
+		///		Packs specified string to current stream with UTF-8 <see cref="Encoding"/>.
 		/// </summary>
 		/// <param name="value">Source string.</param>
 		/// <returns>This instance.</returns>
@@ -1207,7 +1206,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack specified char stream to current stream with specified <see cref="Encoding"/>.
+		///		Packs specified char stream to current stream with specified <see cref="Encoding"/>.
 		/// </summary>
 		/// <param name="value">Source chars its size is not known.</param>
 		/// <param name="encoding"><see cref="Encoding"/> to be used.</param>
@@ -1220,7 +1219,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack specified string to current stream with specified <see cref="Encoding"/>.
+		///		Packs specified string to current stream with specified <see cref="Encoding"/>.
 		/// </summary>
 		/// <param name="value">Source string.</param>
 		/// <param name="encoding"><see cref="Encoding"/> to be used.</param>
@@ -1233,7 +1232,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack specified char stream to current stream with specified <see cref="Encoding"/>.
+		///		Packs specified char stream to current stream with specified <see cref="Encoding"/>.
 		/// </summary>
 		/// <param name="value">Source chars its size is not known.</param>
 		/// <param name="encoding"><see cref="Encoding"/> to be used.</param>
@@ -1275,7 +1274,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack specified string to current stream with specified <see cref="Encoding"/>.
+		///		Packs specified string to current stream with specified <see cref="Encoding"/>.
 		/// </summary>
 		/// <param name="value">Source string.</param>
 		/// <param name="encoding"><see cref="Encoding"/> to be used.</param>
@@ -1364,7 +1363,7 @@ namespace MsgPack
 		#endregion -- IDictionary --
 
 		/// <summary>
-		///		Try pack <see cref="SByte"/> value to current stream as tiny fix num.
+		///		Try packs <see cref="SByte"/> value to current stream as tiny fix num.
 		/// </summary>
 		/// <param name="value">Maybe tiny <see cref="SByte"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -1388,7 +1387,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Try pack <see cref="Byte"/> value to current stream as tiny fix num.
+		///		Try packs <see cref="Byte"/> value to current stream as tiny fix num.
 		/// </summary>
 		/// <param name="value">Maybe tiny <see cref="Byte"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
@@ -1406,7 +1405,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Pack a null value to current stream.
+		///		Packs a null value to current stream.
 		/// </summary>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
