@@ -137,20 +137,27 @@ namespace MsgPack
 
 		internal void ToString( StringBuilder buffer, bool isJson )
 		{
-			if ( this._body == null )
-			{
-				return;
-			}
-
 			if ( isJson )
 			{
-				buffer.Append( "{ \"TypeCode\":" ).Append( this._typeCode ).Append( ", \"Body\":\"" );
+				if ( this._body == null )
+				{
+					// Assume that JSON is used when a collection is stringified, so empty string should break entire JSON.
+					buffer.Append( "null" );
+					return;
+				}
+
+				buffer.Append( "{\"TypeCode\":" ).Append( this._typeCode ).Append( ", \"Body\":\"" );
 				Binary.ToHexString( this._body, buffer );
-				buffer.Append( '"' );
+				buffer.Append( "\"}" );
 			}
 			else
 			{
-				buffer.Append( "[" ).Append( this._body ).Append( "]" );
+				if ( this._body == null )
+				{
+					return;
+				}
+
+				buffer.Append( "[" ).Append( this._typeCode ).Append( "]" );
 				Binary.ToHexString( this._body, buffer );
 			}
 

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -162,13 +163,30 @@ namespace MsgPack
 		[Test]
 		public void TestToString()
 		{
-			Assert.That( new MessagePackExtendedTypeObject( 1, new byte[] {1} ).ToString(), Is.Not.Null.And.Not.Empty );
+			Assert.That( new MessagePackExtendedTypeObject( 1, new byte[] {1} ).ToString(), Is.EqualTo( "[1]0x01" ) );
 		}
 
 		[Test]
 		public void TestToString_Null()
 		{
 			Assert.That( default( MessagePackExtendedTypeObject ).ToString(), Is.Not.Null.And.Empty );
+		}
+
+
+		[Test]
+		public void TestToStringJson()
+		{
+			var buffer = new StringBuilder();
+			new MessagePackExtendedTypeObject( 1, new byte[] {1} ).ToString( buffer, true );
+			Assert.That( buffer.ToString(), Is.EqualTo( "{\"TypeCode\":1, \"Body\":\"0x01\"}" ) );
+		}
+
+		[Test]
+		public void TestToStringJson_Null()
+		{
+			var buffer = new StringBuilder();
+			default (MessagePackExtendedTypeObject ).ToString( buffer, true );
+			Assert.That( buffer.ToString(), Is.EqualTo( "null" ) );
 		}
 	}
 }
