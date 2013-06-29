@@ -178,7 +178,7 @@ namespace MsgPack
 				}
 			}
 		}
-		
+
 		/// <summary>
 		///		Initializes a new instance wraps <see cref="MessagePackString"/>.
 		/// </summary>
@@ -368,6 +368,24 @@ namespace MsgPack
 				}
 			}
 
+			{
+				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
+				if ( asExtendedTypeObjectBody != null )
+				{
+					var otherAsExtendedTypeObjectBody = other._handleOrTypeCode as byte[];
+					if ( otherAsExtendedTypeObjectBody == null )
+					{
+						return false;
+					}
+
+					unchecked
+					{
+						return new MessagePackExtendedTypeObject( ( byte )this._value, asExtendedTypeObjectBody ) ==
+							   new MessagePackExtendedTypeObject( ( byte )other._value, otherAsExtendedTypeObjectBody );
+					}
+				}
+			}
+
 			Debug.Assert( false, String.Format( "Unknown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
 		}
@@ -451,6 +469,14 @@ namespace MsgPack
 			}
 
 			{
+				var asMps = this._handleOrTypeCode as MessagePackString;
+				if( asMps != null )
+				{
+					return asMps.GetHashCode();
+				}
+			}
+
+			{
 				var asArray = this._handleOrTypeCode as IList<MessagePackObject>;
 				if ( asArray != null )
 				{
@@ -468,12 +494,17 @@ namespace MsgPack
 				}
 			}
 
-			var asMps = this._handleOrTypeCode as MessagePackString;
-			if ( asMps != null )
 			{
-				return asMps.GetHashCode();
+				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
+				if ( asExtendedTypeObjectBody != null )
+				{
+					unchecked
+					{
+						return new MessagePackExtendedTypeObject( ( byte ) this._value, asExtendedTypeObjectBody ).GetHashCode();
+					}
+				}
 			}
-			else
+
 			{
 				Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
 				return 0;
@@ -789,6 +820,11 @@ namespace MsgPack
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
 			if ( typeCode == null )
 			{
+				if ( type == typeof( MessagePackExtendedTypeObject ) )
+				{
+					return this._handleOrTypeCode is byte[];
+				}
+
 				if ( type == typeof( string ) || type == typeof( IList<char> ) || type == typeof( IEnumerable<char> ) )
 				{
 					var asMessagePackString = this._handleOrTypeCode as MessagePackString;

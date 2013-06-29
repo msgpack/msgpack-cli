@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -1422,6 +1422,38 @@ namespace MsgPack
 		private void PrivatePackNullCore()
 		{
 			this.WriteByte( MessagePackCode.NilValue );
+		}
+
+		/// <summary>
+		/// Packs an extended type value.
+		/// </summary>
+		/// <param name="typeCode">A type code of the extended type value.</param>
+		/// <param name="body">A binary value portion of the extended type value.</param>
+		/// <returns>This instance. </returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		public Packer PackExtendedTypeValue( byte typeCode, byte[] body )
+		{
+			this.VerifyNotDisposed();
+			Contract.EndContractBlock();
+
+			this.PrivatePackExtendedTypeValueCore();
+			return this;
+		}
+
+		/// <summary>
+		///		Packs an extended type value.
+		/// </summary>
+		/// <param name="mpeto">A <see cref="MessagePackExtendedTypeObject"/> to be packed.</param>
+		/// <returns>This instance.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		public Packer PackExtendedTypeValue( MessagePackExtendedTypeObject mpeto )
+		{
+			return this.PackExtendedTypeValue( mpeto.TypeCode, mpeto.Body );
+		}
+
+		private void PrivatePackExtendedTypeValueCore()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

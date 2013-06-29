@@ -121,6 +121,7 @@
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MessagePackExtendedTypeObject.cs" />
     <Compile Include="MessagePackObjectDictionary.Enumerator.cs" />
     <Compile Include="MessagePackObjectDictionary.KeySet.cs" />
     <Compile Include="MessagePackObjectDictionary.KeySet.Enumerator.cs" />

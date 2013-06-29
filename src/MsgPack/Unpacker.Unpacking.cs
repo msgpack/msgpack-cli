@@ -622,6 +622,58 @@ namespace MsgPack
 			return true;
 		}
 
+		/// <summary>
+		///		Reads next <see cref="MessagePackExtendedTypeObject" /> value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The <see cref="MessagePackExtendedTypeObject" /> value read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the <see cref="MessagePackExtendedTypeObject" /> type.
+		/// </exception>
+		public virtual bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
+		{
+			if( !this.Read() )
+			{
+				result = default( MessagePackExtendedTypeObject );
+				return false;
+			}
+
+			result = this.Data.Value.AsMessagePackExtendedTypeObject();
+			return true;
+		}
+
+		/// <summary>
+		///		Reads next nullable <see cref="MessagePackExtendedTypeObject" /> value from current stream.
+		///	</summary>
+		/// <returns>
+		///		The nullable <see cref="MessagePackExtendedTypeObject" /> value read from current data source successfully.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the nullable <see cref="MessagePackExtendedTypeObject" /> type.
+		/// </exception>
+		public virtual bool ReadNullableMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject? result )
+		{
+			if( !this.Read() )
+			{
+				result = null;
+				return false;
+			}
+
+			result = this.Data.Value.IsNil ? default( MessagePackExtendedTypeObject? ) : this.Data.Value.AsMessagePackExtendedTypeObject();
+			return true;
+		}
+
 
 		/// <summary>
 		///		Reads next array length value from current stream.

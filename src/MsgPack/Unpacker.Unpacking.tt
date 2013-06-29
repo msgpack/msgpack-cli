@@ -39,7 +39,7 @@ namespace MsgPack
 	{
 <#
 foreach( var type in
-	new []
+	new object []
 	{ 
 		typeof( bool ), 
 		typeof( byte ), typeof( sbyte ),
@@ -47,15 +47,16 @@ foreach( var type in
 		typeof( int ), typeof( uint ),
 		typeof( long ), typeof( ulong ),
 		typeof( float ), typeof( double ),
+		"MessagePackExtendedTypeObject"
 	}
 )
 {
 #>
 		/// <summary>
-		///		Reads next <see cref="<#= type.Name #>" /> value from current stream.
+		///		Reads next <see cref="<#= GetTypeName( type ) #>" /> value from current stream.
 		///	</summary>
 		/// <param name="result">
-		///		The <see cref="<#= type.Name #>" /> value read from current stream to be stored when operation is succeeded.
+		///		The <see cref="<#= GetTypeName( type ) #>" /> value read from current stream to be stored when operation is succeeded.
 		/// </param>
 		/// <returns>
 		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
@@ -65,39 +66,39 @@ foreach( var type in
 		///		Cannot read a value because the underlying stream unexpectedly ends.
 		/// </exception>
 		/// <exception cref="MessageTypeException">
-		///		A value read from data source is not compatible for the <see cref="<#= type.Name #>" /> type.
+		///		A value read from data source is not compatible for the <see cref="<#= GetTypeName( type ) #>" /> type.
 		/// </exception>
 <#
-	if( IsCLSCompliant( type ) )
+	if( IsNotCLSCompliant( type as Type ) )
 	{
 #>
 		[CLSCompliant( false )]
 <#
 	}
 #>
-		public virtual bool Read<#= type.Name #>( out <#= type.Name #> result )
+		public virtual bool Read<#= GetTypeName( type ) #>( out <#= GetTypeName( type ) #> result )
 		{
 			if( !this.Read() )
 			{
-				result = default( <#= type.Name #> );
+				result = default( <#= GetTypeName( type ) #> );
 				return false;
 			}
 
-			result = this.Data.Value.As<#= type.Name #>();
+			result = this.Data.Value.As<#= GetTypeName( type ) #>();
 			return true;
 		}
 
 		/// <summary>
-		///		Reads next nullable <see cref="<#= type.Name #>" /> value from current stream.
+		///		Reads next nullable <see cref="<#= GetTypeName( type ) #>" /> value from current stream.
 		///	</summary>
 		/// <returns>
-		///		The nullable <see cref="<#= type.Name #>" /> value read from current data source successfully.
+		///		The nullable <see cref="<#= GetTypeName( type ) #>" /> value read from current data source successfully.
 		/// </returns>
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Cannot read a value because the underlying stream unexpectedly ends.
 		/// </exception>
 		/// <exception cref="MessageTypeException">
-		///		A value read from data source is not compatible for the nullable <see cref="<#= type.Name #>" /> type.
+		///		A value read from data source is not compatible for the nullable <see cref="<#= GetTypeName( type ) #>" /> type.
 		/// </exception>
 <#
 	if( IsCLSCompliant( type ) )
@@ -107,7 +108,7 @@ foreach( var type in
 <#
 	}
 #>
-		public virtual bool ReadNullable<#= type.Name #>( out <#= type.Name #>? result )
+		public virtual bool ReadNullable<#= GetTypeName( type ) #>( out <#= GetTypeName( type ) #>? result )
 		{
 			if( !this.Read() )
 			{
@@ -115,7 +116,7 @@ foreach( var type in
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( <#= type.Name #>? ) : this.Data.Value.As<#= type.Name #>();
+			result = this.Data.Value.IsNil ? default( <#= GetTypeName( type ) #>? ) : this.Data.Value.As<#= GetTypeName( type ) #>();
 			return true;
 		}
 
@@ -274,6 +275,12 @@ foreach( var type in
 <#+
 private bool IsCLSCompliant( Type type )
 {
+	if( type == null )
+	{
+		// MPETO
+		return false;
+	}
+
 	switch( Type.GetTypeCode( type ) )
 	{
 		case TypeCode.SByte:
@@ -288,5 +295,11 @@ private bool IsCLSCompliant( Type type )
 			return true;
 		}
 	}
+}
+
+
+private static string GetTypeName( object typeOrTypeName )
+{
+	return ( typeOrTypeName as string ) ?? ( typeOrTypeName as Type ).Name;
 }
 #>
