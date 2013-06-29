@@ -101,7 +101,7 @@ foreach( var type in
 		///		A value read from data source is not compatible for the nullable <see cref="<#= GetTypeName( type ) #>" /> type.
 		/// </exception>
 <#
-	if( IsCLSCompliant( type ) )
+	if( IsNotCLSCompliant( type as Type ) )
 	{
 #>
 		[CLSCompliant( false )]
@@ -273,7 +273,7 @@ foreach( var type in
 	}
 }
 <#+
-private bool IsCLSCompliant( Type type )
+private static bool IsNotCLSCompliant( Type type )
 {
 	if( type == null )
 	{
