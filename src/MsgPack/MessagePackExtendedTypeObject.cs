@@ -96,9 +96,9 @@ namespace MsgPack
 		/// <param name="typeCode">A type code of this extension object.</param>
 		/// <param name="body">A binary value portion.</param>
 		/// <exception cref="System.ArgumentException">
-		///		The typeCode is over 127. Higher values are reserved for MessagePack format specification.
+		///		The <paramref name="typeCode"/> is over 127. Higher values are reserved for MessagePack format specification.
 		/// </exception>
-		/// <exception cref="System.ArgumentNullException">The body is <c>null</c>.</exception>
+		/// <exception cref="System.ArgumentNullException">The <paramref name="body"/> is <c>null</c>.</exception>
 		public MessagePackExtendedTypeObject( byte typeCode, byte[] body )
 		{
 			if ( typeCode > 0x7F )
