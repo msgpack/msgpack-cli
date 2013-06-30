@@ -3,7 +3,7 @@
   <metadata>
     <id>MsgPack.Cli</id>
     <title>MessagePack for CLI</title>
-    <version>0.3.2-beta1</version>
+    <version>0.3.2</version>
     <authors>FUJIWARA, Yusuke</authors>
     <owners>FUJIWARA, Yusuke</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MessagePack is fast, compact, and interoperable binary serialization format.
 This library provides MessagePack serialization/deserialization APIs.</description>
-    <releaseNotes>This release improves some performance, adds limited WinRT support, and adds .NET 3.5 support.</releaseNotes>
+    <releaseNotes>This release implements issue#128 related specs based on update proposal v5.</releaseNotes>
     <copyright>Copyright 2010-2013 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>Serialization MessagePack MsgPack</tags>
     <dependencies />
