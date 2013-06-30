@@ -134,6 +134,7 @@
     <Compile Include="MessagePackObjectDictionary.cs" />
     <Compile Include="MessagePackObjectEqualityComparer.cs" />
     <Compile Include="MessagePackString.cs" />
+    <Compile Include="PackerCompatibilityOptions.cs" />
     <Compile Include="PackerUnpackerExtensions.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -43,6 +43,33 @@ namespace MsgPack
 	/// </summary>
 	public abstract partial class Packer : IDisposable
 	{
+		private static volatile int _defaultCompatibilityOptions = ( int )PackerCompatibilityOptions.Classic;
+
+		/// <summary>
+		///		Gets or sets the default <see cref="PackerCompatibilityOptions"/> for all instances.
+		/// </summary>
+		/// <value>
+		///		The default <see cref="PackerCompatibilityOptions"/>.
+		///		The default value is <see cref="PackerCompatibilityOptions.Classic"/>.
+		/// </value>
+		/// <remarks>
+		///		<para>
+		///			Note that modification of this value will affect all new instances from the point.
+		///			Existent instances are not afectted by the modification.
+		///		</para>
+		///		<para>
+		///			This property is intended to be set in application initialization code.
+		///		</para>
+		///		<para>
+		///			Note that the default value is <see cref="PackerCompatibilityOptions.Classic"/>, not <see cref="PackerCompatibilityOptions.None"/>.
+		///		</para>
+		/// </remarks>
+		public static PackerCompatibilityOptions DefaultCompatibilityOptions
+		{
+			get { return ( PackerCompatibilityOptions )_defaultCompatibilityOptions; }
+			set { _defaultCompatibilityOptions = ( int )value; }
+		}
+
 		private bool _isDisposed;
 
 		/// <summary>
@@ -66,13 +93,35 @@ namespace MsgPack
 			get { throw new NotSupportedException(); }
 		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Packer"/> class.
-		/// </summary>
-		protected Packer() { }
+		private readonly PackerCompatibilityOptions _compatibilityOptions;
 
 		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/>.
+		///		Gets a compatibility options for this instance.
+		/// </summary>
+		/// <value>
+		///		The compatibility options.
+		/// </value>
+		public PackerCompatibilityOptions CompatibilityOptions
+		{
+			get { return this._compatibilityOptions; }
+		}
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="Packer"/> class with <see cref="DefaultCompatibilityOptions"/>.
+		/// </summary>
+		protected Packer() : this( DefaultCompatibilityOptions ) { }
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="Packer"/> class with specified <see cref="PackerCompatibilityOptions"/>.
+		/// </summary>
+		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
+		protected Packer( PackerCompatibilityOptions compatibilityOptions )
+		{
+			this._compatibilityOptions = compatibilityOptions;
+		}
+
+		/// <summary>
+		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with <see cref="DefaultCompatibilityOptions"/>.
 		/// </summary>
 		/// <param name="stream"><see cref="Stream"/> object. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
 		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
@@ -87,7 +136,23 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/>.
+		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
+		/// </summary>
+		/// <param name="stream"><see cref="Stream"/> object. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
+		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
+		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
+		/// <remarks>
+		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
+		///		 NetworkStream, UnmanagedMemoryStream, or so.
+		/// </remarks>
+		public static Packer Create( Stream stream, PackerCompatibilityOptions compatibilityOptions )
+		{
+			return Create( stream, compatibilityOptions, true );
+		}
+
+		/// <summary>
+		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with <see cref="DefaultCompatibilityOptions"/>.
 		/// </summary>
 		/// <param name="stream"><see cref="Stream"/> object.</param>
 		/// <param name="ownsStream">
@@ -102,12 +167,32 @@ namespace MsgPack
 		/// </remarks>
 		public static Packer Create( Stream stream, bool ownsStream )
 		{
+			return Create( stream, DefaultCompatibilityOptions, ownsStream );
+		}
+
+		/// <summary>
+		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
+		/// </summary>
+		/// <param name="stream"><see cref="Stream"/> object.</param>
+		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
+		/// <param name="ownsStream">
+		///		<c>true</c> to close <paramref name="stream"/> when this instance is disposed;
+		///		<c>false</c>, otherwise.
+		/// </param>
+		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
+		/// <remarks>
+		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
+		///		 NetworkStream, UnmanagedMemoryStream, or so.
+		/// </remarks>
+		public static Packer Create( Stream stream, PackerCompatibilityOptions compatibilityOptions, bool ownsStream )
+		{
 			if ( stream == null )
 			{
 				throw new ArgumentNullException( "stream" );
 			}
 
-			return new StreamPacker( stream, ownsStream );
+			return new StreamPacker( stream, compatibilityOptions, ownsStream );
 		}
 
 		/// <summary>
@@ -927,9 +1012,37 @@ namespace MsgPack
 		/// <param name="length">Byte length.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <remarks>
+		///		This method acts as alias of <see cref="PackStringHeader"/> for compatibility.
+		/// </remarks>
+		[Obsolete( "Use PackStringHeader(Int32) or Use PackBinaryHeader(Int32) instead." )]
 		public Packer PackRawHeader( int length )
 		{
 			this.PackRawHeaderCore( length );
+			return this;
+		}
+
+		/// <summary>
+		///		Bookkeep byte length to be packed on current stream as the bytes may represent well formed encoded string.
+		/// </summary>
+		/// <param name="length">Byte length.</param>
+		/// <returns>This instance.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		public Packer PackStringHeader( int length )
+		{
+			this.PackStringHeaderCore( length );
+			return this;
+		}
+
+		/// <summary>
+		///		Bookkeep byte length to be packed on current stream as the bytes do not represent well formed encoded string.
+		/// </summary>
+		/// <param name="length">Byte length.</param>
+		/// <returns>This instance.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		public Packer PackBinaryHeader( int length )
+		{
+			this.PackBinaryHeaderCore( length );
 			return this;
 		}
 
@@ -938,7 +1051,21 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="length">Byte length.</param>
 		/// <returns>This instance.</returns>
+		/// <remarks>
+		///		This method acts as alias of <see cref="PackStringHeaderCore"/> for compatibility.
+		/// </remarks>
+		[Obsolete( "Use PackStringHeaderCore(Int32) or Use PackBinaryHeaderCore(Int32) instead." )]
 		protected void PackRawHeaderCore( int length )
+		{
+			this.PackStringHeaderCore( length );
+		}
+
+		/// <summary>
+		///		Bookkeep byte length to be packed on current stream as the bytes may represent well formed encoded string.
+		/// </summary>
+		/// <param name="length">Byte length.</param>
+		/// <returns>This instance.</returns>
+		protected void PackStringHeaderCore( int length )
 		{
 			if ( length < 0 )
 			{
@@ -948,42 +1075,109 @@ namespace MsgPack
 			Contract.EndContractBlock();
 			this.VerifyNotDisposed();
 
-			this.PrivatePackRawHeaderCore( length );
+			this.PrivatePackRawHeaderCore( length, true );
 		}
 
-		private void PrivatePackRawHeaderCore( int length )
+		/// <summary>
+		///		Bookkeep byte length to be packed on current stream as the bytes do not represent well formed encoded string.
+		/// </summary>
+		/// <param name="length">Byte length.</param>
+		/// <returns>This instance.</returns>
+		protected void PackBinaryHeaderCore( int length )
+		{
+			if ( length < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "length", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "length" ) );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
+			this.PrivatePackRawHeaderCore( length, false );
+		}
+
+		private void PrivatePackRawHeaderCore( int length, bool isString )
 		{
 			Contract.Assert( 0 <= length );
 
-			if ( length < 32 )
+			if ( isString || ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
 			{
-				this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) ) );
-			}
-			else if ( length <= UInt16.MaxValue )
-			{
-				this.WriteByte( MessagePackCode.Raw16 );
-				unchecked
+				if ( length < 32 )
 				{
-					this.WriteByte( ( byte )( ( length >> 8 ) & 0xff ) );
-					this.WriteByte( ( byte )( length & 0xff ) );
+					this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) ) );
+					return;
+				}
+
+				if ( length <= Byte.MaxValue && ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+				{
+					this.WriteByte( MessagePackCode.Str8 );
+					unchecked
+					{
+						this.WriteByte( ( byte )( length & 0xff ) );
+					}
+
+					return;
+				}
+
+				if ( length <= UInt16.MaxValue )
+				{
+					this.WriteByte( MessagePackCode.Raw16 );
+					unchecked
+					{
+						this.WriteByte( ( byte )( ( length >> 8 ) & 0xff ) );
+						this.WriteByte( ( byte )( length & 0xff ) );
+					}
+				}
+				else
+				{
+					this.WriteByte( MessagePackCode.Raw32 );
+					unchecked
+					{
+						this.WriteByte( ( byte )( ( length >> 24 ) & 0xff ) );
+						this.WriteByte( ( byte )( ( length >> 16 ) & 0xff ) );
+						this.WriteByte( ( byte )( ( length >> 8 ) & 0xff ) );
+						this.WriteByte( ( byte )( length & 0xff ) );
+					}
 				}
 			}
 			else
 			{
-				this.WriteByte( MessagePackCode.Raw32 );
-				unchecked
+				// !isString && compat options is not set.
+
+				if ( length <= Byte.MaxValue )
 				{
-					this.WriteByte( ( byte )( ( length >> 24 ) & 0xff ) );
-					this.WriteByte( ( byte )( ( length >> 16 ) & 0xff ) );
-					this.WriteByte( ( byte )( ( length >> 8 ) & 0xff ) );
-					this.WriteByte( ( byte )( length & 0xff ) );
+					this.WriteByte( MessagePackCode.Bin8 );
+					unchecked
+					{
+						this.WriteByte( ( byte )( length & 0xff ) );
+					}
+				}
+				else if ( length <= UInt16.MaxValue )
+				{
+					this.WriteByte( MessagePackCode.Bin16 );
+					unchecked
+					{
+						this.WriteByte( ( byte )( ( length >> 8 ) & 0xff ) );
+						this.WriteByte( ( byte )( length & 0xff ) );
+					}
+				}
+				else
+				{
+					this.WriteByte( MessagePackCode.Bin32 );
+					unchecked
+					{
+						this.WriteByte( ( byte )( ( length >> 24 ) & 0xff ) );
+						this.WriteByte( ( byte )( ( length >> 16 ) & 0xff ) );
+						this.WriteByte( ( byte )( ( length >> 8 ) & 0xff ) );
+						this.WriteByte( ( byte )( length & 0xff ) );
+					}
 				}
 			}
 		}
 
 		#endregion -- Collection Header --
 
-		#region -- Raw --
+		#region -- Raw with Header --
 
 		/// <summary>
 		///		Packs specified byte stream to current stream.
@@ -991,12 +1185,24 @@ namespace MsgPack
 		/// <param name="value">Source bytes its size is not known.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <remarks>
+		///		This method use str types (previously known as raw types) for compability.
+		/// </remarks>
 		public Packer PackRaw( IEnumerable<byte> value )
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.PrivatePackRaw( value );
+			var asCollection = value as ICollection<byte>;
+			if ( asCollection == null )
+			{
+				this.PrivatePackRaw( value );
+			}
+			else
+			{
+				this.PrivatePackRaw( asCollection );
+			}
+
 			return this;
 		}
 
@@ -1006,6 +1212,9 @@ namespace MsgPack
 		/// <param name="value">Source bytes its size is known.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <remarks>
+		///		This method use str types (previously known as raw types) for compability.
+		/// </remarks>
 		public Packer PackRaw( IList<byte> value )
 		{
 			this.VerifyNotDisposed();
@@ -1029,6 +1238,9 @@ namespace MsgPack
 		/// <param name="value">Source byte array.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <remarks>
+		///		This method use str types (previously known as raw types) for compability.
+		/// </remarks>
 		public Packer PackRaw( byte[] value )
 		{
 			this.VerifyNotDisposed();
@@ -1051,11 +1263,11 @@ namespace MsgPack
 
 		private void PrivatePackRawCore( byte[] value, bool isImmutable )
 		{
-			this.PrivatePackRawHeaderCore( value.Length );
+			this.PrivatePackRawHeaderCore( value.Length, isString: true );
 			this.WriteBytes( value, isImmutable );
 		}
 
-		private void PrivatePackRaw( IList<byte> value )
+		private void PrivatePackRaw( ICollection<byte> value )
 		{
 			if ( value == null )
 			{
@@ -1063,7 +1275,7 @@ namespace MsgPack
 				return;
 			}
 
-			this.PrivatePackRawHeaderCore( value.Count );
+			this.PrivatePackRawHeaderCore( value.Count, isString: true );
 			this.WriteBytes( value );
 		}
 
@@ -1092,6 +1304,10 @@ namespace MsgPack
 				this.StreamWrite( value, ( items, _ ) => this.PrivatePackRawBodyCore( items ), null );
 			}
 		}
+
+		#endregion -- Raw with Header --
+
+		#region -- Raw Body --
 
 		/// <summary>
 		///		Packs specified byte array to current stream without any header.
@@ -1177,7 +1393,7 @@ namespace MsgPack
 			return value.Count;
 		}
 
-		#endregion -- Raw --
+		#endregion -- Raw Body --
 
 		#region -- String --
 
@@ -1269,7 +1485,7 @@ namespace MsgPack
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value.ToArray() );
-			this.PrivatePackRawHeaderCore( encoded.Length );
+			this.PrivatePackRawHeaderCore( encoded.Length, isString: true );
 			this.WriteBytes( encoded, true );
 		}
 
@@ -1312,11 +1528,151 @@ namespace MsgPack
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value );
-			this.PrivatePackRawHeaderCore( encoded.Length );
+			this.PrivatePackRawHeaderCore( encoded.Length, isString: true );
 			this.WriteBytes( encoded, true );
 		}
 
 		#endregion -- String --
+
+		#region -- Binary --
+
+		/// <summary>
+		///		Packs specified byte stream to current stream.
+		/// </summary>
+		/// <param name="value">Source bytes its size is not known.</param>
+		/// <returns>This instance.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <remarks>
+		///		This method use bin types unless <see cref="CompatibilityOptions"/> contains <see cref="PackerCompatibilityOptions.PackBinaryAsRaw"/>.
+		/// </remarks>
+		public Packer PackBinary( IEnumerable<byte> value )
+		{
+			this.VerifyNotDisposed();
+			Contract.EndContractBlock();
+
+			var asCollection = value as ICollection<byte>;
+			if ( asCollection == null )
+			{
+				this.PrivatePackBinary( value );
+			}
+			else
+			{
+				this.PrivatePackBinary( asCollection );
+			} 
+			
+			return this;
+		}
+
+		/// <summary>
+		///		Packs specified byte stream to current stream.
+		/// </summary>
+		/// <param name="value">Source bytes its size is known.</param>
+		/// <returns>This instance.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <remarks>
+		///		This method use bin types unless <see cref="CompatibilityOptions"/> contains <see cref="PackerCompatibilityOptions.PackBinaryAsRaw"/>.
+		/// </remarks>
+		public Packer PackBinary( IList<byte> value )
+		{
+			this.VerifyNotDisposed();
+			Contract.EndContractBlock();
+
+			var asByteArray = value as byte[];
+			if ( asByteArray == null )
+			{
+				this.PrivatePackBinary( value );
+			}
+			else
+			{
+				this.PrivatePackBinary( asByteArray );
+			}
+			return this;
+		}
+
+		/// <summary>
+		///		Packs specified byte array to current stream.
+		/// </summary>
+		/// <param name="value">Source byte array.</param>
+		/// <returns>This instance.</returns>
+		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+		/// <remarks>
+		///		This method use bin types unless <see cref="CompatibilityOptions"/> contains <see cref="PackerCompatibilityOptions.PackBinaryAsRaw"/>.
+		/// </remarks>
+		public Packer PackBinary( byte[] value )
+		{
+			this.VerifyNotDisposed();
+			Contract.EndContractBlock();
+
+			this.PrivatePackBinary( value );
+			return this;
+		}
+
+		private void PrivatePackBinary( byte[] value )
+		{
+			if ( value == null )
+			{
+				this.PrivatePackNullCore();
+				return;
+			}
+
+			PrivatePackBinaryCore( value, false );
+		}
+
+		private void PrivatePackBinaryCore( byte[] value, bool isImmutable )
+		{
+			this.PrivatePackRawHeaderCore( value.Length, isString: false );
+			this.WriteBytes( value, isImmutable );
+		}
+
+		private void PrivatePackBinary( ICollection<byte> value )
+		{
+			if ( value == null )
+			{
+				this.PrivatePackNullCore();
+				return;
+			}
+
+			this.PrivatePackRawHeaderCore( value.Count, isString: false );
+			this.WriteBytes( value );
+		}
+
+		private void PrivatePackBinary( IEnumerable<byte> value )
+		{
+			if ( value == null )
+			{
+				this.PrivatePackNullCore();
+				return;
+			}
+
+			this.PrivatePackBinaryCore( value );
+		}
+
+		private void PrivatePackBinaryCore( IEnumerable<byte> value )
+		{
+			if ( !this.CanSeek )
+			{
+				// buffered
+				this.PrivatePackBinaryCore( value.ToArray(), true );
+			}
+			else
+			{
+				// Header
+				// Use biggest data size because actual binary length is not known.
+				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
+				{
+					this.WriteByte( MessagePackCode.Raw32 );
+				}
+				else
+				{
+					this.WriteByte( MessagePackCode.Bin32 );
+				}
+
+				this.StreamWrite( value, ( items, _ ) => this.PrivatePackRawBodyCore( items ), null );
+			}
+		}
+
+		#endregion -- Binary --
+
 
 		#region -- List --
 
@@ -1429,13 +1785,20 @@ namespace MsgPack
 		/// <param name="typeCode">A type code of the extended type value.</param>
 		/// <param name="body">A binary value portion of the extended type value.</param>
 		/// <returns>This instance. </returns>
+		/// <exception cref="ArgumentNullException"><paramref name="body"/> is <c>null</c>.</exception>
+		/// <exception cref="InvalidOperationException"><see cref="CompatibilityOptions"/> property contains <see cref="PackerCompatibilityOptions.ProhibitExtendedTypeObjects"/>.</exception>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackExtendedTypeValue( byte typeCode, byte[] body )
 		{
+			if ( body == null )
+			{
+				throw new ArgumentNullException( "body" );
+			}
+
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.PrivatePackExtendedTypeValueCore();
+			this.PrivatePackExtendedTypeValueCore( typeCode, body );
 			return this;
 		}
 
@@ -1444,15 +1807,85 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="mpeto">A <see cref="MessagePackExtendedTypeObject"/> to be packed.</param>
 		/// <returns>This instance.</returns>
+		/// <exception cref="ArgumentException"><see cref="MessagePackExtendedTypeObject.IsValid"/> of <paramref name="mpeto"/> is <c>false</c>.</exception>
+		/// <exception cref="InvalidOperationException"><see cref="CompatibilityOptions"/> property contains <see cref="PackerCompatibilityOptions.ProhibitExtendedTypeObjects"/>.</exception>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackExtendedTypeValue( MessagePackExtendedTypeObject mpeto )
 		{
-			return this.PackExtendedTypeValue( mpeto.TypeCode, mpeto.Body );
+			if ( !mpeto.IsValid )
+			{
+				throw new ArgumentException( "MessagePackExtendedTypeObject must have body.", "mpeto" );
+			}
+
+			this.PrivatePackExtendedTypeValueCore( mpeto.TypeCode, mpeto.Body );
+			return this;
 		}
 
-		private void PrivatePackExtendedTypeValueCore()
+		private void PrivatePackExtendedTypeValueCore( byte typeCode, byte[] body )
 		{
-			throw new NotImplementedException();
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) != 0 )
+			{
+				throw new InvalidOperationException( "ExtendedTypeObject is prohibited in this packer." );
+			}
+
+			switch ( body.Length )
+			{
+				case 1:
+				{
+					this.WriteByte( MessagePackCode.FixExt1 );
+					break;
+				}
+				case 2:
+				{
+					this.WriteByte( MessagePackCode.FixExt2 );
+					break;
+				}
+				case 4:
+				{
+					this.WriteByte( MessagePackCode.FixExt4 );
+					break;
+				}
+				case 8:
+				{
+					this.WriteByte( MessagePackCode.FixExt8 );
+					break;
+				}
+				case 16:
+				{
+					this.WriteByte( MessagePackCode.FixExt16 );
+					break;
+				}
+				default:
+				{
+					unchecked
+					{
+						if ( body.Length < 0x100 )
+						{
+							this.WriteByte( MessagePackCode.Ext8 );
+							this.WriteByte( ( byte )( body.Length & 0xFF ) );
+						}
+						else if ( body.Length < 0x10000 )
+						{
+							this.WriteByte( MessagePackCode.Ext16 );
+							this.WriteByte( ( byte )( ( body.Length >> 8 ) & 0xFF ) );
+							this.WriteByte( ( byte )( body.Length & 0xFF ) );
+						}
+						else
+						{
+							this.WriteByte( MessagePackCode.Ext32 );
+							this.WriteByte( ( byte )( ( body.Length >> 24 ) & 0xFF ) );
+							this.WriteByte( ( byte )( ( body.Length >> 16 ) & 0xFF ) );
+							this.WriteByte( ( byte )( ( body.Length >> 8 ) & 0xFF ) );
+							this.WriteByte( ( byte )( body.Length & 0xFF ) );
+						}
+					}
+
+					break;
+				}
+			} // swith
+
+			this.WriteByte( typeCode );
+			this.WriteBytes( body, true );
 		}
 	}
 }

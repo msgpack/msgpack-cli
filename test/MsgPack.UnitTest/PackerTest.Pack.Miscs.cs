@@ -288,6 +288,7 @@ namespace MsgPack
 			}
 		}
 
+#pragma warning disable 0618
 		[Test]
 		public void TestPackRawHeaderInt32_Empty_0xA0()
 		{
@@ -323,6 +324,7 @@ namespace MsgPack
 		{
 			Assert.Throws<ArgumentOutOfRangeException>( () => TestCore( ( packer, count ) => packer.PackRawHeader( count ), -1, new byte[] { 0xC0 } ) );
 		}
+#pragma warning restore 0618
 
 		[Test]
 		public void TestPackRaw_NotNullByteArray_AsIs()
@@ -363,13 +365,13 @@ namespace MsgPack
 		[Test]
 		public void TestPackRaw_NotNullIEnumerableOfByte_AsRaw32()
 		{
-			TestCore<IEnumerable<byte>>( ( packer, array ) => packer.PackRaw( array ), new byte[] { 1, 2, 3 }, new byte[] { 0xDB, 0x0, 0x0, 0x0, 0x3, 0x1, 0x2, 0x3 } );
+			TestCore<IEnumerable<byte>>( ( packer, array ) => packer.PackRaw( array.Select( i => i ) ), new byte[] { 1, 2, 3 }, new byte[] { 0xDB, 0x0, 0x0, 0x0, 0x3, 0x1, 0x2, 0x3 } );
 		}
 
 		[Test]
 		public void TestPackRaw_EmptyIEnumerableOfByte_AsZeroLengthRaw32()
 		{
-			TestCore<IEnumerable<byte>>( ( packer, array ) => packer.PackRaw( array ), Enumerable.Empty<byte>(), new byte[] { 0xDB, 0x0, 0x0, 0x0, 0x0 } );
+			TestCore<IEnumerable<byte>>( ( packer, array ) => packer.PackRaw( array.Select( i => i ) ), Enumerable.Empty<byte>(), new byte[] { 0xDB, 0x0, 0x0, 0x0, 0x0 } );
 		}
 
 		[Test]
@@ -612,7 +614,6 @@ namespace MsgPack
 		{
 			TestCore<UInt64>( ( packer, value ) => packer.Pack( value ), 0x10000, new byte[] { 0xCE, 0x0, 0x01, 0x00, 0x00 } );
 		}
-
 
 		private sealed class Packable : IPackable
 		{
