@@ -1013,6 +1013,7 @@ namespace MsgPack
 				MessagePackString asString;
 				IList<MessagePackObject> asList;
 				IDictionary<MessagePackObject, MessagePackObject> asDictionary;
+				byte[] asExtendedTypeObjectBody;
 				if ( ( asString = this._handleOrTypeCode as MessagePackString ) != null )
 				{
 					packer.PackRaw( asString.GetBytes() );
@@ -1033,6 +1034,10 @@ namespace MsgPack
 						item.Key.PackToMessage( packer, options );
 						item.Value.PackToMessage( packer, options );
 					}
+				}
+				else if( ( asExtendedTypeObjectBody = this._handleOrTypeCode as byte[] ) != null )
+				{
+					packer.PackExtendedTypeValue( unchecked( ( byte ) this._value ), asExtendedTypeObjectBody );
 				}
 				else
 				{
