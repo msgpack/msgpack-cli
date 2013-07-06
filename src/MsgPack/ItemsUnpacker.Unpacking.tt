@@ -107,6 +107,9 @@ this.WriteReadBody( "ArrayLength", "Int64", true, this.WriteUnpackArrayLength );
 this.WriteReadBody( "MapLength", "Int64", false, this.WriteUnpackMapLength );
 this.WriteReadBody( "MapLength", "Int64", true, this.WriteUnpackMapLength );
 
+this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", false, this.WriteUnpackExtendedTypeObject );
+this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", true, this.WriteUnpackExtendedTypeObject );
+
 this.PopIndent();
 #>
 	}

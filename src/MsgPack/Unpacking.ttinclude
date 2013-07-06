@@ -346,6 +346,9 @@ switch( header )
 			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
 		}
 
+<#+
+// TODO: Net45_LongArray
+#>
 		var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 		if( unsignedSize > Int32.MaxValue )
 		{
@@ -660,17 +663,31 @@ foreach( var entry in
 	this.PopIndent();
 #>
 	}
-	case MessagePackCode.FixExt1:
-	case MessagePackCode.FixExt2:
-	case MessagePackCode.FixExt4:
-	case MessagePackCode.FixExt8:
-	case MessagePackCode.FixExt16:
-	case MessagePackCode.Ext8:
-	case MessagePackCode.Ext16:
-	case MessagePackCode.Ext32:
+<#+
+	foreach ( var length in new [] { 1, 2, 4, 8, 16 } )
 	{
-		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
+#>
+	case MessagePackCode.FixExt<#= length #>:
+	{
+<#+
+		this.WriteUnpackFixedLengthExtendedTypeObject( length );
+#>
 	}
+<#+
+	}
+
+	foreach ( var type in new [] { typeof( byte ), typeof( ushort ), typeof( uint ) } )
+	{
+#>
+	case MessagePackCode.Ext<#= System.Runtime.InteropServices.Marshal.SizeOf( type ) * 8 #>:
+	{
+<#+
+		this.WriteUnpackVariableLengthExtendedTypeObject( type );
+#>
+	}
+<#+
+	}
+#>
 	default:
 	{
 #if DEBUG
@@ -755,6 +772,9 @@ switch( header )
 			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
 		}
 
+<#+
+// TODO: Net45_LongArray
+#>
 		var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 		if( unsignedSize > Int32.MaxValue )
 		{
@@ -835,6 +855,9 @@ switch( header )
 			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
 		}
 
+<#+
+// TODO: Net45_LongArray
+#>
 		var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 		if( unsignedSize > Int32.MaxValue )
 		{
@@ -870,6 +893,128 @@ switch( header )
 	}
 }// switch
 #endregion UnpackMapLength
+<#+
+}
+
+
+
+private void WriteUnpackExtendedTypeObject()
+{
+	#>
+#region UnpackExt
+#if DEBUG
+Contract.Assert( source != null );
+Contract.Assert( buffer != null );
+#endif
+
+var header = source.ReadByte();
+if( header < 0 )
+{
+	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+}
+
+switch( header )
+{
+<#+
+	foreach ( var length in new [] { 1, 2, 4, 8, 16 } )
+	{
+#>
+	case MessagePackCode.FixExt<#= length #>:
+	{
+<#+
+		this.WriteUnpackFixedLengthExtendedTypeObject( length );
+#>
+	}
+<#+
+	}
+
+	foreach ( var type in new [] { typeof( byte ), typeof( ushort ), typeof( uint ) } )
+	{
+#>
+	case MessagePackCode.Ext<#= System.Runtime.InteropServices.Marshal.SizeOf( type ) * 8 #>:
+	{
+<#+
+		this.WriteUnpackVariableLengthExtendedTypeObject( type );
+#>
+	}
+<#+
+	}
+#>
+	default:
+	{
+		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, "map header", header, MessagePackCode.ToString( header ) ) );
+	}
+}// switch
+#endregion UnpackExt
+<#+
+}
+
+private void WriteUnpackFixedLengthExtendedTypeObject( int length )
+{
+	this.WriteUnpackExtendedTypeObjectCore( length, null );
+}
+
+private void WriteUnpackVariableLengthExtendedTypeObject( Type lengthType )
+{
+	this.WriteUnpackExtendedTypeObjectCore( null, lengthType );
+}
+
+private void WriteUnpackExtendedTypeObjectCore( int? length, Type lengthType )
+{
+#>
+		#region UnpackExt
+
+		var typeCode = source.ReadByte();
+		if( typeCode < 0 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+
+<#+
+	if( lengthType != null )
+	{
+#>
+
+		<#= lengthType.Name  #> length;
+<#+
+		this.PushIndent( 2 );
+		this.WriteUnpackScalar( lengthType, "length" );
+		this.PopIndent();
+		if( lengthType == typeof( uint ) )
+		{
+			// TODO: Net45_LongArray
+#>
+
+		if( length > Int32.MaxValue )
+		{
+<#+
+			this.PushIndent( 3 );
+			this.WriteTooLargeException();
+			this.PopIndent();
+#>
+		}
+
+<#+
+		}
+#>
+
+<#+
+	}
+#>
+		var data = new byte[ <#= length != null ? length.ToString() : "length" #> ];
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackRawContent( "data", "0", "data.Length" );
+	this.PopIndent();
+#>
+		var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "resultMpoValue" );
+	this.WriteReturn( "resultMpoValue" );
+	this.PopIndent();
+#>
+		#endregion UnpackExt
 <#+
 }
 

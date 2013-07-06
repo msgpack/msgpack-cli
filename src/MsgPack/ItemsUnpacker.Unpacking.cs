@@ -7132,15 +7132,279 @@ namespace MsgPack
 					return true;
 				}
 				case MessagePackCode.FixExt1:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 1 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt2:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 2 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt4:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 4 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt8:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 8 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt16:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 16 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext8:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					Byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext16:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					UInt16 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext32:
 				{
-					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					UInt32 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+			
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
 				}
 				default:
 				{
@@ -7675,15 +7939,279 @@ namespace MsgPack
 					return true;
 				}
 				case MessagePackCode.FixExt1:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 1 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt2:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 2 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt4:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 4 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt8:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 8 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt16:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 16 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext8:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					Byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext16:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					UInt16 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext32:
 				{
-					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					UInt32 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+			
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
 				}
 				default:
 				{
@@ -7963,6 +8491,609 @@ namespace MsgPack
 				}
 			}// switch
 			#endregion UnpackMapLength
+		}
+		
+		public override bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
+		{
+			this.EnsureNotInSubtreeMode();
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+			#region UnpackExt
+			#if DEBUG
+			Contract.Assert( source != null );
+			Contract.Assert( buffer != null );
+			#endif
+			
+			var header = source.ReadByte();
+			if( header < 0 )
+			{
+				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+			}
+			
+			switch( header )
+			{
+				case MessagePackCode.FixExt1:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 1 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt2:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 2 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt4:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 4 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt8:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 8 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt16:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 16 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext8:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					Byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext16:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					UInt16 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext32:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					UInt32 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+			
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				default:
+				{
+					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "map header", header, MessagePackCode.ToString( header ) ) );
+				}
+			}// switch
+			#endregion UnpackExt
+		}
+		
+		internal bool ReadSubtreeMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
+		{
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+			#region UnpackExt
+			#if DEBUG
+			Contract.Assert( source != null );
+			Contract.Assert( buffer != null );
+			#endif
+			
+			var header = source.ReadByte();
+			if( header < 0 )
+			{
+				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+			}
+			
+			switch( header )
+			{
+				case MessagePackCode.FixExt1:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 1 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt2:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 2 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt4:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 4 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt8:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 8 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt16:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 16 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext8:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					Byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext16:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					UInt16 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext32:
+				{
+					#region UnpackExt
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+			
+					UInt32 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+			
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					this._data = resultMpoValue;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				default:
+				{
+					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "map header", header, MessagePackCode.ToString( header ) ) );
+				}
+			}// switch
+			#endregion UnpackExt
 		}
 		
 	}

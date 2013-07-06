@@ -109,6 +109,15 @@ this.PopIndent();
 #>
 		}
 
+		public override bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
+		{
+<#
+this.PushIndent( 3 );
+this.WriteRead( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject" );
+this.PopIndent();
+#>
+		}
+
 		public override bool ReadObject( out MessagePackObject result )
 		{
 <#

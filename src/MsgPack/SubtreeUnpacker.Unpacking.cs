@@ -939,6 +939,41 @@ namespace MsgPack
 			return true;
 		}
 
+		public override bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
+		{
+			this.DiscardCompletedStacks();
+			
+			if ( this._itemsCount.Count == 0 )
+			{
+				result = default( MessagePackExtendedTypeObject );
+				return false;
+			}
+			
+			if ( !this._root.ReadSubtreeMessagePackExtendedTypeObject( out result ) )
+			{
+				return false;
+			}
+			
+			if ( this._root.IsArrayHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( false );
+			}
+			else if ( this._root.IsMapHeader )
+			{
+				this._itemsCount.Push( this._root.ItemsCount * 2 );
+				this._unpacked.Push( 0 );
+				this._isMap.Push( true );
+			}
+			else
+			{
+				this._unpacked.Push( this._unpacked.Pop() + 1 );
+			}
+			
+			return true;
+		}
+
 		public override bool ReadObject( out MessagePackObject result )
 		{
 			this.DiscardCompletedStacks();
