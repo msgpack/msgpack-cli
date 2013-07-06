@@ -7134,7 +7134,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt1:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -7162,7 +7161,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt2:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -7190,7 +7188,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt4:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -7218,7 +7215,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt8:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -7246,7 +7242,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt16:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -7275,13 +7270,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					Byte length;
 					#region UnpackScalar
 					
@@ -7296,6 +7284,12 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
@@ -7318,13 +7312,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					UInt16 length;
 					#region UnpackScalar
 					
@@ -7339,6 +7326,12 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
@@ -7361,13 +7354,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					UInt32 length;
 					#region UnpackScalar
 					
@@ -7386,6 +7372,12 @@ namespace MsgPack
 					if( length > Int32.MaxValue )
 					{
 						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 					}
 			
 					var data = new byte[ length ];
@@ -7941,7 +7933,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt1:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -7969,7 +7960,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt2:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -7997,7 +7987,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt4:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8025,7 +8014,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt8:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8053,7 +8041,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt16:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8082,13 +8069,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					Byte length;
 					#region UnpackScalar
 					
@@ -8103,6 +8083,12 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
@@ -8125,13 +8111,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					UInt16 length;
 					#region UnpackScalar
 					
@@ -8146,6 +8125,12 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
@@ -8168,13 +8153,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					UInt32 length;
 					#region UnpackScalar
 					
@@ -8193,6 +8171,12 @@ namespace MsgPack
 					if( length > Int32.MaxValue )
 					{
 						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 					}
 			
 					var data = new byte[ length ];
@@ -8515,7 +8499,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt1:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8543,7 +8526,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt2:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8571,7 +8553,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt4:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8599,7 +8580,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt8:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8627,7 +8607,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt16:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8656,13 +8635,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					Byte length;
 					#region UnpackScalar
 					
@@ -8677,6 +8649,12 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
@@ -8699,13 +8677,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					UInt16 length;
 					#region UnpackScalar
 					
@@ -8720,6 +8691,12 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
@@ -8742,13 +8719,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					UInt32 length;
 					#region UnpackScalar
 					
@@ -8767,6 +8737,12 @@ namespace MsgPack
 					if( length > Int32.MaxValue )
 					{
 						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 					}
 			
 					var data = new byte[ length ];
@@ -8816,7 +8792,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt1:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8844,7 +8819,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt2:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8872,7 +8846,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt4:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8900,7 +8873,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt8:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8928,7 +8900,6 @@ namespace MsgPack
 				case MessagePackCode.FixExt16:
 				{
 					#region UnpackExt
-			
 					var typeCode = source.ReadByte();
 					if( typeCode < 0 )
 					{
@@ -8957,13 +8928,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					Byte length;
 					#region UnpackScalar
 					
@@ -8978,6 +8942,12 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
@@ -9000,13 +8970,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					UInt16 length;
 					#region UnpackScalar
 					
@@ -9021,6 +8984,12 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
@@ -9043,13 +9012,6 @@ namespace MsgPack
 				{
 					#region UnpackExt
 			
-					var typeCode = source.ReadByte();
-					if( typeCode < 0 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
-			
 					UInt32 length;
 					#region UnpackScalar
 					
@@ -9068,6 +9030,12 @@ namespace MsgPack
 					if( length > Int32.MaxValue )
 					{
 						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
 					}
 			
 					var data = new byte[ length ];

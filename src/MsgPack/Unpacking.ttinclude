@@ -963,13 +963,6 @@ private void WriteUnpackExtendedTypeObjectCore( int? length, Type lengthType )
 {
 #>
 		#region UnpackExt
-
-		var typeCode = source.ReadByte();
-		if( typeCode < 0 )
-		{
-			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-		}
-
 <#+
 	if( lengthType != null )
 	{
@@ -1001,6 +994,12 @@ private void WriteUnpackExtendedTypeObjectCore( int? length, Type lengthType )
 <#+
 	}
 #>
+		var typeCode = source.ReadByte();
+		if( typeCode < 0 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+
 		var data = new byte[ <#= length != null ? length.ToString() : "length" #> ];
 <#+
 	this.PushIndent( 2 );

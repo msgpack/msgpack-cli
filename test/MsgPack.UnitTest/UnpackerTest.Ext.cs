@@ -631,7 +631,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0 }
+					new byte[] { 0xC7, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -653,7 +653,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0 }
+					new byte[] { 0xC7, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -675,7 +675,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0 }
+					new byte[] { 0xC7, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -695,7 +695,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0 }
+					new byte[] { 0xC7, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -715,7 +715,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 1 }
+					new byte[] { 0xC7, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -737,7 +737,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 1 }
+					new byte[] { 0xC7, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -753,7 +753,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 1 }
+					new byte[] { 0xC7, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
@@ -775,7 +775,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 1 }
+					new byte[] { 0xC7, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -795,7 +795,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 1 }
+					new byte[] { 0xC7, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -812,7 +812,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 1 }
+					new byte[] { 0xC7, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
@@ -832,7 +832,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 17 }
+					new byte[] { 0xC7, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
@@ -854,7 +854,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 17 }
+					new byte[] { 0xC7, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
@@ -870,7 +870,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 17 }
+					new byte[] { 0xC7, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
@@ -892,7 +892,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 17 }
+					new byte[] { 0xC7, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
@@ -912,7 +912,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 17 }
+					new byte[] { 0xC7, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
@@ -929,7 +929,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 17 }
+					new byte[] { 0xC7, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
@@ -949,7 +949,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0xFF }
+					new byte[] { 0xC7, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -971,7 +971,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0xFF }
+					new byte[] { 0xC7, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
@@ -987,7 +987,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0xFF }
+					new byte[] { 0xC7, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -1009,7 +1009,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0xFF }
+					new byte[] { 0xC7, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -1029,7 +1029,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0xFF }
+					new byte[] { 0xC7, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
@@ -1046,7 +1046,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC7, typeCode, 0xFF }
+					new byte[] { 0xC7, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -1066,7 +1066,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0 }
+					new byte[] { 0xC8, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -1088,7 +1088,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0 }
+					new byte[] { 0xC8, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -1110,7 +1110,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0 }
+					new byte[] { 0xC8, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -1130,7 +1130,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0 }
+					new byte[] { 0xC8, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -1150,7 +1150,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 1 }
+					new byte[] { 0xC8, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -1172,7 +1172,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 1 }
+					new byte[] { 0xC8, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -1188,7 +1188,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 1 }
+					new byte[] { 0xC8, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
@@ -1210,7 +1210,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 1 }
+					new byte[] { 0xC8, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -1230,7 +1230,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 1 }
+					new byte[] { 0xC8, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -1247,7 +1247,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 1 }
+					new byte[] { 0xC8, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
@@ -1267,7 +1267,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 17 }
+					new byte[] { 0xC8, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
@@ -1289,7 +1289,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 17 }
+					new byte[] { 0xC8, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
@@ -1305,7 +1305,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 17 }
+					new byte[] { 0xC8, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
@@ -1327,7 +1327,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 17 }
+					new byte[] { 0xC8, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
@@ -1347,7 +1347,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 17 }
+					new byte[] { 0xC8, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
@@ -1364,7 +1364,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 17 }
+					new byte[] { 0xC8, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
@@ -1384,7 +1384,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0xFF }
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -1406,7 +1406,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0xFF }
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
@@ -1422,7 +1422,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0xFF }
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -1444,7 +1444,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0xFF }
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -1464,7 +1464,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0xFF }
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
@@ -1481,7 +1481,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0, 0xFF }
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -1501,7 +1501,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 1, 0 }
+					new byte[] { 0xC8, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -1523,7 +1523,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 1, 0 }
+					new byte[] { 0xC8, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -1539,7 +1539,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 1, 0 }
+					new byte[] { 0xC8, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
@@ -1561,7 +1561,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 1, 0 }
+					new byte[] { 0xC8, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -1581,7 +1581,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 1, 0 }
+					new byte[] { 0xC8, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -1598,7 +1598,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 1, 0 }
+					new byte[] { 0xC8, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
@@ -1618,7 +1618,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0xFF, 0xFF }
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
@@ -1640,7 +1640,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0xFF, 0xFF }
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
@@ -1656,7 +1656,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0xFF, 0xFF }
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
@@ -1678,7 +1678,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0xFF, 0xFF }
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
@@ -1698,7 +1698,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0xFF, 0xFF }
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
@@ -1715,7 +1715,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC8, typeCode, 0xFF, 0xFF }
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
@@ -1735,7 +1735,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0 }
+					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -1757,7 +1757,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0 }
+					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -1779,7 +1779,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0 }
+					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -1799,7 +1799,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0 }
+					new byte[] { 0xC9, 0, 0, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -1819,7 +1819,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 1 }
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -1841,7 +1841,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 1 }
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -1857,7 +1857,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 1 }
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
@@ -1879,7 +1879,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 1 }
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
@@ -1899,7 +1899,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 1 }
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
@@ -1916,7 +1916,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 1 }
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
@@ -1936,7 +1936,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 17 }
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
@@ -1958,7 +1958,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 17 }
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
@@ -1974,7 +1974,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 17 }
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
@@ -1996,7 +1996,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 17 }
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
@@ -2016,7 +2016,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 17 }
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
@@ -2033,7 +2033,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 17 }
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
@@ -2053,7 +2053,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -2075,7 +2075,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
@@ -2091,7 +2091,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -2113,7 +2113,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -2133,7 +2133,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
@@ -2150,7 +2150,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -2170,7 +2170,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 1, 0 }
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -2192,7 +2192,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 1, 0 }
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -2208,7 +2208,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 1, 0 }
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
@@ -2230,7 +2230,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 1, 0 }
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
@@ -2250,7 +2250,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 1, 0 }
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
@@ -2267,7 +2267,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 1, 0 }
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
@@ -2287,7 +2287,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0xFF, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
@@ -2309,7 +2309,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0xFF, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
@@ -2325,7 +2325,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0xFF, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
@@ -2347,7 +2347,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0xFF, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
@@ -2367,7 +2367,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0xFF, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
@@ -2384,7 +2384,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 0, 0xFF, 0xFF }
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
@@ -2404,7 +2404,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 1, 0, 0 }
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
@@ -2426,7 +2426,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 1, 0, 0 }
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
@@ -2442,7 +2442,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 1, 0, 0 }
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65537 ) ).ToArray()
 				)
 			)
@@ -2464,7 +2464,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 1, 0, 0 }
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
@@ -2484,7 +2484,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 1, 0, 0 }
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
@@ -2501,7 +2501,7 @@ namespace MsgPack
 			var typeCode = ( byte )( Environment.TickCount % 128 );
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { 0xC9, typeCode, 0, 1, 0, 0 }
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65537 ) ).ToArray()
 				)
 			)
