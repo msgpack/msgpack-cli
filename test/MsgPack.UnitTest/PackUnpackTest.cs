@@ -562,7 +562,7 @@ namespace MsgPack
 				var output = new MemoryStream();
 				var value = new MessagePackExtendedTypeObject(
 					1, Enumerable.Range( 0, count ).Select( i => ( byte ) ( i % 0x100 ) ).ToArray() );
-				Packer.Create( output ).Pack( value );
+				Packer.Create( output, PackerCompatibilityOptions.None ).Pack( value );
 				Assert.AreEqual(
 					value,
 					UnpackOne( output ).AsMessagePackExtendedTypeObject()
