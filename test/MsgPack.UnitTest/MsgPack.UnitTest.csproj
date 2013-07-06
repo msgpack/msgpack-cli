@@ -213,7 +213,7 @@
     <Compile Include="Serialization\NilImplicationCollectionTestTarget.cs" />
     <Compile Include="Serialization\NilImplicationTest.cs" />
     <Compile Include="Serialization\NilImplicationTestTarget.cs" />
-    <Compile Include="Serialization\PackerTest.cs" />
+    <Compile Include="PackerTest.cs" />
     <Compile Include="Serialization\SerializationContextTest.cs" />
     <Compile Include="Serialization\SimpleCollection`1.cs" />
     <Compile Include="Serialization\StringKeyedCollection.cs" />
