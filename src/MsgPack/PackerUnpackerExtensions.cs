@@ -59,7 +59,7 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			PackCore( source, value, new SerializationContext() );
+			PackCore( source, value, SerializationContext.Default );
 		}
 
 		/// <summary>
