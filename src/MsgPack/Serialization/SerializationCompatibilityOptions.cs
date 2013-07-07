@@ -43,6 +43,23 @@ namespace MsgPack.Serialization
 			set;
 		}
 
-		internal SerializationCompatibilityOptions() { }
+		private PackerCompatibilityOptions _packerCompatibilityOptions;
+
+		/// <summary>
+		///		Gets or sets the <see cref="PackerCompatibilityOptions"/>.
+		/// </summary>
+		/// <value>
+		///		The <see cref="PackerCompatibilityOptions"/>. The default is <see cref="F:PackerCompatibilityOptions.Classic"/>.
+		/// </value>
+		public PackerCompatibilityOptions PackerCompatibilityOptions
+		{
+			get { return this._packerCompatibilityOptions; }
+			set { this._packerCompatibilityOptions = value; }
+		}
+
+		internal SerializationCompatibilityOptions()
+		{
+			this._packerCompatibilityOptions = PackerCompatibilityOptions.Classic;
+		}
 	}
 }

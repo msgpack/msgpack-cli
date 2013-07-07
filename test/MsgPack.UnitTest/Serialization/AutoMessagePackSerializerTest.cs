@@ -526,7 +526,7 @@ namespace MsgPack.Serialization
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[ 0 ] );
-				Assert.That( stream.Length, Is.EqualTo( 1 ) );
+				Assert.That( stream.Length, Is.EqualTo( 1 ), BitConverter.ToString( stream.ToArray() ));
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
 			}
@@ -732,6 +732,63 @@ namespace MsgPack.Serialization
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
 				Assert.That( result.Int32Field, Is.EqualTo( default( int ) ), "Round-trip should not be succeeded." );
+			}
+		}
+
+		[Test]
+		public void TestBinary_DefaultContext()
+		{
+			var serializer = MessagePackSerializer.Create<byte[]>();
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( stream, new byte[] { 1 } );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { MessagePackCode.MinimumFixedRaw + 1, 1 } ) );
+			}
+		}
+
+		[Test]
+		public void TestBinary_ContextWithPackerCompatilibyOptionsNone()
+		{
+			var context = new SerializationContext();
+			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
+			var serializer = MessagePackSerializer.Create<byte[]>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( stream, new byte[] { 1 } );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { MessagePackCode.Bin8, 1, 1 } ) );
+			}
+		}
+
+		[Test]
+		public void TestExt_DefaultContext()
+		{
+			var context = new SerializationContext();
+			context.Serializers.Register( new CustomDateTimeSerealizer() );
+			var serializer = MessagePackSerializer.Create<DateTime>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				var date = DateTime.UtcNow;
+				serializer.Pack( stream, date );
+				stream.Position = 0;
+				var unpacked = serializer.Unpack( stream );
+				Assert.That( unpacked.ToString( "yyyyMMddHHmmssfff" ), Is.EqualTo( date.ToString( "yyyyMMddHHmmssfff" ) ) );
+			}
+		}
+
+		[Test]
+		public void TestExt_ContextWithPackerCompatilibyOptionsNone()
+		{
+			var context = new SerializationContext();
+			context.Serializers.Register( new CustomDateTimeSerealizer() );
+			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
+			var serializer = MessagePackSerializer.Create<DateTime>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				var date = DateTime.UtcNow;
+				serializer.Pack( stream, date );
+				stream.Position = 0;
+				var unpacked = serializer.Unpack( stream );
+				Assert.That( unpacked.ToString( "yyyyMMddHHmmssfff" ), Is.EqualTo( date.ToString( "yyyyMMddHHmmssfff" ) ) );
 			}
 		}
 
@@ -1228,6 +1285,33 @@ namespace MsgPack.Serialization
 				Assert.That( unpacker.IsArrayHeader );
 				var value = unpacker.UnpackSubtree();
 				Assert.That( value.Value.AsList()[ 0 ] == Dummy, "{0} != \"[{1}]\"", value.Value, Dummy );
+			}
+		}
+
+		public class CustomDateTimeSerealizer : MessagePackSerializer<DateTime>
+		{
+			private const byte _typeCodeForDateTimeForUs = 1;
+
+			protected internal override void PackToCore( Packer packer, DateTime objectTree )
+			{
+				byte[] data;
+				if ( BitConverter.IsLittleEndian )
+				{
+					data = BitConverter.GetBytes( objectTree.ToUniversalTime().Ticks ).Reverse().ToArray();
+				}
+				else
+				{
+					data = BitConverter.GetBytes( objectTree.ToUniversalTime().Ticks );
+				}
+
+				packer.PackExtendedTypeValue( _typeCodeForDateTimeForUs, data );
+			}
+
+			protected internal override DateTime UnpackFromCore( Unpacker unpacker )
+			{
+				var ext = unpacker.Data.Value.AsMessagePackExtendedTypeObject();
+				Assert.That( ext.TypeCode, Is.EqualTo( 1 ) );
+				return new DateTime( BigEndianBinary.ToInt64( ext.Body, 0 ) ).ToUniversalTime();
 			}
 		}
 	}

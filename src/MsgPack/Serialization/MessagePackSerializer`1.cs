@@ -54,6 +54,21 @@ namespace MsgPack.Serialization
 		private static readonly string _memoryStreamExceptionSourceName = typeof( MemoryStream ).GetTypeInfo().Assembly.GetName().Name;
 #endif
 #endif
+		private readonly PackerCompatibilityOptions _packerCompatibilityOptions;
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="PackerCompatibilityOptions.Classic"/>.
+		/// </summary>
+		protected MessagePackSerializer() : this( PackerCompatibilityOptions.Classic ) { }
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class.
+		/// </summary>
+		/// <param name="packerCompatibilityOptions">The <see cref="PackerCompatibilityOptions"/> for new packer creation.</param>
+		protected MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+		{
+			this._packerCompatibilityOptions = packerCompatibilityOptions;
+		}
 
 		private static bool JudgeNullable()
 		{
@@ -91,7 +106,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void Pack( Stream stream, T objectTree )
 		{
-			this.PackTo( Packer.Create( stream ), objectTree );
+			this.PackTo( Packer.Create( stream, this._packerCompatibilityOptions ), objectTree );
 		}
 
 		/// <summary>

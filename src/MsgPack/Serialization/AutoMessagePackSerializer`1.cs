@@ -40,6 +40,7 @@ namespace MsgPack.Serialization
 		///		Initializes a new instance of the <see cref="AutoMessagePackSerializer&lt;T&gt;"/> class.
 		/// </summary>
 		public AutoMessagePackSerializer( SerializationContext context, Func<SerializationContext, SerializerBuilder<T>> builderProvider )
+			:base( context.CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			Contract.Assert( context != null );
 
