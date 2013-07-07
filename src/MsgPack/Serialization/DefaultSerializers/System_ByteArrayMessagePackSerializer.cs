@@ -26,7 +26,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		protected internal sealed override void PackToCore( Packer packer, byte[] value )
 		{
-			packer.PackRaw( value );
+			packer.PackBinary( value );
 		}
 
 		protected internal sealed override byte[] UnpackFromCore( Unpacker unpacker )
