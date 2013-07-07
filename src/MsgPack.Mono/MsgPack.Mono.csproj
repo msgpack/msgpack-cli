@@ -104,6 +104,9 @@
     <Compile Include="..\MsgPack\MessagePackConvert.cs">
       <Link>MessagePackConvert.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\MessagePackExtendedTypeObject.cs">
+      <Link>MessagePackExtendedTypeObject.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\MessagePackObject.cs">
       <Link>MessagePackObject.cs</Link>
     </Compile>
@@ -143,6 +146,9 @@
     <Compile Include="..\MsgPack\Packer.Nullable.cs">
       <Link>Packer.Nullable.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\PackerCompatibilityOptions.cs">
+      <Link>PackerCompatibilityOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\PackerUnpackerExtensions.cs">
       <Link>PackerUnpackerExtensions.cs</Link>
     </Compile>
@@ -181,6 +187,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MessagePackObjectExtensions.cs">
       <Link>Serialization\DefaultSerializers\MessagePackObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>

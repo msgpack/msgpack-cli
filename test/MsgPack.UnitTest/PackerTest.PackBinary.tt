@@ -69,12 +69,19 @@ namespace MsgPack
 foreach( var testType in
 	new []
 	{
-		// Type, Label
-		Tuple.Create( "IEnumerable<char>", "EnumerableOfChar" ),
-		Tuple.Create( "string", "String" )
+		// Type, Label, Desktop Only
+		Tuple.Create( "IEnumerable<char>", "EnumerableOfChar", false ),
+		Tuple.Create( "string", "String", true )
 	}
 )
 {
+	if ( !testType.Item3 )
+	{
+#>
+#if !NETFX_CORE
+<#
+	}
+
 	foreach( var length in
 		Enumerable.Range( 0, 32 ).Select( length => Tuple.Create( length, new byte[]{ ( byte )( 0xA0 + length ) }, default( byte[] ) ) )
 		.Concat( 
@@ -173,6 +180,13 @@ foreach( var testType in
 		}
 <#
 		}
+	}
+
+	if ( !testType.Item3 )
+	{
+#>
+#endif // !NETFX_CORE
+<#
 	}
 }
 #>

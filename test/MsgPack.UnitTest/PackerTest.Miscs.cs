@@ -36,6 +36,7 @@ namespace MsgPack
 	[TestFixture]
 	public class PackerTest
 	{
+#if !NETFX_CORE
 		[Test]
 		public void DefaultCompatibilityOptions_Classic()
 		{
@@ -55,6 +56,7 @@ namespace MsgPack
 		{
 			Assert.That( Packer.DefaultCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.Classic ) );
 		}
+#endif
 
 		[Test]
 		public void TestCreate_DefaultOptions()
@@ -98,12 +100,12 @@ namespace MsgPack
 			stream = new CloseAwareStream();
 			Packer.Create( stream, false ).Dispose();
 			Assert.That( stream.IsClosed, Is.False );
-			stream.Close();
+			stream.Dispose();
 
 			stream = new CloseAwareStream();
 			Packer.Create( stream, ~Packer.DefaultCompatibilityOptions, false ).Dispose();
 			Assert.That( stream.IsClosed, Is.False );
-			stream.Close();
+			stream.Dispose();
 		}
 
 		[Test]

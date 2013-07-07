@@ -188,7 +188,7 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 #>
 				var result = Unpacking.Unpack<#= suffix #>( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + <#= testCase.Item2 #> ) );
-				Assert.That( <#= asString ? "Encoding.UTF8.GetString( result )" : "result" #>, Is.EqualTo( <#= expectedValue #> ) );
+				Assert.That( <#= asString ? "Encoding.UTF8.GetString( result, 0, result.Length )" : "result" #>, Is.EqualTo( <#= expectedValue #> ) );
 <#+
 	}
 	else
@@ -212,7 +212,7 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 #>
 			var result = Unpacking.Unpack<#= suffix #>( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + <#= testCase.Item2 #> ) );
-			Assert.That( <#= asString ? "Encoding.UTF8.GetString( result.Value )" : "result.Value" #>, Is.EqualTo( <#= expectedValue #> ) );
+			Assert.That( <#= asString ? "Encoding.UTF8.GetString( result.Value, 0, result.Value.Length )" : "result.Value" #>, Is.EqualTo( <#= expectedValue #> ) );
 <#+
 	}
 	else

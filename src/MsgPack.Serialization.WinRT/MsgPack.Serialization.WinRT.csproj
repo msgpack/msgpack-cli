@@ -148,6 +148,9 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MessagePackObjectExtensions.cs">
       <Link>Serialization\DefaultSerializers\MessagePackObjectExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>
     </Compile>

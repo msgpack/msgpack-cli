@@ -36,6 +36,7 @@ namespace MsgPack
 {
 	partial class PackerTest_Pack
 	{
+#if !NETFX_CORE
 
 		[Test]
 		public void TestPackString_0_EnumerableOfChar_WithoutCompatibilityOptions_AsStrStream()
@@ -807,6 +808,7 @@ namespace MsgPack
 				);
 			}
 		}
+#endif // !NETFX_CORE
 
 		[Test]
 		public void TestPackString_0_String_WithoutCompatibilityOptions_AsStrStream()

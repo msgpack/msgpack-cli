@@ -53,7 +53,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 0 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 0 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 			}
 		}
 		
@@ -64,7 +64,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 0 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 0 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 0 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 		}
 
 		[Test]
@@ -79,7 +79,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 0 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 0 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 			}
 		}
 		
@@ -90,7 +90,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 1 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 0 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 0 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 		}
 
 		[Test]
@@ -105,7 +105,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 1 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 1 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 			}
 		}
 		
@@ -116,7 +116,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 1 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 1 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 1 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 		}
 
 		[Test]
@@ -153,7 +153,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 1 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 1 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 			}
 		}
 		
@@ -164,7 +164,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 2 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 1 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 1 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 		}
 
 		[Test]
@@ -179,7 +179,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 31 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 31 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 			}
 		}
 		
@@ -190,7 +190,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 31 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 31 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 31 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 		}
 
 		[Test]
@@ -227,7 +227,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 31 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 31 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 			}
 		}
 		
@@ -238,7 +238,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 32 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 31 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 31 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 		}
 
 		[Test]
@@ -253,7 +253,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 0 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 0 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 			}
 		}
 		
@@ -264,7 +264,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 0 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 0 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 0 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 		}
 
 		[Test]
@@ -279,7 +279,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 0 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 0 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 			}
 		}
 		
@@ -290,7 +290,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 1 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 0 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 0 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 		}
 
 		[Test]
@@ -305,7 +305,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 1 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 1 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 			}
 		}
 		
@@ -316,7 +316,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 1 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 1 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 1 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 		}
 
 		[Test]
@@ -353,7 +353,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 1 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 1 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 			}
 		}
 		
@@ -364,7 +364,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 2 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 1 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 1 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 		}
 
 		[Test]
@@ -379,7 +379,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 31 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 31 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 			}
 		}
 		
@@ -390,7 +390,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 31 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 31 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 31 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 		}
 
 		[Test]
@@ -427,7 +427,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 31 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 31 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 			}
 		}
 		
@@ -438,7 +438,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 32 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 31 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 31 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 		}
 
 		[Test]
@@ -453,7 +453,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 32 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 32 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 			}
 		}
 		
@@ -464,7 +464,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 32 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 32 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 32 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 		}
 
 		[Test]
@@ -501,7 +501,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 32 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 32 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 			}
 		}
 		
@@ -512,7 +512,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 33 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 32 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 32 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 		}
 
 		[Test]
@@ -527,7 +527,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 255 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 255 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 			}
 		}
 		
@@ -538,7 +538,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 255 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 255 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 255 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 		}
 
 		[Test]
@@ -575,7 +575,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 255 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 255 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 			}
 		}
 		
@@ -586,7 +586,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 256 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 255 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 255 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 		}
 
 		[Test]
@@ -601,7 +601,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 0 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 0 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 			}
 		}
 		
@@ -612,7 +612,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 0 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 0 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 0 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 		}
 
 		[Test]
@@ -627,7 +627,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 0 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 0 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 			}
 		}
 		
@@ -638,7 +638,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 1 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 0 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 0 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 		}
 
 		[Test]
@@ -653,7 +653,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 1 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 1 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 			}
 		}
 		
@@ -664,7 +664,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 1 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 1 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 1 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 		}
 
 		[Test]
@@ -701,7 +701,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 1 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 1 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 			}
 		}
 		
@@ -712,7 +712,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 2 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 1 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 1 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 		}
 
 		[Test]
@@ -727,7 +727,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 31 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 31 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 			}
 		}
 		
@@ -738,7 +738,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 31 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 31 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 31 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 		}
 
 		[Test]
@@ -775,7 +775,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 31 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 31 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 			}
 		}
 		
@@ -786,7 +786,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 32 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 31 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 31 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 		}
 
 		[Test]
@@ -801,7 +801,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 32 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 32 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 			}
 		}
 		
@@ -812,7 +812,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 32 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 32 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 32 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 		}
 
 		[Test]
@@ -849,7 +849,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 32 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 32 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 			}
 		}
 		
@@ -860,7 +860,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 33 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 32 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 32 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 		}
 
 		[Test]
@@ -875,7 +875,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 255 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 255 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 			}
 		}
 		
@@ -886,7 +886,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 255 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 255 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 255 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 		}
 
 		[Test]
@@ -923,7 +923,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 255 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 255 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 			}
 		}
 		
@@ -934,7 +934,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 256 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 255 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 255 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 		}
 
 		[Test]
@@ -949,7 +949,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 256 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 256 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 			}
 		}
 		
@@ -960,7 +960,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 256 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 256 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 		}
 
 		[Test]
@@ -997,7 +997,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 256 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 256 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 			}
 		}
 		
@@ -1008,7 +1008,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 257 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 256 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 		}
 
 		[Test]
@@ -1023,7 +1023,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 65535 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 65535 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
 		}
 		
@@ -1034,7 +1034,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65535 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 65535 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
 
 		[Test]
@@ -1071,7 +1071,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 65535 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 65535 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
 		}
 		
@@ -1082,7 +1082,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65536 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 65535 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
 
 		[Test]
@@ -1097,7 +1097,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 0 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 0 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 			}
 		}
 		
@@ -1108,7 +1108,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 0 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 0 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 0 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 		}
 
 		[Test]
@@ -1123,7 +1123,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 0 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 0 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 			}
 		}
 		
@@ -1134,7 +1134,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 1 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 0 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 0 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 0 ) ) );
 		}
 
 		[Test]
@@ -1149,7 +1149,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 1 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 1 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 			}
 		}
 		
@@ -1160,7 +1160,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 1 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 1 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 1 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 		}
 
 		[Test]
@@ -1197,7 +1197,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 1 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 1 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 			}
 		}
 		
@@ -1208,7 +1208,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 2 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 1 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 1 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 1 ) ) );
 		}
 
 		[Test]
@@ -1223,7 +1223,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 31 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 31 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 			}
 		}
 		
@@ -1234,7 +1234,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 31 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 31 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 31 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 		}
 
 		[Test]
@@ -1271,7 +1271,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 31 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 31 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 			}
 		}
 		
@@ -1282,7 +1282,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 32 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 31 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 31 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 31 ) ) );
 		}
 
 		[Test]
@@ -1297,7 +1297,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 32 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 32 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 			}
 		}
 		
@@ -1308,7 +1308,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 32 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 32 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 32 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 		}
 
 		[Test]
@@ -1345,7 +1345,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 32 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 32 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 			}
 		}
 		
@@ -1356,7 +1356,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 33 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 32 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 32 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 32 ) ) );
 		}
 
 		[Test]
@@ -1371,7 +1371,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 255 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 255 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 			}
 		}
 		
@@ -1382,7 +1382,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 255 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 255 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 255 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 		}
 
 		[Test]
@@ -1419,7 +1419,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 255 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 255 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 			}
 		}
 		
@@ -1430,7 +1430,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 256 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 255 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 255 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 255 ) ) );
 		}
 
 		[Test]
@@ -1445,7 +1445,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 256 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 256 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 			}
 		}
 		
@@ -1456,7 +1456,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 256 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 256 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 		}
 
 		[Test]
@@ -1493,7 +1493,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 256 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 256 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 			}
 		}
 		
@@ -1504,7 +1504,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 257 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 256 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 256 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 256 ) ) );
 		}
 
 		[Test]
@@ -1519,7 +1519,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 65535 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 65535 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
 		}
 		
@@ -1530,7 +1530,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65535 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 65535 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
 
 		[Test]
@@ -1567,7 +1567,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 65535 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 65535 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
 		}
 		
@@ -1578,7 +1578,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65536 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65535 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 65535 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65535 ) ) );
 		}
 
 		[Test]
@@ -1593,7 +1593,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 65536 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 65536 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
 		}
 		
@@ -1604,7 +1604,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65536 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65536 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 65536 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65536 ) ) );
 		}
 
 		[Test]
@@ -1641,7 +1641,7 @@ namespace MsgPack
 			{
 				var result = Unpacking.UnpackBinary( buffer );
 				Assert.That( buffer.Position, Is.EqualTo( header.Length + 65536 ) );
-				Assert.That( Encoding.UTF8.GetString( result ), Is.EqualTo( new String( 'A', 65536 ) ) );
+				Assert.That( Encoding.UTF8.GetString( result, 0, result.Length ), Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
 		}
 		
@@ -1652,7 +1652,7 @@ namespace MsgPack
 			var buffer = header.Concat( Enumerable.Repeat( ( byte )'A', 65537 ) ).ToArray();
 			var result = Unpacking.UnpackBinary( buffer );
 			Assert.That( result.ReadCount, Is.EqualTo( header.Length + 65536 ) );
-			Assert.That( Encoding.UTF8.GetString( result.Value ), Is.EqualTo( new String( 'A', 65536 ) ) );
+			Assert.That( Encoding.UTF8.GetString( result.Value, 0, result.Value.Length ), Is.EqualTo( new String( 'A', 65536 ) ) );
 		}
 
 		[Test]
