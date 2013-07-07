@@ -936,5 +936,123 @@ namespace MsgPack
 			return UnpackObjectCore( source );
 		}
 
+		///	<summary>
+		///		Unpacks the <see cref="MessagePackExtendedTypeObject" /> which represents the extended type value. from the head of specified byte array.
+		///	</summary>
+		///	<param name="source">The byte array which contains Message Pack binary stream.</param>
+		///	<returns>
+		///		The <see cref="UnpackingResult{T}"/> of <see cref="MessagePackExtendedTypeObject" /> which contains unpacked the <see cref="MessagePackExtendedTypeObject" /> which represents the extended type value. and processed bytes count.
+		///	</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		///	</exception>
+		/// <exception cref="ArgumentException">
+		///		<paramref name="source"/> is empty.
+		///	</exception>
+		/// <exception cref="UnpackException">
+		///		<paramref name="source"/> is not valid MessagePack stream.
+		///	</exception>
+		/// <exception cref="MessageTypeException">
+		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="MessagePackExtendedTypeObject" />.
+		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
+		/// <remarks>
+		///		<para>
+		/// 		Invocation of this method is equivalant to call <see cref="UnpackExtendedTypeObject(byte[], int)"/> with <c>offset</c> is <c>0</c>.
+		///		</para>
+		///		<para>
+		///			When the type of packed value is not known, use <see cref="UnpackObject(byte[])"/> instead.
+		///		</para>
+		///	</remarks>
+		public static UnpackingResult<MessagePackExtendedTypeObject> UnpackExtendedTypeObject( byte[] source )
+		{
+			return UnpackExtendedTypeObject( source, 0 );
+		}
+
+		///	<summary>
+		///		Unpacks the <see cref="MessagePackExtendedTypeObject" /> which represents the extended type value. from the specified byte array.
+		///	</summary>
+		///	<param name="source">The byte array which contains Message Pack binary stream.</param>
+		///	<param name="offset">The offset to be unpacking start with.</param>
+		///	<returns>
+		///		The <see cref="UnpackingResult{T}"/> of <see cref="MessagePackExtendedTypeObject" /> which contains unpacked the <see cref="MessagePackExtendedTypeObject" /> which represents the extended type value. and processed bytes count.
+		///	</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		///	</exception>
+		/// <exception cref="ArgumentException">
+		///		<paramref name="source"/> is empty.
+		///		Or, the length of <paramref name="source"/> is not grator than <paramref name="offset"/>.
+		///	</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="offset"/> is negative value.
+		///	</exception>
+		/// <exception cref="UnpackException">
+		///		<paramref name="source"/> is not valid MessagePack stream.
+		///	</exception>
+		/// <exception cref="MessageTypeException">
+		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="MessagePackExtendedTypeObject" />.
+		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
+		/// <remarks>
+		///		When the type of packed value is not known, use <see cref="UnpackObject(byte[], int)"/> instead.
+		///	</remarks>
+		public static UnpackingResult<MessagePackExtendedTypeObject> UnpackExtendedTypeObject( byte[] source, int offset )
+		{
+			ValidateByteArray( source, offset );
+			Contract.EndContractBlock();
+
+			using( var stream = new MemoryStream( source ) )
+			{
+				stream.Position = offset;
+				var value = UnpackExtendedTypeObjectCore( stream );
+				return new UnpackingResult<MessagePackExtendedTypeObject>( value, unchecked( ( int )( stream.Position - offset ) ) );
+			}
+		}
+		
+		///	<summary>
+		///		Unpacks the <see cref="MessagePackExtendedTypeObject" /> which represents the extended type value. value from the specified <see cref="Stream"/>.
+		///	</summary>
+		///	<param name="source">The <see cref="Stream"/> which contains Message Pack binary stream.</param>
+		///	<returns>
+		///		The unpacked the <see cref="MessagePackExtendedTypeObject" /> which represents the extended type value. value.
+		///	</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		///	</exception>
+		/// <exception cref="ArgumentException">
+		///		The <see cref="P:Stream.CanRead"/> of <paramref name="source"/> is <c>false</c>.
+		///	</exception>
+		/// <exception cref="UnpackException">
+		///		<paramref name="source"/> is not valid MessagePack stream.
+		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
+		///	</exception>
+		/// <exception cref="MessageTypeException">
+		///		The unpacked result in the <paramref name="source"/> is not compatible to <see cref="MessagePackExtendedTypeObject" />.
+		///		Note that the state of <paramref name="source"/> will be unpredictable espicially it is not seekable.
+		///	</exception>
+		/// <exception cref="MessageNotSupportedException">
+		///		The items count of the underlying collection body is over <see cref="Int32.MaxValue"/>.
+		///	</exception>
+		/// <remarks>
+		///		<para>
+		/// 		The processed bytes count can be calculated via <see cref="P:Stream.Position"/> of <paramref name="source"/> when the <see cref="P:Stream.CanSeek" /> is <c>true</c>.
+		///		</para>
+		///		<para>
+		///			When the type of packed value is not known, use <see cref="UnpackObject(Stream)"/> instead.
+		///		</para>
+		///	</remarks>
+		public static MessagePackExtendedTypeObject UnpackExtendedTypeObject( Stream source )
+		{
+			ValidateStream( source );
+			Contract.EndContractBlock();
+
+			return UnpackExtendedTypeObjectCore( source );
+		}
+
 	}
 }

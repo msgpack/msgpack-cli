@@ -1,0 +1,199 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#
+
+var fixVariations =
+	new []
+	{
+		// Label, Headers, Value Length
+		Tuple.Create( "FixExt1", "0xD4, {0}", 1 ),
+		Tuple.Create( "FixExt2", "0xD5, {0}", 2 ),
+		Tuple.Create( "FixExt4", "0xD6, {0}", 4 ),
+		Tuple.Create( "FixExt8", "0xD7, {0}", 8 ),
+		Tuple.Create( "FixExt16", "0xD8, {0}", 16 ),
+	};
+
+var variableVariations =
+	new []
+	{
+		// Label, Header Format, Length of Length, Actual Value Length
+		Tuple.Create( "Ext8", "0xC7, 0, {0}", 1, 0 ),
+		Tuple.Create( "Ext8", "0xC7, 1, {0}", 1, 1 ),
+		Tuple.Create( "Ext8", "0xC7, 17, {0}", 1, 17 ),
+		Tuple.Create( "Ext8", "0xC7, 0xFF, {0}", 1, 0xFF ),
+		Tuple.Create( "Ext16", "0xC8, 0, 0, {0}", 2, 0 ),
+		Tuple.Create( "Ext16", "0xC8, 0, 1, {0}", 2, 1 ),
+		Tuple.Create( "Ext16", "0xC8, 0, 17, {0}", 2, 17 ),
+		Tuple.Create( "Ext16", "0xC8, 0, 0xFF, {0}", 2, 0xFF ),
+		Tuple.Create( "Ext16", "0xC8, 1, 0, {0}", 2, 0x100 ),
+		Tuple.Create( "Ext16", "0xC8, 0xFF, 0xFF, {0}", 2, 0xFFFF ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 0, {0}", 4, 0 ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 1, {0}", 4, 1 ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 17, {0}", 4, 17 ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 0xFF, {0}", 4, 0xFF ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 1, 0, {0}", 4, 0x100 ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0xFF, 0xFF, {0}", 4, 0xFFFF ),
+		Tuple.Create( "Ext32", "0xC9, 0, 1, 0, 0, {0}", 4, 0x10000 ),
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+using System.Linq;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// This file was generated from UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
+
+	[TestFixture]
+	public partial class UnpackingTest_Ext
+	{
+<#
+foreach ( var testCase in fixVariations )
+{
+	PutTest( testCase.Item1, testCase.Item2, null, testCase.Item3 );
+	// FIXME: Invalid Type Code
+}
+
+foreach ( var testCase in variableVariations )
+{
+	PutTest( testCase.Item1, testCase.Item2, testCase.Item3, testCase.Item4 );
+	// FIXME: Invalid Type Code
+}
+
+#>
+	}
+}
+<#+
+private void PutTest( string label, string headerFormat, int? lengthOfLength, int actualValueLength )
+{
+	var readDataMethodPrefix = "TestUnpackMessagePackExtendedTypeObject_" + label + "_AndBinaryLengthIs" + actualValueLength;
+	PutTestMethod( readDataMethodPrefix + "JustLength_Success", headerFormat, lengthOfLength, actualValueLength, 0, true );
+	PutTestMethod( readDataMethodPrefix + "TooShort_Fail", headerFormat, lengthOfLength, actualValueLength, -1, false );
+	PutTestMethod( readDataMethodPrefix + "HasExtra_NoProblem",  headerFormat, lengthOfLength, actualValueLength, 1, true );
+}
+
+private void PutTestMethod( string methodName, string headerFormat, int? lengthOfLength, int actualValueLength, int valueLengthAjustument, bool success )
+{
+	// Type Hader + Type Code + LengthOfLength
+	var headerLength = 2 + lengthOfLength.GetValueOrDefault();
+	var adjustedValueLength = actualValueLength + valueLengthAjustument;
+	if ( adjustedValueLength < 0 )
+	{
+		// Never occurred situation.
+		return;
+	}
+
+	var headerValue = String.Format( CultureInfo.InvariantCulture, headerFormat, "1" );
+#>
+
+		[Test]
+		public void <#= methodName #>_Stream()
+		{
+			using( var buffer =
+				new MemoryStream( 
+					new byte[] { <#= headerValue #> }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			{
+<#+
+	if ( success )
+	{
+#>
+				var result = Unpacking.UnpackExtendedTypeObject( buffer );
+				Assert.That( buffer.Position, Is.EqualTo( <#= headerLength + actualValueLength #> ) );
+				Assert.That( result.TypeCode, Is.EqualTo( 1 ) );
+				Assert.That( result.Body, Is.Not.Null );
+				Assert.That( result.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
+<#+
+	}
+	else
+	{
+#>
+				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+<#+
+	}
+#>
+			}
+		}
+		
+		[Test]
+		public void <#= methodName #>_ByteArray()
+		{
+			var buffer = new byte[] { <#= headerValue #> }.Concat( Enumerable.Repeat( ( byte )0xFF, <#= adjustedValueLength #> ) ).ToArray();
+<#+
+	if ( success )
+	{
+#>
+			var result = Unpacking.UnpackExtendedTypeObject( buffer );
+			Assert.That( result.ReadCount, Is.EqualTo( <#= headerLength + actualValueLength #> ) );
+			Assert.That( result.Value.TypeCode, Is.EqualTo( 1 ) );
+			Assert.That( result.Value.Body, Is.Not.Null );
+			Assert.That( result.Value.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
+<#+
+	}
+	else
+	{
+#>
+			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+<#+
+	}
+#>
+		}
+<#+
+}
+#>

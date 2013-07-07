@@ -111,6 +111,7 @@ var binVariations =
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -127,14 +128,14 @@ namespace MsgPack
 	// Do not modify this file. Edit UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	[TestFixture]
-	public partial class UnpackerTest_Raw
+	public partial class UnpackingTest_Raw
 	{
 <#
 foreach( var testSituation in testSituations )
 {
 	foreach( var testCase in strVariations )
 	{
-		PutTest( testSituation, testCase );
+		PutTest( testSituation, testCase, "Binary" );
 	}
 
 	if ( testSituation.Item5 )
@@ -142,7 +143,7 @@ foreach( var testSituation in testSituations )
 		// can be bin stream.
 		foreach( var testCase in binVariations )
 		{
-			PutTest( testSituation, testCase );
+			PutTest( testSituation, testCase, "String" );
 		}
 	}
 }
@@ -150,60 +151,16 @@ foreach( var testSituation in testSituations )
 	}
 }
 <#+
-private void PutTest( Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string> testCase )
+private void PutTest( Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string> testCase, string suffix )
 {
 	// FIXME: too short data, too long data
-	var readDataMethodPrefix = "TestUnpack" + testCase.Item1 + "_" +testCase.Item2 + "_As" + testSituation.Item1 + "_Read_";
-	PutTestMethod( readDataMethodPrefix + "JustLength_Success", testSituation, testCase, 0, PutTestUnpackDataBody );
-	PutTestMethod( readDataMethodPrefix + "TooShort_Fail", testSituation, testCase, -1, PutTestUnpackDataBody );
-	PutTestMethod( readDataMethodPrefix + "HasExtra_NoProblem", testSituation, testCase, 1, PutTestUnpackDataBody );
-
-	var readDirectMethodPrefix = "TestUnpack" + testCase.Item1 + "_" + testCase.Item2 + "_Read" + testSituation.Item1 + "_";
-	PutTestMethod( readDirectMethodPrefix + "JustLength_Success", testSituation, testCase, 0, PutTestUnpackDirectBody );
-	PutTestMethod( readDirectMethodPrefix + "TooShort_Fail", testSituation, testCase, -1, PutTestUnpackDirectBody );
-	PutTestMethod( readDirectMethodPrefix + "HasExtra_NoProblem", testSituation, testCase, 1, PutTestUnpackDirectBody );
+	var readDataMethodPrefix = "TestUnpack" + testCase.Item1 + "_" +testCase.Item2 + "_As" + testSituation.Item1 + "_Unpack" + suffix + "_";
+	PutTestMethod( readDataMethodPrefix + "JustLength_Success", testSituation, testCase, 0, suffix, testSituation.Item5 && suffix != "String", true );
+	PutTestMethod( readDataMethodPrefix + "TooShort_Fail", testSituation, testCase, -1, suffix, testSituation.Item5 && suffix != "String", false );
+	PutTestMethod( readDataMethodPrefix + "HasExtra_NoProblem", testSituation, testCase, 1, suffix, testSituation.Item5 && suffix != "String", true );
 }
 
-private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string expectedValue, bool success )
-{
-	if ( success )
-	{
-#>
-				Assert.IsTrue( unpacker.Read() );
-				var result = unpacker.Data;
-				Assert.IsTrue( result.HasValue );
-				Assert.That( ( <#= testSituation.Item2 #> )result.Value, Is.EqualTo( <#= expectedValue #> ) );
-<#+
-	}
-	else
-	{
-#>
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
-<#+
-	}
-}
-
-private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string expectedValue, bool success )
-{
-#>
-				<#= testSituation.Item2 #> result;
-<#+
-	if ( success )
-	{
-#>
-				Assert.IsTrue( unpacker.Read<#= testSituation.Item1 #>( out result ) );
-				Assert.That( result, Is.EqualTo( <#= expectedValue #> ) );
-<#+
-	}
-	else
-	{
-#>
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read<#= testSituation.Item1 #>( out result ) );
-<#+
-	}
-}
-
-private void PutTestMethod( string methodName, Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string> testCase, int valueLengthAjustument, Action<Tuple<string, string, string, string, bool>, string, bool> putTestBody )
+private void PutTestMethod( string methodName, Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string> testCase, int valueLengthAjustument, string suffix, bool asString, bool success )
 {
 	var adjustedValueLength = testCase.Item2 + valueLengthAjustument;
 	if ( adjustedValueLength < 0 )
@@ -216,20 +173,55 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 #>
 
 		[Test]
-		public void <#= methodName #>()
+		public void <#= methodName #>_Stream()
 		{
+			var header = new byte[] { <#= testCase.Item3 #> };
 			using( var buffer =
 				new MemoryStream( 
-					new byte[] { <#= testCase.Item3 #> }
-					.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= adjustedValueLength #> ) ).ToArray()
+					header.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= adjustedValueLength #> ) ).ToArray()
 				)
 			)
-			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 <#+
-				putTestBody( testSituation, expectedValue, valueLengthAjustument >= 0 );
+	if ( success )
+	{
+#>
+				var result = Unpacking.Unpack<#= suffix #>( buffer );
+				Assert.That( buffer.Position, Is.EqualTo( header.Length + <#= testCase.Item2 #> ) );
+				Assert.That( <#= asString ? "Encoding.UTF8.GetString( result )" : "result" #>, Is.EqualTo( <#= expectedValue #> ) );
+<#+
+	}
+	else
+	{
+#>
+				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.Unpack<#= suffix #>( buffer ) );
+<#+
+	}
 #>
 			}
+		}
+		
+		[Test]
+		public void <#= methodName #>_ByteArray()
+		{
+			var header = new byte[] { <#= testCase.Item3 #> };
+			var buffer = header.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= adjustedValueLength #> ) ).ToArray();
+<#+
+	if ( success )
+	{
+#>
+			var result = Unpacking.Unpack<#= suffix #>( buffer );
+			Assert.That( result.ReadCount, Is.EqualTo( header.Length + <#= testCase.Item2 #> ) );
+			Assert.That( <#= asString ? "Encoding.UTF8.GetString( result.Value )" : "result.Value" #>, Is.EqualTo( <#= expectedValue #> ) );
+<#+
+	}
+	else
+	{
+#>
+				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.Unpack<#= suffix #>( buffer ) );
+<#+
+	}
+#>
 		}
 <#+
 }

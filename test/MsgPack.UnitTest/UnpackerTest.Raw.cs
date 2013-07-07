@@ -37,7 +37,7 @@ namespace MsgPack
 	// Do not modify this file. Edit UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	[TestFixture]
-	public partial class PackerTest_Raw
+	public partial class UnpackerTest_Raw
 	{
 
 		[Test]

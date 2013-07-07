@@ -286,7 +286,15 @@ namespace MsgPack
 			{
 				return unchecked( ( uint )( header - MessagePackCode.MinimumFixedRaw ) );
 			}
-			else if ( header == MessagePackCode.Raw16 )
+			else if ( header == MessagePackCode.Str8 || header == MessagePackCode.Bin8 )
+			{
+				var bytes = ReadBytes( source, sizeof( byte ) );
+				unchecked
+				{
+					return bytes[ 0 ];
+				}
+			}
+			else if ( header == MessagePackCode.Raw16 || header == MessagePackCode.Bin16 )
 			{
 				var bytes = ReadBytes( source, sizeof( short ) );
 				unchecked
@@ -296,7 +304,7 @@ namespace MsgPack
 					return buffer;
 				}
 			}
-			else if ( header == MessagePackCode.Raw32 )
+			else if ( header == MessagePackCode.Raw32 || header == MessagePackCode.Bin32 )
 			{
 				var bytes = ReadBytes( source, sizeof( int ) );
 				unchecked
@@ -367,6 +375,15 @@ namespace MsgPack
 			else
 			{
 				return unpacker.Data.Value;
+			}
+		}
+
+
+		private static MessagePackExtendedTypeObject UnpackExtendedTypeObjectCore( Stream source )
+		{
+			using ( var unpacker = Unpacker.Create( source, false ) )
+			{
+				return UnpackObjectCore( unpacker ).AsMessagePackExtendedTypeObject();
 			}
 		}
 

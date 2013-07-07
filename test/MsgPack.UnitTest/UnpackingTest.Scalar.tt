@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -123,50 +123,33 @@ namespace MsgPack
 	// Do not modify this file. Edit UnpackerTest.Scalar.tt instead.
 
 	[TestFixture]
-	public partial class UnpackerTest_Scalar
+	public partial class UnpackingTest_Scalar
 	{
-		// FIXME: Direct reading and direct/MPO mixing cases.
 <#
 foreach( var __testCase in __integers )
 {
 #>
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read()
+		public void TestUnpack<#= __testCase.Item1 #>_Unpack<#= __testCase.Item4.Name #>_Stream()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsTrue( unpacker.Read() );
-				var result = unpacker.Data;
-				Assert.IsTrue( result.HasValue );
-				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
+				var result = Unpacking.Unpack<#= __testCase.Item4.Name #>( buffer );
+				Assert.That( buffer.Position, Is.EqualTo( buffer.Length ) );
+				Assert.That( result, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
 		}
-<#
-	foreach( var __variation in
-		new []
-		{
-			new { IsNullable = false },
-			new { IsNullable = true },
-		}
-	)
-	{
-#>
-
+		
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>()
+		public void TestUnpack<#= __testCase.Item1 #>_Unpack<#= __testCase.Item4.Name #>_ByteArray()
 		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __testCase.Item4.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
-				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>( out result ) );
-				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
-			}
+			var buffer = <#= __testCase.Item3 #>;
+			var result = Unpacking.Unpack<#= __testCase.Item4.Name #>( buffer );
+			Assert.That( result.ReadCount, Is.EqualTo( buffer.Length ) );
+			Assert.That( result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
 		}
 <#
-	}
 }
 
 foreach( var __testCase in __reals )
@@ -174,41 +157,25 @@ foreach( var __testCase in __reals )
 #>
 
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read()
+		public void TestUnpack<#= __testCase.Item1 #>_Unpack<#= __testCase.Item3.Name #>_Stream()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
 			{
-				Assert.IsTrue( unpacker.Read() );
-				var result = unpacker.Data;
-				Assert.IsTrue( result.HasValue );
-				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
+				var result = Unpacking.Unpack<#= __testCase.Item3.Name #>( buffer );
+				Assert.That( buffer.Position, Is.EqualTo( buffer.Length ) );
+				Assert.That( <#= __testCase.Item4 #> result ) );
 			}
 		}
-<#
-	foreach( var __variation in
-		new []
-		{
-			new { IsNullable = false },
-			new { IsNullable = true },
-		}
-	)
-	{
-#>
-
+		
 		[Test]
-		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>()
+		public void TestUnpack<#= __testCase.Item1 #>_Unpack<#= __testCase.Item3.Name #>_ByteArray()
 		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __testCase.Item3.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
-				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>( out result ) );
-				Assert.That( <#= __testCase.Item4 #> result<#= __variation.IsNullable ? ".Value" : String.Empty #> ) );
-			}
+			var buffer = <#= __testCase.Item2 #>;
+			var result = Unpacking.Unpack<#= __testCase.Item3.Name #>( buffer );
+			Assert.That( result.ReadCount, Is.EqualTo( buffer.Length ) );
+			Assert.That( <#= __testCase.Item4 #> result.Value ) );
 		}
 <#
-	}
 }
 #>
 	}

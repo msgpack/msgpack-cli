@@ -340,6 +340,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="UnpackingTest.Scalar.cs">
+      <DependentUpon>UnpackingTest.Scalar.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UnpackingTest.Raw.cs">
+      <DependentUpon>UnpackingTest.Raw.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UnpackingTest.Ext.cs">
+      <DependentUpon>UnpackingTest.Ext.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\MsgPack.snk">
@@ -502,6 +517,18 @@
     <None Include="PackerTest.PackExtendedType.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackerTest.PackExtendedType.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Scalar.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Scalar.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Raw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Raw.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Ext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Ext.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
