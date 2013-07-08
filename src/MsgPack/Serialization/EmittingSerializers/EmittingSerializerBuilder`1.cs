@@ -171,21 +171,21 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var @else = unpackerIL.DefineLabel( "ELSE" );
 			var endif = unpackerIL.DefineLabel( "END_IF" );
 			unpackerIL.EmitBrfalse( @else );
-			EmitUnpackMembersFromArray( emitter, unpackerIL, entries, result, localHolder );
+			EmitUnpackMembersFromArray( emitter, unpackerIL, entries, result, localHolder, endif );
 			unpackerIL.EmitBr( endif );
 			unpackerIL.MarkLabel( @else );
 			EmitUnpackMembersFromMap( emitter, unpackerIL, entries, result, localHolder );
 			unpackerIL.MarkLabel( endif );
 		}
 
-		private static void EmitUnpackMembersFromArray( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result, LocalVariableHolder localHolder )
+		private static void EmitUnpackMembersFromArray( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result, LocalVariableHolder localHolder, Label endOfDeserialization )
 		{
 			/*
 			 *  int unpacked = 0;
 			 *  int itemsCount = unpacker.ItemsCount;
 			 * 
 			 *  :
-			 *  if( unpacked == itemsCount )
+			 *  if( unpacked >= itemsCount )
 			 *  {
 			 *		HandleNilImplication(...);
 			 *  }
@@ -223,17 +223,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 				unpackerIL.EmitAnyLdloc( unpacked );
 				unpackerIL.EmitAnyLdloc( itemsCount );
-				unpackerIL.EmitBlt( else0 );
-				// Tail missing member handling.
-				if ( entries[ i ].Member != null )
-				{
-					// Respect nil implication.
-					Emittion.EmitNilImplication( unpackerIL, 1, entries[ i ].Contract.Name, entries[ i ].Contract.NilImplication, endIf0, localHolder );
-				}
-
-				unpackerIL.EmitBr( endIf0 );
-
-				unpackerIL.MarkLabel( else0 );
+				unpackerIL.EmitBge( else0 );
 
 				if ( entries[ i ].Member == null )
 				{
@@ -269,6 +259,36 @@ namespace MsgPack.Serialization.EmittingSerializers
 				unpackerIL.EmitLdc_I4_1();
 				unpackerIL.EmitAdd();
 				unpackerIL.EmitAnyStloc( unpacked );
+
+				unpackerIL.EmitBr( endIf0 );
+
+				unpackerIL.MarkLabel( else0 );
+
+				if ( entries[ i ].Member != null )
+				{
+					// Respect nil implication.
+					switch ( entries[ i ].Contract.NilImplication )
+					{
+						case NilImplication.MemberDefault:
+						{
+							unpackerIL.EmitBr( endOfDeserialization );
+							break;
+						}
+						case NilImplication.Null:
+						{
+							unpackerIL.EmitLdnull();
+							Emittion.EmitStoreValue( unpackerIL, entries[ i ].Member );
+							break;
+						}
+						case NilImplication.Prohibit:
+						{
+							unpackerIL.EmitLdstr( entries[ i ].Contract.Name );
+							unpackerIL.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+							unpackerIL.EmitThrow();
+							break;
+						}
+					}
+				}
 
 				unpackerIL.MarkLabel( endIf0 );
 			}
