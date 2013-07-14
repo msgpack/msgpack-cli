@@ -724,10 +724,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				case NilImplication.Null:
 				{
+					// TODO: Refactoring
 					// Throw exception for non-nullable value type.
 					// Nop for nullables.
-					if ( member.Member.GetMemberValueType().GetIsValueType()
-						&& Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
+					if( member.Member.GetMemberValueType().GetIsValueType()
+					    && Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
 					{
 						/*
 						 * if( value == null )

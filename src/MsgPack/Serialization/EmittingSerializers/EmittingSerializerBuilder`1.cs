@@ -276,8 +276,43 @@ namespace MsgPack.Serialization.EmittingSerializers
 						}
 						case NilImplication.Null:
 						{
-							unpackerIL.EmitLdnull();
-							Emittion.EmitStoreValue( unpackerIL, entries[ i ].Member );
+							if( entries[ i ].Member.GetMemberValueType().GetIsValueType() )
+							{
+								if( Nullable.GetUnderlyingType( entries[ i ].Member.GetMemberValueType() ) == null )
+								{
+									// val type
+									/*
+									 * if( value == null )
+									 * {
+									 *		throw SerializationEceptions.NewValueTypeCannotBeNull( "...", typeof( MEMBER ), typeof( TYPE ) );
+									 * }
+									 */
+									unpackerIL.EmitLdstr( entries[ i ].Contract.Name );
+									unpackerIL.EmitLdtoken( entries[ i ].Member.GetMemberValueType() );
+									unpackerIL.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
+									unpackerIL.EmitLdtoken( entries[ i ].Member.DeclaringType );
+									unpackerIL.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
+									unpackerIL.EmitAnyCall( SerializationExceptions.NewValueTypeCannotBeNull3Method );
+									unpackerIL.EmitThrow();
+								}
+								else
+								{
+									// nullable
+									unpackerIL.EmitAnyLdloca( localHolder.GetDeserializedValue( entries[ i ].Member.GetMemberValueType() ) );
+									unpackerIL.EmitInitobj( entries[ i ].Member.GetMemberValueType() );
+									unpackerIL.EmitAnyLdloc( result );
+									unpackerIL.EmitAnyLdloc( localHolder.GetDeserializedValue( entries[ i ].Member.GetMemberValueType() ) );
+									Emittion.EmitStoreValue( unpackerIL, entries[ i ].Member );
+								}
+							}
+							else
+							{
+								// ref type
+								unpackerIL.EmitAnyLdloc( result );
+								unpackerIL.EmitLdnull();
+								Emittion.EmitStoreValue( unpackerIL, entries[ i ].Member );
+							}
+
 							break;
 						}
 						case NilImplication.Prohibit:
@@ -376,7 +411,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 
 			// Drain next value with unpacker.Read()
-			unpackerIL.EmitAnyLdarg(1);
+			unpackerIL.EmitAnyLdarg( 1 );
 			unpackerIL.EmitCallvirt( Metadata._Unpacker.Read );
 			unpackerIL.EmitPop();
 			unpackerIL.EmitBr( beginLoop );
