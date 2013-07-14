@@ -791,7 +791,7 @@ namespace MsgPack
 			}
 			VerifyUnderlyingType<MessagePackExtendedTypeObject>( this, null  );
 
-			return new MessagePackExtendedTypeObject( unchecked( ( byte )this._value ), this._handleOrTypeCode as byte[] );
+			return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )this._value ), this._handleOrTypeCode as byte[] );
 		}
 
 		#endregion -- Primitive Type Conversion Methods --
@@ -1622,7 +1622,7 @@ namespace MsgPack
 			}
 			VerifyUnderlyingType<MessagePackExtendedTypeObject>( value, "value"  );
 
-			return new MessagePackExtendedTypeObject( unchecked( ( byte )value._value ), value._handleOrTypeCode as byte[] );
+			return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )value._value ), value._handleOrTypeCode as byte[] );
 		}
 
 		#endregion -- Conversion Operator Overloads --

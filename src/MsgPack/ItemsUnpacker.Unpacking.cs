@@ -7150,7 +7150,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -7177,7 +7177,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -7204,7 +7204,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -7231,7 +7231,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -7258,7 +7258,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -7300,7 +7300,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -7342,7 +7342,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -7390,7 +7390,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -7949,7 +7949,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -7976,7 +7976,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8003,7 +8003,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8030,7 +8030,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8057,7 +8057,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8099,7 +8099,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8141,7 +8141,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8189,7 +8189,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8515,7 +8515,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8542,7 +8542,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8569,7 +8569,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8596,7 +8596,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8623,7 +8623,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8665,7 +8665,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8707,7 +8707,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8755,7 +8755,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8808,7 +8808,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8835,7 +8835,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8862,7 +8862,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8889,7 +8889,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8916,7 +8916,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -8958,7 +8958,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -9000,7 +9000,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;
@@ -9048,7 +9048,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					this._data = resultMpoValue;

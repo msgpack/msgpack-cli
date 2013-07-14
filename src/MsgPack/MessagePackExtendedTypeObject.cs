@@ -90,6 +90,19 @@ namespace MsgPack
 		}
 
 
+		// For unpacking
+		private MessagePackExtendedTypeObject( byte[] body, byte unpackedTypeCode )
+		{
+			if ( body == null )
+			{
+				throw new ArgumentNullException( "body" );
+			}
+
+			this._typeCode = unpackedTypeCode;
+			this._body = body;
+		}
+
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackExtendedTypeObject"/> struct.
 		/// </summary>
@@ -118,6 +131,20 @@ namespace MsgPack
 		}
 
 		/// <summary>
+		///		Creates a new instance of the <see cref="MessagePackExtendedTypeObject"/> struct.
+		/// </summary>
+		/// <param name="typeCode">A type code of this extension object.</param>
+		/// <param name="body">A binary value portion.</param>
+		/// <exception cref="System.ArgumentNullException">The <paramref name="body"/> is <c>null</c>.</exception>
+		/// <remarks>
+		///		This method allows reserved type code. It means that this method does not throw exception when the <paramref name="typeCode"/> is reserved value (greater then 0x7F).
+		/// </remarks>
+		public static MessagePackExtendedTypeObject Unpack( byte typeCode, byte[] body )
+		{
+			return new MessagePackExtendedTypeObject( body, typeCode );
+		}
+
+		/// <summary>
 		///		Returns a <see cref="System.String" /> that represents this instance.
 		/// </summary>
 		/// <returns>
@@ -125,7 +152,7 @@ namespace MsgPack
 		/// </returns>
 		public override string ToString()
 		{
-			if( this._body == null )
+			if ( this._body == null )
 			{
 				return String.Empty;
 			}

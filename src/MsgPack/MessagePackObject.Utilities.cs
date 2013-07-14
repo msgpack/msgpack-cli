@@ -380,8 +380,8 @@ namespace MsgPack
 
 					unchecked
 					{
-						return new MessagePackExtendedTypeObject( ( byte )this._value, asExtendedTypeObjectBody ) ==
-							   new MessagePackExtendedTypeObject( ( byte )other._value, otherAsExtendedTypeObjectBody );
+						return MessagePackExtendedTypeObject.Unpack( ( byte )this._value, asExtendedTypeObjectBody ) ==
+							   MessagePackExtendedTypeObject.Unpack( ( byte )other._value, otherAsExtendedTypeObjectBody );
 					}
 				}
 			}
@@ -500,7 +500,7 @@ namespace MsgPack
 				{
 					unchecked
 					{
-						return new MessagePackExtendedTypeObject( ( byte )this._value, asExtendedTypeObjectBody ).GetHashCode();
+						return MessagePackExtendedTypeObject.Unpack( ( byte )this._value, asExtendedTypeObjectBody ).GetHashCode();
 					}
 				}
 			}
@@ -770,7 +770,7 @@ namespace MsgPack
 				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
 				if ( asExtendedTypeObjectBody != null )
 				{
-					new MessagePackExtendedTypeObject( ( byte )this._value, asExtendedTypeObjectBody ).ToString( buffer, isJson );
+					MessagePackExtendedTypeObject.Unpack( ( byte )this._value, asExtendedTypeObjectBody ).ToString( buffer, isJson );
 					return;
 				}
 			}
@@ -1491,7 +1491,7 @@ namespace MsgPack
 				var asExtendedTypeObject = this._handleOrTypeCode as byte[];
 				if ( asExtendedTypeObject != null )
 				{
-					return new MessagePackExtendedTypeObject( unchecked( ( byte ) this._value ), asExtendedTypeObject );
+					return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte ) this._value ), asExtendedTypeObject );
 				}
 
 				Contract.Assert( false, "Unknwon type:" + this._handleOrTypeCode );

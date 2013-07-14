@@ -339,7 +339,7 @@ private void GenerateAsT( string val, Object typeOrTypeName, bool passParameterN
 #>
 			VerifyUnderlyingType<MessagePackExtendedTypeObject>( <#= val #>, <#= passParameterName ? "\"" + val + "\"" : "null" #>  );
 
-			return new MessagePackExtendedTypeObject( unchecked( ( byte )<#= val #>._value ), <#= val #>._handleOrTypeCode as byte[] );
+			return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )<#= val #>._value ), <#= val #>._handleOrTypeCode as byte[] );
 <#+
 	}
 	else if ( t == typeof( byte[] ) )

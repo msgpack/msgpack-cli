@@ -1006,7 +1006,7 @@ private void WriteUnpackExtendedTypeObjectCore( int? length, Type lengthType )
 	this.WriteUnpackRawContent( "data", "0", "data.Length" );
 	this.PopIndent();
 #>
-		var resultMpoValue = new MessagePackExtendedTypeObject( unchecked( ( byte )typeCode ), data );
+		var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
 <#+
 	this.PushIndent( 2 );
 	this.OnReturnScalarObject( "resultMpoValue" );
