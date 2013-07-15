@@ -20,10 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Reflection;
 using MsgPack.Serialization.DefaultSerializers;
-using System.Collections;
 
 namespace MsgPack.Serialization
 {

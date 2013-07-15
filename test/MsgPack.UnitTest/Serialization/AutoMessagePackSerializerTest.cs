@@ -77,7 +77,7 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
-			if ( _traceOn && this.CanDumpAssembly )
+			if( _traceOn && this.CanDumpAssembly )
 			{
 				try
 				{
