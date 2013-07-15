@@ -140,10 +140,9 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void PackTo( Packer packer, T objectTree )
 		{
-			// TODO: Hot-Path-Optimization
 			if ( packer == null )
 			{
-				throw new ArgumentNullException( "packer" );
+				ThrowArgumentNullException( "packer" );
 			}
 
 			if ( objectTree == null )
@@ -187,15 +186,14 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public T UnpackFrom( Unpacker unpacker )
 		{
-			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
 			{
-				throw new ArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( !unpacker.Data.HasValue )
 			{
-				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
+				SerializationExceptions.ThrowEmptyOrUnstartedUnpacker();
 			}
 
 			if ( unpacker.Data.GetValueOrDefault().IsNil )
@@ -207,7 +205,7 @@ namespace MsgPack.Serialization
 				}
 				else
 				{
-					throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
+					SerializationExceptions.ThrowValueTypeCannotBeNull( typeof( T ) );
 				}
 			}
 
@@ -256,20 +254,19 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void UnpackTo( Unpacker unpacker, T collection )
 		{
-			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
 			{
-				throw new ArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( collection == null )
 			{
-				throw new ArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( !unpacker.Data.HasValue )
 			{
-				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
+				SerializationExceptions.ThrowEmptyOrUnstartedUnpacker();
 			}
 
 			if ( unpacker.Data.Value.IsNil )
@@ -343,13 +340,18 @@ namespace MsgPack.Serialization
 		{
 			if ( buffer == null )
 			{
-				throw new ArgumentNullException( "buffer" );
+				ThrowArgumentNullException( "buffer" );
 			}
 
 			using ( var stream = new MemoryStream( buffer ) )
 			{
 				return this.Unpack( stream );
 			}
+		}
+
+		private static void ThrowArgumentNullException( string parameterName )
+		{
+			throw new ArgumentNullException( parameterName );
 		}
 
 		void IMessagePackSerializer.PackTo( Packer packer, object objectTree )
@@ -366,7 +368,7 @@ namespace MsgPack.Serialization
 				{
 					if ( !( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) ) )
 					{
-						throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
+						SerializationExceptions.ThrowValueTypeCannotBeNull( typeof( T ) );
 					}
 				}
 
@@ -394,25 +396,32 @@ namespace MsgPack.Serialization
 			// TODO: Hot-Path-Optimization
 			if ( unpacker == null )
 			{
-				throw new ArgumentNullException( "unpacker" );
+				ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( collection == null )
 			{
-				throw new ArgumentNullException( "collection" );
+				ThrowArgumentNullException( "collection" );
 			}
 
 			if ( !( collection is T ) )
 			{
-				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
+				ThrowNotACollectionException( collection );
 			}
 
 			if ( !unpacker.Data.HasValue )
 			{
-				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
+				SerializationExceptions.ThrowEmptyOrUnstartedUnpacker();
 			}
 
 			this.UnpackToCore( unpacker, ( T )collection );
+		}
+
+		private static void ThrowNotACollectionException( object collection )
+		{
+			throw new ArgumentException(
+				String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ),
+				"collection" );
 		}
 
 		byte[] IMessagePackSingleObjectSerializer.PackSingleObject( object objectTree )
@@ -420,10 +429,21 @@ namespace MsgPack.Serialization
 			if ( ( typeof( T ).GetIsValueType() && !( objectTree is T ) )
 				|| ( ( objectTree != null && !( objectTree is T ) ) ) )
 			{
-				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree == null ? "(null)" : objectTree.GetType().FullName, typeof( T ) ), "objectTree" );
+				ThrowIncompatibleObject( objectTree );
 			}
 
 			return this.PackSingleObject( ( T )objectTree );
+		}
+
+		private static void ThrowIncompatibleObject( object objectTree )
+		{
+			throw new ArgumentException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"'{0}' is not compatible for '{1}'.",
+					objectTree == null ? "(null)" : objectTree.GetType().FullName,
+					typeof( T ) ),
+				"objectTree" );
 		}
 
 		object IMessagePackSingleObjectSerializer.UnpackSingleObject( byte[] buffer )

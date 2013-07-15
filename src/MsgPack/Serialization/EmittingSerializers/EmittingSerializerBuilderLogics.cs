@@ -223,8 +223,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
 				var endIf = il.DefineLabel( "END_IF" );
 				il.EmitBrtrue_S( endIf );
-				il.EmitAnyCall( SerializationExceptions.NewIsNotArrayHeaderMethod );
-				il.EmitThrow();
+				il.EmitAnyCall( SerializationExceptions.ThrowIsNotArrayHeaderMethod );
 				il.MarkLabel( endIf );
 				var collection = localHolder.GetDeserializingCollection( targetType );
 				// Emit newobj, newarr, or call ValueType..ctor()
@@ -542,8 +541,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitGetProperty( Metadata._Unpacker.IsMapHeader );
 				var endIf = il.DefineLabel( "END_IF" );
 				il.EmitBrtrue_S( endIf );
-				il.EmitAnyCall( SerializationExceptions.NewIsNotMapHeaderMethod );
-				il.EmitThrow();
+				il.EmitAnyCall( SerializationExceptions.ThrowIsNotMapHeaderMethod );
 				il.MarkLabel( endIf );
 
 				var collection = localHolder.GetDeserializingCollection( targetType );
@@ -750,8 +748,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitGetProperty( Metadata._Unpacker.IsArrayHeader );
 				var endIf = il.DefineLabel( "END_IF" );
 				il.EmitBrtrue_S( endIf );
-				il.EmitAnyCall( SerializationExceptions.NewIsNotArrayHeaderMethod );
-				il.EmitThrow();
+				il.EmitAnyCall( SerializationExceptions.ThrowIsNotArrayHeaderMethod );
 				il.MarkLabel( endIf );
 
 				var itemsCount = localHolder.ItemsCount;
@@ -763,8 +760,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitBeq_S( endIf1 );
 				il.EmitAnyLdc_I4( itemTypes.Count );
 				il.EmitAnyLdloc( itemsCount );
-				il.EmitAnyCall( SerializationExceptions.NewTupleCardinarityIsNotMatchMethod );
-				il.EmitThrow();
+				il.EmitAnyCall( SerializationExceptions.ThrowTupleCardinarityIsNotMatchMethod );
 				il.MarkLabel( endIf1 );
 
 				var itemLocals = new LocalBuilder[ itemTypes.Count ];

@@ -196,7 +196,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 								)
 							),
 							Expression.Call(
-								SerializationExceptions.NewMissingItemMethod,
+								SerializationExceptions.ThrowMissingItemMethod,
 								Expression.Constant( number )
 							)
 						),
@@ -250,12 +250,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader();
 			}
 
 			if ( ( int )unpacker.ItemsCount != this._itemSerializers.Length )
 			{
-				throw SerializationExceptions.NewTupleCardinarityIsNotMatch( this._itemSerializers.Length, ( int )unpacker.ItemsCount );
+				SerializationExceptions.ThrowTupleCardinarityIsNotMatch( this._itemSerializers.Length, ( int )unpacker.ItemsCount );
 			}
 
 			return this._unpackFromCore( unpacker, this._itemSerializers );

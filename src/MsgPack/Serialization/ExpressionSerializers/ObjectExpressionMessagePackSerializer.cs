@@ -284,7 +284,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				{
 					if ( !unpacker.Read() )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream();
 					}
 
 					if ( unpacker.Data.Value.IsNil )
@@ -319,7 +319,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				{
 					if ( this._memberSetters[ index ] == null )
 					{
-						throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
+						SerializationExceptions.ThrowReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
 					}
 
 					this._memberSetters[ index ]( ref instance, null );
@@ -331,7 +331,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				}
 				case NilImplication.Prohibit:
 				{
-					throw SerializationExceptions.NewNullIsProhibited( this._memberNames[ index ] );
+					SerializationExceptions.ThrowNullIsProhibited( this._memberNames[ index ] );
+					break;
 				}
 			}
 		}
@@ -360,7 +361,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					// Drains unused value.
 					if ( !unpacker.Read() )
 					{
-						throw SerializationExceptions.NewUnexpectedEndOfStream();
+						SerializationExceptions.ThrowUnexpectedEndOfStream();
 					}
 
 					// TODO: unknown member handling.
@@ -371,7 +372,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				// Fetches value
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewUnexpectedEndOfStream();
+					SerializationExceptions.ThrowUnexpectedEndOfStream();
 				}
 
 				if ( unpacker.Data.Value.IsNil )
@@ -382,7 +383,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						{
 							if ( this._memberSetters[ index ] == null )
 							{
-								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
+								SerializationExceptions.ThrowReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
 							}
 
 							this._memberSetters[ index ]( ref instance, null );
@@ -394,7 +395,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						}
 						case NilImplication.Prohibit:
 						{
-							throw SerializationExceptions.NewNullIsProhibited( this._memberNames[ index ] );
+							SerializationExceptions.ThrowNullIsProhibited( this._memberNames[ index ] );
+							break;
 						}
 					}
 				}
@@ -519,7 +521,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 				if ( !unpacker.Data.HasValue )
 				{
-					throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
+					SerializationExceptions.ThrowEmptyOrUnstartedUnpacker();
 				}
 
 				// Always returns null.
@@ -545,7 +547,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 				if ( !unpacker.Data.HasValue )
 				{
-					throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
+					SerializationExceptions.ThrowEmptyOrUnstartedUnpacker();
 				}
 
 				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported by '{0}'.", this.GetType() ) );

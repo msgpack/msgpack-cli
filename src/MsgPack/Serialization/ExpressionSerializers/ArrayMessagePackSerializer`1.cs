@@ -34,7 +34,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader();
 			}
 
 			var instance = ( T )( object )Array.CreateInstance( this.Traits.ElementType, UnpackHelpers.GetItemsCount( unpacker ) );

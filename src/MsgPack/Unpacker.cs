@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -103,16 +104,23 @@ namespace MsgPack
 		{
 			this.VerifyIsNotDisposed();
 
+			if ( this._mode == mode )
+			{
+				return;
+			}
+			
 			if ( this._mode == UnpackerMode.Unknown )
 			{
 				this._mode = mode;
 				return;
 			}
 
-			if ( this._mode != mode )
-			{
-				throw this.NewInvalidModeException();
-			}
+			this.ThrowInvalidModeException();
+		}
+
+		private void ThrowInvalidModeException()
+		{
+			throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Reader is in '{0}' mode.", this._mode ) );
 		}
 
 		/// <summary>
@@ -122,17 +130,13 @@ namespace MsgPack
 		{
 			if ( this._mode == UnpackerMode.Disposed )
 			{
-				throw new ObjectDisposedException( this.GetType().FullName );
+				this.ThrowDisposedException();
 			}
 		}
 
-		/// <summary>
-		///		Returns new exception instance to notify invalid mode transition.
-		/// </summary>
-		/// <returns>New exception instance to notify invalid mode transition.</returns>
-		private Exception NewInvalidModeException()
+		private void ThrowDisposedException()
 		{
-			return new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Reader is in '{0}' mode.", this._mode ) );
+			throw new ObjectDisposedException( this.GetType().FullName );
 		}
 
 		/// <summary>
@@ -301,10 +305,15 @@ namespace MsgPack
 		internal void EnsureNotInSubtreeMode()
 		{
 			this.VerifyMode( UnpackerMode.Streaming );
-			if( this._isSubtreeReading )
+			if ( this._isSubtreeReading )
 			{
-				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
+				ThrowSubtreeModeException();
 			}
+		}
+
+		private static void ThrowSubtreeModeException()
+		{
+			throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
 		}
 
 		private void SetStable()
@@ -362,13 +371,15 @@ namespace MsgPack
 			{
 				case UnpackerMode.Enumerating:
 				{
-					throw this.NewInvalidModeException();
+					this.ThrowInvalidModeException();
+					Debug.Assert( false, "Never reached." );
+					break;
 				}
 				case UnpackerMode.Streaming:
 				{
 					if ( !this.Data.HasValue )
 					{
-						throw this.NewInvalidModeException();
+						this.ThrowInvalidModeException();
 					}
 
 					// If the value exists, safe to transit skipping.

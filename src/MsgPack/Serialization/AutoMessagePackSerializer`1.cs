@@ -91,7 +91,7 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-			throw SerializationExceptions.NewTypeCannotSerialize( typeof( T ) );
+			SerializationExceptions.ThrowTypeCannotSerialize( typeof( T ) );
 		}
 
 		/// <summary>

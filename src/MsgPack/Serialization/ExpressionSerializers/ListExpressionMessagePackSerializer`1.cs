@@ -47,7 +47,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 			else if ( typeof( T ).GetIsAbstract() )
 			{
-				this._createInstance = () => { throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( T ) ); };
+				this._createInstance =
+					() =>
+					{
+						throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( T ) );
+					};
 				this._createInstanceWithCapacity = null;
 
 			}
@@ -56,7 +60,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				var constructor = ExpressionSerializerLogics.GetCollectionConstructor<T>();
 				if ( constructor == null )
 				{
-					this._createInstance = () => { throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) ); };
+					this._createInstance =
+						() =>
+						{
+							SerializationExceptions.ThrowTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) );
+							return default( T );
+						};
 					this._createInstanceWithCapacity = null;
 				}
 				else
@@ -88,7 +97,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				SerializationExceptions.ThrowIsNotArrayHeader();
 			}
 
 			var instance = this._createInstanceWithCapacity == null ? this._createInstance() : this._createInstanceWithCapacity( UnpackHelpers.GetItemsCount( unpacker ) );

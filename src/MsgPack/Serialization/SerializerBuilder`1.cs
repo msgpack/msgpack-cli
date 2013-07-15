@@ -78,7 +78,7 @@ namespace MsgPack.Serialization
 
 			if ( entries.Length == 0 )
 			{
-				throw SerializationExceptions.NewNoSerializableFieldsException( typeof( TObject ) );
+				SerializationExceptions.ThrowNoSerializableFieldsException( typeof( TObject ) );
 			}
 
 			if ( entries.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )

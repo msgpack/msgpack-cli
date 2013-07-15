@@ -69,7 +69,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 			if ( constructor == null )
 			{
-				this._createInstance = () => { throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) ); };
+				this._createInstance =
+					() =>
+					{
+						SerializationExceptions.ThrowTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) );
+						return default( T );
+					};
 				this._createInstanceWithCapacity = null;
 			}
 			else if ( constructor.GetParameters().Length == 1 )
