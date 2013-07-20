@@ -33,7 +33,7 @@ namespace MsgPack
 		private readonly byte[] _scalarBuffer = new byte[ 8 ];
 		internal long InternalItemsCount;
 		internal CollectionType InternalCollectionType;
-		internal MessagePackObject? InternalData;
+		internal MessagePackObject InternalData;
 
 		public override MessagePackObject? Data
 		{
@@ -58,7 +58,7 @@ namespace MsgPack
 
 		public override long ItemsCount
 		{
-			get { return this.InternalItemsCount; }
+			get { return this.InternalCollectionType != CollectionType.None ? this.InternalItemsCount : 0L; }
 		}
 
 		protected sealed override Stream UnderlyingStream

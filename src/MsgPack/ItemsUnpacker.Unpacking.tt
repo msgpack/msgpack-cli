@@ -167,7 +167,6 @@ private void OnReturnScalar( string resultVariable )
 {
 #>
 this.InternalCollectionType = CollectionType.None;
-this.InternalItemsCount = 0;
 <#+
 }
 
@@ -175,8 +174,6 @@ private void OnReturnScalarObject( string resultVariable )
 {
 #>
 this.InternalCollectionType = CollectionType.None;
-this.InternalItemsCount = 0;
-this.InternalData = <#= resultVariable #>;
 <#+
 }
 
@@ -185,7 +182,6 @@ private void OnIsArray( string sizeVariable )
 #>
 this.InternalCollectionType = CollectionType.Array;
 this.InternalItemsCount = <#= sizeVariable #>;
-this.InternalData = <#= sizeVariable #>;
 <#+
 }
 
@@ -194,7 +190,6 @@ private void OnIsMap( string sizeVariable )
 #>
 this.InternalCollectionType = CollectionType.Map;
 this.InternalItemsCount = <#= sizeVariable #>;
-this.InternalData = <#= sizeVariable #>;
 <#+
 }
 

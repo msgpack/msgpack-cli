@@ -84,7 +84,7 @@ namespace MsgPack
 			this._itemsCount = new Stack<long>( 2 );
 			this._isMap = new Stack<bool>( 2 );
 
-			if ( root.InternalItemsCount > 0 )
+			if ( root.ItemsCount > 0 )
 			{
 				this._itemsCount.Push( root.InternalItemsCount * ( ( int )root.InternalCollectionType ) );
 				this._unpacked.Push( 0 );
@@ -148,7 +148,7 @@ namespace MsgPack
 				return false;
 			}
 
-			switch( this._root.InternalCollectionType )
+			switch ( this._root.InternalCollectionType )
 			{
 				case ItemsUnpacker.CollectionType.Array:
 				{
