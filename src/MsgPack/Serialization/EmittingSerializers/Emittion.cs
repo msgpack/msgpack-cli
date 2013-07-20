@@ -288,14 +288,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitGetProperty( Metadata._Unpacker.ItemsCount );
 			il.EmitAnyStloc( localHolder.RawItemsCount );
 			il.BeginCatchBlock( typeof( InvalidOperationException ) );
-			il.EmitAnyCall( SerializationExceptions.ThrowIsIncorrectStreamMethod );
+			il.EmitAnyCall( SerializationExceptions.NewIsIncorrectStreamMethod );
+			il.EmitThrow();
 			il.EndExceptionBlock();
 
 			il.EmitAnyLdloc( localHolder.RawItemsCount );
 			il.EmitLdc_I8( Int32.MaxValue );
 			var endIf = il.DefineLabel();
 			il.EmitBle_S( endIf );
-			il.EmitAnyCall( SerializationExceptions.ThrowIsTooLargeCollectionMethod );
+			il.EmitAnyCall( SerializationExceptions.NewIsTooLargeCollectionMethod );
+			il.EmitThrow();
 			il.MarkLabel( endIf );
 			il.EmitAnyLdloc( localHolder.RawItemsCount );
 			il.EmitConv_I4();
@@ -343,7 +345,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 					var endIf = il.DefineLabel( "END_IF" );
 					il.EmitBrtrue_S( endIf );
 					il.EmitLdstr( memberName );
-					il.EmitAnyCall( SerializationExceptions.ThrowNullIsProhibitedMethod );
+					il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+					il.EmitThrow();
 					il.MarkLabel( endIf );
 				}
 				else if ( Nullable.GetUnderlyingType( valueType ) != null )
@@ -353,7 +356,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 					var endIf = il.DefineLabel( "END_IF" );
 					il.EmitBrtrue_S( endIf );
 					il.EmitLdstr( memberName );
-					il.EmitAnyCall( SerializationExceptions.ThrowNullIsProhibitedMethod );
+					il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+					il.EmitThrow();
 					il.MarkLabel( endIf );
 				}
 			}
@@ -527,12 +531,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitTypeOf( targetType );
 				il.EmitLdstr( memberName );
 				il.EmitAnyLdloc( ex );
-				il.EmitAnyCall( SerializationExceptions.ThrowFailedToDeserializeMemberMethod );
+				il.EmitAnyCall( SerializationExceptions.NewFailedToDeserializeMemberMethod );
+				il.EmitThrow();
 				il.EndExceptionBlock();
 				var endIf0 = il.DefineLabel( "END_IF" );
 				il.EmitAnyLdloc( isSuccess );
 				il.EmitBrtrue_S( endIf0 );
-				il.EmitAnyCall( SerializationExceptions.ThrowUnexpectedEndOfStreamMethod );
+				il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
+				il.EmitThrow();
 				il.MarkLabel( endIf0 );
 				if ( member != null )
 				{
@@ -688,7 +694,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 					var endIf0 = il.DefineLabel( "END_IF0" );
 					il.EmitBrfalse_S( endIf0 );
 					il.EmitLdstr( memberName );
-					il.EmitAnyCall( SerializationExceptions.ThrowNullIsProhibitedMethod );
+					il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+					il.EmitThrow();
 					il.MarkLabel( endIf0 );
 
 					break;
@@ -734,7 +741,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 						il.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
 						il.EmitLdtoken( member.Member.DeclaringType );
 						il.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
-						il.EmitAnyCall( SerializationExceptions.ThrowValueTypeCannotBeNull3Method );
+						il.EmitAnyCall( SerializationExceptions.NewValueTypeCannotBeNull3Method );
+						il.EmitThrow();
 					}
 
 					break;
@@ -748,7 +756,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 * }
 					 */
 					il.EmitLdstr( member.Contract.Name );
-					il.EmitAnyCall( SerializationExceptions.ThrowNullIsProhibitedMethod );
+					il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+					il.EmitThrow();
 					break;
 				}
 			}
@@ -860,13 +869,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il.EmitLdstr( member.Name );
 					if ( nilImplication == NilImplication.Prohibit )
 					{
-						il.EmitAnyCall( SerializationExceptions.ThrowNullIsProhibitedMethod );
+						il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
 					}
 					else
 					{
 						// Because result member is readonly collection, so the member will not be null if packed value was nil.
-						il.EmitAnyCall( SerializationExceptions.ThrowReadOnlyMemberItemsMustNotBeNullMethod );
+						il.EmitAnyCall( SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNullMethod );
 					}
+					il.EmitThrow();
 					il.MarkLabel( endIf0 );
 
 					break;
@@ -898,7 +908,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitBrtrue_S( endIf );
 			// else
 			il.EmitLdstr( member.Name );
-			il.EmitAnyCall( SerializationExceptions.ThrowStreamDoesNotContainCollectionForMemberMethod );
+			il.EmitAnyCall( SerializationExceptions.NewStreamDoesNotContainCollectionForMemberMethod );
+			il.EmitThrow();
 			// then
 			var subtreeUnpacker = localHolder.SubtreeUnpacker;
 			il.MarkLabel( endIf );
@@ -1000,7 +1011,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			ctor = target.LocalType.GetConstructor( Type.EmptyTypes );
 			if ( ctor == null )
 			{
-				SerializationExceptions.ThrowTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( target.LocalType );
+				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( target.LocalType );
 			}
 
 			il.EmitNewobj( ctor );
@@ -1018,7 +1029,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitAnyCall( Metadata._Unpacker.Read );
 			var endIf = il.DefineLabel( "END_IF" );
 			il.EmitBrtrue_S( endIf );
-			il.EmitAnyCall( SerializationExceptions.ThrowUnexpectedEndOfStreamMethod );
+			il.EmitAnyCall( SerializationExceptions.NewUnexpectedEndOfStreamMethod );
+			il.EmitThrow();
 			il.MarkLabel( endIf );
 		}
 	}

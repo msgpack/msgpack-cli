@@ -64,7 +64,7 @@ namespace MsgPack.Serialization
 
 			if ( !unpacker.IsArrayHeader )
 			{
-				SerializationExceptions.ThrowIsNotArrayHeader();
+				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
 			Contract.EndContractBlock();
@@ -75,7 +75,7 @@ namespace MsgPack.Serialization
 			{
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				T item;
@@ -120,7 +120,7 @@ namespace MsgPack.Serialization
 
 			if ( !unpacker.IsArrayHeader )
 			{
-				SerializationExceptions.ThrowIsNotArrayHeader();
+				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
 			Contract.EndContractBlock();
@@ -131,7 +131,7 @@ namespace MsgPack.Serialization
 			{
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				MessagePackObject item;
@@ -178,7 +178,7 @@ namespace MsgPack.Serialization
 
 			if ( !unpacker.IsArrayHeader )
 			{
-				SerializationExceptions.ThrowIsNotArrayHeader();
+				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
 			Contract.EndContractBlock();
@@ -189,7 +189,7 @@ namespace MsgPack.Serialization
 			{
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				T item;
@@ -235,7 +235,7 @@ namespace MsgPack.Serialization
 
 			if ( !unpacker.IsArrayHeader )
 			{
-				SerializationExceptions.ThrowIsNotArrayHeader();
+				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
 			Contract.EndContractBlock();
@@ -246,7 +246,7 @@ namespace MsgPack.Serialization
 			{
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				MessagePackObject item;
@@ -294,7 +294,7 @@ namespace MsgPack.Serialization
 
 			if ( !unpacker.IsArrayHeader )
 			{
-				SerializationExceptions.ThrowIsNotArrayHeader();
+				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
 			Contract.EndContractBlock();
@@ -305,7 +305,7 @@ namespace MsgPack.Serialization
 			{
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				T item;
@@ -353,7 +353,7 @@ namespace MsgPack.Serialization
 
 			if ( !unpacker.IsMapHeader )
 			{
-				SerializationExceptions.ThrowIsNotMapHeader();
+				throw SerializationExceptions.NewIsNotMapHeader();
 			}
 
 			Contract.EndContractBlock();
@@ -364,7 +364,7 @@ namespace MsgPack.Serialization
 			{
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				TKey key;
@@ -383,7 +383,7 @@ namespace MsgPack.Serialization
 
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				TValue value;
@@ -427,7 +427,7 @@ namespace MsgPack.Serialization
 
 			if ( !unpacker.IsMapHeader )
 			{
-				SerializationExceptions.ThrowIsNotMapHeader();
+				throw SerializationExceptions.NewIsNotMapHeader();
 			}
 
 			Contract.EndContractBlock();
@@ -438,7 +438,7 @@ namespace MsgPack.Serialization
 			{
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				MessagePackObject key;
@@ -457,7 +457,7 @@ namespace MsgPack.Serialization
 
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				MessagePackObject value;
@@ -479,19 +479,19 @@ namespace MsgPack.Serialization
 
 		internal static int GetItemsCount( Unpacker unpacker )
 		{
-			long rawItemsCount = 0L;
+			long rawItemsCount;
 			try
 			{
 				rawItemsCount = unpacker.ItemsCount;
 			}
 			catch ( InvalidOperationException ex )
 			{
-				SerializationExceptions.ThrowIsIncorrectStream( ex );
+				throw SerializationExceptions.NewIsIncorrectStream( ex );
 			}
 
 			if ( rawItemsCount > Int32.MaxValue )
 			{
-				SerializationExceptions.ThrowIsTooLargeCollection();
+				throw SerializationExceptions.NewIsTooLargeCollection();
 			}
 
 			int count = unchecked( ( int )rawItemsCount );
@@ -532,7 +532,7 @@ namespace MsgPack.Serialization
 		{
 			if ( typeof( T ).GetIsValueType() && boxed == null && Nullable.GetUnderlyingType( typeof( T ) ) == null )
 			{
-				SerializationExceptions.ThrowValueTypeCannotBeNull( name, typeof( T ), targetType );
+				throw SerializationExceptions.NewValueTypeCannotBeNull( name, typeof( T ), targetType );
 			}
 
 			return ( T )boxed;

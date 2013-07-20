@@ -62,7 +62,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				if ( !unpacker.Data.HasValue )
 				{
-					SerializationExceptions.ThrowUnexpectedEndOfStream();
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
 				switch ( unpacker.Data.Value.DeserializeAsString() )
@@ -71,7 +71,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					{
 						if ( !unpacker.Read() )
 						{
-							SerializationExceptions.ThrowUnexpectedEndOfStream();
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
 						}
 
 						isKeyFound = true;
@@ -82,7 +82,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					{
 						if ( !unpacker.Read() )
 						{
-							SerializationExceptions.ThrowUnexpectedEndOfStream();
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
 						}
 
 						isValueFound = true;
@@ -94,12 +94,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			if ( !isKeyFound )
 			{
-				SerializationExceptions.ThrowMissingProperty( "Key" );
+				throw SerializationExceptions.NewMissingProperty( "Key" );
 			}
 
 			if ( !isValueFound )
 			{
-				SerializationExceptions.ThrowMissingProperty( "Value" );
+				throw SerializationExceptions.NewMissingProperty( "Value" );
 			}
 
 			return new DictionaryEntry( key, value );

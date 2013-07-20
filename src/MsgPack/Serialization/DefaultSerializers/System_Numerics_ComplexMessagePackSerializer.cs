@@ -39,14 +39,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( !unpacker.Read() )
 			{
-				SerializationExceptions.ThrowUnexpectedEndOfStream();
+				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
 			var real = unpacker.Data.Value.AsDouble();
 
 			if ( !unpacker.Read() )
 			{
-				SerializationExceptions.ThrowUnexpectedEndOfStream();
+				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
 			var imaginary = unpacker.Data.Value.AsDouble();

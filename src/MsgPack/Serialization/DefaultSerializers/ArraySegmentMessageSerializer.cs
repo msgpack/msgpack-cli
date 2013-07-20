@@ -90,7 +90,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowMissingItem( i );
+					throw SerializationExceptions.NewMissingItem( i );
 				}
 
 				array[ i ] = itemSerializer.UnpackFrom( unpacker );

@@ -292,7 +292,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 									unpackerIL.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
 									unpackerIL.EmitLdtoken( entries[ i ].Member.DeclaringType );
 									unpackerIL.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
-									unpackerIL.EmitAnyCall( SerializationExceptions.ThrowValueTypeCannotBeNull3Method );
+									unpackerIL.EmitAnyCall( SerializationExceptions.NewValueTypeCannotBeNull3Method );
+									unpackerIL.EmitThrow();
 								}
 								else
 								{
@@ -317,7 +318,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 						case NilImplication.Prohibit:
 						{
 							unpackerIL.EmitLdstr( entries[ i ].Contract.Name );
-							unpackerIL.EmitAnyCall( SerializationExceptions.ThrowNullIsProhibitedMethod );
+							unpackerIL.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+							unpackerIL.EmitThrow();
 							break;
 						}
 					}

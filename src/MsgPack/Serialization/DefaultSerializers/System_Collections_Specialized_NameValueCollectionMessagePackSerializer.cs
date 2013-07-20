@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				if ( key == null )
 				{
-					ThrowNullKeyIsNotSupported();
+					throw new NotSupportedException( "null key is not supported." );
 				}
 
 				var values = objectTree.GetValues( key );
@@ -59,11 +59,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		private static void ThrowNullKeyIsNotSupported()
-		{
-			throw new NotSupportedException( "null key is not supported." );
-		}
-
 		protected internal sealed override NameValueCollection UnpackFromCore( Unpacker unpacker )
 		{
 			var result = new NameValueCollection( checked( ( int )unpacker.ItemsCount ) );
@@ -73,12 +68,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 				var key = unpacker.Data.Value.DeserializeAsString();
 				if ( !unpacker.Read() )
 				{
-					SerializationExceptions.ThrowUnexpectedEndOfStream();
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
 				if ( !unpacker.IsArrayHeader )
 				{
-					ThrowInvalidNameValueCollectionValue();
+					throw new SerializationException( "Invalid NameValueCollection value." );
 				}
 
 				using ( var valuesUnpacker = unpacker.ReadSubtree() )
@@ -91,11 +86,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			return result;
-		}
-
-		private static void ThrowInvalidNameValueCollectionValue()
-		{
-			throw new SerializationException( "Invalid NameValueCollection value." );
 		}
 	}
 }
