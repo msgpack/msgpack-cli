@@ -29,10 +29,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, DictionaryEntry objectTree )
 		{
-			packer.PackMapHeader( 2 );
-			packer.PackString( "Key" );
+			packer.PackArrayHeader( 2 );
 			packer.Pack( EnsureMessagePackObject( objectTree.Key ) );
-			packer.PackString( "Value" );
 			packer.Pack( EnsureMessagePackObject( objectTree.Value ) );
 		}
 
@@ -53,56 +51,71 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override DictionaryEntry UnpackFromCore( Unpacker unpacker )
 		{
-			object key = null;
-			object value = null;
-			bool isKeyFound = false;
-			bool isValueFound = false;
-
-			while ( unpacker.Read() )
+			if ( unpacker.IsArrayHeader )
 			{
-				if ( !unpacker.Data.HasValue )
+				MessagePackObject key;
+				MessagePackObject value;
+
+				if ( !unpacker.ReadObject( out key ) )
 				{
 					SerializationExceptions.ThrowUnexpectedEndOfStream();
 				}
 
-				switch ( unpacker.Data.Value.DeserializeAsString() )
+				if ( !unpacker.ReadObject( out value ) )
 				{
-					case "Key":
-					{
-						if ( !unpacker.Read() )
-						{
-							SerializationExceptions.ThrowUnexpectedEndOfStream();
-						}
+					SerializationExceptions.ThrowUnexpectedEndOfStream();
+				}
 
-						isKeyFound = true;
-						key = unpacker.Data.Value;
-						break;
-					}
-					case "Value":
-					{
-						if ( !unpacker.Read() )
-						{
-							SerializationExceptions.ThrowUnexpectedEndOfStream();
-						}
+				return new DictionaryEntry( key, value );
+			}
+			else
+			{
+				// Previous DictionaryEntry serializer accidentally pack it as map...
+				MessagePackObject key = default( MessagePackObject );
+				MessagePackObject value = default( MessagePackObject );
+				bool isKeyFound = false;
+				bool isValueFound = false;
+				string propertyName;
 
-						isValueFound = true;
-						value = unpacker.Data.Value;
-						break;
+				while ( ( !isKeyFound || !isValueFound ) && unpacker.ReadString( out propertyName ) )
+				{
+					switch ( propertyName )
+					{
+						case "Key":
+						{
+							if ( !unpacker.ReadObject(out key) )
+							{
+								SerializationExceptions.ThrowUnexpectedEndOfStream();
+							}
+
+							isKeyFound = true;
+							break;
+						}
+						case "Value":
+						{
+							if ( !unpacker.ReadObject( out value ) )
+							{
+								SerializationExceptions.ThrowUnexpectedEndOfStream();
+							}
+
+							isValueFound = true;
+							break;
+						}
 					}
 				}
-			}
 
-			if ( !isKeyFound )
-			{
-				SerializationExceptions.ThrowMissingProperty( "Key" );
-			}
+				if ( !isKeyFound )
+				{
+					SerializationExceptions.ThrowMissingProperty( "Key" );
+				}
 
-			if ( !isValueFound )
-			{
-				SerializationExceptions.ThrowMissingProperty( "Value" );
-			}
+				if ( !isValueFound )
+				{
+					SerializationExceptions.ThrowMissingProperty( "Value" );
+				}
 
-			return new DictionaryEntry( key, value );
+				return new DictionaryEntry( key, value );
+			}
 		}
 	}
 }
