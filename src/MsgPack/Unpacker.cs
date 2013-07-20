@@ -72,6 +72,11 @@ namespace MsgPack
 			get;
 		}
 
+		public virtual bool IsCollectionHeader
+		{
+			get { return this.IsArrayHeader || this.IsMapHeader; }
+		}
+
 		/// <summary>
 		///		Gets the items count for current array or map.
 		/// </summary>
@@ -235,7 +240,7 @@ namespace MsgPack
 		///	</remarks>
 		public Unpacker ReadSubtree()
 		{
-			if ( !this.IsArrayHeader && !this.IsMapHeader )
+			if ( !this.IsCollectionHeader )
 			{
 				throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
 			}
@@ -290,7 +295,7 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 
 			bool result = this.ReadCore();
-			if ( result && !this.IsArrayHeader && !this.IsMapHeader )
+			if ( result && !this.IsCollectionHeader )
 			{
 				this.SetStable();
 			}
@@ -301,7 +306,7 @@ namespace MsgPack
 		internal void EnsureNotInSubtreeMode()
 		{
 			this.VerifyMode( UnpackerMode.Streaming );
-			if( this._isSubtreeReading )
+			if ( this._isSubtreeReading )
 			{
 				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
 			}

@@ -104,7 +104,7 @@ namespace MsgPack
 
 		private static void VerifyIsScalar( Unpacker unpacker )
 		{
-			if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+			if ( unpacker.IsCollectionHeader )
 			{
 				throw new MessageTypeException( "The underlying stream is not scalar type." );
 			}

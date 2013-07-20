@@ -51,6 +51,11 @@ namespace MsgPack
 			get { return this._root.InternalCollectionType == ItemsUnpacker.CollectionType.Map; }
 		}
 
+		public override bool IsCollectionHeader
+		{
+			get { return this._root.InternalCollectionType != ItemsUnpacker.CollectionType.None; }
+		}
+
 		public sealed override MessagePackObject? Data
 		{
 			get { return this._root.InternalData; }

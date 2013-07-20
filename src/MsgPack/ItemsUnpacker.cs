@@ -51,6 +51,11 @@ namespace MsgPack
 			get { return this.InternalCollectionType == CollectionType.Map; }
 		}
 
+		public override bool IsCollectionHeader
+		{
+			get { return this.InternalCollectionType != CollectionType.None; }
+		}
+
 		public override long ItemsCount
 		{
 			get { return this.InternalItemsCount; }
