@@ -27,8 +27,8 @@ using System.Security;
 [assembly: AssemblyConfiguration( "Beta" )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2012" )]
 
-// TODO: use script. Major = Informational-Major, Minor = Informational-Minor, Build = Epoc days from 2010/1/1, Revision = Epoc minutes from 00:00:00
-[assembly: AssemblyFileVersion( "0.3.0.0" )]
+
+[assembly: AssemblyFileVersion( "0.4.1297.568" )]
 
 [assembly: SecurityRules( SecurityRuleSet.Level2, SkipVerificationInFullTrust = true )]
 [assembly: AllowPartiallyTrustedCallers]
