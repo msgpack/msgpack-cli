@@ -24,6 +24,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer : MessagePackSerializer<MessagePackExtendedTypeObject>
 	{
+		public MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, MessagePackExtendedTypeObject value )
 		{
 			packer.PackExtendedTypeValue( value );

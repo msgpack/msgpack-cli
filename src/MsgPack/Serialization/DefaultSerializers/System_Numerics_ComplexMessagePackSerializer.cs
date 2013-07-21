@@ -26,7 +26,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Numerics_ComplexMessagePackSerializer : MessagePackSerializer<Complex>
 	{
-		public System_Numerics_ComplexMessagePackSerializer() { }
+		public System_Numerics_ComplexMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
 
 		protected internal sealed override void PackToCore( Packer packer, Complex objectTree )
 		{

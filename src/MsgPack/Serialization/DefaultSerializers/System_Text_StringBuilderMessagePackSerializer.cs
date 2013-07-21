@@ -25,6 +25,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Text_StringBuilderMessagePackSerializer : MessagePackSerializer<StringBuilder>
 	{
+		public System_Text_StringBuilderMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, StringBuilder value )
 		{
 			// NOTE: More efficient?

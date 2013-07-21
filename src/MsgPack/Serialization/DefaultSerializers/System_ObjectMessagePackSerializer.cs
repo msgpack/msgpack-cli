@@ -24,6 +24,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_ObjectMessagePackSerializer : MessagePackSerializer<object>
 	{
+		public System_ObjectMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, object value )
 		{
 			packer.PackObject( value );

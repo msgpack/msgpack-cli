@@ -38,6 +38,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private readonly Func<Unpacker, IMessagePackSerializer[], T> _unpackFromCore;
 
 		public TupleExpressionMessagePackSerializer( SerializationContext context )
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			Contract.Assert( typeof( T ).FullName.StartsWith( "System.Tuple`", StringComparison.Ordinal ), typeof( T ) + " is not Tuple<...>" );
 			var flattenTypes = TupleItems.GetTupleItemTypes( typeof( T ) );

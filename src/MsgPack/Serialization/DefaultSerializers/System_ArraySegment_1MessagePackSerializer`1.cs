@@ -148,6 +148,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
 		public System_ArraySegment_1MessagePackSerializer( SerializationContext context )
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			if ( context == null )
 			{

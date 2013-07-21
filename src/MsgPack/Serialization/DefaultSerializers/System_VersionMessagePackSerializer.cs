@@ -25,7 +25,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_VersionMessagePackSerializer : MessagePackSerializer<Version>
 	{
-		public System_VersionMessagePackSerializer() { }
+		public System_VersionMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
 
 		protected internal sealed override void PackToCore( Packer packer, Version objectTree )
 		{

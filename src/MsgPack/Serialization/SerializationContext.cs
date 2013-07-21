@@ -53,7 +53,7 @@ namespace MsgPack.Serialization
 			get { return Interlocked.CompareExchange( ref  _default, null, null ); }
 			set
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					throw new ArgumentNullException( "value" );
 				}
@@ -201,13 +201,25 @@ namespace MsgPack.Serialization
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.Default"/>.
 		/// </summary>
 		public SerializationContext()
-			: this( new SerializerRepository( SerializerRepository.Default ) ) { }
+			: this( new SerializerRepository( SerializerRepository.Default ), PackerCompatibilityOptions.Classic ) { }
 
-		internal SerializationContext( SerializerRepository serializers )
+		/// <summary>
+		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.GetDefault(PackerCompatibilityOptions)"/> for specified <see cref="PackerCompatibilityOptions"/>.
+		/// </summary>
+		/// <param name="packerCompatibilityOptions"><see cref="PackerCompatibilityOptions"/> which will be used on built-in serializers.</param>
+		public SerializationContext( PackerCompatibilityOptions packerCompatibilityOptions )
+			: this( new SerializerRepository( SerializerRepository.GetDefault( packerCompatibilityOptions ) ), packerCompatibilityOptions ) { }
+
+		internal SerializationContext( SerializerRepository serializers, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
 			Contract.Requires( serializers != null );
 
-			this._compatibilityOptions = new SerializationCompatibilityOptions();
+			this._compatibilityOptions =
+				new SerializationCompatibilityOptions()
+				{
+					PackerCompatibilityOptions =
+						packerCompatibilityOptions
+				};
 			this._serializers = serializers;
 #if SILVERLIGHT || NETFX_35
 			this._typeLock = new HashSet<Type>();
@@ -251,7 +263,7 @@ namespace MsgPack.Serialization
 #endif
 					}
 
-					if( !lockTaken )
+					if ( !lockTaken )
 					{
 						return new LazyDelegatingMessagePackSerializer<T>( this );
 					}
@@ -260,7 +272,7 @@ namespace MsgPack.Serialization
 				}
 				finally
 				{
-					if( lockTaken )
+					if ( lockTaken )
 					{
 #if SILVERLIGHT || NETFX_35
 						lock( this._typeLock )

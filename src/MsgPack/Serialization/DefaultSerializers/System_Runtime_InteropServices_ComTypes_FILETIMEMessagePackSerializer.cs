@@ -26,6 +26,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer : MessagePackSerializer<FILETIME>
 	{
+		public System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, FILETIME value )
 		{
 			packer.Pack( MessagePackConvert.FromDateTime( DateTime.FromFileTimeUtc( unchecked( ( ( long )value.dwHighDateTime << 32 ) | ( value.dwLowDateTime & 0xffffffff ) ) ) ) );

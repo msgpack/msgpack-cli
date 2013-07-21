@@ -24,6 +24,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_ByteArrayMessagePackSerializer : MessagePackSerializer<byte[]>
 	{
+		public System_ByteArrayMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, byte[] value )
 		{
 			packer.PackBinary( value );

@@ -24,7 +24,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_UriMessagePackSerializer : MessagePackSerializer<Uri>
 	{
-		public System_UriMessagePackSerializer() { }
+		public System_UriMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
 
 		protected internal sealed override void PackToCore( Packer packer, Uri objectTree )
 		{

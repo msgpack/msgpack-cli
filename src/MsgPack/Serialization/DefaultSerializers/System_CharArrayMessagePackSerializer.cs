@@ -24,6 +24,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_CharArrayMessagePackSerializer : MessagePackSerializer<char[]>
 	{
+		public System_CharArrayMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, char[] value )
 		{
 			if ( value == null )

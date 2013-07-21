@@ -70,6 +70,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{ }
 
 		internal NullableMessagePackSerializer( SerializationContext context, EmitterFlavor emitterFlavor )
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			if ( context == null )
 			{

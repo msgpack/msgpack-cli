@@ -60,7 +60,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		public EnumMessagePackSerializer()
+		public EnumMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions )
 		{
 			if ( !typeof( T ).GetIsEnum() )
 			{

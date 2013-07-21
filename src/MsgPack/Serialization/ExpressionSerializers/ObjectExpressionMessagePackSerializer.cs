@@ -74,6 +74,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private readonly UnpackFromMessageInvocation _unpackFromMessage;
 
 		protected ObjectExpressionMessagePackSerializer( SerializationContext context, SerializingMember[] members )
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			this._createInstance =
 				Expression.Lambda<Func<T>>(

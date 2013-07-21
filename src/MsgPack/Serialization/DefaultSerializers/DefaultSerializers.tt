@@ -229,9 +229,14 @@ foreach( Type __type in __types )
 #if !WINDOWS_PHONE && !NETFX_35
 <#
 	}
+
+	var __typeName = __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) + "MessagePackSerializer";
 #>
-	internal sealed class <#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
+	internal sealed class <#= __typeName #> : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
 	{
+		public <#= __typeName #>( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, <#= __type.FullName #> value )
 		{
 <#

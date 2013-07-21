@@ -44,7 +44,7 @@ namespace MsgPack.Serialization
 		///		The serialization context to support lazy retrieval.
 		///	</param>
 		public LazyDelegatingMessagePackSerializer( SerializationContext context )
-			: base()
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			this._context = context;
 		}

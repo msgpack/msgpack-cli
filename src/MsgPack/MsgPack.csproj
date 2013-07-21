@@ -188,6 +188,7 @@
     <Compile Include="Serialization\Metadata\_IDictionaryEnumerator.cs" />
     <Compile Include="Serialization\Metadata\_IEnumreator.cs" />
     <Compile Include="Serialization\Metadata\_MessagePackSerializer.cs" />
+    <Compile Include="Serialization\Metadata\_SerializationCompatibilityOptions.cs" />
     <Compile Include="Serialization\Metadata\_SerializationContext.cs" />
     <Compile Include="Serialization\Metadata\_String.cs" />
     <Compile Include="Serialization\Metadata\_MessagePackObject.cs" />

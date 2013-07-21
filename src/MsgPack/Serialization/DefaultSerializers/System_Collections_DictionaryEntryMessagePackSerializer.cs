@@ -25,7 +25,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Collections_DictionaryEntryMessagePackSerializer : MessagePackSerializer<DictionaryEntry>
 	{
-		public System_Collections_DictionaryEntryMessagePackSerializer() { }
+		public System_Collections_DictionaryEntryMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
 
 		protected internal sealed override void PackToCore( Packer packer, DictionaryEntry objectTree )
 		{

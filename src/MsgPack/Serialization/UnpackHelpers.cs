@@ -36,7 +36,7 @@ namespace MsgPack.Serialization
 	public static class UnpackHelpers
 	{
 		private static readonly MessagePackSerializer<MessagePackObject> _messagePackObjectSerializer =
-			new MsgPack_MessagePackObjectMessagePackSerializer();
+			new MsgPack_MessagePackObjectMessagePackSerializer( PackerCompatibilityOptions.None );
 
 		/// <summary>
 		///		Unpacks the array to the specified array.
