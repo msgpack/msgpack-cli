@@ -3,7 +3,7 @@
   <metadata>
     <id>MsgPack.Cli</id>
     <title>MessagePack for CLI</title>
-    <version>0.4.0-beta1</version>
+    <version>0.4.0-beta2</version>
     <authors>FUJIWARA, Yusuke</authors>
     <owners>FUJIWARA, Yusuke</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>

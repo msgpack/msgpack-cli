@@ -61,6 +61,13 @@ Release 0.4 - T.B.D.
 
   BREAKING CHANGES
   * Packer.PackRaw(IEnumerable<byte>) can emit compact binary when the IEnumerable<byte> object also implements ICollection<byte> or ICollection.
+  * There are little issues in corner cases.
+    * Unpacker.Data never returns null even if it is in before head of underlying stream.
+    * MessagePackSerializer<T>.UnpackFrom does not throw exception when unpacker is still in before head of the underlying stream. Note that generated serializer still require that the unpacker is in head of the underlying array or map.
 
   FEATURES
   * Support binary types, string8 types, and extension types of MsgPack spec.
+  * SerializerGenerator now enable to specify output directory.
+
+  NOTE
+  * Nullable<MessagePack> based unpacker API is deprecated becaue of their poor performance. You should use fast non-nullable APIs instead (properties/methods with 'Data' suffixes).
