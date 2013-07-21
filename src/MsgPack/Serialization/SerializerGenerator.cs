@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@ using System.Reflection;
 using System.Reflection.Emit;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
+using System.IO;
 #endif
 
 namespace MsgPack.Serialization
 {
-	// TODO: testing...
-	// TODO: Can we enable this feature on WinRT using Cecil...?
+	// TODO: Can we enable this feature on WinRT using ...?
 	/// <summary>
 	///		Provides pre-compiled serialier assembly generation.
 	/// </summary>
@@ -82,7 +82,7 @@ namespace MsgPack.Serialization
 		private SerializationMethod _method;
 
 		/// <summary>
-		/// Gets or sets the <see cref="SerializationMethod"/> which indicates serialization method to be used.
+		///		Gets or sets the <see cref="SerializationMethod"/> which indicates serialization method to be used.
 		/// </summary>
 		/// <value>
 		///		The <see cref="SerializationMethod"/> which indicates serialization method to be used.
@@ -131,15 +131,41 @@ namespace MsgPack.Serialization
 
 		/// <summary>
 		///		Generates the serializer assembly and save it to current directory.
-		///		</summary>
+		///	</summary>
+		/// <exception cref="IOException">Some I/O error is occurred on saving assembly file.</exception>
 		public void GenerateAssemblyFile()
+		{
+			this.GenerateAssemblyFile(
+				AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave ) );
+		}
+
+		/// <summary>
+		///		Generates the serializer assembly and save it to specified directory.
+		///	</summary>
+		/// <param name="directory">The path of directory where newly generated assembly file will be located. If the directory does not exist, then it will be created.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="directory"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="directory"/> is not valid.</exception>
+		/// <exception cref="PathTooLongException"><paramref name="directory"/> is too long.</exception>
+		/// <exception cref="DirectoryNotFoundException"><paramref name="directory"/> is existent file.</exception>
+		/// <exception cref="UnauthorizedAccessException">Cannot create specified directory for access control of file system.</exception>
+		/// <exception cref="IOException">Some I/O error is occurred on creating directory or saving assembly file.</exception>
+		public void GenerateAssemblyFile( string directory )
+		{
+			if ( !Directory.Exists( directory ) )
+			{
+				Directory.CreateDirectory( directory );
+			}
+
+			this.GenerateAssemblyFile(
+				AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave, directory ) );
+		}
+
+		private void GenerateAssemblyFile( AssemblyBuilder assemblyBuilder )
 		{
 			var context = new SerializationContext();
 			context.EmitterFlavor = EmitterFlavor.FieldBased;
 			context.GeneratorOption = SerializationMethodGeneratorOption.CanDump;
 			context.SerializationMethod = this._method;
-
-			var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave );
 
 			// AssemblyBuilder cannot be debugged because no PDB files (and 'dummy' source files to step).
 			DefaultSerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
