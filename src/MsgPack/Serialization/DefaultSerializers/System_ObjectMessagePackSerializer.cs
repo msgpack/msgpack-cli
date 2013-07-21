@@ -31,7 +31,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
 		{
-			var result = unpacker.Data.Value;
+			var result = unpacker.LastReadData;
 			return result.IsNil ? null : ( object )result;
 		}
 	}

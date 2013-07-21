@@ -31,7 +31,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override MessagePackExtendedTypeObject UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value.AsMessagePackExtendedTypeObject();
+			return unpacker.LastReadData.AsMessagePackExtendedTypeObject();
 		}
 	}
 }

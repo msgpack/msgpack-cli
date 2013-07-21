@@ -703,39 +703,6 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestUnpackable_UnpackFromMessageUsed()
-		{
-			var context = GetSerializationContext();
-			var serializer = this.CreateTarget<JustUnpackable>( context );
-			using ( var stream = new MemoryStream() )
-			{
-				var value = new JustUnpackable();
-				value.Int32Field = 1;
-				serializer.Pack( stream, value );
-				Assert.That( stream.ToArray(), Is.EqualTo( ( context.SerializationMethod == SerializationMethod.Array ? new byte[] { 0x91, 0x1 } : new byte[] { 0x81, 0xAA }.Concat( Encoding.UTF8.GetBytes( "Int32Field" ) ).Concat( new byte[] { 0x1 } ) ).ToArray() ) );
-				stream.SetLength( 0 );
-				stream.Write( new byte[] { 0x91, 0xA1, ( byte )'A' }, 0, 3 );
-				Assert.Throws<SerializationException>( () => serializer.Unpack( stream ), "Round-trip should not be succeeded." );
-			}
-		}
-
-		[Test]
-		public void TestPackableAndUnpackable_PackToMessageAndUnpackFromMessageUsed()
-		{
-			var serializer = this.CreateTarget<PackableUnpackable>( GetSerializationContext() );
-			using ( var stream = new MemoryStream() )
-			{
-				var value = new PackableUnpackable();
-				value.Int32Field = 1;
-				serializer.Pack( stream, value );
-				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'A' } ) );
-				stream.Position = 0;
-				var result = serializer.Unpack( stream );
-				Assert.That( result.Int32Field, Is.EqualTo( default( int ) ), "Round-trip should not be succeeded." );
-			}
-		}
-
-		[Test]
 		public void TestBinary_DefaultContext()
 		{
 			var serializer = MessagePackSerializer.Create<byte[]>();
@@ -1263,8 +1230,8 @@ namespace MsgPack.Serialization
 			public void UnpackFromMessage( Unpacker unpacker )
 			{
 				Assert.That( unpacker.IsArrayHeader );
-				var value = unpacker.UnpackSubtree();
-				Assert.That( value.Value.AsList()[ 0 ] == Dummy, "{0} != \"[{1}]\"", value.Value, Dummy );
+				var value = unpacker.UnpackSubtreeData();
+				Assert.That( value.AsList()[ 0 ] == Dummy, "{0} != \"[{1}]\"", value, Dummy );
 			}
 		}
 
@@ -1283,8 +1250,8 @@ namespace MsgPack.Serialization
 			public void UnpackFromMessage( Unpacker unpacker )
 			{
 				Assert.That( unpacker.IsArrayHeader );
-				var value = unpacker.UnpackSubtree();
-				Assert.That( value.Value.AsList()[ 0 ] == Dummy, "{0} != \"[{1}]\"", value.Value, Dummy );
+				var value = unpacker.UnpackSubtreeData();
+				Assert.That( value.AsList()[ 0 ] == Dummy, "{0} != \"[{1}]\"", value, Dummy );
 			}
 		}
 
@@ -1309,7 +1276,7 @@ namespace MsgPack.Serialization
 
 			protected internal override DateTime UnpackFromCore( Unpacker unpacker )
 			{
-				var ext = unpacker.Data.Value.AsMessagePackExtendedTypeObject();
+				var ext = unpacker.LastReadData.AsMessagePackExtendedTypeObject();
 				Assert.That( ext.TypeCode, Is.EqualTo( 1 ) );
 				return new DateTime( BigEndianBinary.ToInt64( ext.Body, 0 ) ).ToUniversalTime();
 			}

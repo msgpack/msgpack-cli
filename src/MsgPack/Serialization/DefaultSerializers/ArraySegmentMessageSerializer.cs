@@ -73,14 +73,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static ArraySegment<byte> UnpackByteArraySegmentFrom( Unpacker unpacker, MessagePackSerializer<byte> itemSerializer )
 		{
-			return new ArraySegment<byte>( unpacker.Data.Value.AsBinary() );
+			return new ArraySegment<byte>( unpacker.LastReadData.AsBinary() );
 		}
 
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static ArraySegment<char> UnpackCharArraySegmentFrom( Unpacker unpacker, MessagePackSerializer<char> itemSerializer )
 		{
 			// TODO: More efficient
-			return new ArraySegment<char>( unpacker.Data.Value.AsCharArray() );
+			return new ArraySegment<char>( unpacker.LastReadData.AsCharArray() );
 		}
 
 		public static ArraySegment<T> UnpackGenericArraySegmentFrom<T>( Unpacker unpacker, MessagePackSerializer<T> itemSerializer )

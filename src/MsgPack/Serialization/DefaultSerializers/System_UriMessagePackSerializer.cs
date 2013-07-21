@@ -33,7 +33,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override Uri UnpackFromCore( Unpacker unpacker )
 		{
-			return new Uri( unpacker.Data.Value.DeserializeAsString() );
+			return new Uri( unpacker.LastReadData.DeserializeAsString() );
 		}
 	}
 }

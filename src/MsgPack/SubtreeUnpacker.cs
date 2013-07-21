@@ -56,7 +56,14 @@ namespace MsgPack
 			get { return this._root.InternalCollectionType != ItemsUnpacker.CollectionType.None; }
 		}
 
+		[Obsolete( "Consumer should not use this property. Query LastReadData instead." )]
 		public sealed override MessagePackObject? Data
+		{
+			get { return this._root.InternalData; }
+			protected set { this._root.InternalData = value.GetValueOrDefault(); }
+		}
+
+		public override MessagePackObject LastReadData
 		{
 			get { return this._root.InternalData; }
 			protected set { this._root.InternalData = value; }

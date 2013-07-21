@@ -53,7 +53,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -91,7 +93,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -170,7 +174,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -208,7 +214,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -287,7 +295,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -325,7 +335,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -404,7 +416,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -442,7 +456,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -521,7 +537,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -559,7 +577,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -638,7 +658,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -660,7 +682,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -722,7 +746,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -760,7 +786,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -839,7 +867,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -877,7 +907,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -956,7 +988,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -994,7 +1028,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1073,7 +1109,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1095,7 +1133,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1157,7 +1197,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1195,7 +1237,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1274,7 +1318,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1312,7 +1358,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1391,7 +1439,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1429,7 +1479,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1508,7 +1560,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1546,7 +1600,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1625,7 +1681,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1663,7 +1721,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1742,7 +1802,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1764,7 +1826,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1826,7 +1890,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1864,7 +1930,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1943,7 +2011,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -1981,7 +2051,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -2060,7 +2132,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -2098,7 +2172,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -2177,7 +2253,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -2215,7 +2293,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -2294,7 +2374,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -2332,7 +2414,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -2411,7 +2495,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );
@@ -2449,7 +2535,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( typeCode ) );

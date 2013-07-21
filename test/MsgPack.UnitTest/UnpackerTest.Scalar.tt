@@ -138,7 +138,9 @@ foreach( var __testCase in __integers )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
@@ -180,7 +182,9 @@ foreach( var __testCase in __reals )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
 			}

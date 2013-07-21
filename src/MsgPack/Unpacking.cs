@@ -96,7 +96,7 @@ namespace MsgPack
 
 		private static void UnpackOne( Unpacker unpacker )
 		{
-			if ( !unpacker.Read() || !unpacker.Data.HasValue )
+			if ( !unpacker.Read() )
 			{
 				throw new UnpackException( "Cannot unpack MesssagePack object from the stream." );
 			}
@@ -119,7 +119,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( bool )unpacker.Data.Value;
+					return ( bool )unpacker.LastReadData;
 				}
 				catch ( InvalidOperationException ex )
 				{
@@ -136,7 +136,7 @@ namespace MsgPack
 				UnpackOne( unpacker );
 				VerifyIsScalar( unpacker );
 
-				if ( !unpacker.Data.Value.IsNil )
+				if ( !unpacker.LastReadData.IsNil )
 				{
 					throw new MessageTypeException( "The underlying stream is not nil." );
 				}
@@ -161,7 +161,7 @@ namespace MsgPack
 					throw new MessageTypeException( "The underlying stream is not array type." );
 				}
 
-				return ( uint )unpacker.Data.Value;
+				return ( uint )unpacker.LastReadData;
 			}
 		}
 
@@ -187,7 +187,7 @@ namespace MsgPack
 				return null;
 			}
 
-			uint length = ( uint )unpacker.Data.Value;
+			uint length = ( uint )unpacker.LastReadData;
 			if ( length > Int32.MaxValue )
 			{
 				throw new MessageNotSupportedException( "The array which length is greater than Int32.MaxValue is not supported." );
@@ -218,7 +218,7 @@ namespace MsgPack
 					throw new MessageTypeException( "The underlying stream is not map type." );
 				}
 
-				return ( uint )unpacker.Data.Value;
+				return ( uint )unpacker.LastReadData;
 			}
 		}
 
@@ -244,7 +244,7 @@ namespace MsgPack
 			}
 
 
-			uint count = ( uint )unpacker.Data.Value;
+			uint count = ( uint )unpacker.LastReadData;
 			if ( count > Int32.MaxValue )
 			{
 				throw new MessageNotSupportedException( "The map which count is greater than Int32.MaxValue is not supported." );
@@ -342,7 +342,7 @@ namespace MsgPack
 				UnpackOne( unpacker );
 				try
 				{
-					return unpacker.Data.Value.AsBinary();
+					return unpacker.LastReadData.AsBinary();
 				}
 				catch ( InvalidOperationException ex )
 				{
@@ -374,7 +374,7 @@ namespace MsgPack
 			}
 			else
 			{
-				return unpacker.Data.Value;
+				return unpacker.LastReadData;
 			}
 		}
 
@@ -389,7 +389,9 @@ namespace MsgPack
 
 		private static bool IsNil( Unpacker unpacker )
 		{
-			return unpacker.Data.HasValue && unpacker.Data.Value.IsNil;
+#pragma warning disable 612,618
+			return unpacker.Data.HasValue && unpacker.LastReadData.IsNil;
+#pragma warning restore 612,618
 		}
 
 		private static Exception NewTypeMismatchException( Type requestedType, InvalidOperationException innerException )

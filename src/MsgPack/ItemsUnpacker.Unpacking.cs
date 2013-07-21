@@ -6307,6 +6307,7 @@ namespace MsgPack
 					var size = header & 0xF;
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = size;
+					this.InternalData = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -6315,6 +6316,7 @@ namespace MsgPack
 					var size = header & 0xF;
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = size;
+					this.InternalData = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -6661,6 +6663,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = length;
 					return true;
 				}
@@ -6682,6 +6685,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = ( long )length;
 					return true;
 				}
@@ -6703,6 +6707,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = length;
 					return true;
 				}
@@ -6724,6 +6729,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = ( long )length;
 					return true;
 				}
@@ -7046,6 +7052,7 @@ namespace MsgPack
 					var size = header & 0xF;
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = size;
+					this.InternalData = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -7054,6 +7061,7 @@ namespace MsgPack
 					var size = header & 0xF;
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = size;
+					this.InternalData = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -7400,6 +7408,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = length;
 					return true;
 				}
@@ -7421,6 +7430,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = ( long )length;
 					return true;
 				}
@@ -7442,6 +7452,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = length;
 					return true;
 				}
@@ -7463,6 +7474,7 @@ namespace MsgPack
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = ( long )length;
 					return true;
 				}
@@ -7756,6 +7768,7 @@ namespace MsgPack
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				case MessagePackCode.Array32:
@@ -7774,6 +7787,7 @@ namespace MsgPack
 					result = unsignedSize;
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				default:
@@ -7783,6 +7797,7 @@ namespace MsgPack
 						result = header & 0xF;
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 					}
 			
@@ -7820,6 +7835,7 @@ namespace MsgPack
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				case MessagePackCode.Array32:
@@ -7838,6 +7854,7 @@ namespace MsgPack
 					result = unsignedSize;
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				default:
@@ -7847,6 +7864,7 @@ namespace MsgPack
 						result = header & 0xF;
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 					}
 			
@@ -7885,6 +7903,7 @@ namespace MsgPack
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				case MessagePackCode.Map32:
@@ -7903,6 +7922,7 @@ namespace MsgPack
 					result = unsignedSize;
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				default:
@@ -7912,6 +7932,7 @@ namespace MsgPack
 						result = header & 0xF;
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 					}
 			
@@ -7949,6 +7970,7 @@ namespace MsgPack
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				case MessagePackCode.Map32:
@@ -7967,6 +7989,7 @@ namespace MsgPack
 					result = unsignedSize;
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				default:
@@ -7976,6 +7999,7 @@ namespace MsgPack
 						result = header & 0xF;
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 					}
 			

@@ -69,7 +69,7 @@ namespace MsgPack
 							Assert.That( subtreeReader2.ItemsCount, Is.EqualTo( 3 ) );
 							for ( int j = 1; subtreeReader2.Read(); j++ )
 							{
-								Assert.That( subtreeReader2.Data.Value.AsString(), Is.EqualTo( i + "-" + j ) );
+								Assert.That( subtreeReader2.LastReadData.AsString(), Is.EqualTo( i + "-" + j ) );
 							}
 						}
 					}
@@ -152,7 +152,7 @@ namespace MsgPack
 									Assert.That( subtreeReader3.ItemsCount, Is.EqualTo( 3 ) );
 									for ( int k = 1; subtreeReader3.Read(); k++ )
 									{
-										Assert.That( subtreeReader3.Data.Value.AsString(), Is.EqualTo( i + "-" + j + "-" + k ) );
+										Assert.That( subtreeReader3.LastReadData.AsString(), Is.EqualTo( i + "-" + j + "-" + k ) );
 									}
 								}
 							}

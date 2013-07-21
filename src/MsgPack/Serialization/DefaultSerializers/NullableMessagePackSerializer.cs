@@ -27,7 +27,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public static readonly PropertyInfo MessagePackObject_IsNilProperty = FromExpression.ToProperty( ( MessagePackObject value ) => value.IsNil );
 		public static readonly PropertyInfo Nullable_MessagePackObject_ValueProperty = FromExpression.ToProperty( ( MessagePackObject? value ) => value.Value );
-		public static readonly PropertyInfo UnpackerDataProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.Data );
+		public static readonly PropertyInfo UnpackerLastReadDataProperty = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.LastReadData );
 		public static readonly MethodInfo PackerPackNull = FromExpression.ToMethod( ( Packer packer ) => packer.PackNull() );
 	}
 }

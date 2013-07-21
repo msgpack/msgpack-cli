@@ -147,7 +147,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( Byte )unpacker.Data.Value;
+					return ( Byte )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{
@@ -275,7 +275,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( SByte )unpacker.Data.Value;
+					return ( SByte )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{
@@ -400,7 +400,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( Int16 )unpacker.Data.Value;
+					return ( Int16 )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{
@@ -528,7 +528,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( UInt16 )unpacker.Data.Value;
+					return ( UInt16 )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{
@@ -653,7 +653,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( Int32 )unpacker.Data.Value;
+					return ( Int32 )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{
@@ -781,7 +781,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( UInt32 )unpacker.Data.Value;
+					return ( UInt32 )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{
@@ -906,7 +906,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( Int64 )unpacker.Data.Value;
+					return ( Int64 )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{
@@ -1034,7 +1034,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( UInt64 )unpacker.Data.Value;
+					return ( UInt64 )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{
@@ -1159,7 +1159,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( Single )unpacker.Data.Value;
+					return ( Single )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{
@@ -1284,7 +1284,7 @@ namespace MsgPack
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( Double )unpacker.Data.Value;
+					return ( Double )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{

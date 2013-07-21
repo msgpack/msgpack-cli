@@ -287,7 +287,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						throw SerializationExceptions.NewUnexpectedEndOfStream();
 					}
 
-					if ( unpacker.Data.Value.IsNil )
+					if ( unpacker.LastReadData.IsNil )
 					{
 						this.HandleNilImplication( ref instance, i );
 					}
@@ -374,7 +374,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
-				if ( unpacker.Data.Value.IsNil )
+				if ( unpacker.LastReadData.IsNil )
 				{
 					switch ( this._nilImplications[ index ] )
 					{
@@ -417,7 +417,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsString();
+				return unpacker.LastReadData.AsString();
 			}
 			catch ( InvalidOperationException ex )
 			{
@@ -517,11 +517,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 				Contract.Ensures( Contract.Result<object>() == null );
 
-				if ( !unpacker.Data.HasValue )
-				{
-					throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
-				}
-
 				// Always returns null.
 				return null;
 			}
@@ -541,11 +536,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				if ( !( collection is T ) )
 				{
 					throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
-				}
-
-				if ( !unpacker.Data.HasValue )
-				{
-					throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
 				}
 
 				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported by '{0}'.", this.GetType() ) );

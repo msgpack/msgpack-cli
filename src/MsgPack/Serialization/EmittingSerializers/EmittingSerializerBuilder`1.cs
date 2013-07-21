@@ -354,8 +354,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			unpackerIL.EmitAnyCall( Metadata._Unpacker.ReadString );
 			unpackerIL.EmitBrfalse( endLoop );
 
-			var data = localHolder.UnpackedData;
-			var dataValue = localHolder.UnpackedDataValue;
 			for ( int i = 0; i < entries.Length; i++ )
 			{
 				if ( entries[ i ].Contract.Name == null )

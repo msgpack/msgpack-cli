@@ -33,7 +33,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override FILETIME UnpackFromCore( Unpacker unpacker )
 		{
-			var value = MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ).ToFileTimeUtc();
+			var value = MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ).ToFileTimeUtc();
 			return new FILETIME() { dwHighDateTime = unchecked( ( int )( value >> 32 ) ), dwLowDateTime = unchecked( ( int )( value & 0xffffffff ) ) };
 		}
 	}

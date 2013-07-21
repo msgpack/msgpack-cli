@@ -45,7 +45,7 @@ namespace MsgPack
 
 		public void UnpackFromMessage( Unpacker unpacker )
 		{
-			if ( !unpacker.IsArrayHeader || unpacker.Data.Value.AsInt32() != 5 )
+			if ( !unpacker.IsArrayHeader || unpacker.LastReadData.AsInt32() != 5 )
 			{
 				throw new ArgumentException( "Must be 5 element array." );
 			}

@@ -34,18 +34,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			T value;
 #if !WINDOWS_PHONE && !NETFX_35
-			if ( !Enum.TryParse( unpacker.Data.Value.DeserializeAsString(), out value ) )
+			if ( !Enum.TryParse( unpacker.LastReadData.DeserializeAsString(), out value ) )
 			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.Data.Value.AsString(), typeof( T ) ) );
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.LastReadData.AsString(), typeof( T ) ) );
 			}
 #else
 			try
 			{
-				value = ( T )Enum.Parse( typeof( T ), unpacker.Data.Value.AsString(), false );
+				value = ( T )Enum.Parse( typeof( T ), unpacker.LastReadData.AsString(), false );
 			}
 			catch( ArgumentException )
 			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.Data.Value.AsString(), typeof( T ) ) );
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid for enum type '{1}'.", unpacker.LastReadData.AsString(), typeof( T ) ) );
 			}
 #endif
 			return value;

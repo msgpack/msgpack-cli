@@ -193,12 +193,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
-			if ( !unpacker.Data.HasValue )
-			{
-				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
-			}
-
-			if ( unpacker.Data.GetValueOrDefault().IsNil )
+			if ( unpacker.LastReadData.IsNil )
 			{
 				if ( _isNullable )
 				{
@@ -267,12 +262,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
-			if ( !unpacker.Data.HasValue )
-			{
-				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
-			}
-
-			if ( unpacker.Data.Value.IsNil )
+			if ( unpacker.LastReadData.IsNil )
 			{
 				return;
 			}
@@ -405,11 +395,6 @@ namespace MsgPack.Serialization
 			if ( !( collection is T ) )
 			{
 				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
-			}
-
-			if ( !unpacker.Data.HasValue )
-			{
-				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
 			}
 
 			this.UnpackToCore( unpacker, ( T )collection );

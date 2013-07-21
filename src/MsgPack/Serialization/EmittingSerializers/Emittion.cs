@@ -660,14 +660,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 						 * }
 						 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
-					il.EmitGetProperty( Metadata._Unpacker.Data );
+					il.EmitGetProperty( Metadata._Unpacker.LastReadData );
 					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
-					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = localHolder.UnpackedDataValue;
-					il.EmitAnyStloc( dataValue );
-					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
 					il.EmitBrtrue( endOfDeserialization );
 
@@ -682,14 +678,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 						 * }
 						 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
-					il.EmitGetProperty( Metadata._Unpacker.Data );
+					il.EmitGetProperty( Metadata._Unpacker.LastReadData );
 					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
-					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = localHolder.UnpackedDataValue;
-					il.EmitAnyStloc( dataValue );
-					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
 					var endIf0 = il.DefineLabel( "END_IF0" );
 					il.EmitBrfalse_S( endIf0 );
@@ -825,14 +817,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 * }
 					 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
-					il.EmitGetProperty( Metadata._Unpacker.Data );
+					il.EmitGetProperty( Metadata._Unpacker.LastReadData );
 					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
-					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = localHolder.UnpackedDataValue;
-					il.EmitAnyStloc( dataValue );
-					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
 					il.EmitBrtrue( endOfDeserialization );
 
@@ -855,14 +843,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 * }
 					 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
-					il.EmitGetProperty( Metadata._Unpacker.Data );
+					il.EmitGetProperty( Metadata._Unpacker.LastReadData );
 					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
-					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = localHolder.UnpackedDataValue;
-					il.EmitAnyStloc( dataValue );
-					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
 					var endIf0 = il.DefineLabel( "END_IF0" );
 					il.EmitBrfalse_S( endIf0 );

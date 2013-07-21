@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ); 
+				return MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -64,7 +64,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return MessagePackConvert.ToDateTimeOffset( unpacker.Data.Value.AsInt64() ); 
+				return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.AsInt64() ); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -88,7 +88,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsBoolean();
+				return unpacker.LastReadData.AsBoolean();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -108,7 +108,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsByte();
+				return unpacker.LastReadData.AsByte();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -128,7 +128,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return ( System.Char ) unpacker.Data.Value.AsUInt16(); 
+				return ( System.Char ) unpacker.LastReadData.AsUInt16(); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -152,7 +152,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return System.Decimal.Parse( unpacker.Data.Value.AsString(), CultureInfo.InvariantCulture ); 
+				return System.Decimal.Parse( unpacker.LastReadData.AsString(), CultureInfo.InvariantCulture ); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -176,7 +176,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsDouble();
+				return unpacker.LastReadData.AsDouble();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -196,7 +196,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return new System.Guid( unpacker.Data.Value.AsBinary() ); 
+				return new System.Guid( unpacker.LastReadData.AsBinary() ); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -220,7 +220,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsInt16();
+				return unpacker.LastReadData.AsInt16();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -240,7 +240,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsInt32();
+				return unpacker.LastReadData.AsInt32();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -260,7 +260,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsInt64();
+				return unpacker.LastReadData.AsInt64();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -280,7 +280,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsSByte();
+				return unpacker.LastReadData.AsSByte();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -300,7 +300,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsSingle();
+				return unpacker.LastReadData.AsSingle();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -321,7 +321,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			System.Int64 ctorArgument;
 			try
 			{
-				ctorArgument = unpacker.Data.Value.AsInt64();
+				ctorArgument = unpacker.LastReadData.AsInt64();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -343,7 +343,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsUInt16();
+				return unpacker.LastReadData.AsUInt16();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -363,7 +363,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsUInt32();
+				return unpacker.LastReadData.AsUInt32();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -383,7 +383,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsUInt64();
+				return unpacker.LastReadData.AsUInt64();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -405,7 +405,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			System.Int32 ctorArgument;
 			try
 			{
-				ctorArgument = unpacker.Data.Value.AsInt32();
+				ctorArgument = unpacker.LastReadData.AsInt32();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -429,7 +429,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); 
+				return new System.Numerics.BigInteger( unpacker.LastReadData.AsBinary() ); 
 			}
 			catch( ArgumentException ex )
 			{
