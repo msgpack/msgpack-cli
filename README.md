@@ -5,6 +5,26 @@
 This is MessagePack serialization/deserialization for CLI (Common Language Infrastructure) implementations such as .NET Framework, Silverlight, Mono (including Moonlight.)
 This library can be used from ALL CLS compliant languages such as C#, F#, Visual Basic, Iron Pyhton, Iron Ruby, PowerShell, C++/CLI or so.
 
+## Usage
+
+```c#
+var serializer = MessagePackSerializer<T>.Create();
+serializer.Pack(stream, obj);
+var unpackedObject = serializer.Unpack(stream);
+```
+
+```VisualBasic
+Dim serializer = MessagePackSerializer(Of T).Create()
+serializer.Pack(stream, obj)
+Dim unpackedObject = serializer.Unpack(stream)
+```
+
+## Features
+
+* Fast and interoperable binary format serialization with simple API.
+* Generating pre-compiled assembly for rapid start up.
+* Flexible MessagePackObject which represents MessagePack type system naturally.
+
 ## Documentation
 
 See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
