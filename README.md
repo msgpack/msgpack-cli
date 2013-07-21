@@ -13,7 +13,7 @@ serializer.Pack(stream, obj);
 var unpackedObject = serializer.Unpack(stream);
 ```
 
-```VisualBasic
+```vb
 Dim serializer = MessagePackSerializer(Of T).Create()
 serializer.Pack(stream, obj)
 Dim unpackedObject = serializer.Unpack(stream)
