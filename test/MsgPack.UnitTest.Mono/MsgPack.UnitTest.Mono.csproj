@@ -265,6 +265,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializerGeneratorTest.cs">
+      <Link>Serialization\SerializerGeneratorTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SimpleCollection`1.cs">
       <Link>Serialization\SimpleCollection`1.cs</Link>
     </Compile>

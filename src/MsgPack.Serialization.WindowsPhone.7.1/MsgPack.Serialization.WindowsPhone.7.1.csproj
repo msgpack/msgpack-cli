@@ -261,6 +261,9 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_Packer.cs">
       <Link>Serialization\Metadata\_Packer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_SerializationCompatibilityOptions.cs">
+      <Link>Serialization\Metadata\_SerializationCompatibilityOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_SerializationContext.cs">
       <Link>Serialization\Metadata\_SerializationContext.cs</Link>
     </Compile>
