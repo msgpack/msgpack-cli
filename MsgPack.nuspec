@@ -8,6 +8,7 @@
     <owners>FUJIWARA, Yusuke</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/msgpack/msgpack-cli</projectUrl>
+    <iconUrl>https://github.com/msgpack/msgpack-cli/blob/master/msgpack.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MessagePack is fast, compact, and interoperable binary serialization format.
 This library provides MessagePack serialization/deserialization APIs.</description>
