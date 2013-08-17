@@ -57,10 +57,15 @@ Release 0.3.2 - 2013/6/30
   BUG FIXES
   * Fix infinite loop for invalid stream which header is Raw and it does not have enough length contents.
 
+Release 0.3.2.1 - 2013/8/17
+  BUG FIXES
+  * Fix Unpacker.ReadString/ReadBinary of subtree unpacker leads to subsequent unpacking failure when unpacked value is nil or empty.
+
 Release 0.4 - 2013/8/31
 
   BREAKING CHANGES
   * Packer.PackRaw(IEnumerable<byte>) can emit compact binary when the IEnumerable<byte> object also implements ICollection<byte> or ICollection.
+
   * There are little issues in corner cases.
     * Unpacker.Data never returns null even if it is in before head of underlying stream.
     * MessagePackSerializer<T>.UnpackFrom does not throw exception when unpacker is still in before head of the underlying stream. Note that generated serializer still require that the unpacker is in head of the underlying array or map.
