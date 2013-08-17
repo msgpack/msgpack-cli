@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MessagePack is fast, compact, and interoperable binary serialization format.
 This library provides MessagePack serialization/deserialization APIs.</description>
-    <releaseNotes>This release improves some performance, adds limited WinRT support, and adds .NET 3.5 support.</releaseNotes>
+    <releaseNotes>This release improves performance, adds str8 support, ext type support.</releaseNotes>
     <copyright>Copyright 2010-2013 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>Serialization MessagePack MsgPack</tags>
     <dependencies />

@@ -57,7 +57,7 @@ Release 0.3.2 - 2013/6/30
   BUG FIXES
   * Fix infinite loop for invalid stream which header is Raw and it does not have enough length contents.
 
-Release 0.4 - T.B.D.
+Release 0.4 - 2013/8/31
 
   BREAKING CHANGES
   * Packer.PackRaw(IEnumerable<byte>) can emit compact binary when the IEnumerable<byte> object also implements ICollection<byte> or ICollection.
@@ -71,3 +71,7 @@ Release 0.4 - T.B.D.
 
   NOTE
   * Nullable<MessagePack> based unpacker API is deprecated becaue of their poor performance. You should use fast non-nullable APIs instead (properties/methods with 'Data' suffixes).
+
+Futures
+  * CodeDOM emitter to improve debuggability rather than handiness.
+  * Xamarin support.
