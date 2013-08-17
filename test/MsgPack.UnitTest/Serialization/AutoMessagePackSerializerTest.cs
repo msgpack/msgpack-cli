@@ -703,6 +703,35 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestUnpackable_UnpackFromMessageUsed()
+		{
+			var serializer = this.CreateTarget<JustUnpackable>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new JustUnpackable();
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Int32Field.ToString(), Is.EqualTo( JustUnpackable.Dummy ) );
+			}
+		}
+
+		[Test]
+		public void TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed()
+		{
+			var serializer = this.CreateTarget<PackableUnpackable>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new PackableUnpackable();
+				value.Int32Field = 1;
+				serializer.Pack( stream, value );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { 0x91, 0xA1, ( byte )'A' } ) );
+				stream.Position = 0;
+				serializer.Unpack( stream );
+			}
+		}
+
+		[Test]
 		public void TestBinary_DefaultContext()
 		{
 			var serializer = MessagePackSerializer.Create<byte[]>();
@@ -1223,15 +1252,27 @@ namespace MsgPack.Serialization
 
 		public class JustUnpackable : IUnpackable
 		{
-			public const string Dummy = "A";
+			public const string Dummy = "1";
 
 			public int Int32Field { get; set; }
 
 			public void UnpackFromMessage( Unpacker unpacker )
 			{
-				Assert.That( unpacker.IsArrayHeader );
 				var value = unpacker.UnpackSubtreeData();
-				Assert.That( value.AsList()[ 0 ] == Dummy, "{0} != \"[{1}]\"", value, Dummy );
+				if( value.IsArray )
+				{
+					Assert.That( value.AsList()[ 0 ] == 0, "{0} != \"[{1}]\"", value, 0 );
+				}
+				else if( value.IsMap )
+				{
+					Assert.That( value.AsDictionary().First().Value == 0, "{0} != \"[{1}]\"", value, 0 );
+				}
+				else
+				{
+					Assert.Fail( "Unknown spec." );
+				}
+
+				this.Int32Field = Int32.Parse( Dummy );
 			}
 		}
 
