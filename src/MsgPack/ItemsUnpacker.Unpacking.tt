@@ -199,6 +199,9 @@ private void OnNilRawValue()
 {
 #>
 result = null;
+<#+
+this.OnReturnScalarObject( "result" );
+#>
 return true;
 <#+
 }

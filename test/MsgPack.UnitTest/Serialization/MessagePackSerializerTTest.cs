@@ -464,5 +464,94 @@ namespace MsgPack.Serialization
 				return buffer.ToArray();
 			}
 		}
+
+
+		[Test]
+		public void TestIssue10_Null_ReadString()
+		{
+			TestIssue10_ReadXxxCore( new Inner() { A = null, Bytes = null } );
+		}
+
+		[Test]
+		public void TestIssue10_Empty_ReadString()
+		{
+			TestIssue10_ReadXxxCore( new Inner() { A = String.Empty, Bytes = Binary.Empty } );
+		}
+
+		private void TestIssue10_ReadXxxCore( Inner inner )
+		{
+			var serializer = MessagePackSerializer.Create<Outer>();
+			var outer = new Outer();
+			outer.Inner = inner;
+			var bytes = serializer.PackSingleObject( outer );
+			var result = serializer.UnpackSingleObject( bytes );
+			Assert.That( result.A, Is.EqualTo( outer.A ) );
+			Assert.That( result.O, Is.EqualTo( outer.O ) );
+			Assert.That( result.Inner, Is.Not.Null );
+			Assert.That( result.Inner.A, Is.EqualTo( outer.Inner.A ) );
+			Assert.That( result.Inner.Bytes, Is.EqualTo( outer.Inner.Bytes ) );
+			Assert.That( result.Inner.C, Is.EqualTo( outer.Inner.C ) );
+		}
+
+		[Test]
+		public void TestIssue10_Null_Reader()
+		{
+			TestIssue10_Reader( new Inner() { A = null, Bytes = null } );
+		}
+
+		[Test]
+		public void TestIssue10_Empty_Reader()
+		{
+			TestIssue10_Reader( new Inner() { A = String.Empty, Bytes = Binary.Empty } );
+
+		}
+
+		private void TestIssue10_Reader( Inner inner )
+		{
+			var serializer = MessagePackSerializer.Create<Outer>();
+			var outer = new Outer();
+			outer.Inner = inner;
+			var bytes = serializer.PackSingleObject( outer );
+			using ( var buffer = new MemoryStream( bytes ) )
+			using ( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Action<Unpacker, MessagePackObject> assertion =
+					( u, o ) =>
+					{
+						Assert.That( u.Read(), Is.True );
+						Assert.That( u.Data.Value == o, "{0} == {1}", u.Data.Value, o );
+					};
+
+				assertion( unpacker, 3 );
+				Assert.That( unpacker.IsArrayHeader );
+
+				assertion( unpacker, outer.A );
+				assertion( unpacker, 3 );
+				Assert.That( unpacker.IsArrayHeader );
+
+				using ( var subtreeUnpacker = unpacker.ReadSubtree() )
+				{
+					assertion( subtreeUnpacker, outer.Inner.A );
+					assertion( subtreeUnpacker, outer.Inner.Bytes );
+					assertion( subtreeUnpacker, outer.Inner.C );
+				}
+
+				assertion( unpacker, outer.O );
+			}
+		}
+
+		public class Outer
+		{
+			public string A = "A";
+			public Inner Inner = new Inner();
+			public string O = "O";
+		}
+
+		public class Inner
+		{
+			public string A = null;
+			public byte[] Bytes = null;
+			public string C = "C";
+		}
 	}
 }
