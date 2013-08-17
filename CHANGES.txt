@@ -53,6 +53,7 @@ Release 0.3.2 - 2013/6/30
 
   FEATURES
   * Support safe deserialization for the stream which contains new types of MsgPack spec.
+    see https://github.com/msgpack/msgpack/blob/master/spec.md for details.
 
   BUG FIXES
   * Fix infinite loop for invalid stream which header is Raw and it does not have enough length contents.
@@ -72,7 +73,11 @@ Release 0.4 - 2013/8/31
 
   FEATURES
   * Support binary types, string8 types, and extension types of MsgPack spec.
+    see https://github.com/msgpack/msgpack/blob/master/spec.md for details.
   * SerializerGenerator now enable to specify output directory.
+
+  BUG FIXES
+  * Fix SerializerGenerator only support one serealizer per assembly.
 
   NOTE
   * Nullable<MessagePack> based unpacker API is deprecated becaue of their poor performance. You should use fast non-nullable APIs instead (properties/methods with 'Data' suffixes).
