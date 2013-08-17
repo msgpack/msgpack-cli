@@ -499,7 +499,7 @@ namespace MsgPack.Serialization
 					( u, o ) =>
 					{
 						Assert.That( u.Read(), Is.True );
-						Assert.That( u.Data.Value == o, "{0} == {1}", u.Data.Value, o );
+						Assert.That( u.LastReadData == o, "{0} == {1}", u.LastReadData, o );
 					};
 
 				assertion( unpacker, 3 );
