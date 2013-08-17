@@ -5794,9 +5794,7 @@ namespace MsgPack
 				case MessagePackCode.NilValue:
 				{
 					result = null;
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.None;
 					return true;
 				}
 				case MessagePackCode.Bin8: 
@@ -5855,9 +5853,7 @@ namespace MsgPack
 			if ( size == 0 )
 			{
 				result = Binary.Empty;
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				this._data = result;
+				this.InternalCollectionType = CollectionType.None;
 				return true;
 			}
 			
@@ -5901,9 +5897,7 @@ namespace MsgPack
 				case MessagePackCode.NilValue:
 				{
 					result = null;
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.None;
 					return true;
 				}
 				case MessagePackCode.Bin8: 
@@ -5962,9 +5956,7 @@ namespace MsgPack
 			if ( size == 0 )
 			{
 				result = Binary.Empty;
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				this._data = result;
+				this.InternalCollectionType = CollectionType.None;
 				return true;
 			}
 			
@@ -6013,9 +6005,7 @@ namespace MsgPack
 				case MessagePackCode.NilValue:
 				{
 					result = null;
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.None;
 					return true;
 				}
 				case MessagePackCode.Bin8: 
@@ -6074,9 +6064,7 @@ namespace MsgPack
 			if ( size == 0 )
 			{
 				result = String.Empty;
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				this._data = result;
+				this.InternalCollectionType = CollectionType.None;
 				return true;
 			}
 			
@@ -6156,9 +6144,7 @@ namespace MsgPack
 				case MessagePackCode.NilValue:
 				{
 					result = null;
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.None;
 					return true;
 				}
 				case MessagePackCode.Bin8: 
@@ -6217,9 +6203,7 @@ namespace MsgPack
 			if ( size == 0 )
 			{
 				result = String.Empty;
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				this._data = result;
+				this.InternalCollectionType = CollectionType.None;
 				return true;
 			}
 			
