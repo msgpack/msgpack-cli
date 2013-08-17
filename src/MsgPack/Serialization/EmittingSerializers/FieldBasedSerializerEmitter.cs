@@ -257,7 +257,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il.Emit(
 						OpCodes.Call,
 						this._typeBuilder.BaseType.GetConstructor(
-							BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, _serializerConstructorParameterTypes, null ) );
+							BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, _serializerConstructorParameterTypes, null 
+						) 
+					);
 
 					// this._serializerN = context.GetSerializer<T>();
 					foreach ( var entry in this._serializers )
