@@ -25,13 +25,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-#if !NETFX_CORE
+
 using MsgPack.Serialization.EmittingSerializers;
-#endif
 
 namespace MsgPack.Serialization
 {
-	// TODO: Can we enable this feature on WinRT using ...?
+	// TODO: Enable this feature on WinRT using CodeDOM.
 	/// <summary>
 	///		Provides pre-compiled serialier assembly generation.
 	/// </summary>
@@ -199,9 +198,11 @@ namespace MsgPack.Serialization
 			// AssemblyBuilder cannot be debugged because no PDB files (and 'dummy' source files to step).
 			DefaultSerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
 
+			var generatorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
+
 			foreach( var targetType in this._targetTypes )
 			{
-				( Activator.CreateInstance( typeof( Builder<> ).MakeGenericType( targetType) ) as Builder ).GenerateSerializerTo( context, assemblyBuilder );
+				( Activator.CreateInstance( typeof( Builder<> ).MakeGenericType( targetType) ) as Builder ).GenerateSerializerTo( context, generatorManager );
 			}
 
 			assemblyBuilder.Save( this._assemblyName.Name + ".dll" );
@@ -220,8 +221,8 @@ namespace MsgPack.Serialization
 			///		Generates serializers using a specified assembly builder.
 			/// </summary>
 			/// <param name="context">The dedicated <see cref="SerializationContext"/>.</param>
-			/// <param name="assemblyBuilder">The dedicated <see cref="AssemblyBuilder"/>.</param>
-			public abstract void GenerateSerializerTo( SerializationContext context, AssemblyBuilder assemblyBuilder );
+			/// <param name="generatorManager">The dedicated <see cref="SerializationMethodGeneratorManager"/>.</param>
+			public abstract void GenerateSerializerTo( SerializationContext context, SerializationMethodGeneratorManager generatorManager );
 		}
 
 		/// <summary>
@@ -236,11 +237,11 @@ namespace MsgPack.Serialization
 			///		Generates the assembly and saves it to current directory.
 			/// </summary>
 			/// <param name="context">The dedicated <see cref="SerializationContext"/>.</param>
-			/// <param name="assemblyBuilder">The dedicated <see cref="AssemblyBuilder"/>.</param>
-			public override void GenerateSerializerTo( SerializationContext context, AssemblyBuilder assemblyBuilder )
+			/// <param name="generatorManager">The dedicated <see cref="SerializationMethodGeneratorManager"/>.</param>
+			public override void GenerateSerializerTo( SerializationContext context, SerializationMethodGeneratorManager generatorManager )
 			{
 				var builder = context.SerializationMethod == SerializationMethod.Array ? new ArrayEmittingSerializerBuilder<T>( context ) as EmittingSerializerBuilder<T> : new MapEmittingSerializerBuilder<T>( context );
-				builder.GeneratorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
+				builder.GeneratorManager = generatorManager;
 				builder.CreateSerializer();
 			}
 		}
