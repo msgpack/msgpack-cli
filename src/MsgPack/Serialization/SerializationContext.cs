@@ -228,6 +228,11 @@ namespace MsgPack.Serialization
 #endif
 		}
 
+		internal bool ContainsSerializer( Type rootType )
+		{
+			return this._serializers.Contains( rootType );
+		}
+
 		/// <summary>
 		///		Gets the <see cref="MessagePackSerializer{T}"/> with this instance.
 		/// </summary>

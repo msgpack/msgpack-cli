@@ -235,5 +235,36 @@ namespace MsgPack.Serialization
 
 			return false;
 		}
+
+#if !PARTIAL_TRUST && !SILVERLIGHT
+		[SecuritySafeCritical]
+#endif
+		internal bool Coontains( Type type )
+		{
+			bool holdsReadLock = false;
+#if !SILVERLIGHT && !NETFX_CORE
+			RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+			try { }
+			finally
+			{
+				this._lock.EnterReadLock();
+				holdsReadLock = true;
+			}
+#if !SILVERLIGHT && !NETFX_CORE
+			RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+			try
+			{
+				return this._table.ContainsKey( type.TypeHandle );
+			}
+			finally
+			{
+				if ( holdsReadLock )
+				{
+					this._lock.ExitReadLock();
+				}
+			}
+		}
 	}
 }

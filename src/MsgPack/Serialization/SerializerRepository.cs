@@ -172,5 +172,10 @@ namespace MsgPack.Serialization
 
 			return repository;
 		}
+
+		internal bool Contains( Type rootType )
+		{
+			return this._repository.Coontains( rootType );
+		}
 	}
 }
