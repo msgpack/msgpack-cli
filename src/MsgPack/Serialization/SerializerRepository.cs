@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -30,14 +30,14 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed partial class SerializerRepository : IDisposable
 	{
-		private readonly TypeKeyRepository _repository;
+		private readonly SerializerTypeKeyRepository _repository;
 
 		/// <summary>
 		/// Initializes a new empty instance of the <see cref="SerializerRepository"/> class.
 		/// </summary>
 		public SerializerRepository()
 		{
-			this._repository = new TypeKeyRepository();
+			this._repository = new SerializerTypeKeyRepository();
 		}
 
 		/// <summary>
@@ -54,12 +54,12 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "copiedFrom" );
 			}
 
-			this._repository = new TypeKeyRepository( copiedFrom._repository );
+			this._repository = new SerializerTypeKeyRepository( copiedFrom._repository );
 		}
 
 		private SerializerRepository( Dictionary<RuntimeTypeHandle, object> table )
 		{
-			this._repository = new TypeKeyRepository( table );
+			this._repository = new SerializerTypeKeyRepository( table );
 			this._repository.Freeze();
 		}
 
@@ -99,7 +99,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Register <see cref="MessagePackSerializer{T}"/>.
+		///		Registers a <see cref="MessagePackSerializer{T}"/>.
 		/// </summary>
 		/// <typeparam name="T">The type of serialization target.</typeparam>
 		/// <param name="serializer"><see cref="MessagePackSerializer{T}"/> instance.</param>
@@ -116,7 +116,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "serializer" );
 			}
 
-			return this._repository.Register<T>( serializer );
+			return this._repository.Register( typeof( T ), serializer, allowOverwrite: false );
 		}
 
 		private static readonly Dictionary<PackerCompatibilityOptions, SerializerRepository> _defaults =

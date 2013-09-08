@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -197,6 +197,19 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		private readonly DefaultConcreteTypeRepository _defaultCollectionTypes;
+
+		/// <summary>
+		///		Gets the default collection types.
+		/// </summary>
+		/// <value>
+		///		The default collection types. This value will not be <c>null</c>.
+		/// </value>
+		public DefaultConcreteTypeRepository DefaultCollectionTypes
+		{
+			get { return this._defaultCollectionTypes; }
+		}
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.Default"/>.
 		/// </summary>
@@ -210,7 +223,8 @@ namespace MsgPack.Serialization
 		public SerializationContext( PackerCompatibilityOptions packerCompatibilityOptions )
 			: this( new SerializerRepository( SerializerRepository.GetDefault( packerCompatibilityOptions ) ), packerCompatibilityOptions ) { }
 
-		internal SerializationContext( SerializerRepository serializers, PackerCompatibilityOptions packerCompatibilityOptions )
+		internal SerializationContext(
+			SerializerRepository serializers, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
 			Contract.Requires( serializers != null );
 
@@ -226,6 +240,7 @@ namespace MsgPack.Serialization
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
 #endif
+			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 		}
 
 		internal bool ContainsSerializer( Type rootType )

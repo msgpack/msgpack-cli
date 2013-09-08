@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -249,16 +249,17 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <summary>
 		///		Returns an appropriate <see cref="ConstructorInfo"/> of collection.
 		/// </summary>
-		/// <typeparam name="T">The type of the collection.</typeparam>
+		/// <param name="context">The serialization context which holds default collection type.</param>
+		/// <param name="type">The type of the collection.</param>
 		/// <returns>An appropriate <see cref="ConstructorInfo"/> of collection.</returns>
 		/// <remarks>
 		///		If the collection has <c>.ctor(int capacity)</c>, then it will be returned.
 		///		Otherwise, default constructor will be returned.
 		///		Note that this method cannot determine whether a single <see cref="Int32"/> parameter truely represents 'capacity' or not.
 		/// </remarks>
-		public static ConstructorInfo GetCollectionConstructor<T>()
+		public static ConstructorInfo GetCollectionConstructor( SerializationContext context, Type type )
 		{
-			return typeof( T ).GetConstructor( _containsCapacity ) ?? typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes );
+			return type.GetConstructor( _containsCapacity ) ?? type.GetConstructor( ReflectionAbstractions.EmptyTypes );
 		}
 
 		/// <summary>

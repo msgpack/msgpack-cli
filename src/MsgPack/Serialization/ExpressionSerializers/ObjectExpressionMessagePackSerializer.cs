@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -76,6 +76,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		protected ObjectExpressionMessagePackSerializer( SerializationContext context, SerializingMember[] members )
 			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
+			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
+			{
+				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( T ) );
+			}
+
 			this._createInstance =
 				Expression.Lambda<Func<T>>(
 					typeof( T ).GetIsValueType()

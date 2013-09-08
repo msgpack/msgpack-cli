@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 #if !MSTEST
@@ -78,6 +81,105 @@ namespace MsgPack.Serialization
 			new ConcurrentHelper<MessagePackSerializer<ComplexType>>(
 				() => ( MessagePackSerializer<ComplexType> )target.GetSerializer( typeof( ComplexType ) )
 			).Test();
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Default_Check()
+		{
+			var context = new SerializationContext();
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList<> ) ), Is.EqualTo( typeof( List<> ) ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( ISet<> ) ), Is.EqualTo( typeof( HashSet<> ) ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable<> ) ), Is.EqualTo( typeof( List<> ) ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary ) ), Is.EqualTo( typeof( MessagePackObjectDictionary ) ) );
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_Collection_New_Ok()
+		{
+			var context = new SerializationContext();
+			context.DefaultCollectionTypes.Register( typeof( NewAbstractCollection<> ), typeof( NewConcreteCollection<> ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( NewAbstractCollection<> ) ), Is.EqualTo( typeof( NewConcreteCollection<> ) ) );
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_Collection_Overwrite_Ok()
+		{
+			var context = new SerializationContext();
+			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList<> ) ), Is.EqualTo( typeof( Collection<> ) ) );
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_Collection_Closed_Ok()
+		{
+			var context = new SerializationContext();
+			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( Collection<string> ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList<> ) ), Is.EqualTo( typeof( List<> ) ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList<string> ) ), Is.EqualTo( typeof( Collection<string> ) ) );
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_NonCollection_Fail()
+		{
+			var context = new SerializationContext();
+			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( Stream ), typeof( MemoryStream ) ) );
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_ArityIsTooMany_Fail()
+		{
+			var context = new SerializationContext();
+			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( IEnumerable<> ), typeof( Dictionary<,> ) ) );
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_ArityIsTooFew_Fail()
+		{
+			var context = new SerializationContext();
+			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( IDictionary<,> ), typeof( StringKeyDictionary<> ) ) );
+		}
+
+#if !NETFX_CORE
+		[Test]
+		public void TestDefaultCollectionTypes_Register_Incompatible_Fail()
+		{
+			var context = new SerializationContext();
+			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( ArrayList ) ) );
+		}
+#endif
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_NonGenericGenericMpoOk()
+		{
+			var context = new SerializationContext();
+			context.DefaultCollectionTypes.Register( typeof( IList ), typeof( Collection<MessagePackObject> ) );
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList ) ), Is.EqualTo( typeof( Collection<MessagePackObject> ) ) );
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_AbstractType_Fail()
+		{
+			var context = new SerializationContext();
+			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( IList ), typeof( IList<MessagePackObject> ) ) );
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_OpenClose_Fail()
+		{
+			var context = new SerializationContext();
+			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( List<string> ) ) );
+		}
+
+		[Test]
+		public void TestDefaultCollectionTypes_Register_CloseOpen_Fail()
+		{
+			var context = new SerializationContext();
+			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( List<> ) ) );
 		}
 
 		private sealed class ConcurrentHelper<T> : IDisposable
@@ -144,6 +246,19 @@ namespace MsgPack.Serialization
 #endif
 				}
 			}
+		}
+
+		public abstract class NewAbstractCollection<T> : Collection<T>
+		{
+			
+		}
+
+		public sealed class NewConcreteCollection<T> : NewAbstractCollection<T>
+		{
+		}
+
+		private sealed class StringKeyDictionary<T> : Dictionary<String, T>
+		{
 		}
 	}
 }

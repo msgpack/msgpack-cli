@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
-using System.Text;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
@@ -77,7 +76,7 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
-			if( _traceOn && this.CanDumpAssembly )
+			if ( _traceOn && this.CanDumpAssembly )
 			{
 				try
 				{
@@ -526,7 +525,7 @@ namespace MsgPack.Serialization
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[ 0 ] );
-				Assert.That( stream.Length, Is.EqualTo( 1 ), BitConverter.ToString( stream.ToArray() ));
+				Assert.That( stream.Length, Is.EqualTo( 1 ), BitConverter.ToString( stream.ToArray() ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
 			}
@@ -617,20 +616,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Int32ArrayField, Is.EqualTo( value.Int32ArrayField ) );
 				Assert.That( result.DictionaryField, Is.EqualTo( value.DictionaryField ) );
 			}
-		}
-
-		[Test]
-		public void TestAbstractList_Fail()
-		{
-			var serializer = this.CreateTarget<IList<int>>( GetSerializationContext() );
-			Assert.Throws<NotSupportedException>( () => serializer.Unpack( new MemoryStream( new byte[] { 0x90 } ) ) );
-		}
-
-		[Test]
-		public void TestAbstractDictionary_Fail()
-		{
-			var serializer = this.CreateTarget<IDictionary<int, int>>( GetSerializationContext() );
-			Assert.Throws<NotSupportedException>( () => serializer.Unpack( new MemoryStream( new byte[] { 0x90 } ) ) );
 		}
 
 		[Test]
@@ -786,6 +771,99 @@ namespace MsgPack.Serialization
 				var unpacked = serializer.Unpack( stream );
 				Assert.That( unpacked.ToString( "yyyyMMddHHmmssfff" ), Is.EqualTo( date.ToString( "yyyyMMddHHmmssfff" ) ) );
 			}
+		}
+
+		[Test]
+		public void TestAbstractTypes_KnownCollections_Default_Success()
+		{
+			var context = new SerializationContext();
+			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
+			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var unpacked = serializer.Unpack( stream );
+				Assert.That( unpacked.Collection, Is.Not.Null.And.InstanceOf<List<int>>() );
+				Assert.That( unpacked.Collection[ 0 ], Is.EqualTo( 1 ) );
+				Assert.That( unpacked.Collection[ 1 ], Is.EqualTo( 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestAbstractTypes_KnownCollections_WithoutRegistration_Fail()
+		{
+			var context = new SerializationContext();
+			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
+			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
+			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				Assert.Throws<NotSupportedException>( () => serializer.Unpack( stream ) );
+			}
+		}
+
+		[Test]
+		public void TestAbstractTypes_KnownCollections_ExplicitRegistration_Success()
+		{
+			var context = new SerializationContext();
+			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
+			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
+			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var unpacked = serializer.Unpack( stream );
+				Assert.That( unpacked.Collection, Is.Not.Null.And.InstanceOf<Collection<int>>() );
+				Assert.That( unpacked.Collection[ 0 ], Is.EqualTo( 1 ) );
+				Assert.That( unpacked.Collection[ 1 ], Is.EqualTo( 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestAbstractTypes_KnownCollections_ExplicitRegistrationForSpecific_Success()
+		{
+			var context = new SerializationContext();
+			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
+			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
+			var serializer1 = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
+				serializer1.Pack( stream, value );
+				stream.Position = 0;
+				var unpacked = serializer1.Unpack( stream );
+				Assert.That( unpacked.Collection, Is.Not.Null.And.InstanceOf<Collection<int>>() );
+				Assert.That( unpacked.Collection[ 0 ], Is.EqualTo( 1 ) );
+				Assert.That( unpacked.Collection[ 1 ], Is.EqualTo( 2 ) );
+			}
+
+			// check other types are not affected
+			var serializer2 = MessagePackSerializer.Create<WithAbstractCollection<string>>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithAbstractCollection<string>() { Collection = new[] { "1", "2" } };
+				serializer2.Pack( stream, value );
+				stream.Position = 0;
+				var unpacked = serializer2.Unpack( stream );
+				Assert.That( unpacked.Collection, Is.Not.Null.And.InstanceOf<List<string>>() );
+				Assert.That( unpacked.Collection[ 0 ], Is.EqualTo( "1" ) );
+				Assert.That( unpacked.Collection[ 1 ], Is.EqualTo( "2" ) );
+			}
+		}
+
+		[Test]
+		public void TestAbstractTypes_NotACollection_Fail()
+		{
+			var context = new SerializationContext();
+			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
+			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractNonCollection>( context ) );
 		}
 
 		// FIXME: init-only field, get-only property, Value type which implements IList<T> and has .ctor(int), Enumerator class which explicitly implements IEnumerator
@@ -1259,11 +1337,11 @@ namespace MsgPack.Serialization
 			public void UnpackFromMessage( Unpacker unpacker )
 			{
 				var value = unpacker.UnpackSubtreeData();
-				if( value.IsArray )
+				if ( value.IsArray )
 				{
 					Assert.That( value.AsList()[ 0 ] == 0, "{0} != \"[{1}]\"", value, 0 );
 				}
-				else if( value.IsMap )
+				else if ( value.IsMap )
 				{
 					Assert.That( value.AsDictionary().First().Value == 0, "{0} != \"[{1}]\"", value, 0 );
 				}
@@ -1321,6 +1399,16 @@ namespace MsgPack.Serialization
 				Assert.That( ext.TypeCode, Is.EqualTo( 1 ) );
 				return new DateTime( BigEndianBinary.ToInt64( ext.Body, 0 ) ).ToUniversalTime();
 			}
+		}
+
+		public class WithAbstractCollection<T>
+		{
+			public IList<T> Collection { get; set; }
+		}
+
+		public class WithAbstractNonCollection
+		{
+			public Stream NonCollection { get; set; }
 		}
 	}
 }

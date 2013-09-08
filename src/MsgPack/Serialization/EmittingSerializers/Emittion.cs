@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -719,8 +719,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 					// TODO: Refactoring
 					// Throw exception for non-nullable value type.
 					// Nop for nullables.
-					if( member.Member.GetMemberValueType().GetIsValueType()
-					    && Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
+					if ( member.Member.GetMemberValueType().GetIsValueType()
+						&& Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
 					{
 						/*
 						 * if( value == null )
@@ -954,6 +954,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( target != null );
 
 			// TODO: For collection, supports .ctor(IEnumerable<> other)
+
+			if ( target.LocalType.IsAbstract || target.LocalType.IsInterface )
+			{
+				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( target.LocalType );
+			}
 
 			if ( target.LocalType.IsArray )
 			{

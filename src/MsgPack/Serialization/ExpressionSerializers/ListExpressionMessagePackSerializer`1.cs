@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,28 +35,33 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		public ListExpressionMessagePackSerializer( SerializationContext context, CollectionTraits traits )
 			: base( context, traits )
 		{
-			if ( typeof( T ).IsArray )
+			Type type = typeof( T );
+			if( type.GetIsAbstract() )
+			{
+				type = context.DefaultCollectionTypes.GetConcreteType( typeof( T ) ) ?? type;
+			}
+
+			if ( type.IsArray )
 			{
 				var capacityParameter = Expression.Parameter( typeof( int ), "length" );
 				this._createInstanceWithCapacity =
 					Expression.Lambda<Func<int, T>>(
-							Expression.NewArrayBounds( typeof( T ).GetElementType(), capacityParameter ),
+							Expression.NewArrayBounds( type.GetElementType(), capacityParameter ),
 							capacityParameter
 						).Compile();
 				this._createInstance = null;
 			}
-			else if ( typeof( T ).GetIsAbstract() )
+			else if ( type.GetIsAbstract() )
 			{
-				this._createInstance = () => { throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( T ) ); };
+				this._createInstance = () => { throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( type ); };
 				this._createInstanceWithCapacity = null;
-
 			}
 			else
 			{
-				var constructor = ExpressionSerializerLogics.GetCollectionConstructor<T>();
+				var constructor = ExpressionSerializerLogics.GetCollectionConstructor( context, type );
 				if ( constructor == null )
 				{
-					this._createInstance = () => { throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) ); };
+					this._createInstance = () => { throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( type ); };
 					this._createInstanceWithCapacity = null;
 				}
 				else

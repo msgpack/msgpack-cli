@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		#region -- Arrays --
 
-		public static SerializerEmitter CreateArraySerializerCore( Type targetType, EmitterFlavor emitterFlavor )
+		public static SerializerEmitter CreateArraySerializerCore( SerializationContext context, Type targetType, EmitterFlavor emitterFlavor )
 		{
 			Contract.Requires( targetType != null );
 			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
@@ -48,7 +48,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var emitter = SerializationMethodGeneratorManager.Get().CreateEmitter( targetType, emitterFlavor );
 			var traits = targetType.GetCollectionTraits();
 			CreatePackArrayProceduresCore( targetType, emitter, traits );
-			CreateUnpackArrayProceduresCore( targetType, emitter, traits );
+			CreateUnpackArrayProceduresCore( context, targetType, emitter, traits );
 			return emitter;
 		}
 
@@ -188,24 +188,30 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		private static void CreateUnpackArrayProceduresCore( Type targetType, SerializerEmitter emitter, CollectionTraits traits )
+		private static void CreateUnpackArrayProceduresCore( SerializationContext context, Type targetType, SerializerEmitter emitter, CollectionTraits traits )
 		{
-			CreateArrayUnpackFrom( targetType, emitter, traits );
+			CreateArrayUnpackFrom( context, targetType, emitter, traits );
 			CreateArrayUnpackTo( targetType, emitter, traits );
 		}
 
-		private static void CreateArrayUnpackFrom( Type targetType, SerializerEmitter emitter, CollectionTraits traits )
+		private static void CreateArrayUnpackFrom( SerializationContext context, Type targetType, SerializerEmitter emitter, CollectionTraits traits )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
 			var localHolder = new LocalVariableHolder( il );
+			var instanceType = targetType;
+
 			try
 			{
 				if ( targetType.IsInterface || targetType.IsAbstract )
 				{
-					il.EmitTypeOf( targetType );
-					il.EmitAnyCall( SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod );
-					il.EmitThrow();
-					return;
+					instanceType = context.DefaultCollectionTypes.GetConcreteType( targetType );
+					if ( instanceType == null )
+					{
+						il.EmitTypeOf( targetType );
+						il.EmitAnyCall( SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod );
+						il.EmitThrow();
+						return;
+					}
 				}
 
 				/*
@@ -226,7 +232,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitAnyCall( SerializationExceptions.NewIsNotArrayHeaderMethod );
 				il.EmitThrow();
 				il.MarkLabel( endIf );
-				var collection = localHolder.GetDeserializingCollection( targetType );
+				var collection = localHolder.GetDeserializingCollection( instanceType );
 				// Emit newobj, newarr, or call ValueType..ctor()
 				Emittion.EmitConstruction(
 					il,
@@ -364,7 +370,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		#region -- Maps --
 
-		public static SerializerEmitter CreateMapSerializerCore( Type targetType, EmitterFlavor emitterFlavor )
+		public static SerializerEmitter CreateMapSerializerCore( SerializationContext context, Type targetType, EmitterFlavor emitterFlavor )
 		{
 			Contract.Requires( targetType != null );
 			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
@@ -378,6 +384,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				traits
 			);
 			CreateMapUnpack(
+				context,
 				targetType,
 				emitter,
 				traits
@@ -507,16 +514,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		private static void CreateMapUnpack( Type targetType, SerializerEmitter emitter, CollectionTraits traits )
+		private static void CreateMapUnpack( SerializationContext context, Type targetType, SerializerEmitter emitter, CollectionTraits traits )
 		{
-			CreateMapUnpackFrom( targetType, emitter, traits );
+			CreateMapUnpackFrom( context, targetType, emitter, traits );
 			CreateMapUnpackTo( targetType, emitter, traits );
 		}
 
-		private static void CreateMapUnpackFrom( Type targetType, SerializerEmitter emitter, CollectionTraits traits )
+		private static void CreateMapUnpackFrom( SerializationContext context, Type targetType, SerializerEmitter emitter, CollectionTraits traits )
 		{
 			var il = emitter.GetUnpackFromMethodILGenerator();
 			var localHolder = new LocalVariableHolder( il );
+			var instanceType = targetType;
+
 			try
 			{
 				/*
@@ -532,10 +541,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 				if ( targetType.IsInterface || targetType.IsAbstract )
 				{
-					il.EmitTypeOf( targetType );
-					il.EmitAnyCall( SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod );
-					il.EmitThrow();
-					return;
+					instanceType = context.DefaultCollectionTypes.GetConcreteType( targetType );
+					if( instanceType == null )
+					{
+						il.EmitTypeOf( targetType );
+						il.EmitAnyCall( SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod );
+						il.EmitThrow();
+						return;
+					}
 				}
 
 				il.EmitAnyLdarg( 1 );
@@ -546,7 +559,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.EmitThrow();
 				il.MarkLabel( endIf );
 
-				var collection = localHolder.GetDeserializingCollection( targetType );
+				var collection = localHolder.GetDeserializingCollection( instanceType );
 				Emittion.EmitConstruction(
 					il,
 					collection,
