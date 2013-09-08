@@ -63,7 +63,7 @@ Release 0.3.2.1 - 2013/8/17
   BUG FIXES
   * Fix Unpacker.ReadString/ReadBinary of subtree unpacker leads to subsequent unpacking failure when unpacked value is nil or empty.
 
-Release 0.4 - 2013/8/31
+Release 0.4 - 2013/9/8
 
   BREAKING CHANGES
   * Packer.PackRaw(IEnumerable<byte>) can emit compact binary when the IEnumerable<byte> object also implements ICollection<byte> or ICollection.
@@ -75,6 +75,7 @@ Release 0.4 - 2013/8/31
   * Support binary types, string8 types, and extension types of MsgPack spec.
     see https://github.com/msgpack/msgpack/blob/master/spec.md for details.
   * SerializerGenerator now enable to specify output directory.
+  * Specify default collection types for well-known abstract collection types (IList<T>, IDictionary<TKey,TValue>, etc.).
 
   BUG FIXES
   * Fix SerializerGenerator only support one serealizer per assembly.

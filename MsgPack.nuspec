@@ -3,7 +3,7 @@
   <metadata>
     <id>MsgPack.Cli</id>
     <title>MessagePack for CLI</title>
-    <version>0.4.0-beta3</version>
+    <version>0.4.0</version>
     <authors>FUJIWARA, Yusuke</authors>
     <owners>FUJIWARA, Yusuke</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MessagePack is fast, compact, and interoperable binary serialization format.
 This library provides MessagePack serialization/deserialization APIs.</description>
-    <releaseNotes>This release improves performance, adds str8 support, ext type support, and some bug fixes.</releaseNotes>
+    <releaseNotes>This release improves performance, adds str8 support, ext type support, improved serializer generator API, new abstract collection support, and some bug fixes.</releaseNotes>
     <copyright>Copyright 2010-2013 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>Serialization MessagePack MsgPack</tags>
     <dependencies />
