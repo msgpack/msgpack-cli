@@ -58,6 +58,22 @@ switch( header )
 		this.PopIndent();
 #>
 	}
+<#+
+	if (isNullable)
+	{
+#>
+	case 0xC0:
+	{
+<#+
+		this.PushIndent( 2 );
+		this.OnReturnScalar( "null" );
+		this.WriteReturn( "null" );
+		this.PopIndent();
+#>
+	}
+<#+
+	}
+#>
 	default:
 	{
 		throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, <#= TypeErrorMessage #>, typeof( bool ), header, MessagePackCode.ToString( header ) ) );
