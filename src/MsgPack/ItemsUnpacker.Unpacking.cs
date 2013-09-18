@@ -144,6 +144,13 @@ namespace MsgPack
 					result = false;
 					return true;
 				}
+				case 0xC0:
+				{
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					result = null;
+					return true;
+				}
 				default:
 				{
 					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", typeof( bool ), header, MessagePackCode.ToString( header ) ) );
@@ -181,6 +188,13 @@ namespace MsgPack
 					this._collectionType = CollectionType.None;
 					this._itemsCount = 0;
 					result = false;
+					return true;
+				}
+				case 0xC0:
+				{
+					this._collectionType = CollectionType.None;
+					this._itemsCount = 0;
+					result = null;
 					return true;
 				}
 				default:
