@@ -79,6 +79,8 @@ Release 0.4 - 2013/9/8
 
   BUG FIXES
   * Fix SerializerGenerator only support one serealizer per assembly.
+  * Fix UTC DateTime serialization is corrupt in Mono.
+  * Fix Boolean? unpacking is not implemented.
 
   NOTE
   * Nullable<MessagePack> based unpacker API is deprecated becaue of their poor performance. You should use fast non-nullable APIs instead (properties/methods with 'Data' suffixes).
