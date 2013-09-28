@@ -31,7 +31,7 @@ namespace MsgPack.Serialization
 		public List<int> MemberDefault
 		{
 			get { return this._memberDefault; }
-			internal set { this._memberDefault = value; }
+			set { this._memberDefault = value; }
 		}
 
 		private List<int> _null = new List<int>() { 1 };
@@ -40,7 +40,7 @@ namespace MsgPack.Serialization
 		public List<int> Null
 		{
 			get { return this._null; }
-			internal set { this._null = value; }
+			set { this._null = value; }
 		}
 
 		private List<int> _prohibit = new List<int>() { 2 };
@@ -49,7 +49,7 @@ namespace MsgPack.Serialization
 		public List<int> Prohibit
 		{
 			get { return this._prohibit; }
-			internal set { this._prohibit = value; }
+			set { this._prohibit = value; }
 		}
 	}
 }
