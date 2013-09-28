@@ -140,8 +140,7 @@ namespace MsgPack
 				}
 				case 0xC0:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = null;
 					return true;
 				}
@@ -184,8 +183,7 @@ namespace MsgPack
 				}
 				case 0xC0:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = null;
 					return true;
 				}
