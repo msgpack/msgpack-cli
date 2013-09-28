@@ -36,7 +36,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.Pack( 
 				MessagePackConvert.FromDateTime(
 					// DateTime.FromFileTimeUtc in Mono 2.10.x does not return Utc DateTime (Mono issue #2936), so do convert manually to ensure returned DateTime is UTC.
-					_fileTimeEpocUtc.AddTicks(unchecked( ( ( long )value.dwHighDateTime << 32 ) | ( value.dwLowDateTime & 0xffffffff ) ) )
+					_fileTimeEpocUtc.AddTicks( unchecked( ( ( long )value.dwHighDateTime << 32 ) | ( value.dwLowDateTime & 0xffffffff ) ) )
 				)
 			);
 		}
