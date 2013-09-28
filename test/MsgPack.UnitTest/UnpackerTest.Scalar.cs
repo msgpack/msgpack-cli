@@ -861,6 +861,84 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestUnpackBooleanTrue_Read()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( true ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpackBooleanTrue_ReadBoolean()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Boolean result;
+				Assert.IsTrue( unpacker.ReadBoolean( out result ) );
+				Assert.That( result, Is.EqualTo( true ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpackBooleanTrue_ReadNullableBoolean()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC3 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Boolean? result;
+				Assert.IsTrue( unpacker.ReadNullableBoolean( out result ) );
+				Assert.That( result.Value, Is.EqualTo( true ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpackBooleanFalse_Read()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( false ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpackBooleanFalse_ReadBoolean()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Boolean result;
+				Assert.IsTrue( unpacker.ReadBoolean( out result ) );
+				Assert.That( result, Is.EqualTo( false ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpackBooleanFalse_ReadNullableBoolean()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC2 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Boolean? result;
+				Assert.IsTrue( unpacker.ReadNullableBoolean( out result ) );
+				Assert.That( result.Value, Is.EqualTo( false ) );
+			}
+		}
+
+		[Test]
 		public void TestUnpackSingleMinValue_Read()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF } ) )
@@ -1715,6 +1793,138 @@ namespace MsgPack
 				Double? result;
 				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
 				Assert.That( Double.IsPositiveInfinity( result.Value ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableBoolean()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Boolean? result;
+				Assert.IsTrue( unpacker.ReadNullableBoolean( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableSingle()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Single? result;
+				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableDouble()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Double? result;
+				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableSByte()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				SByte? result;
+				Assert.IsTrue( unpacker.ReadNullableSByte( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableInt16()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Int16? result;
+				Assert.IsTrue( unpacker.ReadNullableInt16( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableInt32()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Int32? result;
+				Assert.IsTrue( unpacker.ReadNullableInt32( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableInt64()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Int64? result;
+				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableByte()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Byte? result;
+				Assert.IsTrue( unpacker.ReadNullableByte( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableUInt16()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				UInt16? result;
+				Assert.IsTrue( unpacker.ReadNullableUInt16( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableUInt32()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				UInt32? result;
+				Assert.IsTrue( unpacker.ReadNullableUInt32( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullableUInt64()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				UInt64? result;
+				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
+				Assert.That( result, Is.Null );
 			}
 		}
 	}
