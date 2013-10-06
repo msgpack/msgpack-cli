@@ -253,9 +253,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\MillisecondsDateTimeOffsetComparer.cs">
       <Link>Serialization\MillisecondsDateTimeOffsetComparer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationCollectionTestTarget.cs">
-      <Link>Serialization\NilImplicationCollectionTestTarget.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTest.cs">
       <Link>Serialization\NilImplicationTest.cs</Link>
     </Compile>
