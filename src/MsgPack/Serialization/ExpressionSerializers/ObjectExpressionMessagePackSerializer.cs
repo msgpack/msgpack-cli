@@ -118,6 +118,32 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					members.Select(
 						m => m.Member == null ? CollectionTraits.NotCollection : m.Member.GetMemberValueType().GetCollectionTraits() ).
 						Select( t => t.CollectionType != CollectionKind.NotCollection ).ToArray();
+
+				// NilImplication validity check
+				foreach ( var member in members )
+				{
+					switch ( member.Contract.NilImplication )
+					{
+						case NilImplication.Null:
+						{
+							if ( member.Member.GetMemberValueType().GetIsValueType() &&
+								Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
+							{
+								throw SerializationExceptions.NewValueTypeCannotBeNull(
+									member.Contract.Name, member.Member.GetMemberValueType(), member.Member.DeclaringType
+								);
+							}
+
+							if ( !member.Member.CanSetValue() )
+							{
+								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( member.Contract.Name );
+							}
+
+							break;
+						}
+					}
+				}
+
 				this._nilImplications = members.Select( m => m.Contract.NilImplication ).ToArray();
 				this._memberNames = members.Select( m => m.Contract.Name ).ToArray();
 			}
@@ -148,17 +174,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						? Expression.Lambda<Func<T, object>>(
 							Expression.Constant( null ),
 							targetParameter
-								).Compile()
-						: Expression.Lambda<Func<T, object>>(
-							Expression.Convert(
-								Expression.PropertyOrField(
-									targetParameter,
-									m.Member.Name
-								),
-								typeof( object )
-							),
-							targetParameter
 						).Compile()
+						: CreateMemberGetter( targetParameter, m )
 					).ToArray();
 			}
 
@@ -216,6 +233,39 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						? default( MemberSetter )
 						: ThrowGetOnlyMemberIsInvalid( m.Member )
 				).ToArray();
+			}
+		}
+
+		private static Func<T, object> CreateMemberGetter( ParameterExpression targetParameter, SerializingMember member )
+		{
+			var coreGetter =
+				Expression.Lambda<Func<T, object>>( 
+					Expression.Convert(
+						Expression.PropertyOrField(
+							targetParameter,
+							member.Member.Name
+						),
+						typeof( object )
+					),
+					targetParameter 
+				).Compile();
+			if( member.Contract.NilImplication == NilImplication.Prohibit )
+			{
+				var name = member.Contract.Name;
+				return target =>
+				       {
+					       var gotten = coreGetter( target );
+						   if( gotten == null )
+						   {
+							   throw SerializationExceptions.NewNullIsProhibited( name );
+						   }
+
+					       return gotten;
+				       };
+			}
+			else
+			{
+				return coreGetter;
 			}
 		}
 
@@ -323,11 +373,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			{
 				case NilImplication.Null:
 				{
-					if ( this._memberSetters[ index ] == null )
-					{
-						throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
-					}
-
 					this._memberSetters[ index ]( ref instance, null );
 					break;
 				}
@@ -386,11 +431,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					{
 						case NilImplication.Null:
 						{
-							if ( this._memberSetters[ index ] == null )
-							{
-								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
-							}
-
 							this._memberSetters[ index ]( ref instance, null );
 							continue;
 						}
@@ -549,7 +589,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 			public byte[] PackSingleObject( object objectTree )
 			{
-				using ( var stream = new MemoryStream( ) )
+				using ( var stream = new MemoryStream() )
 				using ( var packer = Packer.Create( stream ) )
 				{
 					this.PackTo( packer, objectTree );
