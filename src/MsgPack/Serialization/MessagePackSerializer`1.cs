@@ -54,6 +54,21 @@ namespace MsgPack.Serialization
 		private static readonly string _memoryStreamExceptionSourceName = typeof( MemoryStream ).GetTypeInfo().Assembly.GetName().Name;
 #endif
 #endif
+		private readonly PackerCompatibilityOptions _packerCompatibilityOptions;
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="PackerCompatibilityOptions.Classic"/>.
+		/// </summary>
+		protected MessagePackSerializer() : this( PackerCompatibilityOptions.Classic ) { }
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class.
+		/// </summary>
+		/// <param name="packerCompatibilityOptions">The <see cref="PackerCompatibilityOptions"/> for new packer creation.</param>
+		protected MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+		{
+			this._packerCompatibilityOptions = packerCompatibilityOptions;
+		}
 
 		private static bool JudgeNullable()
 		{
@@ -91,7 +106,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void Pack( Stream stream, T objectTree )
 		{
-			this.PackTo( Packer.Create( stream ), objectTree );
+			this.PackTo( Packer.Create( stream, this._packerCompatibilityOptions ), objectTree );
 		}
 
 		/// <summary>
@@ -178,12 +193,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
-			if ( !unpacker.Data.HasValue )
-			{
-				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
-			}
-
-			if ( unpacker.Data.GetValueOrDefault().IsNil )
+			if ( unpacker.LastReadData.IsNil )
 			{
 				if ( _isNullable )
 				{
@@ -252,12 +262,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
-			if ( !unpacker.Data.HasValue )
-			{
-				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
-			}
-
-			if ( unpacker.Data.Value.IsNil )
+			if ( unpacker.LastReadData.IsNil )
 			{
 				return;
 			}
@@ -390,11 +395,6 @@ namespace MsgPack.Serialization
 			if ( !( collection is T ) )
 			{
 				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
-			}
-
-			if ( !unpacker.Data.HasValue )
-			{
-				throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
 			}
 
 			this.UnpackToCore( unpacker, ( T )collection );

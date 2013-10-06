@@ -90,6 +90,9 @@
     <Compile Include="..\MsgPack\Serialization\DataMemberContract.cs">
       <Link>Serialization\DataMemberContract.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultConcreteTypeRepository.cs">
+      <Link>Serialization\DefaultConcreteTypeRepository.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs">
       <Link>Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs</Link>
     </Compile>
@@ -104,6 +107,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MessagePackObjectExtensions.cs">
       <Link>Serialization\DefaultSerializers\MessagePackObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>
@@ -288,6 +294,9 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_Packer.cs">
       <Link>Serialization\Metadata\_Packer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_SerializationCompatibilityOptions.cs">
+      <Link>Serialization\Metadata\_SerializationCompatibilityOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_SerializationContext.cs">
       <Link>Serialization\Metadata\_SerializationContext.cs</Link>
     </Compile>
@@ -350,6 +359,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerRepository.defaults.cs">
       <Link>Serialization\SerializerRepository.defaults.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerTypeKeyRepository.cs">
+      <Link>Serialization\SerializerTypeKeyRepository.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
       <Link>Serialization\SerializingMember.cs</Link>

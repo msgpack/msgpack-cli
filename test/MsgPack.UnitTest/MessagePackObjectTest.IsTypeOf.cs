@@ -20,8 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -145,6 +143,25 @@ namespace MsgPack
 		public void TestIsRaw_NonStringBinary_True()
 		{
 			Assert.IsTrue( new MessagePackObject( new byte[] { 0xff } ).IsRaw );
+		}
+
+
+		[Test]
+		public void TestIsTypeOf_Binary_IsTypeOfMessagePackExtendedTypeObject_False()
+		{
+			Assert.AreEqual( false, new MessagePackObject( new byte[] { 0xff } ).IsTypeOf( typeof( MessagePackExtendedTypeObject ) ) );
+		}
+
+		[Test]
+		public void TestIsTypeOf_MessagePackExtendedTypeObject_IsTypeOfMessagePackExtendedTypeObject_True()
+		{
+			Assert.AreEqual( true, new MessagePackObject( new MessagePackExtendedTypeObject( 1, new byte[] { 1 } ) ).IsTypeOf( typeof( MessagePackExtendedTypeObject ) ) );
+		}
+
+		[Test]
+		public void TestIsTypeOf_Nil_IsTypeOfMessagePackExtendedTypeObject_False()
+		{
+			Assert.AreEqual( false, MessagePackObject.Nil.IsTypeOf( typeof( MessagePackExtendedTypeObject ) ) );
 		}
 	}
 }

@@ -53,7 +53,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsBoolean();
+			result = this.LastReadData.AsBoolean();
 			return true;
 		}
 
@@ -78,7 +78,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( Boolean? ) : this.Data.Value.AsBoolean();
+			result = this.LastReadData.IsNil ? default( Boolean? ) : this.LastReadData.AsBoolean();
 			return true;
 		}
 
@@ -107,7 +107,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsByte();
+			result = this.LastReadData.AsByte();
 			return true;
 		}
 
@@ -132,7 +132,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( Byte? ) : this.Data.Value.AsByte();
+			result = this.LastReadData.IsNil ? default( Byte? ) : this.LastReadData.AsByte();
 			return true;
 		}
 
@@ -161,7 +161,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsSByte();
+			result = this.LastReadData.AsSByte();
 			return true;
 		}
 
@@ -186,7 +186,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( SByte? ) : this.Data.Value.AsSByte();
+			result = this.LastReadData.IsNil ? default( SByte? ) : this.LastReadData.AsSByte();
 			return true;
 		}
 
@@ -215,7 +215,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsInt16();
+			result = this.LastReadData.AsInt16();
 			return true;
 		}
 
@@ -240,7 +240,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( Int16? ) : this.Data.Value.AsInt16();
+			result = this.LastReadData.IsNil ? default( Int16? ) : this.LastReadData.AsInt16();
 			return true;
 		}
 
@@ -269,7 +269,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsUInt16();
+			result = this.LastReadData.AsUInt16();
 			return true;
 		}
 
@@ -294,7 +294,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( UInt16? ) : this.Data.Value.AsUInt16();
+			result = this.LastReadData.IsNil ? default( UInt16? ) : this.LastReadData.AsUInt16();
 			return true;
 		}
 
@@ -323,7 +323,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsInt32();
+			result = this.LastReadData.AsInt32();
 			return true;
 		}
 
@@ -348,7 +348,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( Int32? ) : this.Data.Value.AsInt32();
+			result = this.LastReadData.IsNil ? default( Int32? ) : this.LastReadData.AsInt32();
 			return true;
 		}
 
@@ -377,7 +377,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsUInt32();
+			result = this.LastReadData.AsUInt32();
 			return true;
 		}
 
@@ -402,7 +402,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( UInt32? ) : this.Data.Value.AsUInt32();
+			result = this.LastReadData.IsNil ? default( UInt32? ) : this.LastReadData.AsUInt32();
 			return true;
 		}
 
@@ -431,7 +431,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsInt64();
+			result = this.LastReadData.AsInt64();
 			return true;
 		}
 
@@ -456,7 +456,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( Int64? ) : this.Data.Value.AsInt64();
+			result = this.LastReadData.IsNil ? default( Int64? ) : this.LastReadData.AsInt64();
 			return true;
 		}
 
@@ -485,7 +485,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsUInt64();
+			result = this.LastReadData.AsUInt64();
 			return true;
 		}
 
@@ -510,7 +510,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( UInt64? ) : this.Data.Value.AsUInt64();
+			result = this.LastReadData.IsNil ? default( UInt64? ) : this.LastReadData.AsUInt64();
 			return true;
 		}
 
@@ -539,7 +539,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsSingle();
+			result = this.LastReadData.AsSingle();
 			return true;
 		}
 
@@ -564,7 +564,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( Single? ) : this.Data.Value.AsSingle();
+			result = this.LastReadData.IsNil ? default( Single? ) : this.LastReadData.AsSingle();
 			return true;
 		}
 
@@ -593,7 +593,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsDouble();
+			result = this.LastReadData.AsDouble();
 			return true;
 		}
 
@@ -618,7 +618,59 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.IsNil ? default( Double? ) : this.Data.Value.AsDouble();
+			result = this.LastReadData.IsNil ? default( Double? ) : this.LastReadData.AsDouble();
+			return true;
+		}
+
+		/// <summary>
+		///		Reads next <see cref="MessagePackExtendedTypeObject" /> value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The <see cref="MessagePackExtendedTypeObject" /> value read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the <see cref="MessagePackExtendedTypeObject" /> type.
+		/// </exception>
+		public virtual bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
+		{
+			if( !this.Read() )
+			{
+				result = default( MessagePackExtendedTypeObject );
+				return false;
+			}
+
+			result = this.LastReadData.AsMessagePackExtendedTypeObject();
+			return true;
+		}
+
+		/// <summary>
+		///		Reads next nullable <see cref="MessagePackExtendedTypeObject" /> value from current stream.
+		///	</summary>
+		/// <returns>
+		///		The nullable <see cref="MessagePackExtendedTypeObject" /> value read from current data source successfully.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the nullable <see cref="MessagePackExtendedTypeObject" /> type.
+		/// </exception>
+		public virtual bool ReadNullableMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject? result )
+		{
+			if( !this.Read() )
+			{
+				result = null;
+				return false;
+			}
+
+			result = this.LastReadData.IsNil ? default( MessagePackExtendedTypeObject? ) : this.LastReadData.AsMessagePackExtendedTypeObject();
 			return true;
 		}
 
@@ -652,7 +704,7 @@ namespace MsgPack
 				throw new MessageTypeException( "Not in map header." );
 			}
 
-			result = this.Data.Value.AsInt64();
+			result = this.LastReadData.AsInt64();
 			return true;
 		}
 
@@ -685,7 +737,7 @@ namespace MsgPack
 				throw new MessageTypeException( "Not in map header." );
 			}
 
-			result = this.Data.Value.AsInt64();
+			result = this.LastReadData.AsInt64();
 			return true;
 		}
 
@@ -705,7 +757,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a raw.
 		/// </exception>
-		public virtual bool  ReadBinary( out byte[] result )
+		public virtual bool ReadBinary( out byte[] result )
 		{
 			if( !this.Read() )
 			{
@@ -713,7 +765,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsBinary();
+			result = this.LastReadData.AsBinary();
 			return true;
 		}
 
@@ -741,7 +793,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value.AsString();
+			result = this.LastReadData.AsString();
 			return true;
 		}
 
@@ -766,7 +818,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = this.Data.Value;
+			result = this.LastReadData;
 			return true;
 		}
 	}

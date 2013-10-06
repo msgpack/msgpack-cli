@@ -26,7 +26,7 @@
 <#
 var __typeName = "MessagePackObject";
 var __types = 
-	new Dictionary<Type, byte>
+	new Dictionary<object, byte>
 	{
 		{ typeof( bool ), 1 },
 		{ typeof( byte ), 2 },
@@ -41,10 +41,12 @@ var __types =
 		{ typeof( double ), 0x10 | 2 },
 		{ typeof( string ), 0x10 | 3 },
 		{ typeof( byte[] ), 0x10 | 4 },
+		{ "MessagePackExtendedTypeObject", 0x20 | 1 },
 	};
-Func<Type, bool> __IsNotCLSCompliant =
-	type =>
+Func<object, bool> __IsNotCLSCompliant =
+	input => 		
 	{
+		var type = ( input as Type ) ?? typeof( object );
 		return 
 			type == typeof( sbyte )
 			|| type == typeof( ushort )
@@ -94,7 +96,7 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance.
+		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
 		/// </summary>
 <#
 if( __IsNotCLSCompliant( t ) )
@@ -104,7 +106,7 @@ if( __IsNotCLSCompliant( t ) )
 <#
 }
 #>
-		public <#= __typeName #>( <#= t.Name #> value )
+		public <#= __typeName #>( <#= GetTypeName( t ) #> value )
 		{
 <#
 	this.GenerateConstructor( __typeName, "this", t );
@@ -123,9 +125,9 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Convert this instance to <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance.
+		///		Convert this instance to <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
 		/// </summary>
-		/// <returns><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance corresponds to this instance.</returns>
+		/// <returns><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance corresponds to this instance.</returns>
 <#
 if( __IsNotCLSCompliant( t ) )
 {
@@ -134,7 +136,7 @@ if( __IsNotCLSCompliant( t ) )
 <#
 }
 #>
-		public <#= t.Name #> As<#= t == typeof( byte[] ) ? "Binary" : t.Name #>()
+		public <#= GetTypeName( t ) #> As<#= t == typeof( byte[] ) ? "Binary" : GetTypeName( t ) #>()
 		{
 <#
 	this.GenerateAsT( "this", t, false );
@@ -154,9 +156,9 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Convert <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #>instance to <see cref="<#= __typeName #>"/> instance.
+		///		Convert <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #>instance to <see cref="<#= __typeName #>"/> instance.
 		/// </summary>
-		/// <param name="value"><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance.</param>
+		/// <param name="value"><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.</param>
 		/// <returns><see cref="<#=  __typeName #>"/> instance corresponds to <paramref name="value"/>.</returns>
 <#
 if( __IsNotCLSCompliant( t ) )
@@ -166,7 +168,7 @@ if( __IsNotCLSCompliant( t ) )
 <#
 }
 #>
-		public static implicit operator <#= __typeName #>( <#= t.Name #> value )
+		public static implicit operator <#= __typeName #>( <#= GetTypeName( t ) #> value )
 		{
 			<#= __typeName #> result;
 <#
@@ -184,10 +186,10 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Convert this instance to <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance.
+		///		Convert this instance to <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
 		/// </summary>
 		/// <param name="value"><see cref="<#= __typeName #>"/> instance.</param>
-		/// <returns><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + t.Name + "\" />" #> instance corresponds to <paramref name="value"/>.</returns>
+		/// <returns><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance corresponds to <paramref name="value"/>.</returns>
 <#
 	if( __IsNotCLSCompliant( t ) )
 	{
@@ -196,7 +198,7 @@ foreach(var t in __types.Keys )
 <#
 	}
 #>
-		public static explicit operator <#= t.Name #>( <#= __typeName #> value )
+		public static explicit operator <#= GetTypeName( t ) #>( <#= __typeName #> value )
 		{
 <#
 	this.GenerateAsT( "value", t, true );
@@ -219,13 +221,22 @@ private static bool IsExplicitConversionRequired( Type type )
 		|| type == typeof( long );
 }
 
-private void GenerateConstructor( string typeName, string val, Type t )
+private void GenerateConstructor( string typeName, string val, object typeOrTypeName )
 {
+	var t = typeOrTypeName as Type;
 #>
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			<#= val #> = new <#= typeName #>();
 <#+ 
-	if( t == typeof( byte[] ) )
+	if( t == null )
+	{
+#>
+			<#= val #>._value = value.TypeCode;
+			<#= val #>._handleOrTypeCode = value.Body;
+<#+
+		return;
+	}
+	else if( t == typeof( byte[] ) )
 	{
 #>
 			if ( value == null )
@@ -253,7 +264,8 @@ private void GenerateConstructor( string typeName, string val, Type t )
 <#+
 		return;
 	}
-	else if( t == typeof( bool ) )
+	
+	if( t == typeof( bool ) )
 	{
 #>
 			<#= val #>._value = value ? ( ulong )1 : 0;
@@ -307,19 +319,30 @@ private void GenerateConstructor( string typeName, string val, Type t )
 <#+
 } // GenerateConstructor
 
-private void GenerateAsT( string val, Type t, bool passParameterName )
+private void GenerateAsT( string val, Object typeOrTypeName, bool passParameterName )
 {
-	if( t.IsValueType )
+	var t = typeOrTypeName as Type;
+	var typeName = GetTypeName( typeOrTypeName );
+
+	if( t == null || t.IsValueType )
 	{
 #>
 			if( <#= val #>.IsNil )
 			{
-				ThrowCannotBeNilAs<#= "<" + t.Name  + ">" #>();
+				ThrowCannotBeNilAs<#= "<" + typeName  + ">" #>();
 			}
 <#+
 	}
 
-	if ( t == typeof( byte[] ) )
+	if ( t == null ) // MPETO
+	{
+#>
+			VerifyUnderlyingType<MessagePackExtendedTypeObject>( <#= val #>, <#= passParameterName ? "\"" + val + "\"" : "null" #>  );
+
+			return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )<#= val #>._value ), <#= val #>._handleOrTypeCode as byte[] );
+<#+
+	}
+	else if ( t == typeof( byte[] ) )
 	{
 #>
 			VerifyUnderlyingType<MessagePackString>( <#= val #>, <#= passParameterName ? "\"" + val + "\"" : "null" #>  );
@@ -554,5 +577,10 @@ private void GenerateAsT( string val, Type t, bool passParameterName )
 			}
 <#+
 	}
+}
+
+private static string GetTypeName( object typeOrTypeName )
+{
+	return ( typeOrTypeName as string ) ?? ( typeOrTypeName as Type ).Name;
 }
 #>

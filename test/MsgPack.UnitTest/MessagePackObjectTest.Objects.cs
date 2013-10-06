@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -309,6 +309,13 @@ namespace MsgPack
 		}
 
 		[Test]
+		public void TestFromObject_ExtendedTypeObject_Success()
+		{
+			var value = new MessagePackExtendedTypeObject( 1, new byte[] {1} );
+			TestFromObjectCore( value, value );
+		}
+
+		[Test]
 		public void TestFromObject_NotSupported()
 		{
 			Assert.Throws<MessageTypeException>( () => MessagePackObject.FromObject( new Uri( "http://example.com" ) ) );
@@ -447,6 +454,13 @@ namespace MsgPack
 		{
 			var value = new MessagePackObjectDictionary() { { "1", 1 }, { "2", 2 } };
 			TestToObjectCore( new MessagePackObject( value ), value );
+		}
+
+		[Test]
+		public void TestToObject_ExtendedTypeObject_Success()
+		{
+			var value = new MessagePackExtendedTypeObject( 1, new byte[] { 1 } );
+			TestToObjectCore( value, value );
 		}
 
 		private static void TestToObjectCore<T>( MessagePackObject target, T expected )

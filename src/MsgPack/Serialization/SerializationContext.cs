@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ namespace MsgPack.Serialization
 			get { return Interlocked.CompareExchange( ref  _default, null, null ); }
 			set
 			{
-				if( value == null )
+				if ( value == null )
 				{
 					throw new ArgumentNullException( "value" );
 				}
@@ -197,23 +197,55 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		private readonly DefaultConcreteTypeRepository _defaultCollectionTypes;
+
+		/// <summary>
+		///		Gets the default collection types.
+		/// </summary>
+		/// <value>
+		///		The default collection types. This value will not be <c>null</c>.
+		/// </value>
+		public DefaultConcreteTypeRepository DefaultCollectionTypes
+		{
+			get { return this._defaultCollectionTypes; }
+		}
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.Default"/>.
 		/// </summary>
 		public SerializationContext()
-			: this( new SerializerRepository( SerializerRepository.Default ) ) { }
+			: this( new SerializerRepository( SerializerRepository.Default ), PackerCompatibilityOptions.Classic ) { }
 
-		internal SerializationContext( SerializerRepository serializers )
+		/// <summary>
+		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.GetDefault(PackerCompatibilityOptions)"/> for specified <see cref="PackerCompatibilityOptions"/>.
+		/// </summary>
+		/// <param name="packerCompatibilityOptions"><see cref="PackerCompatibilityOptions"/> which will be used on built-in serializers.</param>
+		public SerializationContext( PackerCompatibilityOptions packerCompatibilityOptions )
+			: this( new SerializerRepository( SerializerRepository.GetDefault( packerCompatibilityOptions ) ), packerCompatibilityOptions ) { }
+
+		internal SerializationContext(
+			SerializerRepository serializers, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
 			Contract.Requires( serializers != null );
 
-			this._compatibilityOptions = new SerializationCompatibilityOptions();
+			this._compatibilityOptions =
+				new SerializationCompatibilityOptions()
+				{
+					PackerCompatibilityOptions =
+						packerCompatibilityOptions
+				};
 			this._serializers = serializers;
 #if SILVERLIGHT || NETFX_35
 			this._typeLock = new HashSet<Type>();
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
 #endif
+			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
+		}
+
+		internal bool ContainsSerializer( Type rootType )
+		{
+			return this._serializers.Contains( rootType );
 		}
 
 		/// <summary>
@@ -251,7 +283,7 @@ namespace MsgPack.Serialization
 #endif
 					}
 
-					if( !lockTaken )
+					if ( !lockTaken )
 					{
 						return new LazyDelegatingMessagePackSerializer<T>( this );
 					}
@@ -260,7 +292,7 @@ namespace MsgPack.Serialization
 				}
 				finally
 				{
-					if( lockTaken )
+					if ( lockTaken )
 					{
 #if SILVERLIGHT || NETFX_35
 						lock( this._typeLock )

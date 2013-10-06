@@ -222,7 +222,7 @@ foreach( var __type in __numericTypes )
 				VerifyIsScalar( unpacker );
 				try
 				{
-					return ( <#= __type.Name #> )unpacker.Data.Value;
+					return ( <#= __type.Name #> )unpacker.LastReadData;
 				}
 				catch( InvalidOperationException ex )
 				{

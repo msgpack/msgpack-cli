@@ -32,6 +32,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<TValue> _valueSerializer;
 
 		public System_Collections_Generic_KeyValuePair_2MessagePackSerializer( SerializationContext context )
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			if ( context == null )
 			{
@@ -66,14 +67,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
-			TKey key = unpacker.Data.Value.IsNil ? default( TKey ) : this._keySerializer.UnpackFrom( unpacker );
+			TKey key = unpacker.LastReadData.IsNil ? default( TKey ) : this._keySerializer.UnpackFrom( unpacker );
 
 			if ( !unpacker.Read() )
 			{
 				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
-			TValue value = unpacker.Data.Value.IsNil ? default( TValue ) : this._valueSerializer.UnpackFrom( unpacker );
+			TValue value = unpacker.LastReadData.IsNil ? default( TValue ) : this._valueSerializer.UnpackFrom( unpacker );
 
 			return new KeyValuePair<TKey, TValue>( key, value );
 		}

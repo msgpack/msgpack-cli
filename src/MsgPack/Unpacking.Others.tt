@@ -31,14 +31,16 @@
 var __typeName = "Unpacking";
 var __methods = new []
 {
+	// Label, Type, Description for doc, May throw too long (not supported) exception
 	Tuple.Create( "Array", "IList<MessagePackObject>", "the array", true ),
-	Tuple.Create( "ArrayLength", "Int64?", "length of the array", false  ),
-	Tuple.Create( "Dictionary", "MessagePackObjectDictionary", "the dictionary", true  ),
-	Tuple.Create( "DictionaryCount", "Int64?", "count of the dictionary entries", false  ),
-	Tuple.Create( "Binary", "byte[]", "the raw binary", true  ),
-	Tuple.Create( "Boolean", "bool", "the boolean", false  ),
-	Tuple.Create( "Null", "object", "the nil", false  ),
-	Tuple.Create( "Object", "MessagePackObject", "the <see cref=\"MessagePackObject\" /> which represents the value which has MessagePack type semantics.", false  ),
+	Tuple.Create( "ArrayLength", "Int64?", "length of the array", false ),
+	Tuple.Create( "Dictionary", "MessagePackObjectDictionary", "the dictionary", true ),
+	Tuple.Create( "DictionaryCount", "Int64?", "count of the dictionary entries", false ),
+	Tuple.Create( "Binary", "byte[]", "the raw binary", true ),
+	Tuple.Create( "Boolean", "bool", "the boolean", false ),
+	Tuple.Create( "Null", "object", "the nil", false ),
+	Tuple.Create( "Object", "MessagePackObject", "the <see cref=\"MessagePackObject\" /> which represents the value which has MessagePack type semantics.", false ),
+	Tuple.Create( "ExtendedTypeObject", "MessagePackExtendedTypeObject", "the <see cref=\"MessagePackExtendedTypeObject\" /> which represents the extended type value.", true ),
 };
 #>
 #region -- License Terms --

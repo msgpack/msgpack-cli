@@ -60,6 +60,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #endif
 
 		protected SequenceExpressionMessagePackSerializer( SerializationContext context, CollectionTraits traits )
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			Contract.Assert( typeof( T ).IsArray || typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ), typeof( T ) + " is not array nor IEnumerable" );
 			this._traits = traits;

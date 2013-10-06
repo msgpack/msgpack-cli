@@ -78,9 +78,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -103,6 +103,7 @@
     <Compile Include="GenericExceptionTester.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="MessagePackConvertTest.cs" />
+    <Compile Include="MessagePackExtendedTypeObjectTest.cs" />
     <Compile Include="MessagePackObjectDictionaryTest.cs" />
     <Compile Include="MessagePackObjectTest.Conversion.cs">
       <AutoGen>True</AutoGen>
@@ -154,6 +155,7 @@
     <Compile Include="MessagePackObjectTest.Strings.cs" />
     <Compile Include="MessagePackStringTest.cs" />
     <Compile Include="MessageUnpackableTest.cs" />
+    <Compile Include="PackerTest.Miscs.cs" />
     <Compile Include="PackerTest.Pack.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -208,11 +210,11 @@
     <Compile Include="Serialization\MessagePackSerializerTTest.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeComparer.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeOffsetComparer.cs" />
-    <Compile Include="Serialization\NilImplicationCollectionTestTarget.cs" />
     <Compile Include="Serialization\NilImplicationTest.cs" />
     <Compile Include="Serialization\NilImplicationTestTarget.cs" />
-    <Compile Include="Serialization\PackerTest.cs" />
+    <Compile Include="PackerTest.cs" />
     <Compile Include="Serialization\SerializationContextTest.cs" />
+    <Compile Include="Serialization\SerializerGeneratorTest.cs" />
     <Compile Include="Serialization\SimpleCollection`1.cs" />
     <Compile Include="Serialization\StringKeyedCollection.cs" />
     <Compile Include="Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs" />
@@ -228,10 +230,10 @@
     <Compile Include="Serialization\ComplexTypeWithNonSerialized.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContract.cs" />
     <Compile Include="SubtreeUnpackerTest.cs" />
-    <Compile Include="Unpacker.Ext.cs">
+    <Compile Include="UnpackerTest.Ext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Unpacker.Ext.tt</DependentUpon>
+      <DependentUpon>UnpackerTest.Ext.tt</DependentUpon>
     </Compile>
     <Compile Include="UnpackerTest.cs" />
     <Compile Include="UnpackerTest.Raw.cs">
@@ -328,6 +330,31 @@
       <DependentUpon>TestRandom.tt</DependentUpon>
     </Compile>
     <Compile Include="TestSuite.cs" />
+    <Compile Include="PackerTest.PackBinary.cs">
+      <DependentUpon>PackerTest.PackBinary.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PackerTest.PackExtendedType.cs">
+      <DependentUpon>PackerTest.PackExtendedType.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UnpackingTest.Scalar.cs">
+      <DependentUpon>UnpackingTest.Scalar.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UnpackingTest.Raw.cs">
+      <DependentUpon>UnpackingTest.Raw.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UnpackingTest.Ext.cs">
+      <DependentUpon>UnpackingTest.Ext.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\MsgPack.snk">
@@ -410,9 +437,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TestRandom.cs</LastGenOutput>
     </None>
-    <None Include="Unpacker.Ext.tt">
+    <None Include="UnpackerTest.Ext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Unpacker.Ext.cs</LastGenOutput>
+      <LastGenOutput>UnpackerTest.Ext.cs</LastGenOutput>
     </None>
     <None Include="UnpackerTest.Raw.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -483,6 +510,26 @@
       <LastGenOutput>UnpackingTest.Combinations.UInt64.cs</LastGenOutput>
     </None>
     <None Include="UnpackingTest.Common.ttinclude" />
+    <None Include="PackerTest.PackBinary.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PackerTest.PackBinary.cs</LastGenOutput>
+    </None>
+    <None Include="PackerTest.PackExtendedType.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PackerTest.PackExtendedType.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Scalar.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Scalar.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Raw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Raw.cs</LastGenOutput>
+    </None>
+    <None Include="UnpackingTest.Ext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackingTest.Ext.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

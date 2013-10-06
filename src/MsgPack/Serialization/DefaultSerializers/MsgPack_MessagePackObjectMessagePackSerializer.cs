@@ -24,6 +24,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class MsgPack_MessagePackObjectMessagePackSerializer : MessagePackSerializer<MessagePackObject>
 	{
+		public MsgPack_MessagePackObjectMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, MessagePackObject value )
 		{
 			value.PackToMessage( packer, new PackingOptions() );
@@ -31,7 +34,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override MessagePackObject UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.Data.Value;
+			return unpacker.LastReadData;
 		}
 	}
 }

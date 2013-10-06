@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
 
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Reflection.Emit;
 using MsgPack.Serialization.Reflection;
 
@@ -171,21 +170,21 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var @else = unpackerIL.DefineLabel( "ELSE" );
 			var endif = unpackerIL.DefineLabel( "END_IF" );
 			unpackerIL.EmitBrfalse( @else );
-			EmitUnpackMembersFromArray( emitter, unpackerIL, entries, result, localHolder );
+			EmitUnpackMembersFromArray( emitter, unpackerIL, entries, result, localHolder, endif );
 			unpackerIL.EmitBr( endif );
 			unpackerIL.MarkLabel( @else );
 			EmitUnpackMembersFromMap( emitter, unpackerIL, entries, result, localHolder );
 			unpackerIL.MarkLabel( endif );
 		}
 
-		private static void EmitUnpackMembersFromArray( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result, LocalVariableHolder localHolder )
+		private static void EmitUnpackMembersFromArray( SerializerEmitter emitter, TracingILGenerator unpackerIL, SerializingMember[] entries, LocalBuilder result, LocalVariableHolder localHolder, Label endOfDeserialization )
 		{
 			/*
 			 *  int unpacked = 0;
 			 *  int itemsCount = unpacker.ItemsCount;
 			 * 
 			 *  :
-			 *  if( unpacked == itemsCount )
+			 *  if( unpacked >= itemsCount )
 			 *  {
 			 *		HandleNilImplication(...);
 			 *  }
@@ -223,17 +222,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 				unpackerIL.EmitAnyLdloc( unpacked );
 				unpackerIL.EmitAnyLdloc( itemsCount );
-				unpackerIL.EmitBlt( else0 );
-				// Tail missing member handling.
-				if ( entries[ i ].Member != null )
-				{
-					// Respect nil implication.
-					Emittion.EmitNilImplication( unpackerIL, 1, entries[ i ].Contract.Name, entries[ i ].Contract.NilImplication, endIf0, localHolder );
-				}
-
-				unpackerIL.EmitBr( endIf0 );
-
-				unpackerIL.MarkLabel( else0 );
+				unpackerIL.EmitBge( else0 );
 
 				if ( entries[ i ].Member == null )
 				{
@@ -270,6 +259,71 @@ namespace MsgPack.Serialization.EmittingSerializers
 				unpackerIL.EmitAdd();
 				unpackerIL.EmitAnyStloc( unpacked );
 
+				unpackerIL.EmitBr( endIf0 );
+
+				unpackerIL.MarkLabel( else0 );
+
+				if ( entries[ i ].Member != null )
+				{
+					// Respect nil implication.
+					switch ( entries[ i ].Contract.NilImplication )
+					{
+						case NilImplication.MemberDefault:
+						{
+							unpackerIL.EmitBr( endOfDeserialization );
+							break;
+						}
+						case NilImplication.Null:
+						{
+							if( entries[ i ].Member.GetMemberValueType().GetIsValueType() )
+							{
+								if( Nullable.GetUnderlyingType( entries[ i ].Member.GetMemberValueType() ) == null )
+								{
+									// val type
+									/*
+									 * if( value == null )
+									 * {
+									 *		throw SerializationEceptions.NewValueTypeCannotBeNull( "...", typeof( MEMBER ), typeof( TYPE ) );
+									 * }
+									 */
+									unpackerIL.EmitLdstr( entries[ i ].Contract.Name );
+									unpackerIL.EmitLdtoken( entries[ i ].Member.GetMemberValueType() );
+									unpackerIL.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
+									unpackerIL.EmitLdtoken( entries[ i ].Member.DeclaringType );
+									unpackerIL.EmitAnyCall( Metadata._Type.GetTypeFromHandle );
+									unpackerIL.EmitAnyCall( SerializationExceptions.NewValueTypeCannotBeNull3Method );
+									unpackerIL.EmitThrow();
+								}
+								else
+								{
+									// nullable
+									unpackerIL.EmitAnyLdloca( localHolder.GetDeserializedValue( entries[ i ].Member.GetMemberValueType() ) );
+									unpackerIL.EmitInitobj( entries[ i ].Member.GetMemberValueType() );
+									unpackerIL.EmitAnyLdloc( result );
+									unpackerIL.EmitAnyLdloc( localHolder.GetDeserializedValue( entries[ i ].Member.GetMemberValueType() ) );
+									Emittion.EmitStoreValue( unpackerIL, entries[ i ].Member );
+								}
+							}
+							else
+							{
+								// ref type
+								unpackerIL.EmitAnyLdloc( result );
+								unpackerIL.EmitLdnull();
+								Emittion.EmitStoreValue( unpackerIL, entries[ i ].Member );
+							}
+
+							break;
+						}
+						case NilImplication.Prohibit:
+						{
+							unpackerIL.EmitLdstr( entries[ i ].Contract.Name );
+							unpackerIL.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
+							unpackerIL.EmitThrow();
+							break;
+						}
+					}
+				}
+
 				unpackerIL.MarkLabel( endIf0 );
 			}
 		}
@@ -299,8 +353,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			unpackerIL.EmitAnyCall( Metadata._Unpacker.ReadString );
 			unpackerIL.EmitBrfalse( endLoop );
 
-			var data = localHolder.UnpackedData;
-			var dataValue = localHolder.UnpackedDataValue;
 			for ( int i = 0; i < entries.Length; i++ )
 			{
 				if ( entries[ i ].Contract.Name == null )
@@ -356,7 +408,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 
 			// Drain next value with unpacker.Read()
-			unpackerIL.EmitAnyLdarg(1);
+			unpackerIL.EmitAnyLdarg( 1 );
 			unpackerIL.EmitCallvirt( Metadata._Unpacker.Read );
 			unpackerIL.EmitPop();
 			unpackerIL.EmitBr( beginLoop );
@@ -372,7 +424,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public sealed override MessagePackSerializer<TObject> CreateArraySerializer()
 		{
-			using ( var emitter = EmittingSerializerBuilderLogics.CreateArraySerializerCore( typeof( TObject ), this._emitterFlavor ) )
+			using ( var emitter = EmittingSerializerBuilderLogics.CreateArraySerializerCore( this.Context, typeof( TObject ), this._emitterFlavor ) )
 			{
 				try
 				{
@@ -394,7 +446,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public sealed override MessagePackSerializer<TObject> CreateMapSerializer()
 		{
-			using ( var emitter = EmittingSerializerBuilderLogics.CreateMapSerializerCore( typeof( TObject ), this._emitterFlavor ) )
+			using ( var emitter = EmittingSerializerBuilderLogics.CreateMapSerializerCore( this.Context, typeof( TObject ), this._emitterFlavor ) )
 			{
 				try
 				{

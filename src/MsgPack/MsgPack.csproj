@@ -24,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -121,6 +122,7 @@
     <Compile Include="IUnpackable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MessagePackExtendedTypeObject.cs" />
     <Compile Include="MessagePackObjectDictionary.Enumerator.cs" />
     <Compile Include="MessagePackObjectDictionary.KeySet.cs" />
     <Compile Include="MessagePackObjectDictionary.KeySet.Enumerator.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="MessagePackObjectDictionary.cs" />
     <Compile Include="MessagePackObjectEqualityComparer.cs" />
     <Compile Include="MessagePackString.cs" />
+    <Compile Include="PackerCompatibilityOptions.cs" />
     <Compile Include="PackerUnpackerExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -150,7 +153,9 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\DefaultConcreteTypeRepository.cs" />
     <Compile Include="Serialization\DefaultSerializers\MessagePackObjectExtensions.cs" />
+    <Compile Include="Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs" />
     <Compile Include="Serialization\EmittingSerializers\ArrayEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\LocalVariableHolder.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ArrayFormatObjectExpressionMessagePackSerializer.cs" />
@@ -177,6 +182,7 @@
     <Compile Include="Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\IMessagePackSingleObjectSerializer.cs" />
+    <Compile Include="Serialization\SerializerTypeKeyRepository.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\MessagePackMemberAttribute.cs" />
@@ -184,6 +190,7 @@
     <Compile Include="Serialization\Metadata\_IDictionaryEnumerator.cs" />
     <Compile Include="Serialization\Metadata\_IEnumreator.cs" />
     <Compile Include="Serialization\Metadata\_MessagePackSerializer.cs" />
+    <Compile Include="Serialization\Metadata\_SerializationCompatibilityOptions.cs" />
     <Compile Include="Serialization\Metadata\_SerializationContext.cs" />
     <Compile Include="Serialization\Metadata\_String.cs" />
     <Compile Include="Serialization\Metadata\_MessagePackObject.cs" />

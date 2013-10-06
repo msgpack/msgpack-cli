@@ -127,7 +127,7 @@ namespace MsgPack
 	// Do not modify this file. Edit UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	[TestFixture]
-	public partial class PackerTest_Raw
+	public partial class UnpackerTest_Raw
 	{
 <#
 foreach( var testSituation in testSituations )
@@ -170,7 +170,9 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 	{
 #>
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( <#= testSituation.Item2 #> )result.Value, Is.EqualTo( <#= expectedValue #> ) );
 <#+

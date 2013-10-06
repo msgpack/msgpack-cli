@@ -53,15 +53,13 @@ namespace MsgPack
 			{
 				case 0xC3:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = true;
 					return true;
 				}
 				case 0xC2:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = false;
 					return true;
 				}
@@ -92,15 +90,13 @@ namespace MsgPack
 			{
 				case 0xC3:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = true;
 					return true;
 				}
 				case 0xC2:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = false;
 					return true;
 				}
@@ -132,16 +128,20 @@ namespace MsgPack
 			{
 				case 0xC3:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = true;
 					return true;
 				}
 				case 0xC2:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = false;
+					return true;
+				}
+				case 0xC0:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = null;
 					return true;
 				}
 				default:
@@ -171,16 +171,20 @@ namespace MsgPack
 			{
 				case 0xC3:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = true;
 					return true;
 				}
 				case 0xC2:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
+					this.InternalCollectionType = CollectionType.None;
 					result = false;
+					return true;
+				}
+				case 0xC0:
+				{
+					this.InternalCollectionType = CollectionType.None;
+					result = null;
 					return true;
 				}
 				default:
@@ -210,8 +214,7 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -224,8 +227,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -240,8 +242,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -276,8 +277,7 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -290,8 +290,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -306,8 +305,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -343,15 +341,13 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -364,8 +360,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -380,8 +375,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -416,15 +410,13 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -437,8 +429,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -453,8 +444,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -490,16 +480,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -512,8 +500,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -528,8 +515,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -564,16 +550,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -586,8 +570,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -602,8 +585,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -639,23 +621,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -668,8 +647,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -684,8 +662,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -720,23 +697,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -749,8 +723,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -765,8 +738,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -802,16 +774,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -824,8 +794,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -840,8 +809,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -856,8 +824,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -872,8 +839,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -908,16 +874,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -930,8 +894,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -946,8 +909,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -962,8 +924,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -978,8 +939,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1015,23 +975,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -1044,8 +1001,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1060,8 +1016,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1076,8 +1031,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1092,8 +1046,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1128,23 +1081,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -1157,8 +1107,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1173,8 +1122,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1189,8 +1137,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1205,8 +1152,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1242,8 +1188,7 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -1256,8 +1201,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1272,8 +1216,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1288,8 +1231,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1304,8 +1246,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1340,8 +1281,7 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -1354,8 +1294,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1370,8 +1309,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1386,8 +1324,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1402,8 +1339,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1439,15 +1375,13 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -1460,8 +1394,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1476,8 +1409,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1492,8 +1424,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1508,8 +1439,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1544,15 +1474,13 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -1565,8 +1493,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1581,8 +1508,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1597,8 +1523,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1613,8 +1538,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1650,16 +1574,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -1672,8 +1594,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1688,8 +1609,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1704,8 +1624,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1720,8 +1639,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1736,8 +1654,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1752,8 +1669,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1768,8 +1684,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1804,16 +1719,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -1826,8 +1739,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1842,8 +1754,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1858,8 +1769,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1874,8 +1784,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1890,8 +1799,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1906,8 +1814,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1922,8 +1829,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -1959,23 +1865,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -1988,8 +1891,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2004,8 +1906,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2020,8 +1921,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2036,8 +1936,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2052,8 +1951,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2068,8 +1966,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2084,8 +1981,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2120,23 +2016,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -2149,8 +2042,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2165,8 +2057,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2181,8 +2072,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2197,8 +2087,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2213,8 +2102,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2229,8 +2117,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2245,8 +2132,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2282,8 +2168,7 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -2296,8 +2181,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2312,8 +2196,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2328,8 +2211,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2344,8 +2226,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2360,8 +2241,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2376,8 +2256,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2392,8 +2271,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2428,8 +2306,7 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -2442,8 +2319,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2458,8 +2334,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2474,8 +2349,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2490,8 +2364,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2506,8 +2379,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2522,8 +2394,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2538,8 +2409,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2575,15 +2445,13 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -2596,8 +2464,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2612,8 +2479,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2628,8 +2494,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2644,8 +2509,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2660,8 +2524,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2676,8 +2539,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2692,8 +2554,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2728,15 +2589,13 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -2749,8 +2608,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2765,8 +2623,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2781,8 +2638,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2797,8 +2653,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2813,8 +2668,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2829,8 +2683,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2845,8 +2698,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2882,16 +2734,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -2904,8 +2754,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2920,8 +2769,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2936,8 +2784,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2952,8 +2799,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2968,8 +2814,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -2984,8 +2829,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3000,8 +2844,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3016,8 +2859,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3032,8 +2874,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3048,8 +2889,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3084,16 +2924,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -3106,8 +2944,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3122,8 +2959,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3138,8 +2974,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3154,8 +2989,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3170,8 +3004,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3186,8 +3019,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3202,8 +3034,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3218,8 +3049,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3234,8 +3064,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3250,8 +3079,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3287,23 +3115,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -3316,8 +3141,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3332,8 +3156,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3348,8 +3171,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3364,8 +3186,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3380,8 +3201,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3396,8 +3216,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3412,8 +3231,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3428,8 +3246,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3444,8 +3261,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3460,8 +3276,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3496,23 +3311,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -3525,8 +3337,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3541,8 +3352,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3557,8 +3367,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3573,8 +3382,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3589,8 +3397,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3605,8 +3412,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3621,8 +3427,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3637,8 +3442,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3653,8 +3457,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3669,8 +3472,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3706,8 +3508,7 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -3720,8 +3521,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3736,8 +3536,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3752,8 +3551,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3768,8 +3566,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3784,8 +3581,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3800,8 +3596,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3816,8 +3611,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3832,8 +3626,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3848,8 +3641,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3864,8 +3656,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3900,8 +3691,7 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -3914,8 +3704,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3930,8 +3719,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3946,8 +3734,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3962,8 +3749,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3978,8 +3764,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -3994,8 +3779,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4010,8 +3794,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4026,8 +3809,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4042,8 +3824,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4058,8 +3839,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4095,15 +3875,13 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -4116,8 +3894,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4132,8 +3909,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4148,8 +3924,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4164,8 +3939,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4180,8 +3954,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4196,8 +3969,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4212,8 +3984,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4228,8 +3999,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4244,8 +4014,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4260,8 +4029,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4296,15 +4064,13 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -4317,8 +4083,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4333,8 +4098,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4349,8 +4113,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4365,8 +4128,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4381,8 +4143,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4397,8 +4158,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4413,8 +4173,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4429,8 +4188,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4445,8 +4203,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4461,8 +4218,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4498,16 +4254,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -4520,8 +4274,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4536,8 +4289,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4552,8 +4304,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4568,8 +4319,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4584,8 +4334,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4600,8 +4349,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4616,8 +4364,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4632,8 +4379,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4648,8 +4394,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4664,8 +4409,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4700,16 +4444,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -4722,8 +4464,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4738,8 +4479,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4754,8 +4494,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4770,8 +4509,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4786,8 +4524,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4802,8 +4539,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4818,8 +4554,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4834,8 +4569,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4850,8 +4584,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4866,8 +4599,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4903,23 +4635,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -4932,8 +4661,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4948,8 +4676,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4964,8 +4691,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4980,8 +4706,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -4996,8 +4721,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5012,8 +4736,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5028,8 +4751,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5044,8 +4766,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5060,8 +4781,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5076,8 +4796,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5112,23 +4831,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -5141,8 +4857,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5157,8 +4872,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5173,8 +4887,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5189,8 +4902,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5205,8 +4917,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5221,8 +4932,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5237,8 +4947,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5253,8 +4962,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5269,8 +4977,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5285,8 +4992,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5322,16 +5028,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -5344,8 +5048,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5360,8 +5063,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5376,8 +5078,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5392,8 +5093,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5408,8 +5108,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5424,8 +5123,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5440,8 +5138,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5456,8 +5153,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5472,8 +5168,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5488,8 +5183,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5524,16 +5218,14 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
@@ -5546,8 +5238,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5562,8 +5253,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5578,8 +5268,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5594,8 +5283,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5610,8 +5298,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5626,8 +5313,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5642,8 +5328,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5658,8 +5343,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5674,8 +5358,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5690,8 +5373,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5727,23 +5409,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -5756,8 +5435,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5772,8 +5450,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5788,8 +5465,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5804,8 +5480,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5820,8 +5495,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5836,8 +5510,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5852,8 +5525,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5868,8 +5540,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5884,8 +5555,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5900,8 +5570,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5936,23 +5605,20 @@ namespace MsgPack
 			if( header < 0x80 )
 			{
 				var resultValue = unchecked( ( byte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header >= 0xE0 )
 			{
 				var resultValue = unchecked( ( sbyte )header );
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = resultValue;
 				return true;
 			}
 			if( header == MessagePackCode.NilValue )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
+				this.InternalCollectionType = CollectionType.None;
 				result = null;
 				return true;
 			}
@@ -5965,8 +5631,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5981,8 +5646,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -5997,8 +5661,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -6013,8 +5676,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -6029,8 +5691,7 @@ namespace MsgPack
 					if( read == 1 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -6045,8 +5706,7 @@ namespace MsgPack
 					if( read == 2 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -6061,8 +5721,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -6077,8 +5736,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -6093,8 +5751,7 @@ namespace MsgPack
 					if( read == 4 )
 					{
 						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -6109,8 +5766,7 @@ namespace MsgPack
 					if( read == 8 )
 					{
 						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
-						this._collectionType = CollectionType.None;
-						this._itemsCount = 0;
+						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
 					}
@@ -6150,6 +5806,7 @@ namespace MsgPack
 				case MessagePackCode.NilValue:
 				{
 					result = null;
+					this.InternalCollectionType = CollectionType.None;
 					return true;
 				}
 				case MessagePackCode.Bin8: 
@@ -6208,6 +5865,7 @@ namespace MsgPack
 			if ( size == 0 )
 			{
 				result = Binary.Empty;
+				this.InternalCollectionType = CollectionType.None;
 				return true;
 			}
 			
@@ -6223,8 +5881,7 @@ namespace MsgPack
 			
 			#endregion UnpackRawContent
 			#endregion UnpackByteArray
-			this._collectionType = CollectionType.None;
-			this._itemsCount = 0;
+			this.InternalCollectionType = CollectionType.None;
 			result = resultValue;
 			return true;
 		}
@@ -6252,6 +5909,7 @@ namespace MsgPack
 				case MessagePackCode.NilValue:
 				{
 					result = null;
+					this.InternalCollectionType = CollectionType.None;
 					return true;
 				}
 				case MessagePackCode.Bin8: 
@@ -6310,6 +5968,7 @@ namespace MsgPack
 			if ( size == 0 )
 			{
 				result = Binary.Empty;
+				this.InternalCollectionType = CollectionType.None;
 				return true;
 			}
 			
@@ -6325,8 +5984,7 @@ namespace MsgPack
 			
 			#endregion UnpackRawContent
 			#endregion UnpackByteArray
-			this._collectionType = CollectionType.None;
-			this._itemsCount = 0;
+			this.InternalCollectionType = CollectionType.None;
 			result = resultValue;
 			return true;
 		}
@@ -6359,6 +6017,7 @@ namespace MsgPack
 				case MessagePackCode.NilValue:
 				{
 					result = null;
+					this.InternalCollectionType = CollectionType.None;
 					return true;
 				}
 				case MessagePackCode.Bin8: 
@@ -6417,6 +6076,7 @@ namespace MsgPack
 			if ( size == 0 )
 			{
 				result = String.Empty;
+				this.InternalCollectionType = CollectionType.None;
 				return true;
 			}
 			
@@ -6464,8 +6124,7 @@ namespace MsgPack
 			
 			var resultValue = stringBuffer.ToString();
 			#endregion UnpackString
-			this._collectionType = CollectionType.None;
-			this._itemsCount = 0;
+			this.InternalCollectionType = CollectionType.None;
 			result = resultValue;
 			return true;
 		}
@@ -6497,6 +6156,7 @@ namespace MsgPack
 				case MessagePackCode.NilValue:
 				{
 					result = null;
+					this.InternalCollectionType = CollectionType.None;
 					return true;
 				}
 				case MessagePackCode.Bin8: 
@@ -6555,6 +6215,7 @@ namespace MsgPack
 			if ( size == 0 )
 			{
 				result = String.Empty;
+				this.InternalCollectionType = CollectionType.None;
 				return true;
 			}
 			
@@ -6602,8 +6263,7 @@ namespace MsgPack
 			
 			var resultValue = stringBuffer.ToString();
 			#endregion UnpackString
-			this._collectionType = CollectionType.None;
-			this._itemsCount = 0;
+			this.InternalCollectionType = CollectionType.None;
 			result = resultValue;
 			return true;
 		}
@@ -6629,25 +6289,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.NilValue:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = MessagePackObject.Nil;
+					this.InternalCollectionType = CollectionType.None;
 					result = MessagePackObject.Nil;
 					return true;
 				}
 				case MessagePackCode.TrueValue:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = Unpacking.TrueValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = Unpacking.TrueValue;
 					return true;
 				}
 				case MessagePackCode.FalseValue:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = Unpacking.FalseValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = Unpacking.FalseValue;
 					return true;
 				}
@@ -6655,17 +6309,13 @@ namespace MsgPack
 			
 			if( header < 0x80 )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				this._data = Unpacking.PositiveIntegers[ header ];
+				this.InternalCollectionType = CollectionType.None;
 				result = Unpacking.PositiveIntegers[ header ];
 				return true;
 			}
 			else if( header >= 0xE0 )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				this._data = Unpacking.NegativeIntegers[ header - 0xE0 ];
+				this.InternalCollectionType = CollectionType.None;
 				result = Unpacking.NegativeIntegers[ header - 0xE0 ];
 				return true;
 			}
@@ -6675,18 +6325,18 @@ namespace MsgPack
 				case 0x80:
 				{
 					var size = header & 0xF;
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = size;
-					this._data = size;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = size;
+					this.InternalData = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
 				case 0x90:
 				{
 					var size = header & 0xF;
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = size;
-					this._data = size;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = size;
+					this.InternalData = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -6705,9 +6355,7 @@ namespace MsgPack
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultMpoValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
@@ -6731,9 +6379,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6753,9 +6399,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6775,9 +6419,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6797,9 +6439,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6819,9 +6459,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6841,9 +6479,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6863,9 +6499,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6885,9 +6519,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6907,9 +6539,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6929,9 +6559,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -6963,9 +6591,7 @@ namespace MsgPack
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultMpoValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
@@ -6997,9 +6623,7 @@ namespace MsgPack
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultMpoValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
@@ -7037,9 +6661,7 @@ namespace MsgPack
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultMpoValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
@@ -7059,9 +6681,9 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = length;
-					this._data = length;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = length;
 					return true;
 				}
@@ -7081,9 +6703,9 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = length;
-					this._data = length;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = ( long )length;
 					return true;
 				}
@@ -7103,9 +6725,9 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = length;
-					this._data = length;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = length;
 					return true;
 				}
@@ -7125,22 +6747,262 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = length;
-					this._data = length;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = ( long )length;
 					return true;
 				}
 				case MessagePackCode.FixExt1:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 1 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt2:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 2 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt4:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 4 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt8:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 8 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt16:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 16 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext8:
+				{
+					#region UnpackExt
+			
+					Byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext16:
+				{
+					#region UnpackExt
+			
+					UInt16 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext32:
 				{
-					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
+					#region UnpackExt
+			
+					UInt32 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+			
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
 				}
 				default:
 				{
@@ -7172,25 +7034,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.NilValue:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = MessagePackObject.Nil;
+					this.InternalCollectionType = CollectionType.None;
 					result = MessagePackObject.Nil;
 					return true;
 				}
 				case MessagePackCode.TrueValue:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = Unpacking.TrueValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = Unpacking.TrueValue;
 					return true;
 				}
 				case MessagePackCode.FalseValue:
 				{
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = Unpacking.FalseValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = Unpacking.FalseValue;
 					return true;
 				}
@@ -7198,17 +7054,13 @@ namespace MsgPack
 			
 			if( header < 0x80 )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				this._data = Unpacking.PositiveIntegers[ header ];
+				this.InternalCollectionType = CollectionType.None;
 				result = Unpacking.PositiveIntegers[ header ];
 				return true;
 			}
 			else if( header >= 0xE0 )
 			{
-				this._collectionType = CollectionType.None;
-				this._itemsCount = 0;
-				this._data = Unpacking.NegativeIntegers[ header - 0xE0 ];
+				this.InternalCollectionType = CollectionType.None;
 				result = Unpacking.NegativeIntegers[ header - 0xE0 ];
 				return true;
 			}
@@ -7218,18 +7070,18 @@ namespace MsgPack
 				case 0x80:
 				{
 					var size = header & 0xF;
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = size;
-					this._data = size;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = size;
+					this.InternalData = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
 				case 0x90:
 				{
 					var size = header & 0xF;
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = size;
-					this._data = size;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = size;
+					this.InternalData = size;
 					result = Unpacking.PositiveIntegers[ size ];
 					return true;
 				}
@@ -7248,9 +7100,7 @@ namespace MsgPack
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultMpoValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
@@ -7274,9 +7124,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7296,9 +7144,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7318,9 +7164,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7340,9 +7184,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7362,9 +7204,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7384,9 +7224,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7406,9 +7244,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7428,9 +7264,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7450,9 +7284,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7472,9 +7304,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultValue;
 					return true;
 				}
@@ -7506,9 +7336,7 @@ namespace MsgPack
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultMpoValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
@@ -7540,9 +7368,7 @@ namespace MsgPack
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultMpoValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
@@ -7580,9 +7406,7 @@ namespace MsgPack
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
-					this._collectionType = CollectionType.None;
-					this._itemsCount = 0;
-					this._data = resultMpoValue;
+					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
@@ -7602,9 +7426,9 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = length;
-					this._data = length;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = length;
 					return true;
 				}
@@ -7624,9 +7448,9 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = length;
-					this._data = length;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = ( long )length;
 					return true;
 				}
@@ -7646,9 +7470,9 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = length;
-					this._data = length;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = length;
 					return true;
 				}
@@ -7668,22 +7492,262 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackScalar
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = length;
-					this._data = length;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = length;
+					this.InternalData = length;
 					result = ( long )length;
 					return true;
 				}
 				case MessagePackCode.FixExt1:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 1 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt2:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 2 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt4:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 4 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt8:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 8 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.FixExt16:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 16 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext8:
+				{
+					#region UnpackExt
+			
+					Byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext16:
+				{
+					#region UnpackExt
+			
+					UInt16 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
 				case MessagePackCode.Ext32:
 				{
-					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Extension type 0x{0:X} is not supported yet.", header ) );
+					#region UnpackExt
+			
+					UInt32 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+			
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
 				}
 				default:
 				{
@@ -7722,9 +7786,9 @@ namespace MsgPack
 					}
 			
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				case MessagePackCode.Array32:
@@ -7741,9 +7805,9 @@ namespace MsgPack
 					}
 			
 					result = unsignedSize;
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				default:
@@ -7751,9 +7815,9 @@ namespace MsgPack
 					if( MessagePackCode.MinimumFixedArray <= header && header <= MessagePackCode.MaximumFixedArray )
 					{
 						result = header & 0xF;
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 					}
 			
@@ -7789,9 +7853,9 @@ namespace MsgPack
 					}
 			
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				case MessagePackCode.Array32:
@@ -7808,9 +7872,9 @@ namespace MsgPack
 					}
 			
 					result = unsignedSize;
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				default:
@@ -7818,9 +7882,9 @@ namespace MsgPack
 					if( MessagePackCode.MinimumFixedArray <= header && header <= MessagePackCode.MaximumFixedArray )
 					{
 						result = header & 0xF;
-					this._collectionType = CollectionType.Array;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Array;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 					}
 			
@@ -7857,9 +7921,9 @@ namespace MsgPack
 					}
 			
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				case MessagePackCode.Map32:
@@ -7876,9 +7940,9 @@ namespace MsgPack
 					}
 			
 					result = unsignedSize;
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				default:
@@ -7886,9 +7950,9 @@ namespace MsgPack
 					if( MessagePackCode.MinimumFixedMap <= header && header <= MessagePackCode.MaximumFixedMap )
 					{
 						result = header & 0xF;
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 					}
 			
@@ -7924,9 +7988,9 @@ namespace MsgPack
 					}
 			
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				case MessagePackCode.Map32:
@@ -7943,9 +8007,9 @@ namespace MsgPack
 					}
 			
 					result = unsignedSize;
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 				}
 				default:
@@ -7953,9 +8017,9 @@ namespace MsgPack
 					if( MessagePackCode.MinimumFixedMap <= header && header <= MessagePackCode.MaximumFixedMap )
 					{
 						result = header & 0xF;
-					this._collectionType = CollectionType.Map;
-					this._itemsCount = result;
-					this._data = result;
+					this.InternalCollectionType = CollectionType.Map;
+					this.InternalItemsCount = result;
+					this.InternalData = result;
 					return true;
 					}
 			
@@ -7963,6 +8027,561 @@ namespace MsgPack
 				}
 			}// switch
 			#endregion UnpackMapLength
+		}
+		
+		public override bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
+		{
+			this.EnsureNotInSubtreeMode();
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+			#region UnpackExt
+			#if DEBUG
+			Contract.Assert( source != null );
+			Contract.Assert( buffer != null );
+			#endif
+			
+			var header = source.ReadByte();
+			if( header < 0 )
+			{
+				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+			}
+			
+			switch( header )
+			{
+				case MessagePackCode.FixExt1:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 1 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt2:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 2 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt4:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 4 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt8:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 8 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt16:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 16 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext8:
+				{
+					#region UnpackExt
+			
+					Byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext16:
+				{
+					#region UnpackExt
+			
+					UInt16 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext32:
+				{
+					#region UnpackExt
+			
+					UInt32 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+			
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				default:
+				{
+					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "map header", header, MessagePackCode.ToString( header ) ) );
+				}
+			}// switch
+			#endregion UnpackExt
+		}
+		
+		internal bool ReadSubtreeMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
+		{
+			var source = this._stream;
+			var buffer = this._scalarBuffer;
+			#region UnpackExt
+			#if DEBUG
+			Contract.Assert( source != null );
+			Contract.Assert( buffer != null );
+			#endif
+			
+			var header = source.ReadByte();
+			if( header < 0 )
+			{
+				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+			}
+			
+			switch( header )
+			{
+				case MessagePackCode.FixExt1:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 1 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt2:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 2 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt4:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 4 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt8:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 8 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.FixExt16:
+				{
+					#region UnpackExt
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ 16 ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext8:
+				{
+					#region UnpackExt
+			
+					Byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext16:
+				{
+					#region UnpackExt
+			
+					UInt16 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				case MessagePackCode.Ext32:
+				{
+					#region UnpackExt
+			
+					UInt32 length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+			
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var typeCode = source.ReadByte();
+					if( typeCode < 0 )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+			
+					var data = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( data, 0, data.Length );
+					if( bytesRead < data.Length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+					#endregion UnpackExt
+				}
+				default:
+				{
+					throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Cannot convert '{0}' type value from type '{2}'(0x{1:X}).", "map header", header, MessagePackCode.ToString( header ) ) );
+				}
+			}// switch
+			#endregion UnpackExt
 		}
 		
 	}

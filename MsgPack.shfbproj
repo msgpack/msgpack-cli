@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{928e44ef-1824-42ba-b6d2-01363b38ad6c}</ProjectGuid>
-    <SHFBSchemaVersion>1.9.3.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>1.9.5.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -16,14 +16,14 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
-    <HtmlHelpName>Documentation</HtmlHelpName>
+    <HtmlHelpName>MessagePackCLI</HtmlHelpName>
     <Language>en-US</Language>
     <NamingMethod>MemberName</NamingMethod>
-    <Preliminary>True</Preliminary>
-    <PresentationStyle>vs2010</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <PresentationStyle>VS2010</PresentationStyle>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <SdkLinkTarget>Self</SdkLinkTarget>
-    <SyntaxFilters>CSharp, VisualBasic, CPlusPlus, FSharp</SyntaxFilters>
+    <SyntaxFilters>CSharp, VisualBasic, VisualBasicUsage, CPlusPlus, FSharp</SyntaxFilters>
     <ProductTitle>MessagePack for CLI</ProductTitle>
     <VendorName>msgpack_org</VendorName>
     <MissingTags>Summary, Parameter, Returns, Value, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
@@ -33,7 +33,8 @@ Site: http://cli.msgpack.org/</ProjectSummary>
     <VisibleItems>Attributes, InheritedMembers, Protected, SealedProtected</VisibleItems>
     <DocumentationSources>
       <DocumentationSource sourceFile="bin\net40-client\MsgPack.dll" xmlns="" />
-<DocumentationSource sourceFile="bin\net40-client\MsgPack.XML" xmlns="" /></DocumentationSources>
+      <DocumentationSource sourceFile="bin\net40-client\MsgPack.XML" xmlns="" />
+    </DocumentationSources>
     <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="MsgPack" isDocumented="True">&lt;para&gt;
@@ -47,7 +48,7 @@ It includes &lt;see cref="T:MsgPack.MessagePackObject" /&gt; which is lightweigh
 Although you should usually use convinience &lt;see cref="N:MsgPack.Serialization" /&gt; APIs to serialize or deserialize object in MessagePack format,
 you can use these primitives to control over serialization depending on internal state of the target object, etc.
 &lt;/para&gt;</NamespaceSummaryItem>
-<NamespaceSummaryItem name="MsgPack.Serialization" isDocumented="True">&lt;para&gt;
+      <NamespaceSummaryItem name="MsgPack.Serialization" isDocumented="True">&lt;para&gt;
 &lt;c&gt;MsgPack.Serialization&lt;/c&gt; namespace defines primitives of MessagePack for CLI.
 &lt;/para&gt;
 &lt;para&gt;
@@ -55,7 +56,14 @@ It includes a &lt;see cref="T:MsgPack.Serialization.MessagePackSerializer{T}" /&
 and its factory, a &lt;see cref="T:MsgPack.Serialization.MessagePackSerializer" /&gt; static class.
 This namespace also includes &lt;see cref="T:MsgPack.Serialization.SerializationContext" /&gt; 
 which manages context information including serializer repository and configuration.
-&lt;/para&gt;</NamespaceSummaryItem></NamespaceSummaries>
+&lt;/para&gt;</NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <HelpTitle>MessagePack for CLI API documentation</HelpTitle>
+    <FooterText>&amp;lt%3ba href=&amp;quot%3bhttps://github.com/msgpack/msgpack-cli/issues/&amp;quot%3b&amp;gt%3bFeedback %28github issues%29&amp;lt%3b/a&amp;gt%3b</FooterText>
+    <CopyrightText>Copyright %28c%29 FUJIWARA,Yusuke 2010-2013</CopyrightText>
+    <FeedbackEMailLinkText>
+    </FeedbackEMailLinkText>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

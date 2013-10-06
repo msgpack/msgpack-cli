@@ -25,6 +25,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Text_StringBuilderMessagePackSerializer : MessagePackSerializer<StringBuilder>
 	{
+		public System_Text_StringBuilderMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, StringBuilder value )
 		{
 			// NOTE: More efficient?
@@ -34,7 +37,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected internal sealed override StringBuilder UnpackFromCore( Unpacker unpacker )
 		{
 			// NOTE: More efficient?
-			var result = unpacker.Data.Value;
+			var result = unpacker.LastReadData;
 			return result.IsNil ? null : new StringBuilder( result.DeserializeAsString() );
 		}
 	}

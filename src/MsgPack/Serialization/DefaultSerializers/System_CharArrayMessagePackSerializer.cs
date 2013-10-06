@@ -24,6 +24,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_CharArrayMessagePackSerializer : MessagePackSerializer<char[]>
 	{
+		public System_CharArrayMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, char[] value )
 		{
 			if ( value == null )
@@ -38,7 +41,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override char[] UnpackFromCore( Unpacker unpacker )
 		{
-			var result = unpacker.Data.Value;
+			var result = unpacker.LastReadData;
 			return result.IsNil ? null : result.AsCharArray();
 		}
 	}

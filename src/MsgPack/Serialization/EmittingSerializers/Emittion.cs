@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -231,7 +231,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var asProperty = member as PropertyInfo;
 			if ( asProperty != null )
 			{
-				if ( !asProperty.CanWrite )
+				if ( !asProperty.CanSetValue() )
 				{
 					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot set value to '{0}.{1}' property.", asProperty.DeclaringType, asProperty.Name ) );
 				}
@@ -330,6 +330,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var value = localHolder.GetSerializingValue( valueType );
 			loadValueEmitter( il );
 			il.EmitAnyStloc( value );
+
 			if ( memberName != null && nilImplication == NilImplication.Prohibit )
 			{
 				/*
@@ -555,8 +556,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					EmitNilImplication(
 						il,
 						unpackerArgumentIndex,
-						member.Value.Contract.Name,
-						member.Value.Contract.NilImplication,
+						member.Value,
 						endOfDeserialization,
 						localHolder
 					);
@@ -634,20 +634,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="il">The il generator.</param>
 		/// <param name="unpackerArgumentIndex">Index of the unpacker argument.</param>
-		/// <param name="memberName">Name of the deserializing member.</param>
-		/// <param name="nilImplication">The nil implication.</param>
+		/// <param name="member">Metadata of the serializing member.</param>
 		/// <param name="endOfDeserialization">The label to the end of deserialization.</param>
 		/// <param name="localHolder">The <see cref="LocalVariableHolder"/> which holds shared local variable information.</param>
 		public static void EmitNilImplication(
 			TracingILGenerator il,
 			int unpackerArgumentIndex,
-			string memberName,
-			NilImplication nilImplication,
+			SerializingMember member,
 			Label endOfDeserialization,
 			LocalVariableHolder localHolder
 		)
 		{
-			switch ( nilImplication )
+			switch ( member.Contract.NilImplication )
 			{
 				case NilImplication.MemberDefault:
 				{
@@ -660,21 +658,41 @@ namespace MsgPack.Serialization.EmittingSerializers
 						 * }
 						 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
-					il.EmitGetProperty( Metadata._Unpacker.Data );
+					il.EmitGetProperty( Metadata._Unpacker.LastReadData );
 					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
-					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = localHolder.UnpackedDataValue;
-					il.EmitAnyStloc( dataValue );
-					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
 					il.EmitBrtrue( endOfDeserialization );
 
 					break;
 				}
+				case NilImplication.Null:
+				{
+					if ( member.Member.GetMemberValueType().GetIsValueType() && Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
+					{
+						throw SerializationExceptions.NewValueTypeCannotBeNull(
+							member.Contract.Name, member.Member.GetMemberValueType(), member.Member.DeclaringType 
+						);
+					}
+
+					if ( !member.Member.CanSetValue() )
+					{
+						throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull(
+							 member.Contract.Name
+						);
+					}
+
+					break;
+				}
 				case NilImplication.Prohibit:
 				{
+					if ( !member.Member.CanSetValue() )
+					{
+						throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull(
+							member.Contract.Name
+						);
+					}
 					/*
 						 * if( unpacker.Data.Value.IsNil )
 						 * {
@@ -682,18 +700,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 						 * }
 						 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
-					il.EmitGetProperty( Metadata._Unpacker.Data );
+					il.EmitGetProperty( Metadata._Unpacker.LastReadData );
 					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
-					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = localHolder.UnpackedDataValue;
-					il.EmitAnyStloc( dataValue );
-					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
 					var endIf0 = il.DefineLabel( "END_IF0" );
 					il.EmitBrfalse_S( endIf0 );
-					il.EmitLdstr( memberName );
+					il.EmitLdstr( member.Contract.Name );
 					il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
 					il.EmitThrow();
 					il.MarkLabel( endIf0 );
@@ -724,6 +738,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				case NilImplication.Null:
 				{
+					if ( member.Member.GetMemberValueType().GetIsValueType() && Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null)
+					{
+						throw SerializationExceptions.NewValueTypeCannotBeNull(
+							member.Contract.Name, member.Member.GetMemberValueType(), member.Member.DeclaringType
+						);
+					}
+
+					// TODO: Refactoring
 					// Throw exception for non-nullable value type.
 					// Nop for nullables.
 					if ( member.Member.GetMemberValueType().GetIsValueType()
@@ -824,14 +846,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 * }
 					 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
-					il.EmitGetProperty( Metadata._Unpacker.Data );
+					il.EmitGetProperty( Metadata._Unpacker.LastReadData );
 					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
-					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = localHolder.UnpackedDataValue;
-					il.EmitAnyStloc( dataValue );
-					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
 					il.EmitBrtrue( endOfDeserialization );
 
@@ -854,14 +872,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 					 * }
 					 */
 					il.EmitAnyLdarg( unpackerArgumentIndex );
-					il.EmitGetProperty( Metadata._Unpacker.Data );
+					il.EmitGetProperty( Metadata._Unpacker.LastReadData );
 					var data = localHolder.UnpackedData;
 					il.EmitAnyStloc( data );
 					il.EmitAnyLdloca( data );
-					il.EmitGetProperty( Metadata._Nullable<MessagePackObject>.Value );
-					var dataValue = localHolder.UnpackedDataValue;
-					il.EmitAnyStloc( dataValue );
-					il.EmitAnyLdloca( dataValue );
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
 					var endIf0 = il.DefineLabel( "END_IF0" );
 					il.EmitBrfalse_S( endIf0 );
@@ -969,6 +983,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( target != null );
 
 			// TODO: For collection, supports .ctor(IEnumerable<> other)
+
+			if ( target.LocalType.IsAbstract || target.LocalType.IsInterface )
+			{
+				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( target.LocalType );
+			}
 
 			if ( target.LocalType.IsArray )
 			{

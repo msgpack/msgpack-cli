@@ -73,6 +73,9 @@
     <Compile Include="..\MsgPack.UnitTest\MessagePackConvertTest.cs">
       <Link>MessagePackConvertTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackExtendedTypeObjectTest.cs">
+      <Link>MessagePackExtendedTypeObjectTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectDictionaryTest.cs">
       <Link>MessagePackObjectDictionaryTest.cs</Link>
     </Compile>
@@ -130,11 +133,23 @@
     <Compile Include="..\MsgPack.UnitTest\MessageUnpackableTest.cs">
       <Link>MessageUnpackableTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.cs">
+      <Link>PackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.Miscs.cs">
+      <Link>PackerTest.Miscs.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.cs">
       <Link>PackerTest.Pack.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.Miscs.cs">
       <Link>PackerTest.Pack.Miscs.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.PackBinary.cs">
+      <Link>PackerTest.PackBinary.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.PackExtendedType.cs">
+      <Link>PackerTest.PackExtendedType.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.PackObject.cs">
       <Link>PackerTest.PackObject.cs</Link>
@@ -229,20 +244,17 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\MillisecondsDateTimeOffsetComparer.cs">
       <Link>Serialization\MillisecondsDateTimeOffsetComparer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationCollectionTestTarget.cs">
-      <Link>Serialization\NilImplicationCollectionTestTarget.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTest.cs">
       <Link>Serialization\NilImplicationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTestTarget.cs">
       <Link>Serialization\NilImplicationTestTarget.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\PackerTest.cs">
-      <Link>Serialization\PackerTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializerGeneratorTest.cs">
+      <Link>Serialization\SerializerGeneratorTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SimpleCollection`1.cs">
       <Link>Serialization\SimpleCollection`1.cs</Link>
@@ -277,11 +289,11 @@
     <Compile Include="..\MsgPack.UnitTest\TestSuite.cs">
       <Link>TestSuite.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Unpacker.Ext.cs">
-      <Link>Unpacker.Ext.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.cs">
       <Link>UnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Ext.cs">
+      <Link>UnpackerTest.Ext.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Raw.cs">
       <Link>UnpackerTest.Raw.cs</Link>
@@ -339,6 +351,15 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackingTest.cs">
       <Link>UnpackingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Ext.cs">
+      <Link>UnpackingTest.Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Raw.cs">
+      <Link>UnpackingTest.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Scalar.cs">
+      <Link>UnpackingTest.Scalar.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\_SetUpFixture.cs">
       <Link>_SetUpFixture.cs</Link>

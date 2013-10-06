@@ -34,9 +34,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 	internal sealed class FieldBasedSerializerEmitter : SerializerEmitter
 	{
 		private static readonly Type[] _constructorParameterTypes = new[] { typeof( SerializationContext ) };
+		private static readonly Type[] _serializerConstructorParameterTypes = new[] { typeof( PackerCompatibilityOptions ) };
 
 		private readonly Dictionary<RuntimeTypeHandle, FieldBuilder> _serializers;
-		private readonly ConstructorBuilder _constructorBuilder;
+		private readonly ConstructorBuilder _defaultConstructorBuilder;
+		private readonly ConstructorBuilder _contextConstructorBuilder;
 		private readonly TypeBuilder _typeBuilder;
 		private readonly MethodBuilder _packMethodBuilder;
 		private readonly MethodBuilder _unpackFromMethodBuilder;
@@ -58,7 +60,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			string typeName =
 #if !NETFX_35
-				String.Join(
+ String.Join(
 					Type.Delimiter.ToString(),
 					typeof( SerializerEmitter ).Namespace,
 					"Generated",
@@ -83,7 +85,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 					typeof( MessagePackSerializer<> ).MakeGenericType( targetType )
 				);
 
-			this._constructorBuilder = this._typeBuilder.DefineConstructor( MethodAttributes.Public, CallingConventions.Standard, _constructorParameterTypes );
+			this._defaultConstructorBuilder = this._typeBuilder.DefineConstructor( MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes );
+			this._contextConstructorBuilder = this._typeBuilder.DefineConstructor( MethodAttributes.Public, CallingConventions.Standard, _constructorParameterTypes );
 
 			this._packMethodBuilder =
 				this._typeBuilder.DefineMethod(
@@ -211,7 +214,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( !this._typeBuilder.IsCreated() )
 			{
 				/*
-				 *	.ctor( SerializationContext ) : base()
+				 *	.ctor() : this(null)
+				 *	{}
+				 */
+				/*
+				 *	.ctor( SerializationContext context ) 
+				 *	  : base( ( context ?? SerializationContext.Default ).CompabilityOptions.PackerCompatibilityOptions )
 				 *	{
 				 *		this._serializer0 = context.GetSerializer<T0>();
 				 *		this._serializer1 = context.GetSerializer<T1>();
@@ -219,23 +227,53 @@ namespace MsgPack.Serialization.EmittingSerializers
 				 *			:
 				 *	}
 				 */
-				var il = this._constructorBuilder.GetILGenerator();
-				// : base()
-				il.Emit( OpCodes.Ldarg_0 );
-				il.Emit( OpCodes.Call, this._typeBuilder.BaseType.GetConstructor( BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null ) );
-
-				// this._serializerN = context.GetSerializer<T>();
-				foreach ( var entry in this._serializers )
+				// default
 				{
-					var targetType = Type.GetTypeFromHandle( entry.Key );
-					var getMethod = Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType );
+					var il = this._defaultConstructorBuilder.GetILGenerator();
+					// : this(null)
 					il.Emit( OpCodes.Ldarg_0 );
-					il.Emit( OpCodes.Ldarg_1 );
-					il.Emit( OpCodes.Callvirt, getMethod );
-					il.Emit( OpCodes.Stfld, entry.Value );
+					il.Emit( OpCodes.Ldnull );
+					il.Emit( OpCodes.Call, this._defaultConstructorBuilder );
+					il.Emit( OpCodes.Ret );
 				}
 
-				il.Emit( OpCodes.Ret );
+				// context
+				{
+					var il = this._contextConstructorBuilder.GetILGenerator();
+					// : base()
+					il.Emit( OpCodes.Ldarg_0 );
+					// ( context ?? SerializationContext.Default )
+					var nullValue = il.DefineLabel();
+					var endExpression = il.DefineLabel();
+					il.Emit( OpCodes.Ldarg_1 );
+					il.Emit( OpCodes.Brfalse_S, nullValue );
+					il.Emit( OpCodes.Ldarg_1 );
+					il.Emit( OpCodes.Br_S, endExpression );
+					il.MarkLabel( nullValue );
+					il.Emit( OpCodes.Call, Metadata._SerializationContext.DefaultProperty.GetGetMethod() );
+					il.MarkLabel( endExpression );
+					il.Emit( OpCodes.Call, Metadata._SerializationContext.CompatibilityOptionsProperty.GetGetMethod() );
+					il.Emit( OpCodes.Call, Metadata._SerializationCompatibilityOptions.PackerCompatibilityOptionsProperty.GetGetMethod() );
+					il.Emit(
+						OpCodes.Call,
+						this._typeBuilder.BaseType.GetConstructor(
+							BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, _serializerConstructorParameterTypes, null 
+						) 
+					);
+
+					// this._serializerN = context.GetSerializer<T>();
+					foreach ( var entry in this._serializers )
+					{
+						var targetType = Type.GetTypeFromHandle( entry.Key );
+						var getMethod = Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType );
+						il.Emit( OpCodes.Ldarg_0 );
+						il.Emit( OpCodes.Ldarg_1 );
+						il.Emit( OpCodes.Callvirt, getMethod );
+						il.Emit( OpCodes.Stfld, entry.Value );
+					}
+
+					il.Emit( OpCodes.Ret );
+				}
 			}
 
 			return this._typeBuilder.CreateType().GetConstructor( _constructorParameterTypes );

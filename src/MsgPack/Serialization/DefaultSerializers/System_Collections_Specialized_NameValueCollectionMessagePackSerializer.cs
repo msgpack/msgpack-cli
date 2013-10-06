@@ -27,6 +27,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Collections_Specialized_NameValueCollectionMessagePackSerializer : MessagePackSerializer<NameValueCollection>
 	{
+		public System_Collections_Specialized_NameValueCollectionMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, NameValueCollection objectTree )
 		{
 			if ( objectTree == null )
@@ -65,7 +68,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			while ( unpacker.Read() )
 			{
-				var key = unpacker.Data.Value.DeserializeAsString();
+				var key = unpacker.LastReadData.DeserializeAsString();
 				if ( !unpacker.Read() )
 				{
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
@@ -80,7 +83,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					while ( valuesUnpacker.Read() )
 					{
-						result.Add( key, unpacker.Data.Value.DeserializeAsString() );
+						result.Add( key, unpacker.LastReadData.DeserializeAsString() );
 					}
 				}
 			}

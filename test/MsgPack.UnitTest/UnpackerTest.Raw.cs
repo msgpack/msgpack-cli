@@ -37,7 +37,7 @@ namespace MsgPack
 	// Do not modify this file. Edit UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	[TestFixture]
-	public partial class PackerTest_Raw
+	public partial class UnpackerTest_Raw
 	{
 
 		[Test]
@@ -52,7 +52,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -70,7 +72,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -122,7 +126,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -155,7 +161,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -223,7 +231,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -256,7 +266,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -324,7 +336,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -342,7 +356,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -394,7 +410,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -427,7 +445,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -495,7 +515,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -528,7 +550,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -596,7 +620,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -629,7 +655,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -697,7 +725,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -730,7 +760,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -798,7 +830,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -816,7 +850,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -868,7 +904,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -901,7 +939,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -969,7 +1009,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -1002,7 +1044,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -1070,7 +1114,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -1103,7 +1149,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -1171,7 +1219,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -1204,7 +1254,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -1272,7 +1324,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -1305,7 +1359,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -1373,7 +1429,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -1406,7 +1464,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -1474,7 +1534,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -1492,7 +1554,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -1544,7 +1608,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -1577,7 +1643,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -1645,7 +1713,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -1678,7 +1748,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -1746,7 +1818,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -1779,7 +1853,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -1847,7 +1923,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -1880,7 +1958,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -1948,7 +2028,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -1981,7 +2063,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -2049,7 +2133,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -2082,7 +2168,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -2150,7 +2238,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -2183,7 +2273,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -2251,7 +2343,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -2269,7 +2363,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -2321,7 +2417,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -2354,7 +2452,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -2422,7 +2522,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -2455,7 +2557,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -2523,7 +2627,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -2556,7 +2662,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -2624,7 +2732,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -2657,7 +2767,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -2725,7 +2837,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -2743,7 +2857,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -2795,7 +2911,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -2828,7 +2946,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -2896,7 +3016,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -2929,7 +3051,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -2997,7 +3121,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -3030,7 +3156,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -3098,7 +3226,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -3131,7 +3261,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -3199,7 +3331,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -3232,7 +3366,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -3300,7 +3436,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -3333,7 +3471,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -3401,7 +3541,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -3419,7 +3561,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 0 ) ) );
 			}
@@ -3471,7 +3615,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -3504,7 +3650,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 1 ) ) );
 			}
@@ -3572,7 +3720,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -3605,7 +3755,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 31 ) ) );
 			}
@@ -3673,7 +3825,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -3706,7 +3860,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 32 ) ) );
 			}
@@ -3774,7 +3930,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -3807,7 +3965,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 255 ) ) );
 			}
@@ -3875,7 +4035,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -3908,7 +4070,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 256 ) ) );
 			}
@@ -3976,7 +4140,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -4009,7 +4175,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65535 ) ) );
 			}
@@ -4077,7 +4245,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -4110,7 +4280,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( String )result.Value, Is.EqualTo( new String( 'A', 65536 ) ) );
 			}
@@ -4178,7 +4350,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -4196,7 +4370,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -4248,7 +4424,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -4281,7 +4459,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -4349,7 +4529,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -4382,7 +4564,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -4450,7 +4634,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -4468,7 +4654,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -4520,7 +4708,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -4553,7 +4743,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -4621,7 +4813,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -4654,7 +4848,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -4722,7 +4918,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -4755,7 +4953,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -4823,7 +5023,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -4856,7 +5058,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -4924,7 +5128,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -4942,7 +5148,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -4994,7 +5202,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -5027,7 +5237,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -5095,7 +5307,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -5128,7 +5342,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -5196,7 +5412,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -5229,7 +5447,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -5297,7 +5517,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -5330,7 +5552,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -5398,7 +5622,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -5431,7 +5657,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -5499,7 +5727,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -5532,7 +5762,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -5600,7 +5832,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -5618,7 +5852,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 0 ).ToArray() ) );
 			}
@@ -5670,7 +5906,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -5703,7 +5941,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 1 ).ToArray() ) );
 			}
@@ -5771,7 +6011,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -5804,7 +6046,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 31 ).ToArray() ) );
 			}
@@ -5872,7 +6116,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -5905,7 +6151,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 32 ).ToArray() ) );
 			}
@@ -5973,7 +6221,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -6006,7 +6256,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 255 ).ToArray() ) );
 			}
@@ -6074,7 +6326,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -6107,7 +6361,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 256 ).ToArray() ) );
 			}
@@ -6175,7 +6431,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -6208,7 +6466,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65535 ).ToArray() ) );
 			}
@@ -6276,7 +6536,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}
@@ -6309,7 +6571,9 @@ namespace MsgPack
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( Byte[] )result.Value, Is.EqualTo( Enumerable.Repeat( 0xFF, 65536 ).ToArray() ) );
 			}

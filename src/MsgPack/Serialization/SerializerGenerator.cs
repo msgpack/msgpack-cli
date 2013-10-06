@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,17 +19,18 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-#if !NETFX_CORE
+
 using MsgPack.Serialization.EmittingSerializers;
-#endif
 
 namespace MsgPack.Serialization
 {
-	// TODO: testing...
-	// TODO: Can we enable this feature on WinRT using Cecil...?
+	// TODO: Enable this feature on WinRT using CodeDOM.
 	/// <summary>
 	///		Provides pre-compiled serialier assembly generation.
 	/// </summary>
@@ -52,18 +53,30 @@ namespace MsgPack.Serialization
 	/// </remarks>
 	public class SerializerGenerator
 	{
-		private readonly Type _rootType;
-
 		/// <summary>
 		///		Gets the type of the root object which will be serialized/deserialized.
 		/// </summary>
 		/// <value>
-		///		The type of the root object which will be serialized/deserialized.
-		///		This value will not be <c>null</c>.
+		///		The first entry of <see cref="TargetTypes"/>.
+		///		This value will be <c>null</c> when the <see cref="TargetTypes"/> is empty.
 		/// </value>
+		[Obsolete( "Use TargetTypes instead." )]
 		public Type RootType
 		{
-			get { return this._rootType; }
+			get { return this._targetTypes.FirstOrDefault(); }
+		}
+
+		private readonly HashSet<Type> _targetTypes;
+
+		/// <summary>
+		///		Gets target types will be generated dedicated serializers.
+		/// </summary>
+		/// <value>
+		///		A collection which stores target types will be generated dedicated serializers.
+		/// </value>
+		public ICollection<Type> TargetTypes
+		{
+			get { return this._targetTypes; }
 		}
 
 		private readonly AssemblyName _assemblyName;
@@ -82,7 +95,7 @@ namespace MsgPack.Serialization
 		private SerializationMethod _method;
 
 		/// <summary>
-		/// Gets or sets the <see cref="SerializationMethod"/> which indicates serialization method to be used.
+		///		Gets or sets the <see cref="SerializationMethod"/> which indicates serialization method to be used.
 		/// </summary>
 		/// <value>
 		///		The <see cref="SerializationMethod"/> which indicates serialization method to be used.
@@ -104,19 +117,12 @@ namespace MsgPack.Serialization
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SerializerGenerator"/> class.
 		/// </summary>
-		/// <param name="rootType">Type of the root object which will be serialized/deserialized.</param>
 		/// <param name="assemblyName">Name of the assembly to be generated.</param>
 		/// <exception cref="ArgumentNullException">
-		///		<paramref name="rootType"/> is <c>null</c>.
-		///		Or <paramref name="assemblyName"/> is <c>null</c>.
+		///		<paramref name="assemblyName"/> is <c>null</c>.
 		/// </exception>
-		public SerializerGenerator( Type rootType, AssemblyName assemblyName )
+		public SerializerGenerator( AssemblyName assemblyName )
 		{
-			if ( rootType == null )
-			{
-				throw new ArgumentNullException( "rootType" );
-			}
-
 			if ( assemblyName == null )
 			{
 				throw new ArgumentNullException( "assemblyName" );
@@ -124,28 +130,85 @@ namespace MsgPack.Serialization
 
 			Contract.EndContractBlock();
 
-			this._rootType = rootType;
 			this._assemblyName = assemblyName;
+			this._targetTypes = new HashSet<Type>();
 			this._method = SerializationMethod.Array;
 		}
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="SerializerGenerator"/> class.
+		/// </summary>
+		/// <param name="rootType">Type of the root object which will be serialized/deserialized.</param>
+		/// <param name="assemblyName">Name of the assembly to be generated.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="rootType"/> is <c>null</c>.
+		///		Or <paramref name="assemblyName"/> is <c>null</c>.
+		/// </exception>
+		public SerializerGenerator( Type rootType, AssemblyName assemblyName )
+			: this( assemblyName )
+		{
+			if ( rootType == null )
+			{
+				throw new ArgumentNullException( "rootType" );
+			}
+
+			Contract.EndContractBlock();
+
+			this._targetTypes.Add( rootType );
+		}
+
+		/// <summary>
 		///		Generates the serializer assembly and save it to current directory.
-		///		</summary>
+		///	</summary>
+		/// <exception cref="IOException">Some I/O error is occurred on saving assembly file.</exception>
 		public void GenerateAssemblyFile()
+		{
+			this.GenerateAssemblyFile(
+				AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave ) );
+		}
+
+		/// <summary>
+		///		Generates the serializer assembly and save it to specified directory.
+		///	</summary>
+		/// <param name="directory">The path of directory where newly generated assembly file will be located. If the directory does not exist, then it will be created.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="directory"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentException"><paramref name="directory"/> is not valid.</exception>
+		/// <exception cref="PathTooLongException"><paramref name="directory"/> is too long.</exception>
+		/// <exception cref="DirectoryNotFoundException"><paramref name="directory"/> is existent file.</exception>
+		/// <exception cref="UnauthorizedAccessException">Cannot create specified directory for access control of file system.</exception>
+		/// <exception cref="IOException">Some I/O error is occurred on creating directory or saving assembly file.</exception>
+		public void GenerateAssemblyFile( string directory )
+		{
+			if ( !Directory.Exists( directory ) )
+			{
+				Directory.CreateDirectory( directory );
+			}
+
+			this.GenerateAssemblyFile(
+				AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave, directory ) );
+		}
+
+		private void GenerateAssemblyFile( AssemblyBuilder assemblyBuilder )
 		{
 			var context = new SerializationContext();
 			context.EmitterFlavor = EmitterFlavor.FieldBased;
 			context.GeneratorOption = SerializationMethodGeneratorOption.CanDump;
 			context.SerializationMethod = this._method;
 
-			var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave );
-
 			// AssemblyBuilder cannot be debugged because no PDB files (and 'dummy' source files to step).
 			DefaultSerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
 
-			( Activator.CreateInstance( typeof( Builder<> ).MakeGenericType( this._rootType ) ) as Builder ).GenerateAssembly( context, assemblyBuilder );
+			var generatorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
+
+			foreach( var targetType in this._targetTypes )
+			{
+				( Activator.CreateInstance( typeof( Builder<> ).MakeGenericType( targetType) ) as Builder ).GenerateSerializerTo( context, generatorManager );
+			}
+
+			assemblyBuilder.Save( this._assemblyName.Name + ".dll" );
 		}
+
+		// TODO: Generate CodeDOM
 
 		/// <summary>
 		///		Defines non-generic interface of actual generic serializer builder.
@@ -155,11 +218,11 @@ namespace MsgPack.Serialization
 			protected Builder() { }
 
 			/// <summary>
-			///		Generates the assembly and saves it to current directory.
+			///		Generates serializers using a specified assembly builder.
 			/// </summary>
 			/// <param name="context">The dedicated <see cref="SerializationContext"/>.</param>
-			/// <param name="assemblyBuilder">The dedicated <see cref="AssemblyBuilder"/>.</param>
-			public abstract void GenerateAssembly( SerializationContext context, AssemblyBuilder assemblyBuilder );
+			/// <param name="generatorManager">The dedicated <see cref="SerializationMethodGeneratorManager"/>.</param>
+			public abstract void GenerateSerializerTo( SerializationContext context, SerializationMethodGeneratorManager generatorManager );
 		}
 
 		/// <summary>
@@ -174,15 +237,12 @@ namespace MsgPack.Serialization
 			///		Generates the assembly and saves it to current directory.
 			/// </summary>
 			/// <param name="context">The dedicated <see cref="SerializationContext"/>.</param>
-			/// <param name="assemblyBuilder">The dedicated <see cref="AssemblyBuilder"/>.</param>
-			public override void GenerateAssembly( SerializationContext context, AssemblyBuilder assemblyBuilder )
+			/// <param name="generatorManager">The dedicated <see cref="SerializationMethodGeneratorManager"/>.</param>
+			public override void GenerateSerializerTo( SerializationContext context, SerializationMethodGeneratorManager generatorManager )
 			{
 				var builder = context.SerializationMethod == SerializationMethod.Array ? new ArrayEmittingSerializerBuilder<T>( context ) as EmittingSerializerBuilder<T> : new MapEmittingSerializerBuilder<T>( context );
-				builder.GeneratorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
+				builder.GeneratorManager = generatorManager;
 				builder.CreateSerializer();
-
-				// Saved to current directory.
-				assemblyBuilder.Save( assemblyBuilder.GetName().Name + ".dll" );
 			}
 		}
 	}

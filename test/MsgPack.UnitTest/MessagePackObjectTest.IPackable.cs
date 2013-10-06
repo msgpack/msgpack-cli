@@ -314,10 +314,179 @@ namespace MsgPack
 			);
 		}
 
+		// Ext types
+
+		private static IEnumerable<byte> BytesRange( int start, int count )
+		{
+			return Enumerable.Range( start, count ).Select( i => ( byte ) ( i & 0xff ) );
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, new byte[0]) ),
+				new byte[] { MessagePackCode.Ext8, 0x0, 0x1 },
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x1Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 1 ).ToArray() ) ),
+				new byte[] { MessagePackCode.FixExt1, 0x1 }.Concat( BytesRange( 1, 1 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x1Length_ProhibitExtType_InvalidOperationException()
+		{
+			Assert.Throws<InvalidOperationException>(
+				() => TestPackToMessageCoreWithOption(
+					new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 1 ).ToArray() ) ),
+					new byte[] { MessagePackCode.FixExt1, 0x1 }.Concat( BytesRange( 1, 1 ) ).ToArray(),
+					PackerCompatibilityOptions.ProhibitExtendedTypeObjects
+			) );
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x2Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 2 ).ToArray() ) ),
+				new byte[] { MessagePackCode.FixExt2, 0x1 }.Concat( BytesRange( 1, 2 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x3Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 3 ).ToArray() ) ),
+				new byte[] { MessagePackCode.Ext8, 0x3, 0x1 }.Concat( BytesRange( 1, 3 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x4Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 4 ).ToArray() ) ),
+				new byte[] { MessagePackCode.FixExt4, 0x1 }.Concat( BytesRange( 1, 4 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x5Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 5 ).ToArray() ) ),
+				new byte[] { MessagePackCode.Ext8, 0x5, 0x1 }.Concat( BytesRange( 1, 5 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x8Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 8 ).ToArray() ) ),
+				new byte[] { MessagePackCode.FixExt8, 0x1 }.Concat( BytesRange( 1, 8 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x9Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 9 ).ToArray() ) ),
+				new byte[] { MessagePackCode.Ext8, 0x9, 0x1 }.Concat( BytesRange( 1, 9 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x16Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 16 ).ToArray() ) ),
+				new byte[] { MessagePackCode.FixExt16, 0x1 }.Concat( BytesRange( 1, 16 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x17Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 17 ).ToArray() ) ),
+				new byte[] { MessagePackCode.Ext8, 0x11, 0x1 }.Concat( BytesRange( 1, 17 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0xFFLength_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 0xFF ).ToArray() ) ),
+				new byte[] { MessagePackCode.Ext8, 0xFF, 0x1 }.Concat( BytesRange( 1, 0xFF ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0x100Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 0x100 ).ToArray() ) ),
+				new byte[] { MessagePackCode.Ext16, 0x1, 0, 0x1 }.Concat( BytesRange( 1, 0x100 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
+		[Test]
+		public void TestPackToMessage_Ext0xFFFFLength_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 0xFFFF ).ToArray() ) ),
+				new byte[] { MessagePackCode.Ext16, 0xFF, 0xFF, 0x1 }.Concat( BytesRange( 1, 0xFFFF ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+		
+		[Test]
+		public void TestPackToMessage_Ext0x10000Length_Success()
+		{
+			TestPackToMessageCoreWithOption(
+				new MessagePackObject( new MessagePackExtendedTypeObject( 1, BytesRange( 1, 0x10000 ).ToArray() ) ),
+				new byte[] { MessagePackCode.Ext32, 0, 0x1, 0, 0, 0x1 }.Concat( BytesRange( 1, 0x10000 ) ).ToArray(),
+				PackerCompatibilityOptions.None
+			);
+		}
+
 		private static void TestPackToMessageCore( MessagePackObject target, params byte[] expected )
 		{
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
+			{
+				target.PackToMessage( packer, new PackingOptions() );
+				var actual = buffer.ToArray();
+				Assert.AreEqual( expected, actual );
+			}
+		}
+
+		private static void TestPackToMessageCoreWithOption( MessagePackObject target, byte[] expected, PackerCompatibilityOptions compatibilityOptions )
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer, compatibilityOptions ) )
 			{
 				target.PackToMessage( packer, new PackingOptions() );
 				var actual = buffer.ToArray();

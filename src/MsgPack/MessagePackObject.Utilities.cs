@@ -178,7 +178,7 @@ namespace MsgPack
 				}
 			}
 		}
-		
+
 		/// <summary>
 		///		Initializes a new instance wraps <see cref="MessagePackString"/>.
 		/// </summary>
@@ -368,6 +368,24 @@ namespace MsgPack
 				}
 			}
 
+			{
+				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
+				if ( asExtendedTypeObjectBody != null )
+				{
+					var otherAsExtendedTypeObjectBody = other._handleOrTypeCode as byte[];
+					if ( otherAsExtendedTypeObjectBody == null )
+					{
+						return false;
+					}
+
+					unchecked
+					{
+						return MessagePackExtendedTypeObject.Unpack( ( byte )this._value, asExtendedTypeObjectBody ) ==
+							   MessagePackExtendedTypeObject.Unpack( ( byte )other._value, otherAsExtendedTypeObjectBody );
+					}
+				}
+			}
+
 			Debug.Assert( false, String.Format( "Unknown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
 		}
@@ -451,6 +469,14 @@ namespace MsgPack
 			}
 
 			{
+				var asMps = this._handleOrTypeCode as MessagePackString;
+				if ( asMps != null )
+				{
+					return asMps.GetHashCode();
+				}
+			}
+
+			{
 				var asArray = this._handleOrTypeCode as IList<MessagePackObject>;
 				if ( asArray != null )
 				{
@@ -468,12 +494,17 @@ namespace MsgPack
 				}
 			}
 
-			var asMps = this._handleOrTypeCode as MessagePackString;
-			if ( asMps != null )
 			{
-				return asMps.GetHashCode();
+				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
+				if ( asExtendedTypeObjectBody != null )
+				{
+					unchecked
+					{
+						return MessagePackExtendedTypeObject.Unpack( ( byte )this._value, asExtendedTypeObjectBody ).GetHashCode();
+					}
+				}
 			}
-			else
+
 			{
 				Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
 				return 0;
@@ -735,6 +766,15 @@ namespace MsgPack
 				}
 			}
 
+			{
+				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
+				if ( asExtendedTypeObjectBody != null )
+				{
+					MessagePackExtendedTypeObject.Unpack( ( byte )this._value, asExtendedTypeObjectBody ).ToString( buffer, isJson );
+					return;
+				}
+			}
+
 			// may be string
 			Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
 			if ( isJson )
@@ -789,6 +829,11 @@ namespace MsgPack
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
 			if ( typeCode == null )
 			{
+				if ( type == typeof( MessagePackExtendedTypeObject ) )
+				{
+					return this._handleOrTypeCode is byte[];
+				}
+
 				if ( type == typeof( string ) || type == typeof( IList<char> ) || type == typeof( IEnumerable<char> ) )
 				{
 					var asMessagePackString = this._handleOrTypeCode as MessagePackString;
@@ -968,6 +1013,7 @@ namespace MsgPack
 				MessagePackString asString;
 				IList<MessagePackObject> asList;
 				IDictionary<MessagePackObject, MessagePackObject> asDictionary;
+				byte[] asExtendedTypeObjectBody;
 				if ( ( asString = this._handleOrTypeCode as MessagePackString ) != null )
 				{
 					packer.PackRaw( asString.GetBytes() );
@@ -988,6 +1034,10 @@ namespace MsgPack
 						item.Key.PackToMessage( packer, options );
 						item.Value.PackToMessage( packer, options );
 					}
+				}
+				else if( ( asExtendedTypeObjectBody = this._handleOrTypeCode as byte[] ) != null )
+				{
+					packer.PackExtendedTypeValue( unchecked( ( byte ) this._value ), asExtendedTypeObjectBody );
 				}
 				else
 				{
@@ -1392,6 +1442,10 @@ namespace MsgPack
 			{
 				return new MessagePackObject( asDictionary, false );
 			}
+			else if ( boxedValue is MessagePackExtendedTypeObject )
+			{
+				return new MessagePackObject( ( MessagePackExtendedTypeObject )boxedValue );
+			}
 
 			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not supported.", boxedValue.GetType() ) );
 		}
@@ -1422,16 +1476,22 @@ namespace MsgPack
 					return asBinary.UnsafeGetBuffer();
 				}
 
+				var asList = this._handleOrTypeCode as IList<MessagePackObject>;
+				if ( asList != null )
+				{
+					return asList;
+				}
+
 				var asDictionary = this._handleOrTypeCode as IDictionary<MessagePackObject, MessagePackObject>;
 				if ( asDictionary != null )
 				{
 					return asDictionary;
 				}
 
-				var asList = this._handleOrTypeCode as IList<MessagePackObject>;
-				if ( asList != null )
+				var asExtendedTypeObject = this._handleOrTypeCode as byte[];
+				if ( asExtendedTypeObject != null )
 				{
-					return asList;
+					return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte ) this._value ), asExtendedTypeObject );
 				}
 
 				Contract.Assert( false, "Unknwon type:" + this._handleOrTypeCode );

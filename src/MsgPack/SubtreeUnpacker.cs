@@ -43,18 +43,30 @@ namespace MsgPack
 
 		public sealed override bool IsArrayHeader
 		{
-			get { return this._root.IsArrayHeader; }
+			get { return this._root.InternalCollectionType == ItemsUnpacker.CollectionType.Array; }
 		}
 
 		public sealed override bool IsMapHeader
 		{
-			get { return this._root.IsMapHeader; }
+			get { return this._root.InternalCollectionType == ItemsUnpacker.CollectionType.Map; }
 		}
 
+		public override bool IsCollectionHeader
+		{
+			get { return this._root.InternalCollectionType != ItemsUnpacker.CollectionType.None; }
+		}
+
+		[Obsolete( "Consumer should not use this property. Query LastReadData instead." )]
 		public sealed override MessagePackObject? Data
 		{
-			get { return this._root.Data; }
-			protected set { this._root.InternalSetData( value ); }
+			get { return this._root.InternalData; }
+			protected set { this._root.InternalData = value.GetValueOrDefault(); }
+		}
+
+		public override MessagePackObject LastReadData
+		{
+			get { return this._root.InternalData; }
+			protected set { this._root.InternalData = value; }
 		}
 
 #if DEBUG
@@ -68,8 +80,10 @@ namespace MsgPack
 
 		private SubtreeUnpacker( ItemsUnpacker root, SubtreeUnpacker parent )
 		{
+#if DEBUG
 			Contract.Assert( root != null );
 			Contract.Assert( root.IsArrayHeader || root.IsMapHeader );
+#endif
 			this._root = root;
 			this._parent = parent;
 			this._unpacked = new Stack<long>( 2 );
@@ -79,9 +93,9 @@ namespace MsgPack
 
 			if ( root.ItemsCount > 0 )
 			{
-				this._itemsCount.Push( root.ItemsCount * ( root.IsMapHeader ? 2 : 1 ) );
+				this._itemsCount.Push( root.InternalItemsCount * ( ( int )root.InternalCollectionType ) );
 				this._unpacked.Push( 0 );
-				this._isMap.Push( root.IsMapHeader );
+				this._isMap.Push( root.InternalCollectionType == ItemsUnpacker.CollectionType.Map );
 			}
 		}
 
@@ -124,7 +138,7 @@ namespace MsgPack
 				throw new InvalidOperationException( "This unpacker is located in the tail." );
 			}
 
-			if ( !this._root.IsArrayHeader && !this._root.IsMapHeader )
+			if ( this._root.InternalCollectionType == ItemsUnpacker.CollectionType.None )
 			{
 				throw new InvalidOperationException( "This unpacker is not located in the head of collection." );
 			}
@@ -136,31 +150,32 @@ namespace MsgPack
 		{
 			this.DiscardCompletedStacks();
 
-			if ( this._itemsCount.Count == 0 )
+			if ( this._itemsCount.Count == 0 || !this._root.ReadSubtreeItem() )
 			{
 				return false;
 			}
 
-			if ( !this._root.ReadSubtreeItem() )
+			switch ( this._root.InternalCollectionType )
 			{
-				return false;
-			}
-
-			if ( this._root.IsArrayHeader )
-			{
-				this._itemsCount.Push( this._root.ItemsCount );
-				this._unpacked.Push( 0 );
-				this._isMap.Push( false );
-			}
-			else if ( this._root.IsMapHeader )
-			{
-				this._itemsCount.Push( this._root.ItemsCount * 2 );
-				this._unpacked.Push( 0 );
-				this._isMap.Push( true );
-			}
-			else
-			{
-				this._unpacked.Push( this._unpacked.Pop() + 1 );
+				case ItemsUnpacker.CollectionType.Array:
+				{
+					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._unpacked.Push( 0 );
+					this._isMap.Push( false );
+					break;
+				}
+				case ItemsUnpacker.CollectionType.Map:
+				{
+					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._unpacked.Push( 0 );
+					this._isMap.Push( true );
+					break;
+				}
+				default:
+				{
+					this._unpacked.Push( this._unpacked.Pop() + 1 );
+					break;
+				}
 			}
 
 			return true;
@@ -188,7 +203,9 @@ namespace MsgPack
 		{
 			if ( this._itemsCount.Count == 0 )
 			{
+#if DEBUG
 				Contract.Assert( this._unpacked.Count == 0 );
+#endif
 				return;
 			}
 
@@ -200,7 +217,9 @@ namespace MsgPack
 
 				if ( this._itemsCount.Count == 0 )
 				{
+#if DEBUG
 					Contract.Assert( this._unpacked.Count == 0 );
+#endif
 					break;
 				}
 

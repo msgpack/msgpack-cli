@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -74,7 +74,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private readonly UnpackFromMessageInvocation _unpackFromMessage;
 
 		protected ObjectExpressionMessagePackSerializer( SerializationContext context, SerializingMember[] members )
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
+			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
+			{
+				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( T ) );
+			}
+
 			this._createInstance =
 				Expression.Lambda<Func<T>>(
 					typeof( T ).GetIsValueType()
@@ -112,6 +118,32 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					members.Select(
 						m => m.Member == null ? CollectionTraits.NotCollection : m.Member.GetMemberValueType().GetCollectionTraits() ).
 						Select( t => t.CollectionType != CollectionKind.NotCollection ).ToArray();
+
+				// NilImplication validity check
+				foreach ( var member in members )
+				{
+					switch ( member.Contract.NilImplication )
+					{
+						case NilImplication.Null:
+						{
+							if ( member.Member.GetMemberValueType().GetIsValueType() &&
+								Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
+							{
+								throw SerializationExceptions.NewValueTypeCannotBeNull(
+									member.Contract.Name, member.Member.GetMemberValueType(), member.Member.DeclaringType
+								);
+							}
+
+							if ( !member.Member.CanSetValue() )
+							{
+								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( member.Contract.Name );
+							}
+
+							break;
+						}
+					}
+				}
+
 				this._nilImplications = members.Select( m => m.Contract.NilImplication ).ToArray();
 				this._memberNames = members.Select( m => m.Contract.Name ).ToArray();
 			}
@@ -142,17 +174,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						? Expression.Lambda<Func<T, object>>(
 							Expression.Constant( null ),
 							targetParameter
-								).Compile()
-						: Expression.Lambda<Func<T, object>>(
-							Expression.Convert(
-								Expression.PropertyOrField(
-									targetParameter,
-									m.Member.Name
-								),
-								typeof( object )
-							),
-							targetParameter
 						).Compile()
+						: CreateMemberGetter( targetParameter, m )
 					).ToArray();
 			}
 
@@ -210,6 +233,39 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						? default( MemberSetter )
 						: ThrowGetOnlyMemberIsInvalid( m.Member )
 				).ToArray();
+			}
+		}
+
+		private static Func<T, object> CreateMemberGetter( ParameterExpression targetParameter, SerializingMember member )
+		{
+			var coreGetter =
+				Expression.Lambda<Func<T, object>>( 
+					Expression.Convert(
+						Expression.PropertyOrField(
+							targetParameter,
+							member.Member.Name
+						),
+						typeof( object )
+					),
+					targetParameter 
+				).Compile();
+			if( member.Contract.NilImplication == NilImplication.Prohibit )
+			{
+				var name = member.Contract.Name;
+				return target =>
+				       {
+					       var gotten = coreGetter( target );
+						   if( gotten == null )
+						   {
+							   throw SerializationExceptions.NewNullIsProhibited( name );
+						   }
+
+					       return gotten;
+				       };
+			}
+			else
+			{
+				return coreGetter;
 			}
 		}
 
@@ -287,7 +343,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						throw SerializationExceptions.NewUnexpectedEndOfStream();
 					}
 
-					if ( unpacker.Data.Value.IsNil )
+					if ( unpacker.LastReadData.IsNil )
 					{
 						this.HandleNilImplication( ref instance, i );
 					}
@@ -317,11 +373,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			{
 				case NilImplication.Null:
 				{
-					if ( this._memberSetters[ index ] == null )
-					{
-						throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
-					}
-
 					this._memberSetters[ index ]( ref instance, null );
 					break;
 				}
@@ -374,17 +425,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
-				if ( unpacker.Data.Value.IsNil )
+				if ( unpacker.LastReadData.IsNil )
 				{
 					switch ( this._nilImplications[ index ] )
 					{
 						case NilImplication.Null:
 						{
-							if ( this._memberSetters[ index ] == null )
-							{
-								throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._memberNames[ index ] );
-							}
-
 							this._memberSetters[ index ]( ref instance, null );
 							continue;
 						}
@@ -417,7 +463,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsString();
+				return unpacker.LastReadData.AsString();
 			}
 			catch ( InvalidOperationException ex )
 			{
@@ -517,11 +563,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 				Contract.Ensures( Contract.Result<object>() == null );
 
-				if ( !unpacker.Data.HasValue )
-				{
-					throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
-				}
-
 				// Always returns null.
 				return null;
 			}
@@ -543,17 +584,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
 				}
 
-				if ( !unpacker.Data.HasValue )
-				{
-					throw SerializationExceptions.NewEmptyOrUnstartedUnpacker();
-				}
-
 				throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported by '{0}'.", this.GetType() ) );
 			}
 
 			public byte[] PackSingleObject( object objectTree )
 			{
-				using ( var stream = new MemoryStream( ) )
+				using ( var stream = new MemoryStream() )
 				using ( var packer = Packer.Create( stream ) )
 				{
 					this.PackTo( packer, objectTree );

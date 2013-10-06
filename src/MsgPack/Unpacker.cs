@@ -39,15 +39,37 @@ namespace MsgPack
 		/// <summary>
 		///		Gets a last unpacked data.
 		/// </summary>
-		/// <value>A last unpacked data or null.</value>
+		/// <value>A last unpacked data.</value>
 		/// <remarks>
-		///		If you use any of directory APIs (methods which return non-<see cref="MessagePackObject"/>), 
+		///		<note class="warning">
+		///			In default implementation, this property never returning <c>null</c> even if it had not been unpacked any objects.
+		///		</note>
+		///		If you use any of direct APIs (methods which return non-<see cref="MessagePackObject"/>), 
 		///		then this property to be invalidated.
+		///		Note that the actual value of invalidated this property is undefined.
 		/// </remarks>
+		[Obsolete( "Consumer should not use this property. Query LastReadData instead." )]
 		public abstract MessagePackObject? Data
 		{
 			get;
 			protected set;
+		}
+
+		/// <summary>
+		///		Gets a last unpacked data.
+		/// </summary>
+		/// <value>A last unpacked data. Initial value is <see cref="MessagePackObject.Nil"/>.</value>
+		/// <remarks>
+		///		If you use any of direct APIs (methods which return non-<see cref="MessagePackObject"/>), 
+		///		then this property to be invalidated.
+		///		Note that the actual value of invalidated this property is undefined.
+		/// </remarks>
+		public virtual MessagePackObject LastReadData
+		{
+#pragma warning disable 612,618
+			get { return this.Data.GetValueOrDefault(); }
+			protected set { this.Data = value; }
+#pragma warning restore 612,618
 		}
 
 		/// <summary>
@@ -70,6 +92,17 @@ namespace MsgPack
 		public abstract bool IsMapHeader
 		{
 			get;
+		}
+
+		/// <summary>
+		///		Gets a value indicating whether this instance is positioned to array or map header.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is positioned to array or map header; otherwise, <c>false</c>.
+		/// </value>
+		public virtual bool IsCollectionHeader
+		{
+			get { return this.IsArrayHeader || this.IsMapHeader; }
 		}
 
 		/// <summary>
@@ -235,7 +268,7 @@ namespace MsgPack
 		///	</remarks>
 		public Unpacker ReadSubtree()
 		{
-			if ( !this.IsArrayHeader && !this.IsMapHeader )
+			if ( !this.IsCollectionHeader )
 			{
 				throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
 			}
@@ -290,7 +323,7 @@ namespace MsgPack
 			this.EnsureNotInSubtreeMode();
 
 			bool result = this.ReadCore();
-			if ( result && !this.IsArrayHeader && !this.IsMapHeader )
+			if ( result && !this.IsCollectionHeader )
 			{
 				this.SetStable();
 			}
@@ -301,7 +334,7 @@ namespace MsgPack
 		internal void EnsureNotInSubtreeMode()
 		{
 			this.VerifyMode( UnpackerMode.Streaming );
-			if( this._isSubtreeReading )
+			if ( this._isSubtreeReading )
 			{
 				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
 			}
@@ -331,11 +364,7 @@ namespace MsgPack
 			this.VerifyMode( UnpackerMode.Enumerating );
 			while ( this.ReadCore() )
 			{
-				if ( this.Data != null )
-				{
-					yield return this.Data.Value;
-				}
-
+				yield return this.LastReadData;
 				this.VerifyMode( UnpackerMode.Enumerating );
 			}
 
@@ -358,30 +387,17 @@ namespace MsgPack
 		{
 			this.VerifyIsNotDisposed();
 
-			switch ( this._mode )
+			if( this._mode == UnpackerMode.Enumerating )
 			{
-				case UnpackerMode.Enumerating:
-				{
-					throw this.NewInvalidModeException();
-				}
-				case UnpackerMode.Streaming:
-				{
-					if ( !this.Data.HasValue )
-					{
-						throw this.NewInvalidModeException();
-					}
-
-					// If the value exists, safe to transit skipping.
-					break;
-				}
+				throw this.NewInvalidModeException();
 			}
-
-			this._mode = UnpackerMode.Skipping;
 
 			if ( this._isSubtreeReading )
 			{
 				throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
 			}
+
+			this._mode = UnpackerMode.Skipping;
 
 			var result = this.SkipCore();
 			if ( result != null )
@@ -404,7 +420,7 @@ namespace MsgPack
 		#endregion -- Streaming API --
 
 		/// <summary>
-		///		Gets current item or collection as single <see cref="MessagePackObject"/> from the stream.
+		///		Gets a current item or collection as single <see cref="MessagePackObject"/> from the stream.
 		/// </summary>
 		/// <returns>
 		///		A read item or collection from the stream.
@@ -419,7 +435,26 @@ namespace MsgPack
 
 			this.UnpackSubtree();
 
+#pragma warning disable 612,618
 			return this.Data;
+#pragma warning restore 612,618
+		}
+
+		/// <summary>
+		///		Gets a current item or collection as single <see cref="MessagePackObject"/> from the stream.
+		/// </summary>
+		/// <returns>
+		///		A read item or collection from the stream.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">The stream unexpectedly ends.</exception>
+		public MessagePackObject ReadItemData()
+		{
+			if ( !this.Read() )
+			{
+				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+			}
+
+			return this.UnpackSubtreeData();
 		}
 
 		/// <summary>
@@ -431,46 +466,78 @@ namespace MsgPack
 		/// </returns>
 		public MessagePackObject? UnpackSubtree()
 		{
-			if ( this.IsArrayHeader )
+			MessagePackObject result;
+			if ( this.UnpackSubtreeDataCore( out result ) )
 			{
-				var array = new MessagePackObject[ checked( ( int )this.Data.Value.AsUInt32() ) ];
-				using ( var subTreeReader = this.ReadSubtree() )
-				{
-					for ( int i = 0; i < array.Length; i++ )
-					{
-						var item = subTreeReader.ReadItem();
-						Contract.Assert( item.HasValue );
-						array[ i ] = item.Value;
-					}
-				}
-
-				this.Data = new MessagePackObject( array, true );
-			}
-			else if ( this.IsMapHeader )
-			{
-				var capacity = checked( ( int )this.Data.Value.AsUInt32() );
-				var map = new MessagePackObjectDictionary( capacity );
-				using ( var subTreeReader = this.ReadSubtree() )
-				{
-					for ( int i = 0; i < capacity; i++ )
-					{
-						var key = subTreeReader.ReadItem();
-						var value = subTreeReader.ReadItem();
-
-						Contract.Assert( key.HasValue );
-						Contract.Assert( value.HasValue );
-						map.Add( key.Value, value.Value );
-					}
-				}
-
-				this.Data = new MessagePackObject( map, true );
+				this.LastReadData = result;
+				return result;
 			}
 			else
 			{
 				return null;
 			}
+		}
 
-			return this.Data;
+		/// <summary>
+		///		Unpacks current subtree and returns subtree root as array or map.
+		/// </summary>
+		/// <returns>
+		///		An unpacked array or map when current position is array or map header.
+		///		Or <see cref="LastReadData"/> when current position is not array nor map header.
+		/// </returns>
+		public MessagePackObject UnpackSubtreeData()
+		{
+			MessagePackObject result;
+			if ( this.UnpackSubtreeDataCore( out result ) )
+			{
+				this.LastReadData = result;
+				return result;
+			}
+			else
+			{
+				return this.LastReadData;
+			}
+		}
+
+		internal bool UnpackSubtreeDataCore( out MessagePackObject result )
+		{
+			if ( this.IsArrayHeader )
+			{
+				var array = new MessagePackObject[ checked( ( int )this.LastReadData.AsUInt32() ) ];
+				using ( var subTreeReader = this.ReadSubtree() )
+				{
+					for ( int i = 0; i < array.Length; i++ )
+					{
+						array[ i ] = subTreeReader.ReadItemData();
+					}
+				}
+
+				result = new MessagePackObject( array, true );
+				return true;
+			}
+			else if ( this.IsMapHeader )
+			{
+				var capacity = checked( ( int )this.LastReadData.AsUInt32() );
+				var map = new MessagePackObjectDictionary( capacity );
+				using ( var subTreeReader = this.ReadSubtree() )
+				{
+					for ( int i = 0; i < capacity; i++ )
+					{
+						var key = subTreeReader.ReadItemData();
+						var value = subTreeReader.ReadItemData();
+
+						map.Add( key, value );
+					}
+				}
+
+				result = new MessagePackObject( map, true );
+				return true;
+			}
+			else
+			{
+				result = default( MessagePackObject );
+				return false;
+			}
 		}
 
 		private enum UnpackerMode

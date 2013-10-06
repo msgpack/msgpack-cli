@@ -26,14 +26,24 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer : MessagePackSerializer<FILETIME>
 	{
+		private static readonly DateTime _fileTimeEpocUtc = new DateTime( 1601, 1, 1, 0, 0, 0, DateTimeKind.Utc );
+
+		public System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, FILETIME value )
 		{
-			packer.Pack( MessagePackConvert.FromDateTime( DateTime.FromFileTimeUtc( unchecked( ( ( long )value.dwHighDateTime << 32 ) | ( value.dwLowDateTime & 0xffffffff ) ) ) ) );
+			packer.Pack( 
+				MessagePackConvert.FromDateTime(
+					// DateTime.FromFileTimeUtc in Mono 2.10.x does not return Utc DateTime (Mono issue #2936), so do convert manually to ensure returned DateTime is UTC.
+					_fileTimeEpocUtc.AddTicks( unchecked( ( ( long )value.dwHighDateTime << 32 ) | ( value.dwLowDateTime & 0xffffffff ) ) )
+				)
+			);
 		}
 
 		protected internal sealed override FILETIME UnpackFromCore( Unpacker unpacker )
 		{
-			var value = MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ).ToFileTimeUtc();
+			var value = MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ).ToFileTimeUtc();
 			return new FILETIME() { dwHighDateTime = unchecked( ( int )( value >> 32 ) ), dwLowDateTime = unchecked( ( int )( value & 0xffffffff ) ) };
 		}
 	}

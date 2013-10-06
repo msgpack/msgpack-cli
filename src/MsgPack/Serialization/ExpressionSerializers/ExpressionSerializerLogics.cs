@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,6 +23,10 @@ using System.Collections;
 using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Reflection;
+#if MONO
+using System.Collections.Generic;
+using System.Linq;
+#endif
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -187,13 +191,62 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			 *	}
 			 */
 
+#if !MONO
 			var enumeratorVariable = Expression.Variable( traits.GetEnumeratorMethod.ReturnType, "enumerator" );
-			var tryBlock = CreateForEachTry( enumeratorVariable, traits, bodyCreator );
+			var enumeratorAssignment = Expression.Assign( enumeratorVariable, Expression.Call( collection, traits.GetEnumeratorMethod ) );
+			var currentProperty =
+				traits.GetEnumeratorMethod.ReturnType == typeof( IDictionaryEnumerator )
+				? traits.GetEnumeratorMethod.ReturnType.GetProperty( "Entry" )
+				: traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" ) ?? Metadata._IEnumerator.Current;
+#else
+			ParameterExpression enumeratorVariable;
+			BinaryExpression enumeratorAssignment;
+			PropertyInfo currentProperty;
+			if( !traits.GetEnumeratorMethod.ReturnType.IsValueType )
+			{
+				currentProperty =
+					traits.GetEnumeratorMethod.ReturnType == typeof( IDictionaryEnumerator )
+					? traits.GetEnumeratorMethod.ReturnType.GetProperty( "Entry" )
+					: traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" ) ?? Metadata._IEnumerator.Current;
+
+				enumeratorVariable = Expression.Variable( traits.GetEnumeratorMethod.ReturnType, "enumerator" );
+				enumeratorAssignment = Expression.Assign( enumeratorVariable, Expression.Call( collection, traits.GetEnumeratorMethod ) );
+			}
+			else if( traits.GetEnumeratorMethod.ReturnType == typeof(IDictionaryEnumerator) )
+			{
+				currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Entry" );
+				enumeratorVariable = Expression.Variable( traits.GetEnumeratorMethod.ReturnType, "enumerator" );
+				enumeratorAssignment = Expression.Assign( enumeratorVariable, Expression.Call( collection, traits.GetEnumeratorMethod ) );
+			}
+			else
+			{
+				// Mono cannot not handle value type local variable with state in expression tree correctly, so value type Enumerator causes infinite loop.
+				var currentPropertyType = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" ).PropertyType;
+				var enumeratorType =
+					traits.GetEnumeratorMethod.ReturnType.GetInterfaces()
+					.FirstOrDefault( i => 
+						i.GetIsGenericType() 
+						&& i.GetGenericTypeDefinition() == typeof( IEnumerator<> )  
+						&& i.GetGenericArguments()[ 0 ] == currentPropertyType 
+					) ?? typeof( IEnumerator );
+				currentProperty = enumeratorType.GetProperty( "Current" );
+				enumeratorVariable = Expression.Variable( enumeratorType, "enumerator" );
+				enumeratorAssignment = 
+					Expression.Assign( 
+						enumeratorVariable, 
+						Expression.Convert( 
+							Expression.Call( collection, traits.GetEnumeratorMethod ), 
+						enumeratorType
+					)
+				);
+			}
+#endif
+			var tryBlock = CreateForEachTry( enumeratorVariable, traits, currentProperty, bodyCreator );
 			var finallyBlock = CreateForEachFinally( enumeratorVariable, traits );
 			return
 				Expression.Block(
 					new[] { enumeratorVariable },
-					Expression.Assign( enumeratorVariable, Expression.Call( collection, traits.GetEnumeratorMethod ) ),
+					enumeratorAssignment,
 					finallyBlock == null
 					? tryBlock
 					: Expression.TryFinally(
@@ -208,13 +261,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				);
 		}
 
-		private static Expression CreateForEachTry( ParameterExpression enumeratorVariable, CollectionTraits traits, Func<Expression, Expression> bodyCreator )
+		private static Expression CreateForEachTry( ParameterExpression enumeratorVariable, CollectionTraits traits, PropertyInfo currentProperty, Func<Expression, Expression> bodyCreator )
 		{
 			var endLoop = Expression.Label( "END_FOREACH" );
-			var currentProperty =
-				traits.GetEnumeratorMethod.ReturnType == typeof( IDictionaryEnumerator )
-				? traits.GetEnumeratorMethod.ReturnType.GetProperty( "Entry" )
-				: traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" ) ?? Metadata._IEnumerator.Current;
 
 			return
 				Expression.Loop(
@@ -249,16 +298,17 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <summary>
 		///		Returns an appropriate <see cref="ConstructorInfo"/> of collection.
 		/// </summary>
-		/// <typeparam name="T">The type of the collection.</typeparam>
+		/// <param name="context">The serialization context which holds default collection type.</param>
+		/// <param name="type">The type of the collection.</param>
 		/// <returns>An appropriate <see cref="ConstructorInfo"/> of collection.</returns>
 		/// <remarks>
 		///		If the collection has <c>.ctor(int capacity)</c>, then it will be returned.
 		///		Otherwise, default constructor will be returned.
 		///		Note that this method cannot determine whether a single <see cref="Int32"/> parameter truely represents 'capacity' or not.
 		/// </remarks>
-		public static ConstructorInfo GetCollectionConstructor<T>()
+		public static ConstructorInfo GetCollectionConstructor( SerializationContext context, Type type )
 		{
-			return typeof( T ).GetConstructor( _containsCapacity ) ?? typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes );
+			return type.GetConstructor( _containsCapacity ) ?? type.GetConstructor( ReflectionAbstractions.EmptyTypes );
 		}
 
 		/// <summary>

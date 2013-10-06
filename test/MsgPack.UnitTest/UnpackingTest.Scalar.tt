@@ -1,0 +1,182 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ assembly Name="System.Numerics" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Numerics" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#
+
+var __integers =
+	new Tuple<string, BigInteger, string, Type>[]
+	{
+		// Label, Expected Value, byte array, Exepected Type
+		Tuple.Create( "Int64MinValue", new BigInteger( Int64.MinValue ), "new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( long ) ),
+		Tuple.Create( "Int32MinValueMinusOne", new BigInteger( ( long )Int32.MinValue - 1L ), "new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF }", typeof( long )),
+		Tuple.Create( "Int32MinValue", new BigInteger( Int32.MinValue ), "new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 }", typeof( long ) ),
+		Tuple.Create( "Int16MinValueMinusOne", new BigInteger( ( int )Int16.MinValue - 1 ), "new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF }", typeof( long ) ),
+		Tuple.Create( "Int16MinValue", new BigInteger( Int16.MinValue ), "new byte[] { 0xD1, 0x80, 0x00 }", typeof( long ) ),
+		Tuple.Create( "SByteMinValueMinusOne", new BigInteger( ( short )SByte.MinValue - 1 ), "new byte[] { 0xD1, 0xFF, 0x7F }", typeof( long ) ),
+		Tuple.Create( "SByteMinValue", new BigInteger( SByte.MinValue ), "new byte[] { 0xD0, 0x80 }", typeof( long ) ),
+		Tuple.Create( "NegativeFixNumMinValueMinusOne", new BigInteger( -33 ), "new byte[] { 0xD0, 0xDF }", typeof( long ) ),
+		Tuple.Create( "NegativeFixNumMinValue", new BigInteger( -32 ), "new byte[] { 0xE0 }", typeof( long ) ),
+		Tuple.Create( "MinusOne", new BigInteger( -1 ), "new byte[] { 0xFF }", typeof( long ) ),
+		Tuple.Create( "Zero", new BigInteger( 0 ), "new byte[] { 0x0 }", typeof( ulong ) ),
+		Tuple.Create( "PlusOne", new BigInteger( 1 ), "new byte[] { 0x1 }", typeof( ulong ) ),
+		Tuple.Create( "PositiveFixNumMaxValue", new BigInteger( 127 ), "new byte[] { 0x7F }", typeof( ulong ) ),
+		Tuple.Create( "PositiveFixNumMaxValuePlusOne", new BigInteger( 128 ), "new byte[] { 0xCC, 0x80 }", typeof( ulong ) ),
+		Tuple.Create( "ByteMaxValue", new BigInteger( Byte.MaxValue ), "new byte[] { 0xCC, 0xFF }", typeof( ulong ) ),
+		Tuple.Create( "ByteMaxValuePlusOne", new BigInteger( ( ushort )Byte.MaxValue + 1 ), "new byte[] { 0xCD, 0x1, 0x00 }", typeof( ulong ) ),
+		Tuple.Create( "UInt16MaxValue", new BigInteger( UInt16.MaxValue ), "new byte[] { 0xCD, 0xFF, 0xFF }", typeof( ulong ) ),
+		Tuple.Create( "UInt16MaxValuePlusOne", new BigInteger( ( uint )UInt16.MaxValue + 1 ), "new byte[] { 0xCE, 0x0, 0x1, 0x00, 0x00 }", typeof( ulong ) ),
+		Tuple.Create( "UInt32MaxValue", new BigInteger( UInt32.MaxValue ), "new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( ulong ) ),
+		Tuple.Create( "UInt32MaxValuePlusOne", new BigInteger( ( ulong )UInt32.MaxValue + 1 ), "new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 }", typeof( ulong ) ),
+		Tuple.Create( "UInt64MaxValue", new BigInteger( UInt64.MaxValue ), "new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( ulong ) ),
+	};
+
+var __reals =
+	new Tuple<string, string, Type, string>[]
+	{
+		// Label, byte array, Exepected Type, Testing Expression
+		Tuple.Create( "SingleMinValue", "new byte[] { 0xCA, 0xFF, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MinValue.Equals(" ),
+		Tuple.Create( "SingleMaxValue", "new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MaxValue.Equals(" ),
+		Tuple.Create( "SingleEpsilon", "new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x01 }", typeof( float ), "Single.Epsilon.Equals(" ),
+		Tuple.Create( "SinglePositiveZero", "new byte[] { 0xCA, 0x00, 0x00, 0x00, 0x00 }", typeof( float ), "( 0.0f ).Equals(" ),
+		Tuple.Create( "SingleNegativeZero", "new byte[] { 0xCA, 0x80, 0x00, 0x00, 0x00 }", typeof( float ), "( -0.0f ).Equals(" ),
+		Tuple.Create( "SingleNaNPositiveMinValue", "new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x01 }", typeof( float ), "Single.IsNaN(" ),
+		Tuple.Create( "SingleNaNPositiveMaxValue", "new byte[] { 0xCA, 0x7F, 0xFF, 0xFF, 0xFF }", typeof( float ), "Single.IsNaN(" ),
+		Tuple.Create( "SingleNaNNegativeMinValue", "new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x01 }", typeof( float ), "Single.IsNaN(" ),
+		Tuple.Create( "SingleNaNNegativeMaxValue", "new byte[] { 0xCA, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( float ), "Single.IsNaN(" ),
+		Tuple.Create( "SingleNegativeInfinity", "new byte[] { 0xCA, 0xFF, 0x80, 0x00, 0x00 }", typeof( float ), "Single.IsNegativeInfinity(" ),
+		Tuple.Create( "SinglePositiveInfinity", "new byte[] { 0xCA, 0x7F, 0x80, 0x00, 0x00 }", typeof( float ), "Single.IsPositiveInfinity(" ),
+		Tuple.Create( "DoubleMinValue", "new byte[] { 0xCB, 0xFF, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.MinValue.Equals(" ),
+		Tuple.Create( "DoubleMaxValue", "new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.MaxValue.Equals("  ),
+		Tuple.Create( "DoubleEpsilon", "new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }", typeof( double ), "Double.Epsilon.Equals("  ),
+		Tuple.Create( "DoublePositiveZero", "new byte[] { 0xCB, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "( 0.0 ).Equals(" ),
+		Tuple.Create( "DoubleNegativeZero", "new byte[] { 0xCB, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "( -0.0 ).Equals(" ),
+		Tuple.Create( "DoubleNaNPositiveMinValue", "new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }", typeof( double ), "Double.IsNaN(" ),
+		Tuple.Create( "DoubleNaNPositiveMaxValue", "new byte[] { 0xCB, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.IsNaN(" ),
+		Tuple.Create( "DoubleNaNNegativeMinValue", "new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }", typeof( double ), "Double.IsNaN(" ),
+		Tuple.Create( "DoubleNaNNegativeMaxValue", "new byte[] { 0xCB, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.IsNaN(" ),
+		Tuple.Create( "DoubleNegativeInfinity", "new byte[] { 0xCB, 0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "Double.IsNegativeInfinity(" ),
+		Tuple.Create( "DoublePositiveInfinity", "new byte[] { 0xCB, 0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( double ), "Double.IsPositiveInfinity(" ),
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+using System.Linq;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// This file was generated from UnpackerTest.Scalar.tt T4Template.
+	// Do not modify this file. Edit UnpackerTest.Scalar.tt instead.
+
+	[TestFixture]
+	public partial class UnpackingTest_Scalar
+	{
+<#
+foreach( var __testCase in __integers )
+{
+#>
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Unpack<#= __testCase.Item4.Name #>_Stream()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
+			{
+				var result = Unpacking.Unpack<#= __testCase.Item4.Name #>( buffer );
+				Assert.That( buffer.Position, Is.EqualTo( buffer.Length ) );
+				Assert.That( result, Is.EqualTo( <#= __testCase.Item2 #> ) );
+			}
+		}
+		
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Unpack<#= __testCase.Item4.Name #>_ByteArray()
+		{
+			var buffer = <#= __testCase.Item3 #>;
+			var result = Unpacking.Unpack<#= __testCase.Item4.Name #>( buffer );
+			Assert.That( result.ReadCount, Is.EqualTo( buffer.Length ) );
+			Assert.That( result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
+		}
+<#
+}
+
+foreach( var __testCase in __reals )
+{
+#>
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Unpack<#= __testCase.Item3.Name #>_Stream()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			{
+				var result = Unpacking.Unpack<#= __testCase.Item3.Name #>( buffer );
+				Assert.That( buffer.Position, Is.EqualTo( buffer.Length ) );
+				Assert.That( <#= __testCase.Item4 #> result ) );
+			}
+		}
+		
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Unpack<#= __testCase.Item3.Name #>_ByteArray()
+		{
+			var buffer = <#= __testCase.Item2 #>;
+			var result = Unpacking.Unpack<#= __testCase.Item3.Name #>( buffer );
+			Assert.That( result.ReadCount, Is.EqualTo( buffer.Length ) );
+			Assert.That( <#= __testCase.Item4 #> result.Value ) );
+		}
+<#
+}
+#>
+	}
+}

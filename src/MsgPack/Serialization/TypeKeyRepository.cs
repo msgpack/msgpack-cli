@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -30,7 +30,10 @@ using System.Security;
 
 namespace MsgPack.Serialization
 {
-	internal sealed class TypeKeyRepository : IDisposable
+	/// <summary>
+	///		Repository for key type with RWlock scheme.
+	/// </summary>
+	internal class TypeKeyRepository : IDisposable
 	{
 		private volatile int _isFrozen;
 
@@ -67,7 +70,16 @@ namespace MsgPack.Serialization
 
 		public void Dispose()
 		{
-			this._lock.Dispose();
+			this.Dispose( true );
+			GC.SuppressFinalize( this );
+		}
+
+		protected virtual void Dispose( bool disposing )
+		{
+			if ( disposing )
+			{
+				this._lock.Dispose();
+			}
 		}
 
 #if !PARTIAL_TRUST && !SILVERLIGHT
@@ -101,37 +113,15 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public TEntry Get<T, TEntry>( SerializationContext context )
-			where TEntry : class
+		public bool Get( Type type, out object matched, out object genericDefinitionMatched )
 		{
-			object matched;
-			object genericDefinitionMatched;
-			if ( !this.Get<T>( out matched, out genericDefinitionMatched ) )
-			{
-				return null;
-			}
-
-			if ( matched != null )
-			{
-				return matched as TEntry;
-			}
-			else
-			{
-				Contract.Assert( typeof( T ).GetIsGenericType() );
-				Contract.Assert( !typeof( T ).GetIsGenericTypeDefinition() );
-				var type = genericDefinitionMatched as Type;
-				Contract.Assert( type != null );
-				Contract.Assert( type.GetIsGenericTypeDefinition() );
-				var result = ( TEntry )Activator.CreateInstance( type.MakeGenericType( typeof( T ).GetGenericArguments() ), context );
-				Contract.Assert( result != null );
-				return result;
-			}
+			return this.GetCore( type, out matched, out genericDefinitionMatched );
 		}
 
 #if !PARTIAL_TRUST && !SILVERLIGHT
 		[SecuritySafeCritical]
 #endif
-		private bool Get<T>( out object matched, out object genericDefinitionMatched )
+		private bool GetCore( Type type, out object matched, out object genericDefinitionMatched )
 		{
 			bool holdsReadLock = false;
 #if !SILVERLIGHT && !NETFX_CORE
@@ -149,16 +139,16 @@ namespace MsgPack.Serialization
 			try
 			{
 				object result;
-				if ( this._table.TryGetValue( typeof( T ).TypeHandle, out result ) )
+				if ( this._table.TryGetValue( type.TypeHandle, out result ) )
 				{
 					matched = result;
 					genericDefinitionMatched = null;
 					return true;
 				}
 
-				if ( typeof( T ).GetIsGenericType() )
+				if ( type.GetIsGenericType() )
 				{
-					if ( this._table.TryGetValue( typeof( T ).GetGenericTypeDefinition().TypeHandle, out result ) )
+					if ( this._table.TryGetValue( type.GetGenericTypeDefinition().TypeHandle, out result ) )
 					{
 						matched = null;
 						genericDefinitionMatched = result;
@@ -184,7 +174,7 @@ namespace MsgPack.Serialization
 			this._isFrozen = 1;
 		}
 
-		public bool Register<T>( object entry )
+		public bool Register( Type type, object entry, bool allowOverwrite )
 		{
 			Contract.Assert( entry != null );
 
@@ -193,15 +183,15 @@ namespace MsgPack.Serialization
 				throw new InvalidOperationException( "This repository is frozen." );
 			}
 
-			return this.Register( typeof( T ), entry );
+			return this.RegisterCore( type, entry, allowOverwrite );
 		}
 
 #if !PARTIAL_TRUST && !SILVERLIGHT
 		[SecuritySafeCritical]
 #endif
-		private bool Register( Type key, object value )
+		private bool RegisterCore( Type key, object value, bool allowOverwrite )
 		{
-			if ( !this._table.ContainsKey( key.TypeHandle ) )
+			if ( allowOverwrite || !this._table.ContainsKey( key.TypeHandle ) )
 			{
 				bool holdsWriteLock = false;
 #if !SILVERLIGHT && !NETFX_CORE
@@ -218,9 +208,9 @@ namespace MsgPack.Serialization
 #endif
 				try
 				{
-					if ( !this._table.ContainsKey( key.TypeHandle ) )
+					if ( allowOverwrite || !this._table.ContainsKey( key.TypeHandle ) )
 					{
-						this._table.Add( key.TypeHandle, value );
+						this._table[ key.TypeHandle ] = value;
 						return true;
 					}
 				}
@@ -234,6 +224,85 @@ namespace MsgPack.Serialization
 			}
 
 			return false;
+		}
+
+
+
+		public bool Unregister( Type type )
+		{
+			if ( this.IsFrozen )
+			{
+				throw new InvalidOperationException( "This repository is frozen." );
+			}
+
+			return this.UnregisterCore( type );
+		}
+
+#if !PARTIAL_TRUST && !SILVERLIGHT
+		[SecuritySafeCritical]
+#endif
+		private bool UnregisterCore( Type key )
+		{
+			if ( this._table.ContainsKey( key.TypeHandle ) )
+			{
+				bool holdsWriteLock = false;
+#if !SILVERLIGHT && !NETFX_CORE
+				RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+				try { }
+				finally
+				{
+					this._lock.EnterWriteLock();
+					holdsWriteLock = true;
+				}
+#if !SILVERLIGHT && !NETFX_CORE
+				RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+				try
+				{
+					return this._table.Remove( key.TypeHandle );
+				}
+				finally
+				{
+					if ( holdsWriteLock )
+					{
+						this._lock.ExitWriteLock();
+					}
+				}
+			}
+
+			return false;
+		}
+
+#if !PARTIAL_TRUST && !SILVERLIGHT
+		[SecuritySafeCritical]
+#endif
+		internal bool Coontains( Type type )
+		{
+			bool holdsReadLock = false;
+#if !SILVERLIGHT && !NETFX_CORE
+			RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+			try { }
+			finally
+			{
+				this._lock.EnterReadLock();
+				holdsReadLock = true;
+			}
+#if !SILVERLIGHT && !NETFX_CORE
+			RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+			try
+			{
+				return this._table.ContainsKey( type.TypeHandle );
+			}
+			finally
+			{
+				if ( holdsReadLock )
+				{
+					this._lock.ExitReadLock();
+				}
+			}
 		}
 	}
 }

@@ -213,6 +213,17 @@ namespace MsgPack
 			}
 		}
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="MessagePackExtendedTypeObject" /> instance.
+		/// </summary>
+		public MessagePackObject( MessagePackExtendedTypeObject value )
+		{
+			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			this = new MessagePackObject();
+			this._value = value.TypeCode;
+			this._handleOrTypeCode = value.Body;
+		}
+
 		#endregion -- Constructors --
 
 		#region -- Primitive Type Conversion Methods --
@@ -768,6 +779,21 @@ namespace MsgPack
 			return asString.GetBytes();
 		}
 
+		/// <summary>
+		///		Convert this instance to <see cref="MessagePackExtendedTypeObject" /> instance.
+		/// </summary>
+		/// <returns><see cref="MessagePackExtendedTypeObject" /> instance corresponds to this instance.</returns>
+		public MessagePackExtendedTypeObject AsMessagePackExtendedTypeObject()
+		{
+			if( this.IsNil )
+			{
+				ThrowCannotBeNilAs<MessagePackExtendedTypeObject>();
+			}
+			VerifyUnderlyingType<MessagePackExtendedTypeObject>( this, null  );
+
+			return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )this._value ), this._handleOrTypeCode as byte[] );
+		}
+
 		#endregion -- Primitive Type Conversion Methods --
 
 		#region -- Conversion Operator Overloads --
@@ -1000,6 +1026,21 @@ namespace MsgPack
 			{
 				result._handleOrTypeCode = new MessagePackString( value );
 			}
+			return result;
+		}
+
+		/// <summary>
+		///		Convert <see cref="MessagePackExtendedTypeObject" />instance to <see cref="MessagePackObject"/> instance.
+		/// </summary>
+		/// <param name="value"><see cref="MessagePackExtendedTypeObject" /> instance.</param>
+		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
+		public static implicit operator MessagePackObject( MessagePackExtendedTypeObject value )
+		{
+			MessagePackObject result;
+			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			result = new MessagePackObject();
+			result._value = value.TypeCode;
+			result._handleOrTypeCode = value.Body;
 			return result;
 		}
 
@@ -1566,6 +1607,22 @@ namespace MsgPack
 			var asString = value._handleOrTypeCode as MessagePackString;
 			Contract.Assert( asString != null );
 			return asString.GetBytes();
+		}
+
+		/// <summary>
+		///		Convert this instance to <see cref="MessagePackExtendedTypeObject" /> instance.
+		/// </summary>
+		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
+		/// <returns><see cref="MessagePackExtendedTypeObject" /> instance corresponds to <paramref name="value"/>.</returns>
+		public static explicit operator MessagePackExtendedTypeObject( MessagePackObject value )
+		{
+			if( value.IsNil )
+			{
+				ThrowCannotBeNilAs<MessagePackExtendedTypeObject>();
+			}
+			VerifyUnderlyingType<MessagePackExtendedTypeObject>( value, "value"  );
+
+			return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )value._value ), value._handleOrTypeCode as byte[] );
 		}
 
 		#endregion -- Conversion Operator Overloads --

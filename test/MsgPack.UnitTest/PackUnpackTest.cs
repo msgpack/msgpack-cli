@@ -278,7 +278,6 @@ namespace MsgPack
 			)
 			{
 				sw.Restart();
-				Console.WriteLine( "Array[0x{0:x}]", count );
 				var output = new MemoryStream();
 				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToArray() );
 				Assert.That(
@@ -458,7 +457,6 @@ namespace MsgPack
 			)
 			{
 				sw.Restart();
-				Console.WriteLine( "Map[0x{0:x}]", count );
 				var output = new MemoryStream();
 				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ) );
 				Assert.That(
@@ -483,15 +481,14 @@ namespace MsgPack
 					0, // empty
 					1, // only one
 					2, // minimum multiple
-					0x1f, // max fix raw size
-					0x20, // min raw16 size
-					0xffff, // max raw16 size
-					0x10000, // min raw32 size
+					0xFF, // max bin8 size
+					0x100, // min bin16 size
+					0xffff, // max bin16 size
+					0x10000, // min bin32 size
 				}
 			)
 			{
 				sw.Restart();
-				Console.WriteLine( "byte[0x{0:x}]", count );
 				var output = new MemoryStream();
 				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray() );
 				Assert.That(
@@ -517,14 +514,15 @@ namespace MsgPack
 					1, // only one
 					2, // minimum multiple
 					0x1f, // max fix raw size
-					0x20, // min raw16 size
-					0xffff, // max raw16 size
-					0x10000, // min raw32 size
+					0x20, // min str8 size
+					0xFF, // max str8 size
+					0x100, // min str16 size
+					0xffff, // max str16 size
+					0x10000, // min str32 size
 				}
 			)
 			{
 				sw.Restart();
-				Console.WriteLine( "utf-8[0x{0:x}]", count );
 				var output = new MemoryStream();
 				Packer.Create( output ).Pack( String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ) );
 				Assert.AreEqual(
@@ -535,6 +533,44 @@ namespace MsgPack
 			}
 
 			Console.WriteLine( "String: {0:0.###} msec/char", sw.Elapsed.TotalMilliseconds / 0x10000 );
+		}
+
+		[Test]
+		[Timeout( 3000 )]
+		public void TestExts()
+		{
+			var sw = new Stopwatch();
+			foreach (
+				var count in
+				new[]
+				{
+					0, // empty
+					1, // fixext1
+					2, // fixext2
+					4, // fixext4
+					8, // fixext8
+					16, // fixext16
+					17, // min ext8 size
+					0xff, // max ext8 size
+					0x100, // min ext16 size
+					0xffff, // max ext16 size
+					0x10000, // min ext32 size
+				}
+			)
+			{
+				sw.Restart();
+				var output = new MemoryStream();
+				var value = new MessagePackExtendedTypeObject(
+					1, Enumerable.Range( 0, count ).Select( i => ( byte ) ( i % 0x100 ) ).ToArray() );
+				Packer.Create( output, PackerCompatibilityOptions.None ).Pack( value );
+				Assert.AreEqual(
+					value,
+					UnpackOne( output ).AsMessagePackExtendedTypeObject()
+				);
+				sw.Stop();
+			}
+
+			Console.WriteLine( "Ext: {0:0.###} msec/byte", sw.Elapsed.TotalMilliseconds / 0x10000 );
 		}
 
 		[Test]
@@ -560,17 +596,5 @@ namespace MsgPack
 				Assert.That( item.AsString(), Is.EqualTo( "1" ) );
 			}
 		}
-
-		//[Test]
-		//public void TestPackerUnpackerCapabilities()
-		//{
-		//	// for 0.4
-		//	using ( var stream = new MemoryStream() )
-		//	using( var packer = Packer.Create( stream ) )
-		//	{
-		//		Assert.That(
-		//			packer.Compatibilities, Is.EqualTo( PackingCompatibilities.UnpackBinaryType | PackingCompatibilities.UnpackFixRaw8 ) );
-		//	}
-		//}
 	}
 }

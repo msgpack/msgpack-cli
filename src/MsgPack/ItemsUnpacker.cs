@@ -31,34 +31,41 @@ namespace MsgPack
 		private readonly bool _ownsStream;
 		private readonly Stream _stream;
 		private readonly byte[] _scalarBuffer = new byte[ 8 ];
-		private long _itemsCount;
-		private CollectionType _collectionType;
-		private MessagePackObject? _data;
+		internal long InternalItemsCount;
+		internal CollectionType InternalCollectionType;
+		internal MessagePackObject InternalData;
 
+		[Obsolete( "Consumer should not use this property. Query LastReadData instead." )]
 		public override MessagePackObject? Data
 		{
-			get { return this._data; }
-			protected set { this._data = value; }
+			get { return this.InternalData; }
+			protected set { this.InternalData = value.GetValueOrDefault(); }
 		}
 
-		internal void InternalSetData( MessagePackObject? value )
+		public override MessagePackObject LastReadData
 		{
-			this._data = value;
+			get { return this.InternalData; }
+			protected set { this.InternalData = value; }
 		}
 
 		public override bool IsArrayHeader
 		{
-			get { return this._collectionType == CollectionType.Array; }
+			get { return this.InternalCollectionType == CollectionType.Array; }
 		}
 
 		public override bool IsMapHeader
 		{
-			get { return this._collectionType == CollectionType.Map; }
+			get { return this.InternalCollectionType == CollectionType.Map; }
+		}
+
+		public override bool IsCollectionHeader
+		{
+			get { return this.InternalCollectionType != CollectionType.None; }
 		}
 
 		public override long ItemsCount
 		{
-			get { return this._itemsCount; }
+			get { return this.InternalCollectionType != CollectionType.None ? this.InternalItemsCount : 0L; }
 		}
 
 		protected sealed override Stream UnderlyingStream
@@ -103,7 +110,7 @@ namespace MsgPack
 			var success = this.ReadSubtreeObject( out value );
 			if ( success )
 			{
-				this._data = value;
+				this.InternalData = value;
 				return true;
 			}
 			else
@@ -144,11 +151,12 @@ namespace MsgPack
 			return this.SkipCore();
 		}
 
-		private enum CollectionType
+		internal enum CollectionType
 		{
-			None,
-			Array,
-			Map
+			// Value must be items count of collection element.
+			None = 0,
+			Array = 1,
+			Map = 2
 		}
 	}
 }

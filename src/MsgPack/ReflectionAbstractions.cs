@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -108,6 +108,24 @@ namespace MsgPack
 			return source.GetTypeInfo().IsPublic;
 #else
 			return source.IsPublic;
+#endif
+		}
+
+		public static Type GetBaseType( this Type source )
+		{
+#if NETFX_CORE
+			return source.GetTypeInfo().BaseType;
+#else
+			return source.BaseType;
+#endif
+		}
+
+		public static Type[] GetGenericTypeParameters( this Type source )
+		{
+#if NETFX_CORE
+			return source.GetTypeInfo().GenericTypeParameters;
+#else
+			return source.GetGenericArguments().Where( t => t.IsGenericParameter ).ToArray();
 #endif
 		}
 

@@ -1,0 +1,458 @@
+﻿<#
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#>
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	partial class PackerTest_Pack
+	{
+<#
+// Str
+foreach( var testType in
+	new []
+	{
+		// Type, Label, Desktop Only
+		Tuple.Create( "IEnumerable<char>", "EnumerableOfChar", false ),
+		Tuple.Create( "string", "String", true )
+	}
+)
+{
+	if ( !testType.Item3 )
+	{
+#>
+#if !NETFX_CORE
+<#
+	}
+
+	foreach( var length in
+		Enumerable.Range( 0, 32 ).Select( length => Tuple.Create( length, new byte[]{ ( byte )( 0xA0 + length ) }, default( byte[] ) ) )
+		.Concat( 
+			new []
+			{
+				// Length, Header, Compat Header
+				Tuple.Create( 32, new byte[]{ 0xD9, 0x20 }, new byte[]{ 0xDA, 0, 0x20 } ),
+				Tuple.Create( 0xFF, new byte[]{ 0xD9, 0xFF }, new byte[]{ 0xDA, 0, 0xFF } ),
+				Tuple.Create( 0x100, new byte[]{ 0xDA, 1, 0 }, default( byte[] ) ),
+				Tuple.Create( 0xFFFF, new byte[]{ 0xDA, 0xFF, 0xFF }, default( byte[] ) ),
+				Tuple.Create( 0x10000, new byte[]{ 0xDB, 0, 1, 0, 0 }, default( byte[] ) ),
+			}
+		)
+	)
+	{
+#>
+
+		[Test]
+		public void TestPackString_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackString( new String( 'A', <#= length.Item1 #> ) as <#= testType.Item1 #> );
+				var packed = buffer.ToArray();
+				Assert.That( 
+					packed.Take( <#= length.Item2.Length #> ).ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+				Assert.That( 
+					packed.Skip( <#= length.Item2.Length #> ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )'A', <#= length.Item1 #> ).ToArray() )
+				);
+			}
+		}
+<#
+		if( testType.Item2 == "string" )
+		{
+			// Only once.
+#>
+
+		[Test]
+		public void TestPackStringHeader_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( <#= length.Item1 #> ) );
+				var packed = buffer.ToArray();
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+			}
+		}
+		
+<#
+		}
+
+		if( length.Item3 != null )
+		{
+#>
+
+		[Test]
+		public void TestPackString_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			{
+				target.PackString( new String( 'A', <#= length.Item1 #> ) as <#= testType.Item1 #> );
+				var packed = buffer.ToArray();
+				Assert.That( 
+					packed.Take( <#= length.Item3.Length #> ).ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+				Assert.That( 
+					packed.Skip( <#= length.Item3.Length #> ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )'A', <#= length.Item1 #> ).ToArray() )
+				);
+			}
+		}
+		
+		[Test]
+		public void TestPackStringHeader_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			{
+				target.PackStringHeader( <#= length.Item1 #> );
+				var packed = buffer.ToArray();
+				Assert.That( 
+					packed,
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+			}
+		}
+<#
+		}
+	}
+
+	if ( !testType.Item3 )
+	{
+#>
+#endif // !NETFX_CORE
+<#
+	}
+}
+#>
+
+<#
+// Bin
+foreach( var testType in
+	new []
+	{
+		// Type, Label, use ToArray
+		Tuple.Create( "IEnumerable<byte>", "UncountableEnumerableOfByte", false ),
+		Tuple.Create( "IEnumerable<byte>", "EnumerableOfByte", true ),
+		Tuple.Create( "IList<byte>", "ListOfByte", true ),
+		Tuple.Create( "byte[]", "ByteArray", true )
+	}
+)
+{
+	foreach( var length in
+		new []
+		{
+			// Length, Bin Header, Compat Header, RawHeader
+			Tuple.Create( 0, new byte[]{ 0xC4, 0 }, new byte[]{ 0xA0 }, new byte[]{ 0xA0 } ),
+			Tuple.Create( 1, new byte[]{ 0xC4, 1 }, new byte[]{ 0xA1 }, new byte[]{ 0xA1 } ),
+			Tuple.Create( 31, new byte[]{ 0xC4, 0x1F }, new byte[]{ 0xBF }, new byte[]{ 0xBF } ),
+			Tuple.Create( 32, new byte[]{ 0xC4, 0x20 }, new byte[]{ 0xDA, 0, 0x20 }, new byte[]{ 0xD9, 0x20 } ),
+			Tuple.Create( 0xFF, new byte[]{ 0xC4, 0xFF }, new byte[]{ 0xDA, 0, 0xFF }, new byte[]{ 0xD9, 0xFF } ),
+			Tuple.Create( 0x100, new byte[]{ 0xC5, 1, 0 }, new byte[]{ 0xDA, 1, 0 }, new byte[]{ 0xDA, 1, 0 } ),
+			Tuple.Create( 0xFFFF, new byte[]{ 0xC5, 0xFF, 0xFF }, new byte[]{ 0xDA, 0xFF, 0xFF }, new byte[]{ 0xDA, 0xFF, 0xFF } ),
+			Tuple.Create( 0x10000, new byte[]{ 0xC6, 0, 1, 0, 0 }, new byte[]{ 0xDB, 0, 1, 0, 0 }, new byte[]{ 0xDB, 0, 1, 0, 0 } ),
+		}
+	)
+	{
+
+#>
+
+		[Test]
+		public void TestPackRaw_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
+				var packed = buffer.ToArray();
+<#
+		if ( testType.Item3 )
+		{
+#>
+				Assert.That( 
+					packed.Take( <#= length.Item4.Length #> ).ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item4.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+				Assert.That( 
+					packed.Skip( <#= length.Item4.Length #> ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
+				);
+<#
+		}
+		else
+		{
+			// IEnumerable<byte> will be always raw32
+#>
+				Assert.That( 
+					packed.Take( 5 ).ToArray(), 
+					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( <#= length.Item1 #> ).Reverse() ).ToArray() )
+				);
+				Assert.That( 
+					packed.Skip( 5 ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
+				);
+<#
+		}
+#>
+			}
+		}
+		
+		[Test]
+		public void TestPackRaw_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			{
+				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
+				var packed = buffer.ToArray();
+<#
+		if ( testType.Item3 )
+		{
+#>
+				Assert.That( 
+					packed.Take( <#= length.Item3.Length #> ).ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+				Assert.That( 
+					packed.Skip( <#= length.Item3.Length #> ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
+				);
+<#
+		}
+		else
+		{
+			// IEnumerable<byte> will be always str32
+#>
+				Assert.That( 
+					packed.Take( 5 ).ToArray(), 
+					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( <#= length.Item1 #> ).Reverse() ).ToArray() )
+				);
+				Assert.That( 
+					packed.Skip( 5 ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
+				);
+<#
+		}
+#>
+			}
+		}
+
+
+		[Test]
+		public void TestPackBinary_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsBinStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
+				var packed = buffer.ToArray();
+<#
+		if ( testType.Item3 )
+		{
+#>
+				Assert.That( 
+					packed.Take( <#= length.Item2.Length #> ).ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+				Assert.That( 
+					packed.Skip( <#= length.Item2.Length #> ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
+				);
+<#
+		}
+		else
+		{
+			// IEnumerable<byte> will be always bin32
+#>
+				Assert.That( 
+					packed.Take( 5 ).ToArray(), 
+					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( <#= length.Item1 #> ).Reverse() ).ToArray() )
+				);
+				Assert.That( 
+					packed.Skip( 5 ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
+				);
+<#
+		}
+#>
+			}
+		}
+		
+		[Test]
+		public void TestPackBinary_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			{
+				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
+				var packed = buffer.ToArray();
+<#
+		if ( testType.Item3 )
+		{
+#>
+				Assert.That( 
+					packed.Take( <#= length.Item3.Length #> ).ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+				Assert.That( 
+					packed.Skip( <#= length.Item3.Length #> ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
+				);
+<#
+		}
+		else
+		{
+			// IEnumerable<byte> will be always raw32
+#>
+				Assert.That( 
+					packed.Take( 5 ).ToArray(), 
+					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( <#= length.Item1 #> ).Reverse() ).ToArray() )
+				);
+				Assert.That( 
+					packed.Skip( 5 ).ToArray(),
+					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
+				);
+<#
+		}
+#>
+			}
+		}		
+<#
+		if( testType.Item1 == "byte[]" )
+		{
+			// Only once
+#>
+
+#pragma warning disable 0618 
+		[Test]
+		public void TestPackRawHeader_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackRawHeader( <#= length.Item1 #> );
+				var packed = buffer.ToArray();
+				Assert.That( 
+					packed.ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item4.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+			}
+		}
+		
+		[Test]
+		public void TestPackRawHeader_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			{
+				target.PackRawHeader( <#= length.Item1 #> );
+				var packed = buffer.ToArray();
+				Assert.That( 
+					packed.ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+			}
+		}
+#pragma warning restore 0618 
+
+		[Test]
+		public void TestPackBinaryHeader_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsBinStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackBinaryHeader( <#= length.Item1 #> );
+				var packed = buffer.ToArray();
+				Assert.That( 
+					packed.ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+			}
+		}
+		
+		[Test]
+		public void TestPackBinaryHeader_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			{
+				target.PackBinaryHeader( <#= length.Item1 #> );
+				var packed = buffer.ToArray();
+				Assert.That( 
+					packed.ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+				);
+			}
+		}
+<#
+		}
+	}
+}
+#>
+	}
+}

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 <#@ assembly Name="System.Numerics" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Numerics" #>
 <#@ import namespace="System.Runtime.InteropServices" #>
@@ -33,7 +34,7 @@ var __integers =
 	{
 		// Label, Expected Value, byte array, Exepected Type
 		Tuple.Create( "Int64MinValue", new BigInteger( Int64.MinValue ), "new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }", typeof( long ) ),
-		Tuple.Create( "Int32MinValueMinusOne", new BigInteger( ( long )Int32.MinValue - 1L ), "new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF }", typeof( long )),
+		Tuple.Create( "Int32MinValueMinusOne", new BigInteger( ( long )Int32.MinValue - 1L ), "new byte[] { 0xD3, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xFF, 0xFF, 0xFF }", typeof( long ) ),
 		Tuple.Create( "Int32MinValue", new BigInteger( Int32.MinValue ), "new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 }", typeof( long ) ),
 		Tuple.Create( "Int16MinValueMinusOne", new BigInteger( ( int )Int16.MinValue - 1 ), "new byte[] { 0xD2, 0xFF, 0xFF, 0x7F, 0xFF }", typeof( long ) ),
 		Tuple.Create( "Int16MinValue", new BigInteger( Int16.MinValue ), "new byte[] { 0xD1, 0x80, 0x00 }", typeof( long ) ),
@@ -53,6 +54,14 @@ var __integers =
 		Tuple.Create( "UInt32MaxValue", new BigInteger( UInt32.MaxValue ), "new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( ulong ) ),
 		Tuple.Create( "UInt32MaxValuePlusOne", new BigInteger( ( ulong )UInt32.MaxValue + 1 ), "new byte[] { 0xCF, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0 }", typeof( ulong ) ),
 		Tuple.Create( "UInt64MaxValue", new BigInteger( UInt64.MaxValue ), "new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( ulong ) ),
+	};
+
+var __booleans =
+	new Tuple<string, bool, string, Type>[]
+	{
+		// Label, Expected Value, byte array, Exepected Type
+		Tuple.Create( "BooleanTrue", true, "new byte[] { 0xC3 }", typeof( bool ) ),
+		Tuple.Create( "BooleanFalse", false, "new byte[] { 0xC2 }", typeof( bool ) ),
 	};
 
 var __reals =
@@ -88,7 +97,7 @@ var __reals =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -123,7 +132,7 @@ namespace MsgPack
 	// Do not modify this file. Edit UnpackerTest.Scalar.tt instead.
 
 	[TestFixture]
-	public partial class PackerTest_Scalar
+	public partial class UnpackerTest_Scalar
 	{
 		// FIXME: Direct reading and direct/MPO mixing cases.
 <#
@@ -138,7 +147,9 @@ foreach( var __testCase in __integers )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
@@ -168,6 +179,49 @@ foreach( var __testCase in __integers )
 <#
 	}
 }
+foreach( var __testCase in __booleans )
+{
+#>
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
+			}
+		}
+<#
+	foreach( var __variation in
+		new []
+		{
+			new { IsNullable = false },
+			new { IsNullable = true },
+		}
+	)
+	{
+#>
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				<#= __testCase.Item4.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
+				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>( out result ) );
+				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
+			}
+		}
+<#
+	}
+}
 
 foreach( var __testCase in __reals )
 {
@@ -180,7 +234,9 @@ foreach( var __testCase in __reals )
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
 			}
@@ -209,6 +265,31 @@ foreach( var __testCase in __reals )
 		}
 <#
 	}
+}
+
+foreach ( var __scalarType in 
+	new []
+	{
+		typeof( bool ), typeof( float ), typeof ( double ),
+		typeof( sbyte ), typeof( short ), typeof ( int ), typeof ( long ),
+		typeof( byte ), typeof( ushort ), typeof ( uint ), typeof ( ulong ),
+	}
+)
+{
+#>
+
+		[Test]
+		public void TestUnpackNil_ReadNullable<#= __scalarType.Name #>()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				<#= __scalarType.Name #>? result;
+				Assert.IsTrue( unpacker.ReadNullable<#= __scalarType.Name #>( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+<#
 }
 #>
 	}

@@ -44,11 +44,11 @@ namespace MsgPack
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.That( rootUnpacker.Read(), "1st" );
-				Assert.That( rootUnpacker.Data.Value.Equals( 1 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
 				Assert.That( rootUnpacker.Read(), "2nd" );
-				Assert.That( rootUnpacker.Data.Value.Equals( 2 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
 				Assert.That( rootUnpacker.Read(), "3rd" );
-				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
 			}
 		}
 
@@ -58,20 +58,22 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream( new byte[] { 0x93, 0x1, 0x2, 0x3 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
 			{
+#pragma warning disable 612,618
 				Assert.That( rootUnpacker.Read(), "1st" );
 				Assert.That( rootUnpacker.IsArrayHeader );
 				Assert.That( rootUnpacker.IsMapHeader, Is.False );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) ); // == Length
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) ); // == Length
 				Assert.That( rootUnpacker.Read(), "2nd" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 1 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
 				Assert.That( rootUnpacker.Read(), "3rd" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 2 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
 				Assert.That( rootUnpacker.Read(), "4th" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
+#pragma warning restore 612,618
 			}
 		}
 
@@ -82,29 +84,31 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream( new byte[] { 0x83, 0x1, 0x1, 0x2, 0x2, 0x3, 0x3 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
 			{
+#pragma warning disable 612,618
 				Assert.That( rootUnpacker.Read(), "1st" );
 				Assert.That( rootUnpacker.IsArrayHeader, Is.False );
 				Assert.That( rootUnpacker.IsMapHeader );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) ); // == Length
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) ); // == Length
 				Assert.That( rootUnpacker.Read(), "2nd" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 1 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
 				Assert.That( rootUnpacker.Read(), "3rd" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 1 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
 				Assert.That( rootUnpacker.Read(), "4th" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 2 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
 				Assert.That( rootUnpacker.Read(), "5th" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 2 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
 				Assert.That( rootUnpacker.Read(), "6th" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
 				Assert.That( rootUnpacker.Read(), "7th" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
-				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
+#pragma warning restore 612,618
 			}
 		}
 
@@ -115,14 +119,14 @@ namespace MsgPack
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
 			{
 				Assert.That( rootUnpacker.Read(), "1st" );
-				Assert.That( rootUnpacker.Data.Value.Equals( 1 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
 				Assert.That( rootUnpacker.Read(), "2nd" );
-				Assert.That( rootUnpacker.Data.Value.Equals( 2 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 2 ) );
 				Assert.That( rootUnpacker.Read(), "3rd" );
-				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
 				Assert.That( rootUnpacker.Read(), Is.False, "Tail" );
 				// Data should be last read.
-				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
 			}
 		}
 
@@ -138,16 +142,16 @@ namespace MsgPack
 				using ( var subTreeReader = rootUnpacker.ReadSubtree() )
 				{
 					Assert.That( subTreeReader.Read(), "1st" );
-					Assert.That( subTreeReader.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeReader.LastReadData.Equals( 1 ) );
 					Assert.That( subTreeReader.Read(), "2nd" );
-					Assert.That( subTreeReader.Data.Value.Equals( 2 ) );
+					Assert.That( subTreeReader.LastReadData.Equals( 2 ) );
 					Assert.That( subTreeReader.Read(), Is.False, "Tail" );
 					// Data should be last read.
-					Assert.That( subTreeReader.Data.Value.Equals( 2 ) );
+					Assert.That( subTreeReader.LastReadData.Equals( 2 ) );
 				}
 
 				Assert.That( rootUnpacker.Read(), "3rd" );
-				Assert.That( rootUnpacker.Data.Value.Equals( 3 ) );
+				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
 			}
 		}
 
@@ -202,7 +206,7 @@ namespace MsgPack
 					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
-						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
@@ -214,16 +218,16 @@ namespace MsgPack
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.IsNil );
+					Assert.That( subTreeUnpacker.LastReadData.IsNil );
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
 					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
-						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
-						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 2 ) );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 2 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
@@ -235,7 +239,7 @@ namespace MsgPack
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.False );
 				}
 
@@ -254,20 +258,20 @@ namespace MsgPack
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
 					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
-						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
-						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 2 ) );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 2 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
 					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
@@ -276,24 +280,24 @@ namespace MsgPack
 					}
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 3 ) );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 3 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.IsNil );
+					Assert.That( subTreeUnpacker.LastReadData.IsNil );
 
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 4 ) );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 4 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.True );
 
 					using ( var subSubtreeUnpacker = subTreeUnpacker.ReadSubtree() )
 					{
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
-						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
-						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 1 ) );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 1 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
-						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 2 ) );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 2 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.True );
-						Assert.That( subSubtreeUnpacker.Data.Value.Equals( 2 ) );
+						Assert.That( subSubtreeUnpacker.LastReadData.Equals( 2 ) );
 						Assert.That( subSubtreeUnpacker.Read(), Is.False );
 					}
 
@@ -305,9 +309,9 @@ namespace MsgPack
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) );
 					Assert.That( subTreeUnpacker.Read(), Is.False );
 				}
 
@@ -326,15 +330,15 @@ namespace MsgPack
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 2 ) ); // Array Length
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 2 ) ); // Array Length
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) ); // Value in grand children
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) ); // Value in grand children
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) ); // Array Length
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) ); // Array Length
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 1 ) ); // Value in grand children
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 1 ) ); // Value in grand children
 					Assert.That( subTreeUnpacker.Read(), Is.True );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 2 ) ); // Value in children
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 2 ) ); // Value in children
 					Assert.That( subTreeUnpacker.Read(), Is.False );
 				}
 
@@ -476,7 +480,7 @@ namespace MsgPack
 				using ( var subTreeUnpacker = target.ReadSubtree() )
 				{
 					Assert.That( subTreeUnpacker.Read() );
-					Assert.That( subTreeUnpacker.Data.Value.Equals( 0x1 ) );
+					Assert.That( subTreeUnpacker.LastReadData.Equals( 0x1 ) );
 				}
 			}
 		}
@@ -689,7 +693,7 @@ namespace MsgPack
 			{
 				Assert.That( target.Read() );
 				Assert.That( target.IsArrayHeader );
-				Assert.That( target.Data.Value == 0, target.Data.Value.ToString() );
+				Assert.That( target.LastReadData == 0, target.LastReadData.ToString() );
 				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
 			}
 		}
@@ -704,7 +708,7 @@ namespace MsgPack
 				Assert.That( target.ReadArrayLength( out result ) );
 				Assert.That( target.IsArrayHeader );
 				Assert.That( result, Is.EqualTo( 0 ) );
-				Assert.That( target.Data.Value == 0, target.Data.Value.ToString() );
+				Assert.That( target.LastReadData == 0, target.LastReadData.ToString() );
 				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
 			}
 		}
@@ -717,7 +721,7 @@ namespace MsgPack
 			{
 				Assert.That( target.Read() );
 				Assert.That( target.IsMapHeader );
-				Assert.That( target.Data.Value == 0, target.Data.Value.ToString() );
+				Assert.That( target.LastReadData == 0, target.LastReadData.ToString() );
 				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
 			}
 		}
@@ -732,7 +736,7 @@ namespace MsgPack
 				Assert.That( target.ReadMapLength( out result ) );
 				Assert.That( target.IsMapHeader );
 				Assert.That( result, Is.EqualTo( 0 ) );
-				Assert.That( target.Data.Value == 0, target.Data.Value.ToString() );
+				Assert.That( target.LastReadData == 0, target.LastReadData.ToString() );
 				Assert.That( target.ItemsCount, Is.EqualTo( 0 ) );
 			}
 		}

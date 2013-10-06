@@ -45,11 +45,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( objectTree.Array == null )
 			{
-				packer.PackRawHeader( 0 );
+				packer.PackBinaryHeader( 0 );
 				return;
 			}
 
-			packer.PackRawHeader( objectTree.Count );
+			packer.PackBinaryHeader( objectTree.Count );
 			packer.PackRawBody( objectTree.Array.Skip( objectTree.Offset ).Take( objectTree.Count ) );
 		}
 
@@ -57,7 +57,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public static void PackCharArraySegmentTo( Packer packer, ArraySegment<char> objectTree, MessagePackSerializer<char> itemSerializer )
 		{
 			// TODO: More efficient
-			packer.PackRawHeader( objectTree.Count );
+			packer.PackStringHeader( objectTree.Count );
 			packer.PackRawBody( MessagePackConvert.EncodeString( new string( objectTree.Array.Skip( objectTree.Offset ).Take( objectTree.Count ).ToArray() ) ) );
 		}
 
@@ -73,14 +73,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static ArraySegment<byte> UnpackByteArraySegmentFrom( Unpacker unpacker, MessagePackSerializer<byte> itemSerializer )
 		{
-			return new ArraySegment<byte>( unpacker.Data.Value.AsBinary() );
+			return new ArraySegment<byte>( unpacker.LastReadData.AsBinary() );
 		}
 
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static ArraySegment<char> UnpackCharArraySegmentFrom( Unpacker unpacker, MessagePackSerializer<char> itemSerializer )
 		{
 			// TODO: More efficient
-			return new ArraySegment<char>( unpacker.Data.Value.AsCharArray() );
+			return new ArraySegment<char>( unpacker.LastReadData.AsCharArray() );
 		}
 
 		public static ArraySegment<T> UnpackGenericArraySegmentFrom<T>( Unpacker unpacker, MessagePackSerializer<T> itemSerializer )

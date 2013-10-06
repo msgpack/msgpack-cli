@@ -26,7 +26,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_Numerics_ComplexMessagePackSerializer : MessagePackSerializer<Complex>
 	{
-		public System_Numerics_ComplexMessagePackSerializer() { }
+		public System_Numerics_ComplexMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
 
 		protected internal sealed override void PackToCore( Packer packer, Complex objectTree )
 		{
@@ -42,14 +43,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
-			var real = unpacker.Data.Value.AsDouble();
+			var real = unpacker.LastReadData.AsDouble();
 
 			if ( !unpacker.Read() )
 			{
 				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
-			var imaginary = unpacker.Data.Value.AsDouble();
+			var imaginary = unpacker.LastReadData.AsDouble();
 
 			return new Complex( real, imaginary );
 		}

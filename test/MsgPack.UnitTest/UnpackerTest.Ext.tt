@@ -29,34 +29,34 @@ var fixVariations =
 	new []
 	{
 		// Label, Headers, Value Length
-		Tuple.Create( "FixExt", "0xD4, {0}", 1 ),
-		Tuple.Create( "FixExt", "0xD5, {0}", 2 ),
-		Tuple.Create( "FixExt", "0xD6, {0}", 4 ),
-		Tuple.Create( "FixExt", "0xD7, {0}", 8 ),
-		Tuple.Create( "FixExt", "0xD8, {0}", 16 ),
+		Tuple.Create( "FixExt1", "0xD4, {0}", 1 ),
+		Tuple.Create( "FixExt2", "0xD5, {0}", 2 ),
+		Tuple.Create( "FixExt4", "0xD6, {0}", 4 ),
+		Tuple.Create( "FixExt8", "0xD7, {0}", 8 ),
+		Tuple.Create( "FixExt16", "0xD8, {0}", 16 ),
 	};
 
 var variableVariations =
 	new []
 	{
 		// Label, Header Format, Length of Length, Actual Value Length
-		Tuple.Create( "Ext8", "0xC7, {0}, 0", 1, 0 ),
-		Tuple.Create( "Ext8", "0xC7, {0}, 1", 1, 1 ),
-		Tuple.Create( "Ext8", "0xC7, {0}, 17", 1, 17 ),
-		Tuple.Create( "Ext8", "0xC7, {0}, 0xFF", 1, 0xFF ),
-		Tuple.Create( "Ext16", "0xC8, {0}, 0", 2, 0 ),
-		Tuple.Create( "Ext16", "0xC8, {0}, 1", 2, 1 ),
-		Tuple.Create( "Ext16", "0xC8, {0}, 17", 2, 17 ),
-		Tuple.Create( "Ext16", "0xC8, {0}, 0xFF", 2, 0xFF ),
-		Tuple.Create( "Ext16", "0xC8, {0}, 1, 0", 2, 0x100 ),
-		Tuple.Create( "Ext16", "0xC8, {0}, 0xFF, 0xFF", 2, 0xFFFF ),
-		Tuple.Create( "Ext32", "0xC9, {0}, 0", 4, 0 ),
-		Tuple.Create( "Ext32", "0xC9, {0}, 1", 4, 1 ),
-		Tuple.Create( "Ext32", "0xC9, {0}, 17", 4, 17 ),
-		Tuple.Create( "Ext32", "0xC9, {0}, 0xFF", 4, 0xFF ),
-		Tuple.Create( "Ext32", "0xC9, {0}, 1, 0", 4, 0x100 ),
-		Tuple.Create( "Ext32", "0xC9, {0}, 0xFF, 0xFF", 4, 0xFFFF ),
-		Tuple.Create( "Ext32", "0xC9, {0}, 1, 0, 0", 4, 0x10000 ),
+		Tuple.Create( "Ext8", "0xC7, 0, {0}", 1, 0 ),
+		Tuple.Create( "Ext8", "0xC7, 1, {0}", 1, 1 ),
+		Tuple.Create( "Ext8", "0xC7, 17, {0}", 1, 17 ),
+		Tuple.Create( "Ext8", "0xC7, 0xFF, {0}", 1, 0xFF ),
+		Tuple.Create( "Ext16", "0xC8, 0, 0, {0}", 2, 0 ),
+		Tuple.Create( "Ext16", "0xC8, 0, 1, {0}", 2, 1 ),
+		Tuple.Create( "Ext16", "0xC8, 0, 17, {0}", 2, 17 ),
+		Tuple.Create( "Ext16", "0xC8, 0, 0xFF, {0}", 2, 0xFF ),
+		Tuple.Create( "Ext16", "0xC8, 1, 0, {0}", 2, 0x100 ),
+		Tuple.Create( "Ext16", "0xC8, 0xFF, 0xFF, {0}", 2, 0xFFFF ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 0, {0}", 4, 0 ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 1, {0}", 4, 1 ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 17, {0}", 4, 17 ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 0xFF, {0}", 4, 0xFF ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 1, 0, {0}", 4, 0x100 ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0xFF, 0xFF, {0}", 4, 0xFFFF ),
+		Tuple.Create( "Ext32", "0xC9, 0, 1, 0, 0, {0}", 4, 0x10000 ),
 	};
 
 #>
@@ -99,7 +99,7 @@ namespace MsgPack
 	// Do not modify this file. Edit UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	[TestFixture]
-	public partial class PackerTest_Ext
+	public partial class UnpackerTest_Ext
 	{
 <#
 foreach ( var testCase in fixVariations )
@@ -120,12 +120,12 @@ foreach ( var testCase in variableVariations )
 <#+
 private void PutTest( string label, string headerFormat, int? lengthOfLength, int actualValueLength )
 {
-	var readDataMethodPrefix = "TestUnpack_Read_" + label + ( lengthOfLength == null ? String.Empty : "LengthIs" + lengthOfLength ) + "_AndBinaryLengthIs" + actualValueLength;
+	var readDataMethodPrefix = "TestUnpack_Read_" + label + "_AndBinaryLengthIs" + actualValueLength;
 	PutTestMethod( readDataMethodPrefix + "JustLength_Success", headerFormat, lengthOfLength, actualValueLength, 0, PutTestUnpackDataBody );
 	PutTestMethod( readDataMethodPrefix + "TooShort_Fail", headerFormat, lengthOfLength, actualValueLength, -1, PutTestUnpackDataBody );
 	PutTestMethod( readDataMethodPrefix + "HasExtra_NoProblem",  headerFormat, lengthOfLength, actualValueLength, 1, PutTestUnpackDataBody );
 
-	var readDirectMethodPrefix = "TestUnpack_ReadExtension_" + label + ( lengthOfLength == null ? String.Empty : "LengthIs" + lengthOfLength ) + "_AndBinaryLengthIs" + actualValueLength;
+	var readDirectMethodPrefix = "TestUnpack_ReadExtension_" + label + "_AndBinaryLengthIs" + actualValueLength;
 	PutTestMethod( readDirectMethodPrefix + "JustLength_Success",  headerFormat, lengthOfLength, actualValueLength, 0, PutTestUnpackDirectBody );
 	PutTestMethod( readDirectMethodPrefix + "TooShort_Fail",  headerFormat, lengthOfLength, actualValueLength, -1, PutTestUnpackDirectBody );
 	PutTestMethod( readDirectMethodPrefix + "HasExtra_NoProblem",  headerFormat, lengthOfLength, actualValueLength, 1, PutTestUnpackDirectBody );
@@ -133,61 +133,46 @@ private void PutTest( string label, string headerFormat, int? lengthOfLength, in
 
 private void PutTestUnpackDataBody( string typeCodeVariable, int actualValueLength, bool success )
 {
-#>
-				// ver 0.3.2 should always fail with NIE.
-				Assert.Throws<MessageTypeException>( ()=> unpacker.Read() );
-<#+
-	return;
-
 	if ( success )
 	{
 #>
 				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
 				var result = unpacker.Data;
+#pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( <#= typeCodeVariable #> ) );
-				Assert.That( actual.Data, Is.Not.Null );
-				Assert.That( actual.Data.Length, Is.EqualTo( <#= actualValueLength #> ) );
+				Assert.That( actual.Body, Is.Not.Null );
+				Assert.That( actual.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
 <#+
 	}
 	else
 	{
 #>
-				Assert.IsFalse( unpacker.Read() );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 <#+
 	}
 }
 
 private void PutTestUnpackDirectBody( string typeCodeVariable, int actualValueLength, bool success )
 {
-	// ver 0.3.2 does not have this API.
-	return;
-
-	// Note: Assuming following struct
-	/*
-		struct MessagePackExtendedTypeObject
-		{
-			public byte TypeCode;
-			public byte[] Data;
-		}
-	 */
 #>
 				MessagePackExtendedTypeObject result;
 <#+
 	if ( success )
 	{
 #>
-				Assert.IsTrue( unpacker.ReadExtendedTypeObject( out result ) );
+				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
 				Assert.That( result.TypeCode, Is.EqualTo( <#= typeCodeVariable #> ) );
-				Assert.That( result.Data, Is.Not.Null );
-				Assert.That( result.Data.Length, Is.EqualTo( <#= actualValueLength #> ) );
+				Assert.That( result.Body, Is.Not.Null );
+				Assert.That( result.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
 <#+
 	}
 	else
 	{
 #>
-				Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
 <#+
 	}
 }

@@ -24,7 +24,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_UriMessagePackSerializer : MessagePackSerializer<Uri>
 	{
-		public System_UriMessagePackSerializer() { }
+		public System_UriMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
 
 		protected internal sealed override void PackToCore( Packer packer, Uri objectTree )
 		{
@@ -33,7 +34,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override Uri UnpackFromCore( Unpacker unpacker )
 		{
-			return new Uri( unpacker.Data.Value.DeserializeAsString() );
+			return new Uri( unpacker.LastReadData.DeserializeAsString() );
 		}
 	}
 }

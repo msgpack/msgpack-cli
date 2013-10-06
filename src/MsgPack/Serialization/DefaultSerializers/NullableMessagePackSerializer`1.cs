@@ -70,6 +70,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{ }
 
 		internal NullableMessagePackSerializer( SerializationContext context, EmitterFlavor emitterFlavor )
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			if ( context == null )
 			{
@@ -207,17 +208,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 				 * 
 				 * return context.Get<T>().Unpack( unpacker );
 				 */
-				var mayBeNullData = il.DeclareLocal( typeof( MessagePackObject? ), "mayBeNullData" );
 				var data = il.DeclareLocal( typeof( MessagePackObject ), "data" );
 				var result = il.DeclareLocal( typeof( T ), "result" );
 				var value = il.DeclareLocal( _nullableTValueProperty.PropertyType, "value" );
 				var endIf = il.DefineLabel( "END_IF" );
 				var endMethod = il.DefineLabel( "END_METHOD" );
 				il.EmitAnyLdarg( 1 );
-				il.EmitGetProperty( NullableMessagePackSerializer.UnpackerDataProperty );
-				il.EmitAnyStloc( mayBeNullData );
-				il.EmitAnyLdloca( mayBeNullData );
-				il.EmitGetProperty( NullableMessagePackSerializer.Nullable_MessagePackObject_ValueProperty );
+				il.EmitGetProperty( NullableMessagePackSerializer.UnpackerLastReadDataProperty );
 				il.EmitAnyStloc( data );
 				il.EmitAnyLdloca( data );
 				il.EmitGetProperty( NullableMessagePackSerializer.MessagePackObject_IsNilProperty );
@@ -258,11 +255,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 						Expression.IsTrue(
 							Expression.Property(
 								Expression.Property(
-									Expression.Property(
-										unpackerParameter,
-										Metadata._Unpacker.Data
-									),
-									NullableMessagePackSerializer.Nullable_MessagePackObject_ValueProperty
+									unpackerParameter,
+									Metadata._Unpacker.LastReadData
 								),
 								Metadata._MessagePackObject.IsNil
 							)

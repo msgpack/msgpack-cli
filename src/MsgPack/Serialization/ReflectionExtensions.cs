@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
@@ -66,7 +65,7 @@ namespace MsgPack.Serialization
 			 * First, if the object implements IDictionary<MessagePackObject,MessagePackObject>, then it is considered as MPO dictionary.
 			 * Second, if the object implements IEnumerable<MPO>, then it is considered as MPO dictionary.
 			 * Third, if the object implement SINGLE IDictionary<TKey,TValue> and multiple IEnumerable<T>, then it is considered as dictionary of TKey and TValue.
-			 * Fource, the object is considered as UNSERIALIZABLE member. This behavior similer to DataContract serialization behavor
+			 * Fourth, the object is considered as UNSERIALIZABLE member. This behavior similer to DataContract serialization behavor
 			 * (see http://msdn.microsoft.com/en-us/library/aa347850.aspx ).
 			 */
 

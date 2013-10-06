@@ -39,6 +39,7 @@ namespace MsgPack.Serialization
 			Func<SerializationContext, Unpacker, T> unpackFromCore,
 			Action<SerializationContext, Unpacker, T> unpackToCore
 		)
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			this._context = context;
 			this._packToCore = packToCore;

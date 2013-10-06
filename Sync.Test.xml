@@ -38,5 +38,6 @@
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
+    <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
   </Project>
 </ProjectSync>

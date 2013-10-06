@@ -343,7 +343,7 @@ namespace MsgPack
 				Assert.That( target.Read() );
 				Assert.That( target.IsMapHeader );
 				Assert.That( target.Read() );
-				Assert.That( target.Data.Value.Equals( 0x1 ) );
+				Assert.That( target.LastReadData.Equals( 0x1 ) );
 				Assert.That( target.Read() );
 
 				using ( var subTreeReader = target.ReadSubtree() )
@@ -353,7 +353,7 @@ namespace MsgPack
 				}
 
 				Assert.That( target.Read() );
-				Assert.That( target.Data.Value.Equals( 0x3 ) );
+				Assert.That( target.LastReadData.Equals( 0x3 ) );
 				Assert.That( target.Read() );
 
 				using ( var subTreeReader = target.ReadSubtree() )
@@ -373,7 +373,7 @@ namespace MsgPack
 				Assert.That( target.Read() );
 				Assert.That( target.IsMapHeader );
 				Assert.That( target.Read() );
-				Assert.That( target.Data.Value.Equals( 0x1 ) );
+				Assert.That( target.LastReadData.Equals( 0x1 ) );
 				Assert.That( target.Read() );
 
 				using ( var subTreeReader = target.ReadSubtree() )
@@ -382,7 +382,7 @@ namespace MsgPack
 				}
 
 				Assert.That( target.Read() );
-				Assert.That( target.Data.Value.Equals( 0x2 ) );
+				Assert.That( target.LastReadData.Equals( 0x2 ) );
 				Assert.That( target.Read() );
 
 				using ( var subTreeReader = target.ReadSubtree() )

@@ -24,14 +24,17 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal sealed class System_ByteArrayMessagePackSerializer : MessagePackSerializer<byte[]>
 	{
+		public System_ByteArrayMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, byte[] value )
 		{
-			packer.PackRaw( value );
+			packer.PackBinary( value );
 		}
 
 		protected internal sealed override byte[] UnpackFromCore( Unpacker unpacker )
 		{
-			var result = unpacker.Data.Value;
+			var result = unpacker.LastReadData;
 			return result.IsNil ? null : result.AsBinary();
 		}
 	}

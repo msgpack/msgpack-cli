@@ -23,7 +23,7 @@ using System;
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Speifies nil implication in serialization/deserialization.
+	///		Specifies nil implication in serialization/deserialization.
 	/// </summary>
 	public enum NilImplication
 	{

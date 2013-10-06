@@ -31,6 +31,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_DateTimeMessagePackSerializer : MessagePackSerializer< System.DateTime >
 	{
+		public System_DateTimeMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.DateTime value )
 		{
 			packer.Pack( MessagePackConvert.FromDateTime( value ) );
@@ -40,7 +43,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ); 
+				return MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -55,6 +58,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_DateTimeOffsetMessagePackSerializer : MessagePackSerializer< System.DateTimeOffset >
 	{
+		public System_DateTimeOffsetMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.DateTimeOffset value )
 		{
 			packer.Pack( MessagePackConvert.FromDateTimeOffset( value ) );
@@ -64,7 +70,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return MessagePackConvert.ToDateTimeOffset( unpacker.Data.Value.AsInt64() ); 
+				return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.AsInt64() ); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -79,6 +85,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_BooleanMessagePackSerializer : MessagePackSerializer< System.Boolean >
 	{
+		public System_BooleanMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Boolean value )
 		{
 			packer.Pack( value );
@@ -88,7 +97,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsBoolean();
+				return unpacker.LastReadData.AsBoolean();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -99,6 +108,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_ByteMessagePackSerializer : MessagePackSerializer< System.Byte >
 	{
+		public System_ByteMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Byte value )
 		{
 			packer.Pack( value );
@@ -108,7 +120,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsByte();
+				return unpacker.LastReadData.AsByte();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -119,6 +131,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_CharMessagePackSerializer : MessagePackSerializer< System.Char >
 	{
+		public System_CharMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Char value )
 		{
 			packer.Pack( ( System.UInt16 )value );
@@ -128,7 +143,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return ( System.Char ) unpacker.Data.Value.AsUInt16(); 
+				return ( System.Char ) unpacker.LastReadData.AsUInt16(); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -143,6 +158,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_DecimalMessagePackSerializer : MessagePackSerializer< System.Decimal >
 	{
+		public System_DecimalMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Decimal value )
 		{
 			packer.PackString( value.ToString( "G", CultureInfo.InvariantCulture ) );
@@ -152,7 +170,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return System.Decimal.Parse( unpacker.Data.Value.AsString(), CultureInfo.InvariantCulture ); 
+				return System.Decimal.Parse( unpacker.LastReadData.AsString(), CultureInfo.InvariantCulture ); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -167,6 +185,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_DoubleMessagePackSerializer : MessagePackSerializer< System.Double >
 	{
+		public System_DoubleMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Double value )
 		{
 			packer.Pack( value );
@@ -176,7 +197,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsDouble();
+				return unpacker.LastReadData.AsDouble();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -187,6 +208,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_GuidMessagePackSerializer : MessagePackSerializer< System.Guid >
 	{
+		public System_GuidMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Guid value )
 		{
 			packer.PackRaw( value.ToByteArray() );
@@ -196,7 +220,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return new System.Guid( unpacker.Data.Value.AsBinary() ); 
+				return new System.Guid( unpacker.LastReadData.AsBinary() ); 
 			}
 			catch( ArgumentException ex )
 			{
@@ -211,6 +235,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_Int16MessagePackSerializer : MessagePackSerializer< System.Int16 >
 	{
+		public System_Int16MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Int16 value )
 		{
 			packer.Pack( value );
@@ -220,7 +247,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsInt16();
+				return unpacker.LastReadData.AsInt16();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -231,6 +258,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_Int32MessagePackSerializer : MessagePackSerializer< System.Int32 >
 	{
+		public System_Int32MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Int32 value )
 		{
 			packer.Pack( value );
@@ -240,7 +270,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsInt32();
+				return unpacker.LastReadData.AsInt32();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -251,6 +281,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_Int64MessagePackSerializer : MessagePackSerializer< System.Int64 >
 	{
+		public System_Int64MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Int64 value )
 		{
 			packer.Pack( value );
@@ -260,7 +293,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsInt64();
+				return unpacker.LastReadData.AsInt64();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -271,6 +304,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_SByteMessagePackSerializer : MessagePackSerializer< System.SByte >
 	{
+		public System_SByteMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.SByte value )
 		{
 			packer.Pack( value );
@@ -280,7 +316,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsSByte();
+				return unpacker.LastReadData.AsSByte();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -291,6 +327,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_SingleMessagePackSerializer : MessagePackSerializer< System.Single >
 	{
+		public System_SingleMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Single value )
 		{
 			packer.Pack( value );
@@ -300,7 +339,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsSingle();
+				return unpacker.LastReadData.AsSingle();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -311,6 +350,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_TimeSpanMessagePackSerializer : MessagePackSerializer< System.TimeSpan >
 	{
+		public System_TimeSpanMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.TimeSpan value )
 		{
 			packer.Pack( value.Ticks );
@@ -321,7 +363,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			System.Int64 ctorArgument;
 			try
 			{
-				ctorArgument = unpacker.Data.Value.AsInt64();
+				ctorArgument = unpacker.LastReadData.AsInt64();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -334,6 +376,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_UInt16MessagePackSerializer : MessagePackSerializer< System.UInt16 >
 	{
+		public System_UInt16MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.UInt16 value )
 		{
 			packer.Pack( value );
@@ -343,7 +388,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsUInt16();
+				return unpacker.LastReadData.AsUInt16();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -354,6 +399,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_UInt32MessagePackSerializer : MessagePackSerializer< System.UInt32 >
 	{
+		public System_UInt32MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.UInt32 value )
 		{
 			packer.Pack( value );
@@ -363,7 +411,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsUInt32();
+				return unpacker.LastReadData.AsUInt32();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -374,6 +422,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	internal sealed class System_UInt64MessagePackSerializer : MessagePackSerializer< System.UInt64 >
 	{
+		public System_UInt64MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.UInt64 value )
 		{
 			packer.Pack( value );
@@ -383,7 +434,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return unpacker.Data.Value.AsUInt64();
+				return unpacker.LastReadData.AsUInt64();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -395,6 +446,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !SILVERLIGHT && !NETFX_CORE
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
+		public System_Collections_Specialized_BitVector32MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Collections.Specialized.BitVector32 value )
 		{
 			packer.Pack( value.Data );
@@ -405,7 +459,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			System.Int32 ctorArgument;
 			try
 			{
-				ctorArgument = unpacker.Data.Value.AsInt32();
+				ctorArgument = unpacker.LastReadData.AsInt32();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -420,6 +474,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !WINDOWS_PHONE && !NETFX_35
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
+		public System_Numerics_BigIntegerMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, System.Numerics.BigInteger value )
 		{
 			packer.PackRaw( value.ToByteArray() );
@@ -429,7 +486,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			try
 			{
-				return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); 
+				return new System.Numerics.BigInteger( unpacker.LastReadData.AsBinary() ); 
 			}
 			catch( ArgumentException ex )
 			{

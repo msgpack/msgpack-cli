@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,14 +23,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Linq.Expressions;
+using System.Text;
 #if NETFX_CORE
 using System.Linq;
-#endif
-using System.Linq.Expressions;
-#if NETFX_CORE
 using System.Reflection;
 #endif
-using System.Text;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -57,6 +55,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #endif
 
 		public MapExpressionMessagePackSerializer( SerializationContext context, CollectionTraits traits )
+			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			Contract.Assert( typeof( IEnumerable ).IsAssignableFrom( typeof( T ) ), typeof( T ) + " is IEnumerable" );
 			Contract.Assert( traits.ElementType == typeof( DictionaryEntry ) || ( traits.ElementType.GetIsGenericType() && traits.ElementType.GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) ), "Element type " + traits.ElementType + " is not KeyValuePair<TKey,TValue>." );
@@ -65,7 +64,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._valueSerializer = traits.ElementType.GetIsGenericType() ? context.GetSerializer( traits.ElementType.GetGenericArguments()[ 1 ] ) : context.GetSerializer( typeof( MessagePackObject ) );
 			this._getCount = ExpressionSerializerLogics.CreateGetCount<T>( traits );
 
-			var constructor = ExpressionSerializerLogics.GetCollectionConstructor<T>();
+			var constructor = ExpressionSerializerLogics.GetCollectionConstructor( context, typeof( T ) );
 
 			if ( constructor == null )
 			{

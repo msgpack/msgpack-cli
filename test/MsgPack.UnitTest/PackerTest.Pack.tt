@@ -31,6 +31,7 @@
 var __numerics =
 	new Tuple<string, Type, string, string>[]
 	{
+		// Label, Target type, Test value, Expected bytes
 		Tuple.Create( "DoubleMinValue", typeof( double ), "Double.MinValue", "new byte[] { 0xCB }.Concat( BitConverter.GetBytes( Double.MinValue ).Reverse() ).ToArray()" ),
 		Tuple.Create( "SingleMinValue", typeof( float ), "Single.MinValue", "new byte[] { 0xCA }.Concat( BitConverter.GetBytes( Single.MinValue ).Reverse() ).ToArray()" ),
 		Tuple.Create( "Int64MinValue", typeof( long ), "Int64.MinValue", "new byte[] { 0xD3 }.Concat( BitConverter.GetBytes( Int64.MinValue ).Reverse() ).ToArray()" ),

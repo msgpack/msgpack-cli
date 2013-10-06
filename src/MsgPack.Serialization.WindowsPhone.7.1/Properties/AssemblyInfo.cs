@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -26,8 +26,8 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration( "Experimental" )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2012" )]
 
-// TODO: use script. Major = Informational-Major, Minor = Informational-Minor, Build = Epoc days from 2010/1/1, Revision = Epoc minutes from 00:00:00
-[assembly: AssemblyFileVersion( "0.3.0.0" )]
+
+[assembly: AssemblyFileVersion( "0.4.1297.568" )]
 
 #if DEBUG || PERFORMANCE_TEST
 [assembly: InternalsVisibleTo( "MsgPack.WindowsPhone.UnitTest" )]

@@ -41,7 +41,8 @@ namespace MsgPack
 			get { return this._stream.Position; }
 		}
 
-		public StreamPacker( Stream output, bool ownsStream )
+		public StreamPacker( Stream output, PackerCompatibilityOptions compatibilityOptions, bool ownsStream )
+			: base( compatibilityOptions )
 		{
 			this._stream = output;
 			this._ownsStream = ownsStream;

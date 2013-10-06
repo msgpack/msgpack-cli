@@ -173,25 +173,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				if ( this._unpackedData == null )
 				{
-					this._unpackedData = this._il.DeclareLocal( typeof( MessagePackObject? ), "unpackedData" );
+					this._unpackedData = this._il.DeclareLocal( typeof( MessagePackObject ), "unpackedData" );
 				}
 
 				return this._unpackedData;
-			}
-		}
-
-		private LocalBuilder _unpackedDataValue;
-
-		public LocalBuilder UnpackedDataValue
-		{
-			get
-			{
-				if ( this._unpackedDataValue == null )
-				{
-					this._unpackedDataValue = this._il.DeclareLocal( typeof( MessagePackObject ), "unpackedDataValue" );
-				}
-
-				return this._unpackedDataValue;
 			}
 		}
 

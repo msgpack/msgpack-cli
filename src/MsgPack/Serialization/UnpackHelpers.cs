@@ -36,7 +36,7 @@ namespace MsgPack.Serialization
 	public static class UnpackHelpers
 	{
 		private static readonly MessagePackSerializer<MessagePackObject> _messagePackObjectSerializer =
-			new MsgPack_MessagePackObjectMessagePackSerializer();
+			new MsgPack_MessagePackObjectMessagePackSerializer( PackerCompatibilityOptions.None );
 
 		/// <summary>
 		///		Unpacks the array to the specified array.
@@ -45,18 +45,13 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
 		/// <param name="serializer">The serializer to deserialize array.</param>
 		/// <param name="array">The array instance to be filled.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or <paramref name="serializer"/> is <c>null</c>.
-		///		Or <paramref name="array"/> is <c>null</c>.
-		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		<paramref name="unpacker"/> is not in the array header.
-		///		Or failed to deserialization.
+		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackArrayTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, T[] array )
 		{
+#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -73,6 +68,7 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.EndContractBlock();
+#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -105,18 +101,13 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
 		/// <param name="collection">The non-generic collection instance to be added unpacked elements.</param>
 		/// <param name="addition">The delegate which contains the instance method of the <paramref name="collection"/>. The parameter is unpacked object.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or <paramref name="collection"/> is <c>null</c>.
-		///		Or <paramref name="addition"/> is <c>null</c>.
-		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		<paramref name="unpacker"/> is not in the array header.
-		///		Or failed to deserialization.
+		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackCollectionTo( Unpacker unpacker, IEnumerable collection, Action<object> addition )
 		{
+#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -133,6 +124,7 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.EndContractBlock();
+#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -167,19 +159,13 @@ namespace MsgPack.Serialization
 		/// <param name="serializer">The serializer to deserialize elements.</param>
 		/// <param name="collection">The generic collection instance to be added unpacked elements.</param>
 		/// <param name="addition">The delegate which contains the instance method of the <paramref name="collection"/>. The parameter is unpacked object.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or <paramref name="serializer"/> is <c>null</c>.
-		///		Or <paramref name="collection"/> is <c>null</c>.
-		///		Or <paramref name="addition"/> is <c>null</c>.
-		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		<paramref name="unpacker"/> is not in the array header.
-		///		Or failed to deserialization.
+		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackCollectionTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Action<T> addition )
 		{
+#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -196,6 +182,7 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.EndContractBlock();
+#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -229,18 +216,13 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
 		/// <param name="collection">The non-generic collection instance to be added unpacked elements.</param>
 		/// <param name="addition">The delegate which contains the instance method of the <paramref name="collection"/>. The parameter is unpacked object.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or <paramref name="collection"/> is <c>null</c>.
-		///		Or <paramref name="addition"/> is <c>null</c>.
-		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		<paramref name="unpacker"/> is not in the array header.
-		///		Or failed to deserialization.
+		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackCollectionTo<TDiscarded>( Unpacker unpacker, IEnumerable collection, Func<object, TDiscarded> addition )
 		{
+#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -257,6 +239,7 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.EndContractBlock();
+#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -292,19 +275,13 @@ namespace MsgPack.Serialization
 		/// <param name="serializer">The serializer to deserialize elements.</param>
 		/// <param name="collection">The generic collection instance to be added unpacked elements.</param>
 		/// <param name="addition">The delegate which contains the instance method of the <paramref name="collection"/>. The parameter is unpacked object.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or <paramref name="serializer"/> is <c>null</c>.
-		///		Or <paramref name="collection"/> is <c>null</c>.
-		///		Or <paramref name="addition"/> is <c>null</c>.
-		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		<paramref name="unpacker"/> is not in the array header.
-		///		Or failed to deserialization.
+		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackCollectionTo<T, TDiscarded>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Func<T, TDiscarded> addition )
 		{
+#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -321,6 +298,7 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.EndContractBlock();
+#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -356,19 +334,13 @@ namespace MsgPack.Serialization
 		/// <param name="keySerializer">The serializer to deserialize key elements.</param>
 		/// <param name="valueSerializer">The serializer to deserialize value elements.</param>
 		/// <param name="dictionary">The generic dictionary instance to be added unpacked elements.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or <paramref name="keySerializer"/> is <c>null</c>.
-		///		Or <paramref name="valueSerializer"/> is <c>null</c>.
-		///		Or <paramref name="dictionary"/> is <c>null</c>.
-		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		<paramref name="unpacker"/> is not in the map header.
-		///		Or failed to deserialization.
+		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackMapTo<TKey, TValue>( Unpacker unpacker, MessagePackSerializer<TKey> keySerializer, MessagePackSerializer<TValue> valueSerializer, IDictionary<TKey, TValue> dictionary )
 		{
+#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -385,6 +357,7 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.EndContractBlock();
+#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -435,17 +408,13 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="unpacker">The unpacker to unpack the underlying stream.</param>
 		/// <param name="dictionary">The non-generic dictionary instance to be added unpacked elements.</param>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="unpacker"/> is <c>null</c>.
-		///		Or <paramref name="dictionary"/> is <c>null</c>.
-		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		<paramref name="unpacker"/> is not in the map header.
-		///		Or failed to deserialization.
+		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static void UnpackMapTo( Unpacker unpacker, IDictionary dictionary )
 		{
+#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -462,6 +431,7 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.EndContractBlock();
+#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )

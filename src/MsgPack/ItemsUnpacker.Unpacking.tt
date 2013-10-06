@@ -107,6 +107,9 @@ this.WriteReadBody( "ArrayLength", "Int64", true, this.WriteUnpackArrayLength );
 this.WriteReadBody( "MapLength", "Int64", false, this.WriteUnpackMapLength );
 this.WriteReadBody( "MapLength", "Int64", true, this.WriteUnpackMapLength );
 
+this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", false, this.WriteUnpackExtendedTypeObject );
+this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", true, this.WriteUnpackExtendedTypeObject );
+
 this.PopIndent();
 #>
 	}
@@ -163,35 +166,32 @@ return false;
 private void OnReturnScalar( string resultVariable )
 {
 #>
-this._collectionType = CollectionType.None;
-this._itemsCount = 0;
+this.InternalCollectionType = CollectionType.None;
 <#+
 }
 
 private void OnReturnScalarObject( string resultVariable )
 {
 #>
-this._collectionType = CollectionType.None;
-this._itemsCount = 0;
-this._data = <#= resultVariable #>;
+this.InternalCollectionType = CollectionType.None;
 <#+
 }
 
 private void OnIsArray( string sizeVariable )
 {
 #>
-this._collectionType = CollectionType.Array;
-this._itemsCount = <#= sizeVariable #>;
-this._data = <#= sizeVariable #>;
+this.InternalCollectionType = CollectionType.Array;
+this.InternalItemsCount = <#= sizeVariable #>;
+this.InternalData = <#= sizeVariable #>;
 <#+
 }
 
 private void OnIsMap( string sizeVariable )
 {
 #>
-this._collectionType = CollectionType.Map;
-this._itemsCount = <#= sizeVariable #>;
-this._data = <#= sizeVariable #>;
+this.InternalCollectionType = CollectionType.Map;
+this.InternalItemsCount = <#= sizeVariable #>;
+this.InternalData = <#= sizeVariable #>;
 <#+
 }
 
@@ -199,6 +199,9 @@ private void OnNilRawValue()
 {
 #>
 result = null;
+<#+
+this.OnReturnScalarObject( "result" );
+#>
 return true;
 <#+
 }

@@ -11,3 +11,9 @@ How to Create NuGet Packages
      See existing .csproj files for details.
   2. Run powershell .\Pack.ps1
   3. Check *.nupkg.
+
+How to Build Help Files
+  1. Open "MsgPack.shfbproj" with SandCastle Help File Builder.
+  2. Build it.
+  3. Copy contents under `Help/` directory to `apidoc/` of `gh-pages` branch without `*.chm` files.
+  4. Copy `*.chm` files to `dist/` of `gh-pages` branch.

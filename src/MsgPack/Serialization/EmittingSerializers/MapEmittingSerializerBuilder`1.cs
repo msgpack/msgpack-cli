@@ -57,8 +57,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 					packerIL,
 					1,
 					entry.Member.GetMemberValueType(),
-					null,
-					NilImplication.MemberDefault,
+					entry.Contract.Name,
+					entry.Contract.NilImplication,
 					il0 =>
 					{
 						if ( typeof( TObject ).IsValueType )

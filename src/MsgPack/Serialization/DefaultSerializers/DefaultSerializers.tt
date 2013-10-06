@@ -144,12 +144,12 @@ var __types =
 var __workArounds =
 	new Dictionary<Type, WorkAround>()
 	{
-		{ typeof( char ), new WorkAround(){ PackCode = "packer.Pack( ( System.UInt16 )value );", UnpackCode = "return ( System.Char ) unpacker.Data.Value.AsUInt16(); " } },
-		{ typeof( decimal ), new WorkAround(){ PackCode = "packer.PackString( value.ToString( \"G\", CultureInfo.InvariantCulture ) );", UnpackCode = "return System.Decimal.Parse( unpacker.Data.Value.AsString(), CultureInfo.InvariantCulture ); " } },
-		{ typeof( DateTime ), new WorkAround(){ PackCode = "packer.Pack( MessagePackConvert.FromDateTime( value ) );", UnpackCode = "return MessagePackConvert.ToDateTime( unpacker.Data.Value.AsInt64() ); " } },
-		{ typeof( DateTimeOffset ), new WorkAround(){ PackCode = "packer.Pack( MessagePackConvert.FromDateTimeOffset( value ) );", UnpackCode = "return MessagePackConvert.ToDateTimeOffset( unpacker.Data.Value.AsInt64() ); " } },
-		{ typeof( Guid ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Guid( unpacker.Data.Value.AsBinary() ); " } },
-		{ typeof( BigInteger ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Numerics.BigInteger( unpacker.Data.Value.AsBinary() ); " } },
+		{ typeof( char ), new WorkAround(){ PackCode = "packer.Pack( ( System.UInt16 )value );", UnpackCode = "return ( System.Char ) unpacker.LastReadData.AsUInt16(); " } },
+		{ typeof( decimal ), new WorkAround(){ PackCode = "packer.PackString( value.ToString( \"G\", CultureInfo.InvariantCulture ) );", UnpackCode = "return System.Decimal.Parse( unpacker.LastReadData.AsString(), CultureInfo.InvariantCulture ); " } },
+		{ typeof( DateTime ), new WorkAround(){ PackCode = "packer.Pack( MessagePackConvert.FromDateTime( value ) );", UnpackCode = "return MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ); " } },
+		{ typeof( DateTimeOffset ), new WorkAround(){ PackCode = "packer.Pack( MessagePackConvert.FromDateTimeOffset( value ) );", UnpackCode = "return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.AsInt64() ); " } },
+		{ typeof( Guid ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Guid( unpacker.LastReadData.AsBinary() ); " } },
+		{ typeof( BigInteger ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Numerics.BigInteger( unpacker.LastReadData.AsBinary() ); " } },
 	};
 
 var __notInSLs =
@@ -229,9 +229,14 @@ foreach( Type __type in __types )
 #if !WINDOWS_PHONE && !NETFX_35
 <#
 	}
+
+	var __typeName = __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) + "MessagePackSerializer";
 #>
-	internal sealed class <#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
+	internal sealed class <#= __typeName #> : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
 	{
+		public <#= __typeName #>( PackerCompatibilityOptions packerCompatibilityOptions )
+			: base( packerCompatibilityOptions ) { }
+
 		protected internal sealed override void PackToCore( Packer packer, <#= __type.FullName #> value )
 		{
 <#
@@ -303,7 +308,7 @@ foreach( var ctor in ctors )
 #>
 			try
 			{
-				return unpacker.Data.Value.As<#= __type.Name #>();
+				return unpacker.LastReadData.As<#= __type.Name #>();
 			}
 			catch( InvalidOperationException ex )
 			{
@@ -334,7 +339,7 @@ foreach( var ctor in ctors )
 			<#= __ctorParameterType #> ctorArgument;
 			try
 			{
-				ctorArgument = unpacker.Data.Value.As<#= __ctorParameterType.Name #>();
+				ctorArgument = unpacker.LastReadData.As<#= __ctorParameterType.Name #>();
 			}
 			catch( InvalidOperationException ex )
 			{
