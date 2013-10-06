@@ -231,7 +231,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var asProperty = member as PropertyInfo;
 			if ( asProperty != null )
 			{
-				if ( !asProperty.CanWrite )
+				if ( !asProperty.CanSetValue() )
 				{
 					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot set value to '{0}.{1}' property.", asProperty.DeclaringType, asProperty.Name ) );
 				}
