@@ -14,7 +14,7 @@
 This library provides MessagePack serialization/deserialization APIs.</description>
     <releaseNotes>This release improves performance, adds str8 support, ext type support, improved serializer generator API, new abstract collection support, and some bug fixes.</releaseNotes>
     <copyright>Copyright 2010-2013 FUJIWARA, Yusuke, all rights reserved.</copyright>
-    <tags>Serialization MessagePack MsgPack</tags>
+    <tags>Serialization MessagePack MsgPack Formatter Binary Serializer</tags>
     <dependencies />
   </metadata>
   <files>
