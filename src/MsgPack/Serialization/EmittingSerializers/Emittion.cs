@@ -330,6 +330,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var value = localHolder.GetSerializingValue( valueType );
 			loadValueEmitter( il );
 			il.EmitAnyStloc( value );
+
 			if ( memberName != null && nilImplication == NilImplication.Prohibit )
 			{
 				/*
@@ -555,8 +556,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					EmitNilImplication(
 						il,
 						unpackerArgumentIndex,
-						member.Value.Contract.Name,
-						member.Value.Contract.NilImplication,
+						member.Value,
 						endOfDeserialization,
 						localHolder
 					);
@@ -634,20 +634,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="il">The il generator.</param>
 		/// <param name="unpackerArgumentIndex">Index of the unpacker argument.</param>
-		/// <param name="memberName">Name of the deserializing member.</param>
-		/// <param name="nilImplication">The nil implication.</param>
+		/// <param name="member">Metadata of the serializing member.</param>
 		/// <param name="endOfDeserialization">The label to the end of deserialization.</param>
 		/// <param name="localHolder">The <see cref="LocalVariableHolder"/> which holds shared local variable information.</param>
 		public static void EmitNilImplication(
 			TracingILGenerator il,
 			int unpackerArgumentIndex,
-			string memberName,
-			NilImplication nilImplication,
+			SerializingMember member,
 			Label endOfDeserialization,
 			LocalVariableHolder localHolder
 		)
 		{
-			switch ( nilImplication )
+			switch ( member.Contract.NilImplication )
 			{
 				case NilImplication.MemberDefault:
 				{
@@ -685,7 +683,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il.EmitGetProperty( Metadata._MessagePackObject.IsNil );
 					var endIf0 = il.DefineLabel( "END_IF0" );
 					il.EmitBrfalse_S( endIf0 );
-					il.EmitLdstr( memberName );
+					il.EmitLdstr( member.Contract.Name );
 					il.EmitAnyCall( SerializationExceptions.NewNullIsProhibitedMethod );
 					il.EmitThrow();
 					il.MarkLabel( endIf0 );
