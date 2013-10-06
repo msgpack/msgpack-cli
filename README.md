@@ -63,7 +63,8 @@ Open MsgPack.mono.sln with MonoDevelop and then click **Build** menu item.
 ## See also
 
 *  GitHub Page           : http://cli.msgpack.org/
-*  Wiki                  : https://github.com/msgpack/msgpack-cli/wiki
+*  Wiki (documentation)  : https://github.com/msgpack/msgpack-cli/wiki
+*  API Reference         : http://cli.msgpack.org/doc/top.html
 *  Issue tracker         : https://github.com/msgpack/msgpack-cli/issues
 *  MSBuild reference     : http://msdn.microsoft.com/en-us/library/0k6kkbsd.aspx
 *  Mono xbuild reference : http://www.mono-project.com/Microsoft.Build
