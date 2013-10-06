@@ -38,7 +38,7 @@ namespace MsgPack.Serialization
 			this._defaultCollectionTypes = new TypeKeyRepository(
 				new Dictionary<RuntimeTypeHandle, object>(
 #if !NETFX_35
- 9
+					9
 #else
 					8
 #endif
