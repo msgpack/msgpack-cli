@@ -37,7 +37,7 @@ namespace MsgPack.Serialization
 		{
 			this._defaultCollectionTypes = new TypeKeyRepository(
 				new Dictionary<RuntimeTypeHandle, object>(
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 					9
 #else
 					8
@@ -52,7 +52,7 @@ namespace MsgPack.Serialization
 					{ typeof( ICollection ).TypeHandle, typeof( List<MessagePackObject> ) },
 					{ typeof( IList ).TypeHandle, typeof( List<MessagePackObject> ) },
 					{ typeof( IDictionary ).TypeHandle, typeof( MessagePackObjectDictionary ) },
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 					{ typeof( ISet<> ).TypeHandle, typeof( HashSet<> ) },
 #endif
 				} );
