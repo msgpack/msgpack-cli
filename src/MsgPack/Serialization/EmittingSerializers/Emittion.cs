@@ -667,8 +667,25 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 					break;
 				}
+				case NilImplication.Null:
+				{
+					if ( !member.Member.CanSetValue() )
+					{
+						throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull(
+							 member.Contract.Name
+						);
+					}
+
+					break;
+				}
 				case NilImplication.Prohibit:
 				{
+					if ( !member.Member.CanSetValue() )
+					{
+						throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull(
+							member.Contract.Name
+						);
+					}
 					/*
 						 * if( unpacker.Data.Value.IsNil )
 						 * {
