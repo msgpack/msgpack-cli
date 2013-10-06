@@ -669,6 +669,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				case NilImplication.Null:
 				{
+					if ( member.Member.GetMemberValueType().GetIsValueType() && Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null )
+					{
+						throw SerializationExceptions.NewValueTypeCannotBeNull(
+							member.Contract.Name, member.Member.GetMemberValueType(), member.Member.DeclaringType 
+						);
+					}
+
 					if ( !member.Member.CanSetValue() )
 					{
 						throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull(
@@ -731,6 +738,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				case NilImplication.Null:
 				{
+					if ( member.Member.GetMemberValueType().GetIsValueType() && Nullable.GetUnderlyingType( member.Member.GetMemberValueType() ) == null)
+					{
+						throw SerializationExceptions.NewValueTypeCannotBeNull(
+							member.Contract.Name, member.Member.GetMemberValueType(), member.Member.DeclaringType
+						);
+					}
+
 					// TODO: Refactoring
 					// Throw exception for non-nullable value type.
 					// Nop for nullables.
