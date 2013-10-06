@@ -34,7 +34,7 @@ namespace MsgPack.Serialization
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
-			var filePath = Path.GetFullPath( ".\\" + name.Name + ".dll" );
+			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			target.GenerateAssemblyFile();
 			// Assert is not polluted.
 			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
@@ -68,7 +68,7 @@ namespace MsgPack.Serialization
 			try
 			{
 				TestOnWorkerAppDomain(
-					Path.Combine( directory, ".\\" + name.Name + ".dll" ),
+					Path.Combine( directory, "." + Path.DirectorySeparatorChar + name.Name + ".dll" ),
 					PackerCompatibilityOptions.Classic,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
@@ -87,7 +87,7 @@ namespace MsgPack.Serialization
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
 			target.Method = SerializationMethod.Map;
-			var filePath = Path.GetFullPath( ".\\" + name.Name + ".dll" );
+			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			target.GenerateAssemblyFile();
 			// Assert is not polluted.
 			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
@@ -114,7 +114,7 @@ namespace MsgPack.Serialization
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
-			var filePath = Path.GetFullPath( ".\\" + name.Name + ".dll" );
+			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
 			target.GenerateAssemblyFile();
 			// Assert is not polluted.
 			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization
 			try
 			{
 				TestOnWorkerAppDomain(
-					Path.Combine( directory, ".\\" + name.Name + ".dll" ),
+					Path.Combine( directory, "." + Path.DirectorySeparatorChar + name.Name + ".dll" ),
 					PackerCompatibilityOptions.Classic,
 					new byte[] { ( byte )'A' },
 					new byte[]
@@ -182,7 +182,7 @@ namespace MsgPack.Serialization
 			try
 			{
 				TestOnWorkerAppDomainForMultiple(
-					Path.Combine( directory, ".\\" + name.Name + ".dll" ),
+					Path.Combine( directory, "." + Path.DirectorySeparatorChar + name.Name + ".dll" ),
 					PackerCompatibilityOptions.Classic,
 					new byte[] { ( byte )'A' },
 					new byte[]
