@@ -153,11 +153,27 @@
       <DependentUpon>Packer.Nullable.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ConditionalILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\DynamicMethodSerializerBuilder.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ILEmittingContext.cs" />
+    <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ILEmittingSerializerBuilder`2.cs" />
+    <Compile Include="Serialization\DefaultSerializers\ArraySerializer`1.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilderContract`3.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Array.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.CommonConstructs.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Map.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.cs" />
     <Compile Include="Serialization\DefaultConcreteTypeRepository.cs" />
     <Compile Include="Serialization\DefaultSerializers\MessagePackObjectExtensions.cs" />
     <Compile Include="Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerGenerationContext.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
     <Compile Include="Serialization\EmittingSerializers\ArrayEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\LocalVariableHolder.cs" />
+    <Compile Include="Serialization\EmittingSerializers\NopILConstruct.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ArrayFormatObjectExpressionMessagePackSerializer.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ArrayMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CallbackMessagePackSerializer`1.cs" />
@@ -182,6 +198,7 @@
     <Compile Include="Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\IMessagePackSingleObjectSerializer.cs" />
+    <Compile Include="Serialization\Metadata\_CultureInfo.cs" />
     <Compile Include="Serialization\SerializerTypeKeyRepository.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs" />

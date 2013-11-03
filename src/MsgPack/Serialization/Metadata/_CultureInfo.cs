@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,20 +19,16 @@
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
 {
 // ReSharper disable InconsistentNaming
-	internal static class _String
+	internal static class _CultureInfo
 	{
-		public static readonly MethodInfo op_Equality = FromExpression.ToOperator( ( String left, String right ) => left == right );
-		public static readonly MethodInfo op_Inequality = FromExpression.ToOperator( ( String left, String right ) => left != right );
-
-		public static readonly MethodInfo Format_P =
-			FromExpression.ToMethod(
-				( IFormatProvider provider, string format, object[] args ) => String.Format( provider, format, args )
-			);
+		public static readonly PropertyInfo InvariantCulture = FromExpression.ToProperty( () => CultureInfo.InvariantCulture );
+		public static readonly PropertyInfo CurrentCulture = FromExpression.ToProperty( () => CultureInfo.CurrentCulture );
 	}
 // ReSharper restore InconsistentNaming
 }

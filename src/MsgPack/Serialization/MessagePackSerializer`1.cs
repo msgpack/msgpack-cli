@@ -21,9 +21,7 @@
 using System;
 using System.Globalization;
 using System.IO;
-#if NETFX_CORE
 using System.Reflection;
-#endif
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
@@ -54,6 +52,10 @@ namespace MsgPack.Serialization
 		private static readonly string _memoryStreamExceptionSourceName = typeof( MemoryStream ).GetTypeInfo().Assembly.GetName().Name;
 #endif
 #endif
+		// This field exists for each closed generic types.
+		internal static readonly MethodInfo UnpackToCoreMethod =
+			FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
+
 		private readonly PackerCompatibilityOptions _packerCompatibilityOptions;
 
 		/// <summary>

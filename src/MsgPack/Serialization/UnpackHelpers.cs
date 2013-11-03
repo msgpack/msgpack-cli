@@ -477,8 +477,25 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		internal static int GetItemsCount( Unpacker unpacker )
+		/// <summary>
+		///		Gets the items count as <see cref="Int32"/>.
+		/// </summary>
+		/// <param name="unpacker">The unpacker.</param>
+		/// <returns>The items count as <see cref="Int32"/>.</returns>
+		/// <exception cref="System.ArgumentNullException"><paramref name="unpacker"/> is <c>null.</c></exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">The items count is greater than <see cref="Int32.MaxValue"/>.</exception>
+		/// <remarks>
+		///		The items count of the collection can be between <see cref="Int32.MaxValue"/> and <see cref="UInt32.MaxValue"/>,
+		///		but most collections do not support so big count.
+		/// </remarks>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static int GetItemsCount( Unpacker unpacker )
 		{
+			if( unpacker == null )
+			{
+				throw new ArgumentNullException( "unpacker" );
+			}
+
 			long rawItemsCount;
 			try
 			{

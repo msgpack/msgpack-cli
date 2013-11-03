@@ -233,7 +233,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					// : this(null)
 					il.Emit( OpCodes.Ldarg_0 );
 					il.Emit( OpCodes.Ldnull );
-					il.Emit( OpCodes.Call, this._defaultConstructorBuilder );
+					il.Emit( OpCodes.Call, this._contextConstructorBuilder );
 					il.Emit( OpCodes.Ret );
 				}
 
