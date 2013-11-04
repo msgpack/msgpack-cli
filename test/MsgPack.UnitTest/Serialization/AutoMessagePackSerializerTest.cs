@@ -801,14 +801,7 @@ namespace MsgPack.Serialization
 			var context = new SerializationContext();
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
-			using ( var stream = new MemoryStream() )
-			{
-				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
-				serializer.Pack( stream, value );
-				stream.Position = 0;
-				Assert.Throws<NotSupportedException>( () => serializer.Unpack( stream ) );
-			}
+			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractCollection<int>>( context ) );
 		}
 
 		[Test]
