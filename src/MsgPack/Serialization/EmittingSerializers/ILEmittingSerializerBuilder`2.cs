@@ -185,11 +185,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Literal( typeof( string ), constant, il => il.EmitLdstr( constant ) );
 		}
 
-		protected override ILConstruct Nop( ILEmittingContext context, Type contextType )
-		{
-			return ILConstruct.Nop( contextType );
-		}
-
 		protected override ILConstruct EmitThisReferenceExpression( ILEmittingContext context )
 		{
 			return ILConstruct.Literal( context.SerializerType, "(this)", il => il.EmitLdarg_0() );
@@ -659,7 +654,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitStringSwitchStatement( ILEmittingContext context, ILConstruct target, IDictionary<string, ILConstruct> cases )
 		{
 			// Simply if statements
-			ILConstruct @else = this.Nop( context, typeof( void ) );
+			ILConstruct @else = null;
 			foreach ( var @case in cases )
 			{
 				@else =

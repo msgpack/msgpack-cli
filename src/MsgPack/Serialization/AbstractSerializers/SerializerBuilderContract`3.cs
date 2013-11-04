@@ -128,15 +128,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct Nop( TContext context, Type contextType )
-		{
-			Contract.Requires( context != null );
-			Contract.Requires( contextType != null );
-			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == contextType );
-			return default( TConstruct );
-		}
-
 		protected override TConstruct EmitThisReferenceExpression( TContext context )
 		{
 			Contract.Requires( context != null );

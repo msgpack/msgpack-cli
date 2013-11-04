@@ -157,8 +157,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct MakeStringLiteral( TContext context, string constant );
 
-		protected abstract TConstruct Nop( TContext context, Type contextType );
-
 		protected abstract TConstruct EmitThisReferenceExpression( TContext context );
 
 		protected abstract TConstruct EmitBoxExpression( TContext context, Type valueType, TConstruct value );
@@ -782,7 +780,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				case NilImplication.MemberDefault:
 				{
-					expressionWhenNil = this.Nop( context, typeof( void ) );
+					expressionWhenNil = null;
 					break;
 				}
 				case NilImplication.Prohibit:
