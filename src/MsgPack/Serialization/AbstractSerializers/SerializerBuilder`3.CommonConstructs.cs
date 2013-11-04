@@ -110,33 +110,51 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 		///  <summary>
-		/// 		Emits the method epiloigue.
+		/// 	Emits the method epiloigue.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="metadata">The metadata of the method.</param>
 		/// <param name="constructs">The constructs which represent method statements in order. Null entry should be ignored.</param>
 		protected abstract void EmitMethodEpilogue( TContext context, MethodInfo metadata, IList<TConstruct> constructs );
 
+		/// <summary>
+		/// 	Emits sequential statements and subsequent loadable expression which determines entire construct type.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="statement">The statement which is usually sequential statements.</param>
+		/// <param name="contextExpression">The expresion which determines entire construct type.</param>
+		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitStatementExpression( TContext context, TConstruct statement, TConstruct contextExpression );
 
+		/// <summary>
+		///		Emits anonymous <c>null</c> reference literal.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct MakeNullLiteral( TContext context );
 
 		/// <summary>
-		///		Emits the constant int value reference.
+		///		Emits the constant <see cref="Int32"/> value reference.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
-		/// <returns>The constant reference.</returns>
+		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct MakeInt32Literal( TContext context, int constant );
 
+		/// <summary>
+		///		Emits the constant <see cref="Int64"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct MakeInt64Literal( TContext context, long constant );
 
 		/// <summary>
-		///		Emits the constant string value reference.
+		///		Emits the constant <see cref="String"/> value reference.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
-		/// <returns>The constant reference.</returns>
+		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct MakeStringLiteral( TContext context, string constant );
 
 		protected abstract TConstruct Nop( TContext context, Type contextType );
@@ -281,7 +299,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 				Contract.Assert( asProperty != null, member.GetType().FullName );
 #endif
-				if ( asProperty.GetSetMethod( true ) != null )
+				if ( asProperty.GetSetMethod( false ) != null )
 				{
 					return this.EmitSetProprety( context, instance, asProperty, value );
 				}
@@ -307,15 +325,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context,
 							traits,
 							value,
-							this.Nop( context, typeof( void ) ),
-							( current, _ ) =>
-							this.EmitAppendCollectionItem(
-								context,
-								traits,
-								member.GetMemberValueType(),
-								getCollection,
-								current
-							)
+							current =>
+								this.EmitAppendCollectionItem(
+									context,
+									traits,
+									member.GetMemberValueType(),
+									getCollection,
+									current
+								)
 						);
 				}
 				case CollectionKind.Map:
@@ -333,30 +350,29 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context,
 							traits,
 							value,
-							this.Nop( context, typeof( void ) ),
-							( current, _ ) =>
-							this.EmitAppendDictionaryItem( 
-								context,
-								traits,
-								getCollection,
-								keyType,
-								this.EmitGetPropretyExpression( 
+							current =>
+								this.EmitAppendDictionaryItem(
 									context,
-									current,
-									traits.ElementType == typeof(DictionaryEntry)
-									? Metadata._DictionaryEntry.Key
-									: traits.ElementType.GetProperty( "Key" )
-								),
-								valueType,
-								this.EmitGetPropretyExpression(
-									context,
-									current,
-									traits.ElementType == typeof( DictionaryEntry )
-									? Metadata._DictionaryEntry.Value
-									: traits.ElementType.GetProperty( "Value" )
-								),
-								false
-							)
+									traits,
+									getCollection,
+									keyType,
+									this.EmitGetPropretyExpression(
+										context,
+										current,
+										traits.ElementType == typeof( DictionaryEntry )
+										? Metadata._DictionaryEntry.Key
+										: traits.ElementType.GetProperty( "Key" )
+									),
+									valueType,
+									this.EmitGetPropretyExpression(
+										context,
+										current,
+										traits.ElementType == typeof( DictionaryEntry )
+										? Metadata._DictionaryEntry.Value
+										: traits.ElementType.GetProperty( "Value" )
+									),
+									false
+								)
 						);
 				}
 				default:
@@ -459,50 +475,51 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			var currentItem = item;
 
-			if ( nilImplication == NilImplication.Prohibit )
+			switch( nilImplication )
 			{
-				TConstruct condition = null;
-				if ( itemType == typeof( MessagePackObject ) )
+				case NilImplication.Prohibit:
 				{
-					condition =
-						this.EmitNotExpression(
-							context,
-							this.EmitGetPropretyExpression( context, item, itemType.GetProperty( "HasValue" ) )
-						);
-				}
-				else if ( !itemType.GetIsValueType() )
-				{
-					condition =
-						this.EmitNotExpression(
-							context,
-							this.EmitGetPropretyExpression( context, item, itemType.GetProperty( "HasValue" ) )
-						);
-				}
-				else if ( Nullable.GetUnderlyingType( itemType ) != null )
-				{
-					condition =
-						this.EmitNotExpression(
-							context,
-							this.EmitGetPropretyExpression( context, item, itemType.GetProperty( "HasValue" ) )
-						);
-				}
-
-				if ( condition != null )
-				{
-					currentItem =
-						this.EmitConditionalExpression(
-							context,
-							condition,
-							this.EmitThrow(
+					TConstruct condition = null;
+					if( itemType == typeof( MessagePackObject ) )
+					{
+						condition =
+							this.EmitGetPropretyExpression( context, item, Metadata._MessagePackObject.IsNil );
+					}
+					else if( !itemType.GetIsValueType() )
+					{
+						condition =
+							this.EmitEqualsExpression(
 								context,
-								itemType,
-								SerializationExceptions.NewNullIsProhibitedMethod,
-								this.MakeStringLiteral( context, memberName ),
-								this.EmitTypeOfExpression( context, itemType ),
-								this.EmitTypeOfExpression( context, typeof( TObject ) )
-							),
-							item
-						);
+								item,
+								this.MakeNullLiteral( context )
+							);
+					}
+					else if( Nullable.GetUnderlyingType( itemType ) != null )
+					{
+						condition =
+							this.EmitNotExpression(
+								context,
+								this.EmitGetPropretyExpression( context, item, itemType.GetProperty( "HasValue" ) )
+							);
+					}
+
+					if( condition != null )
+					{
+						currentItem =
+							this.EmitConditionalExpression(
+								context,
+								condition,
+								this.EmitThrow(
+									context,
+									itemType,
+									SerializationExceptions.NewNullIsProhibitedMethod,
+									this.MakeStringLiteral( context, memberName )
+								),
+								item
+							);
+					}
+
+					break;
 				}
 			}
 
@@ -610,44 +627,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="itemType">Type of the item.</param>
 		/// <param name="nilImplication">The nil implication.</param>
 		/// <param name="unpacker">The reference to the unpacker.</param>
-		/// <param name="itemIndex">Index of the item.</param>
-		/// <param name="memberName">Name of the member.</param>
-		/// <returns></returns>
-		[Obsolete]
-		protected TConstruct EmitUnpackItemValueExpression(
-			TContext context,
-			Type itemType,
-			NilImplication nilImplication,
-			TConstruct unpacker,
-			TConstruct itemIndex,
-			TConstruct memberName
-		)
-		{
-			return
-				this.EmitSequentialStatements(
-					context,
-					this.EmitUnpackItemValueExpressionCore(
-						context,
-						itemType,
-						nilImplication,
-						unpacker,
-						null,
-						itemIndex,
-						memberName,
-						null,
-						null,
-						( ni, @null, value ) => value
-					)
-				);
-		}
-
-		/// <summary>
-		/// Emits the unpack item value expression.
-		/// </summary>
-		/// <param name="context">The context.</param>
-		/// <param name="itemType">Type of the item.</param>
-		/// <param name="nilImplication">The nil implication.</param>
-		/// <param name="unpacker">The reference to the unpacker.</param>
 		/// <param name="unpacking">The reference to the unpacking collection.</param>
 		/// <param name="itemIndex">Index of the item.</param>
 		/// <param name="memberName">Name of the member.</param>
@@ -672,7 +651,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitSequentialStatements(
 					context,
 					this.EmitUnpackItemValueExpressionCore(
-						context, itemType, nilImplication, unpacker, unpacking, itemIndex, memberName, null, null, setValueExpression
+						context, itemType, nilImplication, unpacker, unpacking, itemIndex, memberName, itemsCount, unpacked, setValueExpression
 					)
 				);
 		}
@@ -691,14 +670,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 		)
 		{
 			/*
-				 *	if ( !unpacker.Read() )
-				 *	{
-				 *		throw SerializationExceptiuons.MissingItem(...);
-				 *	}
-				 *	
 				 *	T? nullable;
 				 *	if ( unpacked < itemsCount )
 				 *	{
+				 *		if ( !unpacker.Read() )
+				 *		{
+				 *			throw SerializationExceptiuons.MissingItem(...);
+				 *		}
+				 *	
 				 *		if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
 				 * 		{
 				 * 			nullable = serializer.UnpackFrom( unpacker );
@@ -751,19 +730,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 				nullableType = typeof( Nullable<> ).MakeGenericType( itemType );
 			}
 
-			yield return
-				this.EmitConditionalExpression(
-					context,
-					this.EmitNotExpression(
-						context,
-						this.EmitInvokeMethodExpression( context, unpacker, Metadata._Unpacker.Read )
-					),
-					this.EmitThrow(
-						context, typeof( Unpacker ), SerializationExceptions.NewMissingItemMethod, itemIndex
-					),
-					unpacker
-				);
-
 			var nullable =
 				this.DeclareLocal(
 					context,
@@ -771,8 +737,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 					"nullable" + itemIndex,
 					null
 				);
-
-			yield return nullable;
 
 			var unpack =
 				this.EmitAndConditionalExpression(
@@ -793,7 +757,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitDeserializeItemExpression( context, unpacker, nullableType ),
 						this.EmitSetVariable( context, nullable )
 					),
-					this.EmitUsingExpression(
+					this.EmitUsingStatement(
 						context,
 						typeof( Unpacker ),
 						this.EmitInvokeMethodExpression(
@@ -810,31 +774,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 					)
 				);
 
-			// Missing member is treated as nil
-			if ( unpacked != null )
-			{
-#if DEBUG
-				Contract.Assert( itemsCount != null );
-#endif
-				yield return
-					this.EmitConditionalExpression(
-						context,
-						this.EmitLesserThanExpression(
-							context,
-							unpacked,
-							itemsCount
-						),
-						unpack,
-						this.EmitDefaultValueExpression( context, nullableType )
-					);
-			}
-			else
-			{
-				yield return unpack;
-			}
+			var unpackedItem = this.EmitGetValueWhenNullableExpression( context, itemType, nullable );
 
 			// Nil Implication
-			TConstruct expressionWhenNil = null;
+			TConstruct expressionWhenNil;
 			switch ( nilImplication )
 			{
 				case NilImplication.MemberDefault:
@@ -855,7 +798,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				case NilImplication.Null:
 				{
-					if ( !isNativelyNullable )
+					if( !isNativelyNullable )
 					{
 						expressionWhenNil =
 							this.EmitThrow(
@@ -865,6 +808,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 								memberName,
 								this.EmitTypeOfExpression( context, itemType ),
 								this.EmitTypeOfExpression( context, typeof( TObject ) )
+							);
+					}
+					else
+					{
+						expressionWhenNil =
+							this.EmitSequentialStatements(
+								context,
+								setValueExpression( unpacking, nilImplication, unpackedItem )
 							);
 					}
 
@@ -878,22 +829,61 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 			}
 
-			var unpackedItem = this.EmitGetValueWhenNullableExpression( context, itemType, nullable );
+			var readAndUnpack =
+				this.EmitSequentialStatements(
+					context,
+					this.EmitConditionalExpression(
+						context,
+						this.EmitNotExpression(
+							context,
+							this.EmitInvokeMethodExpression( context, unpacker, Metadata._Unpacker.Read )
+						),
+						this.EmitThrow(
+							context, typeof( Unpacker ), SerializationExceptions.NewMissingItemMethod, itemIndex
+						),
+						unpacker
+					),
+					unpack
+				);
+
+			yield return nullable;
+
+			// Missing member is treated as nil
+			if ( unpacked != null )
+			{
+#if DEBUG
+				Contract.Assert( itemsCount != null );
+#endif
+				yield return
+					this.EmitConditionalExpression(
+						context,
+						this.EmitLesserThanExpression(
+							context,
+							unpacked,
+							itemsCount
+						),
+						readAndUnpack,
+						null
+					);
+			}
+			else
+			{
+				yield return readAndUnpack;
+			}
 
 			yield return
-				expressionWhenNil != null
-					? this.EmitConditionalExpression(
-						context,
-						( !isNativelyNullable || Nullable.GetUnderlyingType( itemType ) != null )
-							? this.EmitGetPropretyExpression( context, nullable, nullableType.GetProperty( "HasValue" ) )
-							: itemType == typeof( MessagePackObject )
-							? this.EmitNotExpression(
-								context,
-								this.EmitGetPropretyExpression( context, nullable, Metadata._MessagePackObject.IsNil )
-							) : this.EmitNotEqualsExpression( context, nullable, this.MakeNullLiteral( context ) ),
-						setValueExpression( unpacking, nilImplication, unpackedItem ),
-						expressionWhenNil
-					) : setValueExpression( unpacking, nilImplication, unpackedItem );
+				this.EmitConditionalExpression(
+					context,
+					( !isNativelyNullable || Nullable.GetUnderlyingType( itemType ) != null )
+						? this.EmitGetPropretyExpression( context, nullable, nullableType.GetProperty( "HasValue" ) )
+						: itemType == typeof( MessagePackObject )
+						? this.EmitNotExpression(
+							context,
+							this.EmitGetPropretyExpression( context, nullable, Metadata._MessagePackObject.IsNil )
+						) : this.EmitNotEqualsExpression( context, nullable, this.MakeNullLiteral( context ) ),
+					setValueExpression( unpacking, nilImplication, unpackedItem ),
+					expressionWhenNil
+				);
 
 			if ( unpacked != null )
 			{
@@ -910,15 +900,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private TConstruct EmitGetValueWhenNullableExpression( TContext context, Type targetType, TConstruct mayBeNullable )
 		{
-			if ( Nullable.GetUnderlyingType( mayBeNullable.ContextType ) != null
+			return
+				( Nullable.GetUnderlyingType( mayBeNullable.ContextType ) != null
 				&& Nullable.GetUnderlyingType( targetType ) == null )
-			{
-				return this.EmitGetPropretyExpression( context, mayBeNullable, mayBeNullable.ContextType.GetProperty( "Value" ) );
-			}
-			else
-			{
-				return mayBeNullable;
-			}
+				? this.EmitGetPropretyExpression( context, mayBeNullable, mayBeNullable.ContextType.GetProperty( "Value" ) )
+				: mayBeNullable;
 		}
 
 		/// <summary>
@@ -932,8 +918,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct unpacking, NilImplication nilImplication, TConstruct unpackedValueMaybeNull
 		);
 
-		protected TConstruct EmitUsingExpression(
-			TContext context, Type disposableType, TConstruct instantiateIDisposableExpression, Func<TConstruct, TConstruct> usingBody
+		/// <summary>
+		///		Emits the using expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="disposableType">Type of the disposable.</param>
+		/// <param name="instantiateIDisposableExpression">The expression which instantiate <see cref="IDisposable"/> object.</param>
+		/// <param name="usingBodyEmitter">The using body which takes disposable object and returns actual statement.</param>
+		/// <returns>The using statement.</returns>
+		private TConstruct EmitUsingStatement(
+			TContext context, Type disposableType, TConstruct instantiateIDisposableExpression, Func<TConstruct, TConstruct> usingBodyEmitter
 		)
 		{
 			var disposable =
@@ -949,7 +943,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					disposable,
 					this.EmitTryFinallyExpression(
 						context,
-						usingBody( disposable ),
+						usingBodyEmitter( disposable ),
 						this.EmitConditionalExpression(
 							context,
 							this.EmitNotEqualsExpression(
@@ -968,6 +962,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
+		/// <summary>
+		///		Emits the deserialize item expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="unpacker">The unpacker expression.</param>
+		/// <param name="itemType">Type of the item to be deserialized.</param>
+		/// <returns>The expression which returns deserialized item.</returns>
 		private TConstruct EmitDeserializeItemExpression( TContext context, TConstruct unpacker, Type itemType )
 		{
 			return
@@ -986,7 +987,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="conditionExpression">The expression which represents conditional.</param>
 		/// <param name="thenExpression">The expression which is used when condition is true.</param>
 		/// <param name="elseExpression">The expression which is used when condition is false.</param>
-		/// <returns></returns>
+		/// <returns>The conditional expression.</returns>
 		protected abstract TConstruct EmitConditionalExpression(
 			TContext context,
 			TConstruct conditionExpression,
@@ -994,6 +995,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct elseExpression
 		);
 
+		/// <summary>
+		///		Emits the conditional expression (cond?then:else) which has short circuit and expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="conditionExpressions">The expression which represents short circuit and expression.</param>
+		/// <param name="thenExpression">The expression which is used when condition is true.</param>
+		/// <param name="elseExpression">The expression which is used when condition is false.</param>
+		/// <returns>The conditional expression.</returns>
 		protected abstract TConstruct EmitAndConditionalExpression(
 			TContext context,
 			IList<TConstruct> conditionExpressions,
@@ -1001,6 +1010,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct elseExpression
 		);
 
+		/// <summary>
+		///		Emits string switch statement.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="target">Target string expression.</param>
+		/// <param name="cases">The case statements. The keys are case condition, and values are actual statement.</param>
+		/// <returns>The switch statement.</returns>
 		protected abstract TConstruct EmitStringSwitchStatement(
 			TContext context, TConstruct target, IDictionary<string, TConstruct> cases
 		);
@@ -1009,11 +1025,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// 	Emits the for loop.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="count">The count reference for loop condition.</param>
-		/// <param name="expressionContext">The expression context.</param>
+		/// <param name="count">The count reference for loop terminiation condition.</param>
 		/// <param name="loopBodyEmitter">The loop body emitter which takes for loop context then returns loop body construct.</param>
-		/// <returns>The expression context after for loop.</returns>
-		protected abstract TConstruct EmitForLoop( TContext context, TConstruct count, TConstruct expressionContext, Func<ForLoopContext, TConstruct> loopBodyEmitter );
+		/// <returns>The for loop.</returns>
+		protected abstract TConstruct EmitForLoop( TContext context, TConstruct count, Func<ForLoopContext, TConstruct> loopBodyEmitter );
 
 		/// <summary>
 		/// 	Emits the for-each loop.
@@ -1021,15 +1036,36 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">The generation context.</param>
 		/// <param name="collectionTraits">The traits of the collection.</param>
 		/// <param name="collection">The collection reference.</param>
-		/// <param name="expressionContext">The expression context.</param>
 		/// <param name="loopBodyEmitter">The loop body emitter which takes item reference then returns loop body construct.</param>
-		/// <returns>The expression context after for each loop.</returns>
-		protected abstract TConstruct EmitForEachLoop( TContext context, CollectionTraits collectionTraits, TConstruct collection, TConstruct expressionContext, ForEachLoopBodyFunc loopBodyEmitter );
-
-		protected delegate TConstruct ForEachLoopBodyFunc(
-			TConstruct currentItem, TConstruct expressionContext
+		/// <returns>The for each loop.</returns>
+		protected abstract TConstruct EmitForEachLoop(
+			TContext context,
+			CollectionTraits collectionTraits,
+			TConstruct collection,
+			Func<TConstruct, TConstruct> loopBodyEmitter
 		);
 
+		/// <summary>
+		///		Retrieves a default constructor of the specified type.
+		/// </summary>
+		/// <param name="instanceType">The target type.</param>
+		/// <returns>A default constructor of the <paramref name="instanceType"/>.</returns>
+		private static ConstructorInfo GetDefaultConstructor( Type instanceType )
+		{
+			var ctor = typeof( TObject ).GetConstructor( Type.EmptyTypes );
+			if ( ctor == null )
+			{
+				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( instanceType );
+			}
+
+			return ctor;
+		}
+
+		/// <summary>
+		///		Retrieves a constructor with <see cref="Int32"/> type capacity parameter or default constructor of the <typeparamref name="TObject"/>.
+		/// </summary>
+		/// <param name="instanceType">The target type.</param>
+		/// <returns>A constructor of the <paramref name="instanceType"/>.</returns>
 		private static ConstructorInfo GetCollectionConstructor( Type instanceType )
 		{
 			var ctor =
@@ -1039,17 +1075,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			if ( ctor == null )
 			{
 				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( instanceType );
-			}
-
-			return ctor;
-		}
-
-		private static ConstructorInfo GetDefaultConstructor()
-		{
-			var ctor = typeof( TObject ).GetConstructor( Type.EmptyTypes );
-			if ( ctor == null )
-			{
-				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( typeof( TObject ) );
 			}
 
 			return ctor;

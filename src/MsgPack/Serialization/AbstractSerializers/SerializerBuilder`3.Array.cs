@@ -68,9 +68,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context,
 								traits,
 								context.PackingTarget,
-								context.Packer,
-								( item, packer ) =>
-								this.EmitPackItemExpression( context, packer, traits.ElementType, NilImplication.Null, null, item )
+								item =>
+									this.EmitPackItemExpression( context, context.Packer, traits.ElementType, NilImplication.Null, null, item )
 							)
 						);
 				}
@@ -174,7 +173,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitForLoop(
 							context,
 							count,
-							context.Unpacker,
 							flc => this.EmitUnpackToCollectionLoopBody( context, flc, traits, context.Unpacker )
 						)
 					);

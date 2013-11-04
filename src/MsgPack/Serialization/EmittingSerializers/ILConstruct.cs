@@ -46,6 +46,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			get { return this._type; }
 		}
 
+		public virtual bool IsTerminating
+		{
+			get { return false; }
+		}
+
 		protected ILConstruct( Type type )
 		{
 			this._type = type;
@@ -94,9 +99,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new StoreVariableILConstruct( variable, value );
 		}
 
-		public static ILConstruct Instruction( string description, Type contextType, Action<TracingILGenerator> instructions )
+		public static ILConstruct Instruction( string description, Type contextType, bool isTerminating, Action<TracingILGenerator> instructions )
 		{
-			return new SinglelStepILConstruct( contextType, description, instructions );
+			return new SinglelStepILConstruct( contextType, description, isTerminating, instructions );
 		}
 
 		public static ILConstruct Nop( Type contextType )
@@ -161,7 +166,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		public static ILConstruct Literal<T>( Type type, T literalValue, Action<TracingILGenerator> instruction )
 		{
-			return new SinglelStepILConstruct( type, "literal " + ( literalValue == null ? "(null)" : literalValue.ToString() ), instruction );
+			return new SinglelStepILConstruct( type, "literal " + ( literalValue == null ? "(null)" : literalValue.ToString() ), false, instruction );
 		}
 
 		public static ILConstruct Variable( ILEmittingContext context, Type type, string name, Action<TracingILGenerator, ILConstruct> initialization )
@@ -215,12 +220,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			private readonly string _description;
 			private readonly Action<TracingILGenerator> _instruction;
+			private readonly bool _isTerminating;
 
-			public SinglelStepILConstruct( Type contextType, string description, Action<TracingILGenerator> instruction )
+			public override bool IsTerminating
+			{
+				get { return this._isTerminating; }
+			}
+
+			public SinglelStepILConstruct( Type contextType, string description, bool isTerminating, Action<TracingILGenerator> instruction )
 				: base( contextType )
 			{
 				this._description = description;
 				this._instruction = instruction;
+				this._isTerminating = isTerminating;
 			}
 
 			public override void Evaluate( TracingILGenerator il )
@@ -465,38 +477,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			public override string ToString()
 			{
 				return String.Format( CultureInfo.InvariantCulture, "Bind[{0}]: {1} context: {2}", this.ContextType, this._binding, this._expression );
-			}
-		}
-
-		private class CompositeILConstruct : ContextfulILConstruct
-		{
-			private readonly ILConstruct _statement;
-			private readonly ILConstruct _contextExpression;
-
-			public CompositeILConstruct( ILConstruct statment, ILConstruct contextExpression )
-				: base( contextExpression.ContextType )
-			{
-				this._statement = statment;
-				this._contextExpression = contextExpression;
-			}
-
-			public override void Evaluate( TracingILGenerator il )
-			{
-				il.TraceWriteLine( "// Eval->: {0}", this );
-				this._statement.Evaluate( il );
-				il.TraceWriteLine( "// ->Eval: {0}", this );
-			}
-
-			public override void LoadValue( TracingILGenerator il, bool shouldBeAddress )
-			{
-				il.TraceWriteLine( "// Load->: {0}", this );
-				this._contextExpression.LoadValue( il, shouldBeAddress );
-				il.TraceWriteLine( "// ->Load: {0}", this );
-			}
-
-			public override string ToString()
-			{
-				return String.Format( CultureInfo.InvariantCulture, "Composite[{0}]: {1} context: {2}", this.ContextType, this._statement, this._contextExpression );
 			}
 		}
 
@@ -794,6 +774,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				this._value = value;
 			}
 
+			public override void Evaluate( TracingILGenerator il )
+			{
+				this.StoreValue( il );
+			}
+
 			public override void StoreValue( TracingILGenerator il )
 			{
 				il.TraceWriteLine( "// Stor->: {0}", this );
@@ -907,7 +892,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 					var endIf = il.DefineLabel( "END_IF" );
 					this._condition.Branch( il, @else );
 					onThen();
-					il.EmitBr( endIf );
+					if ( !this._thenExpression.IsTerminating )
+					{
+						il.EmitBr( endIf );
+					}
+
 					il.MarkLabel( @else );
 					onElse();
 					il.MarkLabel( endIf );

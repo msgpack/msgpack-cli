@@ -134,6 +134,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void BuildObjectSerializer( TContext context, SerializingMember[] entries )
 		{
+			VerifyNilImplication( entries );
+
 			if ( typeof( IPackable ).IsAssignableFrom( typeof( TObject ) ) )
 			{
 				this.BuildIPackablePackTo( context );
@@ -150,6 +152,42 @@ namespace MsgPack.Serialization.AbstractSerializers
 			else
 			{
 				this.BuildObjectUnpackFrom( context, entries );
+			}
+		}
+
+		private void VerifyNilImplication( SerializingMember[] entries )
+		{
+			foreach( var serializingMember in entries )
+			{
+				if( serializingMember.Contract.NilImplication == NilImplication.Null )
+				{
+					var itemType = serializingMember.Member.GetMemberValueType();
+
+					if( itemType != typeof( MessagePackObject )
+					    && itemType.GetIsValueType()
+					    && Nullable.GetUnderlyingType( itemType ) == null )
+					{
+						throw SerializationExceptions.NewValueTypeCannotBeNull( serializingMember.Member.ToString(), itemType, typeof( TObject ) );
+					}
+
+					bool isReadOnly = false;
+					FieldInfo asField;
+					PropertyInfo asProperty;
+					if( ( asField = serializingMember.Member as FieldInfo ) != null )
+					{
+						isReadOnly = asField.IsInitOnly;
+					}
+					else
+					{
+						asProperty = serializingMember.Member as PropertyInfo;
+						isReadOnly = asProperty.GetSetMethod( false ) == null;
+					}
+
+					if( isReadOnly )
+					{
+						throw SerializationExceptions.NewNullIsProhibited( serializingMember.Member.ToString() );
+					}
+				}
 			}
 		}
 
@@ -217,7 +255,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context.Packer,
 								entries[ i ].Member.GetMemberValueType(),
 								entries[ i ].Contract.NilImplication,
-								entries[ i ].Contract.Name,
+								entries[ i ].Member.ToString(),
 								this.EmitGetMemberValueExpression( context, context.PackingTarget, entries[ i ].Member )
 							);
 				}
@@ -243,7 +281,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context.Packer,
 						typeof( string ),
 						NilImplication.Null,
-						null,
+						"MemberName",
 						this.MakeStringLiteral( context, entries[ i ].Contract.Name )
 					);
 
@@ -253,7 +291,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context.Packer,
 						entries[ i ].Member.GetMemberValueType(),
 						entries[ i ].Contract.NilImplication,
-						entries[ i ].Contract.Name,
+						entries[ i ].Member.ToString(),
 						this.EmitGetMemberValueExpression( context, context.PackingTarget, entries[ i ].Member )
 					);
 			}
@@ -273,7 +311,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						"result",
 						this.EmitCreateNewObjectExpression(
 							context,
-							GetDefaultConstructor()
+							GetDefaultConstructor( typeof( TObject ) )
 						)
 					);
 				construct =
@@ -322,7 +360,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						"result",
 						this.EmitCreateNewObjectExpression(
 							context,
-							GetDefaultConstructor()
+							GetDefaultConstructor( typeof( TObject ) )
 						)
 					);
 				construct =
@@ -399,7 +437,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context.Unpacker,
 						result,
 						this.MakeInt32Literal( context, count ),
-						this.MakeStringLiteral( context, entries[ count ].Contract.Name ),
+						this.MakeStringLiteral( context, entries[ count ].Member.ToString() ),
 						itemsCount,
 						unpacked,
 						( unpacking, ni, value ) =>
@@ -433,7 +471,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitForLoop(
 					context,
 					itemsCount,
-					result,
 					loopContext =>
 					{
 						var key =
@@ -471,7 +508,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 										context.Unpacker,
 										result,
 										loopContext.Counter,
-										key,
+										this.MakeStringLiteral( context, entry.Member.ToString() ),
 										null,
 										null,
 										( _1, _2, value ) =>

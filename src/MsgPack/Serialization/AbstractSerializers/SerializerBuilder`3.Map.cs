@@ -58,13 +58,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context,
 							traits,
 							context.PackingTarget,
-							context.Packer,
-							( kvp, packer ) =>
+							keyValuePair =>
 								this.EmitPackKeyValuePair(
 									context,
 									traits,
-									packer,
-									kvp
+									context.Packer,
+									keyValuePair
 								)
 						)
 					);
@@ -183,7 +182,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitForLoop(
 						context,
 						this.EmitGetItemsCountExpression( context, context.Unpacker ),
-						context.Unpacker,
 						flc => this.EmitUnpackToMapLoopBody( context, flc, traits, context.Unpacker )
 					);
 			}

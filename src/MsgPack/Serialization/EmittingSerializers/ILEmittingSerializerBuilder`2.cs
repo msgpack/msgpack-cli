@@ -21,7 +21,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -513,7 +512,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						new[]
 						{
 							ILConstruct.Invoke( instance, method, arguments ),
-							ILConstruct.Instruction( "pop", typeof( void ), il => il.EmitPop() )
+							ILConstruct.Instruction( "pop", typeof( void ), false, il => il.EmitPop() )
 						}
 					);
 		}
@@ -565,10 +564,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitSetProprety( ILEmittingContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
 		{
 #if DEBUG
+// ReSharper disable PossibleNullReferenceException
 			Contract.Assert(
 				property.GetSetMethod( true ) != null,
 				property.DeclaringType.FullName + "::" + property.Name + ".set != null" 
 			);
+// ReSharper restore PossibleNullReferenceException
 #endif
 			return ILConstruct.Invoke( instance, property.GetSetMethod( true ), new[] { value } );
 		}
@@ -589,6 +590,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				ILConstruct.Instruction(
 					"throw",
 					contextType,
+					true,
 					il =>
 					{
 						exceptionExpression.LoadValue( il, false );
@@ -603,6 +605,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				ILConstruct.Instruction(
 					"try-finally",
 					tryExpression.ContextType,
+					false,
 					il =>
 					{
 						il.BeginExceptionBlock();
@@ -621,6 +624,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				ILConstruct.Instruction(
 					"try-catch",
 					tryExpression.ContextType,
+					false,
 					il =>
 					{
 						il.BeginExceptionBlock();
@@ -676,7 +680,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return @else;
 		}
 
-		protected override ILConstruct EmitForLoop( ILEmittingContext context, ILConstruct count, ILConstruct expressionContext, Func<ForLoopContext, ILConstruct> loopBodyEmitter )
+		protected override ILConstruct EmitForLoop( ILEmittingContext context, ILConstruct count, Func<ForLoopContext, ILConstruct> loopBodyEmitter )
 		{
 			var i =
 				this.DeclareLocal(
@@ -690,11 +694,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				this.EmitSequentialStatements(
 					context,
-					expressionContext.ContextType,
+					typeof( void ),
 					i,
 					ILConstruct.Instruction(
 						"for",
-						expressionContext.ContextType,
+						typeof( void ),
+						false,
 						il =>
 						{
 							var forCond = il.DefineLabel( "FOR_COND" );
@@ -717,12 +722,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitForEachLoop( ILEmittingContext context, CollectionTraits traits, ILConstruct collection, ILConstruct expressionContext, ForEachLoopBodyFunc loopBodyEmitter )
+		protected override ILConstruct EmitForEachLoop( ILEmittingContext context, CollectionTraits traits, ILConstruct collection, Func<ILConstruct, ILConstruct> loopBodyEmitter )
 		{
 			return
 				ILConstruct.Instruction(
 					"foreach",
-					expressionContext.ContextType,
+					typeof( void ),
+					false,
 					il =>
 					{
 						var enumerator = il.DeclareLocal( traits.GetEnumeratorMethod.ReturnType, "enumerator" );
@@ -806,7 +812,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						currentItem.StoreValue( il );
 
 						// body
-						loopBodyEmitter( currentItem, expressionContext ).Evaluate( il );
+						loopBodyEmitter( currentItem ).Evaluate( il );
 
 						// end loop
 						il.EmitBr( startLoop );
@@ -852,6 +858,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				ILConstruct.Instruction(
 					"getserializer",
 					typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
+					false,
 				// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
 					il => instructions( il, 0 )
 				);

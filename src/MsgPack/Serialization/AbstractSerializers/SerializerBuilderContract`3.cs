@@ -464,25 +464,23 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitForLoop( TContext context, TConstruct count, TConstruct expressionContext, Func<ForLoopContext, TConstruct> loopBodyEmitter )
+		protected override TConstruct EmitForLoop( TContext context, TConstruct count, Func<ForLoopContext, TConstruct> loopBodyEmitter )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( count != null );
-			Contract.Requires( expressionContext != null );
 			Contract.Requires( loopBodyEmitter != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == expressionContext.ContextType );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( void ) );
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitForEachLoop( TContext context, CollectionTraits collectionTraits, TConstruct collection, TConstruct expressionContext, ForEachLoopBodyFunc loopBodyEmitter )
+		protected override TConstruct EmitForEachLoop( TContext context, CollectionTraits collectionTraits, TConstruct collection, Func<TConstruct, TConstruct> loopBodyEmitter )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( collection != null );
-			Contract.Requires( expressionContext != null );
 			Contract.Requires( loopBodyEmitter != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == expressionContext.ContextType );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( void ) );
 			return default( TConstruct );
 		}
 	}
