@@ -104,11 +104,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new SinglelStepILConstruct( contextType, description, isTerminating, instructions );
 		}
 
-		public static ILConstruct Nop( Type contextType )
-		{
-			return new NopILConstruct( contextType );
-		}
-
 		public static ILConstruct Argument( int index, Type type, string name )
 		{
 			return new VariableILConstruct( name, type, index );
@@ -133,12 +128,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			return new UnaryOperatorILConstruct( @operator, input, operation, branchOperation );
 		}
-
-		public static ILConstruct BinaryOperator( string @operator, Type resultType, ILConstruct left, ILConstruct right, Action<TracingILGenerator, ILConstruct, ILConstruct> operation )
-		{
-			return new BinaryOperatorILConstruct( @operator, resultType, left, right, operation );
-		}
-
+		
 		public static ILConstruct BinaryOperator( string @operator, Type resultType, ILConstruct left, ILConstruct right, Action<TracingILGenerator, ILConstruct, ILConstruct> operation, Action<TracingILGenerator, ILConstruct, ILConstruct, Label> branchOperation )
 		{
 			return new BinaryOperatorILConstruct( @operator, resultType, left, right, operation, branchOperation );
@@ -154,9 +144,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new InvocationILConsruct( constructor, null, arguments );
 		}
 
-		public static ILConstruct Sequence( Type contextType, IEnumerable<ILConstruct> statements )
+		public static ILConstruct Sequence( IEnumerable<ILConstruct> statements )
 		{
-			return new SequenceILConstruct( contextType, statements );
+			return new SequenceILConstruct( statements );
 		}
 
 		public static ILConstruct Composite( ILConstruct before, ILConstruct context )
@@ -166,7 +156,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		public static ILConstruct Literal<T>( Type type, T literalValue, Action<TracingILGenerator> instruction )
 		{
+// ReSharper disable CompareNonConstrainedGenericWithNull
 			return new SinglelStepILConstruct( type, "literal " + ( literalValue == null ? "(null)" : literalValue.ToString() ), false, instruction );
+// ReSharper restore CompareNonConstrainedGenericWithNull
 		}
 
 		public static ILConstruct Variable( ILEmittingContext context, Type type, string name, Action<TracingILGenerator, ILConstruct> initialization )
@@ -412,8 +404,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			private readonly ILConstruct[] _statements;
 
-			public SequenceILConstruct( Type contextType, IEnumerable<ILConstruct> statements )
-				: base( contextType )
+			public SequenceILConstruct( IEnumerable<ILConstruct> statements )
+				: base( typeof( void ) )
 			{
 				this._statements = statements.ToArray();
 			}
@@ -540,11 +532,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			private readonly Action<TracingILGenerator, ILConstruct, ILConstruct> _operation;
 			private readonly Action<TracingILGenerator, ILConstruct, ILConstruct, Label> _branchOperation;
 
-			public BinaryOperatorILConstruct( string @operator, Type resultType, ILConstruct left, ILConstruct right, Action<TracingILGenerator, ILConstruct, ILConstruct> operation )
-				: this( @operator, resultType, left, right, operation, ( il, l, r, @else ) => BranchWithOperationResult( l, r, operation, il, @else ) )
-			{
-			}
-
 			public BinaryOperatorILConstruct( string @operator, Type resultType, ILConstruct left, ILConstruct right, Action<TracingILGenerator, ILConstruct, ILConstruct> operation, Action<TracingILGenerator, ILConstruct, ILConstruct, Label> branchOperation )
 				: base( resultType )
 			{
@@ -568,12 +555,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 				il.TraceWriteLine( "// Load->: {0}", this );
 				this._operation( il, this._left, this._right );
 				il.TraceWriteLine( "// ->Load: {0}", this );
-			}
-
-			private static void BranchWithOperationResult( ILConstruct left, ILConstruct right, Action<TracingILGenerator, ILConstruct, ILConstruct> operation, TracingILGenerator il, Label @else )
-			{
-				operation( il, left, right );
-				il.EmitBrfalse( @else );
 			}
 
 			protected override void BranchCore( TracingILGenerator il, Label @else )
@@ -796,32 +777,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			public override string ToString()
 			{
 				return String.Format( CultureInfo.InvariantCulture, "StoreField[void]: {0}", this._field );
-			}
-		}
-
-		private sealed class NopILConstruct : ILConstruct
-		{
-			public NopILConstruct( Type contextType )
-				: base( contextType ) { }
-
-			public override void Evaluate( TracingILGenerator il )
-			{
-				// nop
-			}
-
-			public override void LoadValue( TracingILGenerator il, bool shouldBeAddress )
-			{
-				// nop
-			}
-
-			public override void StoreValue( TracingILGenerator il )
-			{
-				// nop
-			}
-
-			public override string ToString()
-			{
-				return "(nop)";
 			}
 		}
 

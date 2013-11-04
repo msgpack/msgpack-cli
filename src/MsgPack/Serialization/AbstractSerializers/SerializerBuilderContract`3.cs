@@ -77,13 +77,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( constructs != null );
 		}
 
-		protected override TConstruct EmitSequentialStatements( TContext context, Type contextType, IEnumerable<TConstruct> statements )
+		protected override TConstruct EmitSequentialStatements( TContext context, IEnumerable<TConstruct> statements )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( contextType != null );
 			Contract.Requires( statements != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == contextType );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( void ) );
 			return default( TConstruct );
 		}
 
@@ -179,7 +178,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitGraterThanExpression( TContext context, TConstruct left, TConstruct right )
+		protected override TConstruct EmitGreaterThanExpression( TContext context, TConstruct left, TConstruct right )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( left != null );
@@ -189,22 +188,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitLesserThanExpression( TContext context, TConstruct left, TConstruct right )
+		protected override TConstruct EmitLessThanExpression( TContext context, TConstruct left, TConstruct right )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( left != null );
 			Contract.Requires( right != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( bool ) );
-			return default( TConstruct );
-		}
-
-		protected override TConstruct EmitDefaultValueExpression( TContext context, Type type )
-		{
-			Contract.Requires( context != null );
-			Contract.Requires( type != null );
-			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == type );
 			return default( TConstruct );
 		}
 
@@ -227,16 +217,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitUncheckedConvertExpression( TContext context, Type targetType, TConstruct value )
-		{
-			Contract.Requires( context != null );
-			Contract.Requires( targetType != null );
-			Contract.Requires( value != null );
-			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == targetType );
-			return default( TConstruct );
-		}
-
 		protected override TConstruct DeclareLocal( TContext context, Type type, string name, TConstruct initExpression )
 		{
 			Contract.Requires( context != null );
@@ -245,21 +225,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires(
 				type.IsAssignableFrom( initExpression.ContextType )
 			);
-			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == type );
-			return default( TConstruct );
-		}
-
-		[Obsolete]
-		protected override TConstruct DeclareLocal( TContext context, Type type, string name, TConstruct initExpression, ExpressionWithMonad expression )
-		{
-			Contract.Requires( context != null );
-			Contract.Requires( type != null );
-			Contract.Requires( initExpression != null );
-			Contract.Requires(
-				type.IsAssignableFrom( initExpression.ContextType )
-			);
-			Contract.Requires( expression != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == type );
 			return default( TConstruct );
@@ -293,14 +258,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitCreateNewArrayExpression( TContext context, Type type, int length, IEnumerable<TConstruct> initialElements )
+		protected override TConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length, IEnumerable<TConstruct> initialElements )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( type != null );
+			Contract.Requires( elementType != null );
 			Contract.Requires( length >= 0 );
 			Contract.Requires( initialElements != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == type.MakeArrayType() );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == elementType.MakeArrayType() );
 			return default( TConstruct );
 		}
 
@@ -370,7 +335,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitSetVariable( TContext context, TConstruct variable, TConstruct value )
+		protected override TConstruct EmitSetVariableStatement( TContext context, TConstruct variable, TConstruct value )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( variable != null );
@@ -379,14 +344,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitThrow( TContext context, TConstruct exceptionExpression, Type contextType )
+		protected override TConstruct EmitThrowExpression( TContext context, Type expressionType, TConstruct exceptionExpression )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( exceptionExpression != null );
 			Contract.Requires( typeof( Exception ).IsAssignableFrom( exceptionExpression.ContextType ) );
-			Contract.Requires( contextType != null );
+			Contract.Requires( expressionType != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == contextType );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == expressionType );
 			return default( TConstruct );
 		}
 
@@ -395,16 +360,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( context != null );
 			Contract.Requires( tryExpression != null );
 			Contract.Requires( finallyStatement != null );
-			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == tryExpression.ContextType );
-			return default( TConstruct );
-		}
-
-		protected override TConstruct EmitTryCatchExpression<TException>( TContext context, TConstruct tryExpression, CatchFunc catchExpression )
-		{
-			Contract.Requires( context != null );
-			Contract.Requires( tryExpression != null );
-			Contract.Requires( catchExpression != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == tryExpression.ContextType );
 			return default( TConstruct );

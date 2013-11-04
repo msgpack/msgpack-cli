@@ -23,10 +23,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using MsgPack.Serialization.AbstractSerializers;
-using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
@@ -100,9 +98,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		protected override ILConstruct EmitSequentialStatements( ILEmittingContext context, Type contextType, IEnumerable<ILConstruct> statements )
+		protected override ILConstruct EmitSequentialStatements( ILEmittingContext context, IEnumerable<ILConstruct> statements )
 		{
-			return ILConstruct.Sequence( contextType, statements );
+			return ILConstruct.Sequence( statements );
 		}
 
 		protected override ILConstruct EmitStatementExpression( ILEmittingContext context, ILConstruct statement, ILConstruct contextExpression )
@@ -209,7 +207,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			if ( booleanExpression.ContextType != typeof( bool ) )
 			{
 				throw new ArgumentException(
-					String.Format( CultureInfo.CurrentCulture, "Not expression must be Boolean type, but actual is '{0}'.", booleanExpression.ContextType ),
+					String.Format( CultureInfo.CurrentCulture, "Not expression must be Boolean elementType, but actual is '{0}'.", booleanExpression.ContextType ),
 					"booleanExpression"
 				);
 			}
@@ -271,7 +269,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitGraterThanExpression( ILEmittingContext context, ILConstruct left, ILConstruct right )
+		protected override ILConstruct EmitGreaterThanExpression( ILEmittingContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG
 			Contract.Assert( left.ContextType.IsPrimitive && left.ContextType != typeof( string ) );
@@ -313,7 +311,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitLesserThanExpression( ILEmittingContext context, ILConstruct left, ILConstruct right )
+		protected override ILConstruct EmitLessThanExpression( ILEmittingContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG
 			Contract.Assert( left.ContextType.IsPrimitive && left.ContextType != typeof( string ) );
@@ -356,28 +354,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitDefaultValueExpression( ILEmittingContext context, Type type )
-		{
-			return
-				ILConstruct.Variable(
-					context,
-					type,
-					String.Empty,
-					( il, variable ) =>
-					{
-						if ( type.GetIsValueType() )
-						{
-							variable.LoadValue( il, true );
-							il.EmitInitobj( type );
-						}
-						else
-						{
-							il.EmitLdnull();
-						}
-					}
-				);
-		}
-
 		protected override ILConstruct EmitIncrementExpression( ILEmittingContext context, ILConstruct int32Value )
 		{
 			return
@@ -404,61 +380,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitUncheckedConvertExpression( ILEmittingContext context, Type targetType, ILConstruct value )
-		{
-			Action<TracingILGenerator> conv;
-			if ( !ILEmittingContext.ConversionInstructionMap.TryGetValue( targetType, out conv ) )
-			{
-				MethodInfo op;
-				if ( ( op =
-					value.ContextType
-					.GetMethods( BindingFlags.Public | BindingFlags.Static )
-					.SingleOrDefault( m =>
-						m.Name == "op_Implicit"
-						&& m.ReturnType == targetType
-						&& m.GetParameters().Length == 1
-						&& m.GetParameters()[ 0 ].ParameterType == value.ContextType ) ) != null )
-				{
-					conv = il => il.EmitCall( op );
-				}
-				else if ( ( op =
-					value.ContextType
-					.GetMethods( BindingFlags.Public | BindingFlags.Static )
-					.SingleOrDefault( m =>
-						m.Name == "op_Explicit"
-						&& m.ReturnType == targetType
-						&& m.GetParameters().Length == 1
-						&& m.GetParameters()[ 0 ].ParameterType == value.ContextType ) ) != null )
-				{
-					conv = il => il.EmitCall( op );
-				}
-				else if ( !targetType.GetIsValueType() )
-				{
-					// ReSharper disable ImplicitlyCapturedClosure
-					conv = il => il.EmitIsinst( targetType );
-					// ReSharper restore ImplicitlyCapturedClosure
-				}
-				else
-				{
-					throw new ArgumentException(
-						String.Format( CultureInfo.CurrentCulture, "Cannot cast to '{0}' from  '{1}'.", targetType, value.ContextType ),
-						"targetType"
-					);
-				}
-			}
-
-			return
-				ILConstruct.UnaryOperator(
-					"conv",
-					value,
-					( il, variable ) =>
-					{
-						variable.LoadValue( il, false );
-						conv( il );
-					}
-				);
-		}
-
 		protected override ILConstruct DeclareLocal( ILEmittingContext context, Type type, string name, ILConstruct initExpression )
 		{
 			return
@@ -477,33 +398,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[Obsolete]
-		protected override ILConstruct DeclareLocal( ILEmittingContext context, Type type, string name, ILConstruct initExpression, ExpressionWithMonad expression )
-		{
-			var local =
-				ILConstruct.Variable(
-					context,
-					type,
-					name,
-					( il, variable ) =>
-					{
-						if ( initExpression != null )
-						{
-							initExpression.LoadValue( il, false );
-							variable.StoreValue( il );
-						}
-					}
-				);
-			return ILConstruct.Composite( local, expression( local ) );
-		}
-
 		protected override ILConstruct EmitInvokeVoidMethod( ILEmittingContext context, ILConstruct instance, MethodInfo method, params ILConstruct[] arguments )
 		{
 			return
 				method.ReturnType == typeof( void )
 					? ILConstruct.Invoke( instance, method, arguments )
 					: ILConstruct.Sequence(
-						typeof( void ),
 						new[]
 						{
 							ILConstruct.Invoke( instance, method, arguments ),
@@ -517,16 +417,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.NewObject( constructor, arguments );
 		}
 
-		protected override ILConstruct EmitCreateNewArrayExpression( ILEmittingContext context, Type type, int length, IEnumerable<ILConstruct> initialElements )
+		protected override ILConstruct EmitCreateNewArrayExpression( ILEmittingContext context, Type elementType, int length, IEnumerable<ILConstruct> initialElements )
 		{
 			return
 				ILConstruct.Variable(
 					context,
-					type.MakeArrayType(),
+					elementType.MakeArrayType(),
 					"array",
 					( il, variable ) =>
 					{
-						il.EmitNewarr( type, length );
+						il.EmitNewarr( elementType, length );
 						variable.StoreValue( il );
 						var index = 0;
 						foreach ( var initialElement in initialElements )
@@ -534,7 +434,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							variable.LoadValue( il, false );
 							this.MakeInt32Literal( context, index ).LoadValue( il, false );
 							initialElement.LoadValue( il, false );
-							il.EmitStelem( type );
+							il.EmitStelem( elementType );
 							index++;
 						}
 					}
@@ -574,17 +474,17 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.StoreField( instance, field, value );
 		}
 
-		protected override ILConstruct EmitSetVariable( ILEmittingContext context, ILConstruct variable, ILConstruct value )
+		protected override ILConstruct EmitSetVariableStatement( ILEmittingContext context, ILConstruct variable, ILConstruct value )
 		{
 			return ILConstruct.StoreLocal( variable, value );
 		}
 
-		protected override ILConstruct EmitThrow( ILEmittingContext context, ILConstruct exceptionExpression, Type contextType )
+		protected override ILConstruct EmitThrowExpression( ILEmittingContext context, Type expressionType, ILConstruct exceptionExpression )
 		{
 			return
 				ILConstruct.Instruction(
 					"throw",
-					contextType,
+					expressionType,
 					true,
 					il =>
 					{
@@ -607,25 +507,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 						tryExpression.Evaluate( il );
 						il.BeginFinallyBlock();
 						finallyStatement.Evaluate( il );
-						il.EndExceptionBlock();
-					}
-				);
-		}
-
-		protected override ILConstruct EmitTryCatchExpression<TException>( ILEmittingContext context, ILConstruct tryExpression, CatchFunc catchExpression )
-		{
-			var nop = ILConstruct.Nop( typeof( TException ) );
-			return
-				ILConstruct.Instruction(
-					"try-catch",
-					tryExpression.ContextType,
-					false,
-					il =>
-					{
-						il.BeginExceptionBlock();
-						tryExpression.Evaluate( il );
-						il.BeginCatchBlock( typeof( TException ) );
-						catchExpression( nop );
 						il.EndExceptionBlock();
 					}
 				);
@@ -666,7 +547,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							Metadata._String.op_Equality,
 							target,
 							this.MakeStringLiteral( context, @case.Key )
-							),
+						),
 						@case.Value,
 						@else
 					);
@@ -689,7 +570,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				this.EmitSequentialStatements(
 					context,
-					typeof( void ),
 					i,
 					ILConstruct.Instruction(
 						"for",

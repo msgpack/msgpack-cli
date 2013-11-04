@@ -68,7 +68,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 				if ( entries[ source ].Contract.Id < destination )
 				{
-					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID '{0}' is duplicated in the '{1}' type.", entries[ source ].Contract.Id, typeof( TObject ) ) );
+					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID '{0}' is duplicated in the '{1}' elementType.", entries[ source ].Contract.Id, typeof( TObject ) ) );
 				}
 
 				while ( entries[ source ].Contract.Id > destination )
@@ -170,7 +170,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						throw SerializationExceptions.NewValueTypeCannotBeNull( serializingMember.Member.ToString(), itemType, typeof( TObject ) );
 					}
 
-					bool isReadOnly = false;
+					bool isReadOnly;
 					FieldInfo asField;
 					PropertyInfo asProperty;
 					if( ( asField = serializingMember.Member as FieldInfo ) != null )
@@ -180,6 +180,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					else
 					{
 						asProperty = serializingMember.Member as PropertyInfo;
+#if DEBUG
+						Contract.Assert( asProperty != null, serializingMember.Member.ToString() );
+#endif
 						isReadOnly = asProperty.GetSetMethod( false ) == null;
 					}
 
@@ -368,7 +371,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.EmitSequentialStatements(
 							context,
-							typeof( TObject ),
 							result,
 							this.EmitConditionalExpression(
 								context,
@@ -391,7 +393,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			// TODO: Supports ExtensionObject like round-tripping.
 			return
 				this.EmitSequentialStatements(
-					context, typeof( TObject ), this.EmitObjectUnpackFromArrayCore( context, result, entries )
+					context, this.EmitObjectUnpackFromArrayCore( context, result, entries )
 				);
 		}
 
@@ -435,13 +437,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 						entries[ count ].Member.GetMemberValueType(),
 						entries[ count ].Contract.NilImplication,
 						context.Unpacker,
-						result,
 						this.MakeInt32Literal( context, count ),
 						this.MakeStringLiteral( context, entries[ count ].Member.ToString() ),
 						itemsCount,
 						unpacked,
-						( unpacking, ni, value ) =>
-							this.EmitSetMemberValue( context, unpacking, entries[ count ].Member, value )
+						unpackedItem =>
+							this.EmitSetMemberValueStatement( context, result, entries[ count ].Member, unpackedItem )
 					);
 			}
 		}
@@ -452,7 +453,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			return
 				this.EmitSequentialStatements(
-					context, typeof( TObject ), this.EmitObjectUnpackFromMapCore( context, result, entries )
+					context, this.EmitObjectUnpackFromMapCore( context, result, entries )
 				);
 		}
 
@@ -486,13 +487,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 								typeof( string ),
 								context.DictionaryKeyNilImplication,
 								context.Unpacker,
-								result,
 								loopContext.Counter,
 								this.MakeStringLiteral( context, "MemberName" ),
 								null,
 								null,
-								( _1, _2, unpackedKey ) =>
-									this.EmitSetVariable( context, key, unpackedKey )
+								unpackedKey =>
+									this.EmitSetVariableStatement( context, key, unpackedKey )
 							);
 						var assigns =
 							this.EmitStringSwitchStatement(
@@ -506,13 +506,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 										entry.Member.GetMemberValueType(),
 										entry.Contract.NilImplication,
 										context.Unpacker,
-										result,
 										loopContext.Counter,
 										this.MakeStringLiteral( context, entry.Member.ToString() ),
 										null,
 										null,
-										( _1, _2, value ) =>
-											this.EmitSetMemberValue( context, result, entry.Member, value )
+										unpackedValue =>
+											this.EmitSetMemberValueStatement( context, result, entry.Member, unpackedValue )
 									)
 								)
 							);

@@ -112,31 +112,28 @@ namespace MsgPack.Serialization.AbstractSerializers
 					instanceType = typeof( TObject );
 				}
 
-				if ( construct == null )
-				{
-					/*
-					 *	if (!unpacker.IsArrayHeader)
-					 *	{
-					 *		throw SerializationExceptions.NewIsNotArrayHeader();
-					 *	}
-					 *	int capacity = ITEMS_COUNT(unpacker);
-					 *	TCollection collection = new ...;
-					 *	this.UnpackToCore(unpacker, array);
-					 *	return collection;
-					 */
+				/*
+				 *	if (!unpacker.IsArrayHeader)
+				 *	{
+				 *		throw SerializationExceptions.NewIsNotArrayHeader();
+				 *	}
+				 *	int capacity = ITEMS_COUNT(unpacker);
+				 *	TCollection collection = new ...;
+				 *	this.UnpackToCore(unpacker, array);
+				 *	return collection;
+				 */
 					
-					construct =
-						this.EmitSequentialStatements( 
+				construct =
+					this.EmitSequentialStatements( 
+						context,
+						this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker ),
+						this.EmitUnpackCollectionWithUnpackToExpression(
 							context,
-							this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker ),
-							this.EmitUnpackCollectionWithUnpackToExpression(
-								context,
-								GetCollectionConstructor( instanceType ),
-								this.EmitGetItemsCountExpression( context, context.Unpacker),
-								context.Unpacker
-							)
-						);
-				}
+							GetCollectionConstructor( instanceType ),
+							this.EmitGetItemsCountExpression( context, context.Unpacker),
+							context.Unpacker
+						)
+					);
 			}
 			finally
 			{
@@ -213,17 +210,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 					traits.ElementType,
 					context.CollectionItemNilImplication,
 					unpacker,
-					context.UnpackToTarget,
 					forLoopContext.Counter,
 					this.EmitInvariantStringFormat( context, "item{0}", forLoopContext.Counter ),
 					null,
 					null,
-					( unpacking, nilImplication, unpackedItem ) =>
+					unpackedItem =>
 					this.EmitAppendCollectionItem(
 						context,
 						traits,
-						traits.ElementType,
-						unpacking,
+						context.UnpackToTarget,
 						unpackedItem
 					)
 				);
@@ -238,7 +233,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
 					),
-					this.EmitThrow(
+					this.EmitThrowExpression(
 						context,
 						typeof( Unpacker ),
 						SerializationExceptions.NewIsNotArrayHeaderMethod
@@ -250,7 +245,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private TConstruct EmitAppendCollectionItem(
 			TContext context,
 			CollectionTraits traits,
-			Type itemType,
 			TConstruct collection,
 			TConstruct unpackedItem
 		)

@@ -198,16 +198,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 								unpackedNullableItemType,
 								context.TupleItemNilImplication,
 								context.Unpacker,
-								null,
 								this.MakeInt32Literal( context, i ),
 								this.MakeStringLiteral( context, "Item" + i.ToString( CultureInfo.InvariantCulture ) ),
 								null,
 								null,
-								( ctx, ni, val ) =>
-									this.EmitSetVariable(
+								unpackedItem =>
+									this.EmitSetVariableStatement(
 										context,
 										unpackedItems[ i ],
-										val
+										unpackedItem
 									)
 							)
 					);
@@ -255,7 +254,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.ItemsCount ),
 						this.MakeInt64Literal( context, cardinarity )
 					),
-					this.EmitThrow(
+					this.EmitThrowExpression(
 						context,
 						typeof( Unpacker ),
 						SerializationExceptions.NewIsNotArrayHeaderMethod

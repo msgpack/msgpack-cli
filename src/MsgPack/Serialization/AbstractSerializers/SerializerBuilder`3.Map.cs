@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections;
-using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -132,32 +131,29 @@ namespace MsgPack.Serialization.AbstractSerializers
 					instanceType = typeof( TObject );
 				}
 
-				if ( construct == null )
-				{
-					/*
-					 *	if (!unpacker.IsMapHeader)
-					 *	{
-					 *		throw SerializationExceptions.NewIsNotMapHeader();
-					 *	}
-					 *	int capacity = ITEMS_COUNT(unpacker);
-					 *	
-					 *	TDictionary<TKey, TValue> dictionary = new ...;
-					 *	this.UnpackToCore(unpacker, dictionary);
-					 *	return dictionary;
-					 */
+				/*
+				 *	if (!unpacker.IsMapHeader)
+				 *	{
+				 *		throw SerializationExceptions.NewIsNotMapHeader();
+				 *	}
+				 *	int capacity = ITEMS_COUNT(unpacker);
+				 *	
+				 *	TDictionary<TKey, TValue> dictionary = new ...;
+				 *	this.UnpackToCore(unpacker, dictionary);
+				 *	return dictionary;
+				*/
 
-					construct =
-						this.EmitSequentialStatements(
+				construct =
+					this.EmitSequentialStatements(
+						context,
+						this.EmitCheckIsMapHeaderExpression( context, context.Unpacker ),
+						this.EmitUnpackCollectionWithUnpackToExpression(
 							context,
-							this.EmitCheckIsMapHeaderExpression( context, context.Unpacker ),
-							this.EmitUnpackCollectionWithUnpackToExpression(
-								context,
-								GetCollectionConstructor( instanceType ),
-								this.EmitGetItemsCountExpression( context, context.Unpacker ),
-								context.Unpacker
-							)
-						);
-				}
+							GetCollectionConstructor( instanceType ),
+							this.EmitGetItemsCountExpression( context, context.Unpacker ),
+							context.Unpacker
+						)
+					);
 			}
 			finally
 			{
@@ -239,6 +235,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			var key = this.DeclareLocal( context, keyType, "key", null );
 			var value = this.DeclareLocal( context, valueType, "value", null );
+// ReSharper disable ImplicitlyCapturedClosure
 			return
 				this.EmitSequentialStatements(
 					context,
@@ -249,16 +246,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 						keyType,
 						context.DictionaryKeyNilImplication,
 						unpacker,
-						context.UnpackToTarget,
 						forLoopContext.Counter,
 						this.EmitInvariantStringFormat( context, "key{0}", forLoopContext.Counter ),
 						null,
 						null,
-						( ctx, ni, val ) => 
-							this.EmitSetVariable( 
-								context, 
+						unpackedKey =>
+							this.EmitSetVariableStatement(
+								context,
 								key,
-								val
+								unpackedKey
 							)
 					),
 					this.EmitUnpackItemValueExpression(
@@ -266,16 +262,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 						valueType,
 						context.CollectionItemNilImplication,
 						unpacker,
-						context.UnpackToTarget,
 						forLoopContext.Counter,
 						this.EmitInvariantStringFormat( context, "value{0}", forLoopContext.Counter ),
 						null,
 						null,
-						( ctx, ni, val ) => 
-							this.EmitSetVariable( 
-								context, 
-								value, 
-								val
+						unpackedValue =>
+							this.EmitSetVariableStatement(
+								context,
+								value,
+								unpackedValue
 							)
 					),
 					this.EmitAppendDictionaryItem(
@@ -289,6 +284,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						traits.ElementType == typeof( DictionaryEntry )
 					)
 				);
+// ReSharper restore ImplicitlyCapturedClosure
 		}
 
 		private TConstruct EmitCheckIsMapHeaderExpression( TContext context, TConstruct unpacker )
@@ -300,7 +296,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
 					),
-					this.EmitThrow(
+					this.EmitThrowExpression(
 						context,
 						typeof( Unpacker ),
 						SerializationExceptions.NewIsNotMapHeaderMethod
@@ -325,7 +321,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
-		private static void GetDictionaryKeyValueType( Type elementType, out Type keyType , out Type valueType )
+		private static void GetDictionaryKeyValueType( Type elementType, out Type keyType, out Type valueType )
 		{
 			if ( elementType == typeof( DictionaryEntry ) )
 			{
