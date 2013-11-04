@@ -82,6 +82,10 @@ namespace MsgPack.Serialization
 				{
 					DefaultSerializationMethodGeneratorManager.DumpTo();
 				}
+				catch ( NotSupportedException ex )
+				{
+					Console.Error.WriteLine( ex );
+				}
 				finally
 				{
 					DefaultSerializationMethodGeneratorManager.Refresh();
