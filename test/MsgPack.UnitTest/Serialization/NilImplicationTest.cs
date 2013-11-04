@@ -132,9 +132,6 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			{
 				Assert.Throws<TException>( () => seraizlier.Pack( buffer, inputFactory == null ? new T() : inputFactory() ) );
-
-				buffer.Position = 0;
-				Assert.Throws<TException>( () => seraizlier.Unpack( buffer ) );
 			}
 		}
 
@@ -488,13 +485,13 @@ namespace MsgPack.Serialization
 		{
 			TestUnpackFail<NilImplicationTestTargetForReferenceType, SerializationException>(
 				SerializationMethod.Map,
-				() => 
+				() =>
 					new byte[] { 0x83 }
-					.Concat( new []{ ( byte )( 0xA0 + ( "MemberDefault".Length ) ) } )
+					.Concat( new[] { ( byte )( 0xA0 + ( "MemberDefault".Length ) ) } )
 					.Concat( "MemberDefault".ToCharArray().Select( c => ( byte )c ) ).Concat( new byte[] { 0xC0 } )
-					.Concat( new [] { ( byte )( 0xA0 + ( "Null".Length ) ) } )
+					.Concat( new[] { ( byte )( 0xA0 + ( "Null".Length ) ) } )
 					.Concat( "Null".ToCharArray().Select( c => ( byte )c ) ).Concat( new byte[] { 0xC0 } )
-					.Concat( new [] { ( byte )( 0xA0 + ( "Prohibit".Length ) ) } )
+					.Concat( new[] { ( byte )( 0xA0 + ( "Prohibit".Length ) ) } )
 					.Concat( "Prohibit".ToCharArray().Select( c => ( byte )c ) ).Concat( new byte[] { 0xC0 } )
 					.ToArray()
 			);
@@ -535,7 +532,7 @@ namespace MsgPack.Serialization
 				const string valueOfValue3 = "345";
 				using ( var packer = Packer.Create( buffer, false ) )
 				{
-					packer.PackMapHeader( 1 );
+					packer.PackMapHeader( 3 );
 					packer.PackString( "Value1" );
 					packer.PackString( valueOfValue1 );
 					packer.PackString( "Value2" );
