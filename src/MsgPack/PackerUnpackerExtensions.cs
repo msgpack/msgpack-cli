@@ -176,27 +176,8 @@ namespace MsgPack
 			}
 
 			var type = value.GetType();
-			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
-			var packerParameter = Expression.Parameter( typeof( Packer ), "packer" );
-			var valueParameter = Expression.Parameter( typeof( object ), "value" );
 
-			Expression.Lambda<Action<SerializationContext, Packer, object>>(
-				Expression.Call(
-					Expression.Call(
-						typeof( MessagePackSerializer ).GetMethod( "Create", _messagePackSerializer_Create_ParameterTypes ).MakeGenericMethod( type ),
-						contextParameter
-					),
-					typeof( MessagePackSerializer<> ).MakeGenericType( type ).GetMethod( "PackTo" ),
-					packerParameter,
-					Expression.Convert(
-						valueParameter,
-						type
-					)
-				),
-				contextParameter,
-				packerParameter,
-				valueParameter
-			).Compile()(context, source, value );
+			context.GetSerializer( type ).PackTo( source, value );
 		}
 
 		/// <summary>
