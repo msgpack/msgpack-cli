@@ -180,6 +180,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitSequentialStatements(
 						context,
 						typeof( void ),
+						this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker ),
 						count,
 						this.EmitStoreVariableStatement(
 							context,

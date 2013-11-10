@@ -197,6 +197,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitSequentialStatements(
 						context,
 						typeof( void ),
+						this.EmitCheckIsMapHeaderExpression( context, context.Unpacker ),
 						itemsCount,
 						this.EmitStoreVariableStatement(
 							context,

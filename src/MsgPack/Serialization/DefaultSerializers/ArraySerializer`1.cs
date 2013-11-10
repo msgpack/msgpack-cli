@@ -54,6 +54,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T[] collection )
 		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
 			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
 		}
 
