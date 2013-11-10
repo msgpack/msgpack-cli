@@ -18,6 +18,8 @@
 //
 #endregion -- License Terms --
 
+// #define HEAVY_TEST
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -129,7 +131,9 @@ namespace MsgPack
 
 		[Test]
 		[Timeout( 3000000 )]
-		[Explicit]
+#if !HEAVY_TEST
+		[Ignore]
+#endif
 		public void TestStringMedium()
 		{
 			var sw = Stopwatch.StartNew();
@@ -155,7 +159,9 @@ namespace MsgPack
 #if !NETFX_35
 		[Test]
 		[Timeout( 3000000 )]
-		[Explicit]
+#if !HEAVY_TEST
+		[Ignore]
+#endif
 		public void TestStringLarge()
 		{
 			var sw = Stopwatch.StartNew();
