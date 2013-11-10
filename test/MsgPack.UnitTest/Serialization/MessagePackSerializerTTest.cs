@@ -48,9 +48,9 @@ namespace MsgPack.Serialization
 		private static MessagePackSerializer<T> CreateTarget<T>()
 		{
 #if !NETFX_CORE
-			return new AutoMessagePackSerializer<T>( new SerializationContext(), c => new MapEmittingSerializerBuilder<T>( c ) );
+			return new AutoMessagePackSerializer<T>( new SerializationContext(), new AssemblyBuilderSerializerBuilder<T>() );
 #else
-			return new AutoMessagePackSerializer<T>( new SerializationContext(), c => new ExpressionSerializerBuilder<T>( c ) );
+			return new AutoMessagePackSerializer<T>( new SerializationContext(), new ExpressionTreeSerializerBuilder<T>() );
 #endif
 		}
 
