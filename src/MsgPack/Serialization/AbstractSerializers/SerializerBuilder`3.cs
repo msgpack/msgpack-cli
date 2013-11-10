@@ -20,16 +20,17 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-
 using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
 	internal interface ISerializerCodeGenerator
 	{
-		void BuildSerializerCode( SerializationContext context );
+		void BuildSerializerCode( ISerializerCodeGenerationContext context );
+		ISerializerCodeGenerationContext CreateGenerationContextForCodeGeneration( SerializationContext context );
 	}
 
 	internal interface ISerializerInstanceGenerator<TObject>
@@ -69,7 +70,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context )
 		{
-			if( typeof( TObject ).IsArray )
+			if ( typeof( TObject ).IsArray )
 			{
 				return
 					Activator.CreateInstance(
@@ -107,19 +108,33 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		protected abstract TContext CreateGenerationContextForSerializerCreation( SerializationContext context );
 
-		public void BuildSerializerCode( SerializationContext context )
+
+		public ISerializerCodeGenerationContext CreateGenerationContextForCodeGeneration( SerializationContext context )
 		{
-			var codeGenerationContext = this.CreateGenerationContextForCodeGeneration( context );
-			this.BuildSerializer( codeGenerationContext );
-			this.BuildSerializerCodeCore( codeGenerationContext );
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			return this.CreateGenerationContextForCodeGenerationCore( context );
 		}
 
-		protected virtual TContext CreateGenerationContextForCodeGeneration( SerializationContext context )
+		protected virtual ISerializerCodeGenerationContext CreateGenerationContextForCodeGenerationCore( SerializationContext context )
 		{
 			throw new NotSupportedException();
 		}
 
-		protected virtual void BuildSerializerCodeCore( TContext context )
+		public void BuildSerializerCode( ISerializerCodeGenerationContext context )
+		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			this.BuildSerializerCodeCore( context );
+		}
+
+		protected virtual void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
 		{
 			throw new NotSupportedException();
 		}

@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -108,7 +109,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public abstract MessagePackSerializer<T> CreateInstance<T>( SerializationContext context );
+		public MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
+		{
+			return this.CreateConstructor<T>()( context );
+		}
+
+		public abstract Func<SerializationContext,MessagePackSerializer<T>> CreateConstructor<T>();
 
 		/// <summary>
 		///		Regisgter using <see cref="MessagePackSerializer{T}"/> target type to the current emitting session.
@@ -144,10 +150,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return null;
 		}
 
-		public override MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
+		public override Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
-			Contract.Requires( context != null );
-			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+			Contract.Ensures( Contract.Result<Func<SerializationContext, MessagePackSerializer<T>>>() != null );
 			return null;
 		}
 

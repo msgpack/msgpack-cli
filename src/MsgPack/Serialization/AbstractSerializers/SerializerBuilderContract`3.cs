@@ -45,14 +45,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TContext );
 		}
 
-		protected override TContext CreateGenerationContextForCodeGeneration( SerializationContext context )
+		protected override ISerializerCodeGenerationContext CreateGenerationContextForCodeGenerationCore( SerializationContext context )
 		{
 			Contract.Requires( context != null );
 			Contract.Ensures( Contract.Result<TContext>() != null );
-			return default( TContext );
+			return default( ISerializerCodeGenerationContext );
 		}
 
-		protected override void BuildSerializerCodeCore( TContext context )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
 		{
 			Contract.Requires( context != null );
 		}

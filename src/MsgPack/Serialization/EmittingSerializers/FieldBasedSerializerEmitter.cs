@@ -184,36 +184,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Creates the serializer type built now and returns its new instance.
-		/// </summary>
-		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
-		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
-		/// <returns>
-		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
-		///		This value will not be <c>null</c>.
-		/// </returns>
-		public sealed override MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
-		{
-			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
-			return
-				Expression.Lambda<Func<SerializationContext, MessagePackSerializer<T>>>(
-					Expression.New(
-						this.Create(),
-						contextParameter
-					),
-					contextParameter
-				).Compile()( context );
-		}
-
-
-		/// <summary>
 		///		Creates the serializer type built now and returns its constructor.
 		/// </summary>
 		/// <returns>
 		///		Newly built <see cref="MessagePackSerializer{T}"/> type constructor.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		private ConstructorInfo Create()
+		public sealed override Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
 			if ( !this._typeBuilder.IsCreated() )
 			{
@@ -280,7 +257,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 			}
 
-			return this._typeBuilder.CreateType().GetConstructor( _constructorParameterTypes );
+			var ctor = this._typeBuilder.CreateType().GetConstructor( _constructorParameterTypes );
+			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
+			return
+				Expression.Lambda<Func<SerializationContext, MessagePackSerializer<T>>>(
+					Expression.New(
+						ctor,
+						contextParameter
+					),
+					contextParameter
+				).Compile();
 		}
 
 		/// <summary>

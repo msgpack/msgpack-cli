@@ -26,6 +26,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 
 namespace MsgPack.Serialization
@@ -195,14 +196,25 @@ namespace MsgPack.Serialization
 			context.GeneratorOption = SerializationMethodGeneratorOption.CanDump;
 			context.SerializationMethod = this._method;
 
-			// AssemblyBuilder cannot be debugged because no PDB files (and 'dummy' source files to step).
-			DefaultSerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
+			ISerializerCodeGenerationContext generationContext = null;
 
-			var generatorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
-
-			foreach( var targetType in this._targetTypes )
+			foreach ( var targetType in this._targetTypes )
 			{
-				( Activator.CreateInstance( typeof( Builder<> ).MakeGenericType( targetType) ) as Builder ).GenerateSerializerTo( context, generatorManager );
+				var builder =
+					Activator.CreateInstance(
+						typeof( AssemblyBuilderSerializerBuilder<> ).MakeGenericType( targetType ), assemblyBuilder 
+					) as ISerializerCodeGenerator;
+
+#if DEBUG
+				Contract.Assert( builder != null );
+#endif
+
+				if( generationContext == null )
+				{
+					generationContext = builder.CreateGenerationContextForCodeGeneration( context );
+				}
+
+				builder.BuildSerializerCode( generationContext );
 			}
 
 			assemblyBuilder.Save( this._assemblyName.Name + ".dll" );

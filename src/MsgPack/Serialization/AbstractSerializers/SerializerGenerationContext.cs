@@ -24,7 +24,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 {
 	internal abstract class SerializerGenerationContext<TConstruct>
 	{
-		public Version Version { get; set; }
 		internal SerializationContext SerializationContext { get; private set; }
 		internal TConstruct PackingTarget { get; private set; }
 		internal TConstruct Packer { get; private set; }
@@ -51,8 +50,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 	internal interface ISerializerCodeGenerationContext
 	{
+#warning TODO: Versioning
 		Version Version { get; set; }
-		string AssemblyName { get; set; }
-		string OutputDirectory { get; set; }
 	}
 }

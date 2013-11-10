@@ -115,17 +115,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public override MessagePackSerializer<T> CreateInstance<T>( SerializationContext context )
+		public override Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
-			var packTo = this._packToMethod.CreateDelegate( typeof( Action<SerializationContext, Packer, T> ) ) as Action<SerializationContext, Packer, T>;
-			var unpackFrom = this._unpackFromMethod.CreateDelegate( typeof( Func<SerializationContext, Unpacker, T> ) ) as Func<SerializationContext, Unpacker, T>;
+			var packTo =
+				this._packToMethod.CreateDelegate( typeof( Action<SerializationContext, Packer, T> ) ) as
+				Action<SerializationContext, Packer, T>;
+			var unpackFrom =
+				this._unpackFromMethod.CreateDelegate( typeof( Func<SerializationContext, Unpacker, T> ) ) as
+				Func<SerializationContext, Unpacker, T>;
 			var unpackTo = default( Action<SerializationContext, Unpacker, T> );
+
 			if ( this._unpackToMethod != null )
 			{
-				unpackTo = this._unpackToMethod.CreateDelegate( typeof( Action<SerializationContext, Unpacker, T> ) ) as Action<SerializationContext, Unpacker, T>;
+				unpackTo =
+					this._unpackToMethod.CreateDelegate( typeof( Action<SerializationContext, Unpacker, T> ) ) as
+					Action<SerializationContext, Unpacker, T>;
 			}
 
-			return new CallbackMessagePackSerializer<T>( context, packTo, unpackFrom, unpackTo );
+			return context => new CallbackMessagePackSerializer<T>( context, packTo, unpackFrom, unpackTo );
 		}
 
 		/// <summary>

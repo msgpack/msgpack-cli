@@ -20,6 +20,7 @@
 
 using System;
 using System.Reflection.Emit;
+using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
@@ -37,8 +38,28 @@ namespace MsgPack.Serialization.EmittingSerializers
 			)
 		{
 		}
+	}
+
+	internal class AssemblyBuilderCodeGenerationContext : ISerializerCodeGenerationContext
+	{
+		public Version Version { get; set; }
+
+		private readonly SerializationContext _context;
+		private readonly SerializationMethodGeneratorManager _generatorManager;
+
+		public AssemblyBuilderCodeGenerationContext( SerializationContext context, SerializationMethodGeneratorManager generatorManager )
+		{
+			this._context = context;
+			this._generatorManager = generatorManager;
+		}
+
+		public AssemblyBuilderEmittingContext CreateEmittingContext( Type type, EmitterFlavor emitterFlavor )
+		{
+			return new AssemblyBuilderEmittingContext( this._context, type, this._generatorManager.CreateEmitter( type,emitterFlavor ) );
+		}
 
 	}
+
 
 	internal class AssemblyBuilderSerializerBuilder<TObject> : ILEmittingSerializerBuilder<AssemblyBuilderEmittingContext, TObject>
 	{
@@ -80,7 +101,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override AssemblyBuilderEmittingContext CreateGenerationContextForCodeGeneration( SerializationContext context )
+		protected override ISerializerCodeGenerationContext CreateGenerationContextForCodeGenerationCore( SerializationContext context )
 		{
 			if ( this._predefinedAssemblyBuilder == null )
 			{
@@ -91,17 +112,20 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			var generatorManager = SerializationMethodGeneratorManager.Get( this._predefinedAssemblyBuilder );
 
-			return
-				new AssemblyBuilderEmittingContext(
-					context,
-					typeof( TObject ),
-					generatorManager.CreateEmitter( typeof( TObject ), EmitterFlavor.FieldBased )
-				);
+			return new AssemblyBuilderCodeGenerationContext( context, generatorManager );
 		}
 
-		protected override void BuildSerializerCodeCore( AssemblyBuilderEmittingContext context )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
 		{
-			this.BuildSerializer( context );
+			var asAssemblyBuilderCodeGenerationContext = context as AssemblyBuilderCodeGenerationContext;
+			var emittingContext =
+				asAssemblyBuilderCodeGenerationContext.CreateEmittingContext(
+					typeof( TObject ), EmitterFlavor.FieldBased
+				);
+
+			this.BuildSerializer( emittingContext );
+			// Finish type creation, and discard returned ctor.
+			emittingContext.Emitter.CreateConstructor<TObject>();
 		}
 	}
 }
