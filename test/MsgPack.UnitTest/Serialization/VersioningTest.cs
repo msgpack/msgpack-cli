@@ -206,7 +206,7 @@ namespace MsgPack.Serialization
 			{
 
 				var packer = Packer.Create( stream, false );
-				packer.PackMapHeader( 4 );
+				packer.PackMapHeader( 3 );
 				packer.Pack( "Field1" );
 				packer.Pack( 1 );
 				packer.Pack( "Field2" );
