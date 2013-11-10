@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
@@ -28,5 +29,41 @@ namespace MsgPack.Serialization.Metadata
 	{
 		public static readonly MethodInfo MoveNext = FromExpression.ToMethod( ( IEnumerator enumerator ) => enumerator.MoveNext() );
 		public static readonly PropertyInfo Current = FromExpression.ToProperty( ( IEnumerator enumerator ) => enumerator.Current );
+
+		public static PropertyInfo FindEnumeratorCurrentProperty( Type enumeratorType, CollectionTraits traits )
+		{
+			PropertyInfo currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" );
+
+			if ( currentProperty == null )
+			{
+				if ( enumeratorType == typeof( IDictionaryEnumerator ) )
+				{
+					currentProperty = Metadata._IDictionaryEnumerator.Entry;
+				}
+				else if ( enumeratorType.IsInterface )
+				{
+					if ( enumeratorType.IsGenericType && enumeratorType.GetGenericTypeDefinition() == typeof( IEnumerator<> ) )
+					{
+						currentProperty = typeof( IEnumerator<> ).MakeGenericType( traits.ElementType ).GetProperty( "Current" );
+					}
+					else
+					{
+						currentProperty = Metadata._IEnumerator.Current;
+					}
+				}
+			}
+			return currentProperty;
+		}
+
+		public static MethodInfo FindEnumeratorMoveNextMethod( Type enumeratorType )
+		{
+			MethodInfo moveNextMethod = enumeratorType.GetMethod( "MoveNext", Type.EmptyTypes );
+
+			if ( moveNextMethod == null )
+			{
+				moveNextMethod = Metadata._IEnumerator.MoveNext;
+			}
+			return moveNextMethod;
+		}
 	}
 }

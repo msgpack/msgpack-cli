@@ -145,7 +145,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.BuildObjectPackTo( context, entries );
 			}
 
-			if ( typeof( IPackable ).IsAssignableFrom( typeof( TObject ) ) )
+			if ( typeof( IUnpackable ).IsAssignableFrom( typeof( TObject ) ) )
 			{
 				this.BuildIUnpackableUnpackFrom( context );
 			}
@@ -206,7 +206,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context.PackingTarget,
 						typeof( TObject ).GetInterfaceMap( typeof( IPackable ) ).TargetMethods.Single(),
 						context.Packer,
-						 this.MakeNullLiteral( context )
+						this.MakeNullLiteral( context, typeof( PackingOptions ) )
 					);
 			}
 			finally
@@ -224,6 +224,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				construct =
 					this.EmitSequentialStatements(
 						context,
+						typeof( void ),
 						context.SerializationContext.SerializationMethod == SerializationMethod.Array
 						? this.BuildObjectPackToWithArray( context, entries )
 						: this.BuildObjectPackToWithMap( context, entries )
@@ -307,32 +308,53 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct construct = null;
 			try
 			{
-				var result =
-					this.DeclareLocal(
+				construct =
+					this.EmitSequentialStatements(
 						context,
 						typeof( TObject ),
-						"result",
-						this.EmitCreateNewObjectExpression(
-							context,
-							GetDefaultConstructor( typeof( TObject ) )
-						)
-					);
-				construct =
-					this.EmitStatementExpression(
-						context,
-						this.EmitInvokeVoidMethod(
-							context,
-							result,
-							typeof( TObject ).GetInterfaceMap( typeof( IUnpackable ) ).TargetMethods.Single(),
-							context.Unpacker
-						),
-						result
+						this.BuildIUnpackableUnpackFromCore( context )
 					);
 			}
 			finally
 			{
 				this.EndUnpackFromMethod( context, construct );
 			}
+		}
+
+		private IEnumerable<TConstruct> BuildIUnpackableUnpackFromCore( TContext context )
+		{
+			var result =
+				this.DeclareLocal(
+					context,
+					typeof( TObject ),
+					"result"
+				);
+
+			yield return result;
+
+			if( !typeof(TObject).GetIsValueType())
+			{
+				yield return 
+					this.EmitStoreVariableStatement( 
+						context,
+						result,
+						this.EmitCreateNewObjectExpression(
+							context,
+							null, // reference type.
+							GetDefaultConstructor( typeof( TObject ) )
+						)
+					);
+			}
+
+			yield return 
+				this.EmitInvokeVoidMethod(
+					context,
+					result,
+					typeof( TObject ).GetInterfaceMap( typeof( IUnpackable ) ).TargetMethods.Single(),
+					context.Unpacker
+				);
+
+			yield return this.EmitLoadVariableExpression( context, result );
 		}
 
 		private void BuildObjectUnpackFrom( TContext context, SerializingMember[] entries )
@@ -356,30 +378,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct construct = null;
 			try
 			{
-				var result =
-					this.DeclareLocal(
+				construct =
+					this.EmitSequentialStatements(
 						context,
 						typeof( TObject ),
-						"result",
-						this.EmitCreateNewObjectExpression(
-							context,
-							GetDefaultConstructor( typeof( TObject ) )
-						)
-					);
-				construct =
-					this.EmitStatementExpression(
-						context,
-						this.EmitSequentialStatements(
-							context,
-							result,
-							this.EmitConditionalExpression(
-								context,
-								this.EmitGetPropretyExpression( context, context.Unpacker, Metadata._Unpacker.IsArrayHeader ),
-								this.EmitObjectUnpackFromArray( context, result, entries ),
-								this.EmitObjectUnpackFromMap( context, result, entries )
-							)
-						),
-						result
+						this.BuildObjectUnpackFromCore( context, entries )
 					);
 			}
 			finally
@@ -388,12 +391,48 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
+		private IEnumerable<TConstruct> BuildObjectUnpackFromCore(TContext context, IList<SerializingMember> entries )
+		{
+			var result =
+				this.DeclareLocal(
+					context,
+					typeof( TObject ),
+					"result"
+				);
+			yield return result;
+			if( !typeof( TObject ).GetIsValueType() )
+			{
+				yield return 
+					this.EmitStoreVariableStatement(
+						context,
+						result,
+						this.EmitCreateNewObjectExpression(
+							context,
+							null, // reference type
+							GetDefaultConstructor( typeof( TObject ) )
+						)
+					);
+			}
+
+			yield return
+				this.EmitConditionalExpression(
+					context,
+					this.EmitGetPropretyExpression( context, context.Unpacker, Metadata._Unpacker.IsArrayHeader ),
+					this.EmitObjectUnpackFromArray( context, result, entries ),
+					this.EmitObjectUnpackFromMap( context, result, entries )
+				);
+
+			yield return this.EmitLoadVariableExpression( context, result );
+		}
+
 		private TConstruct EmitObjectUnpackFromArray( TContext context, TConstruct result, IList<SerializingMember> entries )
 		{
 			// TODO: Supports ExtensionObject like round-tripping.
 			return
 				this.EmitSequentialStatements(
-					context, this.EmitObjectUnpackFromArrayCore( context, result, entries )
+					context, 
+					typeof( void ),
+					this.EmitObjectUnpackFromArrayCore( context, result, entries )
 				);
 		}
 
@@ -414,8 +453,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.DeclareLocal(
 					context,
 					typeof( int ),
-					"unpacked",
-					null
+					"unpacked"
 				);
 
 			yield return unpacked;
@@ -424,26 +462,47 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.DeclareLocal(
 					context,
 					typeof( int ),
-					"itemsCount",
-					this.EmitGetItemsCountExpression( context, context.Unpacker )
+					"itemsCount"
 				);
 			yield return itemsCount;
+
+			yield return
+				this.EmitStoreVariableStatement(
+					context,
+					itemsCount,
+					this.EmitGetItemsCountExpression( context, context.Unpacker )
+				);
+
 			for ( int i = 0; i < entries.Count; i++ )
 			{
 				var count = i;
-				yield return
-					this.EmitUnpackItemValueExpression(
-						context,
-						entries[ count ].Member.GetMemberValueType(),
-						entries[ count ].Contract.NilImplication,
-						context.Unpacker,
-						this.MakeInt32Literal( context, count ),
-						this.MakeStringLiteral( context, entries[ count ].Member.ToString() ),
-						itemsCount,
-						unpacked,
-						unpackedItem =>
-							this.EmitSetMemberValueStatement( context, result, entries[ count ].Member, unpackedItem )
-					);
+
+				if( entries[ i ].Member == null )
+				{
+					// just pop
+					yield return
+						this.EmitInvokeVoidMethod(
+							context,
+							context.Unpacker,
+							Metadata._Unpacker.Read
+						);
+				}
+				else
+				{
+					yield return
+						this.EmitUnpackItemValueExpression(
+							context,
+							entries[ count ].Member.GetMemberValueType(),
+							entries[ count ].Contract.NilImplication,
+							context.Unpacker,
+							this.MakeInt32Literal( context, count ),
+							this.MakeStringLiteral( context, entries[ count ].Member.ToString() ),
+							itemsCount,
+							unpacked,
+							unpackedItem =>
+								this.EmitSetMemberValueStatement( context, result, entries[ count ].Member, unpackedItem )
+						);
+				}
 			}
 		}
 
@@ -453,7 +512,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			return
 				this.EmitSequentialStatements(
-					context, this.EmitObjectUnpackFromMapCore( context, result, entries )
+					context, 
+					typeof( void ),
+					this.EmitObjectUnpackFromMapCore( context, result, entries )
 				);
 		}
 
@@ -463,10 +524,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.DeclareLocal(
 					context,
 					typeof( int ),
-					"itemsCount",
-					this.EmitGetItemsCountExpression( context, context.Unpacker )
+					"itemsCount"
 				);
 			yield return itemsCount;
+
+			yield return 
+				this.EmitStoreVariableStatement( 
+					context,
+					itemsCount,
+					this.EmitGetItemsCountExpression( context, context.Unpacker )
+				);
 
 			yield return
 				this.EmitForLoop(
@@ -478,8 +545,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.DeclareLocal(
 								context,
 								typeof( string ),
-								"key",
-								null
+								"key"
 							);
 						var unpackKey =
 							this.EmitUnpackItemValueExpression(
@@ -492,30 +558,31 @@ namespace MsgPack.Serialization.AbstractSerializers
 								null,
 								null,
 								unpackedKey =>
-									this.EmitSetVariableStatement( context, key, unpackedKey )
+									this.EmitStoreVariableStatement( context, key, unpackedKey )
 							);
 						var assigns =
 							this.EmitStringSwitchStatement(
 								context,
 								key,
-								entries.ToDictionary(
+								entries.Where( e => e.Member != null ).ToDictionary(
 									entry => entry.Contract.Name,
 									entry =>
-									this.EmitUnpackItemValueExpression(
-										context,
-										entry.Member.GetMemberValueType(),
-										entry.Contract.NilImplication,
-										context.Unpacker,
-										loopContext.Counter,
-										this.MakeStringLiteral( context, entry.Member.ToString() ),
-										null,
-										null,
-										unpackedValue =>
-											this.EmitSetMemberValueStatement( context, result, entry.Member, unpackedValue )
-									)
+										this.EmitUnpackItemValueExpression(
+											context,
+											entry.Member.GetMemberValueType(),
+											entry.Contract.NilImplication,
+											context.Unpacker,
+											loopContext.Counter,
+											this.MakeStringLiteral( context, entry.Member.ToString() ),
+											null,
+											null,
+											unpackedValue =>
+												this.EmitSetMemberValueStatement( context, result, entry.Member, unpackedValue )
+										)
 								)
 							);
-						return this.EmitSequentialStatements( context, key, unpackKey, assigns );
+
+						return this.EmitSequentialStatements( context, typeof( void ), key, unpackKey, assigns );
 					}
 				);
 		}

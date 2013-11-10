@@ -42,7 +42,6 @@ namespace MsgPack.Serialization
 	public abstract class NilImplicationTest
 	{
 #if !NETFX_CORE
-		private static bool _traceOn = false;
 
 #if MSTEST
 		[Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestInitialize]
@@ -55,7 +54,9 @@ namespace MsgPack.Serialization
 #endif
 		public void SetUp()
 		{
-			if ( _traceOn )
+			//SerializerDebugging.TraceEnabled = true;
+			//SerializerDebugging.DumpEnabled = true;
+			if ( SerializerDebugging.TraceEnabled )
 			{
 				Tracer.Emit.Listeners.Clear();
 				Tracer.Emit.Switch.Level = SourceLevels.All;
@@ -68,17 +69,19 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
-			if ( _traceOn )
+			if ( SerializerDebugging.DumpEnabled )
 			{
 				try
 				{
-					DefaultSerializationMethodGeneratorManager.DumpTo();
+					SerializerDebugging.Dump();
 				}
 				finally
 				{
 					DefaultSerializationMethodGeneratorManager.Refresh();
 				}
 			}
+
+			SerializerDebugging.Reset();
 		}
 #endif
 

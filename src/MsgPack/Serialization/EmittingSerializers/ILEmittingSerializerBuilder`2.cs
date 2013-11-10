@@ -28,10 +28,11 @@ using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
-	internal abstract class ILEmittingSerializerBuilder<TObject> : SerializerBuilder<ILEmittingContext, ILConstruct, TObject>
+	internal abstract class ILEmittingSerializerBuilder<TContext, TObject> : SerializerBuilder<TContext, ILConstruct, TObject>
+		where TContext : ILEmittingContext
 	{
 		protected ILEmittingSerializerBuilder()
-			: this( "DynamicMethodHost", new Version() )
+			: this( "ILDynamicMethodHost", new Version() )
 		{
 		}
 
@@ -40,7 +41,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 		}
 
-		protected override void EmitMethodPrologue( ILEmittingContext context, MethodInfo metadata )
+		protected override void EmitMethodPrologue( TContext context, MethodInfo metadata )
 		{
 			switch ( metadata.Name )
 			{
@@ -66,7 +67,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		protected override void EmitMethodEpilogue( ILEmittingContext context, MethodInfo metadata, IList<ILConstruct> constructs )
+		protected override void EmitMethodEpilogue( TContext context, MethodInfo metadata, IList<ILConstruct> constructs )
 		{
 			try
 			{
@@ -80,40 +81,30 @@ namespace MsgPack.Serialization.EmittingSerializers
 					construct.Evaluate( context.IL );
 				}
 
-				//if ( metadata.ReturnType != typeof( void ) )
-				//{
-				//	var last = constructs.LastOrDefault( c => c != null );
-				//	if ( last != null )
-				//	{
-				//		last.LoadValue( context.IL, false );
-				//	}
-				//}
-
 				context.IL.EmitRet();
 			}
 			finally
 			{
 				context.IL.FlushTrace();
-				context.Emitter.FlushTrace();
 			}
 		}
 
-		protected override ILConstruct EmitSequentialStatements( ILEmittingContext context, IEnumerable<ILConstruct> statements )
+		protected override ILConstruct EmitSequentialStatements( TContext context, Type contextType, IEnumerable<ILConstruct> statements )
 		{
-			return ILConstruct.Sequence( statements );
+			return ILConstruct.Sequence( contextType, statements );
 		}
 
-		protected override ILConstruct EmitStatementExpression( ILEmittingContext context, ILConstruct statement, ILConstruct contextExpression )
+		protected override ILConstruct EmitStatementExpression( TContext context, ILConstruct statement, ILConstruct contextExpression )
 		{
 			return ILConstruct.Composite( statement, contextExpression );
 		}
 
-		protected override ILConstruct MakeNullLiteral( ILEmittingContext context )
+		protected override ILConstruct MakeNullLiteral( TContext context, Type contextType )
 		{
-			return ILConstruct.Literal( typeof( ILConstruct.Any ), default( object ), il => il.EmitLdnull() );
+			return ILConstruct.Literal( contextType, default( object ), il => il.EmitLdnull() );
 		}
 
-		protected override ILConstruct MakeInt32Literal( ILEmittingContext context, int constant )
+		protected override ILConstruct MakeInt32Literal( TContext context, int constant )
 		{
 			switch ( constant )
 			{
@@ -173,22 +164,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		protected override ILConstruct MakeInt64Literal( ILEmittingContext context, long constant )
+		protected override ILConstruct MakeInt64Literal( TContext context, long constant )
 		{
 			return ILConstruct.Literal( typeof( long ), constant, il => il.EmitLdc_I8( constant ) );
 		}
 
-		protected override ILConstruct MakeStringLiteral( ILEmittingContext context, string constant )
+		protected override ILConstruct MakeStringLiteral( TContext context, string constant )
 		{
 			return ILConstruct.Literal( typeof( string ), constant, il => il.EmitLdstr( constant ) );
 		}
 
-		protected override ILConstruct EmitThisReferenceExpression( ILEmittingContext context )
+		protected override ILConstruct EmitThisReferenceExpression( TContext context )
 		{
 			return ILConstruct.Literal( context.SerializerType, "(this)", il => il.EmitLdarg_0() );
 		}
 
-		protected override ILConstruct EmitBoxExpression( ILEmittingContext context, Type valueType, ILConstruct value )
+		protected override ILConstruct EmitBoxExpression( TContext context, Type valueType, ILConstruct value )
 		{
 			return
 				ILConstruct.UnaryOperator(
@@ -202,7 +193,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitNotExpression( ILEmittingContext context, ILConstruct booleanExpression )
+		protected override ILConstruct EmitNotExpression( TContext context, ILConstruct booleanExpression )
 		{
 			if ( booleanExpression.ContextType != typeof( bool ) )
 			{
@@ -229,7 +220,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitEqualsExpression( ILEmittingContext context, ILConstruct left, ILConstruct right )
+		protected override ILConstruct EmitEqualsExpression( TContext context, ILConstruct left, ILConstruct right )
 		{
 			var equality = left.ContextType.GetMethod( "op_Equality" );
 			return
@@ -269,7 +260,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitGreaterThanExpression( ILEmittingContext context, ILConstruct left, ILConstruct right )
+		protected override ILConstruct EmitGreaterThanExpression( TContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG
 			Contract.Assert( left.ContextType.IsPrimitive && left.ContextType != typeof( string ) );
@@ -311,7 +302,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitLessThanExpression( ILEmittingContext context, ILConstruct left, ILConstruct right )
+		protected override ILConstruct EmitLessThanExpression( TContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG
 			Contract.Assert( left.ContextType.IsPrimitive && left.ContextType != typeof( string ) );
@@ -354,7 +345,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitIncrementExpression( ILEmittingContext context, ILConstruct int32Value )
+		protected override ILConstruct EmitIncrementExpression( TContext context, ILConstruct int32Value )
 		{
 			return
 				ILConstruct.UnaryOperator(
@@ -370,7 +361,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitTypeOfExpression( ILEmittingContext context, Type type )
+		protected override ILConstruct EmitTypeOfExpression( TContext context, Type type )
 		{
 			return
 				ILConstruct.Literal(
@@ -380,30 +371,23 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct DeclareLocal( ILEmittingContext context, Type type, string name, ILConstruct initExpression )
+		protected override ILConstruct DeclareLocal( TContext context, Type type, string name )
 		{
 			return
 				ILConstruct.Variable(
 					context,
 					type,
-					name,
-					( il, variable ) =>
-					{
-						if ( initExpression != null )
-						{
-							initExpression.LoadValue( il, false );
-							variable.StoreValue( il );
-						}
-					}
+					name
 				);
 		}
 
-		protected override ILConstruct EmitInvokeVoidMethod( ILEmittingContext context, ILConstruct instance, MethodInfo method, params ILConstruct[] arguments )
+		protected override ILConstruct EmitInvokeVoidMethod( TContext context, ILConstruct instance, MethodInfo method, params ILConstruct[] arguments )
 		{
 			return
 				method.ReturnType == typeof( void )
 					? ILConstruct.Invoke( instance, method, arguments )
 					: ILConstruct.Sequence(
+						typeof( void ),
 						new[]
 						{
 							ILConstruct.Invoke( instance, method, arguments ),
@@ -412,51 +396,68 @@ namespace MsgPack.Serialization.EmittingSerializers
 					);
 		}
 
-		protected override ILConstruct EmitCreateNewObjectExpression( ILEmittingContext context, ConstructorInfo constructor, params ILConstruct[] arguments )
+		protected override ILConstruct EmitCreateNewObjectExpression( TContext context, ILConstruct variable, ConstructorInfo constructor, params ILConstruct[] arguments )
 		{
-			return ILConstruct.NewObject( constructor, arguments );
+			return ILConstruct.NewObject( variable, constructor, arguments );
 		}
 
-		protected override ILConstruct EmitCreateNewArrayExpression( ILEmittingContext context, Type elementType, int length, IEnumerable<ILConstruct> initialElements )
+		protected override ILConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length, IEnumerable<ILConstruct> initialElements )
 		{
-			return
+			var array =
 				ILConstruct.Variable(
 					context,
 					elementType.MakeArrayType(),
-					"array",
-					( il, variable ) =>
-					{
-						il.EmitNewarr( elementType, length );
-						variable.StoreValue( il );
-						var index = 0;
-						foreach ( var initialElement in initialElements )
+					"array"
+				);
+
+			return
+				ILConstruct.Composite( 
+					ILConstruct.Sequence( 
+						array.ContextType,
+						new ILConstruct[]
 						{
-							variable.LoadValue( il, false );
-							this.MakeInt32Literal( context, index ).LoadValue( il, false );
-							initialElement.LoadValue( il, false );
-							il.EmitStelem( elementType );
-							index++;
+							array,
+							ILConstruct.Instruction( 
+								"CreateArray",
+								array.ContextType,
+								false,
+								il =>
+								{
+									il.EmitNewarr( elementType, length );
+									array.StoreValue( il );
+									var index = 0;
+									foreach ( var initialElement in initialElements )
+									{
+										array.LoadValue( il, false );
+										this.MakeInt32Literal( context, index ).LoadValue( il, false );
+										initialElement.LoadValue( il, false );
+										il.EmitStelem( elementType );
+										index++;
+									}
+								}
+							)
 						}
-					}
+					),
+					array
 				);
 		}
 
-		protected override ILConstruct EmitInvokeMethodExpression( ILEmittingContext context, ILConstruct instance, MethodInfo method, IEnumerable<ILConstruct> arguments )
+		protected override ILConstruct EmitInvokeMethodExpression( TContext context, ILConstruct instance, MethodInfo method, IEnumerable<ILConstruct> arguments )
 		{
 			return ILConstruct.Invoke( instance, method, arguments );
 		}
 
-		protected override ILConstruct EmitGetPropretyExpression( ILEmittingContext context, ILConstruct instance, PropertyInfo property )
+		protected override ILConstruct EmitGetPropretyExpression( TContext context, ILConstruct instance, PropertyInfo property )
 		{
 			return ILConstruct.Invoke( instance, property.GetGetMethod( true ), ILConstruct.NoArguments );
 		}
 
-		protected override ILConstruct EmitGetFieldExpression( ILEmittingContext context, ILConstruct instance, FieldInfo field )
+		protected override ILConstruct EmitGetFieldExpression( TContext context, ILConstruct instance, FieldInfo field )
 		{
 			return ILConstruct.LoadField( instance, field );
 		}
 
-		protected override ILConstruct EmitSetProprety( ILEmittingContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
+		protected override ILConstruct EmitSetProprety( TContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
 		{
 #if DEBUG
 // ReSharper disable PossibleNullReferenceException
@@ -469,17 +470,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, property.GetSetMethod( true ), new[] { value } );
 		}
 
-		protected override ILConstruct EmitSetField( ILEmittingContext context, ILConstruct instance, FieldInfo field, ILConstruct value )
+		protected override ILConstruct EmitSetField( TContext context, ILConstruct instance, FieldInfo field, ILConstruct value )
 		{
 			return ILConstruct.StoreField( instance, field, value );
 		}
 
-		protected override ILConstruct EmitSetVariableStatement( ILEmittingContext context, ILConstruct variable, ILConstruct value )
+		protected override ILConstruct EmitLoadVariableExpression( TContext context, ILConstruct variable )
+		{
+			return ILConstruct.Instruction( "load", variable.ContextType, false, il => variable.LoadValue( il, false ) );
+		}
+
+		protected override ILConstruct EmitStoreVariableStatement( TContext context, ILConstruct variable, ILConstruct value )
 		{
 			return ILConstruct.StoreLocal( variable, value );
 		}
 
-		protected override ILConstruct EmitThrowExpression( ILEmittingContext context, Type expressionType, ILConstruct exceptionExpression )
+		protected override ILConstruct EmitThrowExpression( TContext context, Type expressionType, ILConstruct exceptionExpression )
 		{
 			return
 				ILConstruct.Instruction(
@@ -494,7 +500,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitTryFinallyExpression( ILEmittingContext context, ILConstruct tryExpression, ILConstruct finallyStatement )
+		protected override ILConstruct EmitTryFinallyExpression( TContext context, ILConstruct tryExpression, ILConstruct finallyStatement )
 		{
 			return
 				ILConstruct.Instruction(
@@ -512,7 +518,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitConditionalExpression( ILEmittingContext context, ILConstruct conditionExpression, ILConstruct thenExpression, ILConstruct elseExpression )
+		protected override ILConstruct EmitConditionalExpression( TContext context, ILConstruct conditionExpression, ILConstruct thenExpression, ILConstruct elseExpression )
 		{
 			return
 				ILConstruct.IfThenElse(
@@ -522,7 +528,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitAndConditionalExpression( ILEmittingContext context, IList<ILConstruct> conditionExpressions, ILConstruct thenExpression, ILConstruct elseExpression )
+		protected override ILConstruct EmitAndConditionalExpression( TContext context, IList<ILConstruct> conditionExpressions, ILConstruct thenExpression, ILConstruct elseExpression )
 		{
 			return
 				ILConstruct.IfThenElse(
@@ -532,7 +538,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitStringSwitchStatement( ILEmittingContext context, ILConstruct target, IDictionary<string, ILConstruct> cases )
+		protected override ILConstruct EmitStringSwitchStatement( TContext context, ILConstruct target, IDictionary<string, ILConstruct> cases )
 		{
 			// Simply if statements
 			ILConstruct @else = null;
@@ -556,20 +562,20 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return @else;
 		}
 
-		protected override ILConstruct EmitForLoop( ILEmittingContext context, ILConstruct count, Func<ForLoopContext, ILConstruct> loopBodyEmitter )
+		protected override ILConstruct EmitForLoop( TContext context, ILConstruct count, Func<ForLoopContext, ILConstruct> loopBodyEmitter )
 		{
 			var i =
 				this.DeclareLocal(
 					context,
 					typeof( int ),
-					"i",
-					null
+					"i"
 				);
 
 			var loopContext = new ForLoopContext( i );
 			return
 				this.EmitSequentialStatements(
 					context,
+					i.ContextType,
 					i,
 					ILConstruct.Instruction(
 						"for",
@@ -597,7 +603,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitForEachLoop( ILEmittingContext context, CollectionTraits traits, ILConstruct collection, Func<ILConstruct, ILConstruct> loopBodyEmitter )
+		protected override ILConstruct EmitForEachLoop( TContext context, CollectionTraits traits, ILConstruct collection, Func<ILConstruct, ILConstruct> loopBodyEmitter )
 		{
 			return
 				ILConstruct.Instruction(
@@ -611,8 +617,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							this.DeclareLocal( 
 								context,
 								traits.ElementType,
-								"item",
-								null
+								"item"
 							);
 
 						// gets enumerator
@@ -632,32 +637,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 						var endLoop = il.DefineLabel( "END_LOOP" );
 						var enumeratorType = traits.GetEnumeratorMethod.ReturnType;
-						MethodInfo moveNextMethod = enumeratorType.GetMethod( "MoveNext", Type.EmptyTypes );
-						PropertyInfo currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" );
-
-						if ( moveNextMethod == null )
-						{
-							moveNextMethod = Metadata._IEnumerator.MoveNext;
-						}
-
-						if ( currentProperty == null )
-						{
-							if ( enumeratorType == typeof( IDictionaryEnumerator ) )
-							{
-								currentProperty = Metadata._IDictionaryEnumerator.Current;
-							}
-							else if ( enumeratorType.IsInterface )
-							{
-								if ( enumeratorType.IsGenericType && enumeratorType.GetGenericTypeDefinition() == typeof( IEnumerator<> ) )
-								{
-									currentProperty = typeof( IEnumerator<> ).MakeGenericType( traits.ElementType ).GetProperty( "Current" );
-								}
-								else
-								{
-									currentProperty = Metadata._IEnumerator.Current;
-								}
-							}
-						}
+						var moveNextMethod = Metadata._IEnumerator.FindEnumeratorMoveNextMethod( enumeratorType );
+						var currentProperty = Metadata._IEnumerator.FindEnumeratorCurrentProperty( enumeratorType, traits );
 
 						Contract.Assert( currentProperty != null, enumeratorType.ToString() );
 
@@ -726,20 +707,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitGetSerializerExpression( ILEmittingContext context, Type targetType )
-		{
-			var instructions = context.Emitter.RegisterSerializer( targetType );
-			return
-				ILConstruct.Instruction(
-					"getserializer",
-					typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
-					false,
-				// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
-					il => instructions( il, 0 )
-				);
-		}
-
-		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( ILEmittingContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext )
 		{
 			return context => codeGenerationContext.Emitter.CreateInstance<TObject>( context );
 		}

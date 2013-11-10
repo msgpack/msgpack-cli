@@ -55,6 +55,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				construct =
 					this.EmitSequentialStatements(
 						context,
+						typeof( void ),
 						this.BuildTuplePackToCore( context, itemTypes )
 					);
 			}
@@ -157,91 +158,90 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 *	}
 			 */
 			this.BeginUnpackFromMethod( context );
-			var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
 			TConstruct construct = null;
 			try
 			{
-				var checkCardinarity =
-					this.EmitCheckTupleCardinarityExpression(
-						context,
-						this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker ),
-						itemTypes.Count
-					);
-
-				var unpackedNullableItemTypes =
-					itemTypes.Select(
-						itemType =>
-						( itemType != typeof( MessagePackObject ) &&
-						  itemType.GetIsValueType() &&
-						  Nullable.GetUnderlyingType( itemType ) == null )
-							// Use temporary nullable value for nil implication.
-							? typeof( Nullable<> ).MakeGenericType( itemType )
-							: itemType
-					).ToArray();
-
-				var unpackedItems =
-					itemTypes.Select(
-						( type, i ) =>
-						this.DeclareLocal(
-							context,
-							type,
-							"item" + i,
-							null
-						)
-					).ToArray();
-
-				var unpackItems =
-					unpackedNullableItemTypes.Select(
-						( unpackedNullableItemType, i ) =>
-							this.EmitUnpackItemValueExpression(
-								context,
-								unpackedNullableItemType,
-								context.TupleItemNilImplication,
-								context.Unpacker,
-								this.MakeInt32Literal( context, i ),
-								this.MakeStringLiteral( context, "Item" + i.ToString( CultureInfo.InvariantCulture ) ),
-								null,
-								null,
-								unpackedItem =>
-									this.EmitSetVariableStatement(
-										context,
-										unpackedItems[ i ],
-										unpackedItem
-									)
-							)
-					);
-
-				TConstruct currentTuple = null;
-				for ( int nest = tupleTypeList.Count - 1; nest >= 0; nest-- )
-				{
-					var items = unpackedItems.Skip( nest * 7 ).Take( unpackedItems.Length - ( nest * 7 ) );
-					currentTuple =
-						this.EmitCreateNewObjectExpression(
-							context,
-							tupleTypeList[ nest ].GetConstructors().Single(),
-							currentTuple == null
-								? items.ToArray()
-								: items.ToArray().Concat( new[] { currentTuple } ).ToArray()
-							);
-				}
-
-#if DEBUG
-				Contract.Assert( currentTuple != null );
-#endif
 				construct =
 					this.EmitSequentialStatements(
 						context,
-						new[] { checkCardinarity }
-						.Concat( unpackedItems )
-						.Concat( unpackItems )
-						.Concat( new[] { currentTuple } )
-						.ToArray()
+						typeof( TObject ),
+						this.BuildTupleUnpackFromCore( context, itemTypes )
 					);
 			}
 			finally
 			{
 				this.EndUnpackFromMethod( context, construct );
 			}
+		}
+
+		private IEnumerable<TConstruct> BuildTupleUnpackFromCore( TContext context, IList<Type> itemTypes )
+		{
+			var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
+			yield return
+				this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker );
+
+			yield return
+				this.EmitCheckTupleCardinarityExpression(
+					context,
+					context.Unpacker,
+					itemTypes.Count
+				);
+
+			var unpackedItems =
+				itemTypes.Select(
+					( type, i ) =>
+					this.DeclareLocal(
+						context,
+						type,
+						"item" + i
+					)
+				).ToArray();
+
+			var unpackItems =
+				itemTypes.Select(
+					( unpackedNullableItemType, i ) =>
+					this.EmitUnpackItemValueExpression(
+						context,
+						unpackedNullableItemType,
+						context.TupleItemNilImplication,
+						context.Unpacker,
+						this.MakeInt32Literal( context, i ),
+						this.MakeStringLiteral( context, "Item" + i.ToString( CultureInfo.InvariantCulture ) ),
+						null,
+						null,
+						unpackedItem =>
+							this.EmitStoreVariableStatement(
+								context,
+								unpackedItems[ i ],
+								unpackedItem
+							)
+					)
+				);
+
+			TConstruct currentTuple = null;
+			for ( int nest = tupleTypeList.Count - 1; nest >= 0; nest-- )
+			{
+				var items = unpackedItems.Skip( nest * 7 ).Take( Math.Min( unpackedItems.Length, 7 ) );
+				currentTuple =
+					this.EmitCreateNewObjectExpression(
+						context,
+						null, // Tuple is reference type.
+						tupleTypeList[ nest ].GetConstructors().Single(),
+						currentTuple == null
+							? items.ToArray()
+							: items.ToArray().Concat( new[] { currentTuple } ).ToArray()
+						);
+			}
+
+#if DEBUG
+			Contract.Assert( currentTuple != null );
+#endif
+			yield return
+				this.EmitSequentialStatements(
+					context,
+					typeof( TObject ),
+					unpackedItems.Concat( unpackItems ).Concat( new[] { currentTuple } )
+				);
 		}
 
 		private TConstruct EmitCheckTupleCardinarityExpression( TContext context, TConstruct unpacker, int cardinarity )

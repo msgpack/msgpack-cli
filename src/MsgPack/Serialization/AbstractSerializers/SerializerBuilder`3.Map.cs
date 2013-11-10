@@ -50,6 +50,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				construct =
 					this.EmitSequentialStatements(
 						context,
+						typeof( void ),
 						this.EmitPutMapHeaderExpression(
 							context, this.EmitGetCollectionCountExpression( context, context.PackingTarget, traits )
 						),
@@ -92,6 +93,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return
 				this.EmitSequentialStatements(
 					context,
+					typeof( void ),
 					this.EmitPackItemExpression(
 						context,
 						packer,
@@ -142,17 +144,27 @@ namespace MsgPack.Serialization.AbstractSerializers
 				 *	this.UnpackToCore(unpacker, dictionary);
 				 *	return dictionary;
 				*/
+				var collection =
+					this.DeclareLocal(
+						context,
+						typeof( TObject ),
+						"collection"
+					);
 
 				construct =
 					this.EmitSequentialStatements(
 						context,
+						typeof( TObject ),
 						this.EmitCheckIsMapHeaderExpression( context, context.Unpacker ),
+						collection,
 						this.EmitUnpackCollectionWithUnpackToExpression(
 							context,
 							GetCollectionConstructor( instanceType ),
 							this.EmitGetItemsCountExpression( context, context.Unpacker ),
-							context.Unpacker
-						)
+							context.Unpacker,
+							collection
+						),
+						this.EmitLoadVariableExpression( context, collection )
 					);
 			}
 			finally
@@ -174,11 +186,28 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct construct = null;
 			try
 			{
+				var itemsCount =
+					this.DeclareLocal( 
+						context, 
+						typeof( int ), 
+						"itemsCount"
+					);
+
 				construct =
-					this.EmitForLoop(
+					this.EmitSequentialStatements(
 						context,
-						this.EmitGetItemsCountExpression( context, context.Unpacker ),
-						flc => this.EmitUnpackToMapLoopBody( context, flc, traits, context.Unpacker )
+						typeof( void ),
+						itemsCount,
+						this.EmitStoreVariableStatement(
+							context,
+							itemsCount,
+							this.EmitGetItemsCountExpression( context, context.Unpacker )
+						),
+						this.EmitForLoop(
+							context,
+							itemsCount,
+							flc => this.EmitUnpackToMapLoopBody( context, flc, traits, context.Unpacker )
+						)
 					);
 			}
 			finally
@@ -233,12 +262,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Type keyType, valueType;
 			GetDictionaryKeyValueType( traits.ElementType, out keyType, out valueType );
 
-			var key = this.DeclareLocal( context, keyType, "key", null );
-			var value = this.DeclareLocal( context, valueType, "value", null );
+			var key = this.DeclareLocal( context, keyType, "key" );
+			var value = this.DeclareLocal( context, valueType, "value" );
 // ReSharper disable ImplicitlyCapturedClosure
 			return
 				this.EmitSequentialStatements(
 					context,
+					typeof( void ),
 					key,
 					value,
 					this.EmitUnpackItemValueExpression(
@@ -251,7 +281,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null,
 						null,
 						unpackedKey =>
-							this.EmitSetVariableStatement(
+							this.EmitStoreVariableStatement(
 								context,
 								key,
 								unpackedKey
@@ -267,7 +297,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null,
 						null,
 						unpackedValue =>
-							this.EmitSetVariableStatement(
+							this.EmitStoreVariableStatement(
 								context,
 								value,
 								unpackedValue

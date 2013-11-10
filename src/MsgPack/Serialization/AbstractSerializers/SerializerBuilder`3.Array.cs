@@ -20,6 +20,9 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -60,6 +63,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					construct =
 						this.EmitSequentialStatements(
 							context,
+							typeof( void ),
 							this.EmitPutArrayHeaderExpression(
 								context,
 								this.EmitGetCollectionCountExpression( context, context.PackingTarget, traits )
@@ -104,7 +108,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					instanceType = context.SerializationContext.DefaultCollectionTypes.GetConcreteType( typeof( TObject ) );
 					if ( instanceType == null )
 					{
-						throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType(typeof(TObject));
+						throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( TObject ) );
 					}
 				}
 				else
@@ -122,17 +126,27 @@ namespace MsgPack.Serialization.AbstractSerializers
 				 *	this.UnpackToCore(unpacker, array);
 				 *	return collection;
 				 */
-					
-				construct =
-					this.EmitSequentialStatements( 
+				var collection =
+					this.DeclareLocal(
 						context,
+						typeof( TObject ),
+						"collection"
+					);
+
+				construct =
+					this.EmitSequentialStatements(
+						context,
+						collection.ContextType,
 						this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker ),
+						collection,
 						this.EmitUnpackCollectionWithUnpackToExpression(
 							context,
 							GetCollectionConstructor( instanceType ),
-							this.EmitGetItemsCountExpression( context, context.Unpacker),
-							context.Unpacker
-						)
+							this.EmitGetItemsCountExpression( context, context.Unpacker ),
+							context.Unpacker,
+							collection
+						),
+						this.EmitLoadVariableExpression( context, collection )
 					);
 			}
 			finally
@@ -159,14 +173,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.DeclareLocal(
 						context,
 						typeof( int ),
-						"count",
-						this.EmitGetItemsCountExpression( context, context.Unpacker )
+						"count"
 					);
 
 				construct =
-					this.EmitSequentialStatements( 
+					this.EmitSequentialStatements(
 						context,
+						typeof( void ),
 						count,
+						this.EmitStoreVariableStatement(
+							context,
+							count,
+							this.EmitGetItemsCountExpression( context, context.Unpacker )
+						),
 						this.EmitForLoop(
 							context,
 							count,
@@ -215,12 +234,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 					null,
 					null,
 					unpackedItem =>
-					this.EmitAppendCollectionItem(
-						context,
-						traits,
-						context.UnpackToTarget,
-						unpackedItem
-					)
+						this.EmitAppendCollectionItem(
+							context,
+							null,
+							traits,
+							context.UnpackToTarget,
+							unpackedItem
+						)
 				);
 		}
 
@@ -239,22 +259,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 						SerializationExceptions.NewIsNotArrayHeaderMethod
 					),
 					unpacker
-				);
-		}
-
-		private TConstruct EmitAppendCollectionItem(
-			TContext context,
-			CollectionTraits traits,
-			TConstruct collection,
-			TConstruct unpackedItem
-		)
-		{
-			return
-				this.EmitInvokeVoidMethod(
-					context,
-					collection,
-					traits.AddMethod,
-					unpackedItem
 				);
 		}
 	}

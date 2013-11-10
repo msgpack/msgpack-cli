@@ -96,6 +96,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			);
 		}
 
+#warning MethodInfo -> Enum
 		/// <summary>
 		///		Emits the method prologue.
 		/// </summary>
@@ -108,6 +109,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this.EmitMethodEpilogue( context, metadata, constructs as IList<TConstruct> );
 		}
 
+#warning IList<T> -> T, MethodInfo -> Enum
 		///  <summary>
 		/// 	Emits the method epiloigue.
 		///  </summary>
@@ -129,8 +131,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Emits anonymous <c>null</c> reference literal.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
+		/// <param name="contextType">The type of null reference.</param>
 		/// <returns>The generated construct.</returns>
-		protected abstract TConstruct MakeNullLiteral( TContext context );
+		protected abstract TConstruct MakeNullLiteral( TContext context, Type contextType );
 
 		/// <summary>
 		///		Emits the constant <see cref="Int32"/> value reference.
@@ -239,20 +242,22 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Emits the sequential statements. Note that the context elementType is void.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
+		/// <param name="contextType">The type of context.</param>
 		/// <param name="statements">The statements.</param>
 		/// <returns>The generated construct.</returns>
-		protected TConstruct EmitSequentialStatements( TContext context, params TConstruct[] statements )
+		protected TConstruct EmitSequentialStatements( TContext context, Type contextType, params TConstruct[] statements )
 		{
-			return this.EmitSequentialStatements( context, statements as IEnumerable<TConstruct> );
+			return this.EmitSequentialStatements( context, contextType, statements as IEnumerable<TConstruct> );
 		}
 
 		/// <summary>
 		///		Emits the sequential statements. Note that the context elementType is void.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
+		/// <param name="contextType">The type of context.</param>
 		/// <param name="statements">The statements.</param>
 		/// <returns>The generated construct.</returns>
-		protected abstract TConstruct EmitSequentialStatements( TContext context, IEnumerable<TConstruct> statements );
+		protected abstract TConstruct EmitSequentialStatements( TContext context, Type contextType, IEnumerable<TConstruct> statements );
 
 		/// <summary>
 		///		Declares the local variable.
@@ -260,16 +265,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">The generation context.</param>
 		/// <param name="type">The elementType of the variable.</param>
 		/// <param name="name">The name of the variable for debugging puropose.</param>
-		/// <param name="initExpression">The initilization expression.</param>
 		/// <returns>
 		///		The generated construct which represents local variable declaration AND initialization, and reference.
 		/// </returns>
-		protected abstract TConstruct DeclareLocal( TContext context, Type type, string name, TConstruct initExpression );
+		protected abstract TConstruct DeclareLocal( TContext context, Type type, string name );
 
 		/// <summary>
 		///		Emits the create new object expression.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
+		/// <param name="variable">The variable which will store created value type object.</param>
 		/// <param name="constructor">The constructor.</param>
 		/// <param name="arguments">The arguments.</param>
 		/// <returns>
@@ -277,7 +282,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Note that created object remains in context.
 		/// </returns>
 		protected abstract TConstruct EmitCreateNewObjectExpression(
-			TContext context, ConstructorInfo constructor, params TConstruct[] arguments
+			TContext context, TConstruct variable, ConstructorInfo constructor, params TConstruct[] arguments
 		);
 
 		/// <summary>
@@ -438,6 +443,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							current =>
 								this.EmitAppendCollectionItem(
 									context,
+									member,
 									traits,
 									getCollection,
 									current
@@ -519,14 +525,22 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct EmitSetField( TContext context, TConstruct instance, FieldInfo field, TConstruct value );
 
 		/// <summary>
+		///		Emits the statement which loads value from the local variable.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="variable">The variable to be loaded.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct EmitLoadVariableExpression( TContext context, TConstruct variable );
+
+		/// <summary>
 		///		Emits the statement which stores context value to the local variable.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="variable">The variable to be stored.</param>
 		/// <returns>The generated construct.</returns>
-		protected TConstruct EmitSetVariableStatement( TContext context, TConstruct variable )
+		protected virtual TConstruct EmitStoreVariableStatement( TContext context, TConstruct variable )
 		{
-			return this.EmitSetVariableStatement( context, variable, null );
+			return this.EmitStoreVariableStatement( context, variable, null );
 		}
 
 		/// <summary>
@@ -536,7 +550,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="variable">The variable to be stored.</param>
 		/// <param name="value">The value to be stored. <c>null</c> for context value.</param>
 		/// <returns>The generated construct.</returns>
-		protected abstract TConstruct EmitSetVariableStatement( TContext context, TConstruct variable, TConstruct value );
+		protected abstract TConstruct EmitStoreVariableStatement( TContext context, TConstruct variable, TConstruct value );
 
 		/// <summary>
 		///		Emits the throwing exception statement.
@@ -670,7 +684,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitEqualsExpression(
 								context,
 								item,
-								this.MakeNullLiteral( context )
+								this.MakeNullLiteral( context, itemType )
 							);
 					}
 					else if ( Nullable.GetUnderlyingType( itemType ) != null )
@@ -741,9 +755,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="ctor">The constructor of the newly creating collection.</param>
 		/// <param name="collectionCapacity">The newly creating collection capacity.</param>
 		/// <param name="unpacker">The unpacker.</param>
+		/// <param name="collection">The unpacking collection.</param>
 		/// <returns>The generated code construct.</returns>
 		private TConstruct EmitUnpackCollectionWithUnpackToExpression(
-			TContext context, ConstructorInfo ctor, TConstruct collectionCapacity, TConstruct unpacker
+			TContext context, ConstructorInfo ctor, TConstruct collectionCapacity, TConstruct unpacker, TConstruct collection
 		)
 		{
 			/*
@@ -751,34 +766,34 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 *	this.UnpackToCore( unpacker, collection );
 			 *	return collection;
 			 */
-			var collection =
-				this.DeclareLocal(
-					context,
-					typeof( TObject ),
-					"collection",
-					this.EmitCreateNewObjectExpression(
-						context,
-						ctor,
-						ctor.GetParameters().Length == 0
-						? NoConstructs
-						: new[] { collectionCapacity }
-					)
-				);
-
 			return
-				this.EmitStatementExpression(
+				this.EmitSequentialStatements(
 					context,
-					this.EmitSequentialStatements(
+					typeof( void ),
+					this.EmitStoreVariableStatement( 
 						context,
 						collection,
-						this.EmitInvokeMethodExpression(
+						this.EmitCreateNewObjectExpression(
 							context,
-							this.EmitThisReferenceExpression( context ),
-							MessagePackSerializer<TObject>.UnpackToCoreMethod,
-							unpacker,
-							collection
+							collection,
+							ctor,
+							ctor.GetParameters().Length == 0
+							? NoConstructs
+							: new[] { collectionCapacity }
 						)
 					),
+					this.EmitInvokeUnpackTo( context, unpacker, collection )
+				);
+		}
+
+		protected virtual TConstruct EmitInvokeUnpackTo( TContext context, TConstruct unpacker, TConstruct collection )
+		{
+			return 
+				this.EmitInvokeVoidMethod(
+					context,
+					this.EmitThisReferenceExpression( context ),
+					MessagePackSerializer<TObject>.UnpackToCoreMethod,
+					unpacker,
 					collection
 				);
 		}
@@ -820,6 +835,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return
 				this.EmitSequentialStatements(
 					context,
+					typeof( void ),
 					this.EmitUnpackItemValueExpressionCore(
 						context, itemType, nilImplication, unpacker, itemIndex, memberName, itemsCount, unpacked, storeValueStatementEmitter
 					)
@@ -928,8 +944,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.DeclareLocal(
 					context,
 					nullableType,
-					"nullable" + itemIndex,
-					null
+					"nullable" + itemIndex
 				);
 
 			// unpacking item instruction.
@@ -947,11 +962,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
 						)
 					},
-					this.EmitSequentialStatements(
-						context,
-						this.EmitDeserializeItemExpression( context, unpacker, nullableType ),
-						this.EmitSetVariableStatement( context, nullable )
-					),
+					this.EmitDeserializeItemExpression( context, unpacker, nullableType, nullable ),
 					this.EmitUsingStatement(
 						context,
 						typeof( Unpacker ),
@@ -961,11 +972,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							Metadata._Unpacker.ReadSubtree
 						),
 						subtreeUnpacker =>
-							this.EmitSequentialStatements(
-								context,
-								this.EmitDeserializeItemExpression( context, subtreeUnpacker, nullableType ),
-								this.EmitSetVariableStatement( context, nullable )
-							)
+							this.EmitDeserializeItemExpression( context, subtreeUnpacker, nullableType, nullable )
 					)
 				);
 
@@ -975,6 +982,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 				  && Nullable.GetUnderlyingType( itemType ) == null )
 					? this.EmitGetPropretyExpression( context, nullable, nullable.ContextType.GetProperty( "Value" ) )
 					: nullable;
+			var store =
+				storeValueStatementEmitter( unpackedItem );
 
 			// Nil Implication
 			TConstruct expressionWhenNil;
@@ -990,7 +999,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					expressionWhenNil =
 						this.EmitThrowExpression(
 							context,
-							typeof( void ),
+							store.ContextType,
 							SerializationExceptions.NewNullIsProhibitedMethod,
 							memberName
 						);
@@ -1003,7 +1012,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						expressionWhenNil =
 							this.EmitThrowExpression(
 								context,
-								typeof( void ),
+								store.ContextType,
 								SerializationExceptions.NewValueTypeCannotBeNull3Method,
 								memberName,
 								this.EmitTypeOfExpression( context, itemType ),
@@ -1012,11 +1021,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					}
 					else
 					{
-						expressionWhenNil =
-							this.EmitSequentialStatements(
-								context,
-								storeValueStatementEmitter( unpackedItem )
-							);
+						expressionWhenNil = store;
 					}
 
 					break;
@@ -1033,6 +1038,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var readAndUnpack =
 				this.EmitSequentialStatements(
 					context,
+					typeof( void ),
 					this.EmitConditionalExpression(
 						context,
 						this.EmitNotExpression(
@@ -1083,8 +1089,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						? this.EmitNotExpression(
 							context,
 							this.EmitGetPropretyExpression( context, nullable, Metadata._MessagePackObject.IsNil )
-						) : this.EmitNotEqualsExpression( context, nullable, this.MakeNullLiteral( context ) ),
-					storeValueStatementEmitter( unpackedItem ),
+						) : this.EmitNotEqualsExpression( context, nullable, this.MakeNullLiteral( context, itemType ) ),
+					store,
 					expressionWhenNil
 				);
 
@@ -1117,13 +1123,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.DeclareLocal(
 					context,
 					disposableType,
-					"disposable",
-					instantiateIDisposableExpression
+					"disposable"
 				);
 			return
 				this.EmitSequentialStatements(
 					context,
+					typeof( void ),
 					disposable,
+					this.EmitStoreVariableStatement( context, disposable, instantiateIDisposableExpression ),
 					this.EmitTryFinallyExpression(
 						context,
 						usingBodyEmitter( disposable ),
@@ -1132,7 +1139,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitNotEqualsExpression(
 								context,
 								disposable,
-								this.MakeNullLiteral( context )
+								this.MakeNullLiteral( context, disposableType )
 							),
 							this.EmitInvokeMethodExpression(
 								context,
@@ -1151,15 +1158,22 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">The generation context.</param>
 		/// <param name="unpacker">The unpacker expression.</param>
 		/// <param name="itemType">Type of the item to be deserialized.</param>
+		/// <param name="unpacked">The variable which stores unpacked item.</param>
 		/// <returns>The expression which returns deserialized item.</returns>
-		private TConstruct EmitDeserializeItemExpression( TContext context, TConstruct unpacker, Type itemType )
+		private TConstruct EmitDeserializeItemExpression(
+			TContext context, TConstruct unpacker, Type itemType, TConstruct unpacked 
+		)
 		{
 			return
-				this.EmitInvokeMethodExpression(
+				this.EmitStoreVariableStatement( 
 					context,
-					this.EmitGetSerializerExpression( context, itemType ),
-					typeof( MessagePackSerializer<> ).MakeGenericType( itemType ).GetMethod( "UnpackFrom" ),
-					unpacker
+					unpacked,
+					this.EmitInvokeMethodExpression(
+						context,
+						this.EmitGetSerializerExpression( context, itemType ),
+						typeof( MessagePackSerializer<> ).MakeGenericType( itemType ).GetMethod( "UnpackFrom" ),
+						unpacker
+					)
 				);
 		}
 
@@ -1229,12 +1243,69 @@ namespace MsgPack.Serialization.AbstractSerializers
 		);
 
 		/// <summary>
+		///		Emits the append collection item.
+		/// </summary>
+		/// <param name="context">The code generation context.</param>
+		/// <param name="member">The read only collection member metadata. <c>null</c> for collection item.</param>
+		/// <param name="traits">The traits of the collection.</param>
+		/// <param name="collection">The collection to be appended.</param>
+		/// <param name="unpackedItem">The unpacked item.</param>
+		/// <returns></returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		/// </exception>
+		private TConstruct EmitAppendCollectionItem(
+			TContext context,
+			MemberInfo member,
+			CollectionTraits traits,
+			TConstruct collection,
+			TConstruct unpackedItem
+		)
+		{
+			if ( traits.AddMethod == null )
+			{
+				if ( member != null )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Type '{0}' of read only member '{1}' does not have public 'Add' method.",
+							member.GetMemberValueType(),
+							member
+						)
+					);
+				}
+				else
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Type '{0}' does not have public 'Add' method.",
+							collection.ContextType
+						)
+					);
+				}
+			}
+
+			return
+				this.EmitInvokeVoidMethod(
+					context,
+					collection,
+					traits.AddMethod,
+					unpackedItem
+				);
+		}
+
+		/// <summary>
 		///		Retrieves a default constructor of the specified elementType.
 		/// </summary>
 		/// <param name="instanceType">The target elementType.</param>
 		/// <returns>A default constructor of the <paramref name="instanceType"/>.</returns>
 		private static ConstructorInfo GetDefaultConstructor( Type instanceType )
 		{
+#if DEBUG
+			Contract.Assert( !instanceType.GetIsValueType() );
+#endif
+
 			var ctor = typeof( TObject ).GetConstructor( Type.EmptyTypes );
 			if ( ctor == null )
 			{

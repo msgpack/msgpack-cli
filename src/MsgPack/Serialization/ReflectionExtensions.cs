@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using MsgPack.Serialization.Reflection;
@@ -35,10 +36,19 @@ namespace MsgPack.Serialization
 
 		public static Type GetMemberValueType( this MemberInfo source )
 		{
-			Contract.Requires( source != null );
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
 
 			PropertyInfo asProperty = source as PropertyInfo;
 			FieldInfo asField = source as FieldInfo;
+
+			if ( asProperty == null && asField == null )
+			{
+				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "'{0}'({1}) is not field nor property.", source, source.GetType() ) );
+			}
+
 			return asProperty != null ? asProperty.PropertyType : asField.FieldType;
 		}
 

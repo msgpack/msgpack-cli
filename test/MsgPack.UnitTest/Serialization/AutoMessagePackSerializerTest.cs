@@ -47,16 +47,15 @@ namespace MsgPack.Serialization
 	[Timeout( 3000 )]
 	public abstract partial class AutoMessagePackSerializerTest
 	{
-#if !NETFX_CORE
-		private static bool _traceOn = false;
-#endif
 		protected abstract SerializationContext GetSerializationContext();
 
 #if !NETFX_CORE
 		[SetUp]
 		public void SetUp()
 		{
-			if ( _traceOn )
+			//SerializerDebugging.TraceEnabled = true;
+			//SerializerDebugging.DumpEnabled = true;
+			if ( SerializerDebugging.TraceEnabled )
 			{
 				Tracer.Emit.Listeners.Clear();
 				Tracer.Emit.Switch.Level = SourceLevels.All;
@@ -76,11 +75,11 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
-			if ( _traceOn && this.CanDumpAssembly )
+			if ( SerializerDebugging.DumpEnabled && this.CanDumpAssembly )
 			{
 				try
 				{
-					DefaultSerializationMethodGeneratorManager.DumpTo();
+					SerializerDebugging.Dump();
 				}
 				catch ( NotSupportedException ex )
 				{
@@ -91,11 +90,13 @@ namespace MsgPack.Serialization
 					DefaultSerializationMethodGeneratorManager.Refresh();
 				}
 			}
+
+			SerializerDebugging.Reset();
 		}
 #endif
 		protected virtual bool CanDumpAssembly
 		{
-			get { return false; }
+			get { return true; }
 		}
 
 		protected abstract MessagePackSerializer<T> CreateTarget<T>( SerializationContext context );

@@ -264,7 +264,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override Expression VisitBlock( BlockExpression node )
 		{
-			this._writer.WriteLine();
 			this.WriteIndent();
 			this._writer.WriteLine( '{' );
 
@@ -362,24 +361,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		private void VisitIfThenStatement( ConditionalExpression node )
 		{
-			this._writer.WriteLine( "if (" );
-
-			this._indentLevel++;
-			try
-			{
-				this.WriteIndent();
+			this._writer.Write( "if (" );
 				this.Visit( node.Test );
-			}
-			finally
-			{
-				this._indentLevel--;
-			}
-
-			this._writer.WriteLine();
-			this.WriteIndent();
-			this._writer.WriteLine( ")" );
-			this.WriteIndent();
-			this._writer.WriteLine( "{" );
+			this._writer.WriteLine( ") {" );
 
 			this._indentLevel++;
 			try
@@ -399,24 +383,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		private void VisitIfThenElseStatement( ConditionalExpression node )
 		{
-			this._writer.WriteLine( "if (" );
-
-			this._indentLevel++;
-			try
-			{
-				this.WriteIndent();
-				this.Visit( node.Test );
-			}
-			finally
-			{
-				this._indentLevel--;
-			}
-
-			this._writer.WriteLine();
-			this.WriteIndent();
-			this._writer.WriteLine( ")" );
-			this.WriteIndent();
-			this._writer.WriteLine( "{" );
+			this._writer.Write( "if (" );
+			this.Visit( node.Test );
+			this._writer.WriteLine( ") {" );
 
 			this._indentLevel++;
 			try
@@ -431,7 +400,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 			this._writer.WriteLine();
 			this.WriteIndent();
-			this._writer.WriteLine( "}");
+			this._writer.WriteLine( "}" );
 			this.WriteIndent();
 			this._writer.WriteLine( "else" );
 			this.WriteIndent();
@@ -801,14 +770,35 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override Expression VisitNew( NewExpression node )
 		{
-			this.ThrowUnsupportedNodeException( node );
-			return base.VisitNew( node );
+			this._writer.Write( "new " );
+			this._writer.Write( node.Type );
+			this._writer.Write( "( " );
+			if( node.Arguments.Count > 0 )
+			{
+				this._writer.WriteLine();
+				this._indentLevel++;
+				for( int i = 0; i < node.Arguments.Count; i++ )
+				{
+					if( i > 0 )
+					{
+						this._writer.WriteLine( ',' );
+					}
+
+					this.WriteIndent();
+					this.Visit( node.Arguments[ i ] );
+				}
+				this._indentLevel--;
+			}
+
+			this._writer.Write( ") " );
+
+			return node;
 		}
 
 		protected override Expression VisitNewArray( NewArrayExpression node )
 		{
-			this.ThrowUnsupportedNodeException( node );
-			return base.VisitNewArray( node );
+			this._writer.Write( node );
+			return node;
 		}
 
 		protected override Expression VisitParameter( ParameterExpression node )
@@ -825,14 +815,37 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override Expression VisitSwitch( SwitchExpression node )
 		{
-			this.ThrowUnsupportedNodeException( node );
+			this._writer.Write( "switch ( " );
+			this._writer.Write( node.Comparison );
+			this._writer.WriteLine( " ) {" );
+			foreach ( var @case in node.Cases )
+			{
+				this.VisitSwitchCase( @case );
+			}
+
+			if( node.DefaultBody != null )
+			{
+				this._writer.WriteLine( "default: " );
+				this._writer.WriteLine( " ):" );
+				this._indentLevel++;
+				this.Visit( node.DefaultBody );
+				this._indentLevel--;
+			}
+
+			this._writer.WriteLine( "}" );
 			return base.VisitSwitch( node );
 		}
 
 		protected override SwitchCase VisitSwitchCase( SwitchCase node )
 		{
-			this.ThrowUnsupportedNodeException( node );
-			return base.VisitSwitchCase( node );
+			this._writer.Write( "case ( " );
+			this.Visit( node.TestValues );
+			this._writer.WriteLine( " ):" );
+			this._indentLevel++;
+			this.Visit( node.Body );
+			this._indentLevel--;
+
+			return node;
 		}
 
 		protected override Expression VisitTry( TryExpression node )
@@ -1024,6 +1037,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					this._writer.Write( "( +( " );
 					break;
 				}
+				case ExpressionType.Not:
+				{
+					this._writer.Write( "!( " );
+					break;
+				}
 				case ExpressionType.ArrayLength:
 				case ExpressionType.PostDecrementAssign:
 				case ExpressionType.PostIncrementAssign:
@@ -1053,6 +1071,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				case ExpressionType.Increment:
 				case ExpressionType.IsFalse:
 				case ExpressionType.IsTrue:
+				case ExpressionType.Not:
 				case ExpressionType.OnesComplement:
 				case ExpressionType.PreDecrementAssign:
 				case ExpressionType.PreIncrementAssign:

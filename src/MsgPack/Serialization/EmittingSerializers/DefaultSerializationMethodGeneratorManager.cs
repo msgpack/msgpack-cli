@@ -82,27 +82,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			_fast = new DefaultSerializationMethodGeneratorManager( false, false, null );
 		}
 
-#if !SILVERLIGHT
-		/// <summary>
-		///		Save ILs as modules to specified directory.
-		/// </summary>
-		/// <exception cref="PathTooLongException">
-		///		The file path generated is too long on the current platform.
-		/// </exception>
-		/// <exception cref="UnauthorizedAccessException">
-		///		Current user does not have required permission to save file on the current directory.
-		/// </exception>
-		/// <exception cref="IOException">
-		///		The output device does not have enough free space.
-		///		Or the target file already exists and is locked by other thread.
-		///		Or the low level I/O error is occurred.
-		/// </exception>
-		public static void DumpTo()
-		{
-			_canDump.DumpToCore();
-		}
-#endif
-
 #if !WINDOWS_PHONE
 		private readonly AssemblyBuilder _assembly;
 		private readonly ModuleBuilder _module;
@@ -215,11 +194,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public static SerializationMethodGeneratorManager Create( AssemblyBuilder assemblyBuilder )
 		{
 			return new DefaultSerializationMethodGeneratorManager( true, false, assemblyBuilder );
-		}
-
-		private void DumpToCore()
-		{
-			this._assembly.Save( this._moduleFileName );
 		}
 #endif
 

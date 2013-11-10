@@ -77,9 +77,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( constructs != null );
 		}
 
-		protected override TConstruct EmitSequentialStatements( TContext context, IEnumerable<TConstruct> statements )
+		protected override TConstruct EmitSequentialStatements( TContext context, Type contextType, IEnumerable<TConstruct> statements )
 		{
 			Contract.Requires( context != null );
+			Contract.Requires( contextType != null );
 			Contract.Requires( statements != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( void ) );
@@ -96,10 +97,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct MakeNullLiteral( TContext context )
+		protected override TConstruct MakeNullLiteral( TContext context, Type contextType )
 		{
 			Contract.Requires( context != null );
+			Contract.Requires( contextType != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == contextType );
 			return default( TConstruct );
 		}
 
@@ -217,14 +220,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct DeclareLocal( TContext context, Type type, string name, TConstruct initExpression )
+		protected override TConstruct DeclareLocal( TContext context, Type type, string name )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( type != null );
-			Contract.Requires( initExpression != null );
-			Contract.Requires(
-				type.IsAssignableFrom( initExpression.ContextType )
-			);
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == type );
 			return default( TConstruct );
@@ -245,10 +244,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitCreateNewObjectExpression( TContext context, ConstructorInfo constructor, params TConstruct[] arguments )
+		protected override TConstruct EmitCreateNewObjectExpression( TContext context, TConstruct variable, ConstructorInfo constructor, params TConstruct[] arguments )
 		{
 			Contract.Requires( context != null );
+			Contract.Requires( ( variable != null ) == constructor.DeclaringType.IsValueType );
 			Contract.Requires( constructor != null );
+			Contract.Requires( variable.ContextType == constructor.DeclaringType );
 			Contract.Requires(
 				( arguments == null && constructor.GetParameters().Length == 0 ) ||
 				( arguments.Length == constructor.GetParameters().Length )
@@ -335,7 +336,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitSetVariableStatement( TContext context, TConstruct variable, TConstruct value )
+		protected override TConstruct EmitLoadVariableExpression( TContext context, TConstruct variable )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( variable != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == variable.ContextType );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct EmitStoreVariableStatement( TContext context, TConstruct variable, TConstruct value )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( variable != null );

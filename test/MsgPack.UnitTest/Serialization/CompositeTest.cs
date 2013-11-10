@@ -44,12 +44,13 @@ namespace MsgPack.Serialization
 	public class CompositeTest
 	{
 #if !NETFX_CORE
-		private static bool _traceOn = false;
 
 		[SetUp]
 		public void SetUp()
 		{
-			if ( _traceOn )
+			//SerializerDebugging.TraceEnabled = true;
+			//SerializerDebugging.DumpEnabled = true;
+			if ( SerializerDebugging.TraceEnabled )
 			{
 				Tracer.Emit.Listeners.Clear();
 				Tracer.Emit.Switch.Level = SourceLevels.All;
@@ -62,17 +63,19 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
-			if ( _traceOn )
+			if ( SerializerDebugging.DumpEnabled )
 			{
 				try
 				{
-					DefaultSerializationMethodGeneratorManager.DumpTo();
+					SerializerDebugging.Dump();
 				}
 				finally
 				{
 					DefaultSerializationMethodGeneratorManager.Refresh();
 				}
 			}
+
+			SerializerDebugging.Reset();
 		}
 
 		[Test]

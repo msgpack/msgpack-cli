@@ -23,7 +23,24 @@ using System.Reflection.Emit;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
-	internal class AssemblyBuilderSerializerBuilder<TObject> : ILEmittingSerializerBuilder<TObject>
+	internal class AssemblyBuilderEmittingContext : ILEmittingContext
+	{
+		public AssemblyBuilderEmittingContext( SerializationContext context, Type targetType, SerializerEmitter emitter )
+			: base(
+				context,
+				targetType,
+				emitter,
+				ILConstruct.Argument( 1, typeof( Packer ), "packer" ),
+				ILConstruct.Argument( 2, targetType, "objectTree" ),
+				ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" ),
+				ILConstruct.Argument( 2, targetType, "collection" )
+			)
+		{
+		}
+
+	}
+
+	internal class AssemblyBuilderSerializerBuilder<TObject> : ILEmittingSerializerBuilder<AssemblyBuilderEmittingContext, TObject>
 	{
 		private readonly AssemblyBuilder _predefinedAssemblyBuilder;
 
@@ -39,17 +56,31 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._predefinedAssemblyBuilder = predefinedAssemblyBuilder;
 		}
 
-		protected override ILEmittingContext CreateGenerationContextForSerializerCreation( SerializationContext context )
+
+		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType )
+		{
+			var instructions = context.Emitter.RegisterSerializer( targetType );
+			return
+				ILConstruct.Instruction(
+					"getserializer",
+					typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
+					false,
+				// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
+					il => instructions( il, 0 )
+				);
+		}
+
+		protected override AssemblyBuilderEmittingContext CreateGenerationContextForSerializerCreation( SerializationContext context )
 		{
 			return
-				new ILEmittingContext(
+				new AssemblyBuilderEmittingContext(
 					context,
 					typeof( TObject ),
 					SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), EmitterFlavor.FieldBased )
 				);
 		}
 
-		protected override ILEmittingContext CreateGenerationContextForCodeGeneration( SerializationContext context )
+		protected override AssemblyBuilderEmittingContext CreateGenerationContextForCodeGeneration( SerializationContext context )
 		{
 			if ( this._predefinedAssemblyBuilder == null )
 			{
@@ -61,14 +92,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var generatorManager = SerializationMethodGeneratorManager.Get( this._predefinedAssemblyBuilder );
 
 			return
-				new ILEmittingContext(
+				new AssemblyBuilderEmittingContext(
 					context,
 					typeof( TObject ),
 					generatorManager.CreateEmitter( typeof( TObject ), EmitterFlavor.FieldBased )
 				);
 		}
 
-		protected override void BuildSerializerCodeCore( ILEmittingContext context )
+		protected override void BuildSerializerCodeCore( AssemblyBuilderEmittingContext context )
 		{
 			this.BuildSerializer( context );
 		}

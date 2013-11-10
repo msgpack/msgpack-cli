@@ -50,7 +50,7 @@ namespace MsgPack.Serialization
 
 		protected override MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
-			return new AutoMessagePackSerializer<T>( context, c => new MapEmittingSerializerBuilder<T>( c ) );
+			return new AutoMessagePackSerializer<T>( context, new AssemblyBuilderSerializerBuilder<T>() );
 		}
 	}
 #endif

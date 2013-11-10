@@ -84,9 +84,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 					{
 						case "Key":
 						{
-							if ( !unpacker.ReadObject(out key) )
+							if ( !unpacker.ReadObject( out key ) )
 							{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
+								throw SerializationExceptions.NewUnexpectedEndOfStream();
 							}
 
 							isKeyFound = true;
@@ -96,7 +96,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 						{
 							if ( !unpacker.ReadObject( out value ) )
 							{
-							throw SerializationExceptions.NewUnexpectedEndOfStream();
+								throw SerializationExceptions.NewUnexpectedEndOfStream();
 							}
 
 							isValueFound = true;
@@ -107,12 +107,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 				if ( !isKeyFound )
 				{
-				throw SerializationExceptions.NewMissingProperty( "Key" );
+					throw SerializationExceptions.NewMissingProperty( "Key" );
 				}
 
 				if ( !isValueFound )
 				{
-				throw SerializationExceptions.NewMissingProperty( "Value" );
+					throw SerializationExceptions.NewMissingProperty( "Value" );
 				}
 
 				return new DictionaryEntry( key, value );

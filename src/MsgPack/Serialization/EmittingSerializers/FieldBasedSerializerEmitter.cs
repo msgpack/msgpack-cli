@@ -24,6 +24,8 @@ using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -110,6 +112,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._typeBuilder.DefineMethodOverride( this._unpackFromMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._unpackFromMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
 			this._serializers = new Dictionary<RuntimeTypeHandle, FieldBuilder>();
 			this._isDebuggable = isDebuggable;
+
+			if ( isDebuggable && SerializerDebugging.DumpEnabled )
+			{
+				SerializerDebugging.PrepareDump( host.Assembly as AssemblyBuilder );
+			}
 		}
 
 		/// <summary>
@@ -121,13 +128,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public sealed override TracingILGenerator GetPackToMethodILGenerator()
 		{
-			if ( IsTraceEnabled )
+			if ( SerializerDebugging.TraceEnabled )
 			{
-				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._packMethodBuilder );
+				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._packMethodBuilder );
 			}
 
-			return new TracingILGenerator( this._packMethodBuilder, this.Trace, this._isDebuggable );
+			return new TracingILGenerator( this._packMethodBuilder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
 		}
 
 		/// <summary>
@@ -139,13 +145,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public sealed override TracingILGenerator GetUnpackFromMethodILGenerator()
 		{
-			if ( IsTraceEnabled )
+			if ( SerializerDebugging.TraceEnabled )
 			{
-				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._unpackFromMethodBuilder );
+				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._unpackFromMethodBuilder );
 			}
 
-			return new TracingILGenerator( this._unpackFromMethodBuilder, this.Trace, this._isDebuggable );
+			return new TracingILGenerator( this._unpackFromMethodBuilder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
 		}
 
 		/// <summary>
@@ -156,10 +161,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public sealed override TracingILGenerator GetUnpackToMethodILGenerator()
 		{
-			if ( IsTraceEnabled )
+			if ( SerializerDebugging.TraceEnabled )
 			{
-				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._unpackToMethodBuilder );
+				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._unpackToMethodBuilder );
 			}
 
 			if ( this._unpackToMethodBuilder == null )
@@ -176,7 +180,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				this._typeBuilder.DefineMethodOverride( this._unpackToMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._unpackToMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
 			}
 
-			return new TracingILGenerator( this._unpackToMethodBuilder, this.Trace, this._isDebuggable );
+			return new TracingILGenerator( this._unpackToMethodBuilder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
 		}
 
 		/// <summary>
@@ -257,8 +261,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il.Emit(
 						OpCodes.Call,
 						this._typeBuilder.BaseType.GetConstructor(
-							BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, _serializerConstructorParameterTypes, null 
-						) 
+							BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, _serializerConstructorParameterTypes, null
+						)
 					);
 
 					// this._serializerN = context.GetSerializer<T>();

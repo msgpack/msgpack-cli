@@ -56,21 +56,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 #if SILVERLIGHT
 			return DefaultSerializationMethodGeneratorManager.Fast;
 #else
-			switch ( option )
-			{
-				case SerializationMethodGeneratorOption.CanDump:
-				{
-					return DefaultSerializationMethodGeneratorManager.CanDump;
-				}
-				case SerializationMethodGeneratorOption.CanCollect:
-				{
-					return DefaultSerializationMethodGeneratorManager.CanCollect;
-				}
-				default:
-				{
-					return DefaultSerializationMethodGeneratorManager.Fast;
-				}
-			}
+#warning TODO
+			return DefaultSerializationMethodGeneratorManager.CanDump;
+
+			//switch ( option )
+			//{
+			//	case SerializationMethodGeneratorOption.CanDump:
+			//	{
+			//		return DefaultSerializationMethodGeneratorManager.CanDump;
+			//	}
+			//	case SerializationMethodGeneratorOption.CanCollect:
+			//	{
+			//		return DefaultSerializationMethodGeneratorManager.CanCollect;
+			//	}
+			//	default:
+			//	{
+			//		return DefaultSerializationMethodGeneratorManager.Fast;
+			//	}
+			//}
 #endif
 		}
 

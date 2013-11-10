@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace MsgPack
 {
@@ -86,6 +87,20 @@ namespace MsgPack
 				^ this.width.GetHashCode()
 				^ this.height.GetHashCode()
 				^ this.size.GetHashCode();
+		}
+
+		public override string ToString()
+		{
+			return
+				String.Format(
+					CultureInfo.InvariantCulture,
+					"uri: {0}, title: {1}, width: {2}, height: {3}, size: {4}",
+					this.uri,
+					this.title,
+					this.width,
+					this.height,
+					this.size
+				);
 		}
 	}
 

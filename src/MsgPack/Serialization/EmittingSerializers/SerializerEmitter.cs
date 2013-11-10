@@ -36,44 +36,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected static readonly Type[] UnpackFromCoreParameterTypes = new[] { typeof( Unpacker ) };
 
 		/// <summary>
-		///		 Gets a value indicating whether this instance is trace enabled.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if the trace enabled; otherwise, <c>false</c>.
-		/// </value>
-		protected static bool IsTraceEnabled
-		{
-			get { return ( Tracer.Emit.Switch.Level & SourceLevels.Verbose ) == SourceLevels.Verbose; }
-		}
-
-		private readonly TextWriter _trace = IsTraceEnabled ? new StringWriter( CultureInfo.InvariantCulture ) : TextWriter.Null;
-
-		/// <summary>
-		///		Gets the <see cref="TextWriter"/> for tracing.
-		/// </summary>
-		/// <value>
-		///		The <see cref="TextWriter"/> for tracing.
-		///		This value will not be <c>null</c>.
-		/// </value>
-		protected TextWriter Trace { get { return this._trace; } }
-
-		/// <summary>
 		///		Flushes the trace.
 		/// </summary>
+		[Obsolete]
 		public void FlushTrace()
 		{
-			StringWriter writer = this._trace as StringWriter;
-			if ( writer != null )
-			{
-				var buffer = writer.GetStringBuilder();
-				var source = Tracer.Emit;
-				if ( source != null && 0 < buffer.Length )
-				{
-					source.TraceData( Tracer.EventType.ILTrace, Tracer.EventId.ILTrace, buffer );
-				}
-
-				buffer.Clear();
-			}
+			// nop
 		}
 
 		/// <summary>
@@ -98,10 +66,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		protected virtual void Dispose( bool disposing )
 		{
-			if ( disposing )
-			{
-				this._trace.Dispose();
-			}
+			// nop
 		}
 
 		/// <summary>

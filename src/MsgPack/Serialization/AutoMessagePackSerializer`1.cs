@@ -25,6 +25,7 @@ using System.Linq;
 using System.Reflection;
 #endif
 using System.Runtime.Serialization;
+using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization
 {
@@ -36,11 +37,29 @@ namespace MsgPack.Serialization
 	{
 		private readonly MessagePackSerializer<T> _underlying;
 
+		public AutoMessagePackSerializer(
+			SerializationContext context, ISerializerInstanceGenerator<T> builder )
+			: base( context.CompatibilityOptions.PackerCompatibilityOptions )
+		{
+			var serializer = context.Serializers.Get<T>( context );
+
+			if ( serializer != null )
+			{
+				this._underlying = serializer;
+				return;
+			}
+
+			serializer = builder.BuildSerializerInstance( context );
+			Contract.Assert( serializer != null );
+			this._underlying = serializer;
+		}
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="AutoMessagePackSerializer&lt;T&gt;"/> class.
 		/// </summary>
+		[Obsolete]
 		public AutoMessagePackSerializer( SerializationContext context, Func<SerializationContext, SerializerBuilder<T>> builderProvider )
-			:base( context.CompatibilityOptions.PackerCompatibilityOptions )
+			: base( context.CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			Contract.Assert( context != null );
 
@@ -81,7 +100,7 @@ namespace MsgPack.Serialization
 
 			if ( serializer != null )
 			{
-				if ( !context.Serializers.Register<T>( serializer ) )
+				if ( !context.Serializers.Register( serializer ) )
 				{
 					serializer = context.Serializers.Get<T>( context );
 					Contract.Assert( serializer != null );

@@ -144,7 +144,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 			finally
 			{
 				il.FlushTrace();
-				emitter.FlushTrace();
 			}
 		}
 #else
@@ -238,7 +237,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 			finally
 			{
 				il.FlushTrace();
-				emitter.FlushTrace();
 			}
 		}
 #else

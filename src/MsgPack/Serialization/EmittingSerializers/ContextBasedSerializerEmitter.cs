@@ -60,13 +60,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public override TracingILGenerator GetPackToMethodILGenerator()
 		{
-			if ( IsTraceEnabled )
+			if ( SerializerDebugging.TraceEnabled )
 			{
-				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._packToMethod );
+				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._packToMethod );
 			}
 
-			return new TracingILGenerator( this._packToMethod, this.Trace );
+			return new TracingILGenerator( this._packToMethod, SerializerDebugging.ILTraceWriter );
 		}
 
 		/// <summary>
@@ -78,13 +77,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public override TracingILGenerator GetUnpackFromMethodILGenerator()
 		{
-			if ( IsTraceEnabled )
+			if ( SerializerDebugging.TraceEnabled )
 			{
-				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethod );
+				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackFromMethod );
 			}
 
-			return new TracingILGenerator( this._unpackFromMethod, this.Trace );
+			return new TracingILGenerator( this._unpackFromMethod, SerializerDebugging.ILTraceWriter );
 		}
 
 		/// <summary>
@@ -100,13 +98,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 				this._unpackToMethod = new DynamicMethod( "UnpackToCore", null, new[] { typeof( SerializationContext ), typeof( Unpacker ), this._targetType } );
 			}
 
-			if ( IsTraceEnabled )
+			if ( SerializerDebugging.TraceEnabled )
 			{
-				this.Trace.WriteLine();
-				this.Trace.WriteLine( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackToMethod );
+				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._unpackToMethod );
 			}
 
-			return new TracingILGenerator( this._unpackToMethod, this.Trace );
+			return new TracingILGenerator( this._unpackToMethod, SerializerDebugging.ILTraceWriter );
 		}
 
 		/// <summary>

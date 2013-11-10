@@ -29,6 +29,7 @@ using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 #endif
 #if !NETFX_CORE
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif
 #if !WINDOWS_PHONE && !NETFX_35
@@ -78,35 +79,38 @@ namespace MsgPack.Serialization
 
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
-			Func<SerializationContext, SerializerBuilder<T>> builderProvider;
+			//Func<SerializationContext, SerializerBuilder<T>> builderProvider;
+			ISerializerInstanceGenerator<T> builder;
 #if NETFX_CORE
-			builderProvider = c => new ExpressionSerializerBuilder<T>( c );
+			builder = new ExpressionTreeSerializerBuilder<T>();
 #else
 #if !WINDOWS_PHONE && !NETFX_35
 			if ( context.EmitterFlavor == EmitterFlavor.ExpressionBased )
 			{
-				builderProvider = c => new ExpressionSerializerBuilder<T>( c );
+				builder = new ExpressionTreeSerializerBuilder<T>();
 			}
 			else
 			{
 #endif // !WINDOWS_PHONE && !NETFX_35
-				if ( context.SerializationMethod == SerializationMethod.Map )
+				if ( context.EmitterFlavor  == EmitterFlavor.FieldBased )
 				{
-					builderProvider = c => new MapEmittingSerializerBuilder<T>( c );
+					builder = new AssemblyBuilderSerializerBuilder<T>();
 				}
 				else
 				{
-					builderProvider = c => new ArrayEmittingSerializerBuilder<T>( c );
+					builder = new DynamicMethodSerializerBuilder<T>();
 				}
+
 #if !WINDOWS_PHONE && !NETFX_35
 			}
 #endif // !WINDOWS_PHONE  && !NETFX_35
 #endif // NETFX_CORE else
 
-				return new AutoMessagePackSerializer<T>( context, builderProvider );
+			return new AutoMessagePackSerializer<T>( context, builder );
 		}
 
 #if !SILVERLIGHT && !NETFX_35
+#warning Use context.
 		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
 #else
 		private static readonly object _syncRoot = new object();

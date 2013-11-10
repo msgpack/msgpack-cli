@@ -50,14 +50,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 		internal Type SerializerType { get; private set; }
 		internal SerializerEmitter Emitter { get; private set; }
 
-		public ILEmittingContext( SerializationContext serializationContext, Type targetType, SerializerEmitter emitter )
-			: base(
-				serializationContext,
-				ILConstruct.Argument( 1, typeof( Packer ), "packer" ),
-				ILConstruct.Argument( 2, targetType, "objectTree" ),
-				ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" ),
-				ILConstruct.Argument( 2, targetType, "collection" )
-			)
+		public ILEmittingContext(
+			SerializationContext serializationContext,
+			Type targetType,
+			SerializerEmitter emitter,
+			ILConstruct packer,
+			ILConstruct packToTarget,
+			ILConstruct unpacker,
+			ILConstruct unpackToTaret 
+		) : base( serializationContext, packer, packToTarget, unpacker, unpackToTaret )
 		{
 			this.SerializerType = typeof( MessagePackSerializer<> ).MakeGenericType( targetType );
 			this.Emitter = emitter;

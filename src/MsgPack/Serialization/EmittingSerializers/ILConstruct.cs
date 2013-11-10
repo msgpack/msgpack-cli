@@ -139,14 +139,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new InvocationILConsruct( method, target, arguments );
 		}
 
-		internal static ILConstruct NewObject( ConstructorInfo constructor, IEnumerable<ILConstruct> arguments )
+		internal static ILConstruct NewObject( ILConstruct variable, ConstructorInfo constructor, IEnumerable<ILConstruct> arguments )
 		{
-			return new InvocationILConsruct( constructor, null, arguments );
+			return new InvocationILConsruct( constructor, variable, arguments );
 		}
 
-		public static ILConstruct Sequence( IEnumerable<ILConstruct> statements )
+		public static ILConstruct Sequence( Type contextType, IEnumerable<ILConstruct> statements )
 		{
-			return new SequenceILConstruct( statements );
+			return new SequenceILConstruct( contextType, statements );
 		}
 
 		public static ILConstruct Composite( ILConstruct before, ILConstruct context )
@@ -161,17 +161,17 @@ namespace MsgPack.Serialization.EmittingSerializers
 // ReSharper restore CompareNonConstrainedGenericWithNull
 		}
 
-		public static ILConstruct Variable( ILEmittingContext context, Type type, string name, Action<TracingILGenerator, ILConstruct> initialization )
+		public static ILConstruct Variable( ILEmittingContext context, Type type, string name )
 		{
-			return new VariableILConstruct( name, type, initialization );
+			return new VariableILConstruct( name, type );
 		}
 
 		private static void ValidateContextTypeMatch( ILConstruct left, ILConstruct right )
 		{
-			if ( left.ContextType == typeof( Any ) || right.ContextType == typeof( Any ) )
-			{
-				return;
-			}
+			//if ( left.ContextType == typeof( Any ) || right.ContextType == typeof( Any ) )
+			//{
+			//	return;
+			//}
 
 			if ( GetNormalizedType( left.ContextType ) != GetNormalizedType( right.ContextType ) )
 			{
@@ -287,16 +287,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 			private readonly bool _isLocal;
 			private int _index;
 			private readonly string _name;
-			private readonly Action<TracingILGenerator, ILConstruct> _initializer;
 
-			public VariableILConstruct( string name, Type valueType, Action<TracingILGenerator, ILConstruct> initializer )
+			public VariableILConstruct( string name, Type valueType )
 				: base( valueType )
 			{
 				Contract.Assert( name != null );
 				this._isLocal = true;
 				this._name = name;
 				this._index = -1;
-				this._initializer = initializer;
 			}
 
 			public VariableILConstruct( string name, Type valueType, int parameterIndex )
@@ -306,7 +304,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 				this._isLocal = false;
 				this._name = name;
 				this._index = parameterIndex;
-				this._initializer = null;
 			}
 
 			public override void Evaluate( TracingILGenerator il )
@@ -317,10 +314,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 					this._index = il.DeclareLocal( this.ContextType, this._name ).LocalIndex;
 
-					if ( this._initializer != null )
-					{
-						this._initializer( il, this );
-					}
 					il.TraceWriteLine( "// ->Eval: {0}", this );
 				}
 			}
@@ -404,8 +397,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			private readonly ILConstruct[] _statements;
 
-			public SequenceILConstruct( IEnumerable<ILConstruct> statements )
-				: base( typeof( void ) )
+			public SequenceILConstruct( Type contextType, IEnumerable<ILConstruct> statements )
+				: base( contextType )
 			{
 				this._statements = statements.ToArray();
 			}
@@ -610,16 +603,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					{
 						throw new ArgumentException(
 							String.Format( CultureInfo.CurrentCulture, "target must not be null for expression type constructor '{0}'", ctor )
-							);
-					}
-				}
-				else
-				{
-					if ( target != null )
-					{
-						throw new ArgumentException(
-							String.Format( CultureInfo.CurrentCulture, "target must be null for reference type constructor method '{0}'", ctor )
-							);
+						);
 					}
 				}
 
@@ -663,6 +647,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 						}
 
 						il.EmitCallConstructor( asConsctructor );
+
+						// For compatibility to ref type.
+						this._target.LoadValue( il, false );
 					}
 					else
 					{
