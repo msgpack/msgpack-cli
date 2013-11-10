@@ -19,10 +19,12 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 #if NETFX_CORE
 using System.Linq;
 #endif
+using System.Linq;
 using System.Linq.Expressions;
 #if NETFX_CORE
 using System.Reflection;
@@ -107,8 +109,68 @@ namespace MsgPack
 				return;
 			}
 
-			MessagePackSerializer.Create<T>( context ).PackTo( source, value );
+			context.GetSerializer<T>().PackTo( source, value );
 		}
+
+		public static void Pack<T>( this Packer source, IEnumerable<T> items )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			Contract.EndContractBlock();
+
+			PackCore( source, items, SerializationContext.Default );
+		}
+
+		public static void Pack<T>( this Packer source, IEnumerable<T> items, SerializationContext context )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			Contract.EndContractBlock();
+
+			PackCore( source, items, context );
+		}
+
+		private static void PackCore<T>( this Packer source, IEnumerable<T> items, SerializationContext context )
+		{
+			if ( items == null )
+			{
+				source.PackNull();
+				return;
+			}
+
+			var asPackable = items as IPackable;
+			if ( asPackable != null )
+			{
+				asPackable.PackToMessage( source, new PackingOptions() );
+				return;
+			}
+
+			var asCollection = items as ICollection<T>;
+			if ( asCollection == null )
+			{
+				asCollection = items.ToArray();
+			}
+
+			var itemSerializer = context.GetSerializer<T>();
+
+			source.PackArrayHeader( asCollection.Count );
+			foreach ( var item in asCollection )
+			{
+				itemSerializer.PackTo( source, item );
+			}
+		}
+
 
 		/// <summary>
 		///		Packs specified value with the default context.
