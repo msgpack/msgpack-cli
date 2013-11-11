@@ -57,7 +57,7 @@ namespace MsgPack.Serialization
 			return this._unpackFromCore( this._context, unpacker );
 		}
 
-		protected internal sealed override void UnpackToCore( Unpacker unpacker, T collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			if ( this._unpackToCore != null )
 			{

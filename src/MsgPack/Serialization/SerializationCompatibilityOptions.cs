@@ -51,6 +51,13 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The <see cref="PackerCompatibilityOptions"/>. The default is <see cref="F:PackerCompatibilityOptions.Classic"/>.
 		/// </value>
+		/// <remarks>
+		///		<note>
+		///			Changing this property value does not affect already built serializers -- especially built-in (default) serializers.
+		///			You must specify <see cref="T:PackerCompatibilityOptions"/> enumeration to the constructor of <see cref="SerializationContext"/> to
+		///			change built-in serializers' behavior.
+		///		</note>
+		/// </remarks>
 		public PackerCompatibilityOptions PackerCompatibilityOptions
 		{
 			get { return this._packerCompatibilityOptions; }

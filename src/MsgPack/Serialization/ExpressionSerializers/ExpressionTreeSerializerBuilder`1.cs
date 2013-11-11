@@ -49,46 +49,39 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 		}
 
-		protected override void EmitMethodPrologue( ExpressionTreeContext context, MethodInfo metadata )
+		protected override void EmitMethodPrologue( ExpressionTreeContext context, SerializerMethod method )
 		{
 			// nop
 		}
 
-		protected override void EmitMethodEpilogue( ExpressionTreeContext context, MethodInfo metadata, IList<ExpressionConstruct> constructs )
+		protected override void EmitMethodEpilogue( ExpressionTreeContext context, SerializerMethod method, ExpressionConstruct construct )
 		{
-			if ( constructs == null || constructs[ 0 ] == null )
+			if ( construct == null )
 			{
 				return;
 			}
 
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "----{0}----", metadata );
-				constructs[ 0 ].ToString( SerializerDebugging.ILTraceWriter );
+				SerializerDebugging.TraceEvent( "----{0}----", method );
+				construct.ToString( SerializerDebugging.ILTraceWriter );
 				SerializerDebugging.FlushTraceData();
 			}
 
-#if DEBUG
-			Contract.Assert( constructs.Count == 1 );
-#endif
-
 			var lambda =
 				Expression.Lambda(
-					ExpressionTreeContext.CreateDelegateType<TObject>( metadata ),
-					( constructs.Count > 1
-						  ? Expression.Block( metadata.ReturnType, constructs.Select( c => c.Expression ) )
-						  : constructs[ 0 ].Expression
-					),
-					metadata.Name,
+					ExpressionTreeContext.CreateDelegateType<TObject>( method ),
+					construct.Expression,
+					method.ToString(),
 					false,
-					context.GetParameters( metadata )
+					context.GetParameters( method )
 				);
 
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				var mb =
 					this._typeBuilder.DefineMethod(
-						metadata.Name,
+						method.ToString(),
 						MethodAttributes.Public | MethodAttributes.Static,
 						lambda.Type,
 						lambda.Parameters.Select( e => e.Type ).ToArray()
@@ -97,7 +90,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 
 			context.SetDelegate(
-				metadata,
+				method,
 				lambda.Compile()
 			);
 		}

@@ -26,7 +26,6 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _IDictionaryEnumerator
 	{
-		public static readonly PropertyInfo Current = FromExpression.ToProperty( ( IDictionaryEnumerator enumerator ) => enumerator.Entry );
 		public static readonly PropertyInfo Entry = FromExpression.ToProperty( ( IDictionaryEnumerator enumerator ) => enumerator.Entry );
 	}
 }

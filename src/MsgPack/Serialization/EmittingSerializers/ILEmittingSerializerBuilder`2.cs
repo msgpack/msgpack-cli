@@ -38,45 +38,40 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ILEmittingSerializerBuilder{TContext, TObject}"/> class.
 		/// </summary>
-		protected ILEmittingSerializerBuilder() {}
+		protected ILEmittingSerializerBuilder() { }
 
-		protected override void EmitMethodPrologue( TContext context, MethodInfo metadata )
+		protected override void EmitMethodPrologue( TContext context, SerializerMethod method )
 		{
-			switch ( metadata.Name )
+			switch ( method )
 			{
-				case "PackToCore":
+				case SerializerMethod.PackToCore:
 				{
 					context.IL = context.Emitter.GetPackToMethodILGenerator();
 					break;
 				}
-				case "UnpackFromCore":
+				case SerializerMethod.UnpackFromCore:
 				{
 					context.IL = context.Emitter.GetUnpackFromMethodILGenerator();
 					break;
 				}
-				case "UnpackToCore":
+				case SerializerMethod.UnpackToCore:
 				{
 					context.IL = context.Emitter.GetUnpackToMethodILGenerator();
 					break;
 				}
 				default:
 				{
-					throw new NotSupportedException( metadata.Name );
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
 				}
 			}
 		}
 
-		protected override void EmitMethodEpilogue( TContext context, MethodInfo metadata, IList<ILConstruct> constructs )
+		protected override void EmitMethodEpilogue( TContext context, SerializerMethod method, ILConstruct construct )
 		{
 			try
 			{
-				foreach ( var construct in constructs )
+				if ( construct != null )
 				{
-					if ( construct == null )
-					{
-						continue;
-					}
-
 					construct.Evaluate( context.IL );
 				}
 
@@ -410,10 +405,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 
 			return
-				ILConstruct.Composite( 
-					ILConstruct.Sequence( 
+				ILConstruct.Composite(
+					ILConstruct.Sequence(
 						array.ContextType,
-						new []
+						new[]
 						{
 							array,
 							ILConstruct.Instruction( 
@@ -459,12 +454,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct EmitSetProprety( TContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
 		{
 #if DEBUG
-// ReSharper disable PossibleNullReferenceException
+			// ReSharper disable PossibleNullReferenceException
 			Contract.Assert(
 				property.GetSetMethod( true ) != null,
-				property.DeclaringType.FullName + "::" + property.Name + ".set != null" 
+				property.DeclaringType.FullName + "::" + property.Name + ".set != null"
 			);
-// ReSharper restore PossibleNullReferenceException
+			// ReSharper restore PossibleNullReferenceException
 #endif
 			return ILConstruct.Invoke( instance, property.GetSetMethod( true ), new[] { value } );
 		}
@@ -613,7 +608,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					{
 						var enumerator = il.DeclareLocal( traits.GetEnumeratorMethod.ReturnType, "enumerator" );
 						var currentItem =
-							this.DeclareLocal( 
+							this.DeclareLocal(
 								context,
 								traits.ElementType,
 								"item"

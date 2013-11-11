@@ -158,9 +158,9 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilderConstants.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerMethod.cs" />
     <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
     <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderEmittingContext.cs" />
-    <Compile Include="Serialization\EmittingSerializers\ConditionalILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\DynamicMethodEmittingContext.cs" />
     <Compile Include="Serialization\EmittingSerializers\DynamicMethodSerializerBuilder`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\ILConstruct.cs" />
@@ -180,8 +180,6 @@
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
     <Compile Include="Serialization\EmittingSerializers\LocalVariableHolder.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ArrayFormatObjectExpressionMessagePackSerializer.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ArrayMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CallbackMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\DefaultSerializers\DefaultSerializers.cs">
@@ -190,7 +188,6 @@
       <DependentUpon>DefaultSerializers.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\EmitterFlavor.cs" />
-    <Compile Include="Serialization\EmittingSerializers\EmittingSerializerBuilder`1.cs" />
     <Compile Include="ReflectionAbstractions.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionConstruct.cs" />
@@ -198,13 +195,6 @@
     <Compile Include="Serialization\ExpressionSerializers\ExpressionSerializerLogics.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeContext.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder`1.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\IExpressionMessagePackSerializer.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ListExpressionMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\MapExpressionMessagePackSerializer.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\MapFormatObjectExpressionMessagePackSerializer.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ObjectExpressionMessagePackSerializer.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\SequenceExpressionMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\TupleExpressionMessagePackSerializer.cs" />
     <Compile Include="Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\IMessagePackSerializer.cs" />
     <Compile Include="Serialization\IMessagePackSingleObjectSerializer.cs" />
@@ -212,7 +202,6 @@
     <Compile Include="Serialization\SerializerGenerationDebugging.cs" />
     <Compile Include="Serialization\SerializerTypeKeyRepository.cs" />
     <Compile Include="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
-    <Compile Include="Serialization\EmittingSerializers\MapEmittingSerializerBuilder`1.cs" />
     <Compile Include="Serialization\MessagePackMemberAttribute.cs" />
     <Compile Include="Serialization\Metadata\_Enumerable.cs" />
     <Compile Include="Serialization\Metadata\_IDictionaryEnumerator.cs" />
@@ -257,7 +246,6 @@
     <Compile Include="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs" />
     <Compile Include="Serialization\EmittingSerializers\DefaultSerializationMethodGeneratorManager.cs" />
-    <Compile Include="Serialization\EmittingSerializers\EmittingSerializerBuilderLogics.cs" />
     <Compile Include="Serialization\EmittingSerializers\Emittion.cs" />
     <Compile Include="Serialization\FromExpression.cs" />
     <Compile Include="Serialization\FromExpression.ToMethod.cs">
@@ -273,7 +261,6 @@
     <Compile Include="Serialization\Metadata\_UnpackHelpers.cs" />
     <Compile Include="Serialization\Metadata\_NotImplementedException.cs" />
     <Compile Include="Serialization\NilImplication.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionSerializerBuilder`1.cs" />
     <Compile Include="Serialization\Reflection\GenericTypeExtensions.cs" />
     <Compile Include="Serialization\Reflection\ReflectionExtensions.cs">
       <SubType>Code</SubType>
@@ -297,7 +284,6 @@
     <Compile Include="Serialization\ReflectionExtensions.cs" />
     <Compile Include="Serialization\SerializationContext.cs" />
     <Compile Include="Serialization\SerializationExceptions.cs" />
-    <Compile Include="Serialization\SerializerBuilder`1.cs" />
     <Compile Include="Serialization\SerializerRepository.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />

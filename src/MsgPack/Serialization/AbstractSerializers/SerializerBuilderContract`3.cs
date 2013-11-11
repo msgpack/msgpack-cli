@@ -59,17 +59,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( Func<SerializationContext, MessagePackSerializer<TObject>> );
 		}
 
-		protected override void EmitMethodPrologue( TContext context, MethodInfo metadata )
+		protected override void EmitMethodPrologue( TContext context, SerializerMethod method )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( metadata != null );
+			Contract.Requires( Enum.IsDefined( typeof( SerializationMethod ), method ) );
 		}
 
-		protected override void EmitMethodEpilogue( TContext context, MethodInfo metadata, IList<TConstruct> constructs )
+		protected override void EmitMethodEpilogue( TContext context, SerializerMethod method, TConstruct construct )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( metadata != null );
-			Contract.Requires( constructs != null );
+			Contract.Requires( Enum.IsDefined( typeof( SerializationMethod ), method ) );
+			Contract.Requires( construct != null );
 		}
 
 		protected override TConstruct EmitSequentialStatements( TContext context, Type contextType, IEnumerable<TConstruct> statements )

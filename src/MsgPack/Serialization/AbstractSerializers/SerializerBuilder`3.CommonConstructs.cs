@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			this.EmitMethodPrologue(
 				context,
-				typeof( MessagePackSerializer<TObject> ).GetMethod( "PackToCore", BindingFlags.Instance | BindingFlags.NonPublic )
+				SerializerMethod.PackToCore
 			);
 		}
 
@@ -45,7 +45,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			this.EmitMethodEpilogue(
 				context,
-				typeof( MessagePackSerializer<TObject> ).GetMethod( "PackToCore", BindingFlags.Instance | BindingFlags.NonPublic ),
+				SerializerMethod.PackToCore,
 				construct
 			);
 		}
@@ -54,7 +54,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			this.EmitMethodPrologue(
 				context,
-				typeof( MessagePackSerializer<TObject> ).GetMethod( "UnpackFromCore", BindingFlags.Instance | BindingFlags.NonPublic )
+				SerializerMethod.UnpackFromCore
 			);
 		}
 
@@ -62,7 +62,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			this.EmitMethodEpilogue(
 				context,
-				typeof( MessagePackSerializer<TObject> ).GetMethod( "UnpackFromCore", BindingFlags.Instance | BindingFlags.NonPublic ),
+				SerializerMethod.UnpackFromCore,
 				construct
 			);
 		}
@@ -71,7 +71,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			this.EmitMethodPrologue(
 				context,
-				typeof( MessagePackSerializer<TObject> ).GetMethod( "UnpackToCore", BindingFlags.Instance | BindingFlags.NonPublic )
+				SerializerMethod.UnpackToCore
 			);
 		}
 
@@ -79,32 +79,25 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			this.EmitMethodEpilogue(
 				context,
-				typeof( MessagePackSerializer<TObject> ).GetMethod( "UnpackToCore", BindingFlags.Instance | BindingFlags.NonPublic ),
+				SerializerMethod.UnpackToCore,
 				construct
 			);
 		}
 
-#warning MethodInfo -> Enum
 		/// <summary>
 		///		Emits the method prologue.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="metadata">The metadata of the method.</param>
-		protected abstract void EmitMethodPrologue( TContext context, MethodInfo metadata );
+		/// <param name="method">The metadata of the method.</param>
+		protected abstract void EmitMethodPrologue( TContext context, SerializerMethod method );
 
-		private void EmitMethodEpilogue( TContext context, MethodInfo metadata, params TConstruct[] constructs )
-		{
-			this.EmitMethodEpilogue( context, metadata, constructs as IList<TConstruct> );
-		}
-
-#warning IList<T> -> T, MethodInfo -> Enum
 		///  <summary>
 		/// 	Emits the method epiloigue.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="metadata">The metadata of the method.</param>
-		/// <param name="constructs">The constructs which represent method statements in order. Null entry should be ignored.</param>
-		protected abstract void EmitMethodEpilogue( TContext context, MethodInfo metadata, IList<TConstruct> constructs );
+		/// <param name="method">The metadata of the method.</param>
+		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
+		protected abstract void EmitMethodEpilogue( TContext context, SerializerMethod method, TConstruct construct );
 
 		/// <summary>
 		/// 	Emits sequential statements and subsequent loadable expression which determines entire construct elementType.

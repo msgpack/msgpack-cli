@@ -43,24 +43,24 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestCreate1_WithoutContext_NewInstance()
+		public void TestCreate1_WithoutContext_SameInstance()
 		{
 			var first = MessagePackSerializer.Create<int>();
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create<int>();
 			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.Not.SameAs( second ) );
+			Assert.That( first, Is.SameAs( second ) );
 		}
 
 		[Test]
-		public void TestCreate1_WithContext_NewInstance()
+		public void TestCreate1_WithContext_SameInstance()
 		{
 			var context = new SerializationContext();
 			var first = MessagePackSerializer.Create<int>( context );
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create<int>( context );
 			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.Not.SameAs( second ) );
+			Assert.That( first, Is.SameAs( second ) );
 		}
 
 		[Test]
@@ -70,13 +70,13 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestCreate_WithoutContext_NewInstance()
+		public void TestCreate_WithoutContext_SameInstance()
 		{
 			var first = MessagePackSerializer.Create( typeof( int ) );
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create( typeof( int ) );
 			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.Not.SameAs( second ) );
+			Assert.That( first, Is.SameAs( second ) );
 		}
 
 		[Test]
@@ -90,14 +90,14 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestCreate_WithContext_NewInstance()
+		public void TestCreate_WithContext_SameInstance()
 		{
 			var context = new SerializationContext();
 			var first = MessagePackSerializer.Create( typeof( int ), context );
 			Assert.That( first, Is.Not.Null );
 			var second = MessagePackSerializer.Create( typeof( int ), context );
 			Assert.That( second, Is.Not.Null );
-			Assert.That( first, Is.Not.SameAs( second ) );
+			Assert.That( first, Is.SameAs( second ) );
 		}
 
 		[Test]

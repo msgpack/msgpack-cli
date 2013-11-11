@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,12 +19,18 @@
 #endregion -- License Terms --
 
 using System;
-using System.IO;
 
-namespace MsgPack.Serialization.ExpressionSerializers
+namespace MsgPack.Serialization.AbstractSerializers
 {
-	internal interface IExpressionMessagePackSerializer
+	internal enum SerializerMethod
 	{
-		void ToString( TextWriter writer, int depth );
+		PackToCore,
+		UnpackFromCore,
+		UnpackToCore
+	}
+
+	internal static class SerializerMethodExtensions
+	{
+		
 	}
 }

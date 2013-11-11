@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 #if !NETFX_CORE
 using MsgPack.Serialization.AbstractSerializers;
@@ -35,6 +36,10 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public static class MessagePackSerializer
 	{
+#if DEBUG
+		private static System.Collections.Generic.HashSet<Type> _infiniteRecursiveCallDetector =
+			new HashSet<Type>();
+#endif
 		/// <summary>
 		///		Creates new <see cref="MessagePackSerializer{T}"/> instance with <see cref="SerializationContext.Default"/>.
 		/// </summary>
@@ -71,6 +76,30 @@ namespace MsgPack.Serialization
 
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
+			if ( context.ContainsSerializer( typeof( T ) ) )
+			{
+#if DEBUG
+				if ( _infiniteRecursiveCallDetector == null )
+				{
+					_infiniteRecursiveCallDetector = new HashSet<Type>();
+				}
+				
+				if ( _infiniteRecursiveCallDetector.Contains( typeof( T ) ) )
+				{
+					throw new Exception( "Infite recursive call." );
+				}
+				else
+				{
+					_infiniteRecursiveCallDetector.Add( typeof( T ) );
+				}
+#endif
+				var result = context.GetSerializer<T>();
+#if DEBUG
+				_infiniteRecursiveCallDetector.Remove( typeof( T ) );
+#endif
+				return result;
+			}
+
 			//Func<SerializationContext, SerializerBuilder<T>> builderProvider;
 			ISerializerBuilder<T> builder;
 #if NETFX_CORE
@@ -84,7 +113,7 @@ namespace MsgPack.Serialization
 			else
 			{
 #endif // !WINDOWS_PHONE && !NETFX_35
-				if ( context.EmitterFlavor  == EmitterFlavor.FieldBased )
+				if ( context.EmitterFlavor == EmitterFlavor.FieldBased )
 				{
 					builder = new AssemblyBuilderSerializerBuilder<T>();
 				}

@@ -20,9 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq.Expressions;
-using System.Reflection;
 
 using MsgPack.Serialization.AbstractSerializers;
 
@@ -33,10 +31,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	/// </summary>
 	internal sealed class ExpressionTreeContext : SerializerGenerationContext<ExpressionConstruct>
 	{
-		private const string PackToCoreMethod = "PackToCore";
-		private const string UnpackFromCoreMethod = "UnpackFromCore";
-		private const string UnpackToCoreMethod = "UnpackToCore";
-
 		private readonly ExpressionConstruct _context;
 
 		/// <summary>
@@ -95,7 +89,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					);
 		}
 
-#warning TODO: MethodInfo -> Enum
 		/// <summary>
 		///		Creates the type of the delegate.
 		/// </summary>
@@ -108,30 +101,29 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <exception cref="InvalidOperationException">
 		///		<paramref name="method"/> is unknown.
 		/// </exception>
-		public static Type CreateDelegateType<TObject>( MethodInfo method )
+		public static Type CreateDelegateType<TObject>( SerializerMethod method )
 		{
-			switch ( method.Name )
+			switch ( method )
 			{
-				case PackToCoreMethod:
+				case SerializerMethod.PackToCore:
 				{
 					return typeof( Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Packer, TObject> );
 				}
-				case UnpackFromCoreMethod:
+				case SerializerMethod.UnpackFromCore:
 				{
 					return typeof( Func<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Unpacker, TObject> );
 				}
-				case UnpackToCoreMethod:
+				case SerializerMethod.UnpackToCore:
 				{
 					return typeof( Action<ExpressionCallbackMessagePackSerializer<TObject>, SerializationContext, Unpacker, TObject> );
 				}
 				default:
 				{
-					throw UnknownMethod( method );
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
 				}
 			}
 		}
 
-#warning TODO: MethodInfo -> Enum
 		/// <summary>
 		///		Gets the <see cref="ParameterExpression"/>s for specified method.
 		/// </summary>
@@ -140,25 +132,25 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		///		The <see cref="ParameterExpression"/>s for specified method.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public IEnumerable<ParameterExpression> GetParameters( MethodInfo method )
+		public IEnumerable<ParameterExpression> GetParameters( SerializerMethod method )
 		{
 			yield return this._this.Expression as ParameterExpression;
 			yield return this._context.Expression as ParameterExpression;
 
-			switch ( method.Name )
+			switch ( method )
 			{
-				case PackToCoreMethod:
+				case SerializerMethod.PackToCore:
 				{
 					yield return this.Packer.Expression as ParameterExpression;
 					yield return this.PackToTarget.Expression as ParameterExpression;
 					break;
 				}
-				case UnpackFromCoreMethod:
+				case SerializerMethod.UnpackFromCore:
 				{
 					yield return this.Unpacker.Expression as ParameterExpression;
 					break;
 				}
-				case UnpackToCoreMethod:
+				case SerializerMethod.UnpackToCore:
 				{
 					yield return this.Unpacker.Expression as ParameterExpression;
 					yield return this.UnpackToTarget.Expression as ParameterExpression;
@@ -166,46 +158,40 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				}
 				default:
 				{
-					throw UnknownMethod( method );
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
 				}
 			}
 		}
 
-#warning TODO: MethodInfo -> Enum
 		/// <summary>
 		///		Sets the specified delegate object for specified method.
 		/// </summary>
 		/// <param name="method">The method to be created.</param>
 		/// <param name="delegate">The delegate which refers the generated method.</param>
-		public void SetDelegate( MethodInfo method, Delegate @delegate )
+		public void SetDelegate( SerializerMethod method, Delegate @delegate )
 		{
-			switch ( method.Name )
+			switch ( method )
 			{
-				case PackToCoreMethod:
+				case SerializerMethod.PackToCore:
 				{
 					this._packToCore = @delegate;
 					break;
 				}
-				case UnpackFromCoreMethod:
+				case SerializerMethod.UnpackFromCore:
 				{
 					this._unpackFromCore = @delegate;
 					break;
 				}
-				case UnpackToCoreMethod:
+				case SerializerMethod.UnpackToCore:
 				{
 					this._unpackToCore = @delegate;
 					break;
 				}
 				default:
 				{
-					throw UnknownMethod( method );
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
 				}
 			}
-		}
-
-		private static Exception UnknownMethod( MethodInfo method )
-		{
-			return new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Unknown method '{0}'.", method ) );
 		}
 
 		/// <summary>
