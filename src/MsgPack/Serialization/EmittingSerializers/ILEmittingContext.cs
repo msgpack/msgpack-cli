@@ -19,37 +19,63 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
+	/// <summary>
+	///		Implements <see cref="SerializerGenerationContext{TConstruct}"/> for <see cref="ILEmittingSerializerBuilder{TContext,TObject}"/>.
+	/// </summary>
 	internal class ILEmittingContext : SerializerGenerationContext<ILConstruct>
 	{
-		internal static readonly Dictionary<Type, Action<TracingILGenerator>> ConversionInstructionMap =
-			new Dictionary<Type, Action<TracingILGenerator>>
-			{
-				{typeof( sbyte ), il => il.EmitConv_I1()},
-				{typeof( short ), il => il.EmitConv_I2()},
-				{typeof( int ), il => il.EmitConv_I4()},
-				{typeof( long ), il => il.EmitConv_I8()},
-				{typeof( IntPtr ), il => il.EmitConv_I()},
-				{typeof( byte ), il => il.EmitConv_U1()},
-				{typeof( ushort ), il => il.EmitConv_U2()},
-				{typeof( uint ), il => il.EmitConv_U4()},
-				{typeof( ulong ), il => il.EmitConv_U8()},
-				{typeof( UIntPtr ), il => il.EmitConv_U()},
-				{typeof( float ), il => il.EmitConv_R4()},
-				{typeof( double ), il => il.EmitConv_R8()}
-			};
-
+		/// <summary>
+		///		Gets or sets the <see cref="TracingILGenerator"/> to emit IL for current method.
+		/// </summary>
+		/// <value>
+		///		The <see cref="TracingILGenerator"/> to emit IL for current method.
+		/// </value>
 		internal TracingILGenerator IL { get; set; }
+
+		/// <summary>
+		///		Gets the type of the generating serializer.
+		/// </summary>
+		/// <value>
+		///		The type of the generating serializer.
+		/// </value>
 		internal Type SerializerType { get; private set; }
+
+		/// <summary>
+		///		Gets the <see cref="SerializerEmitter"/>.
+		/// </summary>
+		/// <value>
+		///		The <see cref="SerializerEmitter"/>.
+		/// </value>
 		internal SerializerEmitter Emitter { get; private set; }
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ILEmittingContext"/> class.
+		/// </summary>
+		/// <param name="serializationContext">The serialization context.</param>
+		/// <param name="targetType">
+		///		The type of the serializer target.
+		/// </param>
+		/// <param name="emitter">
+		///		The <see cref="SerializerEmitter"/> to be used.
+		/// </param>
+		/// <param name="packer">
+		///		The code construct which represents the argument for the packer.
+		///	</param>
+		/// <param name="packToTarget">
+		///		The code construct which represents the argument for the packing target object tree root.
+		/// </param>
+		/// <param name="unpacker">
+		///		The code construct which represents the argument for the unpacker.
+		/// </param>
+		/// <param name="unpackToTarget">
+		///		The code construct which represents the argument for the collection which will hold unpacked items.
+		/// </param>
 		public ILEmittingContext(
 			SerializationContext serializationContext,
 			Type targetType,
@@ -57,8 +83,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			ILConstruct packer,
 			ILConstruct packToTarget,
 			ILConstruct unpacker,
-			ILConstruct unpackToTaret 
-		) : base( serializationContext, packer, packToTarget, unpacker, unpackToTaret )
+			ILConstruct unpackToTarget 
+		) : base( serializationContext, packer, packToTarget, unpacker, unpackToTarget )
 		{
 			this.SerializerType = typeof( MessagePackSerializer<> ).MakeGenericType( targetType );
 			this.Emitter = emitter;

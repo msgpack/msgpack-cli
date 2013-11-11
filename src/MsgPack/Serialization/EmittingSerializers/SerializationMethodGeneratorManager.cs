@@ -28,9 +28,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// </summary>
 	internal abstract class SerializationMethodGeneratorManager
 	{
-		// TODO: Configurable
-		internal static SerializationMethodGeneratorOption DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.Fast;
-
 		/// <summary>
 		///		Get the appropriate <see cref="SerializationMethodGeneratorManager"/> for the current configuration.
 		/// </summary>
@@ -40,7 +37,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///	</returns>
 		public static SerializationMethodGeneratorManager Get()
 		{
-			return Get( DefaultSerializationMethodGeneratorOption );
+#if SILVERLIGHT
+			return Get( SerializationMethodGeneratorOption.Fast );
+#else
+			return Get( SerializerDebugging.DumpEnabled ? SerializationMethodGeneratorOption.CanDump : SerializationMethodGeneratorOption.Fast );
+#endif
 		}
 
 		/// <summary>
@@ -56,24 +57,21 @@ namespace MsgPack.Serialization.EmittingSerializers
 #if SILVERLIGHT
 			return DefaultSerializationMethodGeneratorManager.Fast;
 #else
-#warning TODO
-			return DefaultSerializationMethodGeneratorManager.CanDump;
-
-			//switch ( option )
-			//{
-			//	case SerializationMethodGeneratorOption.CanDump:
-			//	{
-			//		return DefaultSerializationMethodGeneratorManager.CanDump;
-			//	}
-			//	case SerializationMethodGeneratorOption.CanCollect:
-			//	{
-			//		return DefaultSerializationMethodGeneratorManager.CanCollect;
-			//	}
-			//	default:
-			//	{
-			//		return DefaultSerializationMethodGeneratorManager.Fast;
-			//	}
-			//}
+			switch ( option )
+			{
+				case SerializationMethodGeneratorOption.CanDump:
+				{
+					return DefaultSerializationMethodGeneratorManager.CanDump;
+				}
+				case SerializationMethodGeneratorOption.CanCollect:
+				{
+					return DefaultSerializationMethodGeneratorManager.CanCollect;
+				}
+				default:
+				{
+					return DefaultSerializationMethodGeneratorManager.Fast;
+				}
+			}
 #endif
 		}
 

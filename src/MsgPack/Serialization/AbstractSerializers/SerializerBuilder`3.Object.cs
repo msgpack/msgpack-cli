@@ -203,7 +203,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				construct =
 					this.EmitInvokeVoidMethod(
 						context,
-						context.PackingTarget,
+						context.PackToTarget,
 						typeof( TObject ).GetInterfaceMap( typeof( IPackable ) ).TargetMethods.Single(),
 						context.Packer,
 						this.MakeNullLiteral( context, typeof( PackingOptions ) )
@@ -260,7 +260,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								entries[ i ].Member.GetMemberValueType(),
 								entries[ i ].Contract.NilImplication,
 								entries[ i ].Member.ToString(),
-								this.EmitGetMemberValueExpression( context, context.PackingTarget, entries[ i ].Member )
+								this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member )
 							);
 				}
 			}
@@ -296,7 +296,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						entries[ i ].Member.GetMemberValueType(),
 						entries[ i ].Contract.NilImplication,
 						entries[ i ].Member.ToString(),
-						this.EmitGetMemberValueExpression( context, context.PackingTarget, entries[ i ].Member )
+						this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member )
 					);
 			}
 		}
@@ -340,7 +340,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						result,
 						this.EmitCreateNewObjectExpression(
 							context,
-							null, // reference type.
+							null, // reference contextType.
 							GetDefaultConstructor( typeof( TObject ) )
 						)
 					);
@@ -408,7 +408,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						result,
 						this.EmitCreateNewObjectExpression(
 							context,
-							null, // reference type
+							null, // reference contextType
 							GetDefaultConstructor( typeof( TObject ) )
 						)
 					);

@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -28,18 +27,18 @@ using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
+	/// <summary>
+	///		Implements common features for IL emitter based serializer builders.
+	/// </summary>
+	/// <typeparam name="TContext">The type of the code generation context.</typeparam>
+	/// <typeparam name="TObject">The type of the serialization target object.</typeparam>
 	internal abstract class ILEmittingSerializerBuilder<TContext, TObject> : SerializerBuilder<TContext, ILConstruct, TObject>
 		where TContext : ILEmittingContext
 	{
-		protected ILEmittingSerializerBuilder()
-			: this( "ILDynamicMethodHost", new Version() )
-		{
-		}
-
-		protected ILEmittingSerializerBuilder( string assemblyName, Version version )
-			: base( assemblyName, version )
-		{
-		}
+		/// <summary>
+		///		Initializes a new instance of the <see cref="ILEmittingSerializerBuilder{TContext, TObject}"/> class.
+		/// </summary>
+		protected ILEmittingSerializerBuilder() {}
 
 		protected override void EmitMethodPrologue( TContext context, MethodInfo metadata )
 		{
@@ -414,7 +413,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				ILConstruct.Composite( 
 					ILConstruct.Sequence( 
 						array.ContextType,
-						new ILConstruct[]
+						new []
 						{
 							array,
 							ILConstruct.Instruction( 
@@ -540,7 +539,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct EmitStringSwitchStatement( TContext context, ILConstruct target, IDictionary<string, ILConstruct> cases )
 		{
-			// Simply if statements
+			// Simple if statements
 			ILConstruct @else = null;
 			foreach ( var @case in cases )
 			{

@@ -61,15 +61,6 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
-
-			/*
-			 * Core2 Duo 6300 1.83GHz Windows 7 x64:
-			 * CanCollect : 4.35 sec
-			 * CanDump    : 4.18 sec
-			 * Fast       : 3.43 sec
-			 * 
-			 */
-			SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanDump;
 		}
 
 		[TearDown]

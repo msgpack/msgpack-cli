@@ -101,7 +101,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						itemTypes[ i ],
 						context.Packer,
-						context.PackingTarget,
+						context.PackToTarget,
 						propertyInvocationChain
 					);
 
@@ -225,7 +225,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				currentTuple =
 					this.EmitCreateNewObjectExpression(
 						context,
-						null, // Tuple is reference type.
+						null, // Tuple is reference contextType.
 						tupleTypeList[ nest ].GetConstructors().Single(),
 						currentTuple == null
 							? items.ToArray()

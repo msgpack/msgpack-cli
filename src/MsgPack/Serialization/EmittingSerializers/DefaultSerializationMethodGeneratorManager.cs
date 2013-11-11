@@ -20,7 +20,6 @@
 
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
@@ -49,7 +48,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		public static DefaultSerializationMethodGeneratorManager CanCollect
 		{
-			get { return DefaultSerializationMethodGeneratorManager._canCollect; }
+			get { return _canCollect; }
 		}
 
 		private static DefaultSerializationMethodGeneratorManager _canDump = new DefaultSerializationMethodGeneratorManager( true, false, null );
@@ -59,7 +58,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		public static DefaultSerializationMethodGeneratorManager CanDump
 		{
-			get { return DefaultSerializationMethodGeneratorManager._canDump; }
+			get { return _canDump; }
 		}
 #endif
 
@@ -70,7 +69,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		public static DefaultSerializationMethodGeneratorManager Fast
 		{
-			get { return DefaultSerializationMethodGeneratorManager._fast; }
+			get { return _fast; }
 		}
 
 		internal static void Refresh()
@@ -157,7 +156,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				dedicatedAssemblyBuilder.SetCustomAttribute(
 					new CustomAttributeBuilder(
+// ReSharper disable AssignNullToNotNullAttribute
 						typeof( DebuggableAttribute ).GetConstructor( new[] { typeof( DebuggableAttribute.DebuggingModes ) } ),
+// ReSharper restore AssignNullToNotNullAttribute
 						new object[] { DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints }
 					)
 				);
@@ -165,14 +166,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
+// ReSharper disable AssignNullToNotNullAttribute
 					typeof( System.Runtime.CompilerServices.CompilationRelaxationsAttribute ).GetConstructor( new[] { typeof( int ) } ),
+// ReSharper restore AssignNullToNotNullAttribute
 					new object[] { 8 }
 				)
 			);
 #if !SILVERLIGHT && !NETFX_35
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
+// ReSharper disable AssignNullToNotNullAttribute
 					typeof( System.Security.SecurityRulesAttribute ).GetConstructor( new[] { typeof( System.Security.SecurityRuleSet ) } ),
+// ReSharper restore AssignNullToNotNullAttribute
 					new object[] { System.Security.SecurityRuleSet.Level2 },
 					new[] { typeof( System.Security.SecurityRulesAttribute ).GetProperty( "SkipVerificationInFullTrust" ) },
 					new object[] { true }
@@ -205,7 +210,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <returns>
 		///		New <see cref="SerializerEmitter"/> which corresponds to the specified <see cref="EmitterFlavor"/>.
 		/// </returns>
-		protected sealed override SerializerEmitter CreateEmitterCore( Type targetType, EmitterFlavor emitterFlavor )
+		protected override SerializerEmitter CreateEmitterCore( Type targetType, EmitterFlavor emitterFlavor )
 		{
 #if !WINDOWS_PHONE
 			switch ( emitterFlavor )
@@ -214,7 +219,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 				{
 					return new FieldBasedSerializerEmitter( this._module, this._isExternalAssemblyBuilder ? default( int? ) : Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
 				}
-				case EmitterFlavor.ContextBased:
 				default:
 				{
 					return new ContextBasedSerializerEmitter( targetType );

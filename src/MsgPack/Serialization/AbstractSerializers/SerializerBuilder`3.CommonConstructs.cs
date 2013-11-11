@@ -31,19 +31,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 {
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
-		protected static readonly TConstruct Unit = null;
-		// TODO: Arrays.Empty
 		private static readonly TConstruct[] NoConstructs = new TConstruct[ 0 ];
-
-		protected class ForLoopContext
-		{
-			public TConstruct Counter { get; private set; }
-
-			public ForLoopContext( TConstruct counter )
-			{
-				this.Counter = counter;
-			}
-		}
 
 		private void BeginPackToMethod( TContext context )
 		{
@@ -396,6 +384,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct getCollection;
 			CollectionTraits traits;
 			FieldInfo asField;
+// ReSharper disable RedundantIfElseBlock
 			if ( ( asField = member as FieldInfo ) != null )
 			{
 				if ( !asField.IsInitOnly )
@@ -406,9 +395,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				getCollection = this.EmitGetFieldExpression( context, instance, asField );
 				traits = asField.FieldType.GetCollectionTraits();
 			}
-			// ReSharper disable RedundantIfElseBlock
 			else
-			// ReSharper restore RedundantIfElseBlock
 			{
 				var asProperty = member as PropertyInfo;
 #if DEBUG
@@ -422,6 +409,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				getCollection = this.EmitGetPropretyExpression( context, instance, asProperty );
 				traits = asProperty.PropertyType.GetCollectionTraits();
 			}
+// ReSharper restore RedundantIfElseBlock
 
 			// use Add(T) for appendable collection elementType read only member.
 
@@ -465,6 +453,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context,
 							traits,
 							value,
+// ReSharper disable ImplicitlyCapturedClosure
 							current =>
 								this.EmitAppendDictionaryItem(
 									context,
@@ -488,6 +477,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 									),
 									false
 								)
+// ReSharper restore ImplicitlyCapturedClosure
 						);
 				}
 				default:
@@ -1146,7 +1136,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								disposable,
 								disposableType.GetMethod( "Dispose", Type.EmptyTypes )
 							),
-							Unit
+							null
 						)
 					)
 				);
@@ -1263,6 +1253,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( traits.AddMethod == null )
 			{
+// ReSharper disable RedundantIfElseBlock
 				if ( member != null )
 				{
 					throw new SerializationException(
@@ -1284,6 +1275,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						)
 					);
 				}
+// ReSharper restore RedundantIfElseBlock
 			}
 
 			return
@@ -1293,6 +1285,36 @@ namespace MsgPack.Serialization.AbstractSerializers
 					traits.AddMethod,
 					unpackedItem
 				);
+		}
+		
+		private TConstruct EmitAppendDictionaryItem( TContext context, CollectionTraits traits, TConstruct dictionary, Type keyType, TConstruct key, Type valueType, TConstruct value, bool withBoxing )
+		{
+			return
+				this.EmitInvokeVoidMethod(
+					context,
+					dictionary,
+					traits.AddMethod,
+					withBoxing
+					? this.EmitBoxExpression( context, keyType, key )
+					: key,
+					withBoxing
+					? this.EmitBoxExpression( context, valueType, value )
+					: value
+				);
+		}
+
+		private static void GetDictionaryKeyValueType( Type elementType, out Type keyType, out Type valueType )
+		{
+			if ( elementType == typeof( DictionaryEntry ) )
+			{
+				keyType = typeof( object );
+				valueType = typeof( object );
+			}
+			else
+			{
+				keyType = elementType.GetGenericArguments()[ 0 ];
+				valueType = elementType.GetGenericArguments()[ 1 ];
+			}
 		}
 
 		/// <summary>
@@ -1333,5 +1355,25 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			return ctor;
 		}
+
+		/// <summary>
+		///		Represents for-loop context information.
+		/// </summary>
+		protected class ForLoopContext
+		{
+			/// <summary>
+			///		Gets the counter variable (<c>i</c>).
+			/// </summary>
+			/// <value>
+			///		The counter variable.
+			/// </value>
+			public TConstruct Counter { get; private set; }
+
+			public ForLoopContext( TConstruct counter )
+			{
+				this.Counter = counter;
+			}
+		}
+
 	}
 }

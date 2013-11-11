@@ -25,7 +25,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 #endif
 using System.Linq;
-using System.Linq.Expressions;
 #if NETFX_CORE
 using System.Reflection;
 #endif
@@ -38,8 +37,6 @@ namespace MsgPack
 	/// </summary>
 	public static class PackerUnpackerExtensions
 	{
-		private static readonly Type[] _messagePackSerializer_Create_ParameterTypes = new[] { typeof( SerializationContext ) };
-
 		/// <summary>
 		///		Packs specified value with the default context.
 		/// </summary>
@@ -97,21 +94,36 @@ namespace MsgPack
 
 		private static void PackCore<T>( Packer source, T value, SerializationContext context )
 		{
+// ReSharper disable CompareNonConstrainedGenericWithNull
 			if ( value == null )
+// ReSharper restore CompareNonConstrainedGenericWithNull
 			{
 				source.PackNull();
 				return;
 			}
 
-			if ( typeof( T ) != typeof( MessagePackObject ) && typeof( IPackable ).IsAssignableFrom( typeof( T ) ) )
+			var asPackable = value as IPackable;
+			if ( asPackable != null )
 			{
-				( value as IPackable ).PackToMessage( source, new PackingOptions() );
+				asPackable.PackToMessage( source, new PackingOptions() );
 				return;
 			}
 
 			context.GetSerializer<T>().PackTo( source, value );
 		}
 
+		/// <summary>
+		///		Packs specified collection with the default context.
+		/// </summary>
+		/// <typeparam name="T">The type of the value.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="items">The collection to be serialized.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize the item of <paramref name="items"/>.
+		/// </exception>
 		public static void Pack<T>( this Packer source, IEnumerable<T> items )
 		{
 			if ( source == null )
@@ -124,6 +136,20 @@ namespace MsgPack
 			PackCore( source, items, SerializationContext.Default );
 		}
 
+		/// <summary>
+		///		Packs specified value with the specified context.
+		/// </summary>
+		/// <typeparam name="T">The type of the value.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="items">The collection to be serialized.</param>
+		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		///		Or <paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize the item of <paramref name="items"/>.
+		/// </exception>
 		public static void Pack<T>( this Packer source, IEnumerable<T> items, SerializationContext context )
 		{
 			if ( source == null )
@@ -149,7 +175,9 @@ namespace MsgPack
 				return;
 			}
 
+// ReSharper disable SuspiciousTypeConversion.Global
 			var asPackable = items as IPackable;
+// ReSharper restore SuspiciousTypeConversion.Global
 			if ( asPackable != null )
 			{
 				asPackable.PackToMessage( source, new PackingOptions() );

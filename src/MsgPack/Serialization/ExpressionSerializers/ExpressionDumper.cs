@@ -724,7 +724,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			if ( node.Object == null )
 			{
-				this._writer.Write( node.Method.DeclaringType.Name );
+				if ( node.Method.DeclaringType != null )
+				{
+					this._writer.Write( node.Method.DeclaringType.Name );
+				}
 			}
 			else
 			{
@@ -1119,7 +1122,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #if DEBUG
 #if !NETFX_CORE
 			Type expressionType = node.GetType();
-			while ( expressionType.IsNotPublic )
+			while ( expressionType != null && expressionType.IsNotPublic )
 			{
 				expressionType = expressionType.BaseType;
 			}
@@ -1131,7 +1134,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 #endif
 
-			throw new NotImplementedException( String.Format( CultureInfo.CurrentCulture, "{0}(NodeType:{1})", expressionType.Name, node.NodeType ) );
+			throw new NotImplementedException( String.Format( CultureInfo.CurrentCulture, "{0}(NodeType:{1})", expressionType, node.NodeType ) );
 #else
 			this._writer.Write( node );
 #endif

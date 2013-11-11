@@ -21,11 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-
-using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -55,15 +54,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <param name="targetType">Type of the serialization target.</param>
 		/// <param name="isDebuggable">Set to <c>true</c> when <paramref name="host"/> is debuggable.</param>
 		public FieldBasedSerializerEmitter( ModuleBuilder host, int? sequence, Type targetType, bool isDebuggable )
-			: base()
 		{
 			Contract.Requires( host != null );
 			Contract.Requires( targetType != null );
 
 			string typeName =
 #if !NETFX_35
- String.Join(
-					Type.Delimiter.ToString(),
+				 String.Join(
+					Type.Delimiter.ToString( CultureInfo.InvariantCulture ),
 					typeof( SerializerEmitter ).Namespace,
 					"Generated",
 					IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" + sequence
@@ -96,7 +94,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
 					CallingConventions.HasThis,
 					typeof( void ),
-					new Type[] { typeof( Packer ), targetType }
+					new [] { typeof( Packer ), targetType }
 				);
 
 			this._unpackFromMethodBuilder =
@@ -108,8 +106,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 					UnpackFromCoreParameterTypes
 				);
 
-			this._typeBuilder.DefineMethodOverride( this._packMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._packMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-			this._typeBuilder.DefineMethodOverride( this._unpackFromMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._unpackFromMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+			var baseType = this._typeBuilder.BaseType;
+#if DEBUG
+			Contract.Assert( baseType != null, "baseType != null" );
+#endif
+			this._typeBuilder.DefineMethodOverride( this._packMethodBuilder, baseType.GetMethod( this._packMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
+			this._typeBuilder.DefineMethodOverride( this._unpackFromMethodBuilder, baseType.GetMethod( this._unpackFromMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
 			this._serializers = new Dictionary<RuntimeTypeHandle, FieldBuilder>();
 			this._isDebuggable = isDebuggable;
 
@@ -120,13 +122,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		///		Gets the IL generator to implement <see cref="MessagePackSerializer{T}.PackToCore"/> overrides.
 		/// </summary>
 		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		///		The IL generator to implement <see cref="MessagePackSerializer{T}.PackToCore"/> overrides.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public sealed override TracingILGenerator GetPackToMethodILGenerator()
+		public override TracingILGenerator GetPackToMethodILGenerator()
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
@@ -137,13 +139,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		///		Gets the IL generator to implement <see cref="MessagePackSerializer{T}.UnpackFromCore"/> overrides.
 		/// </summary>
 		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		///		The IL generator to implement <see cref="MessagePackSerializer{T}.UnpackFromCore"/> overrides.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public sealed override TracingILGenerator GetUnpackFromMethodILGenerator()
+		public override TracingILGenerator GetUnpackFromMethodILGenerator()
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
@@ -154,12 +156,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		///		Gets the IL generator to implement <see cref="MessagePackSerializer{T}.UnpackToCore"/> overrides.
 		/// </summary>
 		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		///		The IL generator to implement <see cref="MessagePackSerializer{T}.UnpackToCore"/> overrides.
 		/// </returns>
-		public sealed override TracingILGenerator GetUnpackToMethodILGenerator()
+		public override TracingILGenerator GetUnpackToMethodILGenerator()
 		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
@@ -174,9 +176,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 						MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final,
 						CallingConventions.HasThis,
 						null,
-						new Type[] { typeof( Unpacker ), this._unpackFromMethodBuilder.ReturnType }
+						new [] { typeof( Unpacker ), this._unpackFromMethodBuilder.ReturnType }
 					);
 
+#if DEBUG
+				Contract.Assert( this._typeBuilder.BaseType != null, "this._typeBuilder.BaseType != null" );
+#endif
 				this._typeBuilder.DefineMethodOverride( this._unpackToMethodBuilder, this._typeBuilder.BaseType.GetMethod( this._unpackToMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
 			}
 
@@ -186,11 +191,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Creates the serializer type built now and returns its constructor.
 		/// </summary>
+		/// <typeparam name="T">The type of serialization target.</typeparam>
 		/// <returns>
 		///		Newly built <see cref="MessagePackSerializer{T}"/> type constructor.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public sealed override Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>()
+		public override Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
 			if ( !this._typeBuilder.IsCreated() )
 			{
@@ -235,6 +241,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il.MarkLabel( endExpression );
 					il.Emit( OpCodes.Call, Metadata._SerializationContext.CompatibilityOptionsProperty.GetGetMethod() );
 					il.Emit( OpCodes.Call, Metadata._SerializationCompatibilityOptions.PackerCompatibilityOptionsProperty.GetGetMethod() );
+#if DEBUG
+					Contract.Assert( this._typeBuilder.BaseType != null, "this._typeBuilder.BaseType != null" );
+#endif
 					il.Emit(
 						OpCodes.Call,
 						this._typeBuilder.BaseType.GetConstructor(
@@ -259,6 +268,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			var ctor = this._typeBuilder.CreateType().GetConstructor( _constructorParameterTypes );
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
+#if DEBUG
+			Contract.Assert( ctor != null, "ctor != null" );
+#endif
 			return
 				Expression.Lambda<Func<SerializationContext, MessagePackSerializer<T>>>(
 					Expression.New(
@@ -279,7 +291,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		The 2nd argument should be argument index of the serializer holder.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public sealed override Action<TracingILGenerator, int> RegisterSerializer( Type targetType )
+		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType )
 		{
 			if ( this._typeBuilder.IsCreated() )
 			{

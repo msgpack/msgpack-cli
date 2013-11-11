@@ -221,41 +221,5 @@ namespace MsgPack.Serialization
 		}
 
 		// TODO: Generate CodeDOM
-
-		/// <summary>
-		///		Defines non-generic interface of actual generic serializer builder.
-		/// </summary>
-		private abstract class Builder
-		{
-			protected Builder() { }
-
-			/// <summary>
-			///		Generates serializers using a specified assembly builder.
-			/// </summary>
-			/// <param name="context">The dedicated <see cref="SerializationContext"/>.</param>
-			/// <param name="generatorManager">The dedicated <see cref="SerializationMethodGeneratorManager"/>.</param>
-			public abstract void GenerateSerializerTo( SerializationContext context, SerializationMethodGeneratorManager generatorManager );
-		}
-
-		/// <summary>
-		///		Actual generic serializer builder.
-		/// </summary>
-		/// <typeparam name="T">The type of root type.</typeparam>
-		private class Builder<T> : Builder
-		{
-			public Builder() { }
-
-			/// <summary>
-			///		Generates the assembly and saves it to current directory.
-			/// </summary>
-			/// <param name="context">The dedicated <see cref="SerializationContext"/>.</param>
-			/// <param name="generatorManager">The dedicated <see cref="SerializationMethodGeneratorManager"/>.</param>
-			public override void GenerateSerializerTo( SerializationContext context, SerializationMethodGeneratorManager generatorManager )
-			{
-				var builder = context.SerializationMethod == SerializationMethod.Array ? new ArrayEmittingSerializerBuilder<T>( context ) as EmittingSerializerBuilder<T> : new MapEmittingSerializerBuilder<T>( context );
-				builder.GeneratorManager = generatorManager;
-				builder.CreateSerializer();
-			}
-		}
 	}
 }

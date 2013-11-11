@@ -52,12 +52,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						typeof( void ),
 						this.EmitPutMapHeaderExpression(
-							context, this.EmitGetCollectionCountExpression( context, context.PackingTarget, traits )
+							context, this.EmitGetCollectionCountExpression( context, context.PackToTarget, traits )
 						),
 						this.EmitForEachLoop(
 							context,
 							traits,
-							context.PackingTarget,
+							context.PackToTarget,
 							keyValuePair =>
 								this.EmitPackKeyValuePair(
 									context,
@@ -334,36 +334,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 					),
 					unpacker
 				);
-		}
-
-		private TConstruct EmitAppendDictionaryItem( TContext context, CollectionTraits traits, TConstruct dictionary, Type keyType, TConstruct key, Type valueType, TConstruct value, bool withBoxing )
-		{
-			return
-				this.EmitInvokeVoidMethod(
-					context,
-					dictionary,
-					traits.AddMethod,
-					withBoxing
-					? this.EmitBoxExpression( context, keyType, key )
-					: key,
-					withBoxing
-					? this.EmitBoxExpression( context, valueType, value )
-					: value
-				);
-		}
-
-		private static void GetDictionaryKeyValueType( Type elementType, out Type keyType, out Type valueType )
-		{
-			if ( elementType == typeof( DictionaryEntry ) )
-			{
-				keyType = typeof( object );
-				valueType = typeof( object );
-			}
-			else
-			{
-				keyType = elementType.GetGenericArguments()[ 0 ];
-				valueType = elementType.GetGenericArguments()[ 1 ];
-			}
 		}
 	}
 }

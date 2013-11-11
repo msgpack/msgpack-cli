@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,15 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-#if SILVERLIGHT || NETFX_35
-using System.Collections.Generic;
-#else
-using System.Collections.Concurrent;
-#endif
 using System.Diagnostics.Contracts;
-#if NETFX_CORE
-using System.Linq.Expressions;
-#endif
 #if !NETFX_CORE
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.EmittingSerializers;
@@ -54,7 +46,7 @@ namespace MsgPack.Serialization
 		{
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
-			return MessagePackSerializer.Create<T>( SerializationContext.Default );
+			return Create<T>( SerializationContext.Default );
 		}
 
 		/// <summary>
@@ -80,7 +72,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
 			//Func<SerializationContext, SerializerBuilder<T>> builderProvider;
-			ISerializerInstanceGenerator<T> builder;
+			ISerializerBuilder<T> builder;
 #if NETFX_CORE
 			builder = new ExpressionTreeSerializerBuilder<T>();
 #else
@@ -109,14 +101,6 @@ namespace MsgPack.Serialization
 			return new AutoMessagePackSerializer<T>( context, builder );
 		}
 
-#if !SILVERLIGHT && !NETFX_35
-#warning Use context.
-		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
-#else
-		private static readonly object _syncRoot = new object();
-		private static readonly Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
-#endif
-
 		/// <summary>
 		///		Creates new <see cref="IMessagePackSerializer"/> instance with <see cref="SerializationContext.Default"/>.
 		/// </summary>
@@ -132,7 +116,7 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public static IMessagePackSingleObjectSerializer Create( Type targetType )
 		{
-			return MessagePackSerializer.Create( targetType, SerializationContext.Default );
+			return Create( targetType, SerializationContext.Default );
 		}
 
 		/// <summary>
@@ -165,62 +149,7 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
-#if NETFX_CORE
-			var factory =
-				_creatorCache.GetOrAdd(
-					targetType,
-					type =>
-					{
-						var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
-						// Utilize covariance of delegate.
-						return
-							Expression.Lambda<Func<SerializationContext, IMessagePackSingleObjectSerializer>>(
-								Expression.Call(
-									null,
-									Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type ),
-									contextParameter
-								),
-								contextParameter
-							).Compile();
-					}
-				);
-#elif SILVERLIGHT || NETFX_35
-			Func<SerializationContext, IMessagePackSingleObjectSerializer> factory;
-
-			lock ( _syncRoot )
-			{
-				_creatorCache.TryGetValue( targetType, out factory );
-			}
-
-			if ( factory == null )
-			{
-				// Utilize covariance of delegate.
-				factory =
-					Delegate.CreateDelegate(
-						typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
-						Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( targetType )
-						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>;
-
-				Contract.Assert( factory != null );
-
-				lock ( _syncRoot )
-				{
-					_creatorCache[ targetType ] = factory;
-				}
-			}
-#else
-			var factory =
-				_creatorCache.GetOrAdd(
-					targetType,
-					type =>
-						// Utilize covariance of delegate.
-						Delegate.CreateDelegate(
-							typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
-							Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type )
-						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>
-				);
-#endif
-			return factory( context );
+			return context.GetSerializer( targetType );
 		}
 	}
 }

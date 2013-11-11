@@ -31,14 +31,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
 	{
-		public SerializerBuilderContract( string assemblyName, Version version )
-			: base( assemblyName, version )
-		{
-			Contract.Requires( !String.IsNullOrEmpty( assemblyName ) );
-			Contract.Requires( version != null );
-		}
+		public SerializerBuilderContract() { }
 
-		protected override TContext CreateGenerationContextForSerializerCreation( SerializationContext context )
+		protected override TContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
 			Contract.Requires( context != null );
 			Contract.Ensures( Contract.Result<TContext>() != null );

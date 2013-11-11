@@ -57,8 +57,6 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
-
-			SerializationMethodGeneratorManager.DefaultSerializationMethodGeneratorOption = SerializationMethodGeneratorOption.CanDump;
 		}
 
 		[TearDown]
@@ -118,7 +116,7 @@ namespace MsgPack.Serialization
 		}
 #endif
 
-		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerInstanceGenerator<DirectoryItem> generator )
+		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder<DirectoryItem> generator )
 		{
 			var root = new DirectoryItem() { Name = "/" };
 			root.Directories =

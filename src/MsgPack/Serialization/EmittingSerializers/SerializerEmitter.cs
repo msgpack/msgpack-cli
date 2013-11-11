@@ -19,11 +19,8 @@
 #endregion -- License Terms --
 
 using System;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
+
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -71,31 +68,31 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		///		Gets the IL generator to implement <see cref="MessagePackSerializer{T}.PackToCore"/> overrides.
 		/// </summary>
 		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		///		The IL generator to implement <see cref="MessagePackSerializer{T}.PackToCore"/> overrides.
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		public abstract TracingILGenerator GetPackToMethodILGenerator();
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		///		Gets the IL generator to implement <see cref="MessagePackSerializer{T}.UnpackFromCore"/> overrides.
 		/// </summary>
 		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		///		The IL generator to implement <see cref="MessagePackSerializer{T}.UnpackFromCore"/> overrides.
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		public abstract TracingILGenerator GetUnpackFromMethodILGenerator();
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		///		Gets the IL generator to implement <see cref="MessagePackSerializer{T}.UnpackToCore"/> overrides.
 		/// </summary>
 		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		///		The IL generator to implement <see cref="MessagePackSerializer{T}.UnpackToCore"/> overrides.
 		/// </returns>
 		/// <remarks>
-		///		When this method is called, <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> will be overridden.
+		///		When this method is called, <see cref="MessagePackSerializer{T}.UnpackToCore"/> will be overridden.
 		///		This value will not be <c>null</c>.
 		/// </remarks>
 		public abstract TracingILGenerator GetUnpackToMethodILGenerator();

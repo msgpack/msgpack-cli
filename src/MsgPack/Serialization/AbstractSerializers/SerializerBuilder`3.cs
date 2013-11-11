@@ -20,54 +20,35 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
 using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
-	internal interface ISerializerCodeGenerator
-	{
-		void BuildSerializerCode( ISerializerCodeGenerationContext context );
-		ISerializerCodeGenerationContext CreateGenerationContextForCodeGeneration( SerializationContext context );
-	}
-
-	internal interface ISerializerInstanceGenerator<TObject>
-	{
-		MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context );
-	}
-
-	internal interface ICodeConstruct
-	{
-		Type ContextType { get; }
-	}
-
+	/// <summary>
+	///		Defines common features for serializer builder.
+	/// </summary>
+	/// <typeparam name="TContext">The type of the context which holds global information for generating serializer.</typeparam>
+	/// <typeparam name="TConstruct">The type of the construct which abstracts code constructs.</typeparam>
+	/// <typeparam name="TObject">The type of the object which will be target of the generating serializer.</typeparam>
 	[ContractClass( typeof( SerializerBuilderContract<,,> ) )]
-	internal abstract partial class SerializerBuilder<TContext, TConstruct, TObject> : ISerializerCodeGenerator, ISerializerInstanceGenerator<TObject>
+	internal abstract partial class SerializerBuilder<TContext, TConstruct, TObject> : ISerializerCodeGenerator, ISerializerBuilder<TObject>
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
 	{
-		private readonly string _assemblyName;
+		/// <summary>
+		///		Initializes a new instance of the <see cref="SerializerBuilder{TContext, TConstruct, TObject}"/> class.
+		/// </summary>
+		protected SerializerBuilder() { }
 
-		protected string AssemblyName
-		{
-			get { return this._assemblyName; }
-		}
-
-		private readonly Version _version;
-
-		protected Version Version
-		{
-			get { return this._version; }
-		}
-
-		protected SerializerBuilder( string assemblyName, Version version )
-		{
-			this._assemblyName = assemblyName;
-			this._version = version;
-		}
-
+		/// <summary>
+		///		Builds the serializer and returns its new instance.
+		/// </summary>
+		/// <param name="context">The context information.</param>
+		/// <returns>
+		///		Newly created serializer object.
+		///		This value will not be <c>null</c>.
+		/// </returns>
 		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context )
 		{
 			if ( typeof( TObject ).IsArray )
@@ -78,7 +59,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					) as MessagePackSerializer<TObject>;
 			}
 
-			var codeGenerationContext = this.CreateGenerationContextForSerializerCreation( context );
+			var codeGenerationContext = this.CreateCodeGenerationContextForSerializerCreation( context );
 			this.BuildSerializer( codeGenerationContext );
 			Func<SerializationContext, MessagePackSerializer<TObject>> constructor = this.CreateSerializerConstructor( codeGenerationContext );
 
@@ -102,43 +83,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 			throw SerializationExceptions.NewTypeCannotSerialize( typeof( TObject ) );
 		}
 
-		protected abstract Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor(
-			TContext codeGenerationContext
-		);
+		/// <summary>
+		///		Creates the code generation context for serializer instance creation.
+		/// </summary>
+		/// <param name="context">The serialization context.</param>
+		/// <returns>
+		///		The code generation context for serializer instance creation.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		protected abstract TContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context );
 
-		protected abstract TContext CreateGenerationContextForSerializerCreation( SerializationContext context );
-
-
-		public ISerializerCodeGenerationContext CreateGenerationContextForCodeGeneration( SerializationContext context )
-		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			return this.CreateGenerationContextForCodeGenerationCore( context );
-		}
-
-		protected virtual ISerializerCodeGenerationContext CreateGenerationContextForCodeGenerationCore( SerializationContext context )
-		{
-			throw new NotSupportedException();
-		}
-
-		public void BuildSerializerCode( ISerializerCodeGenerationContext context )
-		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			this.BuildSerializerCodeCore( context );
-		}
-
-		protected virtual void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
-		{
-			throw new NotSupportedException();
-		}
-
+		/// <summary>
+		///		Builds the serializer and returns its new instance.
+		/// </summary>
+		/// <param name="context">The context information. This value will not be <c>null</c>.</param>
+		/// <returns>
+		///		Newly created serializer object.
+		///		This value will not be <c>null</c>.
+		/// </returns>
 		protected void BuildSerializer( TContext context )
 		{
 #if DEBUG
@@ -177,6 +139,111 @@ namespace MsgPack.Serialization.AbstractSerializers
 					break;
 				}
 			}
+		}
+
+
+		/// <summary>
+		///		Creates the serializer type and returns its constructor.
+		/// </summary>
+		/// <param name="codeGenerationContext">The code generation context.</param>
+		/// <returns>
+		///		<see cref="Func{T, TResult}"/> which refers newly created constructor.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		protected abstract Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor(
+			TContext codeGenerationContext
+		);
+
+		/// <summary>
+		///		Creates new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.
+		/// </summary>
+		/// <param name="context">The <see cref="SerializationContext"/>.</param>
+		/// <returns>
+		///		The new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		///		A type of <paramref name="context"/> is not valid.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This class does not support code generation.
+		/// </exception>
+		public ISerializerCodeGenerationContext CreateGenerationContextForCodeGeneration( SerializationContext context )
+		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			return this.CreateGenerationContextForCodeGenerationCore( context );
+		}
+
+		/// <summary>
+		///		In derived class, creates new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.
+		/// </summary>
+		/// <param name="context">The <see cref="SerializationContext"/>. This value will not be <c>null</c>.</param>
+		/// <returns>
+		///		The new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.
+		///		This value must not be <c>null</c>.
+		/// </returns>
+		/// <exception cref="ArgumentException">
+		///		A type of <paramref name="context"/> is not valid.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This class does not support code generation.
+		/// </exception>
+		protected virtual ISerializerCodeGenerationContext CreateGenerationContextForCodeGenerationCore( SerializationContext context )
+		{
+			throw new NotSupportedException();
+		}
+
+		/// <summary>
+		///		Builds the serializer code using specified code generation context.
+		/// </summary>
+		/// <param name="context">
+		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		This class does not support code generation.
+		/// </exception>
+		/// <remarks>
+		///		This method will not do anything when <see cref="ISerializerCodeGenerationContext.BuiltInSerializerExists"/> returns <c>true</c> for <typeparamref name="TObject"/>.
+		/// </remarks>
+		public void BuildSerializerCode( ISerializerCodeGenerationContext context )
+		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			if ( context.BuiltInSerializerExists( typeof( TObject ) ) )
+			{
+				// nothing to do.
+				return;
+			}
+
+			this.BuildSerializerCodeCore( context );
+		}
+
+		/// <summary>
+		///		In derived class, builds the serializer code using specified code generation context.
+		/// </summary>
+		/// <param name="context">
+		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
+		///		This value will not be <c>null</c>.
+		/// </param>
+		/// <exception cref="NotSupportedException">
+		///		This class does not support code generation.
+		/// </exception>
+		protected virtual void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
+		{
+			throw new NotSupportedException();
 		}
 	}
 }

@@ -24,55 +24,29 @@ using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
-	internal class AssemblyBuilderEmittingContext : ILEmittingContext
-	{
-		public AssemblyBuilderEmittingContext( SerializationContext context, Type targetType, SerializerEmitter emitter )
-			: base(
-				context,
-				targetType,
-				emitter,
-				ILConstruct.Argument( 1, typeof( Packer ), "packer" ),
-				ILConstruct.Argument( 2, targetType, "objectTree" ),
-				ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" ),
-				ILConstruct.Argument( 2, targetType, "collection" )
-			)
-		{
-		}
-	}
-
-	internal class AssemblyBuilderCodeGenerationContext : ISerializerCodeGenerationContext
-	{
-		public Version Version { get; set; }
-
-		private readonly SerializationContext _context;
-		private readonly SerializationMethodGeneratorManager _generatorManager;
-
-		public AssemblyBuilderCodeGenerationContext( SerializationContext context, SerializationMethodGeneratorManager generatorManager )
-		{
-			this._context = context;
-			this._generatorManager = generatorManager;
-		}
-
-		public AssemblyBuilderEmittingContext CreateEmittingContext( Type type, EmitterFlavor emitterFlavor )
-		{
-			return new AssemblyBuilderEmittingContext( this._context, type, this._generatorManager.CreateEmitter( type,emitterFlavor ) );
-		}
-
-	}
-
-
+	/// <summary>
+	///		An implementation of <see cref="SerializerBuilder{TContext,TConstruct,TObject}"/> with <see cref="AssemblyBuilder"/>.
+	/// </summary>
+	/// <typeparam name="TObject">The type of the serializing object.</typeparam>
 	internal class AssemblyBuilderSerializerBuilder<TObject> : ILEmittingSerializerBuilder<AssemblyBuilderEmittingContext, TObject>
 	{
 		private readonly AssemblyBuilder _predefinedAssemblyBuilder;
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="AssemblyBuilderSerializerBuilder{TObject}"/> class for instance creation.
+		/// </summary>
 		public AssemblyBuilderSerializerBuilder()
-			: base()
 		{
 			this._predefinedAssemblyBuilder = null;
 		}
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="AssemblyBuilderSerializerBuilder{TObject}"/> class for code generation.
+		/// </summary>
+		/// <param name="predefinedAssemblyBuilder">
+		///		The predefined <see cref="AssemblyBuilder"/> which holds generated serializer types.
+		///	</param>
 		public AssemblyBuilderSerializerBuilder( AssemblyBuilder predefinedAssemblyBuilder )
-			: base( predefinedAssemblyBuilder.GetName().Name, predefinedAssemblyBuilder.GetName().Version )
 		{
 			this._predefinedAssemblyBuilder = predefinedAssemblyBuilder;
 		}
@@ -91,7 +65,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override AssemblyBuilderEmittingContext CreateGenerationContextForSerializerCreation( SerializationContext context )
+		protected override AssemblyBuilderEmittingContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
 			return
 				new AssemblyBuilderEmittingContext(
@@ -118,9 +92,17 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
 		{
 			var asAssemblyBuilderCodeGenerationContext = context as AssemblyBuilderCodeGenerationContext;
+			if( asAssemblyBuilderCodeGenerationContext == null )
+			{
+				throw new ArgumentException(
+					"'context' was not created with CreateGenerationContextForCodeGeneration method.", 
+					"context" 
+				);
+			}
+
 			var emittingContext =
 				asAssemblyBuilderCodeGenerationContext.CreateEmittingContext(
-					typeof( TObject ), EmitterFlavor.FieldBased
+					typeof( TObject )
 				);
 
 			this.BuildSerializer( emittingContext );

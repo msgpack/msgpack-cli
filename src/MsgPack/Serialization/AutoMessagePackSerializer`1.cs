@@ -38,7 +38,7 @@ namespace MsgPack.Serialization
 		private readonly MessagePackSerializer<T> _underlying;
 
 		public AutoMessagePackSerializer(
-			SerializationContext context, ISerializerInstanceGenerator<T> builder )
+			SerializationContext context, ISerializerBuilder<T> builder )
 			: base( context.CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			var serializer = context.Serializers.Get<T>( context );
@@ -52,65 +52,6 @@ namespace MsgPack.Serialization
 			serializer = builder.BuildSerializerInstance( context );
 			Contract.Assert( serializer != null );
 			this._underlying = serializer;
-		}
-
-		/// <summary>
-		///		Initializes a new instance of the <see cref="AutoMessagePackSerializer&lt;T&gt;"/> class.
-		/// </summary>
-		[Obsolete]
-		public AutoMessagePackSerializer( SerializationContext context, Func<SerializationContext, SerializerBuilder<T>> builderProvider )
-			: base( context.CompatibilityOptions.PackerCompatibilityOptions )
-		{
-			Contract.Assert( context != null );
-
-			var serializer = context.Serializers.Get<T>( context );
-			if ( serializer != null )
-			{
-				this._underlying = serializer;
-				return;
-			}
-
-			var traits = typeof( T ).GetCollectionTraits();
-			switch ( traits.CollectionType )
-			{
-				case CollectionKind.Array:
-				{
-					serializer = builderProvider( context ).CreateArraySerializer();
-					break;
-				}
-				case CollectionKind.Map:
-				{
-					serializer = builderProvider( context ).CreateMapSerializer();
-					break;
-				}
-				case CollectionKind.NotCollection:
-				{
-					if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) || typeof( T ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
-						&& typeof( T ).GetIsPublic() && typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
-					{
-						serializer = builderProvider( context ).CreateTupleSerializer();
-					}
-					else
-					{
-						serializer = builderProvider( context ).CreateSerializer();
-					}
-					break;
-				}
-			}
-
-			if ( serializer != null )
-			{
-				if ( !context.Serializers.Register( serializer ) )
-				{
-					serializer = context.Serializers.Get<T>( context );
-					Contract.Assert( serializer != null );
-				}
-
-				this._underlying = serializer;
-				return;
-			}
-
-			throw SerializationExceptions.NewTypeCannotSerialize( typeof( T ) );
 		}
 
 		/// <summary>

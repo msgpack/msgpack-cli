@@ -25,7 +25,6 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 
 namespace MsgPack.Serialization
 {
@@ -37,6 +36,12 @@ namespace MsgPack.Serialization
 		[ThreadStatic]
 		private static bool _traceEnabled;
 
+		/// <summary>
+		///		Gets or sets a value indicating whether instruction/expression tracing is enabled or not.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if instruction/expression tracing is enabled; otherwise, <c>false</c>.
+		/// </value>
 		public static bool TraceEnabled
 		{
 			get { return _traceEnabled; }
@@ -46,6 +51,12 @@ namespace MsgPack.Serialization
 		[ThreadStatic]
 		private static bool _dumpEnabled;
 
+		/// <summary>
+		///		Gets or sets a value indicating whether IL dump is enabled or not.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if IL dump is enabled; otherwise, <c>false</c>.
+		/// </value>
 		public static bool DumpEnabled
 		{
 			get { return _dumpEnabled; }
@@ -55,6 +66,13 @@ namespace MsgPack.Serialization
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
 
+		/// <summary>
+		///		Gets the <see cref="TextWriter"/> for IL tracing.
+		/// </summary>
+		/// <value>
+		///		The <see cref="TextWriter"/> for IL tracing.
+		///		This value will not be <c>null</c>.
+		/// </value>
 		public static TextWriter ILTraceWriter
 		{
 			get
@@ -73,6 +91,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Traces the instruction.
+		/// </summary>
+		/// <param name="format">The format string.</param>
+		/// <param name="args">The args for formatting.</param>
 		public static void TraceInstruction( string format, params object[] args )
 		{
 			if ( !_traceEnabled )
@@ -83,6 +106,11 @@ namespace MsgPack.Serialization
 			_ilTraceWriter.WriteLine( format, args );
 		}
 
+		/// <summary>
+		///		Traces the specific event.
+		/// </summary>
+		/// <param name="format">The format string.</param>
+		/// <param name="args">The args for formatting.</param>
 		public static void TraceEvent( string format, params object[] args )
 		{
 			if ( !_traceEnabled )
@@ -93,6 +121,9 @@ namespace MsgPack.Serialization
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
 		}
 
+		/// <summary>
+		///		Flushes the trace data.
+		/// </summary>
 		public static void FlushTraceData()
 		{
 			if ( !_traceEnabled )
@@ -109,6 +140,10 @@ namespace MsgPack.Serialization
 		[ThreadStatic]
 		private static ModuleBuilder _moduleBuilder;
 
+		/// <summary>
+		///		Prepares instruction dump with specified <see cref="AssemblyBuilder"/>.
+		/// </summary>
+		/// <param name="assemblyBuilder">The assembly builder to hold instructions.</param>
 		public static void PrepareDump( AssemblyBuilder assemblyBuilder )
 		{
 			if ( _dumpEnabled )
@@ -120,6 +155,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Prepares the dump with dedicated internal <see cref="AssemblyBuilder"/>.
+		/// </summary>
 		public static void PrepareDump()
 		{
 			_assemblyBuilder =
@@ -132,7 +170,13 @@ namespace MsgPack.Serialization
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
 
-		public static TypeBuilder NewTypeBuilder( Type type )
+		/// <summary>
+		///		Creates the new type builder for the serializer.
+		/// </summary>
+		/// <param name="targetType">The serialization target type.</param>
+		/// <returns></returns>
+		/// <exception cref="System.InvalidOperationException">PrepareDump() was not called.</exception>
+		public static TypeBuilder NewTypeBuilder( Type targetType )
 		{
 			if ( _moduleBuilder == null )
 			{
@@ -140,9 +184,12 @@ namespace MsgPack.Serialization
 			}
 
 			return
-				_moduleBuilder.DefineType( IdentifierUtility.EscapeTypeName( type ) + "SerializerLogics" );
+				_moduleBuilder.DefineType( IdentifierUtility.EscapeTypeName( targetType ) + "SerializerLogics" );
 		}
 
+		/// <summary>
+		///		Takes dump of instructions.
+		/// </summary>
 		public static void Dump()
 		{
 			if ( _assemblyBuilder != null )
@@ -151,6 +198,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		/// <summary>
+		///		Resets debugging states.
+		/// </summary>
 		public static void Reset()
 		{
 			_assemblyBuilder = null;

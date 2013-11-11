@@ -30,39 +30,74 @@ using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
+	/// <summary>
+	///		Represents code construct for <see cref="ILEmittingSerializerBuilder{TContext,TObject}"/>s.
+	/// </summary>
 	internal abstract class ILConstruct : ICodeConstruct
 	{
-		public static class Any
-		{
-			// nop
-		}
-
 		public static readonly ILConstruct[] NoArguments = new ILConstruct[ 0 ];
 
-		private readonly Type _type;
+		private readonly Type _contextType;
 
+		/// <summary>
+		///		Gets the context type of this construct.
+		/// </summary>
+		/// <value>
+		///		The context type of this construct.
+		///		This value will not be <c>null</c>, but might be <see cref="Void" />.
+		/// </value>
+		/// <remarks>
+		///		A context type represents the type of the evaluation context.
+		/// </remarks>
 		public Type ContextType
 		{
-			get { return this._type; }
+			get { return this._contextType; }
 		}
 
+		/// <summary>
+		///		Gets a value indicating whether this instance is terminating.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if this instruction terminates method; otherwise, <c>false</c>.
+		/// </value>
 		public virtual bool IsTerminating
 		{
 			get { return false; }
 		}
 
-		protected ILConstruct( Type type )
+		/// <summary>
+		///		Initializes a new instance of the <see cref="ILConstruct"/> class.
+		/// </summary>
+		/// <param name="contextType">The type.</param>
+		protected ILConstruct( Type contextType )
 		{
-			this._type = type;
+			this._contextType = contextType;
 		}
 
+		/// <summary>
+		///		Evaluates this construct that is executing this construct as instruction.
+		/// </summary>
+		/// <param name="il">The <see cref="TracingILGenerator"/>.</param>
+		/// <exception cref="InvalidOperationException">
+		///		This construct does not have eval semantics.
+		/// </exception>
 		public virtual void Evaluate( TracingILGenerator il )
 		{
 			throw new InvalidOperationException(
 				String.Format( CultureInfo.CurrentCulture, "'{0}' does not define stand alone instruction.", this )
-				);
+			);
 		}
 
+		/// <summary>
+		///		Loads value from the storage represented by this construct.
+		/// </summary>
+		/// <param name="il">The <see cref="TracingILGenerator"/>.</param>
+		/// <param name="shouldBeAddress">
+		///		<c>true</c>, if value type value should be pushed its address instead of bits; otherwise, <c>false</c>.
+		/// </param>
+		/// <exception cref="InvalidOperationException">
+		///		This construct does not have load value semantics.
+		/// </exception>
 		public virtual void LoadValue( TracingILGenerator il, bool shouldBeAddress )
 		{
 			throw new InvalidOperationException(
@@ -70,6 +105,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 			);
 		}
 
+		/// <summary>
+		///		Stores value to the storage represented by this construct.
+		/// </summary>
+		/// <param name="il">The <see cref="TracingILGenerator"/>.</param>
+		/// <exception cref="InvalidOperationException">
+		///		This construct does not have store value semantics.
+		/// </exception>
 		public virtual void StoreValue( TracingILGenerator il )
 		{
 			throw new InvalidOperationException(
@@ -77,6 +119,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 			);
 		}
 
+		/// <summary>
+		///		Evaluates this construct as branch instruction.
+		/// </summary>
+		/// <param name="il">The <see cref="TracingILGenerator"/>.</param>
+		/// <param name="else">The <see cref="Label"/> which points the head of 'else' instructions.</param>
+		/// <exception cref="InvalidOperationException">
+		///		This construct does not have branch semantics.
+		/// </exception>
 		public virtual void Branch( TracingILGenerator il, Label @else )
 		{
 			throw new InvalidOperationException(
@@ -361,7 +411,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			public override string ToString()
 			{
-				return String.Format( CultureInfo.InvariantCulture, "Variable[{0}]: [{3}{4}]{1}({2})", this.ContextType, this._name, this._type, this._isLocal ? "local" : "arg", this._index );
+				return String.Format( CultureInfo.InvariantCulture, "Variable[{0}]: [{3}{4}]{1}({2})", this.ContextType, this._name, this._contextType, this._isLocal ? "local" : "arg", this._index );
 			}
 		}
 

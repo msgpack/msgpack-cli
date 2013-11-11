@@ -18,14 +18,9 @@
 //
 #endregion -- License Terms --
 
-// TODO: Flag of context
-#define DUMP
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -34,249 +29,19 @@ using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
-	internal sealed class ExpressionConstruct : ICodeConstruct
-	{
-		private readonly Expression _expression;
-
-		public Expression Expression
-		{
-			get { return this._expression; }
-		}
-
-		private readonly bool _isSignificantReference;
-
-		public bool IsSignificantReference
-		{
-			get { return this._isSignificantReference; }
-		}
-
-		public Type ContextType
-		{
-			get { return this._expression.Type; }
-		}
-
-		public ExpressionConstruct( Expression expression )
-			: this( expression, false )
-		{
-		}
-
-		public ExpressionConstruct( Expression expression, bool isSignificantReference )
-		{
-#if DEBUG
-			Contract.Assert( expression != null );
-#endif
-			this._expression = expression;
-			this._isSignificantReference = isSignificantReference;
-		}
-
-		public static implicit operator ExpressionConstruct( Expression expression )
-		{
-			return expression == null ? null : new ExpressionConstruct( expression );
-		}
-
-		public static implicit operator Expression( ExpressionConstruct construct )
-		{
-			return construct == null ? null : construct.Expression;
-		}
-
-		internal void ToString( System.IO.TextWriter textWriter )
-		{
-			this.ToString( textWriter, 0 );
-		}
-
-		private void ToString( System.IO.TextWriter textWriter, int indentLevel )
-		{
-			new ExpressionDumper( textWriter, indentLevel ).Visit( this.Expression );
-		}
-	}
-
-	internal sealed class ExpressionTreeContext : SerializerGenerationContext<ExpressionConstruct>
-	{
-		private const string PackToCoreMethod = "PackToCore";
-		private const string UnpackFromCoreMethod = "UnpackFromCore";
-		private const string UnpackToCoreMethod = "UnpackToCore";
-
-		private readonly ExpressionConstruct _context;
-
-		public ExpressionConstruct Context
-		{
-			get { return this._context; }
-		}
-
-		private readonly ExpressionConstruct _this;
-
-		public ExpressionConstruct This
-		{
-			get { return this._this; }
-		}
-
-		private Delegate _packToCore;
-		private Delegate _unpackFromCore;
-		private Delegate _unpackToCore;
-
-		public ExpressionTreeContext( SerializationContext serializationContext, ExpressionConstruct packer, ExpressionConstruct packingTarget, ExpressionConstruct unpacker, ExpressionConstruct unpackToTarget )
-			: base( serializationContext, packer, packingTarget, unpacker, unpackToTarget )
-		{
-			this._context = Expression.Parameter( typeof( SerializationContext ), "context" );
-			this._this =
-				Expression.Parameter(
-					typeof( ExpressionCallbackMessagePackSerializer<> ).MakeGenericType( packingTarget.ContextType ), "this"
-				);
-		}
-
-		public static Type CreateDelegateType<T>( MethodInfo method )
-		{
-			switch ( method.Name )
-			{
-				case PackToCoreMethod:
-				{
-					return typeof( Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> );
-				}
-				case UnpackFromCoreMethod:
-				{
-					return typeof( Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> );
-				}
-				case UnpackToCoreMethod:
-				{
-					return typeof( Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> );
-				}
-				default:
-				{
-					throw UnknownMethod( method );
-				}
-			}
-		}
-
-		private static Exception UnknownMethod( MethodInfo method )
-		{
-			return new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Unknown method '{0}'.", method ) );
-		}
-
-		public IEnumerable<ParameterExpression> GetParameters<T>( MethodInfo method )
-		{
-			yield return this._this.Expression as ParameterExpression;
-			yield return this._context.Expression as ParameterExpression;
-
-			switch ( method.Name )
-			{
-				case PackToCoreMethod:
-				{
-					yield return this.Packer.Expression as ParameterExpression;
-					yield return this.PackingTarget.Expression as ParameterExpression;
-					break;
-				}
-				case UnpackFromCoreMethod:
-				{
-					yield return this.Unpacker.Expression as ParameterExpression;
-					break;
-				}
-				case UnpackToCoreMethod:
-				{
-					yield return this.Unpacker.Expression as ParameterExpression;
-					yield return this.UnpackToTarget.Expression as ParameterExpression;
-					break;
-				}
-				default:
-				{
-					throw UnknownMethod( method );
-				}
-			}
-		}
-
-		public void SetDelegate( MethodInfo method, Delegate @delegate )
-		{
-			switch ( method.Name )
-			{
-				case PackToCoreMethod:
-				{
-					this._packToCore = @delegate;
-					break;
-				}
-				case UnpackFromCoreMethod:
-				{
-					this._unpackFromCore = @delegate;
-					break;
-				}
-				case UnpackToCoreMethod:
-				{
-					this._unpackToCore = @delegate;
-					break;
-				}
-				default:
-				{
-					throw UnknownMethod( method );
-				}
-			}
-		}
-
-		public Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> GetPackToCore<T>()
-		{
-			return this._packToCore as Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T>;
-		}
-
-		public Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> GetUnpackFromCore<T>()
-		{
-			return this._unpackFromCore as Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T>;
-		}
-
-		public Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> GetUnpackToCore<T>()
-		{
-			return this._unpackToCore as Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T>;
-		}
-	}
-
-	internal class ExpressionCallbackMessagePackSerializer<T> : MessagePackSerializer<T>
-	{
-		private readonly SerializationContext _context;
-		private readonly Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> _packToCore;
-		private readonly Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> _unpackFromCore;
-		private readonly Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> _unpackToCore;
-
-		public ExpressionCallbackMessagePackSerializer(
-			SerializationContext context,
-			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> packToCore,
-			Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackFromCore,
-			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackToCore
-		)
-			: base( context == null ? PackerCompatibilityOptions.Classic : context.CompatibilityOptions.PackerCompatibilityOptions )
-		{
-			this._context = context;
-			this._packToCore = packToCore;
-			this._unpackFromCore = unpackFromCore;
-			this._unpackToCore = unpackToCore;
-		}
-
-		protected internal override void PackToCore( Packer packer, T objectTree )
-		{
-			this._packToCore( this, this._context, packer, objectTree );
-		}
-
-		protected internal override T UnpackFromCore( Unpacker unpacker )
-		{
-			return this._unpackFromCore( this, this._context, unpacker );
-		}
-
-		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
-		{
-			if ( this._unpackToCore != null )
-			{
-				this._unpackToCore( this, this._context, unpacker, collection );
-			}
-			else
-			{
-				base.UnpackToCore( unpacker, collection );
-			}
-		}
-	}
-
-	class ExpressionTreeSerializerBuilder<TObject> : SerializerBuilder<ExpressionTreeContext, ExpressionConstruct, TObject>
+	/// <summary>
+	///		An implementation of <see cref="SerializerBuilder{TContext,TConstruct,TObject}"/> using expression tree.
+	/// </summary>
+	/// <typeparam name="TObject">The type of the serializing object.</typeparam>
+	internal sealed class ExpressionTreeSerializerBuilder<TObject> : SerializerBuilder<ExpressionTreeContext, ExpressionConstruct, TObject>
 	{
 		private readonly TypeBuilder _typeBuilder;
 
+		/// <summary>
+		///		Initializes a new instance of the <see cref="ExpressionTreeSerializerBuilder{TObject}"/> class.
+		/// </summary>
 		public ExpressionTreeSerializerBuilder()
-			: base( "ETDynamicMethodHost", new Version() )
 		{
-
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				SerializerDebugging.PrepareDump();
@@ -316,7 +81,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					),
 					metadata.Name,
 					false,
-					context.GetParameters<TObject>( metadata )
+					context.GetParameters( metadata )
 				);
 
 			if ( SerializerDebugging.DumpEnabled )
@@ -420,6 +185,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override ExpressionConstruct EmitTypeOfExpression( ExpressionTreeContext context, Type type )
 		{
+// ReSharper disable RedundantIfElseBlock
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				// LambdaExpression.CompileToMethod cannot handle RuntimeTypeHandle, but handle Type constants.
@@ -430,6 +196,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				// WinRT expression tree cannot handle Type constants, but handle RuntimeTypeHandle.
 				return Expression.Call( Metadata._Type.GetTypeFromHandle, Expression.Constant( type.TypeHandle ) );
 			}
+// ReSharper restore RedundantIfElseBlock
 		}
 
 		protected override ExpressionConstruct EmitSequentialStatements( ExpressionTreeContext context, Type contextType, IEnumerable<ExpressionConstruct> statements )
@@ -507,7 +274,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #if DEBUG
 			Contract.Assert(
 				( variable.Expression is ParameterExpression ) && variable.ContextType != typeof( void ),
-				variable.Expression.ToString() 
+				variable.Expression.ToString()
 			);
 #endif
 			return new ExpressionConstruct( variable, true );
@@ -585,7 +352,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		)
 		{
 			return
-				Expression.IfThenElse( 
+				Expression.IfThenElse(
 					conditionExpressions.Aggregate( ( l, r ) => Expression.AndAlso( l, r ) ),
 					thenExpression,
 					elseExpression
@@ -670,7 +437,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return context => new ExpressionCallbackMessagePackSerializer<TObject>( context, packTo, unpackFrom, unpackTo );
 		}
 
-		protected override ExpressionTreeContext CreateGenerationContextForSerializerCreation( SerializationContext context )
+		protected override ExpressionTreeContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
 			return
 				new ExpressionTreeContext(

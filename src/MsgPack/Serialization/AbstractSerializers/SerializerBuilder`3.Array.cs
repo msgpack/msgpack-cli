@@ -20,9 +20,6 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -54,7 +51,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitGetSerializerExpression( context, arrayType ),
 							typeof( MessagePackSerializer<> ).MakeGenericType( arrayType ).GetMethod( "PackTo" ),
 							context.Packer,
-							this.EmitInvokeEnumerableToArrayExpression( context, context.PackingTarget, traits.ElementType )
+							this.EmitInvokeEnumerableToArrayExpression( context, context.PackToTarget, traits.ElementType )
 						);
 				}
 				else
@@ -66,12 +63,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 							typeof( void ),
 							this.EmitPutArrayHeaderExpression(
 								context,
-								this.EmitGetCollectionCountExpression( context, context.PackingTarget, traits )
+								this.EmitGetCollectionCountExpression( context, context.PackToTarget, traits )
 							),
 							this.EmitForEachLoop(
 								context,
 								traits,
-								context.PackingTarget,
+								context.PackToTarget,
 								item =>
 									this.EmitPackItemExpression( context, context.Packer, traits.ElementType, NilImplication.Null, null, item )
 							)

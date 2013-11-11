@@ -52,10 +52,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		///		Gets the IL generator to implement <see cref="MessagePackSerializer{T}.PackToCore"/> overrides.
 		/// </summary>
 		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.PackToCore"/> overrides.
+		///		The IL generator to implement <see cref="MessagePackSerializer{T}.PackToCore"/> overrides.
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		public override TracingILGenerator GetPackToMethodILGenerator()
@@ -69,10 +69,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		///		Gets the IL generator to implement <see cref="MessagePackSerializer{T}.UnpackFromCore"/> overrides.
 		/// </summary>
 		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackFromCore"/> overrides.
+		///		The IL generator to implement <see cref="MessagePackSerializer{T}.UnpackFromCore"/> overrides.
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		public override TracingILGenerator GetUnpackFromMethodILGenerator()
@@ -86,10 +86,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		///		Gets the IL generator to implement <see cref="MessagePackSerializer{T}.UnpackToCore"/> overrides.
 		/// </summary>
 		/// <returns>
-		///		The IL generator to implement <see cref="M:MessagePackSerializer{T}.UnpackToCore"/> overrides.
+		///		The IL generator to implement <see cref="MessagePackSerializer{T}.UnpackToCore"/> overrides.
 		/// </returns>
 		public override TracingILGenerator GetUnpackToMethodILGenerator()
 		{
@@ -107,14 +107,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Creates the serializer type built now and returns its new instance.
+		///		Creates the serializer type built now and returns its constructor.
 		/// </summary>
-		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
-		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
+		/// <typeparam name="T">The type of serialization target.</typeparam>
 		/// <returns>
-		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
+		///		Newly built <see cref="MessagePackSerializer{T}"/> type constructor.
 		///		This value will not be <c>null</c>.
-		/// </returns>
+		///	</returns>
 		public override Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
 			var packTo =
