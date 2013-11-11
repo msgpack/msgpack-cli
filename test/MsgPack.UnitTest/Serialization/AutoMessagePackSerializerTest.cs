@@ -726,25 +726,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = new SerializationContext( PackerCompatibilityOptions.None );
-			var serializer = MessagePackSerializer.Create<byte[]>( context );
-			using ( var stream = new MemoryStream() )
-			{
-				serializer.Pack( stream, new byte[] { 1 } );
-				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { MessagePackCode.Bin8, 1, 1 } ) );
-			}
-		}
-
-		[Test]
-		public void TestBinary_ContextWithPackerCompatilibyOptionsProperty_DoesNotAffectBuiltInSerializers()
-		{
 			var context = new SerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<byte[]>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1 } );
-				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { MessagePackCode.MinimumFixedRaw + 1, 1 } ) );
+				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { MessagePackCode.Bin8, 1, 1 } ) );
 			}
 		}
 

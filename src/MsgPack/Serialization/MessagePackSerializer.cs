@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,8 +19,15 @@
 #endregion -- License Terms --
 
 using System;
+#if SILVERLIGHT || NETFX_35
 using System.Collections.Generic;
+#else
+using System.Collections.Concurrent;
+#endif
 using System.Diagnostics.Contracts;
+#if NETFX_CORE
+using System.Linq.Expressions;
+#endif
 #if !NETFX_CORE
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.EmittingSerializers;
@@ -36,10 +43,6 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public static class MessagePackSerializer
 	{
-#if DEBUG
-		private static System.Collections.Generic.HashSet<Type> _infiniteRecursiveCallDetector =
-			new HashSet<Type>();
-#endif
 		/// <summary>
 		///		Creates new <see cref="MessagePackSerializer{T}"/> instance with <see cref="SerializationContext.Default"/>.
 		/// </summary>
@@ -76,30 +79,6 @@ namespace MsgPack.Serialization
 
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
-			if ( context.ContainsSerializer( typeof( T ) ) )
-			{
-#if DEBUG
-				if ( _infiniteRecursiveCallDetector == null )
-				{
-					_infiniteRecursiveCallDetector = new HashSet<Type>();
-				}
-				
-				if ( _infiniteRecursiveCallDetector.Contains( typeof( T ) ) )
-				{
-					throw new Exception( "Infite recursive call." );
-				}
-				else
-				{
-					_infiniteRecursiveCallDetector.Add( typeof( T ) );
-				}
-#endif
-				var result = context.GetSerializer<T>();
-#if DEBUG
-				_infiniteRecursiveCallDetector.Remove( typeof( T ) );
-#endif
-				return result;
-			}
-
 			//Func<SerializationContext, SerializerBuilder<T>> builderProvider;
 			ISerializerBuilder<T> builder;
 #if NETFX_CORE
@@ -113,7 +92,7 @@ namespace MsgPack.Serialization
 			else
 			{
 #endif // !WINDOWS_PHONE && !NETFX_35
-				if ( context.EmitterFlavor == EmitterFlavor.FieldBased )
+				if ( context.EmitterFlavor  == EmitterFlavor.FieldBased )
 				{
 					builder = new AssemblyBuilderSerializerBuilder<T>();
 				}
@@ -129,6 +108,13 @@ namespace MsgPack.Serialization
 
 			return new AutoMessagePackSerializer<T>( context, builder );
 		}
+
+#if !SILVERLIGHT && !NETFX_35
+		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
+#else
+		private static readonly object _syncRoot = new object();
+		private static readonly Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
+#endif
 
 		/// <summary>
 		///		Creates new <see cref="IMessagePackSerializer"/> instance with <see cref="SerializationContext.Default"/>.
@@ -178,7 +164,64 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
-			return context.GetSerializer( targetType );
+
+			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
+#if NETFX_CORE
+			var factory =
+				_creatorCache.GetOrAdd(
+					targetType,
+					type =>
+					{
+						var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
+						// Utilize covariance of delegate.
+						return
+							Expression.Lambda<Func<SerializationContext, IMessagePackSingleObjectSerializer>>(
+								Expression.Call(
+									null,
+									Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type ),
+									contextParameter
+								),
+								contextParameter
+							).Compile();
+					}
+				);
+#elif SILVERLIGHT || NETFX_35
+			Func<SerializationContext, IMessagePackSingleObjectSerializer> factory;
+
+			lock ( _syncRoot )
+			{
+				_creatorCache.TryGetValue( targetType, out factory );
+			}
+
+			if ( factory == null )
+			{
+				// Utilize covariance of delegate.
+				factory =
+					Delegate.CreateDelegate(
+						typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
+						Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( targetType )
+						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>;
+
+				Contract.Assert( factory != null );
+
+				lock ( _syncRoot )
+				{
+					_creatorCache[ targetType ] = factory;
+				}
+			}
+#else
+			var factory =
+				_creatorCache.GetOrAdd(
+					targetType,
+					type =>
+						// Utilize covariance of delegate.
+						Delegate.CreateDelegate(
+							typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
+							Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type )
+						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>
+				);
+#endif
+			return factory( context );
 		}
 	}
 }
