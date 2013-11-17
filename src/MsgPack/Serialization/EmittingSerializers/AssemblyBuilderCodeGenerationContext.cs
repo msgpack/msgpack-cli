@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
 
@@ -29,15 +30,17 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// </summary>
 	internal class AssemblyBuilderCodeGenerationContext : ISerializerCodeGenerationContext
 	{
-		public Version Version { get; set; }
-
 		private readonly SerializationContext _context;
 		private readonly SerializationMethodGeneratorManager _generatorManager;
+		private readonly AssemblyBuilder _assemblyBuilder;
 
-		public AssemblyBuilderCodeGenerationContext( SerializationContext context, SerializationMethodGeneratorManager generatorManager )
+		public AssemblyBuilderCodeGenerationContext( SerializationContext context, AssemblyBuilder assemblyBuilder )
 		{
 			this._context = context;
-			this._generatorManager = generatorManager;
+			this._assemblyBuilder = assemblyBuilder;
+
+			DefaultSerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( assemblyBuilder, false );
+			this._generatorManager = SerializationMethodGeneratorManager.Get( assemblyBuilder );
 		}
 
 		/// <summary>
@@ -60,12 +63,17 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <exception cref="System.NotImplementedException"></exception>
 		public bool BuiltInSerializerExists( Type type )
 		{
-			if( type == null )
+			if ( type == null )
 			{
 				throw new ArgumentNullException( "type" );
 			}
 
 			return type.IsArray || SerializerRepository.Default.Contains( type );
+		}
+
+		public void Generate()
+		{
+			this._assemblyBuilder.Save( this._assemblyBuilder.ManifestModule.ScopeName + ".dll" );
 		}
 	}
 }

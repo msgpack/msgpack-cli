@@ -27,6 +27,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
+using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 
 namespace MsgPack.Serialization
@@ -164,8 +165,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="IOException">Some I/O error is occurred on saving assembly file.</exception>
 		public void GenerateAssemblyFile()
 		{
-			this.GenerateAssemblyFile(
-				AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave ) );
+			this.GenerateAssemblyFile( Path.GetFullPath( "." ) );
 		}
 
 		/// <summary>
@@ -185,41 +185,78 @@ namespace MsgPack.Serialization
 				Directory.CreateDirectory( directory );
 			}
 
-			this.GenerateAssemblyFile(
-				AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave, directory ) );
+			this.GenerateCode( EmitterFlavor.FieldBased, new CodeGenerationConfiguration { OutputDirectory = directory } );
 		}
 
-		private void GenerateAssemblyFile( AssemblyBuilder assemblyBuilder )
+		/// <summary>
+		///		Generates the codes for serializers with default configuration.
+		/// </summary>
+		public void GenerateCode()
+		{
+			this.GenerateCode( null );
+		}
+
+		/// <summary>
+		///		Generates the codes for serializers with specified configuration.
+		/// </summary>
+		/// <param name="configuration">The configuration for code generation. Specify <c>null</c> to use default configuration.</param>
+		public void GenerateCode( CodeGenerationConfiguration configuration )
+		{
+			this.GenerateCode( EmitterFlavor.CodeDomBased, configuration ?? new CodeGenerationConfiguration() );
+		}
+
+		private void GenerateCode( EmitterFlavor flavor, CodeGenerationConfiguration configuration )
 		{
 			var context = new SerializationContext();
-			context.EmitterFlavor = EmitterFlavor.FieldBased;
+			context.EmitterFlavor = flavor;
 			context.GeneratorOption = SerializationMethodGeneratorOption.CanDump;
 			context.SerializationMethod = this._method;
 
-			ISerializerCodeGenerationContext generationContext = null;
+			ISerializerCodeGenerationContext generationContext;
+			Func<Type, ISerializerCodeGenerator> generatorFactory;
+
+			switch ( flavor )
+			{
+				case EmitterFlavor.FieldBased:
+				{
+					var assemblyBuilderCodeGenerationContext =
+						new AssemblyBuilderCodeGenerationContext(
+							context,
+							AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave, configuration.OutputDirectory )
+						);
+					generationContext = assemblyBuilderCodeGenerationContext;
+					generatorFactory =
+						type =>
+							Activator.CreateInstance(
+								typeof( AssemblyBuilderSerializerBuilder<> ).MakeGenericType( type )
+							) as ISerializerCodeGenerator;
+
+					break;
+				}
+				case EmitterFlavor.CodeDomBased:
+				{
+					generationContext = new CodeDomContext( context, configuration );
+					generatorFactory =
+						type =>
+							Activator.CreateInstance(
+								typeof( CodeDomSerializerBuilder<> ).MakeGenericType( type )
+							) as ISerializerCodeGenerator;
+
+					break;
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "flavor" );
+				}
+			}
 
 			foreach ( var targetType in this._targetTypes )
 			{
-				var builder =
-					Activator.CreateInstance(
-						typeof( AssemblyBuilderSerializerBuilder<> ).MakeGenericType( targetType ), assemblyBuilder 
-					) as ISerializerCodeGenerator;
-
-#if DEBUG
-				Contract.Assert( builder != null );
-#endif
-
-				if( generationContext == null )
-				{
-					generationContext = builder.CreateGenerationContextForCodeGeneration( context );
-				}
-
-				builder.BuildSerializerCode( generationContext );
+				var generator = generatorFactory( targetType );
+				generator.BuildSerializerCode( generationContext );
 			}
 
-			assemblyBuilder.Save( this._assemblyName.Name + ".dll" );
+			generationContext.Generate();
 		}
-
-		// TODO: Generate CodeDOM
 	}
 }

@@ -155,52 +155,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		);
 
 		/// <summary>
-		///		Creates new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.
-		/// </summary>
-		/// <param name="context">The <see cref="SerializationContext"/>.</param>
-		/// <returns>
-		///		The new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.
-		///		This value will not be <c>null</c>.
-		/// </returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="context"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="ArgumentException">
-		///		A type of <paramref name="context"/> is not valid.
-		/// </exception>
-		/// <exception cref="NotSupportedException">
-		///		This class does not support code generation.
-		/// </exception>
-		public ISerializerCodeGenerationContext CreateGenerationContextForCodeGeneration( SerializationContext context )
-		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			return this.CreateGenerationContextForCodeGenerationCore( context );
-		}
-
-		/// <summary>
-		///		In derived class, creates new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.
-		/// </summary>
-		/// <param name="context">The <see cref="SerializationContext"/>. This value will not be <c>null</c>.</param>
-		/// <returns>
-		///		The new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.
-		///		This value must not be <c>null</c>.
-		/// </returns>
-		/// <exception cref="ArgumentException">
-		///		A type of <paramref name="context"/> is not valid.
-		/// </exception>
-		/// <exception cref="NotSupportedException">
-		///		This class does not support code generation.
-		/// </exception>
-		protected virtual ISerializerCodeGenerationContext CreateGenerationContextForCodeGenerationCore( SerializationContext context )
-		{
-			throw new NotSupportedException();
-		}
-
-		/// <summary>
 		///		Builds the serializer code using specified code generation context.
 		/// </summary>
 		/// <param name="context">

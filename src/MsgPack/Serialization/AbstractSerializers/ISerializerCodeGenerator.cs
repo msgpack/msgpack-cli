@@ -40,21 +40,5 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		This class does not support code generation.
 		/// </exception>
 		void BuildSerializerCode( ISerializerCodeGenerationContext context );
-
-		/// <summary>
-		///		Creates new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.
-		/// </summary>
-		/// <param name="context">The <see cref="SerializationContext"/>.</param>
-		/// <returns>The new <see cref="ISerializerCodeGenerationContext"/> instance dedicated to this builder.</returns>
-		/// <exception cref="ArgumentNullException">
-		///		<paramref name="context"/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="ArgumentException">
-		///		A type of <paramref name="context"/> is not valid.
-		/// </exception>
-		/// <exception cref="NotSupportedException">
-		///		This class does not support code generation.
-		/// </exception>
-		ISerializerCodeGenerationContext CreateGenerationContextForCodeGeneration( SerializationContext context );
 	}
 }

@@ -157,15 +157,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void VerifyNilImplication( SerializingMember[] entries )
 		{
-			foreach( var serializingMember in entries )
+			foreach ( var serializingMember in entries )
 			{
-				if( serializingMember.Contract.NilImplication == NilImplication.Null )
+				if ( serializingMember.Contract.NilImplication == NilImplication.Null )
 				{
 					var itemType = serializingMember.Member.GetMemberValueType();
 
-					if( itemType != typeof( MessagePackObject )
-					    && itemType.GetIsValueType()
-					    && Nullable.GetUnderlyingType( itemType ) == null )
+					if ( itemType != typeof( MessagePackObject )
+						&& itemType.GetIsValueType()
+						&& Nullable.GetUnderlyingType( itemType ) == null )
 					{
 						throw SerializationExceptions.NewValueTypeCannotBeNull( serializingMember.Member.ToString(), itemType, typeof( TObject ) );
 					}
@@ -173,7 +173,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					bool isReadOnly;
 					FieldInfo asField;
 					PropertyInfo asProperty;
-					if( ( asField = serializingMember.Member as FieldInfo ) != null )
+					if ( ( asField = serializingMember.Member as FieldInfo ) != null )
 					{
 						isReadOnly = asField.IsInitOnly;
 					}
@@ -186,7 +186,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						isReadOnly = asProperty.GetSetMethod( false ) == null;
 					}
 
-					if( isReadOnly )
+					if ( isReadOnly )
 					{
 						throw SerializationExceptions.NewNullIsProhibited( serializingMember.Member.ToString() );
 					}
@@ -332,10 +332,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			yield return result;
 
-			if( !typeof(TObject).GetIsValueType())
+			if ( !typeof( TObject ).GetIsValueType() )
 			{
-				yield return 
-					this.EmitStoreVariableStatement( 
+				yield return
+					this.EmitStoreVariableStatement(
 						context,
 						result,
 						this.EmitCreateNewObjectExpression(
@@ -346,7 +346,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					);
 			}
 
-			yield return 
+			yield return
 				this.EmitInvokeVoidMethod(
 					context,
 					result,
@@ -391,7 +391,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private IEnumerable<TConstruct> BuildObjectUnpackFromCore(TContext context, IList<SerializingMember> entries )
+		private IEnumerable<TConstruct> BuildObjectUnpackFromCore( TContext context, IList<SerializingMember> entries )
 		{
 			var result =
 				this.DeclareLocal(
@@ -400,9 +400,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					"result"
 				);
 			yield return result;
-			if( !typeof( TObject ).GetIsValueType() )
+			if ( !typeof( TObject ).GetIsValueType() )
 			{
-				yield return 
+				yield return
 					this.EmitStoreVariableStatement(
 						context,
 						result,
@@ -430,7 +430,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			// TODO: Supports ExtensionObject like round-tripping.
 			return
 				this.EmitSequentialStatements(
-					context, 
+					context,
 					typeof( void ),
 					this.EmitObjectUnpackFromArrayCore( context, result, entries )
 				);
@@ -477,7 +477,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				var count = i;
 
-				if( entries[ i ].Member == null )
+				if ( entries[ i ].Member == null )
 				{
 					// just pop
 					yield return
@@ -512,7 +512,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			return
 				this.EmitSequentialStatements(
-					context, 
+					context,
 					typeof( void ),
 					this.EmitObjectUnpackFromMapCore( context, result, entries )
 				);
@@ -528,8 +528,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 			yield return itemsCount;
 
-			yield return 
-				this.EmitStoreVariableStatement( 
+			yield return
+				this.EmitStoreVariableStatement(
 					context,
 					itemsCount,
 					this.EmitGetItemsCountExpression( context, context.Unpacker )

@@ -19,20 +19,16 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.Reflection;
 using System.Reflection.Emit;
-using System.Runtime.Serialization;
+
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
 	// FIXME : comment
 	// FIXME : local-variable sharing
-	internal static partial class Emittion
+	internal static class Emittion
 	{
 		/// <summary>
 		///		Emits the serializing value instructions.

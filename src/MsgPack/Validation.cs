@@ -21,7 +21,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace MsgPack
@@ -90,9 +89,12 @@ namespace MsgPack
 			}
 		}
 
-		private static readonly Regex _unicodeTR15Annex7IdentifierPattern =
-			new Regex( 
-				@"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*", 
+		private const string UnicodeTr15Annex7Idneifier =
+			@"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*";
+
+		private static readonly Regex UnicodeTr15Annex7IdentifierPattern =
+			new Regex(
+				UnicodeTr15Annex7Idneifier,
 #if !SILVERLIGHT && !NETFX_CORE
 				RegexOptions.Compiled |
 #endif
@@ -103,7 +105,7 @@ namespace MsgPack
 		{
 			ValidateIsNotNullNorEmpty( methodName, parameterName );
 
-			var matches = _unicodeTR15Annex7IdentifierPattern.Matches( methodName );
+			var matches = UnicodeTr15Annex7IdentifierPattern.Matches( methodName );
 			if ( matches.Count == 1 && matches[ 0 ].Success && matches[ 0 ].Index == 0 && matches[ 0 ].Length == methodName.Length )
 			{
 				return;
@@ -128,6 +130,7 @@ namespace MsgPack
 			Contract.Assert( position >= 0 );
 
 			var category = CharUnicodeInfo.GetUnicodeCategory( methodName, position );
+// ReSharper disable RedundantIfElseBlock
 			if ( IsPrintable( category ) )
 			{
 				throw new ArgumentException(
@@ -153,6 +156,74 @@ namespace MsgPack
 					)
 				);
 			}
+// ReSharper restore RedundantIfElseBlock
+		}
+
+		private static readonly Regex NamespacePattern =
+			new Regex(
+				"^(" + UnicodeTr15Annex7Idneifier + @")(\." + UnicodeTr15Annex7Idneifier + ")*$",
+#if !SILVERLIGHT && !NETFX_CORE
+				RegexOptions.Compiled |
+#endif
+				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline
+			);
+
+		public static void ValidateNamespace( string @namespace, string parameterName )
+		{
+			ValidateIsNotNullNorEmpty( @namespace, parameterName );
+
+			var matches = NamespacePattern.Matches( @namespace );
+			if ( matches.Count == 1 && matches[ 0 ].Success && matches[ 0 ].Index == 0 && matches[ 0 ].Length == @namespace.Length )
+			{
+				return;
+			}
+
+			// Get invalid value.
+			int position = 0;
+			int validLength = 0;
+			for ( int i = 0; i < matches.Count; i++ )
+			{
+				if ( matches[ i ].Index == validLength )
+				{
+					validLength += matches[ i ].Length;
+				}
+				else
+				{
+					position = validLength;
+					break;
+				}
+			}
+
+			Contract.Assert( position >= 0 );
+
+			var category = CharUnicodeInfo.GetUnicodeCategory( @namespace, position );
+// ReSharper disable RedundantIfElseBlock
+			if ( IsPrintable( category ) )
+			{
+				throw new ArgumentException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Char at {0}('{1}'\\u{2}[{3}] is not used for namespace.",
+						position,
+						@namespace[ position ],
+						( ushort )@namespace[ position ],
+						category
+					)
+				);
+			}
+			else
+			{
+				throw new ArgumentException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Char at {0}(\\u{1}[{2}] is not used for namespace.",
+						position,
+						( ushort )@namespace[ position ],
+						category
+					)
+				);
+			}
+// ReSharper restore RedundantIfElseBlock
 		}
 
 		/// <summary>

@@ -40,25 +40,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Initializes a new instance of the <see cref="DynamicMethodEmittingContext"/> class.
 		/// </summary>
-		/// <param name="serializationContext">The serialization context.</param>
-		/// <param name="targetType">
-		///		The type of the serializer target.
-		/// </param>
+		/// <param name="context">The serialization context.</param>
+		/// <param name="targetType">Type of the serialization target.</param>
 		/// <param name="emitter">
 		///		The <see cref="SerializerEmitter"/> to be used.
 		/// </param>
-		public DynamicMethodEmittingContext( SerializationContext serializationContext, Type targetType, SerializerEmitter emitter )
-			: base(
-				serializationContext,
-				targetType,
-				emitter,
-				ILConstruct.Argument( 1, typeof( Packer ), "packer" ),
-				ILConstruct.Argument( 2, targetType, "objectTree" ),
-				ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" ),
-				ILConstruct.Argument( 2, targetType, "collection" )
-				)
+		public DynamicMethodEmittingContext( SerializationContext context, Type targetType, SerializerEmitter emitter )
+			: base( context, emitter )
 		{
 			this.Context = ILConstruct.Argument( 0, typeof( SerializationContext ), "context" );
+			this.Reset( targetType );
 		}
 	}
 }

@@ -40,13 +40,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TContext );
 		}
 
-		protected override ISerializerCodeGenerationContext CreateGenerationContextForCodeGenerationCore( SerializationContext context )
-		{
-			Contract.Requires( context != null );
-			Contract.Ensures( Contract.Result<TContext>() != null );
-			return default( ISerializerCodeGenerationContext );
-		}
-
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
 		{
 			Contract.Requires( context != null );
@@ -79,16 +72,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( statements != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( void ) );
-			return default( TConstruct );
-		}
-
-		protected override TConstruct EmitStatementExpression( TContext context, TConstruct statement, TConstruct contextExpression )
-		{
-			Contract.Requires( context != null );
-			Contract.Requires( statement != null );
-			Contract.Requires( contextExpression != null );
-			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == contextExpression.ContextType );
 			return default( TConstruct );
 		}
 
@@ -196,7 +179,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitIncrementExpression( TContext context, TConstruct int32Value )
+		protected override TConstruct EmitIncrement( TContext context, TConstruct int32Value )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( int32Value != null );
@@ -360,13 +343,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitTryFinallyExpression( TContext context, TConstruct tryExpression, TConstruct finallyStatement )
+		protected override TConstruct EmitTryFinally( TContext context, TConstruct tryStatement, TConstruct finallyStatement )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( tryExpression != null );
+			Contract.Requires( tryStatement != null );
 			Contract.Requires( finallyStatement != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == tryExpression.ContextType );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == tryStatement.ContextType );
 			return default( TConstruct );
 		}
 

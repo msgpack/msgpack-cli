@@ -27,9 +27,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// </summary>
 	internal interface ISerializerCodeGenerationContext
 	{
-#warning TODO: Versioning
-		Version Version { get; set; }
-
 		/// <summary>
 		///		Determines that whether built-in serializer for specified type exists or not.
 		/// </summary>
@@ -41,5 +38,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		<paramref name="type"/> is <c>null</c>.
 		/// </exception>
 		bool BuiltInSerializerExists( Type type );
+
+		/// <summary>
+		///		Generates codes for this context.
+		/// </summary>
+		void Generate();
 	}
 }

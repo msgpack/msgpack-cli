@@ -19,26 +19,39 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
-	/// <summary>
-	///		A code generation context for <see cref="AssemblyBuilderSerializerBuilder{TObject}"/>.
-	/// </summary>
-	internal class AssemblyBuilderEmittingContext : ILEmittingContext
+	internal class SequenceILConstruct : ILConstruct
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="AssemblyBuilderEmittingContext"/> class.
-		/// </summary>
-		/// <param name="context">The serialization context.</param>
-		/// <param name="targetType">Type of the serialization target.</param>
-		/// <param name="emitter">
-		///		The <see cref="SerializerEmitter"/> to be used.
-		/// </param>
-		public AssemblyBuilderEmittingContext( SerializationContext context, Type targetType, SerializerEmitter emitter )
-			: base( context, emitter)
+		private readonly ILConstruct[] _statements;
+
+		public SequenceILConstruct( Type contextType, IEnumerable<ILConstruct> statements )
+			: base( contextType )
 		{
-			this.Reset( targetType );
+			this._statements = statements.ToArray();
+		}
+
+		public override void Evaluate( TracingILGenerator il )
+		{
+			il.TraceWriteLine( "// Eval->: {0}", this );
+
+			foreach ( var statement in this._statements )
+			{
+				statement.Evaluate( il );
+			}
+
+			il.TraceWriteLine( "// ->Eval: {0}", this );
+		}
+
+		public override string ToString()
+		{
+			return String.Format( CultureInfo.InvariantCulture, "Sequence[{0}]", this._statements.Length );
 		}
 	}
 }

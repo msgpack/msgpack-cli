@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, SerializerMethod method )
 		{
-			// nop
+			context.Reset( typeof( TObject ) );
 		}
 
 		protected override void EmitMethodEpilogue( ExpressionTreeContext context, SerializerMethod method, ExpressionConstruct construct )
@@ -74,7 +74,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					construct.Expression,
 					method.ToString(),
 					false,
-					context.GetParameters( method )
+					context.GetParameters( typeof( TObject ), method )
 				);
 
 			if ( SerializerDebugging.DumpEnabled )
@@ -93,19 +93,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				method,
 				lambda.Compile()
 			);
-		}
-
-		protected override ExpressionConstruct EmitStatementExpression(
-			ExpressionTreeContext context, ExpressionConstruct statement, ExpressionConstruct contextExpression
-		)
-		{
-			var expressions = new Expression[] { statement, contextExpression };
-			return
-				Expression.Block(
-					contextExpression.ContextType,
-					expressions.OfType<ParameterExpression>(),
-					expressions
-				);
 		}
 
 		protected override ExpressionConstruct MakeNullLiteral( ExpressionTreeContext context, Type contextType )
@@ -171,14 +158,14 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.LessThan( left, right );
 		}
 
-		protected override ExpressionConstruct EmitIncrementExpression( ExpressionTreeContext context, ExpressionConstruct int32Value )
+		protected override ExpressionConstruct EmitIncrement( ExpressionTreeContext context, ExpressionConstruct int32Value )
 		{
 			return Expression.Assign( int32Value, Expression.Increment( int32Value ) );
 		}
 
 		protected override ExpressionConstruct EmitTypeOfExpression( ExpressionTreeContext context, Type type )
 		{
-// ReSharper disable RedundantIfElseBlock
+			// ReSharper disable RedundantIfElseBlock
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				// LambdaExpression.CompileToMethod cannot handle RuntimeTypeHandle, but handle Type constants.
@@ -189,7 +176,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				// WinRT expression tree cannot handle Type constants, but handle RuntimeTypeHandle.
 				return Expression.Call( Metadata._Type.GetTypeFromHandle, Expression.Constant( type.TypeHandle ) );
 			}
-// ReSharper restore RedundantIfElseBlock
+			// ReSharper restore RedundantIfElseBlock
 		}
 
 		protected override ExpressionConstruct EmitSequentialStatements( ExpressionTreeContext context, Type contextType, IEnumerable<ExpressionConstruct> statements )
@@ -293,11 +280,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Throw( exceptionExpression, expressionType );
 		}
 
-		protected override ExpressionConstruct EmitTryFinallyExpression(
-			ExpressionTreeContext context, ExpressionConstruct tryExpression, ExpressionConstruct finallyStatement
+		protected override ExpressionConstruct EmitTryFinally(
+			ExpressionTreeContext context, ExpressionConstruct tryStatement, ExpressionConstruct finallyStatement
 		)
 		{
-			return Expression.TryFinally( tryExpression, finallyStatement );
+			return Expression.TryFinally( tryStatement, finallyStatement );
 		}
 
 		protected override ExpressionConstruct EmitCreateNewArrayExpression(
@@ -432,14 +419,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override ExpressionTreeContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
-			return
-				new ExpressionTreeContext(
-					context,
-					Expression.Parameter( typeof( Packer ), "packer" ),
-					Expression.Parameter( typeof( TObject ), "objectTree" ),
-					Expression.Parameter( typeof( Unpacker ), "unpacker" ),
-					Expression.Parameter( typeof( TObject ), "collection" )
-				);
+			return new ExpressionTreeContext( context );
 		}
 	}
 }

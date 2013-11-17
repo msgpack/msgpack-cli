@@ -27,6 +27,7 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal enum EmitterFlavor
 	{
+#if !NETFX_CORE
 		/// <summary>
 		///		Uses <see cref="SerializationContext"/> in each case of the members (de)serialization.
 		///		It may cause more contentions but is available in WP7.
@@ -38,12 +39,20 @@ namespace MsgPack.Serialization
 		///		It is default.
 		/// </summary>
 		FieldBased,
+#endif
 #if !NETFX_35
 		/// <summary>
 		///		Uses expression tree to (de)serialization.
 		///		It may have more overhead but is available in WinRT.
 		/// </summary>
 		ExpressionBased,
+#endif
+#if !NETFX_CORE
+		/// <summary>
+		///		Uses code DOM code generation to (de)serialization.
+		///		It requires a long time but prevents runtime code generation at all.
+		/// </summary>
+		CodeDomBased
 #endif
 	}
 }

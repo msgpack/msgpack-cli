@@ -170,6 +170,45 @@ namespace MsgPack.Serialization
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
 
+		[ThreadStatic]
+		private static IList<string> _compiledCodeDomSerializerAssemblies;
+
+		public static IList<string> CompiledCodeDomSerializerAssemblies
+		{
+			get
+			{
+				if ( _compiledCodeDomSerializerAssemblies == null )
+				{
+					ResetCompiledCodeDomSerializerAssemblies();
+				}
+
+				return _compiledCodeDomSerializerAssemblies;
+			}
+		}
+
+		public static void ResetCompiledCodeDomSerializerAssemblies()
+		{
+			if ( _compiledCodeDomSerializerAssemblies == null )
+			{
+				_compiledCodeDomSerializerAssemblies = new List<string>();
+			}
+			else
+			{
+				_compiledCodeDomSerializerAssemblies.Clear();
+			}
+
+			_compiledCodeDomSerializerAssemblies.Add( typeof( SerializerDebugging ).Assembly.Location );
+		}
+
+		[ThreadStatic]
+		private static bool _onTheFlyCodeDomEnabled;
+
+		public static bool OnTheFlyCodeDomEnabled
+		{
+			get { return _onTheFlyCodeDomEnabled; }
+			set { _onTheFlyCodeDomEnabled = value; }
+		}
+
 		/// <summary>
 		///		Creates the new type builder for the serializer.
 		/// </summary>
@@ -214,6 +253,7 @@ namespace MsgPack.Serialization
 
 			_dumpEnabled = false;
 			_traceEnabled = false;
+			ResetCompiledCodeDomSerializerAssemblies();
 		}
 	}
 }

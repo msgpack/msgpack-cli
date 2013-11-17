@@ -187,9 +187,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 			try
 			{
 				var itemsCount =
-					this.DeclareLocal( 
-						context, 
-						typeof( int ), 
+					this.DeclareLocal(
+						context,
+						typeof( int ),
 						"itemsCount"
 					);
 
@@ -265,7 +265,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			var key = this.DeclareLocal( context, keyType, "key" );
 			var value = this.DeclareLocal( context, valueType, "value" );
-// ReSharper disable ImplicitlyCapturedClosure
+			// ReSharper disable ImplicitlyCapturedClosure
 			return
 				this.EmitSequentialStatements(
 					context,
@@ -315,7 +315,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						traits.ElementType == typeof( DictionaryEntry )
 					)
 				);
-// ReSharper restore ImplicitlyCapturedClosure
+			// ReSharper restore ImplicitlyCapturedClosure
 		}
 
 		private TConstruct EmitCheckIsMapHeaderExpression( TContext context, TConstruct unpacker )

@@ -28,9 +28,4 @@ namespace MsgPack.Serialization.AbstractSerializers
 		UnpackFromCore,
 		UnpackToCore
 	}
-
-	internal static class SerializerMethodExtensions
-	{
-		
-	}
 }

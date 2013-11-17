@@ -30,10 +30,12 @@ using System.Linq.Expressions;
 #endif
 #if !NETFX_CORE
 using MsgPack.Serialization.AbstractSerializers;
+using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif
 #if !WINDOWS_PHONE && !NETFX_35
 using MsgPack.Serialization.ExpressionSerializers;
+using System.Globalization;
 #endif
 
 namespace MsgPack.Serialization
@@ -84,26 +86,42 @@ namespace MsgPack.Serialization
 #if NETFX_CORE
 			builder = new ExpressionTreeSerializerBuilder<T>();
 #else
+			switch ( context.EmitterFlavor )
+			{
 #if !WINDOWS_PHONE && !NETFX_35
-			if ( context.EmitterFlavor == EmitterFlavor.ExpressionBased )
-			{
-				builder = new ExpressionTreeSerializerBuilder<T>();
-			}
-			else
-			{
+				case EmitterFlavor.ExpressionBased:
+				{
+					builder = new ExpressionTreeSerializerBuilder<T>();
+					break;
+				}
 #endif // !WINDOWS_PHONE && !NETFX_35
-				if ( context.EmitterFlavor  == EmitterFlavor.FieldBased )
+				case EmitterFlavor.FieldBased:
 				{
 					builder = new AssemblyBuilderSerializerBuilder<T>();
+					break;
 				}
-				else
+				case EmitterFlavor.ContextBased:
 				{
 					builder = new DynamicMethodSerializerBuilder<T>();
+					break;
 				}
+				default:
+				{
+					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
+					{
+						throw new NotSupportedException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"Flavor '{0:G}'({0:D}) is not supported for serializer instance creation.",
+								context.EmitterFlavor
+							) 
+						);
+					}
 
-#if !WINDOWS_PHONE && !NETFX_35
+					builder = new CodeDomSerializerBuilder<T>();
+					break;
+				}
 			}
-#endif // !WINDOWS_PHONE  && !NETFX_35
 #endif // NETFX_CORE else
 
 			return new AutoMessagePackSerializer<T>( context, builder );

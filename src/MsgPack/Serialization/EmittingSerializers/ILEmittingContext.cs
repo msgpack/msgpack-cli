@@ -39,14 +39,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		internal TracingILGenerator IL { get; set; }
 
 		/// <summary>
-		///		Gets the type of the generating serializer.
-		/// </summary>
-		/// <value>
-		///		The type of the generating serializer.
-		/// </value>
-		internal Type SerializerType { get; private set; }
-
-		/// <summary>
 		///		Gets the <see cref="SerializerEmitter"/>.
 		/// </summary>
 		/// <value>
@@ -55,39 +47,41 @@ namespace MsgPack.Serialization.EmittingSerializers
 		internal SerializerEmitter Emitter { get; private set; }
 
 		/// <summary>
+		///		Gets the type of the serializer.
+		/// </summary>
+		/// <param name="targetType">Type of the serialization target.</param>
+		/// <returns>Type of the serializer.</returns>
+		public Type GetSerializerType( Type targetType )
+		{
+			return typeof( MessagePackSerializer<> ).MakeGenericType( targetType );
+		}
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="ILEmittingContext"/> class.
 		/// </summary>
-		/// <param name="serializationContext">The serialization context.</param>
-		/// <param name="targetType">
-		///		The type of the serializer target.
-		/// </param>
+		/// <param name="context">The serialization context.</param>
 		/// <param name="emitter">
 		///		The <see cref="SerializerEmitter"/> to be used.
 		/// </param>
-		/// <param name="packer">
-		///		The code construct which represents the argument for the packer.
-		///	</param>
-		/// <param name="packToTarget">
-		///		The code construct which represents the argument for the packing target object tree root.
-		/// </param>
-		/// <param name="unpacker">
-		///		The code construct which represents the argument for the unpacker.
-		/// </param>
-		/// <param name="unpackToTarget">
-		///		The code construct which represents the argument for the collection which will hold unpacked items.
-		/// </param>
 		public ILEmittingContext(
-			SerializationContext serializationContext,
-			Type targetType,
-			SerializerEmitter emitter,
-			ILConstruct packer,
-			ILConstruct packToTarget,
-			ILConstruct unpacker,
-			ILConstruct unpackToTarget 
-		) : base( serializationContext, packer, packToTarget, unpacker, unpackToTarget )
+			SerializationContext context,
+			SerializerEmitter emitter
+		)
+			: base( context )
 		{
-			this.SerializerType = typeof( MessagePackSerializer<> ).MakeGenericType( targetType );
 			this.Emitter = emitter;
+		}
+
+		/// <summary>
+		///		Resets internal states for specified target type.
+		/// </summary>
+		/// <param name="targetType">Type of the serialization target.</param>
+		public sealed override void Reset( Type targetType )
+		{
+			this.Packer = ILConstruct.Argument( 1, typeof( Packer ), "packer" );
+			this.PackToTarget = ILConstruct.Argument( 2, targetType, "objectTree" );
+			this.Unpacker = ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" );
+			this.UnpackToTarget = ILConstruct.Argument( 2, targetType, "collection" );
 		}
 	}
 }

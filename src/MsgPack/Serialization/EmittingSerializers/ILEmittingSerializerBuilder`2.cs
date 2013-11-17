@@ -88,11 +88,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Sequence( contextType, statements );
 		}
 
-		protected override ILConstruct EmitStatementExpression( TContext context, ILConstruct statement, ILConstruct contextExpression )
-		{
-			return ILConstruct.Composite( statement, contextExpression );
-		}
-
 		protected override ILConstruct MakeNullLiteral( TContext context, Type contextType )
 		{
 			return ILConstruct.Literal( contextType, default( object ), il => il.EmitLdnull() );
@@ -170,7 +165,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct EmitThisReferenceExpression( TContext context )
 		{
-			return ILConstruct.Literal( context.SerializerType, "(this)", il => il.EmitLdarg_0() );
+			return ILConstruct.Literal( context.GetSerializerType( typeof( TObject ) ), "(this)", il => il.EmitLdarg_0() );
 		}
 
 		protected override ILConstruct EmitBoxExpression( TContext context, Type valueType, ILConstruct value )
@@ -339,7 +334,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitIncrementExpression( TContext context, ILConstruct int32Value )
+		protected override ILConstruct EmitIncrement( TContext context, ILConstruct int32Value )
 		{
 			return
 				ILConstruct.UnaryOperator(
@@ -494,17 +489,17 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitTryFinallyExpression( TContext context, ILConstruct tryExpression, ILConstruct finallyStatement )
+		protected override ILConstruct EmitTryFinally( TContext context, ILConstruct tryStatement, ILConstruct finallyStatement )
 		{
 			return
 				ILConstruct.Instruction(
 					"try-finally",
-					tryExpression.ContextType,
+					tryStatement.ContextType,
 					false,
 					il =>
 					{
 						il.BeginExceptionBlock();
-						tryExpression.Evaluate( il );
+						tryStatement.Evaluate( il );
 						il.BeginFinallyBlock();
 						finallyStatement.Evaluate( il );
 						il.EndExceptionBlock();

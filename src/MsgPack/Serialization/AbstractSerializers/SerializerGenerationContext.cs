@@ -34,16 +34,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <value>
 		///		The serialization context. This value will not be <c>null</c>.
 		/// </value>
-		internal SerializationContext SerializationContext { get; private set; }
-
-		/// <summary>
-		///		Gets the code construct which represents the argument for the packing target object tree root.
-		/// </summary>
-		/// <value>
-		///		The code construct which represents the argument for the packing target object tree root.
-		///		This value will not be <c>null</c>.
-		/// </value>
-		internal TConstruct PackToTarget { get; private set; }
+		public SerializationContext SerializationContext { get; private set; }
 
 		/// <summary>
 		///		Gets the code construct which represents the argument for the packer.
@@ -52,7 +43,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		The code construct which represents the argument for the packer.
 		///		This value will not be <c>null</c>.
 		/// </value>
-		internal TConstruct Packer { get; private set; }
+		public TConstruct Packer { get; protected set; }
+
+		/// <summary>
+		///		Gets the code construct which represents the argument for the packing target object tree root.
+		/// </summary>
+		/// <returns>
+		///		The code construct which represents the argument for the packing target object tree root.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public TConstruct PackToTarget { get; protected set; }
 
 		/// <summary>
 		///		Gets the code construct which represents the argument for the unpacker.
@@ -61,16 +61,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		The code construct which represents the argument for the unpacker.
 		///		This value will not be <c>null</c>.
 		/// </value>
-		internal TConstruct Unpacker { get; private set; }
+		public TConstruct Unpacker { get; protected set; }
 
 		/// <summary>
 		///		Gets the code construct which represents the argument for the collection which will hold unpacked items.
 		/// </summary>
-		/// <value>
+		/// <returns>
 		///		The code construct which represents the argument for the collection which will hold unpacked items.
 		///		This value will not be <c>null</c>.
-		/// </value>
-		internal TConstruct UnpackToTarget { get; private set; }
+		/// </returns>
+		public TConstruct UnpackToTarget { get; protected set; }
 
 		/// <summary>
 		///		Gets the configured nil-implication for collection items.
@@ -101,29 +101,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializerGenerationContext{TConstruct}"/> class.
 		/// </summary>
-		/// <param name="serializationContext">The serialization context.</param>
-		/// <param name="packer">
-		///		The code construct which represents the argument for the packer.
-		///	</param>
-		/// <param name="packToTarget">
-		///		The code construct which represents the argument for the packing target object tree root.
-		/// </param>
-		/// <param name="unpacker">
-		///		The code construct which represents the argument for the unpacker.
-		/// </param>
-		/// <param name="unpackToTarget">
-		///		The code construct which represents the argument for the collection which will hold unpacked items.
-		/// </param>
-		protected SerializerGenerationContext( SerializationContext serializationContext, TConstruct packer, TConstruct packToTarget, TConstruct unpacker, TConstruct unpackToTarget )
+		/// <param name="context">The serialization context.</param>
+		protected SerializerGenerationContext( SerializationContext context )
 		{
-			this.SerializationContext = serializationContext;
-			this.Packer = packer;
-			this.PackToTarget = packToTarget;
-			this.Unpacker = unpacker;
-			this.UnpackToTarget = unpackToTarget;
+			this.SerializationContext = context;
 			this.CollectionItemNilImplication = NilImplication.Null;
 			this.DictionaryKeyNilImplication = NilImplication.Prohibit;
 			this.TupleItemNilImplication = NilImplication.Null;
 		}
+
+		/// <summary>
+		///		Resets internal states for specified target type.
+		/// </summary>
+		/// <param name="targetType">Type of the serialization target.</param>
+		public abstract void Reset( Type targetType );
 	}
 }

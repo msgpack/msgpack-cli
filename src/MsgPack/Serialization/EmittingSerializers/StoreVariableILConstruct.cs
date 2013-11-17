@@ -19,26 +19,37 @@
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
+
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
-	/// <summary>
-	///		A code generation context for <see cref="AssemblyBuilderSerializerBuilder{TObject}"/>.
-	/// </summary>
-	internal class AssemblyBuilderEmittingContext : ILEmittingContext
+	internal class StoreVariableILConstruct : ILConstruct
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="AssemblyBuilderEmittingContext"/> class.
-		/// </summary>
-		/// <param name="context">The serialization context.</param>
-		/// <param name="targetType">Type of the serialization target.</param>
-		/// <param name="emitter">
-		///		The <see cref="SerializerEmitter"/> to be used.
-		/// </param>
-		public AssemblyBuilderEmittingContext( SerializationContext context, Type targetType, SerializerEmitter emitter )
-			: base( context, emitter)
+		private readonly ILConstruct _variable;
+		private readonly ILConstruct _value;
+
+		public StoreVariableILConstruct( ILConstruct variable, ILConstruct value )
+			: base( typeof( void ) )
 		{
-			this.Reset( targetType );
+			this._variable = variable;
+			this._value = value;
+		}
+
+		public override void Evaluate( TracingILGenerator il )
+		{
+			if ( this._value != null )
+			{
+				this._value.LoadValue( il, false );
+			}
+
+			this._variable.StoreValue( il );
+		}
+
+		public override string ToString()
+		{
+			return String.Format( CultureInfo.InvariantCulture, "StoreVariable: {0} = (context)", this._variable );
 		}
 	}
 }

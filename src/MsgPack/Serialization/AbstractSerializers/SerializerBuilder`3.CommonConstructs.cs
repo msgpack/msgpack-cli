@@ -100,15 +100,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract void EmitMethodEpilogue( TContext context, SerializerMethod method, TConstruct construct );
 
 		/// <summary>
-		/// 	Emits sequential statements and subsequent loadable expression which determines entire construct elementType.
-		/// </summary>
-		/// <param name="context">The generation context.</param>
-		/// <param name="statement">The statement which is usually sequential statements.</param>
-		/// <param name="contextExpression">The expresion which determines entire construct elementType.</param>
-		/// <returns>The generated construct.</returns>
-		protected abstract TConstruct EmitStatementExpression( TContext context, TConstruct statement, TConstruct contextExpression );
-
-		/// <summary>
 		///		Emits anonymous <c>null</c> reference literal.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
@@ -209,7 +200,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">The generation context.</param>
 		/// <param name="int32Value">The int32 value to be incremented.</param>
 		/// <returns>The generated construct.</returns>
-		protected abstract TConstruct EmitIncrementExpression( TContext context, TConstruct int32Value );
+		protected abstract TConstruct EmitIncrement( TContext context, TConstruct int32Value );
 
 		/// <summary>
 		///		Emits the elementType-of expression.
@@ -567,11 +558,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Emits the try-finally expression.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="tryExpression">The try expression.</param>
+		/// <param name="tryStatement">The try expression.</param>
 		/// <param name="finallyStatement">The finally statement.</param>
-		/// <returns>The generated construct which elementType is elementType of <paramref name="tryExpression"/>.</returns>
-		protected abstract TConstruct EmitTryFinallyExpression(
-			TContext context, TConstruct tryExpression, TConstruct finallyStatement
+		/// <returns>The generated construct which elementType is elementType of <paramref name="tryStatement"/>.</returns>
+		protected abstract TConstruct EmitTryFinally(
+			TContext context, TConstruct tryStatement, TConstruct finallyStatement
 		);
 
 		/// <summary>
@@ -1083,7 +1074,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				Contract.Assert( itemsCount != null );
 #endif
 				yield return
-					this.EmitIncrementExpression(
+					this.EmitIncrement(
 						context,
 						unpacked
 					);
@@ -1114,7 +1105,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					typeof( void ),
 					disposable,
 					this.EmitStoreVariableStatement( context, disposable, instantiateIDisposableExpression ),
-					this.EmitTryFinallyExpression(
+					this.EmitTryFinally(
 						context,
 						usingBodyEmitter( disposable ),
 						this.EmitConditionalExpression(

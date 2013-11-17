@@ -46,7 +46,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			get { return this._context; }
 		}
 
-		private readonly ExpressionConstruct _this;
+		private ExpressionConstruct _this;
 
 		/// <summary>
 		///		Gets the code construct which represents 'this' reference.
@@ -66,27 +66,24 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ExpressionTreeContext"/> class.
 		/// </summary>
-		/// <param name="serializationContext">The serialization context.</param>
-		/// <param name="packer">
-		///		The code construct which represents the argument for the packer.
-		///	</param>
-		/// <param name="packingTarget">
-		///		The code construct which represents the argument for the packing target object tree root.
-		/// </param>
-		/// <param name="unpacker">
-		///		The code construct which represents the argument for the unpacker.
-		/// </param>
-		/// <param name="unpackToTarget">
-		///		The code construct which represents the argument for the collection which will hold unpacked items.
-		/// </param>
-		public ExpressionTreeContext( SerializationContext serializationContext, ExpressionConstruct packer, ExpressionConstruct packingTarget, ExpressionConstruct unpacker, ExpressionConstruct unpackToTarget )
-			: base( serializationContext, packer, packingTarget, unpacker, unpackToTarget )
+		/// <param name="context">The serialization context.</param>
+		public ExpressionTreeContext( SerializationContext context )
+			: base( context )
 		{
 			this._context = Expression.Parameter( typeof( SerializationContext ), "context" );
+		}
+
+		public override void Reset( Type targetType )
+		{
 			this._this =
 				Expression.Parameter(
-					typeof( ExpressionCallbackMessagePackSerializer<> ).MakeGenericType( packingTarget.ContextType ), "this"
-					);
+					typeof( ExpressionCallbackMessagePackSerializer<> ).MakeGenericType( targetType ), "this"
+				);
+
+			this.Packer = Expression.Parameter( typeof( Packer ), "packer" );
+			this.PackToTarget = Expression.Parameter( targetType, "objectTree" );
+			this.Unpacker = Expression.Parameter( typeof( Unpacker ), "unpacker" );
+			this.UnpackToTarget = Expression.Parameter( targetType, "collection" );
 		}
 
 		/// <summary>
@@ -127,12 +124,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <summary>
 		///		Gets the <see cref="ParameterExpression"/>s for specified method.
 		/// </summary>
+		/// <param name="targetType">The type of the serialization target.</param>
 		/// <param name="method">The method to be created.</param>
 		/// <returns>
 		///		The <see cref="ParameterExpression"/>s for specified method.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public IEnumerable<ParameterExpression> GetParameters( SerializerMethod method )
+		public IEnumerable<ParameterExpression> GetParameters( Type targetType, SerializerMethod method )
 		{
 			yield return this._this.Expression as ParameterExpression;
 			yield return this._context.Expression as ParameterExpression;

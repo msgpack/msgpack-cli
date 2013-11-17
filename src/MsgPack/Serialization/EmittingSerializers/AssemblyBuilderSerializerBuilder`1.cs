@@ -30,27 +30,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// <typeparam name="TObject">The type of the serializing object.</typeparam>
 	internal class AssemblyBuilderSerializerBuilder<TObject> : ILEmittingSerializerBuilder<AssemblyBuilderEmittingContext, TObject>
 	{
-		private readonly AssemblyBuilder _predefinedAssemblyBuilder;
-
 		/// <summary>
 		///		Initializes a new instance of the <see cref="AssemblyBuilderSerializerBuilder{TObject}"/> class for instance creation.
 		/// </summary>
-		public AssemblyBuilderSerializerBuilder()
-		{
-			this._predefinedAssemblyBuilder = null;
-		}
-
-		/// <summary>
-		///		Initializes a new instance of the <see cref="AssemblyBuilderSerializerBuilder{TObject}"/> class for code generation.
-		/// </summary>
-		/// <param name="predefinedAssemblyBuilder">
-		///		The predefined <see cref="AssemblyBuilder"/> which holds generated serializer types.
-		///	</param>
-		public AssemblyBuilderSerializerBuilder( AssemblyBuilder predefinedAssemblyBuilder )
-		{
-			this._predefinedAssemblyBuilder = predefinedAssemblyBuilder;
-		}
-
+		public AssemblyBuilderSerializerBuilder() { }
 
 		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType )
 		{
@@ -75,28 +58,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ISerializerCodeGenerationContext CreateGenerationContextForCodeGenerationCore( SerializationContext context )
-		{
-			if ( this._predefinedAssemblyBuilder == null )
-			{
-				throw new InvalidOperationException( "predefinedAssemblyBuilder was not specified." );
-			}
-
-			DefaultSerializationMethodGeneratorManager.SetUpAssemblyBuilderAttributes( this._predefinedAssemblyBuilder, false );
-
-			var generatorManager = SerializationMethodGeneratorManager.Get( this._predefinedAssemblyBuilder );
-
-			return new AssemblyBuilderCodeGenerationContext( context, generatorManager );
-		}
-
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
 		{
 			var asAssemblyBuilderCodeGenerationContext = context as AssemblyBuilderCodeGenerationContext;
-			if( asAssemblyBuilderCodeGenerationContext == null )
+			if ( asAssemblyBuilderCodeGenerationContext == null )
 			{
 				throw new ArgumentException(
-					"'context' was not created with CreateGenerationContextForCodeGeneration method.", 
-					"context" 
+					"'context' was not created with CreateGenerationContextForCodeGeneration method.",
+					"context"
 				);
 			}
 
