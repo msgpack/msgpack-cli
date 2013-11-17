@@ -159,8 +159,20 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilderConstants.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerMethod.cs" />
+    <Compile Include="Serialization\CodeDomSerializers\CodeDomConstruct.cs" />
+    <Compile Include="Serialization\CodeDomSerializers\CodeDomContext.cs" />
+    <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder`1.cs" />
+    <Compile Include="Serialization\CodeDomSerializers\ExpressionCodeDomConstruct.cs" />
+    <Compile Include="Serialization\CodeDomSerializers\ParameterCodeDomConstruct.cs" />
+    <Compile Include="Serialization\CodeDomSerializers\StatementCodeDomConstruct.cs" />
+    <Compile Include="Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs" />
+    <Compile Include="Serialization\CodeGenerationConfiguration.cs" />
+    <Compile Include="Serialization\EmittingSerializers\AndConditionILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
     <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderEmittingContext.cs" />
+    <Compile Include="Serialization\EmittingSerializers\BinaryOperatorILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ConditionalILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ContextfulILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\DynamicMethodEmittingContext.cs" />
     <Compile Include="Serialization\EmittingSerializers\DynamicMethodSerializerBuilder`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\ILConstruct.cs" />
@@ -179,6 +191,8 @@
     <Compile Include="Serialization\AbstractSerializers\SerializerGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
+    <Compile Include="Serialization\EmittingSerializers\InvocationILConsruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\LoadFieldILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\LocalVariableHolder.cs" />
     <Compile Include="Serialization\CallbackMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs" />
@@ -189,6 +203,13 @@
     </Compile>
     <Compile Include="Serialization\EmitterFlavor.cs" />
     <Compile Include="ReflectionAbstractions.cs" />
+    <Compile Include="Serialization\EmittingSerializers\SequenceILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\SinglelStepILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\StatementExpressionILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\StoreFieldILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\StoreVariableILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\UnaryOperatorILConstruct.cs" />
+    <Compile Include="Serialization\EmittingSerializers\VariableILConstruct.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionConstruct.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionDumper.cs" />

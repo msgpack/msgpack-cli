@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -585,4 +584,13 @@ namespace MsgPack.Serialization
 		}
 	}
 #endif
+
+	[TestFixture]
+	public class NilImplicationOnCodeDomBasedEmittionFlavorTest : NilImplicationTest
+	{
+		protected override SerializationContext CreateSerializationContext()
+		{
+			return new SerializationContext { EmitterFlavor = EmitterFlavor.CodeDomBased };
+		}
+	}
 }

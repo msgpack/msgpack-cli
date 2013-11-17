@@ -229,6 +229,8 @@
     <Compile Include="Serialization\_SetUpFixture.cs" />
     <Compile Include="Serialization\ComplexTypeWithNonSerialized.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContract.cs" />
+    <Compile Include="Serialization\ArrayCodeDomBasedAutoMessagePackSerializerTest.cs" />
+    <Compile Include="Serialization\MapCodeDomBasedAutoMessagePackSerializerTest.cs" />
     <Compile Include="SubtreeUnpackerTest.cs" />
     <Compile Include="UnpackerTest.Ext.cs">
       <AutoGen>True</AutoGen>
