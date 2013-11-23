@@ -19,46 +19,17 @@
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
 
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Represents configuration for serializer code generation.
+	///		Represents configuration for pre-generated serializer assembly generation.
 	/// </summary>
-	public sealed class SerializerCodeGenerationConfiguration : ISerializerGeneratorConfiguration
+	public sealed class SerializerAssemblyGenerationConfiguration : ISerializerGeneratorConfiguration
 	{
-		private const string DefaultNamespace = "MsgPack.Serialization.GeneratedSerializers";
-		private const string DefaultLanguage = "C#";
-		private const string DefaultIndentString = "    ";
-
-		private string _namespace;
-
-		/// <summary>
-		///		Gets or sets the namespace of generated classes.
-		/// </summary>
-		/// <value>
-		///		The namespace of generated classes.
-		///		The default is <c>"MsgPack.Serialization.GeneratedSerializers"</c>.
-		/// </value>
-		/// <exception cref="ArgumentException">Specified value is not valid for namespace.</exception>
-		public string Namespace
-		{
-			get { return this._namespace; }
-			set
-			{
-				if ( value == null )
-				{
-					this._namespace = DefaultNamespace;
-				}
-				else
-				{
-					Validation.ValidateNamespace( value, "value" );
-					this._namespace = value;
-				}
-			}
-		}
-
 		private string _outputDirectory;
 
 		/// <summary>
@@ -76,46 +47,6 @@ namespace MsgPack.Serialization
 			get { return this._outputDirectory; }
 			set { this._outputDirectory = Path.GetFullPath( value ?? "." ); }
 		}
-
-		private string _language;
-
-		/// <summary>
-		///		Gets or sets the language identifier for code generation.
-		/// </summary>
-		/// <value>
-		///		The language identifier for code generation.
-		///		This value must be registered identifier in CodeDOM configuration.
-		///		The default is <c>"C#"</c>.
-		/// </value>
-		/// <remarks>
-		///		This value will be passed as-is for an underlying code dom provider.
-		/// </remarks>
-		/// <see cref="System.CodeDom.Compiler.CodeDomProvider.CreateProvider(String)"/>
-		public string Language
-		{
-			get { return this._language; }
-			set { this._language = value ?? DefaultLanguage; }
-		}
-
-		private string _indentString;
-
-		/// <summary>
-		///		Gets or sets the indentation string for code generation.
-		/// </summary>
-		/// <value>
-		///		The indentation string for code generation.
-		///		The default is <c>"    "</c>(4 U+0020 chars).
-		/// </value>
-		/// <remarks>
-		///		This value will be passed as-is for an underlying code dom provider.
-		/// </remarks>
-		/// <see cref="System.CodeDom.Compiler.CodeGeneratorOptions"/>
-		public string CodeIndentString
-		{
-			get { return this._indentString; }
-			set { this._indentString = value ?? DefaultIndentString; }
-		}
-
 		private SerializationMethod _serializationMethod;
 
 		/// <summary>
@@ -147,21 +78,50 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="SerializerCodeGenerationConfiguration"/> class.
+		///		Gets or sets the name of the assembly.
+		///		This property is required.
 		/// </summary>
-		public SerializerCodeGenerationConfiguration()
+		/// <value>
+		///		The name of the assembly.
+		/// </value>
+		public AssemblyName AssemblyName { get; set; }
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="SerializerAssemblyGenerationConfiguration"/> class.
+		/// </summary>
+		public SerializerAssemblyGenerationConfiguration()
 		{
-			// Set to defaults.
 			this.OutputDirectory = null;
-			this.Language = null;
-			this.Namespace = null;
-			this.CodeIndentString = null;
 			this._serializationMethod = SerializationMethod.Array;
 		}
 
 		void ISerializerGeneratorConfiguration.Validate()
 		{
-			// nop
+			try
+			{
+				// ReSharper disable ReturnValueOfPureMethodIsNotUsed
+				Path.GetFullPath( "." + Path.DirectorySeparatorChar + this.AssemblyName.Name );
+				// ReSharper restore ReturnValueOfPureMethodIsNotUsed
+			}
+			catch ( ArgumentException ex )
+			{
+				throw this.CreateValidationError( ex );
+			}
+			catch ( NotSupportedException ex )
+			{
+				throw this.CreateValidationError( ex );
+			}
+		}
+
+		private Exception CreateValidationError( Exception innerException )
+		{
+			return
+				new InvalidOperationException(
+					String.Format(
+						CultureInfo.CurrentCulture, "AssemblyName property is not set correctly. Detail: {0}", innerException.Message
+						),
+					innerException
+					);
 		}
 	}
 }

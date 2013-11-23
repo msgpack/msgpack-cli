@@ -166,6 +166,8 @@
     <Compile Include="Serialization\CodeDomSerializers\ParameterCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\StatementCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs" />
+    <Compile Include="Serialization\ISerializerGeneratorConfiguration.cs" />
+    <Compile Include="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Compile Include="Serialization\EmittingSerializers\AndConditionILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
