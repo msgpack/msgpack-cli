@@ -207,10 +207,13 @@ namespace MsgPack.Serialization
 
 		private void GenerateCode( EmitterFlavor flavor, CodeGenerationConfiguration configuration )
 		{
-			var context = new SerializationContext();
-			context.EmitterFlavor = flavor;
-			context.GeneratorOption = SerializationMethodGeneratorOption.CanDump;
-			context.SerializationMethod = this._method;
+			var context =
+				new SerializationContext
+				{
+					EmitterFlavor = flavor,
+					GeneratorOption = SerializationMethodGeneratorOption.CanDump,
+					SerializationMethod = this._method
+				};
 
 			ISerializerCodeGenerationContext generationContext;
 			Func<Type, ISerializerCodeGenerator> generatorFactory;

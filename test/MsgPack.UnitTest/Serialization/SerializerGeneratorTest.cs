@@ -158,7 +158,7 @@ namespace MsgPack.Serialization
 						MessagePackCode.NilValue
 					},
 					TestType.RootGeneratorTestObject
-					);
+				);
 			}
 			finally
 			{
