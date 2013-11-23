@@ -71,9 +71,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return type.IsArray || SerializerRepository.Default.Contains( type );
 		}
 
+		/// <summary>
+		///		Generates codes for this context.
+		/// </summary>
 		public void Generate()
 		{
-			this._assemblyBuilder.Save( this._assemblyBuilder.ManifestModule.ScopeName + ".dll" );
+			this._assemblyBuilder.Save( this._assemblyBuilder.GetName().Name + ".dll" );
 		}
 	}
 }
