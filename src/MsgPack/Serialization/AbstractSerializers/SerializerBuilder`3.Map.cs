@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+using System.Linq;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -94,21 +95,22 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitSequentialStatements(
 					context,
 					typeof( void ),
-					this.EmitPackItemExpression(
+					this.EmitPackItemStatements(
 						context,
 						packer,
 						keyType,
 						NilImplication.Null,
 						null,
 						this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Key" ) )
-					),
-					this.EmitPackItemExpression(
-						context,
-						packer,
-						valueType,
-						NilImplication.Null,
-						null,
-						this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Value" ) )
+					).Concat(
+						this.EmitPackItemStatements(
+							context,
+							packer,
+							valueType,
+							NilImplication.Null,
+							null,
+							this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Value" ) )
+						)
 					)
 				);
 		}
@@ -164,7 +166,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context.Unpacker,
 							collection
 						),
-						this.EmitLoadVariableExpression( context, collection )
+						this.EmitRetrunStatement( 
+							context,
+							this.EmitLoadVariableExpression( context, collection )
+						)
 					);
 			}
 			finally
@@ -332,7 +337,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						typeof( Unpacker ),
 						SerializationExceptions.NewIsNotMapHeaderMethod
 					),
-					unpacker
+					null
 				);
 		}
 	}

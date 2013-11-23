@@ -86,7 +86,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return new ParameterCodeDomConstruct( type, name );
 		}
 
-		public static StatementCodeDomConstruct Statement( CodeStatement statement )
+		public static StatementCodeDomConstruct Statement( params CodeStatement[] statement )
 		{
 			return new StatementCodeDomConstruct( statement );
 		}

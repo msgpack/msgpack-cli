@@ -21,7 +21,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace MsgPack.Serialization
@@ -29,8 +29,10 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class SerializerGeneratorTest
 	{
+		#region -- Compat --
+#pragma warning disable 0618
 		[Test]
-		public void TestWithDefault_DllIsGeneratedOnAppBase()
+		public void TestGenerateAssemblyFile_WithDefault_DllIsGeneratedOnAppBase()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
@@ -47,7 +49,7 @@ namespace MsgPack.Serialization
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
 					TestType.GeneratorTestObject
-					);
+				);
 			}
 			finally
 			{
@@ -56,7 +58,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestWithDirectory_DllIsGeneratedOnSpecifiedDirectory()
+		public void TestGenerateAssemblyFile_WithDirectory_DllIsGeneratedOnSpecifiedDirectory()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
@@ -68,12 +70,12 @@ namespace MsgPack.Serialization
 			try
 			{
 				TestOnWorkerAppDomain(
-					Path.Combine( directory, "." + Path.DirectorySeparatorChar + name.Name + ".dll" ),
+					Path.Combine( directory, name.Name + ".dll" ),
 					PackerCompatibilityOptions.Classic,
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
 					TestType.GeneratorTestObject
-					);
+				);
 			}
 			finally
 			{
@@ -82,7 +84,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestWithWithMethod_OptionsAreAsSpecified()
+		public void TestGenerateAssemblyFile_WithMethod_OptionsAreAsSpecified()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
@@ -101,7 +103,7 @@ namespace MsgPack.Serialization
 					new byte[] { MessagePackCode.MinimumFixedMap + 1, MessagePackCode.MinimumFixedRaw + 3, ( byte )'V', ( byte )'a', ( byte )'l',
 						MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
 					TestType.GeneratorTestObject
-					);
+				);
 			}
 			finally
 			{
@@ -110,7 +112,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestWithWithPackerOption_OptionsAreAsSpecified()
+		public void TestGenerateAssemblyFile_WithPackerOption_OptionsAreAsSpecified()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( GeneratorTestObject ), name );
@@ -127,7 +129,7 @@ namespace MsgPack.Serialization
 					new byte[] { ( byte )'A' },
 					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.Bin8, 1, ( byte )'A' },
 					TestType.GeneratorTestObject
-					);
+				);
 			}
 			finally
 			{
@@ -136,7 +138,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestComplexType_ChildGeneratorsAreContainedAutomatically()
+		public void TestGenerateAssemblyFile_ComplexType_ChildGeneratorsAreContainedAutomatically()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( typeof( RootGeneratorTestObject ), name );
@@ -167,7 +169,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestComplexType_MultipleTypes()
+		public void TestGenerateAssemblyFile_ComplexType_MultipleTypes()
 		{
 			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
 			var target = new SerializerGenerator( name );
@@ -194,12 +196,368 @@ namespace MsgPack.Serialization
 					{
 						MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte ) 'B',
 					}
-					);
+				);
 			}
 			finally
 			{
 				Directory.Delete( directory, true );
 			}
+		}
+#pragma warning restore 0618
+		#endregion -- Compat --
+
+		[Test]
+		public void TestGenerateAssembly_WithDefault_DllIsGeneratedOnAppBase()
+		{
+			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
+			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var result =
+				SerializerGenerator.GenerateAssembly(
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name }, typeof( GeneratorTestObject )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+			Assert.That( result, Is.EqualTo( filePath ) );
+
+			try
+			{
+				TestOnWorkerAppDomain(
+					filePath,
+					PackerCompatibilityOptions.Classic,
+					new byte[] { ( byte )'A' },
+					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
+					TestType.GeneratorTestObject
+				);
+			}
+			finally
+			{
+				File.Delete( filePath );
+			}
+		}
+
+		[Test]
+		public void TestGenerateAssembly_WithDirectory_DllIsGeneratedOnSpecifiedDirectory()
+		{
+			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
+			var directory = Path.Combine( Path.GetTempPath(), Guid.NewGuid().ToString() );
+			var filePath = Path.Combine( directory, name.Name + ".dll" );
+			var result =
+				SerializerGenerator.GenerateAssembly(
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, OutputDirectory = directory },
+					typeof( GeneratorTestObject )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+			Assert.That( result, Is.EqualTo( filePath ) );
+
+			try
+			{
+				TestOnWorkerAppDomain(
+					filePath,
+					PackerCompatibilityOptions.Classic,
+					new byte[] { ( byte )'A' },
+					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
+					TestType.GeneratorTestObject
+				);
+			}
+			finally
+			{
+				Directory.Delete( directory, true );
+			}
+		}
+
+		[Test]
+		public void TestGenerateAssembly_WithMethod_OptionsAreAsSpecified()
+		{
+			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
+			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var result =
+				SerializerGenerator.GenerateAssembly(
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, SerializationMethod = SerializationMethod.Map },
+					typeof( GeneratorTestObject )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+			Assert.That( result, Is.EqualTo( filePath ) );
+
+			try
+			{
+				TestOnWorkerAppDomain(
+					filePath,
+					PackerCompatibilityOptions.Classic,
+					new byte[] { ( byte )'A' },
+					new byte[] { MessagePackCode.MinimumFixedMap + 1, MessagePackCode.MinimumFixedRaw + 3, ( byte )'V', ( byte )'a', ( byte )'l',
+						MessagePackCode.MinimumFixedRaw + 1, ( byte )'A' },
+					TestType.GeneratorTestObject
+					);
+			}
+			finally
+			{
+				File.Delete( filePath );
+			}
+		}
+
+		[Test]
+		public void TestGenerateAssembly_WithPackerOption_OptionsAreAsSpecified()
+		{
+			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
+			var filePath = Path.GetFullPath( "." + Path.DirectorySeparatorChar + name.Name + ".dll" );
+			var result =
+				SerializerGenerator.GenerateAssembly(
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name },
+					typeof( GeneratorTestObject )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+			Assert.That( result, Is.EqualTo( filePath ) );
+
+			try
+			{
+				TestOnWorkerAppDomain(
+					filePath,
+					PackerCompatibilityOptions.None,
+					new byte[] { ( byte )'A' },
+					new byte[] { MessagePackCode.MinimumFixedArray + 1, MessagePackCode.Bin8, 1, ( byte )'A' },
+					TestType.GeneratorTestObject
+				);
+			}
+			finally
+			{
+				File.Delete( filePath );
+			}
+		}
+
+		[Test]
+		public void TestGenerateAssembly_ComplexType_ChildGeneratorsAreContainedAutomatically()
+		{
+			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
+			var directory = Path.Combine( Path.GetTempPath(), Guid.NewGuid().ToString() );
+			var filePath = Path.Combine( directory, name.Name + ".dll" );
+			var result =
+				SerializerGenerator.GenerateAssembly(
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, OutputDirectory = directory },
+					typeof( RootGeneratorTestObject )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
+			Assert.That( result, Is.EqualTo( filePath ) );
+
+			try
+			{
+				TestOnWorkerAppDomain(
+					filePath,
+					PackerCompatibilityOptions.Classic,
+					new byte[] { ( byte )'A' },
+					new byte[]
+					{
+						MessagePackCode.MinimumFixedArray + 2,
+						MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte ) 'A',
+						MessagePackCode.NilValue
+					},
+					TestType.RootGeneratorTestObject
+				);
+			}
+			finally
+			{
+				Directory.Delete( directory, true );
+			}
+		}
+
+		[Test]
+		public void TestGenerateAssembly_ComplexType_MultipleTypes()
+		{
+			var name = new AssemblyName( MethodBase.GetCurrentMethod().Name );
+			var directory = Path.Combine( Path.GetTempPath(), Guid.NewGuid().ToString() );
+			var filePath = Path.Combine( directory, name.Name + ".dll" );
+			var result =
+				SerializerGenerator.GenerateAssembly(
+					new SerializerAssemblyGenerationConfiguration { AssemblyName = name, OutputDirectory = directory },
+					typeof( GeneratorTestObject ),
+					typeof( AnotherGeneratorTestObject )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
+			Assert.That( result, Is.EqualTo( filePath ) );
+
+			try
+			{
+				TestOnWorkerAppDomainForMultiple(
+					filePath,
+					PackerCompatibilityOptions.Classic,
+					new byte[] { ( byte )'A' },
+					new byte[]
+					{
+						MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte ) 'A',
+					},
+					new byte[] { ( byte )'B' },
+					new byte[]
+					{
+						MessagePackCode.MinimumFixedArray + 1, MessagePackCode.MinimumFixedRaw + 1, ( byte ) 'B',
+					}
+				);
+			}
+			finally
+			{
+				Directory.Delete( directory, true );
+			}
+		}
+
+		[Test]
+		public void TestGenerateCode_WithDefault_CSFileGeneratedOnAppBase()
+		{
+			var filePathCS =
+				Path.GetFullPath(
+					Path.Combine(
+						".",
+						"MsgPack",
+						"Serialization",
+						"GeneratedSerializers",
+						IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+					)
+				);
+			var resultCS =
+				SerializerGenerator.GenerateCode(
+					typeof( GeneratorTestObject )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+			Assert.That( resultCS.Single(), Is.EqualTo( filePathCS ) );
+			var linesCS = File.ReadAllLines( filePathCS );
+			// BracingStyle, IndentString
+			Assert.That( !linesCS.Any( l => Regex.IsMatch( l, @"^\t+if.+\{\s*$" ) ) );
+			// Nemespace
+			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\s*namespace\s+MsgPack\.Serialization\.GeneratedSerializers\s+" ) ) );
+			// Array
+			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"\.PackArrayHeader" ) ) );
+		}
+
+		[Test]
+		public void TestGeneratCode_WithOptions_OptionsAreValid()
+		{
+			var directory = Path.Combine( Path.GetTempPath(), Guid.NewGuid().ToString() );
+			var filePathCS =
+				Path.Combine(
+					directory,
+					"Test",
+					IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+				);
+			var resultCS =
+				SerializerGenerator.GenerateCode(
+					new SerializerCodeGenerationConfiguration
+					{
+						CodeIndentString = "\t",
+						Namespace = "Test",
+						SerializationMethod = SerializationMethod.Map,
+						OutputDirectory = directory,
+					},
+					typeof( GeneratorTestObject )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+			Assert.That( resultCS.Single(), Is.EqualTo( filePathCS ) );
+			Console.WriteLine( File.ReadAllText( filePathCS ) );
+			var linesCS = File.ReadAllLines( filePathCS );
+			// BracingStyle, IndentString
+			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\t+[^\{\s]+.+\{\s*$" ) ) );
+			// Nemespace
+			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"^\s*namespace\s+Test\s+" ) ) );
+			// Map
+			Assert.That( linesCS.Any( l => Regex.IsMatch( l, @"\.PackMapHeader" ) ) );
+
+			// Language
+			var filePathVB =
+				Path.Combine(
+					directory,
+					"MsgPack",
+					"Serialization",
+					"GeneratedSerializers",
+					IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.vb"
+				);
+			var resultVB =
+				SerializerGenerator.GenerateCode(
+					new SerializerCodeGenerationConfiguration
+					{
+						Language = "VB",
+						OutputDirectory = directory,
+					},
+					typeof( GeneratorTestObject )
+				);
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+			Assert.That( resultVB.Single(), Is.EqualTo( filePathVB ) );
+			var linesVB = File.ReadAllLines( filePathVB );
+			// CheckVB
+			Assert.That( linesVB.Any( l => Regex.IsMatch( l, @"^\s*End Sub\s*$" ) ) );
+		}
+
+		[Test]
+		public void TestGenerateCode_ComplexType_ChildGeneratorsAreNotContainedAutomatically()
+		{
+			var filePathCS1 =
+				Path.GetFullPath(
+					Path.Combine(
+						".",
+						"MsgPack",
+						"Serialization",
+						"GeneratedSerializers",
+						IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+					)
+				);
+			var filePathCS2 =
+				Path.GetFullPath(
+					Path.Combine(
+						".",
+						"MsgPack",
+						"Serialization",
+						"GeneratedSerializers",
+						IdentifierUtility.EscapeTypeName( typeof( RootGeneratorTestObject ) ) + "Serializer.cs"
+					)
+				);
+			var resultCS =
+				SerializerGenerator.GenerateCode(
+					typeof( RootGeneratorTestObject )
+				).ToArray();
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
+			Assert.That( resultCS.Length, Is.EqualTo( 1 ) );
+			Assert.That( resultCS[ 0 ], Is.EqualTo( filePathCS2 ) );
+		}
+
+		[Test]
+		public void TestGenerateCode_ComplexType_MultipleTypes()
+		{
+			var filePathCS1 =
+				Path.GetFullPath(
+					Path.Combine(
+						".",
+						"MsgPack",
+						"Serialization",
+						"GeneratedSerializers",
+						IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+					)
+				);
+			var filePathCS2 =
+				Path.GetFullPath(
+					Path.Combine(
+						".",
+						"MsgPack",
+						"Serialization",
+						"GeneratedSerializers",
+						IdentifierUtility.EscapeTypeName( typeof( AnotherGeneratorTestObject ) ) + "Serializer.cs"
+					)
+				);
+			var resultCS =
+				SerializerGenerator.GenerateCode(
+					typeof( GeneratorTestObject ),
+					typeof( AnotherGeneratorTestObject )
+				).ToArray();
+			// Assert is not polluted.
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( GeneratorTestObject ) ), Is.False );
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( AnotherGeneratorTestObject ) ), Is.False );
+			Assert.That( SerializationContext.Default.ContainsSerializer( typeof( RootGeneratorTestObject ) ), Is.False );
+			Assert.That( resultCS.Length, Is.EqualTo( 2 ) );
+			Assert.That( resultCS, Contains.Item( filePathCS1 ).And.Contains( filePathCS2 ) );
 		}
 
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )

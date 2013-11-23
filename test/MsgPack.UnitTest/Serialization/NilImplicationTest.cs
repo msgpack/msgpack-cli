@@ -53,6 +53,7 @@ namespace MsgPack.Serialization
 #endif
 		public void SetUp()
 		{
+			SerializerDebugging.DeletePastTemporaries();
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
 			if ( SerializerDebugging.TraceEnabled )
@@ -61,6 +62,9 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
+
+			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 		}
 
 		[TearDown]
@@ -79,6 +83,7 @@ namespace MsgPack.Serialization
 			}
 
 			SerializerDebugging.Reset();
+			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif
 

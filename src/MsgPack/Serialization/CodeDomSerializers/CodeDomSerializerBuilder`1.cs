@@ -21,12 +21,14 @@
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-
+using System.Runtime.Serialization;
 using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers
@@ -55,7 +57,10 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					codeMethod =
 						new CodeMemberMethod
 						{
-							Name = "PackToCore"
+							Name = "PackToCore",
+							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+							Attributes = MemberAttributes.Family | MemberAttributes.Override
+							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 						};
 					codeMethod.Parameters.Add( context.Packer.AsParameter() );
 					codeMethod.Parameters.Add( context.PackToTarget.AsParameter() );
@@ -68,6 +73,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						new CodeMemberMethod
 						{
 							Name = "UnpackFromCore",
+							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+							Attributes = MemberAttributes.Family | MemberAttributes.Override,
+							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 							ReturnType = new CodeTypeReference( typeof( TObject ) )
 						};
 					codeMethod.Parameters.Add( context.Unpacker.AsParameter() );
@@ -79,7 +87,10 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					codeMethod =
 						new CodeMemberMethod
 						{
-							Name = "UnpackToCore"
+							Name = "UnpackToCore",
+							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
+							Attributes = MemberAttributes.Family | MemberAttributes.Override
+							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 						};
 					codeMethod.Parameters.Add( context.Unpacker.AsParameter() );
 					codeMethod.Parameters.Add( context.UnpackToTarget.AsParameter() );
@@ -96,6 +107,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
 			// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 			codeMethod.Statements.AddRange( construct.AsStatements().ToArray() );
+
+			context.DeclaringType.Members.Add( codeMethod );
 		}
 
 		protected override CodeDomConstruct MakeNullLiteral( CodeDomContext context, Type contextType )
@@ -211,14 +224,17 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override CodeDomConstruct DeclareLocal( CodeDomContext context, Type type, string name )
 		{
-			return CodeDomConstruct.Variable( type, name );
+#if DEBUG
+			Contract.Assert( !name.Contains( "." ) );
+#endif
+			return CodeDomConstruct.Variable( type, context.GetUniqueVariableName( name ) );
 		}
 
 		protected override CodeDomConstruct EmitCreateNewObjectExpression( CodeDomContext context, CodeDomConstruct variable, ConstructorInfo constructor, params CodeDomConstruct[] arguments )
 		{
 #if DEBUG
 			Contract.Assert( constructor.DeclaringType != null );
-			Contract.Assert( arguments.All( c => c.IsExpression ) );
+			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ) ) );
 #endif
 			return
 				CodeDomConstruct.Expression(
@@ -232,15 +248,18 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
 			arguments = arguments.Where( a => a != null ).ToArray();
-			Contract.Assert( arguments.All( c => c.IsExpression ) );
+			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ) ) );
+			Contract.Assert( method.DeclaringType != null );
 #endif
 			return
 				CodeDomConstruct.Statement(
 					new CodeExpressionStatement(
-						new CodeMethodInvokeExpression( 
-							instance == null ? null : instance.AsExpression(),
-							method.Name, 
-							arguments.Select( a => a.AsExpression() ).ToArray() 
+						new CodeMethodInvokeExpression(
+							instance == null
+							? new CodeTypeReferenceExpression( method.DeclaringType )
+							: instance.AsExpression(),
+							method.Name,
+							arguments.Select( a => a.AsExpression() ).ToArray()
 						)
 					)
 				);
@@ -251,15 +270,18 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
 			arguments = arguments.Where( a => a != null ).ToArray();
-			Contract.Assert( arguments.All( c => c.IsExpression ) );
+			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ) ) );
+			Contract.Assert( method.DeclaringType != null );
 #endif
 			return
 				CodeDomConstruct.Expression(
 					method.ReturnType,
 					new CodeMethodInvokeExpression(
-						instance == null ? null : instance.AsExpression(), 
-						method.Name, 
-						arguments.Select( a => a.AsExpression() ).ToArray() 
+						instance == null
+						? new CodeTypeReferenceExpression( method.DeclaringType )
+						: instance.AsExpression(),
+						method.Name,
+						arguments.Select( a => a.AsExpression() ).ToArray()
 					)
 				);
 		}
@@ -268,11 +290,17 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
+			Contract.Assert( property.DeclaringType != null );
 #endif
 			return
 				CodeDomConstruct.Expression(
 					property.PropertyType,
-					new CodePropertyReferenceExpression( instance == null ? null : instance.AsExpression(), property.Name )
+					new CodePropertyReferenceExpression(
+						instance == null
+						? new CodeTypeReferenceExpression( property.DeclaringType )
+						: instance.AsExpression(),
+						property.Name
+					)
 				);
 		}
 
@@ -280,11 +308,17 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
+			Contract.Assert( field.DeclaringType != null );
 #endif
 			return
 				CodeDomConstruct.Expression(
 					field.FieldType,
-					new CodeFieldReferenceExpression( instance == null ? null : instance.AsExpression(), field.Name )
+					new CodeFieldReferenceExpression(
+						instance == null
+						? new CodeTypeReferenceExpression( field.DeclaringType )
+						: instance.AsExpression(),
+						field.Name
+					)
 				);
 		}
 
@@ -292,12 +326,18 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
+			Contract.Assert( property.DeclaringType != null );
 			Contract.Assert( value.IsExpression );
 #endif
 			return
 				CodeDomConstruct.Statement(
 					new CodeAssignStatement(
-						new CodePropertyReferenceExpression( instance == null ? null : instance.AsExpression(), property.Name ),
+						new CodePropertyReferenceExpression(
+							instance == null
+							? new CodeTypeReferenceExpression( property.DeclaringType )
+							: instance.AsExpression(),
+							property.Name
+						),
 						value.AsExpression()
 					)
 				);
@@ -307,12 +347,18 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
+			Contract.Assert( field.DeclaringType != null );
 			Contract.Assert( value.IsExpression );
 #endif
 			return
 				CodeDomConstruct.Statement(
 					new CodeAssignStatement(
-						new CodeFieldReferenceExpression( instance == null ? null : instance.AsExpression(), field.Name ),
+						new CodeFieldReferenceExpression(
+							instance == null
+							? new CodeTypeReferenceExpression( field.DeclaringType )
+							: instance.AsExpression(),
+							field.Name
+						),
 						value.AsExpression()
 					)
 				);
@@ -397,7 +443,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 #if DEBUG
 			Contract.Assert(
-				elseExpression == null || 
+				elseExpression == null ||
 				thenExpression.ContextType == typeof( void ) ||
 				( thenExpression.ContextType == elseExpression.ContextType ),
 				thenExpression.ContextType + " != " + ( elseExpression == null ? "(null)" : elseExpression.ContextType.FullName )
@@ -490,6 +536,17 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
+		protected override CodeDomConstruct EmitRetrunStatement( CodeDomContext context, CodeDomConstruct expression )
+		{
+#if DEBUG
+			Contract.Assert( expression.IsExpression );
+#endif
+			return
+				CodeDomConstruct.Statement(
+					new CodeMethodReturnStatement( expression.AsExpression() )
+				);
+		}
+
 		protected override CodeDomConstruct EmitForLoop( CodeDomContext context, CodeDomConstruct count, Func<ForLoopContext, CodeDomConstruct> loopBodyEmitter )
 		{
 #if DEBUG
@@ -498,6 +555,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			var counterName = context.GetUniqueVariableName( "i" );
 			var counter = CodeDomConstruct.Variable( typeof( int ), counterName );
 			var loopContext = new ForLoopContext( counter );
+
 			return
 				CodeDomConstruct.Statement(
 					new CodeIterationStatement(
@@ -530,43 +588,39 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			var enumeratorName = context.GetUniqueVariableName( "enumerator" );
 			var currentName = context.GetUniqueVariableName( "current" );
 			bool isDisposable = typeof( IDisposable ).IsAssignableFrom( collectionTraits.GetEnumeratorMethod.ReturnType );
-			var enumerator = CodeDomConstruct.Variable( collectionTraits.GetEnumeratorMethod.ReturnType, enumeratorName );
+			var enumerator =
+				CodeDomConstruct.Variable(
+					collectionTraits.GetEnumeratorMethod.ReturnType, enumeratorName
+				);
 			var current = CodeDomConstruct.Variable( collectionTraits.ElementType, currentName );
 
-			CodeStatement[] loopBody =
-				isDisposable
-				? new CodeStatement[]
-				{
-					new CodeAssignStatement(
-						current.AsExpression(),
-						new CodePropertyReferenceExpression( enumerator.AsExpression(), "Current" )
-					),
-					new CodeTryCatchFinallyStatement(
-						loopBodyEmitter( current ).AsStatements().ToArray(),
-						CodeDomContext.EmptyCatches,
+			var loopBody =
+				CodeDomConstruct.Statement(
+					new CodeIterationStatement(
+						new CodeSnippetStatement( String.Empty ),
+						new CodeMethodInvokeExpression(
+							enumerator.AsExpression(),
+							"MoveNext"
+							),
+						new CodeSnippetStatement( String.Empty ),
 						new CodeStatement[]
 						{
-							new CodeExpressionStatement(
-								new CodeMethodInvokeExpression(
-									enumerator.AsExpression(),
-									"Dispose"
+							new CodeAssignStatement(
+								current.AsExpression(),
+								new CodePropertyReferenceExpression(
+									enumerator.AsExpression(), 
+									collectionTraits.GetEnumeratorMethod.ReturnType == typeof( IDictionaryEnumerator )
+									? "Entry"
+									: "Current" 
 								)
 							)
-						}
+						}.Concat( loopBodyEmitter( current ).AsStatements() ).ToArray()
 					)
-				}
-				: new CodeStatement[]
-				{
-					new CodeAssignStatement(
-						current.AsExpression(),
-						new CodePropertyReferenceExpression( enumerator.AsExpression(), "Current" ) 
-					)
-				}.Concat( loopBodyEmitter( current ).AsStatements() ).ToArray();
+				);
 
-			return
-				EmitSequentialStatements(
-					context,
-					typeof( void ),
+			var statements =
+				new List<CodeDomConstruct>
+				{
 					CodeDomConstruct.Statement(
 						new CodeVariableDeclarationStatement(
 							enumerator.ContextType,
@@ -577,18 +631,39 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							)
 						)
 					),
-					CodeDomConstruct.Statement( new CodeVariableDeclarationStatement( current.ContextType, currentName ) ),
+					CodeDomConstruct.Statement( new CodeVariableDeclarationStatement( current.ContextType, currentName ) )
+				};
+
+			if ( isDisposable )
+			{
+				statements.Add(
 					CodeDomConstruct.Statement(
-						new CodeIterationStatement(
-							null,
-							new CodeMethodInvokeExpression(
-								enumerator.AsExpression(),
-								"MoveNext"
-							),
-							null,
-							loopBody
+						new CodeTryCatchFinallyStatement(
+							loopBody.AsStatements().ToArray(),
+							CodeDomContext.EmptyCatches,
+							new CodeStatement[]
+							{
+								new CodeExpressionStatement(
+									new CodeMethodInvokeExpression(
+										enumerator.AsExpression(),
+										"Dispose"
+									)
+								)
+							}
 						)
 					)
+				);
+			}
+			else
+			{
+				statements.Add( loopBody );
+			}
+
+			return
+				EmitSequentialStatements(
+					context,
+					typeof( void ),
+					statements.ToArray()
 				);
 		}
 
@@ -616,28 +691,103 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				throw new NotSupportedException();
 			}
 
+			this.Finish( codeGenerationContext );
 			var cu = codeGenerationContext.CreateCodeCompileUnit();
 			var codeProvider = CodeDomProvider.CreateProvider( "cs" );
+			if ( SerializerDebugging.DumpEnabled )
+			{
+				SerializerDebugging.TraceEvent( "Compile {0}", codeGenerationContext.DeclaringType.Name );
+				codeProvider.GenerateCodeFromCompileUnit( cu, SerializerDebugging.ILTraceWriter, new CodeGeneratorOptions() );
+				SerializerDebugging.FlushTraceData();
+			}
+
 			var cr =
 				codeProvider.CompileAssemblyFromDom(
-					new CompilerParameters( SerializerDebugging.CompiledCodeDomSerializerAssemblies.ToArray() ),
+					new CompilerParameters( SerializerDebugging.CodeDomSerializerDependentAssemblies.ToArray() ),
 					cu
 				);
-			SerializerDebugging.CompiledCodeDomSerializerAssemblies.Add( cr.PathToAssembly );
+			var errors = cr.Errors.OfType<CompilerError>().Where( e => !e.IsWarning ).ToArray();
+			if ( errors.Length > 0 )
+			{
+				if ( SerializerDebugging.TraceEnabled )
+				{
+					codeProvider.GenerateCodeFromCompileUnit( cu, SerializerDebugging.ILTraceWriter, new CodeGeneratorOptions() );
+					SerializerDebugging.FlushTraceData();
+				}
+
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Failed to compile assembly. Details:{0}{1}",
+						Environment.NewLine,
+						BuildCompilationError( cr )
+					)
+				);
+			}
+
+#if DEBUG
+			// Check warning except ambigious type reference.
+			var warnings = cr.Errors.OfType<CompilerError>().Where( e => e.ErrorNumber != "CS0436" ).ToArray();
+			Contract.Assert( !warnings.Any(), BuildCompilationError( cr ) );
+#endif
+			
+			if ( SerializerDebugging.TraceEnabled )
+			{
+				SerializerDebugging.TraceEvent( "Build assembly '{0}' from dom.", cr.PathToAssembly );
+			}
+
+			SerializerDebugging.AddCompiledCodeDomAssembly( cr.PathToAssembly );
 
 			var targetType =
 				cr.CompiledAssembly.GetTypes()
-				.Single(
+				.SingleOrDefault(
 					t =>
-					t.Namespace == cu.Namespaces[ 0 ].Name && t.Name.StartsWith( codeGenerationContext.DeclaringType.Name ) &&
-					t.GetGenericArguments()[ 0 ].AssemblyQualifiedName == typeof( TObject ).AssemblyQualifiedName
+					t.Namespace == cu.Namespaces[ 0 ].Name
+					&& t.Name == codeGenerationContext.DeclaringType.Name
 				);
+
+			Contract.Assert(
+				targetType != null,
+				String.Join(
+					Environment.NewLine,
+					cr.CompiledAssembly.GetTypes()
+					.Where(
+				// ReSharper disable ImplicitlyCapturedClosure
+						t => t.Namespace == cu.Namespaces[ 0 ].Name
+				// ReSharper restore ImplicitlyCapturedClosure
+					).Select( t => t.FullName )
+				)
+			);
+
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			return
 				Expression.Lambda<Func<SerializationContext, MessagePackSerializer<TObject>>>(
 					Expression.New( targetType.GetConstructors().Single(), contextParameter ),
 					contextParameter
 				).Compile();
+		}
+
+		private static string BuildCompilationError( CompilerResults cr )
+		{
+			return
+				String.Join(
+					Environment.NewLine,
+					cr.Errors.OfType<CompilerError>()
+					  .Select(
+						  ( error, i ) =>
+						  String.Format(
+							  CultureInfo.InvariantCulture,
+							  "[{0}]{1}:{2}:(File:{3}, Line:{4}, Column:{5}):{6}",
+							  i,
+							  error.IsWarning ? "Warning" : "Error   ",
+							  error.ErrorNumber,
+							  error.FileName,
+							  error.Line,
+							  error.Column,
+							  error.ErrorText
+							)
+					)
+				);
 		}
 
 		private void Finish( CodeDomContext context )
@@ -655,11 +805,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			// ctor
 			{
-				var ctor = new CodeConstructor();
+				var ctor =
+					new CodeConstructor
+					{
+						Attributes = MemberAttributes.Public
+					};
 				var contextArgument = new CodeArgumentReferenceExpression( "context" );
 				var contextExpression =
 					new CodeMethodInvokeExpression(
-						null,
+						new CodeTypeReferenceExpression( context.DeclaringType.Name ),
 						CodeDomContext.ConditionalExpressionHelperMethodName,
 						new CodeBinaryOperatorExpression(
 							contextArgument,
@@ -673,7 +827,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						)
 					);
 				ctor.Parameters.Add( new CodeParameterDeclarationExpression( typeof( SerializationContext ), "context" ) );
-				ctor.BaseConstructorArgs.Add( contextExpression );
+				ctor.BaseConstructorArgs.Add(
+					new CodePropertyReferenceExpression(
+						new CodePropertyReferenceExpression(
+							contextExpression,
+							"CompatibilityOptions"
+						),
+						"PackerCompatibilityOptions"
+					)
+				);
 				ctor.Statements.Add(
 					new CodeVariableDeclarationStatement( typeof( SerializationContext ), "safeContext", contextExpression )
 				);
@@ -688,9 +850,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 								new CodeMethodReferenceExpression(
 									contextVariable,
 									"GetSerializer",
-									new CodeTypeReference( dependentSerializer.Value )
-									),
-							new CodeTypeReferenceExpression( dependentSerializer.Value.GetGenericArguments()[ 0 ] )
+									new CodeTypeReference( dependentSerializer.Value.GetGenericArguments()[ 0 ] )
+								)
 							)
 						)
 					);
@@ -706,6 +867,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				var conditional =
 					new CodeMemberMethod
 					{
+						Name = CodeDomContext.ConditionalExpressionHelperMethodName,
 						// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
 						Attributes = MemberAttributes.Static | MemberAttributes.Private,
 						// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
@@ -729,7 +891,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override CodeDomContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
-			var result = new CodeDomContext( context, new CodeGenerationConfiguration() );
+			var result = new CodeDomContext( context, new SerializerCodeGenerationConfiguration() );
 			result.Reset( typeof( TObject ) );
 			return result;
 		}

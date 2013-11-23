@@ -76,6 +76,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		A collection which stores target types will be generated dedicated serializers.
 		/// </value>
+		[Obsolete( "Use static methods instead." )]
 		public ICollection<Type> TargetTypes
 		{
 			get { return this._targetTypes; }
@@ -89,6 +90,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The name of the assembly to be generated.
 		/// </value>
+		[Obsolete( "Use static methods instead." )]
 		public AssemblyName AssemblyName
 		{
 			get { return this._assemblyName; }
@@ -102,6 +104,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The <see cref="SerializationMethod"/> which indicates serialization method to be used.
 		/// </value>
+		[Obsolete( "Use static methods instead." )]
 		public SerializationMethod Method
 		{
 			get { return this._method; }
@@ -123,6 +126,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="assemblyName"/> is <c>null</c>.
 		/// </exception>
+		[Obsolete( "Use static methods instead." )]
 		public SerializerGenerator( AssemblyName assemblyName )
 		{
 			if ( assemblyName == null )
@@ -146,6 +150,7 @@ namespace MsgPack.Serialization
 		///		<paramref name="rootType"/> is <c>null</c>.
 		///		Or <paramref name="assemblyName"/> is <c>null</c>.
 		/// </exception>
+		[Obsolete( "Use static methods instead." )]
 		public SerializerGenerator( Type rootType, AssemblyName assemblyName )
 			: this( assemblyName )
 		{
@@ -162,7 +167,9 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Generates the serializer assembly and save it to current directory.
 		///	</summary>
+		/// <returns>The path of generated files.</returns>
 		/// <exception cref="IOException">Some I/O error is occurred on saving assembly file.</exception>
+		[Obsolete( "Use static GenerateAssembly method instead." )]
 		public void GenerateAssemblyFile()
 		{
 			this.GenerateAssemblyFile( Path.GetFullPath( "." ) );
@@ -172,12 +179,14 @@ namespace MsgPack.Serialization
 		///		Generates the serializer assembly and save it to specified directory.
 		///	</summary>
 		/// <param name="directory">The path of directory where newly generated assembly file will be located. If the directory does not exist, then it will be created.</param>
+		/// <returns>The path of generated files.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="directory"/> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentException"><paramref name="directory"/> is not valid.</exception>
 		/// <exception cref="PathTooLongException"><paramref name="directory"/> is too long.</exception>
 		/// <exception cref="DirectoryNotFoundException"><paramref name="directory"/> is existent file.</exception>
 		/// <exception cref="UnauthorizedAccessException">Cannot create specified directory for access control of file system.</exception>
 		/// <exception cref="IOException">Some I/O error is occurred on creating directory or saving assembly file.</exception>
+		[Obsolete( "Use static GenerateAssembly method instead." )]
 		public void GenerateAssemblyFile( string directory )
 		{
 			if ( !Directory.Exists( directory ) )
@@ -185,81 +194,217 @@ namespace MsgPack.Serialization
 				Directory.CreateDirectory( directory );
 			}
 
-			this.GenerateCode( EmitterFlavor.FieldBased, new CodeGenerationConfiguration { OutputDirectory = directory } );
-		}
-
-		/// <summary>
-		///		Generates the codes for serializers with default configuration.
-		/// </summary>
-		public void GenerateCode()
-		{
-			this.GenerateCode( null );
-		}
-
-		/// <summary>
-		///		Generates the codes for serializers with specified configuration.
-		/// </summary>
-		/// <param name="configuration">The configuration for code generation. Specify <c>null</c> to use default configuration.</param>
-		public void GenerateCode( CodeGenerationConfiguration configuration )
-		{
-			this.GenerateCode( EmitterFlavor.CodeDomBased, configuration ?? new CodeGenerationConfiguration() );
-		}
-
-		private void GenerateCode( EmitterFlavor flavor, CodeGenerationConfiguration configuration )
-		{
-			var context =
-				new SerializationContext
+			GenerateAssembly(
+				new SerializerAssemblyGenerationConfiguration
 				{
-					EmitterFlavor = flavor,
-					GeneratorOption = SerializationMethodGeneratorOption.CanDump,
+					AssemblyName = this._assemblyName,
+					OutputDirectory = directory,
 					SerializationMethod = this._method
-				};
+				},
+				this._targetTypes
+			);
+		}
 
-			ISerializerCodeGenerationContext generationContext;
-			Func<Type, ISerializerCodeGenerator> generatorFactory;
+		/// <summary>
+		///		Generates an assembly which contains auto-generated serializer types for specified types.
+		/// </summary>
+		/// <param name="configuration">The <see cref="SerializerAssemblyGenerationConfiguration"/> which holds required <see cref="SerializerAssemblyGenerationConfiguration.AssemblyName"/> and optional settings.</param>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="configuration"/> is <c>null</c>. Or, <paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="InvalidOperationException"><see cref="SerializerAssemblyGenerationConfiguration.AssemblyName"/> of <paramref name="configuration"/> is not set correctly.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are automatically generated.
+		/// </remarks>
+		public static string GenerateAssembly( SerializerAssemblyGenerationConfiguration configuration, params Type[] targetTypes )
+		{
+			return GenerateAssembly( configuration, targetTypes as IEnumerable<Type> );
+		}
 
-			switch ( flavor )
+		/// <summary>
+		///		Generates an assembly which contains auto-generated serializer types for specified types.
+		/// </summary>
+		/// <param name="configuration">The <see cref="SerializerAssemblyGenerationConfiguration"/> which holds required <see cref="SerializerAssemblyGenerationConfiguration.AssemblyName"/> and optional settings.</param>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="configuration"/> is <c>null</c>. Or, <paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="InvalidOperationException"><see cref="SerializerAssemblyGenerationConfiguration.AssemblyName"/> of <paramref name="configuration"/> is not set correctly.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are automatically generated.
+		/// </remarks>
+		public static string GenerateAssembly( SerializerAssemblyGenerationConfiguration configuration, IEnumerable<Type> targetTypes )
+		{
+			return
+				Path.GetFullPath(
+					Path.Combine(
+						configuration == null ? "." : configuration.OutputDirectory,
+						new SerializerAssemblyGenerationLogic().Generate( targetTypes, configuration ).Single()
+					)
+				);
+		}
+
+		/// <summary>
+		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
+		/// </summary>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+		///		This method just generate serializer types for specified types.
+		/// </remarks>
+		public static IEnumerable<string> GenerateCode( params Type[] targetTypes )
+		{
+			return GenerateCode( null, targetTypes as IEnumerable<Type> );
+		}
+
+		/// <summary>
+		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
+		/// </summary>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+		///		This method just generate serializer types for specified types.
+		/// </remarks>
+		public static IEnumerable<string> GenerateCode( IEnumerable<Type> targetTypes )
+		{
+			return GenerateCode( null, targetTypes );
+		}
+
+		/// <summary>
+		///		Generates source codes which implement auto-generated serializer types for specified types with specified configuration.
+		/// </summary>
+		/// <param name="configuration">The <see cref="SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+		///		This method just generate serializer types for specified types.
+		/// </remarks>
+		public static IEnumerable<string> GenerateCode( SerializerCodeGenerationConfiguration configuration, params Type[] targetTypes )
+		{
+			return GenerateCode( configuration, targetTypes as IEnumerable<Type> );
+		}
+
+		/// <summary>
+		///		Generates source codes which implement auto-generated serializer types for specified types with specified configuration.
+		/// </summary>
+		/// <param name="configuration">The <see cref="SerializerCodeGenerationConfiguration"/> which holds optional settings. Specifying <c>null</c> means using default settings.</param>
+		/// <param name="targetTypes">The target types where serializer types to be generated.</param>
+		/// <returns>The file path for generated single module assembly file.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="targetTypes"/> is <c>null</c>.</exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">Failed to generate a serializer because of <paramref name="targetTypes"/>.</exception>
+		/// <remarks>
+		///		Serializer types for dependent types which are refered from specified <paramref name="targetTypes"/> are NOT generated.
+		///		This method just generate serializer types for specified types.
+		/// </remarks>
+		public static IEnumerable<string> GenerateCode( SerializerCodeGenerationConfiguration configuration, IEnumerable<Type> targetTypes )
+		{
+			return new SerializerCodesGenerationLogic().Generate( targetTypes, configuration ?? new SerializerCodeGenerationConfiguration() );
+		}
+
+		private abstract class SerializerGenerationLogic<TConfig>
+			where TConfig : class, ISerializerGeneratorConfiguration
+		{
+			protected abstract EmitterFlavor EmitterFlavor { get; }
+
+			public IEnumerable<string> Generate( IEnumerable<Type> targetTypes, TConfig configuration )
 			{
-				case EmitterFlavor.FieldBased:
+				if ( targetTypes == null )
 				{
-					var assemblyBuilderCodeGenerationContext =
-						new AssemblyBuilderCodeGenerationContext(
-							context,
-							AppDomain.CurrentDomain.DefineDynamicAssembly( this._assemblyName, AssemblyBuilderAccess.RunAndSave, configuration.OutputDirectory )
-						);
-					generationContext = assemblyBuilderCodeGenerationContext;
-					generatorFactory =
-						type =>
-							Activator.CreateInstance(
-								typeof( AssemblyBuilderSerializerBuilder<> ).MakeGenericType( type )
-							) as ISerializerCodeGenerator;
+					throw new ArgumentNullException( "targetTypes" );
+				}
 
-					break;
-				}
-				case EmitterFlavor.CodeDomBased:
+				if ( configuration == null )
 				{
-					generationContext = new CodeDomContext( context, configuration );
-					generatorFactory =
-						type =>
-							Activator.CreateInstance(
-								typeof( CodeDomSerializerBuilder<> ).MakeGenericType( type )
-							) as ISerializerCodeGenerator;
+					throw new ArgumentNullException( "configuration" );
+				}
 
-					break;
-				}
-				default:
+				configuration.Validate();
+				var context =
+					new SerializationContext
+					{
+						EmitterFlavor = this.EmitterFlavor,
+						GeneratorOption = SerializationMethodGeneratorOption.CanDump,
+						SerializationMethod = configuration.SerializationMethod
+					};
+
+				var generationContext = this.CreateGenerationContext( context, configuration );
+				var generatorFactory = this.CreateGeneratorFactory();
+				foreach ( var targetType in targetTypes.Distinct() )
 				{
-					throw new ArgumentOutOfRangeException( "flavor" );
+					var generator = generatorFactory( targetType );
+					generator.BuildSerializerCode( generationContext );
 				}
+
+				Directory.CreateDirectory( configuration.OutputDirectory );
+
+				return generationContext.Generate();
 			}
 
-			foreach ( var targetType in this._targetTypes )
+			protected abstract ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, TConfig configuration );
+
+			protected abstract Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory();
+		}
+
+		private sealed class SerializerAssemblyGenerationLogic : SerializerGenerationLogic<SerializerAssemblyGenerationConfiguration>
+		{
+			protected override EmitterFlavor EmitterFlavor
 			{
-				var generator = generatorFactory( targetType );
-				generator.BuildSerializerCode( generationContext );
+				get { return EmitterFlavor.FieldBased; }
 			}
 
-			generationContext.Generate();
+			public SerializerAssemblyGenerationLogic() { }
+
+			protected override ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, SerializerAssemblyGenerationConfiguration configuration )
+			{
+				return
+					new AssemblyBuilderCodeGenerationContext(
+						context,
+						AppDomain.CurrentDomain.DefineDynamicAssembly( configuration.AssemblyName, AssemblyBuilderAccess.RunAndSave, configuration.OutputDirectory )
+					);
+			}
+
+			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
+			{
+				return
+					type =>
+					Activator.CreateInstance(
+						typeof( AssemblyBuilderSerializerBuilder<> ).MakeGenericType( type )
+					) as ISerializerCodeGenerator;
+			}
+		}
+
+		private sealed class SerializerCodesGenerationLogic : SerializerGenerationLogic<SerializerCodeGenerationConfiguration>
+		{
+			protected override EmitterFlavor EmitterFlavor
+			{
+				get { return EmitterFlavor.CodeDomBased; }
+			}
+
+			public SerializerCodesGenerationLogic() { }
+
+			protected override ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, SerializerCodeGenerationConfiguration configuration )
+			{
+				return new CodeDomContext( context, configuration );
+			}
+
+			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory()
+			{
+				return
+					type =>
+					Activator.CreateInstance(
+						typeof( CodeDomSerializerBuilder<> ).MakeGenericType( type )
+					) as ISerializerCodeGenerator;
+			}
 		}
 	}
 }

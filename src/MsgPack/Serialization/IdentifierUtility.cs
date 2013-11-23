@@ -47,7 +47,11 @@ namespace MsgPack.Serialization
 
 		public static string EscapeTypeName( Type type )
 		{
-			var fullName = type.GetFullName();
+			return EscapeTypeName( type.GetFullName() );
+		}
+
+		public static string EscapeTypeName( string fullName )
+		{
 			var result = new StringBuilder( fullName.Length );
 			bool mayArray = false;
 			foreach ( var c in fullName )
@@ -105,6 +109,7 @@ namespace MsgPack.Serialization
 						result.Append( "Reference" );
 						break;
 					}
+					case '+':
 					case '.':
 					case '`':
 					{

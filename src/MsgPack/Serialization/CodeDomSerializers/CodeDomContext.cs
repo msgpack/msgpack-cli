@@ -44,7 +44,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		private readonly Dictionary<Type, CodeTypeDeclaration> _declaringTypes = new Dictionary<Type, CodeTypeDeclaration>();
 
-		private readonly CodeGenerationConfiguration _configuration;
+		private readonly SerializerCodeGenerationConfiguration _configuration;
 
 		private CodeTypeDeclaration _buildingType;
 
@@ -59,7 +59,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			get { return this._buildingType; }
 		}
 
-		public CodeDomContext( SerializationContext context, CodeGenerationConfiguration configuration )
+		public CodeDomContext( SerializationContext context, SerializerCodeGenerationConfiguration configuration )
 			: base( context )
 		{
 			this._configuration = configuration;
@@ -164,14 +164,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		/// <summary>
 		///		Generates codes for this context.
 		/// </summary>
-		public void Generate()
+		/// <returns>The path of generated files.</returns>
+		public IEnumerable<string> Generate()
 		{
 			var provider = CodeDomProvider.CreateProvider( this._configuration.Language );
 			var options =
 				new CodeGeneratorOptions
 				{
 					BlankLinesBetweenMembers = true,
-					BracingStyle = this._configuration.CodeBracingStyle,
 					ElseOnClosing = false,
 					IndentString = this._configuration.CodeIndentString,
 					VerbatimOrder = false
@@ -182,6 +182,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					this._configuration.OutputDirectory,
 					this._configuration.Namespace.Replace( Type.Delimiter, Path.DirectorySeparatorChar )
 				);
+			Directory.CreateDirectory( directory );
+
+			var result = new List<string>( _declaringTypes.Count );
 
 			foreach ( var declaringType in _declaringTypes )
 			{
@@ -191,16 +194,23 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					typeFileName += "`" + declaringType.Value.TypeParameters.Count.ToString( CultureInfo.InvariantCulture );
 				}
 
+				typeFileName += "." + provider.FileExtension;
+
 				var cn = new CodeNamespace( this._configuration.Namespace );
 				cn.Types.Add( declaringType.Value );
 				var cu = new CodeCompileUnit();
 				cu.Namespaces.Add( cn );
 
-				using ( var writer = new StreamWriter( Path.Combine( directory, typeFileName ), false, Encoding.UTF8 ) )
+				var filePath = Path.Combine( directory, typeFileName );
+				result.Add( filePath );
+
+				using ( var writer = new StreamWriter( filePath, false, Encoding.UTF8 ) )
 				{
 					provider.GenerateCodeFromCompileUnit( cu, writer, options );
 				}
 			}
+
+			return result;
 		}
 
 		/// <summary>

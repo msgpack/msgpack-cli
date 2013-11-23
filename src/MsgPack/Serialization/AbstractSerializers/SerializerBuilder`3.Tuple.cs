@@ -96,20 +96,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 					itemNProperty != null,
 					tupleTypeList[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i );
 #endif
-				yield return
-					this.EmitPackTupleItemExpression(
+				foreach ( var packTupleItem in
+					this.EmitPackTupleItemStatements(
 						context,
 						itemTypes[ i ],
 						context.Packer,
 						context.PackToTarget,
 						propertyInvocationChain
-					);
+					)
+				)
+				{
+					yield return packTupleItem;
+				}
 
 				propertyInvocationChain.Clear();
 			}
 		}
 
-		private TConstruct EmitPackTupleItemExpression(
+		private IEnumerable<TConstruct> EmitPackTupleItemStatements(
 			TContext context,
 			Type itemType,
 			TConstruct currentPacker,
@@ -117,7 +121,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			IEnumerable<PropertyInfo> propertyInvocationChain )
 		{
 			return
-				this.EmitPackItemExpression(
+				this.EmitPackItemStatements(
 					context,
 					currentPacker,
 					itemType,
@@ -240,7 +244,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitSequentialStatements(
 					context,
 					typeof( TObject ),
-					unpackedItems.Concat( unpackItems ).Concat( new[] { currentTuple } )
+					unpackedItems.Concat( unpackItems ).Concat( new[] { this.EmitRetrunStatement( context, currentTuple ) } )
 				);
 		}
 
@@ -259,7 +263,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						typeof( Unpacker ),
 						SerializationExceptions.NewIsNotArrayHeaderMethod
 					),
-					unpacker
+					null
 				);
 		}
 	}

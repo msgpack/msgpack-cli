@@ -19,14 +19,66 @@
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
 
 namespace MsgPack.Serialization
 {
+#warning TODO: Property validation.
+	internal interface ISerializerGeneratorConfiguration
+	{
+		string OutputDirectory { get; set; }
+		SerializationMethod SerializationMethod { get; set; }
+		void Validate();
+	}
+
+	public sealed class SerializerAssemblyGenerationConfiguration : ISerializerGeneratorConfiguration
+	{
+		public string OutputDirectory { get; set; }
+		public SerializationMethod SerializationMethod { get; set; }
+		public AssemblyName AssemblyName { get; set; }
+
+		public SerializerAssemblyGenerationConfiguration()
+		{
+			this.OutputDirectory = ".";
+			this.SerializationMethod = SerializationMethod.Array;
+		}
+
+		void ISerializerGeneratorConfiguration.Validate()
+		{
+			try
+			{
+// ReSharper disable ReturnValueOfPureMethodIsNotUsed
+				Path.GetFullPath( "." + Path.DirectorySeparatorChar + this.AssemblyName.Name );
+// ReSharper restore ReturnValueOfPureMethodIsNotUsed
+			}
+			catch ( ArgumentException ex )
+			{
+				throw CreateValidationError( ex );
+			}
+			catch ( NotSupportedException ex )
+			{
+				throw CreateValidationError( ex );
+			}
+		}
+
+		private Exception CreateValidationError( Exception innerException )
+		{
+			return
+				new InvalidOperationException(
+					String.Format(
+						CultureInfo.CurrentCulture, "AssemblyName property is not set correctly. Detail: {0}", innerException.Message
+					),
+					innerException
+				);
+		}
+	}
+
 	/// <summary>
 	///		Represents configuration for code generation.
 	/// </summary>
-	public sealed class CodeGenerationConfiguration
+	public sealed class SerializerCodeGenerationConfiguration : ISerializerGeneratorConfiguration
 	{
 		private string _namespace;
 
@@ -93,28 +145,21 @@ namespace MsgPack.Serialization
 		public string CodeIndentString { get; set; }
 
 		/// <summary>
-		///		Gets or sets the bracing style specifier for code generation.
+		///		Initializes a new instance of the <see cref="SerializerCodeGenerationConfiguration"/> class.
 		/// </summary>
-		/// <value>
-		///		The bracing style specifier for code generation.
-		///		The default is <c>"Block"</c>.
-		/// </value>
-		/// <remarks>
-		///		This value will be passed as-is for an underlying code dom provider.
-		/// </remarks>
-		/// <see cref="System.CodeDom.Compiler.CodeGeneratorOptions"/>
-		public string CodeBracingStyle { get; set; }
-
-		/// <summary>
-		///		Initializes a new instance of the <see cref="CodeGenerationConfiguration"/> class.
-		/// </summary>
-		public CodeGenerationConfiguration()
+		public SerializerCodeGenerationConfiguration()
 		{
 			this.OutputDirectory = Path.GetFullPath( "." );
 			this.Language = "C#";
-			this.CodeBracingStyle = "Block";
 			this.Namespace = "MsgPack.Serialization.GeneratedSerializers";
 			this.CodeIndentString = "    ";
+		}
+
+		public SerializationMethod SerializationMethod { get; set; }
+
+		void ISerializerGeneratorConfiguration.Validate()
+		{
+			// nop
 		}
 	}
 }

@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -42,6 +43,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <summary>
 		///		Generates codes for this context.
 		/// </summary>
-		void Generate();
+		/// <returns>The path of generated files.</returns>
+		IEnumerable<string> Generate();
 	}
 }

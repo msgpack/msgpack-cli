@@ -44,11 +44,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			collection.AddRange( this._statements );
 		}
 
-		public StatementCodeDomConstruct( CodeStatement statement )
-			: this( new[] { statement } )
-		{
-		}
-
 		public StatementCodeDomConstruct( IEnumerable<CodeStatement> statements )
 			: base( typeof( void ) )
 		{

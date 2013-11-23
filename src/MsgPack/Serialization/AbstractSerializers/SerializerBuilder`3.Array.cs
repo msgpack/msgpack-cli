@@ -70,7 +70,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 								traits,
 								context.PackToTarget,
 								item =>
-									this.EmitPackItemExpression( context, context.Packer, traits.ElementType, NilImplication.Null, null, item )
+									this.EmitSequentialStatements( 
+										context,
+										typeof( void ),
+										this.EmitPackItemStatements( context, context.Packer, traits.ElementType, NilImplication.Null, null, item )
+									)
 							)
 						);
 				}
@@ -143,7 +147,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context.Unpacker,
 							collection
 						),
-						this.EmitLoadVariableExpression( context, collection )
+						this.EmitRetrunStatement( 
+							context,
+							this.EmitLoadVariableExpression( context, collection )
+						)
 					);
 			}
 			finally
@@ -256,7 +263,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						typeof( Unpacker ),
 						SerializationExceptions.NewIsNotArrayHeaderMethod
 					),
-					unpacker
+					null
 				);
 		}
 	}

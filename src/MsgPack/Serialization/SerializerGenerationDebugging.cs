@@ -19,12 +19,15 @@
 #endregion -- License Terms --
 
 using System;
+using System.CodeDom.Compiler;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Threading;
 
 namespace MsgPack.Serialization
 {
@@ -170,34 +173,110 @@ namespace MsgPack.Serialization
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
 
+		// TODO: Cleanup %Temp% to delete temp assemblies generated for on the fly code DOM.
+
+		[ThreadStatic]
+		private static IList<string> _runtimeAssemblies;
+
 		[ThreadStatic]
 		private static IList<string> _compiledCodeDomSerializerAssemblies;
 
-		public static IList<string> CompiledCodeDomSerializerAssemblies
+		public static IEnumerable<string> CodeDomSerializerDependentAssemblies
 		{
 			get
 			{
-				if ( _compiledCodeDomSerializerAssemblies == null )
+				EnsureDependentAssembliesListsInitialized();
+#if DEBUG
+				Contract.Assert( _compiledCodeDomSerializerAssemblies != null );
+#endif
+				// FCL dependencies and msgpack core libs
+				foreach ( var runtimeAssembly in _runtimeAssemblies )
 				{
-					ResetCompiledCodeDomSerializerAssemblies();
+					yield return runtimeAssembly;
 				}
 
-				return _compiledCodeDomSerializerAssemblies;
+				// dependents
+				foreach ( var compiledAssembly in _compiledCodeDomSerializerAssemblies )
+				{
+					yield return compiledAssembly;
+				}
 			}
 		}
 
-		public static void ResetCompiledCodeDomSerializerAssemblies()
+		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
+			EnsureDependentAssembliesListsInitialized();
+			_runtimeAssemblies.Add( pathToAssembly );
+		}
+
+		public static void AddCompiledCodeDomAssembly( string pathToAssembly )
+		{
+			EnsureDependentAssembliesListsInitialized();
+			_compiledCodeDomSerializerAssemblies.Add( pathToAssembly );
+		}
+
+		public static void ResetDependentAssemblies()
+		{
+			EnsureDependentAssembliesListsInitialized();
+
+			File.AppendAllLines( GetHistoryFilePath(), _compiledCodeDomSerializerAssemblies );
+			_compiledCodeDomSerializerAssemblies.Clear();
+			ResetRuntimeAssemblies();
+		}
+
+		private static int _wasDeleted = 0;
+		private const string _historyFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
+
+		public static void DeletePastTemporaries()
+		{
+			if ( Interlocked.CompareExchange( ref _wasDeleted, 1, 0 ) != 0 )
+			{
+				return;
+			}
+
+			try
+			{
+				var historyFilePath = GetHistoryFilePath();
+				if ( !File.Exists( historyFilePath ) )
+				{
+					return;
+				}
+
+				foreach ( var pastAssembly in File.ReadLines( historyFilePath ) )
+				{
+					File.Delete( pastAssembly );
+				}
+
+				new FileStream( historyFilePath, FileMode.Truncate ).Close();
+			}
+			catch ( IOException ) { }
+		}
+
+		private static string GetHistoryFilePath()
+		{
+			return Path.Combine( Path.GetTempPath(), _historyFile );
+		}
+
+		private static void EnsureDependentAssembliesListsInitialized()
+		{
+			if ( _runtimeAssemblies == null )
+			{
+				_runtimeAssemblies = new List<string>();
+				ResetRuntimeAssemblies();
+			}
+
 			if ( _compiledCodeDomSerializerAssemblies == null )
 			{
 				_compiledCodeDomSerializerAssemblies = new List<string>();
 			}
-			else
-			{
-				_compiledCodeDomSerializerAssemblies.Clear();
-			}
+		}
 
-			_compiledCodeDomSerializerAssemblies.Add( typeof( SerializerDebugging ).Assembly.Location );
+		private static void ResetRuntimeAssemblies()
+		{
+			_runtimeAssemblies.Add( "System.dll" );
+			_runtimeAssemblies.Add( "System.Core.dll" );
+			_runtimeAssemblies.Add( "System.Numerics.dll" );
+			_runtimeAssemblies.Add( typeof( SerializerDebugging ).Assembly.Location );
 		}
 
 		[ThreadStatic]
@@ -253,7 +332,7 @@ namespace MsgPack.Serialization
 
 			_dumpEnabled = false;
 			_traceEnabled = false;
-			ResetCompiledCodeDomSerializerAssemblies();
+			ResetDependentAssemblies();
 		}
 	}
 }

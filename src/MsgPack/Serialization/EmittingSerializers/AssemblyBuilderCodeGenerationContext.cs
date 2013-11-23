@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
@@ -74,9 +75,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Generates codes for this context.
 		/// </summary>
-		public void Generate()
+		/// <returns>The path of generated files.</returns>
+		public IEnumerable<string> Generate()
 		{
-			this._assemblyBuilder.Save( this._assemblyBuilder.GetName().Name + ".dll" );
+			var assemblyFileName = this._assemblyBuilder.GetName().Name + ".dll";
+			this._assemblyBuilder.Save( assemblyFileName );
+			return new[] { assemblyFileName };
 		}
 	}
 }

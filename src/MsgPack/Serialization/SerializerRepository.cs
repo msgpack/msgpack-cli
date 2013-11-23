@@ -85,6 +85,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
+			// TODO: Unity
 			if ( typeof( T ).GetIsEnum() )
 			{
 				return new EnumMessagePackSerializer<T>( context.CompatibilityOptions.PackerCompatibilityOptions );

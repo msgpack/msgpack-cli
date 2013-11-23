@@ -31,7 +31,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		public CodeVariableDeclarationStatement Declaration
 		{
-			get { return new CodeVariableDeclarationStatement( this._type, this._name ); }
+			get { return new CodeVariableDeclarationStatement( this._type, this._name, new CodeDefaultValueExpression( this._type ) ); }
 		}
 
 		public CodeVariableReferenceExpression Reference

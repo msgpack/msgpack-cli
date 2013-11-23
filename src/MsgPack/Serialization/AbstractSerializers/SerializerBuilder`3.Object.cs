@@ -253,15 +253,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				else
 				{
-					yield return
-							this.EmitPackItemExpression(
-								context,
-								context.Packer,
-								entries[ i ].Member.GetMemberValueType(),
-								entries[ i ].Contract.NilImplication,
-								entries[ i ].Member.ToString(),
-								this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member )
-							);
+					foreach ( var packItem in 
+						this.EmitPackItemStatements(
+							context,
+							context.Packer,
+							entries[ i ].Member.GetMemberValueType(),
+							entries[ i ].Contract.NilImplication,
+							entries[ i ].Member.ToString(),
+							this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member )
+						)
+					)
+					{
+						yield return packItem;
+					}
 				}
 			}
 		}
@@ -279,25 +283,33 @@ namespace MsgPack.Serialization.AbstractSerializers
 					continue;
 				}
 
-				yield return
-					this.EmitPackItemExpression(
+				foreach ( var packKey in
+					this.EmitPackItemStatements(
 						context,
 						context.Packer,
 						typeof( string ),
 						NilImplication.Null,
 						"MemberName",
 						this.MakeStringLiteral( context, entries[ i ].Contract.Name )
-					);
+						)
+					)
+				{
+					yield return packKey;
+				}
 
-				yield return
-					this.EmitPackItemExpression(
+				foreach ( var packValue in
+					this.EmitPackItemStatements(
 						context,
 						context.Packer,
 						entries[ i ].Member.GetMemberValueType(),
 						entries[ i ].Contract.NilImplication,
 						entries[ i ].Member.ToString(),
 						this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member )
-					);
+					)
+				)
+				{
+					yield return packValue;
+				}
 			}
 		}
 
@@ -354,7 +366,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context.Unpacker
 				);
 
-			yield return this.EmitLoadVariableExpression( context, result );
+			yield return this.EmitRetrunStatement( context, this.EmitLoadVariableExpression( context, result ) );
 		}
 
 		private void BuildObjectUnpackFrom( TContext context, SerializingMember[] entries )
@@ -422,7 +434,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitObjectUnpackFromMap( context, result, entries )
 				);
 
-			yield return this.EmitLoadVariableExpression( context, result );
+			yield return this.EmitRetrunStatement( context, this.EmitLoadVariableExpression( context, result ) );
 		}
 
 		private TConstruct EmitObjectUnpackFromArray( TContext context, TConstruct result, IList<SerializingMember> entries )

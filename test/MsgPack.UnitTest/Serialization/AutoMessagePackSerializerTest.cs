@@ -53,6 +53,7 @@ namespace MsgPack.Serialization
 		[SetUp]
 		public void SetUp()
 		{
+			SerializerDebugging.DeletePastTemporaries();
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
 			if ( SerializerDebugging.TraceEnabled )
@@ -61,6 +62,9 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
+
+			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 		}
 
 		[TearDown]
@@ -83,6 +87,7 @@ namespace MsgPack.Serialization
 			}
 
 			SerializerDebugging.Reset();
+			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif
 		protected virtual bool CanDumpAssembly
@@ -663,6 +668,7 @@ namespace MsgPack.Serialization
 				var value = new DictionaryValueType<int, int>( 3 ) { { 1, 1 }, { 2, 2 }, { 3, 3 } };
 				serializer.Pack( stream, value );
 				stream.Position = 0;
+				Console.WriteLine();
 				var result = serializer.Unpack( stream );
 				Assert.That( result.ToArray(), Is.EquivalentTo( Enumerable.Range( 1, 3 ).Select( i => new KeyValuePair<int, int>( i, i ) ).ToArray() ) );
 			}

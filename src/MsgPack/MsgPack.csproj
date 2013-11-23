@@ -166,7 +166,7 @@
     <Compile Include="Serialization\CodeDomSerializers\ParameterCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\StatementCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs" />
-    <Compile Include="Serialization\CodeGenerationConfiguration.cs" />
+    <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Compile Include="Serialization\EmittingSerializers\AndConditionILConstruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
     <Compile Include="Serialization\EmittingSerializers\AssemblyBuilderEmittingContext.cs" />
@@ -213,7 +213,6 @@
     <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionConstruct.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionDumper.cs" />
-    <Compile Include="Serialization\ExpressionSerializers\ExpressionSerializerLogics.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeContext.cs" />
     <Compile Include="Serialization\ExpressionSerializers\ExpressionTreeSerializerBuilder`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs" />

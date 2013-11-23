@@ -638,10 +638,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="memberName">Name of the member.</param>
 		/// <param name="item">The item to be packed.</param>
 		/// <returns>The generated code construct.</returns>
-		private TConstruct EmitPackItemExpression( TContext context, TConstruct packer, Type itemType, NilImplication nilImplication, string memberName, TConstruct item )
+		private IEnumerable<TConstruct> EmitPackItemStatements( TContext context, TConstruct packer, Type itemType, NilImplication nilImplication, string memberName, TConstruct item )
 		{
-			var currentItem = item;
-
 			switch ( nilImplication )
 			{
 				case NilImplication.Prohibit:
@@ -672,7 +670,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 					if ( condition != null )
 					{
-						currentItem =
+						yield return 
 							this.EmitConditionalExpression(
 								context,
 								condition,
@@ -682,7 +680,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 									SerializationExceptions.NewNullIsProhibitedMethod,
 									this.MakeStringLiteral( context, memberName )
 								),
-								item
+								null
 							);
 					}
 
@@ -693,7 +691,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			/*
 			 * this._serializerN.PackTo(packer, item);
 			 */
-			return
+			yield return 
 				this.EmitInvokeVoidMethod(
 					context,
 					this.EmitGetSerializerExpression( context, itemType ),
@@ -701,7 +699,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						.MakeGenericType( itemType )
 						.GetMethod( "PackTo", BindingFlags.Instance | BindingFlags.Public ),
 					packer,
-					currentItem
+					item
 				);
 		}
 
@@ -918,7 +916,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.DeclareLocal(
 					context,
 					nullableType,
-					"nullable" + itemIndex
+					"nullable"
 				);
 
 			// unpacking item instruction.
@@ -1022,7 +1020,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitThrowExpression(
 							context, typeof( Unpacker ), SerializationExceptions.NewMissingItemMethod, itemIndex
 						),
-						unpacker
+						null
 					),
 					unpack
 				);
@@ -1191,6 +1189,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct EmitStringSwitchStatement(
 			TContext context, TConstruct target, IDictionary<string, TConstruct> cases
 		);
+
+		/// <summary>
+		/// 	Emits the return statement
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="expression">The expression to be returned.</param>
+		/// <returns>The return statement.</returns>
+		protected virtual TConstruct EmitRetrunStatement( TContext context, TConstruct expression )
+		{
+			return expression;
+		}
 
 		/// <summary>
 		/// 	Emits the for loop.
