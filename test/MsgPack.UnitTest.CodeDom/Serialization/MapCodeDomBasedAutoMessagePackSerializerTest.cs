@@ -36,6 +36,7 @@ namespace MsgPack.Serialization
 {
 #if !NETFX_CORE
 	[TestFixture]
+	[Ignore]
 	public class MapCodeDomBasedAutoMessagePackSerializerTest : AutoMessagePackSerializerTest
 	{
 		protected override bool CanDumpAssembly
