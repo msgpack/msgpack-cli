@@ -40,7 +40,9 @@ using System.Text;
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif
+#if !NETFX_35
 using MsgPack.Serialization.ExpressionSerializers;
+#endif
 #if !MSTEST
 using NUnit.Framework;
 #else

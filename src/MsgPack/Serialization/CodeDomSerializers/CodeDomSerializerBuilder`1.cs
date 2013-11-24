@@ -234,7 +234,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 #if DEBUG
 			Contract.Assert( constructor.DeclaringType != null );
-			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ) ) );
+			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ).ToArray() ) );
 #endif
 			return
 				CodeDomConstruct.Expression(
@@ -248,7 +248,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
 			arguments = arguments.Where( a => a != null ).ToArray();
-			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ) ) );
+			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ).ToArray() ) );
 			Contract.Assert( method.DeclaringType != null );
 #endif
 			return
@@ -270,7 +270,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
 			arguments = arguments.Where( a => a != null ).ToArray();
-			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ) ) );
+			Contract.Assert( arguments.All( c => c.IsExpression ), String.Join( ",", arguments.Select( c => c.ToString() ).ToArray() ) );
 			Contract.Assert( method.DeclaringType != null );
 #endif
 			return
@@ -686,6 +686,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( CodeDomContext codeGenerationContext )
 		{
+#if NETFX_35
+			throw new NotSupportedException();
+#else
 			if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
 			{
 				throw new NotSupportedException();
@@ -765,8 +768,10 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					Expression.New( targetType.GetConstructors().Single(), contextParameter ),
 					contextParameter
 				).Compile();
+#endif
 		}
 
+#if !NETFX_35
 		private static string BuildCompilationError( CompilerResults cr )
 		{
 			return
@@ -789,6 +794,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					)
 				);
 		}
+#endif
 
 		private void Finish( CodeDomContext context )
 		{

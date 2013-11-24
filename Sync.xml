@@ -2,6 +2,7 @@
 <ProjectSync>
   <Project Name="MsgPack.Net35" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
     <Exclude Path="Serialization\ExpressionSerializers\*" />
     <Exclude File="*.tt" />

@@ -111,6 +111,7 @@ namespace MsgPack.Serialization
 				}
 				default:
 				{
+#if !NETFX_35
 					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
 					{
 						throw new NotSupportedException(
@@ -121,6 +122,7 @@ namespace MsgPack.Serialization
 							) 
 						);
 					}
+#endif
 
 					builder = new CodeDomSerializerBuilder<T>();
 					break;

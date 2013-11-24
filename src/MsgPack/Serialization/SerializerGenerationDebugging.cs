@@ -21,7 +21,9 @@
 using System;
 #if !NETFX_CORE
 using System.CodeDom.Compiler;
+#if !NETFX_35
 using System.Collections.Concurrent;
+#endif
 #endif
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -151,7 +153,7 @@ namespace MsgPack.Serialization
 #endif
 		}
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 		[ThreadStatic]
 		private static AssemblyBuilder _assemblyBuilder;
 
@@ -220,7 +222,7 @@ namespace MsgPack.Serialization
 #endif
 		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 			EnsureDependentAssembliesListsInitialized();
 			_runtimeAssemblies.Add( pathToAssembly );
 #endif
@@ -228,7 +230,7 @@ namespace MsgPack.Serialization
 
 		public static void AddCompiledCodeDomAssembly( string pathToAssembly )
 		{
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 			EnsureDependentAssembliesListsInitialized();
 			_compiledCodeDomSerializerAssemblies.Add( pathToAssembly );
 #endif
@@ -236,7 +238,7 @@ namespace MsgPack.Serialization
 
 		public static void ResetDependentAssemblies()
 		{
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 			EnsureDependentAssembliesListsInitialized();
 
 			File.AppendAllLines( GetHistoryFilePath(), _compiledCodeDomSerializerAssemblies );
@@ -246,11 +248,13 @@ namespace MsgPack.Serialization
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_35
 		private static int _wasDeleted = 0;
 		private const string _historyFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
-
+#endif
 		public static void DeletePastTemporaries()
 		{
+#if !NETFX_35
 			if ( Interlocked.CompareExchange( ref _wasDeleted, 1, 0 ) != 0 )
 			{
 				return;
@@ -272,8 +276,11 @@ namespace MsgPack.Serialization
 				new FileStream( historyFilePath, FileMode.Truncate ).Close();
 			}
 			catch ( IOException ) { }
+#endif // !NETFX_35
 		}
+#endif // !NETFX_CORE && !SILVERLIGHT
 
+#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 		private static string GetHistoryFilePath()
 		{
 			return Path.Combine( Path.GetTempPath(), _historyFile );
@@ -300,6 +307,7 @@ namespace MsgPack.Serialization
 			_runtimeAssemblies.Add( "System.Numerics.dll" );
 			_runtimeAssemblies.Add( typeof( SerializerDebugging ).Assembly.Location );
 		}
+#endif
 
 		[ThreadStatic]
 		private static bool _onTheFlyCodeDomEnabled;
@@ -310,6 +318,7 @@ namespace MsgPack.Serialization
 			set { _onTheFlyCodeDomEnabled = value; }
 		}
 
+#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 		/// <summary>
 		///		Creates the new type builder for the serializer.
 		/// </summary>
@@ -326,16 +335,20 @@ namespace MsgPack.Serialization
 			return
 				_moduleBuilder.DefineType( IdentifierUtility.EscapeTypeName( targetType ) + "SerializerLogics" );
 		}
+#endif
 
+#if !NETFX_CORE && !SILVERLIGHT
 		/// <summary>
 		///		Takes dump of instructions.
 		/// </summary>
 		public static void Dump()
 		{
+#if !NETFX_35
 			if ( _assemblyBuilder != null )
 			{
 				_assemblyBuilder.Save( _assemblyBuilder.GetName().Name + ".dll" );
 			}
+#endif
 		}
 #endif
 
@@ -344,7 +357,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		public static void Reset()
 		{
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 			_assemblyBuilder = null;
 			_moduleBuilder = null;
 

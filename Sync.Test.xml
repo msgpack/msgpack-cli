@@ -35,6 +35,7 @@
   <Project Name="MsgPack.UnitTest.Net35" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\ExpressionBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\Task.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\TaskFactory.cs" />

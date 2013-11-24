@@ -408,12 +408,16 @@ namespace MsgPack.Serialization
 		{
 			var filePathCS =
 				Path.GetFullPath(
-					Path.Combine(
-						".",
-						"MsgPack",
-						"Serialization",
-						"GeneratedSerializers",
-						IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+					String.Join(
+						Path.DirectorySeparatorChar.ToString(),
+						new []
+						{
+							".",
+							"MsgPack",
+							"Serialization",
+							"GeneratedSerializers",
+							IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+						}
 					)
 				);
 			var resultCS =
@@ -437,10 +441,14 @@ namespace MsgPack.Serialization
 		{
 			var directory = Path.Combine( Path.GetTempPath(), Guid.NewGuid().ToString() );
 			var filePathCS =
-				Path.Combine(
-					directory,
-					"Test",
-					IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+				String.Join(
+					Path.DirectorySeparatorChar.ToString(),
+					new []
+					{
+						directory,
+						"Test",
+						IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+					}
 				);
 			var resultCS =
 				SerializerGenerator.GenerateCode(
@@ -467,12 +475,16 @@ namespace MsgPack.Serialization
 
 			// Language
 			var filePathVB =
-				Path.Combine(
-					directory,
-					"MsgPack",
-					"Serialization",
-					"GeneratedSerializers",
-					IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.vb"
+				String.Join(
+					Path.DirectorySeparatorChar.ToString(),
+					new []
+					{
+						directory,
+						"MsgPack",
+						"Serialization",
+						"GeneratedSerializers",
+						IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.vb"
+					}
 				);
 			var resultVB =
 				SerializerGenerator.GenerateCode(
@@ -496,22 +508,30 @@ namespace MsgPack.Serialization
 		{
 			var filePathCS1 =
 				Path.GetFullPath(
-					Path.Combine(
-						".",
-						"MsgPack",
-						"Serialization",
-						"GeneratedSerializers",
-						IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+					String.Join(
+						Path.DirectorySeparatorChar.ToString(),
+						new []
+						{
+							".",
+							"MsgPack",
+							"Serialization",
+							"GeneratedSerializers",
+							IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+						}
 					)
 				);
 			var filePathCS2 =
 				Path.GetFullPath(
-					Path.Combine(
-						".",
-						"MsgPack",
-						"Serialization",
-						"GeneratedSerializers",
-						IdentifierUtility.EscapeTypeName( typeof( RootGeneratorTestObject ) ) + "Serializer.cs"
+					String.Join(
+						Path.DirectorySeparatorChar.ToString(),
+						new []
+						{
+							".",
+							"MsgPack",
+							"Serialization",
+							"GeneratedSerializers",
+							IdentifierUtility.EscapeTypeName( typeof( RootGeneratorTestObject ) ) + "Serializer.cs"
+						}
 					)
 				);
 			var resultCS =
@@ -529,22 +549,30 @@ namespace MsgPack.Serialization
 		{
 			var filePathCS1 =
 				Path.GetFullPath(
-					Path.Combine(
-						".",
-						"MsgPack",
-						"Serialization",
-						"GeneratedSerializers",
-						IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+					String.Join(
+						Path.DirectorySeparatorChar.ToString(),
+						new []
+						{
+							".",
+							"MsgPack",
+							"Serialization",
+							"GeneratedSerializers",
+							IdentifierUtility.EscapeTypeName( typeof( GeneratorTestObject ) ) + "Serializer.cs"
+						}
 					)
 				);
 			var filePathCS2 =
 				Path.GetFullPath(
-					Path.Combine(
-						".",
-						"MsgPack",
-						"Serialization",
-						"GeneratedSerializers",
-						IdentifierUtility.EscapeTypeName( typeof( AnotherGeneratorTestObject ) ) + "Serializer.cs"
+					String.Join(
+						Path.DirectorySeparatorChar.ToString(),
+						new []
+						{
+							".",
+							"MsgPack",
+							"Serialization",
+							"GeneratedSerializers",
+							IdentifierUtility.EscapeTypeName( typeof( AnotherGeneratorTestObject ) ) + "Serializer.cs"
+						}
 					)
 				);
 			var resultCS =
@@ -599,7 +627,7 @@ namespace MsgPack.Serialization
 			{
 				var assembly = Assembly.LoadFrom( testAssemblyFile );
 				var types = assembly.GetTypes().Where( t => typeof( IMessagePackSerializer ).IsAssignableFrom( t ) ).ToList();
-				Assert.That( types.Count, Is.EqualTo( expectedSerializerTypeCounts ), String.Join( ", ", types ) );
+				Assert.That( types.Count, Is.EqualTo( expectedSerializerTypeCounts ), String.Join( ", ", types.Select( t => t.ToString() ).ToArray() ) );
 
 				var context = new SerializationContext( ( PackerCompatibilityOptions )packerCompatiblityOptions );
 

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -37,6 +37,11 @@ namespace System
 		public static Tuple<T1, T2, T3, T4> Create<T1, T2, T3, T4>( T1 item1, T2 item2, T3 item3, T4 item4 )
 		{
 			return new Tuple<T1, T2, T3, T4>( item1, item2, item3, item4 );
+		}
+
+		public static Tuple<T1, T2, T3, T4, T5> Create<T1, T2, T3, T4, T5>( T1 item1, T2 item2, T3 item3, T4 item4, T5 item5 )
+		{
+			return new Tuple<T1, T2, T3, T4, T5>( item1, item2, item3, item4, item5 );
 		}
 	}
 #if !WINDOWS_PHONE
@@ -128,6 +133,72 @@ namespace System
 			buffer.Append( this._item3 );
 			buffer.Append( ", " );
 			buffer.Append( this._item4 );
+			return buffer.ToString();
+		}
+	}
+#if !WINDOWS_PHONE
+	[Serializable]
+#endif
+	internal class Tuple<T1, T2, T3, T4, T5>
+	{
+		private readonly T1 _item1;
+		
+		public T1 Item1
+		{
+			get { return this._item1; }
+		}
+		private readonly T2 _item2;
+		
+		public T2 Item2
+		{
+			get { return this._item2; }
+		}
+		private readonly T3 _item3;
+		
+		public T3 Item3
+		{
+			get { return this._item3; }
+		}
+		private readonly T4 _item4;
+		
+		public T4 Item4
+		{
+			get { return this._item4; }
+		}
+		private readonly T5 _item5;
+		
+		public T5 Item5
+		{
+			get { return this._item5; }
+		}
+		public Tuple(
+			T1 item1,
+			T2 item2,
+			T3 item3,
+			T4 item4,
+			T5 item5
+		)
+		{
+			this._item1 = item1;
+			this._item2 = item2;
+			this._item3 = item3;
+			this._item4 = item4;
+			this._item5 = item5;
+		}
+		
+		public override string ToString()
+		{
+			var buffer = new StringBuilder();
+			buffer.Append( '(' );
+			buffer.Append( this._item1 );
+			buffer.Append( ", " );
+			buffer.Append( this._item2 );
+			buffer.Append( ", " );
+			buffer.Append( this._item3 );
+			buffer.Append( ", " );
+			buffer.Append( this._item4 );
+			buffer.Append( ", " );
+			buffer.Append( this._item5 );
 			return buffer.ToString();
 		}
 	}

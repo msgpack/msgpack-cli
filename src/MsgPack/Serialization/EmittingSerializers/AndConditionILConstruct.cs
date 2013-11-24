@@ -91,9 +91,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			return
 				String.Format(
-					// ReSharper disable CoVariantArrayConversion
-					CultureInfo.InvariantCulture, "And[{0}]: ({1})", this.ContextType, String.Join( ", ", this._expressions.ToArray() as object[] )
-					// ReSharper restore CoVariantArrayConversion
+				// ReSharper disable CoVariantArrayConversion
+					CultureInfo.InvariantCulture, "And[{0}]: ({1})", this.ContextType, String.Join( ", ", this._expressions.Select( e => e.ToString() ).ToArray() )
+				// ReSharper restore CoVariantArrayConversion
 					);
 		}
 	}

@@ -211,9 +211,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ExpressionBasedNilImplicationTest.cs">
-      <Link>Serialization\ExpressionBasedNilImplicationTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\FieldBasedNilImplicationTest.cs">
       <Link>Serialization\FieldBasedNilImplicationTest.cs</Link>
     </Compile>

@@ -193,9 +193,6 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Object.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs">
-      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerGenerationContext.cs">
       <Link>Serialization\AbstractSerializers\SerializerGenerationContext.cs</Link>
     </Compile>
