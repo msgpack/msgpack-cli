@@ -1,0 +1,365 @@
+﻿<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Collections.ObjectModel" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Numerics" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Runtime.InteropServices.ComTypes" #>
+<#@ import namespace="System.Text" #>
+<#+
+void GenerateTypes()
+{
+	var __fields =
+		new Tuple<Object, string, string, bool>[]
+		{
+			new Tuple<Object, string, string, bool>( typeof( Object ), "NullField", "null", true ),
+			new Tuple<Object, string, string, bool>( typeof( Boolean ), "TrueField", "true", true ),
+			new Tuple<Object, string, string, bool>( typeof( Boolean ), "FalseField", "false", true ),
+			new Tuple<Object, string, string, bool>( typeof( Byte ), "TinyByteField", "1", true ),
+			new Tuple<Object, string, string, bool>( typeof( Byte ), "ByteField", "0x80", true ),
+			new Tuple<Object, string, string, bool>( typeof( Byte ), "MaxByteField", "0xff", true ),
+			new Tuple<Object, string, string, bool>( typeof( UInt16 ), "TinyUInt16Field", "0x100", true ),
+			new Tuple<Object, string, string, bool>( typeof( UInt16 ), "MaxUInt16Field", "0xffff", true ),
+			new Tuple<Object, string, string, bool>( typeof( Int32 ), "TinyInt32Field", "0x10000", true ),
+			new Tuple<Object, string, string, bool>( typeof( Int32 ), "MaxInt32Field", "Int32.MaxValue", true ),
+			new Tuple<Object, string, string, bool>( typeof( Int32 ), "MinInt32Field", "Int32.MinValue", true ),
+			new Tuple<Object, string, string, bool>( typeof( Int64 ), "TinyInt64Field", "0x100000000", true ),
+			new Tuple<Object, string, string, bool>( typeof( Int64 ), "MaxInt64Field", "Int64.MaxValue", true ),
+			new Tuple<Object, string, string, bool>( typeof( Int64 ), "MinInt64Field", "Int64.MinValue", true ),
+			new Tuple<Object, string, string, bool>( typeof( DateTime ), String.Empty, "DateTime.UtcNow", true ),
+			new Tuple<Object, string, string, bool>( typeof( DateTimeOffset ), String.Empty, "DateTimeOffset.UtcNow", true ),
+			new Tuple<Object, string, string, bool>( typeof( Uri ), String.Empty, "new Uri( \"http://example.com/\" )", true ),
+			new Tuple<Object, string, string, bool>( typeof( Version ), String.Empty, "new Version( 1, 2, 3, 4 )", true ),
+			new Tuple<Object, string, string, bool>( typeof( FILETIME ), String.Empty, "ToFileTime( DateTime.UtcNow )", true ),
+			new Tuple<Object, string, string, bool>( typeof( TimeSpan ), String.Empty, "TimeSpan.FromMilliseconds( 123456789 )", true ),
+			new Tuple<Object, string, string, bool>( typeof( Guid ), String.Empty, "Guid.NewGuid()", true ),
+			new Tuple<Object, string, string, bool>( typeof( Char ), String.Empty, "'\u3000'", true ),
+			new Tuple<Object, string, string, bool>( typeof( Decimal ), String.Empty, "123456789.0987654321m", true ),
+			new Tuple<Object, string, string, bool>( typeof( BigInteger ), String.Empty, "new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue", true ),
+			new Tuple<Object, string, string, bool>( typeof( Complex ), String.Empty, "new Complex( 1.3, 2.4 )", true ),
+			new Tuple<Object, string, string, bool>( typeof( DictionaryEntry ), String.Empty, "new DictionaryEntry( new MessagePackObject( \"Key\" ), new MessagePackObject( \"Value\" ) )", true ),
+			new Tuple<Object, string, string, bool>( typeof( KeyValuePair<String, DateTimeOffset> ), String.Empty, "new KeyValuePair<String, DateTimeOffset>( \"Key\", DateTimeOffset.UtcNow )", true ),
+			new Tuple<Object, string, string, bool>( typeof( KeyValuePair<String, Complex> ), String.Empty, "new KeyValuePair<String, Complex>( \"Key\", new Complex( 1.3, 2.4 ) )", true ),
+			new Tuple<Object, string, string, bool>( typeof( String ), String.Empty, "\"StringValue\"", true ),
+			new Tuple<Object, string, string, bool>( typeof( Byte[] ), String.Empty, "new Byte[]{ 1, 2, 3, 4 }", true ),
+			new Tuple<Object, string, string, bool>( typeof( Char[] ), String.Empty, "\"ABCD\".ToCharArray()", true ),
+			new Tuple<Object, string, string, bool>( typeof( ArraySegment<Byte> ), String.Empty, "new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } )", true ),
+			new Tuple<Object, string, string, bool>( typeof( ArraySegment<Int32> ), String.Empty, "new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } )", true ),
+			new Tuple<Object, string, string, bool>( typeof( ArraySegment<Decimal> ), String.Empty, "new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } )", true ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Tuple<,,,> ).FullName, new [] { typeof( Int32 ).FullName, typeof( String ).FullName, "MsgPack.MessagePackObject", typeof( Object ).FullName } ), String.Empty, "new Tuple<Int32, String, MessagePackObject, Object>( 1, \"ABC\", new MessagePackObject( \"abc\" ), new MessagePackObject( \"123\" ) ) ", true ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Image", new String[ 0 ] ), String.Empty, "new Image(){ uri = \"http://example.com/logo.png\", title = \"logo\", width = 160, height = 120, size = 13612 }", true ),
+			new Tuple<Object, string, string, bool>( typeof( List<DateTime> ), String.Empty, "new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( Dictionary<String, DateTime> ), String.Empty, "new Dictionary<String, DateTime>(){ { \"Yesterday\", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { \"Today\", DateTime.UtcNow } }", false ),
+			new Tuple<Object, string, string, bool>( typeof( Collection<DateTime> ), String.Empty, "new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.StringKeyedCollection`1", new []{ typeof( DateTime ).FullName } ), String.Empty, "new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( ObservableCollection<DateTime> ), String.Empty, "new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( HashSet<DateTime> ), String.Empty, "new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( ICollection<DateTime> ), String.Empty, "new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( ISet<DateTime> ), String.Empty, "new HashSet<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( IList<DateTime> ), String.Empty, "new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( IDictionary<String, DateTime> ), String.Empty, "new Dictionary<String, DateTime>(){ { \"Yesterday\", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { \"Today\", DateTime.UtcNow } }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new []{ typeof( DateTime ).FullName } ), String.Empty, "new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow }", false ),
+			new Tuple<Object, string, string, bool>( typeof( Object ), String.Empty, "new MessagePackObject( 1 )", true ),
+			new Tuple<Object, string, string, bool>( typeof( Object[] ), String.Empty, "new Object []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", true ),
+			new Tuple<Object, string, string, bool>( typeof( ArrayList ), String.Empty, "new ArrayList(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( typeof( Hashtable ), String.Empty, "new Hashtable(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+			new Tuple<Object, string, string, bool>( typeof( List<Object> ), String.Empty, "new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( typeof( Dictionary<Object, Object> ), String.Empty, "new Dictionary<Object, Object>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+			new Tuple<Object, string, string, bool>( typeof( Collection<Object> ), String.Empty, "new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.StringKeyedCollection`1", new [] { typeof( Object ).FullName } ), String.Empty, "new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( typeof( ObservableCollection<Object> ), String.Empty, "new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( typeof( HashSet<Object> ), String.Empty, "new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( typeof( ICollection<Object> ), String.Empty, "new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( typeof( ISet<Object> ), String.Empty, "new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( typeof( IList<Object> ), String.Empty, "new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( typeof( IDictionary<Object, Object> ), String.Empty, "new Dictionary<Object, Object>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new [] { typeof( Object ).FullName } ), String.Empty, "new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.MessagePackObject", new String[ 0 ] ), String.Empty, "new MessagePackObject( 1 )", true ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.MessagePackObject[]", new String[ 0 ] ), String.Empty, "new MessagePackObject []{ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", true ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( List<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Dictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( Collection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.StringKeyedCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ObservableCollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( HashSet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ICollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( ISet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new HashSet<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IList<> ).FullName, new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( typeof( IDictionary<,> ).FullName, new [] { "MsgPack.MessagePackObject", "MsgPack.MessagePackObject" } ), String.Empty, "new Dictionary<MessagePackObject, MessagePackObject>(){ { new MessagePackObject( \"1\" ), new MessagePackObject( 1 ) }, { new MessagePackObject( \"2\" ), new MessagePackObject( 2 ) } }", false ),
+			new Tuple<Object, string, string, bool>( new Tuple<String, String[]>( "MsgPack.Serialization.AddOnlyCollection`1", new [] { "MsgPack.MessagePackObject" } ), String.Empty, "new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) }", false ),
+		};
+
+	var __desktopOnly =
+		new HashSet<Type>()
+		{
+			typeof( ArrayList ),
+			typeof( Hashtable )
+		};
+
+	var __notInNet35 =
+		new HashSet<String>()
+		{
+			ToTypeName( new Tuple<String, String[]>( typeof( ObservableCollection<> ).FullName, new [] { "MsgPack.MessagePackObject" } ) ),
+			ToTypeName( new Tuple<String, String[]>( typeof( ISet<> ).FullName, new [] { "MsgPack.MessagePackObject" } ) ),
+			ToTypeName( typeof( ISet<Object> ) ),
+			ToTypeName( typeof( ObservableCollection<object> ) ),
+			ToTypeName( typeof( ISet<DateTime> ) ),
+			ToTypeName( typeof( ObservableCollection<DateTime> ) ),
+			ToTypeName( typeof( KeyValuePair<string, Complex> ) ),
+			ToTypeName( new Tuple<String, String[]>( typeof( Tuple<,,,> ).FullName, new [] { "System.Int32", "System.String", "MsgPack.MessagePackObject", "System.Object" } ) ),
+			ToTypeName( typeof( BigInteger ) ),
+			ToTypeName( typeof( Complex ) ),
+		};
+	// Root
+	foreach( Tuple<Object, string, string, bool> __item in __fields )
+	{
+		String __typeName;
+		if( __item.Item1 is Type )
+		{
+			__typeName = ToTypeName( __item.Item1 as Type );
+		}
+		else
+		{
+			__typeName = ToTypeName( __item.Item1 as Tuple<String, String[]> );
+		}
+
+		var __asType = __item.Item1 as Type;
+		if( __asType != null && __desktopOnly.Contains( __asType ) )
+		{
+#>
+#if !NETFX_CORE && !SILVERLIGHT
+<#+
+		}
+		else if( __notInNet35.Contains( __typeName ) )
+		{
+#>
+#if !NETFX_35
+<#+
+		}
+#>
+		[Test]
+		public void Test<#= ToFieldName( __item ) #>()
+		{
+			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, this.GetSerializationContext() );
+		}
+		
+		[Test]
+		public void Test<#= ToFieldName( __item ) #>Array()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray(), this.GetSerializationContext() );
+		}
+		
+<#+
+		if( !( __item.Item1 is Type ) || !( __item.Item1 as Type ).IsValueType )
+		{
+#>
+		[Test]
+		public void Test<#= ToFieldName( __item ) #>Null()
+		{
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ), this.GetSerializationContext() );
+		}
+		
+		[Test]
+		public void Test<#= ToFieldName( __item ) #>ArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ), this.GetSerializationContext() );
+		}	
+		
+<#+
+		}
+
+		if( __asType != null && __desktopOnly.Contains( __asType ) )
+		{
+#>
+#endif // !NETFX_CORE && !SILVERLIGHT
+<#+
+		}
+		else if( __notInNet35.Contains( __typeName ) )
+		{
+#>
+#endif // !NETFX_35
+<#+
+		}
+	}
+	// In object
+#>
+		[Test]
+		public void TestComplexTypeGeneratedEnclosure()
+		{
+			var target = new ComplexTypeGeneratedEnclosure();
+			target.Initialize();
+			this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+		}
+		
+		[Test]
+		public void TestComplexTypeGeneratedEnclosureArray()
+		{
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
+		}
+		
+<#+
+	// In nested object
+#>
+		[Test]
+		public void TestComplexTypeGenerated()
+		{
+			var target = new ComplexTypeGenerated();
+			target.Initialize();
+			this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+		}
+		
+		[Test]
+		public void TestComplexTypeGeneratedArray()
+		{
+			this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
+		}
+
+		private void TestCoreWithAutoVerify<T>( T value, SerializationContext context )
+		{
+			var target = this.CreateTarget<T>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, value );
+				buffer.Position = 0;
+				T unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				AutoMessagePackSerializerTest.Verify( value, unpacked );
+			}
+		}
+		
+		private void TestCoreWithVerifiable<T>( T value, SerializationContext context )
+			where T : IVerifiable<T>
+		{
+			var target = this.CreateTarget<T>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, value );
+				buffer.Position = 0;
+				T unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				unpacked.Verify( value );
+			}
+		}	
+		
+		private void TestCoreWithVerifiable<T>( T[] value, SerializationContext context )
+			where T : IVerifiable<T>
+		{
+			var target = this.CreateTarget<T[]>( context );
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, value );
+				buffer.Position = 0;
+				T[] unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.Length, Is.EqualTo( value.Length ) );
+				for( int i = 0; i < unpacked.Length; i ++ )
+				{
+					try
+					{
+						unpacked[ i ].Verify( value[ i ] );
+					}
+#if MSTEST
+					catch( Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException ae )
+					{
+						throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( i.ToString(), ae );
+					}
+#else
+					catch( AssertionException ae )
+					{
+						throw new AssertionException( i.ToString(), ae );
+					}
+#endif
+				}
+			}
+		}	
+		
+		private static FILETIME ToFileTime( DateTime dateTime )
+		{
+			var fileTime = dateTime.ToFileTimeUtc();
+			return new FILETIME(){ dwHighDateTime = unchecked( ( int )( fileTime >> 32 ) ), dwLowDateTime = unchecked( ( int )( fileTime & 0xffffffff ) ) };
+		}
+	}
+}
+<#+
+}
+
+private static string ToTypeName( Type type )
+{
+	if( !type.IsGenericType )
+	{
+		return type.Name;
+	}
+	
+	return type.Name.Remove( type.Name.IndexOf( '`' ) ) + "<" + String.Join( ", ", type.GetGenericArguments().Select( item => item.Name ) ) + ">";
+}
+
+private static string ToTypeName( Tuple<string, string[]> tuple )
+{
+	if( tuple.Item2 == null || tuple.Item2.Length == 0 )
+	{
+		return tuple.Item1;
+	}
+	
+	return tuple.Item1.Remove( tuple.Item1.IndexOf( '`' ) ) + "<" + String.Join( ", ", tuple.Item2 ) + ">";
+}
+
+private static string ToFieldName( Tuple<Object, string, string, bool> tuple )
+{
+	if( !String.IsNullOrWhiteSpace( tuple.Item2 ) )
+	{
+		return tuple.Item2;
+	}
+	else if( tuple.Item1 is Type )
+	{
+		var type = tuple.Item1 as Type;
+		var typeName = ( type.IsArray ? type.GetElementType() : type ).Name;
+		var suffix = type.IsArray ? "ArrayField" : "Field";
+		
+		int index = type.Name.IndexOf( '`' );
+		if( index < 0 )
+		{
+			return typeName + suffix;
+		}
+		else
+		{
+			return typeName.Remove( index ) + String.Join( String.Empty, type.GetGenericArguments().Select( item => item.Name ) ) + suffix;
+		}
+	}
+	else if( tuple.Item1 is Tuple<string, string[]> )
+	{
+		var items = tuple.Item1 as Tuple<string, string[]>;
+		var first = items.Item1.Substring( items.Item1.LastIndexOf( '.' ) + 1 );
+		int indexOfBackQuat = first.IndexOf( '`' );
+		if( 0 <= indexOfBackQuat )
+		{
+			first = first.Remove( indexOfBackQuat );
+		}
+		
+		int indexOfBracket = first.IndexOf( '[' );
+		if( 0 <= indexOfBracket )
+		{
+			first = first.Remove( indexOfBracket ) + "Array";
+		}
+
+		return first + "_" + String.Join( "_", items.Item2.Select( item => item.Substring( item.LastIndexOf( '.' ) + 1 ) ) ) + "Field";
+	}
+	else
+	{
+		throw new NotImplementedException( tuple.Item1.GetType().FullName );
+	}
+}
+
+private static string GetSimpleInitializer( Tuple<Object, string, string, bool> tuple )
+{
+	int index = tuple.Item3.IndexOf( '{' );
+	if( index < 0 )
+	{
+		return tuple.Item3;
+	}
+	else
+	{
+		return tuple.Item3.Remove( index );
+	}
+}
+#>

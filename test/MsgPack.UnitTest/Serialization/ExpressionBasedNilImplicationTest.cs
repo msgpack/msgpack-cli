@@ -1,3 +1,5 @@
+﻿
+ 
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -38,7 +40,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	public abstract class NilImplicationTest
+	public abstract class ExpressionBasedNilImplicationTest
 	{
 #if !NETFX_CORE
 
@@ -558,44 +560,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		protected abstract SerializationContext CreateSerializationContext();
-	}
-
-	[TestFixture]
-	public class NilImplicationOnFieldBasedEmittionFlavorTest : NilImplicationTest
-	{
-		protected override SerializationContext CreateSerializationContext()
-		{
-			return new SerializationContext { EmitterFlavor = EmitterFlavor.FieldBased };
-		}
-	}
-
-	[TestFixture]
-	public class NilImplicationOnContextBasedEmittionFlavorTest : NilImplicationTest
-	{
-		protected override SerializationContext CreateSerializationContext()
-		{
-			return new SerializationContext { EmitterFlavor = EmitterFlavor.ContextBased };
-		}
-	}
-
-#if !NETFX_35
-	[TestFixture]
-	public class NilImplicationOnExpressionFlavorTest : NilImplicationTest
-	{
-		protected override SerializationContext CreateSerializationContext()
+		private SerializationContext CreateSerializationContext()
 		{
 			return new SerializationContext { EmitterFlavor = EmitterFlavor.ExpressionBased };
 		}
 	}
-#endif
-
-	[TestFixture]
-	public class NilImplicationOnCodeDomBasedEmittionFlavorTest : NilImplicationTest
-	{
-		protected override SerializationContext CreateSerializationContext()
-		{
-			return new SerializationContext { EmitterFlavor = EmitterFlavor.CodeDomBased };
-		}
-	}
-}
+}	

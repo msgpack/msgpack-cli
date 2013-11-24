@@ -1,4 +1,8 @@
-﻿#region -- License Terms --
+﻿<#+ 
+void Geneate( string serializationMethod, string emitterFlavor, string builderTypeName, bool canDump )
+{
+#>
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -18,6 +22,7 @@
 //
 #endregion -- License Terms --
 
+#pragma warning disable 3003
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,12 +31,18 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+#if !NETFX_35
+using System.Numerics;
+#endif
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
+using System.Text;
+using MsgPack.Serialization.CodeDomSerializers;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
+using MsgPack.Serialization.ExpressionSerializers;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -44,10 +55,23 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	[Timeout( 3000 )]
-	public abstract partial class AutoMessagePackSerializerTest
+	[Timeout( 30000 )]
+	public class <#= serializationMethod #><#= emitterFlavor #>AutoMessagePackSerializerTest
 	{
-		protected abstract SerializationContext GetSerializationContext();
+		private SerializationContext GetSerializationContext()
+		{
+			return new SerializationContext() { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
+		}
+
+		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
+		{
+			return new AutoMessagePackSerializer<T>( context, new <#= builderTypeName #><T>() );
+		}
+		
+		private bool CanDump
+		{
+			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
+		}
 
 #if !NETFX_CORE
 		[SetUp]
@@ -64,13 +88,17 @@ namespace MsgPack.Serialization
 			}
 
 			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
-			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
+			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
+			if( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )
+			{
+				SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
+			}
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
-			if ( SerializerDebugging.DumpEnabled && this.CanDumpAssembly )
+			if ( SerializerDebugging.DumpEnabled && this.CanDump )
 			{
 				try
 				{
@@ -90,12 +118,6 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif
-		protected virtual bool CanDumpAssembly
-		{
-			get { return true; }
-		}
-
-		protected abstract MessagePackSerializer<T> CreateTarget<T>( SerializationContext context );
 
 		[Test]
 		public void TestUnpackTo()
@@ -892,181 +914,6 @@ namespace MsgPack.Serialization
 				unpacked.Verify( buffer );
 			}
 		}
-
-		internal static void Verify<T>( T expected, T actual )
-		{
-			if ( expected == null )
-			{
-				Assert.That( actual, Is.Null );
-				return;
-			}
-
-#if !NETFX_CORE
-			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
-#else
-			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( ArraySegment<> ) )
-#endif
-			{
-				AssertArraySegmentEquals( expected, actual );
-				return;
-			}
-
-			if ( expected is DateTime )
-			{
-				Assert.That(
-					MillisecondsDateTimeComparer.Instance.Equals( ( DateTime )( object )expected, ( DateTime )( object )actual ),
-					"Expected:{1}({2},{3}){0}Actual :{4}({5},{6})",
-					Environment.NewLine,
-					expected,
-					expected == null ? "(null)" : expected.GetType().FullName,
-					( ( DateTime )( object )expected ).Kind,
-					actual,
-					actual == null ? "(null)" : actual.GetType().FullName,
-					( ( DateTime )( object )actual ).Kind
-					);
-				return;
-			}
-			else if ( expected is DateTimeOffset )
-			{
-				Assert.That(
-					MillisecondsDateTimeOffsetComparer.Instance.Equals( ( DateTimeOffset )( object )expected, ( DateTimeOffset )( object )actual ),
-				"Expected:{1}({2}){0}Actual :{3}({4})",
-				Environment.NewLine,
-				expected,
-				expected == null ? "(null)" : expected.GetType().FullName,
-				actual,
-				actual == null ? "(null)" : actual.GetType().FullName
-				);
-				return;
-			}
-
-			if ( expected is IDictionary )
-			{
-				var actuals = ( IDictionary )actual;
-				foreach ( DictionaryEntry entry in ( ( IDictionary )expected ) )
-				{
-					Assert.That( actuals.Contains( entry.Key ), "'{0}' is not in '[{1}]'", entry.Key, String.Join( ", ", actuals.Keys.OfType<object>().Select( o => o == null ? String.Empty : o.ToString() ).ToArray() ) );
-					Verify( entry.Value, actuals[ entry.Key ] );
-				}
-				return;
-			}
-
-			if ( expected is IEnumerable )
-			{
-				var expecteds = ( ( IEnumerable )expected ).Cast<Object>().ToArray();
-				var actuals = ( ( IEnumerable )actual ).Cast<Object>().ToArray();
-				Assert.That( expecteds.Length, Is.EqualTo( actuals.Length ) );
-				for ( int i = 0; i < expecteds.Length; i++ )
-				{
-					Verify( expecteds[ i ], actuals[ i ] );
-				}
-				return;
-			}
-
-#if !NETFX_35
-			if ( expected is IStructuralEquatable )
-			{
-				Assert.That(
-					( ( IStructuralEquatable )expected ).Equals( actual, EqualityComparer<object>.Default ),
-					"Expected:{1}({2}){0}Actual :{3}({4})",
-					Environment.NewLine,
-					expected,
-					expected == null ? "(null)" : expected.GetType().FullName,
-					actual,
-					actual == null ? "(null)" : actual.GetType().FullName
-				);
-				return;
-			}
-#endif
-
-			if ( expected is FILETIME )
-			{
-				var expectedFileTime = ( FILETIME )( object )expected;
-				var actualFileTime = ( FILETIME )( object )actual;
-				Verify(
-					DateTime.FromFileTimeUtc( ( ( ( long )expectedFileTime.dwHighDateTime ) << 32 ) | ( expectedFileTime.dwLowDateTime & 0xffffffff ) ),
-					DateTime.FromFileTimeUtc( ( ( ( long )actualFileTime.dwHighDateTime ) << 32 ) | ( actualFileTime.dwLowDateTime & 0xffffffff ) )
-				);
-				return;
-			}
-
-#if !NETFX_CORE
-			if ( expected.GetType().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
-#else
-			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
-#endif
-			{
-#if !NETFX_35
-				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
-				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
-#else
-				Assert.Inconclusive( ".NET 3.5 does not support dynamic." );
-#endif
-				return;
-			}
-
-			if ( expected is DictionaryEntry )
-			{
-				var expectedEntry = ( DictionaryEntry )( object )expected;
-				var actualEntry = ( DictionaryEntry )( object )actual;
-
-				if ( expectedEntry.Key == null )
-				{
-					Assert.That( ( ( MessagePackObject )actualEntry.Key ).IsNil );
-				}
-				else
-				{
-					Verify( ( MessagePackObject )expectedEntry.Key, ( MessagePackObject )actualEntry.Key );
-				}
-
-
-				if ( expectedEntry.Value == null )
-				{
-					Assert.That( ( ( MessagePackObject )actualEntry.Value ).IsNil );
-				}
-				else
-				{
-					Verify( ( MessagePackObject )expectedEntry.Value, ( MessagePackObject )actualEntry.Value );
-				}
-
-				return;
-			}
-
-			Assert.That(
-				EqualityComparer<T>.Default.Equals( expected, actual ),
-				"Expected:{1}({2}){0}Actual :{3}({4})",
-				Environment.NewLine,
-				expected,
-				expected == null ? "(null)" : expected.GetType().FullName,
-				actual,
-				actual == null ? "(null)" : actual.GetType().FullName
-			);
-		}
-
-		private static void AssertArraySegmentEquals( object x, object y )
-		{
-#if !NETFX_CORE
-			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( x.GetType().GetGenericArguments()[ 0 ] );
-			Assert.That(
-				( bool )type.InvokeMember( "Equals", BindingFlags.InvokeMethod, null, Activator.CreateInstance( type ), new[] { x, y } ),
-				"Expected:{1}{0}Actual :{2}",
-				Environment.NewLine,
-				x,
-				y
-			);
-#else
-			var elementType = x.GetType().GetTypeInfo().GenericTypeArguments[ 0 ];
-			var type = typeof( ArraySegmentEqualityComparer<> ).MakeGenericType( elementType );
-			Assert.That(
-				( bool )type.GetRuntimeMethod( "Equals", new[] { x.GetType(), x.GetType() } ).Invoke( Activator.CreateInstance( type ), new[] { x, y } ),
-				"Expected:{1}{0}Actual :{2}",
-				Environment.NewLine,
-				x,
-				y
-			);
-#endif
-		}
-
 		public struct TestValueType
 		{
 			public string StringField;
@@ -1405,5 +1252,6 @@ namespace MsgPack.Serialization
 		{
 			public Stream NonCollection { get; set; }
 		}
-	}
-}
+<#+
+}	
+#>

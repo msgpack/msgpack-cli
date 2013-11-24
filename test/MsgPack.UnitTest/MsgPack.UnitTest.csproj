@@ -180,15 +180,17 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\AddOnlyCollection`1.cs" />
-    <Compile Include="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs" />
-    <Compile Include="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
-    <Compile Include="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs" />
-    <Compile Include="Serialization\ArraySegmentEqualityComparer`1.cs" />
-    <Compile Include="Serialization\AutoMessagePackSerializerTest.cs" />
-    <Compile Include="Serialization\AutoMessagePackSerializerTest.Types.cs">
+    <Compile Include="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayContextBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArraySegmentEqualityComparer`1.cs" />
+    <Compile Include="Serialization\AutoMessagePackSerializerTest.Types.cs">
       <DependentUpon>AutoMessagePackSerializerTest.Types.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Serialization\ComplexType.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContractWithOrder.cs" />
@@ -198,19 +200,25 @@
     <Compile Include="Serialization\CompositeTest.cs" />
     <Compile Include="Serialization\DataContractAndNonSerializedMixedTarget.cs" />
     <Compile Include="Serialization\DataMemberAttributeNamedPropertyTestTarget.cs" />
+    <Compile Include="Serialization\ContextBasedNilImplicationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContextBasedNilImplicationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\FieldBasedNilImplicationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FieldBasedNilImplicationTest.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\FromExpressionTest.cs" />
     <Compile Include="Serialization\IVerifiable.cs" />
     <Compile Include="Serialization\IVerifiable`1.cs" />
-    <Compile Include="Serialization\MapContextBasedAutoMessagePackSerializerTest.cs" />
-    <Compile Include="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs" />
-    <Compile Include="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs" />
     <Compile Include="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
     <Compile Include="Serialization\MessagePackMemberAttributeTest.cs" />
     <Compile Include="Serialization\MessagePackSerializerTest.cs" />
     <Compile Include="Serialization\MessagePackSerializerTTest.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeComparer.cs" />
     <Compile Include="Serialization\MillisecondsDateTimeOffsetComparer.cs" />
-    <Compile Include="Serialization\NilImplicationTest.cs" />
     <Compile Include="Serialization\NilImplicationTestTarget.cs" />
     <Compile Include="PackerTest.cs" />
     <Compile Include="Serialization\SerializationContextTest.cs" />
@@ -229,6 +237,36 @@
     <Compile Include="Serialization\_SetUpFixture.cs" />
     <Compile Include="Serialization\ComplexTypeWithNonSerialized.cs" />
     <Compile Include="Serialization\ComplexTypeWithDataContract.cs" />
+    <Compile Include="Serialization\ExpressionBasedNilImplicationTest.cs">
+      <DependentUpon>ExpressionBasedNilImplicationTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs">
+      <DependentUpon>ArrayExpressionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs">
+      <DependentUpon>ArrayFieldBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\MapContextBasedAutoMessagePackSerializerTest.cs">
+      <DependentUpon>MapContextBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs">
+      <DependentUpon>MapExpressionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs">
+      <DependentUpon>MapFieldBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="SubtreeUnpackerTest.cs" />
     <Compile Include="UnpackerTest.Ext.cs">
       <AutoGen>True</AutoGen>
@@ -425,13 +463,52 @@
     <None Include="PEVerify.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayContextBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\AutoMessagePackSerializerTest.ttinclude" />
     <None Include="Serialization\AutoMessagePackSerializerTest.Types.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AutoMessagePackSerializerTest.Types.cs</LastGenOutput>
     </None>
+    <None Include="Serialization\AutoMessagePackSerializerTest.Types.ttinclude" />
+    <None Include="Serialization\FieldBasedNilImplicationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FieldBasedNilImplicationTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\NilImplicationTest.ttinclude" />
     <None Include="Serialization\VersioningTest.Cases.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VersioningTest.Cases.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\ContextBasedNilImplicationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ContextBasedNilImplicationTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\ExpressionBasedNilImplicationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ExpressionBasedNilImplicationTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayExpressionBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayFieldBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\MapContextBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapContextBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapExpressionBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\MapFieldBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapFieldBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
     </None>
     <None Include="TestRandom.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
