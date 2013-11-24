@@ -115,10 +115,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._serializers = new Dictionary<RuntimeTypeHandle, FieldBuilder>();
 			this._isDebuggable = isDebuggable;
 
+#if !SILVERLIGHT
 			if ( isDebuggable && SerializerDebugging.DumpEnabled )
 			{
 				SerializerDebugging.PrepareDump( host.Assembly as AssemblyBuilder );
 			}
+#endif
 		}
 
 		/// <summary>

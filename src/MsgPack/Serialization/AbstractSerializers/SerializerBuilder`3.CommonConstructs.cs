@@ -32,6 +32,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
 		private static readonly TConstruct[] NoConstructs = new TConstruct[ 0 ];
+		private static readonly Type[] EmptyTypes = new Type[ 0 ];
 
 		private void BeginPackToMethod( TContext context )
 		{
@@ -385,7 +386,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 				Contract.Assert( asProperty != null, member.GetType().FullName );
 #endif
-				if ( asProperty.GetSetMethod( false ) != null )
+				if ( asProperty.GetSetMethod() != null )
 				{
 					return this.EmitSetProprety( context, instance, asProperty, value );
 				}
@@ -447,17 +448,25 @@ namespace MsgPack.Serialization.AbstractSerializers
 									this.EmitGetPropretyExpression(
 										context,
 										current,
+#if !NETFX_CORE
 										traits.ElementType == typeof( DictionaryEntry )
 										? Metadata._DictionaryEntry.Key
 										: traits.ElementType.GetProperty( "Key" )
+#else
+										traits.ElementType.GetProperty( "Key" )
+#endif
 									),
 									valueType,
 									this.EmitGetPropretyExpression(
 										context,
 										current,
+#if !NETFX_CORE
 										traits.ElementType == typeof( DictionaryEntry )
 										? Metadata._DictionaryEntry.Value
 										: traits.ElementType.GetProperty( "Value" )
+#else
+										traits.ElementType.GetProperty( "Value" )
+#endif
 									),
 									false
 								)
@@ -697,7 +706,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitGetSerializerExpression( context, itemType ),
 					typeof( MessagePackSerializer<> )
 						.MakeGenericType( itemType )
-						.GetMethod( "PackTo", BindingFlags.Instance | BindingFlags.Public ),
+						.GetMethods()
+						.Single( m => 
+							m.Name == "PackTo"
+							&& !m.IsStatic
+							&& m.IsPublic
+						),
 					packer,
 					item
 				);
@@ -1116,7 +1130,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitInvokeMethodExpression(
 								context,
 								disposable,
-								disposableType.GetMethod( "Dispose", Type.EmptyTypes )
+								disposableType.GetMethod( "Dispose", EmptyTypes )
 							),
 							null
 						)
@@ -1321,7 +1335,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Assert( !instanceType.GetIsValueType() );
 #endif
 
-			var ctor = typeof( TObject ).GetConstructor( Type.EmptyTypes );
+			var ctor = typeof( TObject ).GetConstructor( EmptyTypes );
 			if ( ctor == null )
 			{
 				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( instanceType );
@@ -1339,7 +1353,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			var ctor =
 				instanceType.GetConstructor( SerializerBuilderConstants.CollectionConstructorWithCapacityParameterTypes )
-				?? instanceType.GetConstructor( Type.EmptyTypes );
+				?? instanceType.GetConstructor( EmptyTypes );
 
 			if ( ctor == null )
 			{

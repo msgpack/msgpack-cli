@@ -19,8 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+#if !NETFX_CORE
 using System.CodeDom.Compiler;
 using System.Collections.Concurrent;
+#endif
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -66,8 +68,10 @@ namespace MsgPack.Serialization
 			set { _dumpEnabled = value; }
 		}
 
+#if !NETFX_CORE
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
+#endif
 
 		/// <summary>
 		///		Gets the <see cref="TextWriter"/> for IL tracing.
@@ -80,6 +84,7 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#if !NETFX_CORE
 				if ( !_traceEnabled )
 				{
 					return TextWriter.Null;
@@ -91,6 +96,9 @@ namespace MsgPack.Serialization
 				}
 
 				return _ilTraceWriter;
+#else
+				return TextWriter.Null;
+#endif
 			}
 		}
 
@@ -101,12 +109,14 @@ namespace MsgPack.Serialization
 		/// <param name="args">The args for formatting.</param>
 		public static void TraceInstruction( string format, params object[] args )
 		{
+#if !NETFX_CORE
 			if ( !_traceEnabled )
 			{
 				return;
 			}
 
 			_ilTraceWriter.WriteLine( format, args );
+#endif
 		}
 
 		/// <summary>
@@ -116,12 +126,14 @@ namespace MsgPack.Serialization
 		/// <param name="args">The args for formatting.</param>
 		public static void TraceEvent( string format, params object[] args )
 		{
+#if !NETFX_CORE
 			if ( !_traceEnabled )
 			{
 				return;
 			}
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
+#endif
 		}
 
 		/// <summary>
@@ -129,14 +141,17 @@ namespace MsgPack.Serialization
 		/// </summary>
 		public static void FlushTraceData()
 		{
+#if !NETFX_CORE
 			if ( !_traceEnabled )
 			{
 				return;
 			}
 
 			Tracer.Emit.TraceData( Tracer.EventType.DefineType, Tracer.EventId.DefineType, _ilTraceWriter.ToString() );
+#endif
 		}
 
+#if !NETFX_CORE && !SILVERLIGHT
 		[ThreadStatic]
 		private static AssemblyBuilder _assemblyBuilder;
 
@@ -202,28 +217,35 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-
+#endif
 		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
+#if !NETFX_CORE && !SILVERLIGHT
 			EnsureDependentAssembliesListsInitialized();
 			_runtimeAssemblies.Add( pathToAssembly );
+#endif
 		}
 
 		public static void AddCompiledCodeDomAssembly( string pathToAssembly )
 		{
+#if !NETFX_CORE && !SILVERLIGHT
 			EnsureDependentAssembliesListsInitialized();
 			_compiledCodeDomSerializerAssemblies.Add( pathToAssembly );
+#endif
 		}
 
 		public static void ResetDependentAssemblies()
 		{
+#if !NETFX_CORE && !SILVERLIGHT
 			EnsureDependentAssembliesListsInitialized();
 
 			File.AppendAllLines( GetHistoryFilePath(), _compiledCodeDomSerializerAssemblies );
 			_compiledCodeDomSerializerAssemblies.Clear();
 			ResetRuntimeAssemblies();
+#endif
 		}
 
+#if !NETFX_CORE && !SILVERLIGHT
 		private static int _wasDeleted = 0;
 		private const string _historyFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
 
@@ -315,12 +337,14 @@ namespace MsgPack.Serialization
 				_assemblyBuilder.Save( _assemblyBuilder.GetName().Name + ".dll" );
 			}
 		}
+#endif
 
 		/// <summary>
 		///		Resets debugging states.
 		/// </summary>
 		public static void Reset()
 		{
+#if !NETFX_CORE && !SILVERLIGHT
 			_assemblyBuilder = null;
 			_moduleBuilder = null;
 
@@ -329,6 +353,7 @@ namespace MsgPack.Serialization
 				_ilTraceWriter.Dispose();
 				_ilTraceWriter = null;
 			}
+#endif
 
 			_dumpEnabled = false;
 			_traceEnabled = false;

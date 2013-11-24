@@ -27,6 +27,7 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _IEnumerator
 	{
+		private static readonly Type[] EmptyTypes = new Type[ 0 ];
 		public static readonly MethodInfo MoveNext = FromExpression.ToMethod( ( IEnumerator enumerator ) => enumerator.MoveNext() );
 		public static readonly PropertyInfo Current = FromExpression.ToProperty( ( IEnumerator enumerator ) => enumerator.Current );
 
@@ -40,9 +41,9 @@ namespace MsgPack.Serialization.Metadata
 				{
 					currentProperty = Metadata._IDictionaryEnumerator.Entry;
 				}
-				else if ( enumeratorType.IsInterface )
+				else if ( enumeratorType.GetIsInterface() )
 				{
-					if ( enumeratorType.IsGenericType && enumeratorType.GetGenericTypeDefinition() == typeof( IEnumerator<> ) )
+					if ( enumeratorType.GetIsGenericType() && enumeratorType.GetGenericTypeDefinition() == typeof( IEnumerator<> ) )
 					{
 						currentProperty = typeof( IEnumerator<> ).MakeGenericType( traits.ElementType ).GetProperty( "Current" );
 					}
@@ -57,7 +58,7 @@ namespace MsgPack.Serialization.Metadata
 
 		public static MethodInfo FindEnumeratorMoveNextMethod( Type enumeratorType )
 		{
-			MethodInfo moveNextMethod = enumeratorType.GetMethod( "MoveNext", Type.EmptyTypes );
+			MethodInfo moveNextMethod = enumeratorType.GetMethod( "MoveNext", EmptyTypes );
 
 			if ( moveNextMethod == null )
 			{

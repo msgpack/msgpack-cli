@@ -35,6 +35,7 @@ using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 using ExplicitAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.IgnoreAttribute;
+using IgnoreAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.IgnoreAttribute;
 #endif
 
 namespace MsgPack

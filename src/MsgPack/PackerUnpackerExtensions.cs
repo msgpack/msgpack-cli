@@ -21,9 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-#if NETFX_CORE
-using System.Linq;
-#endif
 using System.Linq;
 #if NETFX_CORE
 using System.Reflection;

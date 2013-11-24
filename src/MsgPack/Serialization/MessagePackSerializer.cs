@@ -28,9 +28,11 @@ using System.Diagnostics.Contracts;
 #if NETFX_CORE
 using System.Linq.Expressions;
 #endif
-#if !NETFX_CORE
 using MsgPack.Serialization.AbstractSerializers;
+#if !NETFX_CORE
+#if !SILVERLIGHT
 using MsgPack.Serialization.CodeDomSerializers;
+#endif
 using MsgPack.Serialization.EmittingSerializers;
 #endif
 #if !WINDOWS_PHONE && !NETFX_35
@@ -85,6 +87,8 @@ namespace MsgPack.Serialization
 			ISerializerBuilder<T> builder;
 #if NETFX_CORE
 			builder = new ExpressionTreeSerializerBuilder<T>();
+#elif SILVERLIGHT
+			builder = new DynamicMethodSerializerBuilder<T>();
 #else
 			switch ( context.EmitterFlavor )
 			{

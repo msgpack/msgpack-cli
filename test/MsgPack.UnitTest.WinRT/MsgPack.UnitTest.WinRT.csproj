@@ -229,20 +229,11 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs">
       <Link>Serialization\AddOnlyCollection`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs">
       <Link>Serialization\ArraySegmentEqualityComparer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\AutoMessagePackSerializerTest.cs">
-      <Link>Serialization\AutoMessagePackSerializerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\AutoMessagePackSerializerTest.Types.cs">
       <Link>Serialization\AutoMessagePackSerializerTest.Types.cs</Link>
@@ -277,6 +268,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ExpressionBasedNilImplicationTest.cs">
+      <Link>Serialization\ExpressionBasedNilImplicationTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\FromExpressionTest.cs">
       <Link>Serialization\FromExpressionTest.cs</Link>
     </Compile>
@@ -286,14 +280,8 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
       <Link>Serialization\IVerifiable`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapContextBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\MapContextBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
       <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
@@ -312,9 +300,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MillisecondsDateTimeOffsetComparer.cs">
       <Link>Serialization\MillisecondsDateTimeOffsetComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTest.cs">
-      <Link>Serialization\NilImplicationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTestTarget.cs">
       <Link>Serialization\NilImplicationTestTarget.cs</Link>
@@ -461,10 +446,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.Serialization.WinRT\MsgPack.Serialization.WinRT.csproj">
-      <Project>{f010646a-7343-4f6e-b8cd-9f37042ddd5e}</Project>
-      <Name>MsgPack.Serialization.WinRT</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\MsgPack.WinRT\MsgPack.WinRT.csproj">
       <Project>{725997ad-f083-485e-bd88-f2a5bf34bee7}</Project>
       <Name>MsgPack.WinRT</Name>

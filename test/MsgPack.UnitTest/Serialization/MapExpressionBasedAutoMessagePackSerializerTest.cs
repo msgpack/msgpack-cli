@@ -36,8 +36,8 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
-using MsgPack.Serialization.CodeDomSerializers;
 #if !NETFX_CORE
+using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif
 using MsgPack.Serialization.ExpressionSerializers;
@@ -688,7 +688,6 @@ namespace MsgPack.Serialization
 				var value = new DictionaryValueType<int, int>( 3 ) { { 1, 1 }, { 2, 2 }, { 3, 3 } };
 				serializer.Pack( stream, value );
 				stream.Position = 0;
-				Console.WriteLine();
 				var result = serializer.Unpack( stream );
 				Assert.That( result.ToArray(), Is.EquivalentTo( Enumerable.Range( 1, 3 ).Select( i => new KeyValuePair<int, int>( i, i ) ).ToArray() ) );
 			}

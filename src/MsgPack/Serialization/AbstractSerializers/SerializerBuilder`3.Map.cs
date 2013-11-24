@@ -122,7 +122,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			try
 			{
 				Type instanceType;
-				if ( typeof( TObject ).IsInterface || typeof( TObject ).IsAbstract )
+				if ( typeof( TObject ).GetIsInterface() || typeof( TObject ).GetIsAbstract() )
 				{
 					instanceType = context.SerializationContext.DefaultCollectionTypes.GetConcreteType( typeof( TObject ) );
 					if ( instanceType == null )

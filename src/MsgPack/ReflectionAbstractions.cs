@@ -175,6 +175,11 @@ namespace MsgPack
 			return source.GetTypeInfo().ImplementedInterfaces;
 		}
 
+		public static MethodInfo GetGetMethod( this PropertyInfo source )
+		{
+			return source.GetMethod;
+		}
+
 		public static MethodInfo GetSetMethod( this PropertyInfo source )
 		{
 			return source.SetMethod;

@@ -40,7 +40,7 @@ namespace MsgPack.Serialization
 	{
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( PackerCompatibilityOptions packerCompatibilityOptions )
 		{
-			var dictionary = new Dictionary<RuntimeTypeHandle, object>( 428 );
+			var dictionary = new Dictionary<RuntimeTypeHandle, object>( 429 );
 			dictionary.Add( typeof( MessagePackObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer( packerCompatibilityOptions ) );
 			dictionary.Add( typeof( MessagePackExtendedTypeObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer( packerCompatibilityOptions ) );
 			dictionary.Add( typeof( Object ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_ObjectMessagePackSerializer( packerCompatibilityOptions ) );

@@ -36,6 +36,7 @@ namespace MsgPack.Serialization
 {
 	partial class VersioningTest
 	{
+#if !NETFX_CORE
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_FieldBased_Fail()
@@ -54,6 +55,8 @@ namespace MsgPack.Serialization
 		{
 			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.FieldBased ) );
 		}
+#endif // !NETFX_CORE
+#if !NETFX_CORE
 
 		[Test]
 		public void TestExtraField_NotExtensible_Array_ContextBased_Fail()
@@ -72,6 +75,7 @@ namespace MsgPack.Serialization
 		{
 			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ContextBased ) );
 		}
+#endif // !NETFX_CORE
 #if !NETFX_35
 
 		[Test]
@@ -92,6 +96,7 @@ namespace MsgPack.Serialization
 			Assert.Throws<SerializationException>( () => TestFieldInvalidTypeCore( SerializationMethod.Array, EmitterFlavor.ExpressionBased ) );
 		}
 #endif // !NETFX_35
+#if !NETFX_CORE
 
 		[Test]
 		public void TestExtraField_NotExtensible_Map_FieldBased_Fail()
@@ -116,6 +121,8 @@ namespace MsgPack.Serialization
 		{
 			TestFieldSwappedCore( EmitterFlavor.FieldBased );
 		}
+#endif // !NETFX_CORE
+#if !NETFX_CORE
 
 		[Test]
 		public void TestExtraField_NotExtensible_Map_ContextBased_Fail()
@@ -140,6 +147,7 @@ namespace MsgPack.Serialization
 		{
 			TestFieldSwappedCore( EmitterFlavor.ContextBased );
 		}
+#endif // !NETFX_CORE
 #if !NETFX_35
 
 		[Test]

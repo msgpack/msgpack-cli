@@ -32,7 +32,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 	{
 		private void BuildObjectSerializer( TContext context )
 		{
-			if ( typeof( TObject ).IsInterface || typeof( TObject ).IsAbstract )
+			if ( typeof( TObject ).GetIsInterface() || typeof( TObject ).GetIsAbstract() )
 			{
 				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( TObject ) );
 			}
@@ -183,7 +183,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 						Contract.Assert( asProperty != null, serializingMember.Member.ToString() );
 #endif
-						isReadOnly = asProperty.GetSetMethod( false ) == null;
+						isReadOnly = asProperty.GetSetMethod() == null;
 					}
 
 					if ( isReadOnly )

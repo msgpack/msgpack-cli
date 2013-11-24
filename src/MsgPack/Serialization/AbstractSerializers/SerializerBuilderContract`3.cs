@@ -40,10 +40,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TContext );
 		}
 
+#if !NETFX_CORE && !SILVERLIGHT
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
 		{
 			Contract.Requires( context != null );
 		}
+#endif
 
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext )
 		{
@@ -225,7 +227,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected override TConstruct EmitCreateNewObjectExpression( TContext context, TConstruct variable, ConstructorInfo constructor, params TConstruct[] arguments )
 		{
 			Contract.Requires( context != null );
-			Contract.Requires( ( variable != null ) == constructor.DeclaringType.IsValueType );
+			Contract.Requires( ( variable != null ) == constructor.DeclaringType.GetIsValueType() );
 			Contract.Requires( constructor != null );
 			Contract.Requires( variable.ContextType == constructor.DeclaringType );
 			Contract.Requires(
@@ -264,9 +266,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( property != null );
-			Contract.Requires( property.GetGetMethod( false ) != null );
-			Contract.Requires( instance == null && property.GetGetMethod( false ).IsStatic );
-			Contract.Requires( instance != null && !property.GetGetMethod( false ).IsStatic );
+			Contract.Requires( property.GetGetMethod() != null );
+			Contract.Requires( instance == null && property.GetGetMethod().IsStatic );
+			Contract.Requires( instance != null && !property.GetGetMethod().IsStatic );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == property.PropertyType );
 			return default( TConstruct );
@@ -287,12 +289,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( property != null );
-			Contract.Requires( property.GetSetMethod( false ) != null );
-			Contract.Requires( instance == null && property.GetSetMethod( false ).IsStatic );
-			Contract.Requires( instance != null && !property.GetSetMethod( false ).IsStatic );
+			Contract.Requires( property.GetSetMethod() != null );
+			Contract.Requires( instance == null && property.GetSetMethod().IsStatic );
+			Contract.Requires( instance != null && !property.GetSetMethod().IsStatic );
 			Contract.Requires( value != null );
 			Contract.Requires(
-				property.GetSetMethod( false ).GetParameters()[ 0 ].ParameterType.IsAssignableFrom( value.ContextType )
+				property.GetSetMethod().GetParameters()[ 0 ].ParameterType.IsAssignableFrom( value.ContextType )
 			);
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( void ) );

@@ -143,6 +143,12 @@ foreach( var __method in new []{ "Array", "Map" } )
 #if !NETFX_35
 <#
 		}
+		else
+		{
+#>
+#if !NETFX_CORE
+<#
+		}
 #>
 
 		[Test]
@@ -179,6 +185,12 @@ foreach( var __method in new []{ "Array", "Map" } )
 		{
 #>
 #endif // !NETFX_35
+<#
+		}
+		else
+		{
+#>
+#endif // !NETFX_CORE
 <#
 		}
 	}

@@ -21,53 +21,55 @@
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
+  <!--
+  <Project Name="MsgPack.Unity" Base="MsgPack.Net35">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="Serialization\EmittingSerializers\*" />
+    <Exclude Path="Serialization\ExpressionSerializers\*" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+  </Project>
+  <Project Name="MsgPack.MonoDroid" Base="MsgPack">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+  </Project>
+  <Project Name="MsgPack.MonoTouch" Base="MsgPack">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+  </Project>
+  -->
   <Project Name="MsgPack.WinRT" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
-    <Exclude Path="Serialization\*" />
-    <Exclude Path="Serialization\**\*" />
-    <Exclude Path="PackerUnpackerExtensions.cs" />
     <Preserve Path="WinRTCompatibility.cs" />
-  </Project>
-  <Project Name="MsgPack.Serialization.WinRT" Base="MsgPack">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-    <Exclude Path="*.cs" />
-    <Exclude Path="Serialization\SerializerGenerator.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Exclude Path="Serialization\CodeDomSerializers\*" />
     <Exclude Path="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
-    <Exclude Path="Serialization\Metadata\_DictionaryEntry.cs" />
-    <Exclude Path="Serialization\Metadata\_IDictionaryEnumerator.cs" />
-    <Exclude Path="Serialization\Metadata\_KeyValuePair`2.cs" />
-    <Exclude Path="Serialization\Metadata\_Nullable`1.cs" />
-    <Exclude Path="Serialization\Metadata\_String.cs" />
+    <Exclude Path="Serialization\ISerializerGeneratorConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Exclude Path="Serialization\Reflection\TracingILGenerator.*" />
     <Exclude Path="Serialization\Tracer.cs" />
-    <Include Path="PackerUnpackerExtensions.cs" />
-    <Include Path="ReflectionAbstractions.cs" />
-    <Include Path="TupleItems.cs" />
   </Project>
-  <Project Name="MsgPack.Silverlight.4" Base="MsgPack">
+  <Project Name="MsgPack.Silverlight.5" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
-    <Exclude Path="Serialization\*" />
-    <Exclude Path="Serialization\**\*" />
-    <Exclude Path="PackerUnpackerExtensions.cs" />
-    <Include Path="ReflectionAbstractions.cs" />
-    <Preserve Path="SilverlightExtensions.cs" />
-    <Exclude Path="TupleItems.cs" />
-  </Project>
-  <Project Name="MsgPack.Serialization.Silverlight.4" Base="MsgPack">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-    <Exclude Path="*.cs" />
-    <Exclude Path="*.xml" />
+    <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Exclude Path="Serialization\CodeDomSerializers\*" />
+    <Exclude Path="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
     <Preserve Path="Serialization\LockRecursionPolicy.cs" />
     <Preserve Path="Serialization\ReaderWriterLockSlim.cs" />
+    <Exclude Path="Serialization\ISerializerGeneratorConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Preserve Path="Serialization\SourceLevels.cs" />
     <Preserve Path="Serialization\SourceSwitch.cs" />
@@ -77,52 +79,5 @@
     <Include Path="ReflectionAbstractions.cs" />
     <Preserve Path="SilverlightExtensions.cs" />
     <Include Path="TupleItems.cs" />
-    </Project>
-  <Project Name="MsgPack.Silverlight.5" Base="MsgPack.Silverlight.4">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-  </Project>
-  <Project Name="MsgPack.Serialization.Silverlight.5" Base="MsgPack.Serialization.Silverlight.4">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-  </Project>
-  <Project Name="MsgPack.WindowsPhone.7.1" Base="MsgPack.Net35">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\*" />
-    <Exclude Path="Serialization\**\*" />
-    <Exclude File="*.snk" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-    <Preserve Path="HashSet`1.cs" />
-    <Exclude Path="..\MsgPack.Silverlight.4\SilverlightExtensions.cs" />
-    <Exclude Path="NetFxCompatibilities.cs" />
-    <Exclude Path="PackerUnpackerExtensions.cs" />
-    <Preserve Path="SilverlightExtensions.cs" />
-    <Exclude Path="Tuple`n.cs" />
-    <Exclude Path="TupleItems.cs" />
-  </Project>
-  <Project Name="MsgPack.Serialization.WindowsPhone.7.1" Base="MsgPack.Net35">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude File="*.snk" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs" />
-    <Exclude Path="Serialization\ExpressionSerializers\*" />
-    <Exclude Path="Serialization\Metadata\_NotImplementedException.cs" />
-    <Preserve Path="Serialization\LockRecursionPolicy.cs" />
-    <Preserve Path="Serialization\ReaderWriterLockSlim.cs" />
-    <Exclude Path="Serialization\SerializerGenerator.cs" />
-    <Preserve Path="Serialization\SourceLevels.cs" />
-    <Preserve Path="Serialization\SourceSwitch.cs" />
-    <Preserve Path="Serialization\TraceEventType.cs" />
-    <Preserve Path="Serialization\TraceSource.cs" />
-    <Exclude Path="*.cs" />
-    <Exclude Path="*.xml" />
-    <Include Path="Contract.cs" />
-    <Preserve Path="HashSet`1.cs" />
-    <Exclude Path="NetFxCompatibilities.cs" />
-    <Include Path="..\MsgPack\PackerUnpackerExtensions.cs" />
-    <Preserve Path="ReflectionAbstractions.cs" />
-    <Preserve Path="SilverlightExtensions.cs" />
-    <Include Path="Tuple`n.cs" />
   </Project>
 </ProjectSync>

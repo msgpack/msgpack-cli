@@ -85,7 +85,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !NETFX_CORE
 		private EmitterFlavor _emitterFlavor = EmitterFlavor.FieldBased;
+#else
+		private EmitterFlavor _emitterFlavor = EmitterFlavor.ExpressionBased;
+#endif
 
 		/// <summary>
 		///		Gets or sets the <see cref="EmitterFlavor"/>.

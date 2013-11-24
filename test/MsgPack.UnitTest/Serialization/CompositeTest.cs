@@ -22,8 +22,8 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-#if !NETFX_CORE
 using MsgPack.Serialization.AbstractSerializers;
+#if !NETFX_CORE
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif
@@ -121,6 +121,7 @@ namespace MsgPack.Serialization
 			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Map, new ExpressionTreeSerializerBuilder<DirectoryItem>() );
 		}
 
+#if !NETFX_CORE
 		[Test]
 		public void TestMapContextBased()
 		{
@@ -132,6 +133,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder<DirectoryItem>() );
 		}
+#endif
 #endif
 
 		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder<DirectoryItem> generator )

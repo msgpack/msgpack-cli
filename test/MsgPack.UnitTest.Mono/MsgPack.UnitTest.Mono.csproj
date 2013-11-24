@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -182,9 +182,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs">
       <Link>Serialization\ArraySegmentEqualityComparer`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\AutoMessagePackSerializerTest.cs">
-      <Link>Serialization\AutoMessagePackSerializerTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\AutoMessagePackSerializerTest.Types.cs">
       <Link>Serialization\AutoMessagePackSerializerTest.Types.cs</Link>
     </Compile>
@@ -212,11 +209,20 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\CompositeTest.cs">
       <Link>Serialization\CompositeTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ContextBasedNilImplicationTest.cs">
+      <Link>Serialization\ContextBasedNilImplicationTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataContractAndNonSerializedMixedTarget.cs">
       <Link>Serialization\DataContractAndNonSerializedMixedTarget.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ExpressionBasedNilImplicationTest.cs">
+      <Link>Serialization\ExpressionBasedNilImplicationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\FieldBasedNilImplicationTest.cs">
+      <Link>Serialization\FieldBasedNilImplicationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\FromExpressionTest.cs">
       <Link>Serialization\FromExpressionTest.cs</Link>
@@ -253,9 +259,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MillisecondsDateTimeOffsetComparer.cs">
       <Link>Serialization\MillisecondsDateTimeOffsetComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTest.cs">
-      <Link>Serialization\NilImplicationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTestTarget.cs">
       <Link>Serialization\NilImplicationTestTarget.cs</Link>

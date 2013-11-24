@@ -58,6 +58,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+#if !SILVERLIGHT
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
 		{
 			var asAssemblyBuilderCodeGenerationContext = context as AssemblyBuilderCodeGenerationContext;
@@ -78,5 +79,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			// Finish type creation, and discard returned ctor.
 			emittingContext.Emitter.CreateConstructor<TObject>();
 		}
+#endif
 	}
 }

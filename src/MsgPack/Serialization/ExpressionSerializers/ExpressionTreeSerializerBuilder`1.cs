@@ -35,18 +35,22 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	/// <typeparam name="TObject">The type of the serializing object.</typeparam>
 	internal sealed class ExpressionTreeSerializerBuilder<TObject> : SerializerBuilder<ExpressionTreeContext, ExpressionConstruct, TObject>
 	{
+#if !NETFX_CORE && !SILVERLIGHT
 		private readonly TypeBuilder _typeBuilder;
+#endif
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ExpressionTreeSerializerBuilder{TObject}"/> class.
 		/// </summary>
 		public ExpressionTreeSerializerBuilder()
 		{
+#if !NETFX_CORE && !SILVERLIGHT
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				SerializerDebugging.PrepareDump();
 				this._typeBuilder = SerializerDebugging.NewTypeBuilder( typeof( TObject ) );
 			}
+#endif
 		}
 
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, SerializerMethod method )
@@ -77,6 +81,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					context.GetParameters( typeof( TObject ), method )
 				);
 
+#if !NETFX_CORE && !SILVERLIGHT
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				var mb =
@@ -88,6 +93,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						);
 				lambda.CompileToMethod( mb );
 			}
+#endif
 
 			context.SetDelegate(
 				method,
@@ -409,10 +415,12 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			var unpackFrom = codeGenerationContext.GetUnpackFromCore<TObject>();
 			var unpackTo = codeGenerationContext.GetUnpackToCore<TObject>();
 
+#if !NETFX_CORE && !SILVERLIGHT
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				this._typeBuilder.CreateType();
 			}
+#endif
 
 			return context => new ExpressionCallbackMessagePackSerializer<TObject>( context, packTo, unpackFrom, unpackTo );
 		}
