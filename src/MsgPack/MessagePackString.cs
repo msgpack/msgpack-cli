@@ -276,18 +276,11 @@ namespace MsgPack
 		}
 
 #if !WINDOWS_PHONE
-#if MONO
-		private static int _isFastEqualsDisabled = 0;
-#elif NETFX_CORE
-		private static int _isFastEqualsDisabled = 0;
-#elif NETFX_35
-		private static int _isFastEqualsDisabled = 0;
-#elif !SILVERLIGHT
-		private static int _isFastEqualsDisabled =
-			typeof( MessagePackString ).GetMethod( "UnsafeFastEquals", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic ).IsSecuritySafeCritical ? 0 : 1;
-#else
+#if SILVERLIGHT
 		private static int _isFastEqualsDisabled =
 			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
+#else
+		private static int _isFastEqualsDisabled = 0;
 #endif
 
 		internal static bool IsFastEqualsDisabled
