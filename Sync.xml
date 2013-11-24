@@ -14,8 +14,10 @@
     <Preserve Path="Tuple`n.cs" />
     <Exclude Path="TupleItems.cs" />
   </Project>
-  <Project Name="MsgPack.Mono" Base="MsgPack">
+  <Project Name="MsgPack.Net40" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Immutable_ImmutableCollectionSerializer`2.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Immutable_ImmutableDictionarySerializer`3.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
