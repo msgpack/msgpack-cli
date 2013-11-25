@@ -21,3 +21,4 @@ Storage.dat
 test-results/
 TestResult/
 TestResults/
+*.userprefs
