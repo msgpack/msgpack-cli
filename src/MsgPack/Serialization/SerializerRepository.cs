@@ -85,15 +85,14 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-			// TODO: Unity
 			if ( typeof( T ).GetIsEnum() )
 			{
-				return new EnumMessagePackSerializer<T>( context.CompatibilityOptions.PackerCompatibilityOptions );
+				return GenericSerializer.CreateEnumSerializer<T>( context );
 			}
 
 			if ( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
 			{
-				return new NullableMessagePackSerializer<T>( context );
+				return GenericSerializer.CreateNullableSerializer<T>( context );
 			}
 
 			return this._repository.Get<T, MessagePackSerializer<T>>( context );

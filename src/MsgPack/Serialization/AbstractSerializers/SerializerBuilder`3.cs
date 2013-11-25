@@ -57,10 +57,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( typeof( TObject ).IsArray )
 			{
-				return
-					Activator.CreateInstance(
-						typeof( ArraySerializer<> ).MakeGenericType( typeof( TObject ).GetElementType() ), context
-					) as MessagePackSerializer<TObject>;
+				return GenericSerializer.CreateArraySerializer<TObject>( context );
 			}
 
 			var codeGenerationContext = this.CreateCodeGenerationContextForSerializerCreation( context );
