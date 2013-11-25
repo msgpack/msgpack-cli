@@ -53,6 +53,12 @@
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
+  <Project Name="MsgPack.UnitTest.CodeDom.Net35" Base="MsgPack.UnitTest.CodeDom">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude File="*.ps1" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+  </Project>
   <Project Name="MsgPack.UnitTest.WinRT" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve File="*.config" />

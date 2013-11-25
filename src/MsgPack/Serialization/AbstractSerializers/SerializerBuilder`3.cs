@@ -32,11 +32,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// <typeparam name="TConstruct">The type of the construct which abstracts code constructs.</typeparam>
 	/// <typeparam name="TObject">The type of the object which will be target of the generating serializer.</typeparam>
 	[ContractClass( typeof( SerializerBuilderContract<,,> ) )]
-	internal abstract partial class SerializerBuilder<TContext, TConstruct, TObject> : 
+	internal abstract partial class SerializerBuilder<TContext, TConstruct, TObject> :
 #if !NETFX_CORE && !SILVERLIGHT
-		ISerializerCodeGenerator, 
+ ISerializerCodeGenerator,
 #endif
-		ISerializerBuilder<TObject>
+ ISerializerBuilder<TObject>
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
 	{

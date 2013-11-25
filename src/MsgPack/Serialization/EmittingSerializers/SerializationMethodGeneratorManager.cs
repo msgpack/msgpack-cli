@@ -99,7 +99,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public SerializerEmitter CreateEmitter( Type targetType, EmitterFlavor emitterFlavor )
 		{
 			Contract.Requires( targetType != null );
-			Contract.Requires( emitterFlavor == EmitterFlavor.FieldBased || emitterFlavor == EmitterFlavor.ContextBased );
 			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
 
 			return this.CreateEmitterCore( targetType , emitterFlavor);

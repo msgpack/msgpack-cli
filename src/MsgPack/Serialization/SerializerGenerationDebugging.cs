@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
@@ -189,9 +190,10 @@ namespace MsgPack.Serialization
 			_moduleBuilder =
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
-
+#endif
 		// TODO: Cleanup %Temp% to delete temp assemblies generated for on the fly code DOM.
 
+#if !NETFX_CORE && !SILVERLIGHT
 		[ThreadStatic]
 		private static IList<string> _runtimeAssemblies;
 
@@ -222,7 +224,7 @@ namespace MsgPack.Serialization
 #endif
 		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
-#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
+#if !NETFX_CORE && !SILVERLIGHT
 			EnsureDependentAssembliesListsInitialized();
 			_runtimeAssemblies.Add( pathToAssembly );
 #endif
@@ -230,7 +232,7 @@ namespace MsgPack.Serialization
 
 		public static void AddCompiledCodeDomAssembly( string pathToAssembly )
 		{
-#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
+#if !NETFX_CORE && !SILVERLIGHT
 			EnsureDependentAssembliesListsInitialized();
 			_compiledCodeDomSerializerAssemblies.Add( pathToAssembly );
 #endif
@@ -238,23 +240,24 @@ namespace MsgPack.Serialization
 
 		public static void ResetDependentAssemblies()
 		{
-#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
+#if !NETFX_CORE && !SILVERLIGHT
 			EnsureDependentAssembliesListsInitialized();
 
-			File.AppendAllLines( GetHistoryFilePath(), _compiledCodeDomSerializerAssemblies );
+			File.AppendAllText(
+				GetHistoryFilePath(), 
+				String.Join( Environment.NewLine, _compiledCodeDomSerializerAssemblies.ToArray() ) 
+			);
 			_compiledCodeDomSerializerAssemblies.Clear();
 			ResetRuntimeAssemblies();
 #endif
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
-#if !NETFX_35
 		private static int _wasDeleted = 0;
 		private const string _historyFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
-#endif
+
 		public static void DeletePastTemporaries()
 		{
-#if !NETFX_35
 			if ( Interlocked.CompareExchange( ref _wasDeleted, 1, 0 ) != 0 )
 			{
 				return;
@@ -268,7 +271,7 @@ namespace MsgPack.Serialization
 					return;
 				}
 
-				foreach ( var pastAssembly in File.ReadLines( historyFilePath ) )
+				foreach ( var pastAssembly in File.ReadAllLines( historyFilePath ) )
 				{
 					File.Delete( pastAssembly );
 				}
@@ -276,11 +279,8 @@ namespace MsgPack.Serialization
 				new FileStream( historyFilePath, FileMode.Truncate ).Close();
 			}
 			catch ( IOException ) { }
-#endif // !NETFX_35
 		}
-#endif // !NETFX_CORE && !SILVERLIGHT
 
-#if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 		private static string GetHistoryFilePath()
 		{
 			return Path.Combine( Path.GetTempPath(), _historyFile );
@@ -303,8 +303,12 @@ namespace MsgPack.Serialization
 		private static void ResetRuntimeAssemblies()
 		{
 			_runtimeAssemblies.Add( "System.dll" );
+#if NETFX_35
+			_runtimeAssemblies.Add( typeof( Enumerable ).Assembly.Location );
+#else
 			_runtimeAssemblies.Add( "System.Core.dll" );
 			_runtimeAssemblies.Add( "System.Numerics.dll" );
+#endif
 			_runtimeAssemblies.Add( typeof( SerializerDebugging ).Assembly.Location );
 		}
 #endif

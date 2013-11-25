@@ -686,9 +686,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( CodeDomContext codeGenerationContext )
 		{
-#if NETFX_35
-			throw new NotSupportedException();
-#else
 			if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
 			{
 				throw new NotSupportedException();
@@ -758,7 +755,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				// ReSharper disable ImplicitlyCapturedClosure
 						t => t.Namespace == cu.Namespaces[ 0 ].Name
 				// ReSharper restore ImplicitlyCapturedClosure
-					).Select( t => t.FullName )
+					).Select( t => t.FullName ).ToArray()
 				)
 			);
 
@@ -768,10 +765,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					Expression.New( targetType.GetConstructors().Single(), contextParameter ),
 					contextParameter
 				).Compile();
-#endif
 		}
 
-#if !NETFX_35
 		private static string BuildCompilationError( CompilerResults cr )
 		{
 			return
@@ -779,22 +774,21 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					Environment.NewLine,
 					cr.Errors.OfType<CompilerError>()
 					  .Select(
-						  ( error, i ) =>
-						  String.Format(
-							  CultureInfo.InvariantCulture,
-							  "[{0}]{1}:{2}:(File:{3}, Line:{4}, Column:{5}):{6}",
-							  i,
-							  error.IsWarning ? "Warning" : "Error   ",
-							  error.ErrorNumber,
-							  error.FileName,
-							  error.Line,
-							  error.Column,
-							  error.ErrorText
+						( error, i ) =>
+							String.Format(
+								CultureInfo.InvariantCulture,
+								"[{0}]{1}:{2}:(File:{3}, Line:{4}, Column:{5}):{6}",
+								i,
+								error.IsWarning ? "Warning" : "Error   ",
+								error.ErrorNumber,
+								error.FileName,
+								error.Line,
+								error.Column,
+								error.ErrorText
 							)
-					)
+					).ToArray()
 				);
 		}
-#endif
 
 		private void Finish( CodeDomContext context )
 		{
