@@ -17,6 +17,7 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
 using System;
 using System.Diagnostics.Contracts;
 
@@ -34,10 +35,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif
 			return
 				Activator.CreateInstance(
-					typeof( ArraySerializer<> ).MakeGenericType( typeof( T ).GetElementType() ), 
+					typeof( ArraySerializer<> ).MakeGenericType( typeof( T ).GetElementType() ),
 					context
 				) as MessagePackSerializer<T>;
-
 		}
 
 		public static MessagePackSerializer<T> CreateNullableSerializer<T>( SerializationContext context )
@@ -55,8 +55,70 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif
 			return
 				new EnumMessagePackSerializer<T>(
-					( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions 
+					( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions
 				);
+		}
+
+		public static MessagePackSerializer<T> TryCreateImmutableCollectionSerializer<T>( SerializationContext context )
+		{
+#if NETFX_35 || NETFX_40 || SILVERLIGHT
+			// ImmutableCollections does not support above platforms.
+			return null;
+#else
+			if ( typeof( T ).Namespace != "System.Collections.Immutable" )
+			{
+				return null;
+			}
+
+			if ( !typeof( T ).GetIsGenericType() )
+			{
+				return null;
+			}
+
+			switch ( typeof( T ).GetGenericTypeDefinition().Name )
+			{
+				case "ImmutableList`1":
+				case "ImmutableHashSet`1":
+				case "ImmutableSortedSet`1":
+				case "ImmutableQueue`1":
+				{
+					return
+						Activator.CreateInstance(
+							typeof( ImmutableCollectionSerializer<,> )
+							.MakeGenericType( typeof( T ), typeof( T ).GetGenericArguments()[ 0 ] ),
+							context
+						) as MessagePackSerializer<T>;
+				}
+				case "ImmutableStack`1":
+				{
+					return
+						Activator.CreateInstance(
+							typeof( ImmutableStackSerializer<,> )
+							.MakeGenericType( typeof( T ), typeof( T ).GetGenericArguments()[ 0 ] ),
+							context
+						) as MessagePackSerializer<T>;
+				}
+				case "ImmutableDictionary`2":
+				case "ImmutableSortedDictionary`2":
+				{
+					return
+						Activator.CreateInstance(
+							typeof( ImmutableDictionarySerializer<,,> )
+							.MakeGenericType( typeof( T ), typeof( T ).GetGenericArguments()[ 0 ], typeof( T ).GetGenericArguments()[ 1 ] ),
+							context
+						) as MessagePackSerializer<T>;
+				}
+				default:
+				{
+#if DEBUG
+					Contract.Assert( false, "Unknown type:" + typeof( T ) );
+#endif
+// ReSharper disable HeuristicUnreachableCode
+					return null;
+// ReSharper restore HeuristicUnreachableCode
+				}
+			}
+#endif
 		}
 	}
 }

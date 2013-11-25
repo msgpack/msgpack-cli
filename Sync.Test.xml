@@ -9,6 +9,12 @@
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
+  <Project Name="MsgPack.UnitTest.BclExtensions.Mono" Base="MsgPack.UnitTest.BclExtensions">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude File="*.ps1" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+  </Project>
   <!--
   <Project Name="MsgPack.UnitTest.CodeDom.Mono" Base="MsgPack.UnitTest.CodeDom">
     <Preserve Path="Properties\AssemblyInfo.cs" />
@@ -76,5 +82,17 @@
     <Exclude Path="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\MapContextBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+  </Project>
+  <Project Name="MsgPack.UnitTest.BclExtensions.WinRT" Base="MsgPack.UnitTest.BclExtensions">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude File="*.ps1" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+    <Exclude Path="Serialization\ArrayFieldBasedImmutableCollectionsTest.cs" />
+    <Exclude Path="Serialization\ArrayContextBasedImmutableCollectionsTest.cs" />
+    <Exclude Path="Serialization\ArrayCodeDomBasedImmutableCollectionsTest.cs" />
+    <Exclude Path="Serialization\MapFieldBasedImmutableCollectionsTest.cs" />
+    <Exclude Path="Serialization\MapContextBasedImmutableCollectionsTest.cs" />
+    <Exclude Path="Serialization\MapCodeDomBasedImmutableCollectionsTest.cs" />
   </Project>
 </ProjectSync>

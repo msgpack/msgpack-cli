@@ -3,6 +3,9 @@
   <Project Name="MsgPack.Net35" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
     <Exclude Path="Serialization\ExpressionSerializers\*" />
     <Exclude File="*.tt" />
@@ -17,8 +20,9 @@
   </Project>
   <Project Name="MsgPack.Net40" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Immutable_ImmutableCollectionSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Collections_Immutable_ImmutableDictionarySerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
@@ -65,6 +69,9 @@
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Exclude Path="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
+    <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
     <Exclude Path="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
     <Preserve Path="Serialization\LockRecursionPolicy.cs" />
     <Preserve Path="Serialization\ReaderWriterLockSlim.cs" />

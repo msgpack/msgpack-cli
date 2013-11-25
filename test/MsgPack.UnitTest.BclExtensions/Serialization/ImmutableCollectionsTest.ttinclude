@@ -1,0 +1,163 @@
+﻿<#+ 
+void Geneate( string serializationMethod, string emitterFlavor, string builderTypeName, bool canDump )
+{
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+#if !NETFX_CORE
+using MsgPack.Serialization.CodeDomSerializers;
+using MsgPack.Serialization.EmittingSerializers;
+#endif
+using MsgPack.Serialization.ExpressionSerializers;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack.Serialization
+{
+	[TestFixture]
+	public class <#= serializationMethod #><#= emitterFlavor #>ImmutableCollectionsTest
+	{
+		private MessagePackSerializer<T> CreateTarget<T>()
+		{
+			var context = new SerializationContext() { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
+			return new AutoMessagePackSerializer<T>( context, new <#= builderTypeName #><T>() );
+		}
+		
+		private bool CanDump
+		{
+			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
+		}
+
+#if !NETFX_CORE
+		[SetUp]
+		public void SetUp()
+		{
+			SerializerDebugging.DeletePastTemporaries();
+			//SerializerDebugging.TraceEnabled = true;
+			//SerializerDebugging.DumpEnabled = true;
+			if ( SerializerDebugging.TraceEnabled )
+			{
+				Tracer.Emit.Listeners.Clear();
+				Tracer.Emit.Switch.Level = SourceLevels.All;
+				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+			}
+
+			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+			SerializerDebugging.AddRuntimeAssembly( typeof( ImmutableList ).Assembly.Location );
+		}
+
+		[TearDown]
+		public void TearDown()
+		{
+			if ( SerializerDebugging.DumpEnabled && this.CanDump )
+			{
+				try
+				{
+					SerializerDebugging.Dump();
+				}
+				catch ( NotSupportedException ex )
+				{
+					Console.Error.WriteLine( ex );
+				}
+				finally
+				{
+					DefaultSerializationMethodGeneratorManager.Refresh();
+				}
+			}
+
+			SerializerDebugging.Reset();
+			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+		}
+#endif
+
+<#+
+	foreach ( var type in
+		new []
+		{
+			"ImmutableList`1",
+			"ImmutableStack`1",
+			"ImmutableQueue`1",
+			"ImmutableHashSet`1",
+			"ImmutableSortedSet`1",
+			"ImmutableDictionary`2",
+			"ImmutableSortedDictionary`2",
+		}
+	)
+	{
+		foreach ( var itemsCount in new []{ 0, 1, 2 } )
+		{
+			var safeTypeName = type.Remove( type.IndexOf( '`' ) );
+			var isDictionary = type.EndsWith( "2" );
+			var addMethod =
+				safeTypeName.EndsWith( "Queue" )
+				? "Enqueue"
+				: safeTypeName.EndsWith( "Stack" )
+				? "Push"
+				: "Add";
+
+			var genericArguments = "<" + String.Format( CultureInfo.InvariantCulture, isDictionary ? "{0}, {0}" : "{0}", "int" ) + ">";
+#>
+
+		[Test]
+		public void <#= safeTypeName #>Test_<#= itemsCount #>_Success()
+		{
+			var collection = <#= safeTypeName #>.Create<#= genericArguments #>();
+<#+
+			for ( int i = 0; i < itemsCount; i++ )
+			{
+#>
+			collection = collection.<#= addMethod #>( <#= String.Format( CultureInfo.InvariantCulture, isDictionary ? "{0}, {0}" : "{0}", i ) #> );
+<#+
+			}
+#>
+			var target = this.CreateTarget<<#= safeTypeName + genericArguments #>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+<#+
+		}
+	}
+#>
+	}
+}
+<#+
+}
+#>

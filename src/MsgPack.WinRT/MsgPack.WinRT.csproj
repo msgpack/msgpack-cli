@@ -292,6 +292,15 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs">
+      <Link>Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MessagePackObjectExtensions.cs">
       <Link>Serialization\DefaultSerializers\MessagePackObjectExtensions.cs</Link>
     </Compile>

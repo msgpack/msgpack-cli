@@ -60,6 +60,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 				return GenericSerializer.CreateArraySerializer<TObject>( context );
 			}
 
+			var immutableCollectionsSerializer = GenericSerializer.TryCreateImmutableCollectionSerializer<TObject>( context );
+			if ( immutableCollectionsSerializer != null )
+			{
+				return immutableCollectionsSerializer;
+			}
+
 			var codeGenerationContext = this.CreateCodeGenerationContextForSerializerCreation( context );
 			this.BuildSerializer( codeGenerationContext );
 			Func<SerializationContext, MessagePackSerializer<TObject>> constructor = this.CreateSerializerConstructor( codeGenerationContext );

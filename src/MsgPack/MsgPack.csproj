@@ -175,6 +175,9 @@
     <Compile Include="Serialization\CodeDomSerializers\StatementCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs" />
     <Compile Include="Serialization\DefaultSerializers\GenericSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
+    <Compile Include="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
+    <Compile Include="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
     <Compile Include="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Compile Include="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />

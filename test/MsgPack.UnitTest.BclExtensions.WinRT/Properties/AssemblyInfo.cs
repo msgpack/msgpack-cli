@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Resources;
 
-[assembly: AssemblyTitle( "Unit test of MessagePack for CLI" )]
-[assembly: AssemblyDescription( "Unit test of MessagePack CLI binding (.NET 3.5)" )]
+[assembly: AssemblyTitle( "Unit test of MessagePack for CLI(WinRT)" )]
+[assembly: AssemblyDescription( "Unit test of MessagePack CLI(WinRT) binding (Microsoft.Bcl.*)" )]
 [assembly: AssemblyConfiguration( "Develop" )]
 [assembly: AssemblyProduct( "MessagePack" )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2013" )]
