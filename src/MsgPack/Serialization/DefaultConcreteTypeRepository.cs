@@ -21,6 +21,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !NETFX_35 && !SILVERLIGHT && !NETFX_40
+using System.Collections.ObjectModel;
+#endif
 using System.Globalization;
 using System.Linq;
 
@@ -37,10 +40,10 @@ namespace MsgPack.Serialization
 		{
 			this._defaultCollectionTypes = new TypeKeyRepository(
 				new Dictionary<RuntimeTypeHandle, object>(
-#if !NETFX_35 && !WINDOWS_PHONE
-					9
-#else
+#if NETFX_35 || WINDOWS_PHONE
 					8
+#else
+					9
 #endif
  )
 				{

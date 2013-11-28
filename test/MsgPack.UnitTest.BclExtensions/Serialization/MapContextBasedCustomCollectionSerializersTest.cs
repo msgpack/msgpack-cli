@@ -20,6 +20,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !NETFX_CORE
+using System.Collections;
+#endif
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
@@ -44,12 +47,12 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack.Serialization
 {
 	[TestFixture]
-	public class ArrayCodeDomBasedImmutableCollectionsTest
+	public class MapContextBasedImmutableCollectionsTest
 	{
 		private MessagePackSerializer<T> CreateTarget<T>()
 		{
-			var context = new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.CodeDomBased };
-			return new AutoMessagePackSerializer<T>( context, new CodeDomSerializerBuilder<T>() );
+			var context = new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = EmitterFlavor.ContextBased };
+			return new AutoMessagePackSerializer<T>( context, new DynamicMethodSerializerBuilder<T>() );
 		}
 		
 		private bool CanDump
@@ -98,6 +101,79 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif
+
+		#warning JIT コード生成と後からの巻き戻し
+
+		[Test]
+		public void QueueSerializationTest()
+		{
+			var serializer = SerializationContext.Default.GetSerializer<Queue<int>>();
+			var value = new Queue<int>();
+			value.Enqueue( 1 );
+			value.Enqueue( 2 );
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, value );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( value ) );
+			}
+		}
+
+		[Test]
+		public void StackSerializationTest()
+		{
+			var serializer = SerializationContext.Default.GetSerializer<Stack<int>>();
+			var value = new Stack<int>();
+			value.Push( 1 );
+			value.Push( 2 );
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, value );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( value ) );
+			}
+		}
+
+#if !NETFX_CORE
+		[Test]
+		public void NonGenericQueueSerializationTest()
+		{
+			var serializer = SerializationContext.Default.GetSerializer<Queue>();
+			var value = new Queue();
+			value.Enqueue( ( MessagePackObject )1 );
+			value.Enqueue( ( MessagePackObject )2 );
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, value );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( value ) );
+			}
+		}
+
+		[Test]
+		public void NonGenericStackSerializationTest()
+		{
+			var serializer = SerializationContext.Default.GetSerializer<Stack>();
+			var value = new Stack();
+			value.Push( ( MessagePackObject )1 );
+			value.Push( ( MessagePackObject )2 );
+
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, value );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( value ) );
+			}
+		}
+#endif // !NETFX_CORE
+
 
 		[Test]
 		public void ImmutableListTest_0_Success()

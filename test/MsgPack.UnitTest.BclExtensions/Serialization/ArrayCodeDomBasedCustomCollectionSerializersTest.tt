@@ -1,6 +1,6 @@
 ﻿<#@ template hostSpecific="false"#>
 <#@ output extension=".cs" #>
-<#@ include file="ImmutableCollectionsTest.ttinclude" #>
+<#@ include file="CustomCollectionSerializersTest.ttinclude" #>
 <#@ Assembly Name="System.Core" #>
 <#@ Assembly Name="System.Numerics" #>
 <#@ import namespace="System" #>
@@ -11,5 +11,5 @@
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #> 
 <#
-Geneate( "Map", "CodeDomBased", "CodeDomSerializerBuilder", false );
+Geneate( "Array", "CodeDomBased", "CodeDomSerializerBuilder", true );
 #>

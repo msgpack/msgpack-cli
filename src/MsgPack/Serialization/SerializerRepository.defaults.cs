@@ -40,7 +40,7 @@ namespace MsgPack.Serialization
 	{
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( PackerCompatibilityOptions packerCompatibilityOptions )
 		{
-			var dictionary = new Dictionary<RuntimeTypeHandle, object>( 429 );
+			var dictionary = new Dictionary<RuntimeTypeHandle, object>( 433 );
 			dictionary.Add( typeof( MessagePackObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer( packerCompatibilityOptions ) );
 			dictionary.Add( typeof( MessagePackExtendedTypeObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer( packerCompatibilityOptions ) );
 			dictionary.Add( typeof( Object ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_ObjectMessagePackSerializer( packerCompatibilityOptions ) );
@@ -66,15 +66,11 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( System.UInt32 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt32MessagePackSerializer( packerCompatibilityOptions ) );
 			dictionary.Add( typeof( System.UInt64 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt64MessagePackSerializer( packerCompatibilityOptions ) );
 #if !SILVERLIGHT && !NETFX_CORE
-#if !SILVERLIGHT
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer( packerCompatibilityOptions ) );
 #endif // !SILVERLIGHT && !NETFX_CORE
-#endif // !SILVERLIGHT
 #if !SILVERLIGHT && !NETFX_CORE
-#if !SILVERLIGHT
 			dictionary.Add( typeof( System.Collections.Specialized.BitVector32 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Specialized_BitVector32MessagePackSerializer( packerCompatibilityOptions ) );
 #endif // !SILVERLIGHT && !NETFX_CORE
-#endif // !SILVERLIGHT
 #if !WINDOWS_PHONE
 #if !NETFX_35
 			dictionary.Add( typeof( System.Numerics.BigInteger ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_BigIntegerMessagePackSerializer( packerCompatibilityOptions ) );
@@ -82,7 +78,19 @@ namespace MsgPack.Serialization
 #endif // !NETFX_35
 			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer<> ) );
 			dictionary.Add( typeof( System.Collections.DictionaryEntry ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_DictionaryEntryMessagePackSerializer( packerCompatibilityOptions ) );
+#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT
+			dictionary.Add( typeof( System.Collections.Stack ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_StackMessagePackSerializer( packerCompatibilityOptions ) );
+#endif // !SILVERLIGHT && !NETFX_CORE
+#endif // !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT
+			dictionary.Add( typeof( System.Collections.Queue ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_QueueMessagePackSerializer( packerCompatibilityOptions ) );
+#endif // !SILVERLIGHT && !NETFX_CORE
+#endif // !SILVERLIGHT
 			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessagePackSerializer<, > ) );
+			dictionary.Add( typeof( System.Collections.Generic.Stack<> ).TypeHandle, typeof( System_Collections_Generic_Stack_1MessagePackSerializer<> ) );
+			dictionary.Add( typeof( System.Collections.Generic.Queue<> ).TypeHandle, typeof( System_Collections_Generic_Queue_1MessagePackSerializer<> ) );
 #if !WINDOWS_PHONE
 #if !NETFX_35
 			dictionary.Add( typeof( System.Numerics.Complex ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_ComplexMessagePackSerializer( packerCompatibilityOptions ) );

@@ -178,6 +178,10 @@
     <Compile Include="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs" />
     <Compile Include="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Compile Include="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />

@@ -53,29 +53,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayCodeDomBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\ArrayCodeDomBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayCodeDomBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\ArrayCodeDomBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayContextBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\ArrayContextBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayContextBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\ArrayContextBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayExpressionBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\ArrayExpressionBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayFieldBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\ArrayFieldBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayFieldBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\ArrayFieldBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapCodeDomBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\MapCodeDomBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapCodeDomBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\MapCodeDomBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapContextBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\MapContextBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapContextBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\MapContextBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapExpressionBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\MapExpressionBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapFieldBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\MapFieldBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapFieldBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\MapFieldBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

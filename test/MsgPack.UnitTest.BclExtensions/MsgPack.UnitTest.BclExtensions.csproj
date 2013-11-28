@@ -54,43 +54,43 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\ArrayContextBasedImmutableCollectionsTest.cs">
-      <DependentUpon>ArrayContextBasedImmutableCollectionsTest.tt</DependentUpon>
+    <Compile Include="Serialization\ArrayContextBasedCustomCollectionSerializersTest.cs">
+      <DependentUpon>ArrayContextBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\ArrayCodeDomBasedImmutableCollectionsTest.cs">
-      <DependentUpon>ArrayCodeDomBasedImmutableCollectionsTest.tt</DependentUpon>
+    <Compile Include="Serialization\ArrayCodeDomBasedCustomCollectionSerializersTest.cs">
+      <DependentUpon>ArrayCodeDomBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\ArrayFieldBasedImmutableCollectionsTest.cs">
-      <DependentUpon>ArrayFieldBasedImmutableCollectionsTest.tt</DependentUpon>
+    <Compile Include="Serialization\ArrayFieldBasedCustomCollectionSerializersTest.cs">
+      <DependentUpon>ArrayFieldBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\ArrayExpressionBasedImmutableCollectionsTest.cs">
-      <DependentUpon>ArrayExpressionBasedImmutableCollectionsTest.tt</DependentUpon>
+    <Compile Include="Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs">
+      <DependentUpon>ArrayExpressionBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\MapCodeDomBasedImmutableCollectionsTest.cs">
-      <DependentUpon>MapCodeDomBasedImmutableCollectionsTest.tt</DependentUpon>
+    <Compile Include="Serialization\MapCodeDomBasedCustomCollectionSerializersTest.cs">
+      <DependentUpon>MapCodeDomBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\MapContextBasedImmutableCollectionsTest.cs">
-      <DependentUpon>MapContextBasedImmutableCollectionsTest.tt</DependentUpon>
+    <Compile Include="Serialization\MapContextBasedCustomCollectionSerializersTest.cs">
+      <DependentUpon>MapContextBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\MapExpressionBasedImmutableCollectionsTest.cs">
-      <DependentUpon>MapExpressionBasedImmutableCollectionsTest.tt</DependentUpon>
+    <Compile Include="Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs">
+      <DependentUpon>MapExpressionBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\MapFieldBasedImmutableCollectionsTest.cs">
-      <DependentUpon>MapFieldBasedImmutableCollectionsTest.tt</DependentUpon>
+    <Compile Include="Serialization\MapFieldBasedCustomCollectionSerializersTest.cs">
+      <DependentUpon>MapFieldBasedCustomCollectionSerializersTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -106,40 +106,40 @@
       <Link>MsgPack.snk</Link>
     </None>
     <None Include="packages.config" />
-    <None Include="Serialization\ArrayContextBasedImmutableCollectionsTest.tt">
+    <None Include="Serialization\ArrayContextBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ArrayContextBasedImmutableCollectionsTest.cs</LastGenOutput>
+      <LastGenOutput>ArrayContextBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ImmutableCollectionsTest.ttinclude">
+    <None Include="Serialization\CustomCollectionSerializersTest.ttinclude">
       <LastGenOutput>ImmutableCollectionsTest1.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ArrayCodeDomBasedImmutableCollectionsTest.tt">
+    <None Include="Serialization\ArrayCodeDomBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ArrayCodeDomBasedImmutableCollectionsTest.cs</LastGenOutput>
+      <LastGenOutput>ArrayCodeDomBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ArrayFieldBasedImmutableCollectionsTest.tt">
+    <None Include="Serialization\ArrayFieldBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ArrayFieldBasedImmutableCollectionsTest.cs</LastGenOutput>
+      <LastGenOutput>ArrayFieldBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ArrayExpressionBasedImmutableCollectionsTest.tt">
+    <None Include="Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ArrayExpressionBasedImmutableCollectionsTest.cs</LastGenOutput>
+      <LastGenOutput>ArrayExpressionBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapCodeDomBasedImmutableCollectionsTest.tt">
+    <None Include="Serialization\MapCodeDomBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MapCodeDomBasedImmutableCollectionsTest.cs</LastGenOutput>
+      <LastGenOutput>MapCodeDomBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapContextBasedImmutableCollectionsTest.tt">
+    <None Include="Serialization\MapContextBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MapContextBasedImmutableCollectionsTest.cs</LastGenOutput>
+      <LastGenOutput>MapContextBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapExpressionBasedImmutableCollectionsTest.tt">
+    <None Include="Serialization\MapExpressionBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MapExpressionBasedImmutableCollectionsTest.cs</LastGenOutput>
+      <LastGenOutput>MapExpressionBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapFieldBasedImmutableCollectionsTest.tt">
+    <None Include="Serialization\MapFieldBasedCustomCollectionSerializersTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MapFieldBasedImmutableCollectionsTest.cs</LastGenOutput>
+      <LastGenOutput>MapFieldBasedCustomCollectionSerializersTest.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -149,7 +149,11 @@ var __classTypes =
 	{
 		typeof( ArraySegment<> ),
 		typeof( DictionaryEntry ),
+		typeof( System.Collections.Stack ),
+		typeof( System.Collections.Queue ),
 		typeof( KeyValuePair<,> ),
+		typeof( Stack<> ),
+		typeof( Queue<> ),
 		typeof( Complex ),
 		typeof( Uri ),
 		typeof( Version ),		
@@ -169,6 +173,8 @@ var __notInNet35s =
 var __notInSLs =
 	new HashSet<Type>()
 	{
+		typeof( System.Collections.Stack ),
+		typeof( System.Collections.Queue ),
 		typeof( System.Collections.Specialized.BitVector32 ),
 		typeof( System.Collections.Specialized.NameValueCollection ),
 		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
@@ -252,13 +258,6 @@ foreach( Type __type in __structTypes )
 <#
 	}
 
-	if( __notInSLs.Contains( __type ) )
-	{
-#>
-#if !SILVERLIGHT
-<#
-	}
-
 	if( __notInNet35s.Contains( __type ) )
 	{
 #>
@@ -280,13 +279,6 @@ foreach( Type __type in __structTypes )
 	{
 #>
 #endif // !SILVERLIGHT && !NETFX_CORE
-<#
-	}
-
-	if( __notInSLs.Contains( __type ) )
-	{
-#>
-#endif // !SILVERLIGHT
 <#
 	}
 

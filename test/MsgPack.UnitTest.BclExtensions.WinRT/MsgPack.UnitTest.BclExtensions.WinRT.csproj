@@ -111,11 +111,11 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayExpressionBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\ArrayExpressionBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\ArrayExpressionBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapExpressionBasedImmutableCollectionsTest.cs">
-      <Link>Serialization\MapExpressionBasedImmutableCollectionsTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs">
+      <Link>Serialization\MapExpressionBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
