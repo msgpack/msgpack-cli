@@ -2819,7 +2819,7 @@ namespace MsgPack.Serialization
 #else
 					catch( AssertionException ae )
 					{
-						throw new AssertionException( i.ToString(), ae );
+						throw new AssertionException( i.ToString() + ":" + ae.Message, ae );
 					}
 #endif
 				}
