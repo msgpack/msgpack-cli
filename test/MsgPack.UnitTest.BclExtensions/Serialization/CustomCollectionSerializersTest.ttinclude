@@ -105,8 +105,6 @@ namespace MsgPack.Serialization
 		}
 #endif
 
-		#warning JIT コード生成と後からの巻き戻し
-
 		[Test]
 		public void QueueSerializationTest()
 		{
