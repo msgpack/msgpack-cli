@@ -22,7 +22,7 @@ Type[] _valueTypes =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -48,53 +48,50 @@ namespace MsgPack.Serialization.Metadata
 	// This file was generated from _Unpacker.Read.tt and StreamingUnapkcerBase.ttinclude T4Template.
 	// Do not modify this file. Edit _Unpacker.Read.tt and StreamingUnapkcerBase.ttinclude instead.
 
-	partial class _Unpacker
+	partial class _UnpackHelpers
 	{
-		private static readonly Dictionary<Type,MethodInfo> _directReadMethods;
+		private static readonly Dictionary<Type,MethodInfo> _directUnpackMethods;
 
 <#
 foreach( var type in _valueTypes )
 {
 #>
-		public static readonly MethodInfo Read<#= type.Name #>;
-		public static readonly MethodInfo ReadNullable<#= type.Name #>;
+		public static readonly MethodInfo Unpack<#= type.Name #>Value;
 <#
 }
 #>
-		public static readonly MethodInfo ReadString;
-		public static readonly MethodInfo ReadBinary;
-		public static readonly MethodInfo ReadObject;
+		public static readonly MethodInfo UnpackStringValue;
+		public static readonly MethodInfo UnpackBinaryValue;
+		public static readonly MethodInfo UnpackObjectValue;
 
-		static _Unpacker()
+		static _UnpackHelpers()
 		{
-			var directReadMethods = new Dictionary<Type, MethodInfo>( <#= _valueTypes.Length * 2 + 3 #> );
+			var directUnpackMethods = new Dictionary<Type, MethodInfo>( <#= _valueTypes.Length + 3 #> );
 <#
 foreach( var type in _valueTypes )
 {
 	// NOTE: Allways use nullable version for nil implication.
 #>
 			
-			Read<#= type.Name #> = typeof( Unpacker ).GetMethod( "Read<#= type.Name #>" );
-			ReadNullable<#= type.Name #> = typeof( Unpacker ).GetMethod( "ReadNullable<#= type.Name #>" );
-			directReadMethods.Add( typeof( <#= type.FullName #> ), ReadNullable<#= type.Name #> );
-			directReadMethods.Add( typeof( <#= type.FullName #>? ), ReadNullable<#= type.Name #> );
+			Unpack<#= type.Name #>Value = typeof( Unpacker ).GetMethod( "Unpack<#= type.Name #>Value" );
+			directUnpackMethods.Add( typeof( <#= type.Name #>? ), Unpack<#= type.Name #>Value );
 <#
 }
 #>
-			ReadString = typeof( Unpacker ).GetMethod( "ReadString" );
-			directReadMethods.Add( typeof( string ), ReadString );
-			ReadBinary = typeof( Unpacker ).GetMethod( "ReadBinary" );
-			directReadMethods.Add( typeof( byte[] ), ReadBinary );
-			ReadObject = typeof( Unpacker ).GetMethod( "ReadObject" );
-			directReadMethods.Add( typeof( MessagePackObject ), ReadObject );
+			UnpackStringValue = typeof( Unpacker ).GetMethod( "UnpackStringValue" );
+			directUnpackMethods.Add( typeof( string ), UnpackStringValue );
+			UnpackBinaryValue = typeof( Unpacker ).GetMethod( "UnpackBinaryValue" );
+			directUnpackMethods.Add( typeof( byte[] ), UnpackBinaryValue );
+			UnpackObjectValue = typeof( Unpacker ).GetMethod( "UnpackObjectValue" );
+			directUnpackMethods.Add( typeof( MessagePackObject ), UnpackObjectValue );
 
-			Interlocked.Exchange( ref _directReadMethods, directReadMethods );
+			Interlocked.Exchange( ref _directUnpackMethods, directUnpackMethods );
 		}
 
-		public static MethodInfo GetDirectReadMethod( Type type )
+		public static MethodInfo GetDirectUnpackMethod( Type type )
 		{
 			MethodInfo result;
-			_directReadMethods.TryGetValue( type, out result );
+			_directUnpackMethods.TryGetValue( type, out result );
 			return result;
 		}
 	}

@@ -176,7 +176,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			return new UnaryOperatorILConstruct( @operator, input, operation, branchOperation );
 		}
-		
+
 		public static ILConstruct BinaryOperator( string @operator, Type resultType, ILConstruct left, ILConstruct right, Action<TracingILGenerator, ILConstruct, ILConstruct> operation, Action<TracingILGenerator, ILConstruct, ILConstruct, Label> branchOperation )
 		{
 			return new BinaryOperatorILConstruct( @operator, resultType, left, right, operation, branchOperation );
@@ -204,9 +204,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		public static ILConstruct Literal<T>( Type type, T literalValue, Action<TracingILGenerator> instruction )
 		{
-// ReSharper disable CompareNonConstrainedGenericWithNull
+			// ReSharper disable CompareNonConstrainedGenericWithNull
 			return new SinglelStepILConstruct( type, "literal " + ( literalValue == null ? "(null)" : literalValue.ToString() ), false, instruction );
-// ReSharper restore CompareNonConstrainedGenericWithNull
+			// ReSharper restore CompareNonConstrainedGenericWithNull
 		}
 
 		public static ILConstruct Variable( ILEmittingContext context, Type type, string name )

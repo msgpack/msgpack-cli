@@ -174,10 +174,16 @@
     <Compile Include="Serialization\CodeDomSerializers\ParameterCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\StatementCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs" />
+    <Compile Include="Serialization\DefaultSerializers\ArraySerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\GenericSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
+    <Compile Include="Serialization\DefaultSerializers\ArraySerializer.Primitives.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArraySerializer.Primitives.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs" />
@@ -291,10 +297,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FromExpression.ToMethod.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\Metadata\_Unpacker.Read.cs">
+    <Compile Include="Serialization\Metadata\_UnpackHelpers.direct.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>_Unpacker.Read.tt</DependentUpon>
+      <DependentUpon>_UnpackHelpers.direct.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\Metadata\_UnpackHelpers.cs" />
     <Compile Include="Serialization\Metadata\_NotImplementedException.cs" />
@@ -329,6 +335,11 @@
     <Compile Include="Serialization\TypeKeyRepository.cs" />
     <Compile Include="Serialization\MessagePackSerializer.cs" />
     <Compile Include="Serialization\UnpackHelpers.cs" />
+    <Compile Include="Serialization\UnpackHelpers.direct.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnpackHelpers.direct.tt</DependentUpon>
+    </Compile>
     <Compile Include="SetOperation.cs" />
     <Compile Include="StreamPacker.cs" />
     <Compile Include="SubtreeUnpacker.cs" />
@@ -388,6 +399,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DefaultSerializers.cs</LastGenOutput>
     </None>
+    <None Include="Serialization\DefaultSerializers\ArraySerializer.Primitives.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArraySerializer.Primitives.cs</LastGenOutput>
+    </None>
     <None Include="Serialization\FromExpression.ToConstructor.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FromExpression.ToConstructor.cs</LastGenOutput>
@@ -396,13 +411,17 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FromExpression.ToMethod.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\Metadata\_Unpacker.Read.tt">
+    <None Include="Serialization\Metadata\_UnpackHelpers.direct.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>_Unpacker.Read.cs</LastGenOutput>
+      <LastGenOutput>_UnpackHelpers.direct.cs</LastGenOutput>
     </None>
     <None Include="Serialization\SerializerRepository.defaults.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SerializerRepository.defaults.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\UnpackHelpers.direct.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackHelpers.direct.cs</LastGenOutput>
     </None>
     <None Include="Unpacking.Numerics.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

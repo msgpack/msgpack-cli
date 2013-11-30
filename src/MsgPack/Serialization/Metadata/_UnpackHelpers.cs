@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2013 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
 {
-	internal static class _UnpackHelpers
+	internal static partial class _UnpackHelpers
 	{
 		public static readonly MethodInfo UnpackArrayTo_1 =
 			typeof( UnpackHelpers ).GetMethod( "UnpackArrayTo" );

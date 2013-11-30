@@ -277,6 +277,12 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs">
       <Link>Serialization\DefaultSerializers\ArraySegmentMessageSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySerializer.cs">
+      <Link>Serialization\DefaultSerializers\ArraySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySerializer.Primitives.cs">
+      <Link>Serialization\DefaultSerializers\ArraySerializer.Primitives.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySerializer`1.cs">
       <Link>Serialization\DefaultSerializers\ArraySerializer`1.cs</Link>
     </Compile>
@@ -457,11 +463,11 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_Unpacker.cs">
       <Link>Serialization\Metadata\_Unpacker.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_Unpacker.Read.cs">
-      <Link>Serialization\Metadata\_Unpacker.Read.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_UnpackHelpers.cs">
       <Link>Serialization\Metadata\_UnpackHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_UnpackHelpers.direct.cs">
+      <Link>Serialization\Metadata\_UnpackHelpers.direct.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\NilImplication.cs">
       <Link>Serialization\NilImplication.cs</Link>
@@ -510,6 +516,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\UnpackHelpers.cs">
       <Link>Serialization\UnpackHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\UnpackHelpers.direct.cs">
+      <Link>Serialization\UnpackHelpers.direct.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\SetOperation.cs">
       <Link>SetOperation.cs</Link>

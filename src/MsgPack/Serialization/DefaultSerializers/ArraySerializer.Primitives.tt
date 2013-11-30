@@ -1,0 +1,178 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#
+Type[] _valueTypes =
+	new []
+	{
+		typeof( sbyte ), typeof( short ), typeof( int ), typeof( long ),
+		typeof( byte ), typeof( ushort ), typeof( uint ), typeof( ulong ),
+		typeof( float ), typeof( double ),
+		typeof( bool )
+	};
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+
+namespace MsgPack.Serialization.DefaultSerializers
+{
+	// This file generated from ArraySerializer.Primitives.tt T4Template.
+	// Do not modify this file. Edit DefaultMarshalers.tt instead.
+	partial class ArraySerializer
+	{
+		private static readonly Dictionary<Type, Func<SerializationContext,object>> _arraySerializerFactories =
+			InitializeArraySerializerFactories();
+
+		private static Dictionary<Type, Func<SerializationContext,object>> InitializeArraySerializerFactories()
+		{
+			return
+				new Dictionary<Type, Func<SerializationContext,object>>( <#= _valueTypes.Length * 2 + 3 #> )
+				{
+<#
+foreach( var type in _valueTypes )
+{
+#>
+					{ typeof( <#= type.Name #>[] ), context => new <#= GetName( type ) #>ArraySerializer( context ) },
+					{ typeof( <#= type.Name #>?[] ),context => new <#= GetName( typeof( Nullable<> ).MakeGenericType( type ) ) #>ArraySerializer( context ) },
+<#
+}
+#>
+					{ typeof( string[] ), context => new <#= GetName( typeof( string ) ) #>ArraySerializer( context ) },
+					{ typeof( byte[][] ), context => new <#= GetName( typeof( byte[] ) ) #>ArraySerializer( context ) },
+					{ typeof( MessagePackObject[] ), context => new MessagePackObjectArraySerializer( context ) },
+				};
+		}
+	}
+
+<#
+foreach( var type in _valueTypes )
+{
+	GeneratePrimitiveArraySerializer( type.Name, GetName( type ) );
+}
+foreach( var type in _valueTypes )
+{
+	GeneratePrimitiveArraySerializer( type.Name + "?", GetName( typeof( Nullable<> ).MakeGenericType( type ) ) );
+}
+GeneratePrimitiveArraySerializer( "String", "String" );
+GeneratePrimitiveArraySerializer( "Byte[]", "Binary" );
+GeneratePrimitiveArraySerializer( "MessagePackObject", "MessagePackObject" );
+#>
+
+}
+<#+
+private string GetName( Type itemType )
+{
+	if ( itemType == typeof( byte[] ) )
+	{
+		return "Binary";
+	} 
+
+	var underlyingType = Nullable.GetUnderlyingType( itemType );
+	if ( underlyingType != null )
+	{
+		return "Nullable" + GetName( underlyingType );
+	}
+
+	return itemType.Name;
+}
+
+private void GeneratePrimitiveArraySerializer( string itemTypeName, string simpleName )
+{
+#>
+
+internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#= "<" + itemTypeName + "[]>" #>
+{
+	public <#= simpleName #>ArraySerializer( SerializationContext context )
+		: base ( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions ) { }
+
+	protected internal override void PackToCore( Packer packer, <#= itemTypeName #>[] objectTree )
+	{
+		packer.PackArrayHeader( objectTree.Length );
+		foreach ( var item in objectTree )
+		{
+			packer.Pack( item );
+		}
+	}
+
+	protected internal override <#= itemTypeName #>[] UnpackFromCore( Unpacker unpacker )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			throw SerializationExceptions.NewIsNotArrayHeader();
+		}
+
+		var count = UnpackHelpers.GetItemsCount( unpacker );
+<#+
+	if ( itemTypeName.EndsWith( "[]" ) )
+	{
+#>
+		var result = new <#= itemTypeName.Substring( 0, itemTypeName.Length - 2 ) #>[ count ][];
+<#+
+	}
+	else
+	{
+#>
+		var result = new <#= itemTypeName #>[ count ];
+<#+
+	}
+#>
+		this.UnpackToCore( unpacker, result, count );
+		return result;
+	}
+
+	protected internal override void UnpackToCore( Unpacker unpacker, <#= itemTypeName #>[] collection )
+	{
+		if ( !unpacker.IsArrayHeader )
+		{
+			throw SerializationExceptions.NewIsNotArrayHeader();
+		}
+
+		this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+	}
+
+	private void UnpackToCore( Unpacker unpacker, <#= itemTypeName #>[] collection, int count )
+	{
+		for ( int i = 0; i < count; i++ )
+		{
+			<#= itemTypeName #> item;
+			if ( !unpacker.Read<#= simpleName == "MessagePackObject" ? "Object" : simpleName #>( out item ) )
+			{
+				throw SerializationExceptions.NewMissingItem( i );
+			}
+
+			collection[ i ] = item;
+		}
+	}
+}
+<#+
+}
+#>

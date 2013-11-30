@@ -933,9 +933,25 @@ namespace MsgPack.Serialization.AbstractSerializers
 					"nullable"
 				);
 
+			// try direct unpack
+			var directRead = 
+				Metadata._UnpackHelpers.GetDirectUnpackMethod( nullableType );
+
 			// unpacking item instruction.
 			var unpack =
-				this.EmitAndConditionalExpression(
+				directRead != null
+				? this.EmitStoreVariableStatement( 
+					context,
+					nullable,
+					this.EmitInvokeMethodExpression( 
+						context,
+						null,
+						directRead,
+						unpacker,
+						this.EmitTypeOfExpression( context, typeof( TObject ) ),
+						memberName
+					)
+				) : this.EmitAndConditionalExpression(
 					context,
 					new[]
 					{

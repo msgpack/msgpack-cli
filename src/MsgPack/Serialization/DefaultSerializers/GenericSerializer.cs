@@ -33,11 +33,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if DEBUG
 			Contract.Assert( typeof( T ).IsArray );
 #endif
-			return
-				Activator.CreateInstance(
-					typeof( ArraySerializer<> ).MakeGenericType( typeof( T ).GetElementType() ),
-					context
-				) as MessagePackSerializer<T>;
+			return ArraySerializer.Create<T>( context );
 		}
 
 		public static MessagePackSerializer<T> CreateNullableSerializer<T>( SerializationContext context )
