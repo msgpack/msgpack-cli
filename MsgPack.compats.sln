@@ -136,7 +136,6 @@ Global
 		{2A8463C8-8E4B-44F6-AA58-D1232DF88438}.PerformanceTest|x64.ActiveCfg = Release|Any CPU
 		{2A8463C8-8E4B-44F6-AA58-D1232DF88438}.PerformanceTest|x86.ActiveCfg = Release|Any CPU
 		{2A8463C8-8E4B-44F6-AA58-D1232DF88438}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A8463C8-8E4B-44F6-AA58-D1232DF88438}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A8463C8-8E4B-44F6-AA58-D1232DF88438}.Release|ARM.ActiveCfg = Release|Any CPU
 		{2A8463C8-8E4B-44F6-AA58-D1232DF88438}.Release|x64.ActiveCfg = Release|Any CPU
 		{2A8463C8-8E4B-44F6-AA58-D1232DF88438}.Release|x86.ActiveCfg = Release|Any CPU

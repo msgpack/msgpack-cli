@@ -5,7 +5,6 @@ param([Switch]$Rebuild)
 
 [string]$sln = 'MsgPack.sln'
 [string]$slnCompat = 'MsgPack.compats.sln'
-[string]$slnWP7 = 'MsgPack.wp7.sln'
 
 [string]$nuspec = 'MsgPack.nuspec'
 
@@ -19,6 +18,5 @@ $buildOptions += '/p:Configuration=Release'
 
 &$builder $sln $buildOptions
 &$builder $slnCompat $buildOptions
-&$builder $slnWP7 $buildOptions
 
 .\.nuget\nuget.exe pack $nuspec
