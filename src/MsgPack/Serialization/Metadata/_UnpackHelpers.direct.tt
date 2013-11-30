@@ -41,7 +41,6 @@ Type[] _valueTypes =
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading;
 
 namespace MsgPack.Serialization.Metadata
 {
@@ -50,48 +49,38 @@ namespace MsgPack.Serialization.Metadata
 
 	partial class _UnpackHelpers
 	{
-		private static readonly Dictionary<Type,MethodInfo> _directUnpackMethods;
+		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods();
 
-<#
-foreach( var type in _valueTypes )
-{
-#>
-		public static readonly MethodInfo Unpack<#= type.Name #>Value;
-<#
-}
-#>
-		public static readonly MethodInfo UnpackStringValue;
-		public static readonly MethodInfo UnpackBinaryValue;
-		public static readonly MethodInfo UnpackObjectValue;
-
-		static _UnpackHelpers()
+		private static Dictionary<Type, MethodInfo> GetDirectUnpackMethods()
 		{
-			var directUnpackMethods = new Dictionary<Type, MethodInfo>( <#= _valueTypes.Length + 3 #> );
+			return
+				new Dictionary<Type, MethodInfo>( <#= _valueTypes.Length + 3 #> )
+				{
 <#
 foreach( var type in _valueTypes )
 {
 	// NOTE: Allways use nullable version for nil implication.
 #>
 			
-			Unpack<#= type.Name #>Value = typeof( Unpacker ).GetMethod( "Unpack<#= type.Name #>Value" );
-			directUnpackMethods.Add( typeof( <#= type.Name #>? ), Unpack<#= type.Name #>Value );
+					{ typeof( <#= type.Name #> ), typeof( UnpackHelpers ).GetMethod( "Unpack<#= type.Name #>Value" ) },
+					{ typeof( <#= type.Name #>? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullable<#= type.Name #>Value" ) },
 <#
 }
 #>
-			UnpackStringValue = typeof( Unpacker ).GetMethod( "UnpackStringValue" );
-			directUnpackMethods.Add( typeof( string ), UnpackStringValue );
-			UnpackBinaryValue = typeof( Unpacker ).GetMethod( "UnpackBinaryValue" );
-			directUnpackMethods.Add( typeof( byte[] ), UnpackBinaryValue );
-			UnpackObjectValue = typeof( Unpacker ).GetMethod( "UnpackObjectValue" );
-			directUnpackMethods.Add( typeof( MessagePackObject ), UnpackObjectValue );
-
-			Interlocked.Exchange( ref _directUnpackMethods, directUnpackMethods );
+					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( "UnpackStringValue" ) },
+					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( "UnpackBinaryValue" ) },
+				};
 		}
 
 		public static MethodInfo GetDirectUnpackMethod( Type type )
 		{
 			MethodInfo result;
-			_directUnpackMethods.TryGetValue( type, out result );
+			if ( _directUnpackMethods.TryGetValue( type, out result ) )
+			{
+#if DEBUG
+				System.Diagnostics.Contracts.Contract.Assert( result != null, "Failed to initialize value for " + type );
+#endif
+			}
 			return result;
 		}
 	}

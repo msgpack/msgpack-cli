@@ -679,7 +679,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 					if ( condition != null )
 					{
-						yield return 
+						yield return
 							this.EmitConditionalExpression(
 								context,
 								condition,
@@ -700,14 +700,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 			/*
 			 * this._serializerN.PackTo(packer, item);
 			 */
-			yield return 
+			yield return
 				this.EmitInvokeVoidMethod(
 					context,
 					this.EmitGetSerializerExpression( context, itemType ),
 					typeof( MessagePackSerializer<> )
 						.MakeGenericType( itemType )
 						.GetMethods()
-						.Single( m => 
+						.Single( m =>
 							m.Name == "PackTo"
 							&& !m.IsStatic
 							&& m.IsPublic
@@ -756,7 +756,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitSequentialStatements(
 					context,
 					typeof( void ),
-					this.EmitStoreVariableStatement( 
+					this.EmitStoreVariableStatement(
 						context,
 						collection,
 						this.EmitCreateNewObjectExpression(
@@ -774,7 +774,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		protected virtual TConstruct EmitInvokeUnpackTo( TContext context, TConstruct unpacker, TConstruct collection )
 		{
-			return 
+			return
 				this.EmitInvokeVoidMethod(
 					context,
 					this.EmitThisReferenceExpression( context ),
@@ -938,7 +938,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 				Metadata._UnpackHelpers.GetDirectUnpackMethod( nullableType );
 
 			// unpacking item instruction.
-			var unpack =
+			// compose read inst. and unpack inst. now.
+			var readAndUnpack =
 				directRead != null
 				? this.EmitStoreVariableStatement( 
 					context,
@@ -951,30 +952,54 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitTypeOfExpression( context, typeof( TObject ) ),
 						memberName
 					)
-				) : this.EmitAndConditionalExpression(
+				) : this.EmitSequentialStatements(
 					context,
-					new[]
-					{
-						this.EmitNotExpression(
-							context,
-							this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
-						),
-						this.EmitNotExpression(
-							context,
-							this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
-						)
-					},
-					this.EmitDeserializeItemExpression( context, unpacker, nullableType, nullable ),
-					this.EmitUsingStatement(
+					typeof( void ),
+					this.EmitConditionalExpression(
 						context,
-						typeof( Unpacker ),
-						this.EmitInvokeMethodExpression(
+						this.EmitNotExpression(
+							context,
+							this.EmitInvokeMethodExpression( context, unpacker, Metadata._Unpacker.Read )
+						),
+						this.EmitThrowExpression(
+							context, typeof( Unpacker ), SerializationExceptions.NewMissingItemMethod, itemIndex
+						),
+						null
+					),
+					itemType == typeof( MessagePackObject )
+					? this.EmitStoreVariableStatement(
+						context,
+						nullable,
+						this.EmitGetPropretyExpression(
 							context,
 							unpacker,
-							Metadata._Unpacker.ReadSubtree
-						),
-						subtreeUnpacker =>
-							this.EmitDeserializeItemExpression( context, subtreeUnpacker, nullableType, nullable )
+							Metadata._Unpacker.LastReadData
+						)
+					) : this.EmitAndConditionalExpression(
+						context,
+						new[]
+						{
+							this.EmitNotExpression(
+								context,
+								this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
+							),
+							this.EmitNotExpression(
+								context,
+								this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
+							)
+						},
+						this.EmitDeserializeItemExpression( context, unpacker, nullableType, nullable ),
+						this.EmitUsingStatement(
+							context,
+							typeof( Unpacker ),
+							this.EmitInvokeMethodExpression(
+								context,
+								unpacker,
+								Metadata._Unpacker.ReadSubtree
+							),
+							subtreeUnpacker =>
+								this.EmitDeserializeItemExpression( context, subtreeUnpacker, nullableType, nullable )
+						)
 					)
 				);
 
@@ -1035,25 +1060,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 					);
 				}
 			}
-
-			// compose read inst. and unpack inst. now.
-			var readAndUnpack =
-				this.EmitSequentialStatements(
-					context,
-					typeof( void ),
-					this.EmitConditionalExpression(
-						context,
-						this.EmitNotExpression(
-							context,
-							this.EmitInvokeMethodExpression( context, unpacker, Metadata._Unpacker.Read )
-						),
-						this.EmitThrowExpression(
-							context, typeof( Unpacker ), SerializationExceptions.NewMissingItemMethod, itemIndex
-						),
-						null
-					),
-					unpack
-				);
 
 			// actually declare local now.
 			yield return nullable;
@@ -1163,11 +1169,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="unpacked">The variable which stores unpacked item.</param>
 		/// <returns>The expression which returns deserialized item.</returns>
 		private TConstruct EmitDeserializeItemExpression(
-			TContext context, TConstruct unpacker, Type itemType, TConstruct unpacked 
+			TContext context, TConstruct unpacker, Type itemType, TConstruct unpacked
 		)
 		{
 			return
-				this.EmitStoreVariableStatement( 
+				this.EmitStoreVariableStatement(
 					context,
 					unpacked,
 					this.EmitInvokeMethodExpression(
@@ -1309,7 +1315,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					unpackedItem
 				);
 		}
-		
+
 		private TConstruct EmitAppendDictionaryItem( TContext context, CollectionTraits traits, TConstruct dictionary, Type keyType, TConstruct key, Type valueType, TConstruct value, bool withBoxing )
 		{
 			return

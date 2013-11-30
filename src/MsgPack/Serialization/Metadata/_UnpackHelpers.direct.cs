@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading;
 
 namespace MsgPack.Serialization.Metadata
 {
@@ -30,73 +29,60 @@ namespace MsgPack.Serialization.Metadata
 
 	partial class _UnpackHelpers
 	{
-		private static readonly Dictionary<Type,MethodInfo> _directUnpackMethods;
+		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods();
 
-		public static readonly MethodInfo UnpackSByteValue;
-		public static readonly MethodInfo UnpackInt16Value;
-		public static readonly MethodInfo UnpackInt32Value;
-		public static readonly MethodInfo UnpackInt64Value;
-		public static readonly MethodInfo UnpackByteValue;
-		public static readonly MethodInfo UnpackUInt16Value;
-		public static readonly MethodInfo UnpackUInt32Value;
-		public static readonly MethodInfo UnpackUInt64Value;
-		public static readonly MethodInfo UnpackSingleValue;
-		public static readonly MethodInfo UnpackDoubleValue;
-		public static readonly MethodInfo UnpackBooleanValue;
-		public static readonly MethodInfo UnpackStringValue;
-		public static readonly MethodInfo UnpackBinaryValue;
-		public static readonly MethodInfo UnpackObjectValue;
-
-		static _UnpackHelpers()
+		private static Dictionary<Type, MethodInfo> GetDirectUnpackMethods()
 		{
-			var directUnpackMethods = new Dictionary<Type, MethodInfo>( 14 );
+			return
+				new Dictionary<Type, MethodInfo>( 14 )
+				{
 			
-			UnpackSByteValue = typeof( Unpacker ).GetMethod( "UnpackSByteValue" );
-			directUnpackMethods.Add( typeof( SByte? ), UnpackSByteValue );
+					{ typeof( SByte ), typeof( UnpackHelpers ).GetMethod( "UnpackSByteValue" ) },
+					{ typeof( SByte? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableSByteValue" ) },
 			
-			UnpackInt16Value = typeof( Unpacker ).GetMethod( "UnpackInt16Value" );
-			directUnpackMethods.Add( typeof( Int16? ), UnpackInt16Value );
+					{ typeof( Int16 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt16Value" ) },
+					{ typeof( Int16? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt16Value" ) },
 			
-			UnpackInt32Value = typeof( Unpacker ).GetMethod( "UnpackInt32Value" );
-			directUnpackMethods.Add( typeof( Int32? ), UnpackInt32Value );
+					{ typeof( Int32 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt32Value" ) },
+					{ typeof( Int32? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt32Value" ) },
 			
-			UnpackInt64Value = typeof( Unpacker ).GetMethod( "UnpackInt64Value" );
-			directUnpackMethods.Add( typeof( Int64? ), UnpackInt64Value );
+					{ typeof( Int64 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt64Value" ) },
+					{ typeof( Int64? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt64Value" ) },
 			
-			UnpackByteValue = typeof( Unpacker ).GetMethod( "UnpackByteValue" );
-			directUnpackMethods.Add( typeof( Byte? ), UnpackByteValue );
+					{ typeof( Byte ), typeof( UnpackHelpers ).GetMethod( "UnpackByteValue" ) },
+					{ typeof( Byte? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableByteValue" ) },
 			
-			UnpackUInt16Value = typeof( Unpacker ).GetMethod( "UnpackUInt16Value" );
-			directUnpackMethods.Add( typeof( UInt16? ), UnpackUInt16Value );
+					{ typeof( UInt16 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt16Value" ) },
+					{ typeof( UInt16? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt16Value" ) },
 			
-			UnpackUInt32Value = typeof( Unpacker ).GetMethod( "UnpackUInt32Value" );
-			directUnpackMethods.Add( typeof( UInt32? ), UnpackUInt32Value );
+					{ typeof( UInt32 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt32Value" ) },
+					{ typeof( UInt32? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt32Value" ) },
 			
-			UnpackUInt64Value = typeof( Unpacker ).GetMethod( "UnpackUInt64Value" );
-			directUnpackMethods.Add( typeof( UInt64? ), UnpackUInt64Value );
+					{ typeof( UInt64 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt64Value" ) },
+					{ typeof( UInt64? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt64Value" ) },
 			
-			UnpackSingleValue = typeof( Unpacker ).GetMethod( "UnpackSingleValue" );
-			directUnpackMethods.Add( typeof( Single? ), UnpackSingleValue );
+					{ typeof( Single ), typeof( UnpackHelpers ).GetMethod( "UnpackSingleValue" ) },
+					{ typeof( Single? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableSingleValue" ) },
 			
-			UnpackDoubleValue = typeof( Unpacker ).GetMethod( "UnpackDoubleValue" );
-			directUnpackMethods.Add( typeof( Double? ), UnpackDoubleValue );
+					{ typeof( Double ), typeof( UnpackHelpers ).GetMethod( "UnpackDoubleValue" ) },
+					{ typeof( Double? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableDoubleValue" ) },
 			
-			UnpackBooleanValue = typeof( Unpacker ).GetMethod( "UnpackBooleanValue" );
-			directUnpackMethods.Add( typeof( Boolean? ), UnpackBooleanValue );
-			UnpackStringValue = typeof( Unpacker ).GetMethod( "UnpackStringValue" );
-			directUnpackMethods.Add( typeof( string ), UnpackStringValue );
-			UnpackBinaryValue = typeof( Unpacker ).GetMethod( "UnpackBinaryValue" );
-			directUnpackMethods.Add( typeof( byte[] ), UnpackBinaryValue );
-			UnpackObjectValue = typeof( Unpacker ).GetMethod( "UnpackObjectValue" );
-			directUnpackMethods.Add( typeof( MessagePackObject ), UnpackObjectValue );
-
-			Interlocked.Exchange( ref _directUnpackMethods, directUnpackMethods );
+					{ typeof( Boolean ), typeof( UnpackHelpers ).GetMethod( "UnpackBooleanValue" ) },
+					{ typeof( Boolean? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableBooleanValue" ) },
+					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( "UnpackStringValue" ) },
+					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( "UnpackBinaryValue" ) },
+				};
 		}
 
 		public static MethodInfo GetDirectUnpackMethod( Type type )
 		{
 			MethodInfo result;
-			_directUnpackMethods.TryGetValue( type, out result );
+			if ( _directUnpackMethods.TryGetValue( type, out result ) )
+			{
+#if DEBUG
+				System.Diagnostics.Contracts.Contract.Assert( result != null, "Failed to initialize value for " + type );
+#endif
+			}
 			return result;
 		}
 	}

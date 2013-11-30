@@ -37,15 +37,51 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Boolean type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static Boolean? UnpackBooleanValue( Unpacker unpacker, Type objectType, String memberName )
+		public static Boolean UnpackBooleanValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-			Boolean? result;
-			if ( !unpacker.ReadNullableBoolean( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				Boolean result;
+				if ( !unpacker.ReadBoolean( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableBoolean" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Boolean type value from underlying stream.
+		/// </exception>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static Boolean? UnpackNullableBooleanValue( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				Boolean? result;
+				if ( !unpacker.ReadNullableBoolean( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -59,15 +95,51 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Byte type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static Byte? UnpackByteValue( Unpacker unpacker, Type objectType, String memberName )
+		public static Byte UnpackByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-			Byte? result;
-			if ( !unpacker.ReadNullableByte( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				Byte result;
+				if ( !unpacker.ReadByte( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableByte" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Byte type value from underlying stream.
+		/// </exception>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static Byte? UnpackNullableByteValue( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				Byte? result;
+				if ( !unpacker.ReadNullableByte( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -81,15 +153,51 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Int16 type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static Int16? UnpackInt16Value( Unpacker unpacker, Type objectType, String memberName )
+		public static Int16 UnpackInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-			Int16? result;
-			if ( !unpacker.ReadNullableInt16( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				Int16 result;
+				if ( !unpacker.ReadInt16( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableInt16" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Int16 type value from underlying stream.
+		/// </exception>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static Int16? UnpackNullableInt16Value( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				Int16? result;
+				if ( !unpacker.ReadNullableInt16( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -103,15 +211,51 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Int32 type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static Int32? UnpackInt32Value( Unpacker unpacker, Type objectType, String memberName )
+		public static Int32 UnpackInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-			Int32? result;
-			if ( !unpacker.ReadNullableInt32( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				Int32 result;
+				if ( !unpacker.ReadInt32( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableInt32" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Int32 type value from underlying stream.
+		/// </exception>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static Int32? UnpackNullableInt32Value( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				Int32? result;
+				if ( !unpacker.ReadNullableInt32( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -125,15 +269,51 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Int64 type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static Int64? UnpackInt64Value( Unpacker unpacker, Type objectType, String memberName )
+		public static Int64 UnpackInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-			Int64? result;
-			if ( !unpacker.ReadNullableInt64( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				Int64 result;
+				if ( !unpacker.ReadInt64( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableInt64" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Int64 type value from underlying stream.
+		/// </exception>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static Int64? UnpackNullableInt64Value( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				Int64? result;
+				if ( !unpacker.ReadNullableInt64( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -148,15 +328,52 @@ namespace MsgPack.Serialization
 		/// </exception>
 		[CLSCompliant( false )]
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static SByte? UnpackSByteValue( Unpacker unpacker, Type objectType, String memberName )
+		public static SByte UnpackSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-			SByte? result;
-			if ( !unpacker.ReadNullableSByte( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				SByte result;
+				if ( !unpacker.ReadSByte( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableSByte" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack SByte type value from underlying stream.
+		/// </exception>
+		[CLSCompliant( false )]
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static SByte? UnpackNullableSByteValue( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				SByte? result;
+				if ( !unpacker.ReadNullableSByte( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -171,15 +388,52 @@ namespace MsgPack.Serialization
 		/// </exception>
 		[CLSCompliant( false )]
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static UInt16? UnpackUInt16Value( Unpacker unpacker, Type objectType, String memberName )
+		public static UInt16 UnpackUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-			UInt16? result;
-			if ( !unpacker.ReadNullableUInt16( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				UInt16 result;
+				if ( !unpacker.ReadUInt16( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableUInt16" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack UInt16 type value from underlying stream.
+		/// </exception>
+		[CLSCompliant( false )]
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static UInt16? UnpackNullableUInt16Value( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				UInt16? result;
+				if ( !unpacker.ReadNullableUInt16( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -194,15 +448,52 @@ namespace MsgPack.Serialization
 		/// </exception>
 		[CLSCompliant( false )]
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static UInt32? UnpackUInt32Value( Unpacker unpacker, Type objectType, String memberName )
+		public static UInt32 UnpackUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-			UInt32? result;
-			if ( !unpacker.ReadNullableUInt32( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				UInt32 result;
+				if ( !unpacker.ReadUInt32( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableUInt32" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack UInt32 type value from underlying stream.
+		/// </exception>
+		[CLSCompliant( false )]
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static UInt32? UnpackNullableUInt32Value( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				UInt32? result;
+				if ( !unpacker.ReadNullableUInt32( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -217,15 +508,52 @@ namespace MsgPack.Serialization
 		/// </exception>
 		[CLSCompliant( false )]
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static UInt64? UnpackUInt64Value( Unpacker unpacker, Type objectType, String memberName )
+		public static UInt64 UnpackUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
-			UInt64? result;
-			if ( !unpacker.ReadNullableUInt64( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				UInt64 result;
+				if ( !unpacker.ReadUInt64( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableUInt64" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack UInt64 type value from underlying stream.
+		/// </exception>
+		[CLSCompliant( false )]
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static UInt64? UnpackNullableUInt64Value( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				UInt64? result;
+				if ( !unpacker.ReadNullableUInt64( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -239,15 +567,51 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Single type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static Single? UnpackSingleValue( Unpacker unpacker, Type objectType, String memberName )
+		public static Single UnpackSingleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-			Single? result;
-			if ( !unpacker.ReadNullableSingle( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				Single result;
+				if ( !unpacker.ReadSingle( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableSingle" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Single type value from underlying stream.
+		/// </exception>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static Single? UnpackNullableSingleValue( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				Single? result;
+				if ( !unpacker.ReadNullableSingle( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -261,15 +625,51 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Double type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static Double? UnpackDoubleValue( Unpacker unpacker, Type objectType, String memberName )
+		public static Double UnpackDoubleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-			Double? result;
-			if ( !unpacker.ReadNullableDouble( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				Double result;
+				if ( !unpacker.ReadDouble( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="Unpacker.ReadNullableDouble" /> and returns its result.
+		/// </summary>
+		/// <param name="unpacker">The unpacker to be used.</param>
+		/// <param name="objectType">The type of the object which is deserializing now.</param>
+		/// <param name="memberName">The name of the member which is deserializing now.</param>
+		/// <returns>The unpacked value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to unpack Double type value from underlying stream.
+		/// </exception>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static Double? UnpackNullableDoubleValue( Unpacker unpacker, Type objectType, String memberName )
+		{
+			try
+			{
+				Double? result;
+				if ( !unpacker.ReadNullableDouble( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 
@@ -286,13 +686,20 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static string UnpackStringValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-			string result;
-			if ( !unpacker.ReadString( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
-			}
+				string result;
+				if ( !unpacker.ReadString( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
 
-			return result;
+				return result;
+			}
+			catch ( MessageTypeException ex )
+			{
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
+			}
 		}
 
 		/// <summary>
@@ -308,35 +715,20 @@ namespace MsgPack.Serialization
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static byte[] UnpackBinaryValue( Unpacker unpacker, Type objectType, String memberName )
 		{
-			byte[] result;
-			if ( !unpacker.ReadBinary( out result ) )
+			try
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				byte[] result;
+				if ( !unpacker.ReadBinary( out result ) )
+				{
+					throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				}
+
+				return result;
 			}
-
-			return result;
-		}
-
-		/// <summary>
-		///		Invokes <see cref="Unpacker.ReadObject" /> and returns its result.
-		/// </summary>
-		/// <param name="unpacker">The unpacker to be used.</param>
-		/// <param name="objectType">The type of the object which is deserializing now.</param>
-		/// <param name="memberName">The name of the member which is deserializing now.</param>
-		/// <returns>The unpacked value.</returns>
-		/// <exception cref="System.Runtime.Serialization.SerializationException">
-		///		Failed to unpack object value from underlying stream.
-		/// </exception>
-		[EditorBrowsable( EditorBrowsableState.Never )]
-		public static MessagePackObject UnpackObjectValue( Unpacker unpacker, Type objectType, String memberName )
-		{
-			MessagePackObject result;
-			if ( !unpacker.ReadObject( out result ) )
+			catch ( MessageTypeException ex )
 			{
-				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, null );
+				throw SerializationExceptions.NewFailedToDeserializeMember( objectType, memberName, ex );
 			}
-
-			return result;
 		}
 	}
 }
