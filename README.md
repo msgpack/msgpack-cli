@@ -7,15 +7,27 @@ This library can be used from ALL CLS compliant languages such as C#, F#, Visual
 
 ## Usage
 
+You can serialize/deserialize objects as following:
+1. Create serializer via `MessagePackSerializer.Create` generic method. This method creates dependent types serializers as well.
+1. Invoke serializer as following:
+** `Pack` method with destination `Stream` and target object for serialization.
+** `Unpack` method with source `Stream`.
+
 ```c#
-var serializer = MessagePackSerializer<T>.Create();
+// Creates serializer.
+var serializer = MessagePackSerializer.Create<T>();
+// Pack obj to stream.
 serializer.Pack(stream, obj);
+// Unpack from stream.
 var unpackedObject = serializer.Unpack(stream);
 ```
 
 ```vb
-Dim serializer = MessagePackSerializer(Of T).Create()
+' Creates serializer.
+Dim serializer = MessagePackSerializer.Create(Of T)()
+' Pack obj to stream.
 serializer.Pack(stream, obj)
+' Unpack from stream.
 Dim unpackedObject = serializer.Unpack(stream)
 ```
 
