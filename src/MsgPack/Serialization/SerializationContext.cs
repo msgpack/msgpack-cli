@@ -64,7 +64,7 @@ namespace MsgPack.Serialization
 
 		private readonly SerializerRepository _serializers;
 #if SILVERLIGHT || NETFX_35
-		private readonly HashSet<Type> _typeLock;
+		private readonly Dictionary<Type, object> _typeLock;
 #else
 		private readonly ConcurrentDictionary<Type, object> _typeLock;
 #endif
@@ -140,8 +140,8 @@ namespace MsgPack.Serialization
 			{
 				switch ( value )
 				{
-					case Serialization.SerializationMethod.Array:
-					case Serialization.SerializationMethod.Map:
+					case SerializationMethod.Array:
+					case SerializationMethod.Map:
 					{
 						break;
 					}
@@ -229,14 +229,14 @@ namespace MsgPack.Serialization
 			Contract.Requires( serializers != null );
 
 			this._compatibilityOptions =
-				new SerializationCompatibilityOptions()
+				new SerializationCompatibilityOptions
 				{
 					PackerCompatibilityOptions =
 						packerCompatibilityOptions
 				};
 			this._serializers = serializers;
 #if SILVERLIGHT || NETFX_35
-			this._typeLock = new HashSet<Type>();
+			this._typeLock = new Dictionary<Type, object>();
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
 #endif
@@ -258,58 +258,115 @@ namespace MsgPack.Serialization
 		///		Else the new instance will be created.
 		/// </returns>
 		/// <remarks>
-		///		This method automatically register new instance via <see cref="M:SerializationRepository.Register{T}(MessagePackSerializer{T})"/>.
+		///		This method automatically register new instance via <see cref="SerializerRepository.Register{T}(MessagePackSerializer{T})"/>.
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>()
 		{
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
-			var serializer = this._serializers.Get<T>( this );
-			if ( serializer == null )
+			MessagePackSerializer<T> serializer = null;
+			while ( serializer == null )
 			{
-				bool lockTaken = false;
-				try
+				serializer = this._serializers.Get<T>( this );
+				if ( serializer == null )
 				{
-					try { }
+					object aquiredLock = null;
+					bool lockTaken = false;
+					try
+					{
+						try { }
+						finally
+						{
+							var newLock = new object();
+#if SILVERLIGHT || NETFX_35
+							Monitor.Enter( newLock );
+							try
+							{
+								lock( this._typeLock )
+								{
+									lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
+									if ( lockTaken )
+									{
+										aquiredLock = newLock;
+										this._typeLock.Add( typeof( T ), newLock );
+									}
+								}
+#else
+							bool newLockTaken = false;
+							try
+							{
+								Monitor.Enter( newLock, ref newLockTaken );
+								aquiredLock = this._typeLock.GetOrAdd( typeof( T ), _ => newLock );
+								lockTaken = newLock == aquiredLock;
+#endif
+							}
+							finally
+							{
+#if SILVERLIGHT || NETFX_35
+								if ( !lockTaken )
+#else
+								if ( !lockTaken && newLockTaken )
+#endif
+								{
+									// Release the lock which failed to become 'primary' lock.
+									Monitor.Exit( newLock );
+								}
+							}
+						}
+
+						if ( Monitor.TryEnter( aquiredLock ) )
+						{
+							// Decrement monitor counter.
+ 							Monitor.Exit( aquiredLock );
+
+							if ( lockTaken )
+							{
+								// This thread creating new type serializer.
+								serializer = MessagePackSerializer.Create<T>( this );
+							}
+							else
+							{
+								// This thread owns existing lock -- thus, constructing self-composite type.
+
+								// Prevent release owned lock.
+								aquiredLock = null;
+								return new LazyDelegatingMessagePackSerializer<T>( this );
+							}
+						}
+						else
+						{
+							// Wait creation by other thread.
+							// Acquire as 'waiting' lock.
+							Monitor.Enter( aquiredLock );
+						}
+					}
 					finally
 					{
-#if SILVERLIGHT || NETFX_35
-						lock( this._typeLock )
+						if ( lockTaken )
 						{
-							lockTaken = this._typeLock.Add( typeof( T ) );
-						}
-#else
-						lockTaken = this._typeLock.TryAdd( typeof( T ), null );
-#endif
-					}
-
-					if ( !lockTaken )
-					{
-						return new LazyDelegatingMessagePackSerializer<T>( this );
-					}
-
-					serializer = MessagePackSerializer.Create<T>( this );
-				}
-				finally
-				{
-					if ( lockTaken )
-					{
 #if SILVERLIGHT || NETFX_35
-						lock( this._typeLock )
-						{
-							this._typeLock.Remove( typeof( T ) );
-						}
+							lock( this._typeLock )
+							{
+								this._typeLock.Remove( typeof( T ) );
+							}
 #else
-						object dummy;
-						this._typeLock.TryRemove( typeof( T ), out dummy );
+							object dummy;
+							this._typeLock.TryRemove( typeof( T ), out dummy );
 #endif
+						}
+
+						if ( aquiredLock != null )
+						{
+							// Release primary lock or waiting lock.
+							Monitor.Exit( aquiredLock );
+						}
 					}
 				}
+			}
 
-				if ( !this._serializers.Register<T>( serializer ) )
-				{
-					serializer = this._serializers.Get<T>( this );
-				}
+			if ( !this._serializers.Register( serializer ) )
+			{
+				serializer = this._serializers.Get<T>( this );
 			}
 
 			return serializer;
@@ -375,6 +432,9 @@ namespace MsgPack.Serialization
 							contextParameter
 						).Compile();
 #endif
+#if DEBUG
+					Contract.Assert( func != null );
+#endif
 					this._cache[ targetType.TypeHandle ] = func;
 				}
 
@@ -408,10 +468,13 @@ namespace MsgPack.Serialization
 			}
 #endif
 
+// ReSharper disable UnusedMember.Local
+			// This method is invoked via Reflection on SerializerGetter.Get().
 			public static IMessagePackSingleObjectSerializer Get( SerializationContext context )
 			{
 				return _func( context );
 			}
+			// ReSharper restore UnusedMember.Local
 		}
 	}
 }
