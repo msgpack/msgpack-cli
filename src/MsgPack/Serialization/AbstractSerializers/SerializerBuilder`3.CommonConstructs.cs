@@ -937,6 +937,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var directRead = 
 				Metadata._UnpackHelpers.GetDirectUnpackMethod( nullableType );
 
+			var isNotInCollectionCondition =
+				new[]
+				{
+					this.EmitNotExpression(
+						context,
+						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
+					),
+					this.EmitNotExpression(
+						context,
+						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
+					)
+				};
+
 			// unpacking item instruction.
 			// compose read inst. and unpack inst. now.
 			var readAndUnpack =
@@ -967,27 +980,30 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null
 					),
 					itemType == typeof( MessagePackObject )
-					? this.EmitStoreVariableStatement(
-						context,
-						nullable,
-						this.EmitGetPropretyExpression(
+					? this.EmitAndConditionalExpression( 
 							context,
-							unpacker,
-							Metadata._Unpacker.LastReadData
+							isNotInCollectionCondition,
+							this.EmitStoreVariableStatement(
+							context,
+							nullable, 
+							this.EmitGetPropretyExpression(
+									context,
+									unpacker,
+									Metadata._Unpacker.LastReadData
+								)
+							),
+							this.EmitStoreVariableStatement(
+							context,
+							nullable,
+							this.EmitInvokeMethodExpression( 
+								context,
+								unpacker,
+								Metadata._Unpacker.UnpackSubtreeData
+							)
 						)
 					) : this.EmitAndConditionalExpression(
 						context,
-						new[]
-						{
-							this.EmitNotExpression(
-								context,
-								this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
-							),
-							this.EmitNotExpression(
-								context,
-								this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
-							)
-						},
+						isNotInCollectionCondition,
 						this.EmitDeserializeItemExpression( context, unpacker, nullableType, nullable ),
 						this.EmitUsingStatement(
 							context,
