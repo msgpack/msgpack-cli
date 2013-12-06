@@ -38,4 +38,4 @@ using System.Runtime.InteropServices;
 //   Build : Bug fixes and improvements, which does not break API contract, but may break some code depends on internal implementation behaviors.
 //           For example, some programs use reflection to retrieve private fields, analyse human readable exception messages or stack trace, or so.
 //   Revision : Not used. It might be used to indicate target platform.
-[assembly: AssemblyInformationalVersion( "0.4.0" )]
+[assembly: AssemblyInformationalVersion( "0.4.1" )]

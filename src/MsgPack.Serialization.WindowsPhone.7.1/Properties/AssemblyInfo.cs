@@ -27,7 +27,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2012" )]
 
 
-[assembly: AssemblyFileVersion( "0.4.1297.568" )]
+[assembly: AssemblyFileVersion( "0.4.1435.1085" )]
 
 #if DEBUG || PERFORMANCE_TEST
 [assembly: InternalsVisibleTo( "MsgPack.WindowsPhone.UnitTest" )]
