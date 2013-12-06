@@ -241,7 +241,7 @@ namespace MsgPack.Serialization
 			{
 				var assembly = Assembly.LoadFrom( testAssemblyFile );
 				var types = assembly.GetTypes().Where( t => typeof( IMessagePackSerializer ).IsAssignableFrom( t ) ).ToList();
-				Assert.That( types.Count, Is.EqualTo( expectedSerializerTypeCounts ), String.Join( ", ", types ) );
+				Assert.That( types.Count, Is.EqualTo( expectedSerializerTypeCounts ), String.Join( ", ", types.Select( t => t.ToString() ).ToArray() ) );
 
 				var context = new SerializationContext( ( PackerCompatibilityOptions )packerCompatiblityOptions );
 

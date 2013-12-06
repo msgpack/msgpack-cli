@@ -88,7 +88,9 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext();
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList<> ) ), Is.EqualTo( typeof( List<> ) ) );
+#if !NETFX_35
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ISet<> ) ), Is.EqualTo( typeof( HashSet<> ) ) );
+#endif
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable<> ) ), Is.EqualTo( typeof( List<> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
