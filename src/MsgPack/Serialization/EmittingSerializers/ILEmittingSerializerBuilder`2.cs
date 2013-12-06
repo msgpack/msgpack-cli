@@ -199,7 +199,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 					( il, val ) =>
 					{
 						val.LoadValue( il, false );
-						il.EmitNot();
+						il.EmitLdc_I4_0();
+						il.EmitCeq();
 					},
 					( il, val, @else ) =>
 					{
