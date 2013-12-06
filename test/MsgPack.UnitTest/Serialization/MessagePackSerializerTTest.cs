@@ -23,8 +23,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-#if !NETFX_CORE
 using MsgPack.Serialization.DefaultSerializers;
+#if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #else
 using MsgPack.Serialization.ExpressionSerializers;
