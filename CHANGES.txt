@@ -87,16 +87,20 @@ Release 0.4 - 2013/10/6
   * Nullable<MessagePack> based unpacker API is deprecated because of their poor performance. You should use fast non-nullable APIs instead (properties/methods with 'Data' suffixes).
   * This version is tested on .NET 4.5 and Mono 2.10.8.1.
 
-Release 0.5 - 2013/
+Release 0.5 - 2014/?/?
 
   FEATURES
-  * [planned] CodeDOM serializer generator, which generates source code for custom serializer. It enables debugger break points, insert your own codes, etc.
-  * [planned] Start Unity supporting with CodeDOM serializer generator.
-  * [planned] Support .NET 4.5 including IReadOnlyCollection, IReadOnlyList, IReadOnlyDictionary, and immutable collections.
-  * [done] Support on-the-fly IEnumerable<T> (such as the result of Enumerable.Range()) packing. Note that unpacking is still unsupported.
+  * CodeDOM serializer generator, which generates source code for custom serializer. It enables debugger break points, insert your own codes, etc.
+  * [planned] Start Unity/Xamarin supporting with CodeDOM serializer generator.
+  * Support .NET 4.5 including immutable collections support.
+  * Support on-the-fly IEnumerable<T> (such as the result of Enumerable.Range()) packing. Note that unpacking is still unsupported.
 
   BUG FIXES
   * PackerUnpackerExtensions.Pack(Object) takes long time. (#14)
+  * Fix Readme code error (issue #20. Ported from 0.4 branch.)
+  * Fix MessagePack.Create<T>() might fail due to type lock synchronization does not coordinate multiple threads (issue #19. Ported from 0.4 branch.)
+  * Fix deserializing as MessagePackObject fails when unpacking data is list or map (issue #13. Ported from 0.4 branch.)
 
   NOTE
+  * This release unifies .NET build and Mono build for main source codes (testing codes have not been unified yet.)
   * This release contains reimplementation of serializer generation stack. It might change implementation detail dependant behavior (it usually potential issue).
