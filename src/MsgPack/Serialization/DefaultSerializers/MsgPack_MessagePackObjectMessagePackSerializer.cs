@@ -34,7 +34,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override MessagePackObject UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.LastReadData;
+			if ( unpacker.IsArrayHeader || unpacker.IsMapHeader )
+			{
+				return unpacker.UnpackSubtreeData();
+			}
+			else
+			{
+				return unpacker.LastReadData;
+			}
 		}
 	}
 }

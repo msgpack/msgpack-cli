@@ -19,9 +19,11 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using MsgPack.Serialization.DefaultSerializers;
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #else
@@ -484,6 +486,46 @@ namespace MsgPack.Serialization
 		{
 			TestIssue10_Reader( new Inner() { A = String.Empty, Bytes = Binary.Empty } );
 
+		}
+
+		[Test]
+		public void TestIssue13_StringListMapAsMpoDictionary()
+		{
+			var target = MessagePackSerializer.Create<Dictionary<MessagePackObject, MessagePackObject>>();
+			using ( var buffer = new MemoryStream( Convert.FromBase64String( "gadyZXN1bHRzkss/8AAAAAAAAMtAAAAAAAAAAA==" ) ) )
+			{
+				var result = target.Unpack( buffer );
+				Assert.That( result.Count, Is.EqualTo( 1 ) );
+				Assert.That( result.First().Key == "results", "{0}.Key != results", result.First().Key );
+				Assert.That( result.First().Value.IsList, "{0}.Value is not list", result.First().Value.UnderlyingType );
+			}
+		}
+
+		[Test]
+		public void TestIssue13_ListAsMpo()
+		{
+			var target = new MsgPack_MessagePackObjectMessagePackSerializer( PackerCompatibilityOptions.Classic );
+			using ( var buffer = new MemoryStream( new byte[] { 0x91, 2 } ) )
+			{
+				var result = target.Unpack( buffer );
+				Assert.That( result.IsList, "{0} is not list", result.UnderlyingType );
+				Assert.That( result.AsList().Count, Is.EqualTo( 1 ) );
+				Assert.That( result.AsList().First() == 2, "{0}[0] != 2", result );
+			}
+		}
+
+		[Test]
+		public void TestIssue13_MapAsMpo()
+		{
+			var target = new MsgPack_MessagePackObjectMessagePackSerializer( PackerCompatibilityOptions.Classic );
+			using ( var buffer = new MemoryStream( new byte[] { 0x81, 2, 3 } ) )
+			{
+				var result = target.Unpack( buffer );
+				Assert.That( result.IsDictionary, "{0} is not dictionary", result.UnderlyingType );
+				Assert.That( result.AsDictionary().Count, Is.EqualTo( 1 ) );
+				Assert.That( result.AsDictionary().First().Key == 2, "{0}.First().Key != 2", result );
+				Assert.That( result.AsDictionary().First().Value == 3, "{0}.First().Value != 3", result );
+			}
 		}
 
 		private void TestIssue10_Reader( Inner inner )
