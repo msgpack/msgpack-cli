@@ -32,25 +32,28 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 #if DEBUG
 			Contract.Assert( typeof( T ).IsArray );
-#endif
+#endif // if DEBUG
 			return ArraySerializer.Create<T>( context );
 		}
 
-#if !XAMIOS
 		public static MessagePackSerializer<T> CreateNullableSerializer<T>( SerializationContext context )
 		{
 #if DEBUG
 			Contract.Assert( Nullable.GetUnderlyingType( typeof( T ) ) != null );
-#endif
+#endif // if DEBUG
+#if XAMIOS || UNIOS
+#warning TODO: IMPL
+			throw new NotImplementedException("Nullable<T> has not been supported in iOS yet.");
+#else
 			return new NullableMessagePackSerializer<T>( context );
+#endif // if XAMIOS || UNIOS
 		}
-#endif
 
 		public static MessagePackSerializer<T> CreateEnumSerializer<T>( SerializationContext context )
 		{
 #if DEBUG
 			Contract.Assert( typeof( T ).GetIsEnum() );
-#endif
+#endif // if DEBUG
 			return
 				new EnumMessagePackSerializer<T>(
 					( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions

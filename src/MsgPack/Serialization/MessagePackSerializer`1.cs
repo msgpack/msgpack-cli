@@ -46,11 +46,11 @@ namespace MsgPack.Serialization
 	{
 		private static readonly bool _isNullable = JudgeNullable();
 
-#if !XAMIOS
+#if !XAMIOS && !UNIOS
 		// This field exists for each closed generic types.
 		internal static readonly MethodInfo UnpackToCoreMethod =
 			FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
-#endif
+#endif // if !XAMIOS && !UNIOS
 
 		private readonly PackerCompatibilityOptions _packerCompatibilityOptions;
 

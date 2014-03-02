@@ -34,7 +34,9 @@ namespace MsgPack.Serialization
 	[EditorBrowsable( EditorBrowsableState.Never )]
 	public static class SerializationExceptions
 	{
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewValueTypeCannotBeNull3Method = FromExpression.ToMethod( ( string name, Type memberType, Type declaringType ) => SerializationExceptions.NewValueTypeCannotBeNull( name, memberType, declaringType ) );
+#endif // if  !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -68,10 +70,12 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot be null '{0}' type value.", type ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewTypeCannotSerialize"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewTypeCannotSerializeMethod = FromExpression.ToMethod( ( Type type ) => NewTypeCannotSerialize( type ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -87,10 +91,12 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize '{0}' type.", type ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewTypeCannotDeserialize(Type)"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewTypeCannotDeserializeMethod = FromExpression.ToMethod( ( Type type ) => NewTypeCannotDeserialize( type ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -106,10 +112,12 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize '{0}' type.", type ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewTypeCannotDeserialize(Type,String,Exception)"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewTypeCannotDeserialize3Method = FromExpression.ToMethod( ( Type type, string memberName, Exception inner ) => NewTypeCannotDeserialize( type, memberName, inner ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -129,10 +137,12 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{1}' of type '{0}'.", type, memberName ), inner );
 		}
 
+#if !XAMIOS && !UNIOS
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewMissingItem"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewMissingItemMethod = FromExpression.ToMethod( ( int index ) => NewMissingItem( index ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -190,10 +200,12 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize type '{0}' because it does not have any serializable fields nor properties.", type ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewMissingProperty"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewMissingPropertyMethod = FromExpression.ToMethod( ( string name ) => NewMissingProperty( name ) );
+#endif // !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -209,10 +221,12 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Property '{0}' is missing.", name ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewUnexpectedEndOfStream"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewUnexpectedEndOfStreamMethod = FromExpression.ToMethod( () => NewUnexpectedEndOfStream() );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -240,7 +254,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have appropriate Add method.", type ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewIsNotArrayHeaderMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsNotArrayHeader() );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -252,7 +268,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( "Unpacker is not in the array header. The stream may not be array." );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewIsNotMapHeaderMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsNotMapHeader() );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -266,7 +284,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( "Unpacker is not in the map header. The stream may not be map." );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod = FromExpression.ToMethod( ( Type type ) => SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( type ) );
+#endif // !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -282,7 +302,9 @@ namespace MsgPack.Serialization
 			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported because '{0}' cannot be instanciated.", type ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewTupleCardinarityIsNotMatchMethod = FromExpression.ToMethod( ( int expected, int actual ) => SerializationExceptions.NewTupleCardinarityIsNotMatch( expected, actual ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -299,7 +321,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The length of array ({0}) does not match to tuple cardinality ({1}).", actualArrayLength, expectedTupleCardinality ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewIsIncorrectStreamMethod = FromExpression.ToMethod( ( Exception innerException ) => SerializationExceptions.NewIsIncorrectStream( innerException ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -314,7 +338,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( "Failed to unpack items count of the collection.", innerException );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewIsTooLargeCollectionMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsTooLargeCollection() );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -340,7 +366,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( "The unpacker did not read any data yet. The unpacker might never read or underlying stream is empty." );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => SerializationExceptions.NewNullIsProhibited( memberName ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -356,7 +384,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member '{0}' cannot be nil.", memberName ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewReadOnlyMemberItemsMustNotBeNullMethod = FromExpression.ToMethod( ( string memberName ) => SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( memberName ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -372,7 +402,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member '{0}' cannot be nil because it is read only member.", memberName ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewStreamDoesNotContainCollectionForMemberMethod = FromExpression.ToMethod( ( string memberName ) => SerializationExceptions.NewStreamDoesNotContainCollectionForMember( memberName ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -388,7 +420,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{0}' because the underlying stream does not contain collection.", memberName ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		internal static readonly MethodInfo NewUnexpectedArrayLengthMethod = FromExpression.ToMethod( ( int expectedLength, int actualLength ) => SerializationExceptions.NewUnexpectedArrayLength( expectedLength, actualLength ) );
+#endif // !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -406,11 +440,13 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The MessagePack stream is invalid. Expected array length is {0}, but actual is {1}.", expectedLength, actualLength ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewFailedToDeserializeMember"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewFailedToDeserializeMemberMethod =
 			FromExpression.ToMethod( ( Type targetType, string memberName, Exception inner ) => NewFailedToDeserializeMember( targetType, memberName, inner ) );
+#endif // !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>

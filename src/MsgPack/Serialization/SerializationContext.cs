@@ -25,7 +25,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
-#if XAMIOS
+#if XAMIOS || UNIOS
 using System.Globalization;
 #endif
 #if NETFX_CORE
@@ -281,7 +281,7 @@ namespace MsgPack.Serialization
 				serializer = this._serializers.Get<T>( this );
 				if ( serializer == null )
 				{
-#if XAMIOS
+#if XAMIOS || UNIOS
 					throw new InvalidOperationException( 
 						String.Format( 
 							CultureInfo.CurrentCulture, 
@@ -318,7 +318,7 @@ namespace MsgPack.Serialization
 								Monitor.Enter( newLock, ref newLockTaken );
 								aquiredLock = this._typeLock.GetOrAdd( typeof( T ), _ => newLock );
 								lockTaken = newLock == aquiredLock;
-#endif
+#endif // if  SILVERLIGHT || NETFX_35
 							}
 							finally
 							{
@@ -326,7 +326,7 @@ namespace MsgPack.Serialization
 								if ( !lockTaken )
 #else
 								if ( !lockTaken && newLockTaken )
-#endif
+#endif // if SILVERLIGHT || NETFX_35
 								{
 									// Release the lock which failed to become 'primary' lock.
 									Monitor.Exit( newLock );
@@ -337,7 +337,7 @@ namespace MsgPack.Serialization
 						if ( Monitor.TryEnter( aquiredLock ) )
 						{
 							// Decrement monitor counter.
- 							Monitor.Exit( aquiredLock );
+							Monitor.Exit( aquiredLock );
 
 							if ( lockTaken )
 							{
@@ -372,7 +372,7 @@ namespace MsgPack.Serialization
 #else
 							object dummy;
 							this._typeLock.TryRemove( typeof( T ), out dummy );
-#endif
+#endif // if SILVERLIGHT || NETFX_35
 						}
 
 						if ( aquiredLock != null )
@@ -381,16 +381,16 @@ namespace MsgPack.Serialization
 							Monitor.Exit( aquiredLock );
 						}
 					}
-#endif // XAMIOS else
+#endif // if XAMIOS || UNIOS
 				}
 			}
 
-#if !XAMIOS
+#if !XAMIOS && !UNIOS
 			if ( !this._serializers.Register( serializer ) )
 			{
 				serializer = this._serializers.Get<T>( this );
 			}
-#endif // !XAMIOS
+#endif // if !XAMIOS && !UNIOS
 
 			return serializer;
 		}
@@ -420,14 +420,14 @@ namespace MsgPack.Serialization
 
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
 
-#if !XAMIOS
+#if !XAMIOS && !UNIOS
 			return SerializerGetter.Instance.Get( this, targetType );
 #else
 			return this._serializers.Get( this, targetType );
-#endif
+#endif // if !XAMIOS && !UNIOS
 		}
 
-#if !XAMIOS
+#if !XAMIOS && !UNIOS
 		private sealed class SerializerGetter
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
@@ -459,10 +459,10 @@ namespace MsgPack.Serialization
 							),
 							contextParameter
 						).Compile();
-#endif
+#endif // if !NETFX_CORE
 #if DEBUG
 					Contract.Assert( func != null );
-#endif
+#endif // if DEBUG
 					this._cache[ targetType.TypeHandle ] = func;
 				}
 
@@ -494,7 +494,7 @@ namespace MsgPack.Serialization
 						thisParameter
 					).Compile();
 			}
-#endif
+#endif // if !NETFX_CORE
 
 // ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().
@@ -504,6 +504,6 @@ namespace MsgPack.Serialization
 			}
 // ReSharper restore UnusedMember.Local
 		}
-#endif // if !XAMIOS
+#endif // if !XAMIOS && !UNIOS
 	}
 }

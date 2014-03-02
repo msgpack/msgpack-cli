@@ -28,7 +28,7 @@ using System.Diagnostics.Contracts;
 #if NETFX_CORE
 using System.Linq.Expressions;
 #endif
-#if !XAMIOS
+#if !XAMIOS && !UNIOS
 using MsgPack.Serialization.AbstractSerializers;
 #if !NETFX_CORE
 #if !SILVERLIGHT && !XAMDROID
@@ -83,7 +83,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-#if XAMIOS
+#if XAMIOS || UNIOS
 			return context.GetSerializer<T>();
 #else
 
@@ -203,7 +203,7 @@ namespace MsgPack.Serialization
 
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
 
-#if XAMIOS
+#if XAMIOS || UNIOS
 			return context.GetSerializer( targetType );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.

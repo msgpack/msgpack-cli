@@ -27,6 +27,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal static class ArraySegmentMessageSerializer
 	{
+#if !XAMIOS && !UNIOS
 		public static readonly MethodInfo PackByteArraySegmentToMethod =
 			FromExpression.ToMethod( ( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer ) => PackByteArraySegmentTo( packer, objectTree, itemSerializer ) );
 		public static readonly MethodInfo PackCharArraySegmentToMethod =
@@ -39,6 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			FromExpression.ToMethod( ( Unpacker unpacker, MessagePackSerializer<char> itemSerializer ) => UnpackCharArraySegmentFrom( unpacker, itemSerializer ) );
 		public static readonly MethodInfo UnpackGenericArraySegmentFrom1Method =
 			typeof( ArraySegmentMessageSerializer ).GetMethod( "UnpackGenericArraySegmentFrom" );
+#endif // if !XAMIOS && !UNIOS
 
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static void PackByteArraySegmentTo( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer )
