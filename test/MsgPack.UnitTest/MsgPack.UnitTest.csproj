@@ -109,6 +109,7 @@
     <Compile Include="ExceptionTest.cs" />
     <Compile Include="GenericExceptionTester.cs" />
     <Compile Include="Image.cs" />
+    <Compile Include="Issues.cs" />
     <Compile Include="MessagePackConvertTest.cs" />
     <Compile Include="MessagePackExtendedTypeObjectTest.cs" />
     <Compile Include="MessagePackObjectDictionaryTest.cs" />
@@ -617,6 +618,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
