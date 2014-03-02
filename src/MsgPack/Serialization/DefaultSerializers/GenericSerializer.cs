@@ -36,6 +36,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return ArraySerializer.Create<T>( context );
 		}
 
+#if !XAMIOS
 		public static MessagePackSerializer<T> CreateNullableSerializer<T>( SerializationContext context )
 		{
 #if DEBUG
@@ -43,6 +44,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif
 			return new NullableMessagePackSerializer<T>( context );
 		}
+#endif
 
 		public static MessagePackSerializer<T> CreateEnumSerializer<T>( SerializationContext context )
 		{

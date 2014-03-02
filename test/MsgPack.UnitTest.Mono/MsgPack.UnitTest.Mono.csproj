@@ -403,10 +403,4 @@
     </Content>
     <Content Include="cases.json" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
-      <Project>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</Project>
-      <Name>MsgPack</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

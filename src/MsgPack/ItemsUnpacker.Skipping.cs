@@ -33,7 +33,6 @@ namespace MsgPack
 	partial class ItemsUnpacker
 	{
 		private static readonly byte[] DummyBufferForSkipping = new byte[ 64 * 1024 ];
-		private readonly Stack<uint> _remainingCollections = new Stack<uint>( 4 );
 
 		protected sealed override long? SkipCore()
 		{

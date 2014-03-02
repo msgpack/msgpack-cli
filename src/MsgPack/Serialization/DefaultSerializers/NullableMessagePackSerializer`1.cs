@@ -94,7 +94,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._packToCore = CreatePacking( underlyingType );
 			this._unpackFromCore = CreateUnpacking( underlyingType );
 			this._underlyingTypeSerializer = context.GetSerializer( underlyingType );
-#endif
+#endif // if !NETFX_CORE
 		}
 
 #if !NETFX_CORE
@@ -146,7 +146,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.FlushTrace();
 			}
 		}
-#else
+#else 
 		private static Action<Packer, T, IMessagePackSerializer> CreatePacking( Type underlyingType )
 		{
 			var packerParameter = Expression.Parameter( typeof( Packer ), "packer" );
@@ -190,7 +190,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					packerParameter, targetParameter, serializerParameter
 				).Compile();
 		}
-#endif
+#endif // if !NETFX_CORE
 
 #if !NETFX_CORE
 
@@ -239,7 +239,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				il.FlushTrace();
 			}
 		}
-#else
+#else // if !NETFX_CORE
 		private static Func<Unpacker, IMessagePackSerializer, T> CreateUnpacking( Type underlyingType )
 		{
 			var unpackerParameter = Expression.Parameter( typeof( Unpacker ), "unpacker" );
@@ -277,7 +277,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					unpackerParameter, serializerParameter
 				).Compile();
 		}
-#endif
+#endif // if !NETFX_CORE
 
 		protected internal sealed override void PackToCore( Packer packer, T value )
 		{

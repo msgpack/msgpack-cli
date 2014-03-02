@@ -45,16 +45,12 @@ namespace MsgPack.Serialization
 	public abstract class MessagePackSerializer<T> : IMessagePackSerializer, IMessagePackSingleObjectSerializer
 	{
 		private static readonly bool _isNullable = JudgeNullable();
-#if !SILVERLIGHT
-#if !NETFX_CORE
-		private static readonly string _memoryStreamExceptionSourceName = typeof( MemoryStream ).Assembly.GetName().Name;
-#else
-		private static readonly string _memoryStreamExceptionSourceName = typeof( MemoryStream ).GetTypeInfo().Assembly.GetName().Name;
-#endif
-#endif
+
+#if !XAMIOS
 		// This field exists for each closed generic types.
 		internal static readonly MethodInfo UnpackToCoreMethod =
 			FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
+#endif
 
 		private readonly PackerCompatibilityOptions _packerCompatibilityOptions;
 

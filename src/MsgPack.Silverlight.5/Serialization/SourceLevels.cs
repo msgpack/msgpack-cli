@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+#if SILVERLIGHT || XAMDROID
 using System;
 
 namespace MsgPack.Serialization
@@ -33,3 +34,4 @@ namespace MsgPack.Serialization
 		All = unchecked( ( int )0xffffffff )
 	}
 }
+#endif // if SILVERLIGHT || XAMDROID

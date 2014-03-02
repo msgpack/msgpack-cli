@@ -47,25 +47,30 @@ namespace MsgPack.Serialization
 		public TEntry Get<T, TEntry>( SerializationContext context )
 			where TEntry : class
 		{
+			return Get( context, typeof( T ) ) as TEntry;
+		}
+
+		public Object Get( SerializationContext context, Type keyType )
+		{
 			object matched;
 			object genericDefinitionMatched;
-			if ( !this.Get( typeof( T ), out matched, out genericDefinitionMatched ) )
+			if ( !this.Get( keyType, out matched, out genericDefinitionMatched ) )
 			{
 				return null;
 			}
 
 			if ( matched != null )
 			{
-				return matched as TEntry;
+				return matched;
 			}
 			else
 			{
-				Contract.Assert( typeof( T ).GetIsGenericType() );
-				Contract.Assert( !typeof( T ).GetIsGenericTypeDefinition() );
+				Contract.Assert( keyType.GetIsGenericType() );
+				Contract.Assert( !keyType.GetIsGenericTypeDefinition() );
 				var type = genericDefinitionMatched as Type;
 				Contract.Assert( type != null );
 				Contract.Assert( type.GetIsGenericTypeDefinition() );
-				var result = ( TEntry )Activator.CreateInstance( type.MakeGenericType( typeof( T ).GetGenericArguments() ), context );
+				var result = Activator.CreateInstance( type.MakeGenericType( keyType.GetGenericArguments() ), context );
 				Contract.Assert( result != null );
 				return result;
 			}

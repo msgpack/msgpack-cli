@@ -36,7 +36,7 @@ namespace MsgPack
 	/// </summary>
 #if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
-#endif
+#endif // if !SILVERLIGHT && !NETFX_CORE
 	[DebuggerDisplay( "{DebuggerDisplayString}" )]
 	[DebuggerTypeProxy( typeof( MessagePackStringDebuggerProxy ) )]
 	internal sealed class MessagePackString
@@ -257,7 +257,7 @@ namespace MsgPack
 					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
 				}
 			}
-#endif
+#endif // if !WINDOWS_PHONE
 
 			return SlowEquals( left._encoded, right._encoded );
 		}
@@ -281,7 +281,7 @@ namespace MsgPack
 			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
 #else
 		private static int _isFastEqualsDisabled = 0;
-#endif
+#endif // if SILVERLIGHT
 
 		internal static bool IsFastEqualsDisabled
 		{
@@ -296,7 +296,7 @@ namespace MsgPack
 			Contract.Assert( y != null );
 			Contract.Assert( 0 < x.Length );
 			Contract.Assert( x.Length == y.Length );
-#endif
+#endif // if DEBUG
 			int result;
 			if ( !UnsafeNativeMethods.TryMemCmp( x, y, new UIntPtr( unchecked( ( uint )x.Length ) ), out result ) )
 			{
@@ -306,11 +306,11 @@ namespace MsgPack
 
 			return result == 0;
 		}
-#endif
+#endif // if !WINDOWS_PHONE
 
 #if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]
-#endif
+#endif // if !SILVERLIGHT && !NETFX_CORE
 		private enum BinaryType : int
 		{
 			Unknwon = 0,
@@ -320,7 +320,6 @@ namespace MsgPack
 
 		internal sealed class MessagePackStringDebuggerProxy
 		{
-			private static readonly string[] _elipse = new[] { "..." };
 			private readonly MessagePackString _target;
 			private string _asByteArray;
 

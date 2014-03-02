@@ -25,6 +25,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
+#if XAMIOS
+using System.Globalization;
+#endif
 #if NETFX_CORE
 using System.Linq;
 using System.Linq.Expressions;
@@ -63,10 +66,12 @@ namespace MsgPack.Serialization
 		}
 
 		private readonly SerializerRepository _serializers;
+#if !XAMIOS
 #if SILVERLIGHT || NETFX_35
 		private readonly Dictionary<Type, object> _typeLock;
 #else
 		private readonly ConcurrentDictionary<Type, object> _typeLock;
+#endif
 #endif
 
 		/// <summary>
@@ -239,10 +244,12 @@ namespace MsgPack.Serialization
 						packerCompatibilityOptions
 				};
 			this._serializers = serializers;
+#if !XAMIOS
 #if SILVERLIGHT || NETFX_35
 			this._typeLock = new Dictionary<Type, object>();
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
+#endif
 #endif
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 		}
@@ -274,6 +281,15 @@ namespace MsgPack.Serialization
 				serializer = this._serializers.Get<T>( this );
 				if ( serializer == null )
 				{
+#if XAMIOS
+					throw new InvalidOperationException( 
+						String.Format( 
+							CultureInfo.CurrentCulture, 
+							"The serializer for type '{0}' is not registered yet. On-the-fly generation is not supported in this platform.",
+							typeof( T )
+						)
+					);
+#else
 					object aquiredLock = null;
 					bool lockTaken = false;
 					try
@@ -365,13 +381,16 @@ namespace MsgPack.Serialization
 							Monitor.Exit( aquiredLock );
 						}
 					}
+#endif // XAMIOS else
 				}
 			}
 
+#if !XAMIOS
 			if ( !this._serializers.Register( serializer ) )
 			{
 				serializer = this._serializers.Get<T>( this );
 			}
+#endif // !XAMIOS
 
 			return serializer;
 		}
@@ -401,9 +420,14 @@ namespace MsgPack.Serialization
 
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
 
+#if !XAMIOS
 			return SerializerGetter.Instance.Get( this, targetType );
+#else
+			return this._serializers.Get( this, targetType );
+#endif
 		}
 
+#if !XAMIOS
 		private sealed class SerializerGetter
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
@@ -448,7 +472,7 @@ namespace MsgPack.Serialization
 
 		private static class SerializerGetter<T>
 		{
-#if !NETFX_CORE
+#if !NETFX_CORE 
 			private static readonly Func<SerializationContext, MessagePackSerializer<T>> _func =
 				Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, MessagePackSerializer<T>> ),
@@ -478,7 +502,8 @@ namespace MsgPack.Serialization
 			{
 				return _func( context );
 			}
-			// ReSharper restore UnusedMember.Local
+// ReSharper restore UnusedMember.Local
 		}
+#endif // if !XAMIOS
 	}
 }

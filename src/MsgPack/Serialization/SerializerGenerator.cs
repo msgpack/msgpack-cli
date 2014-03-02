@@ -27,7 +27,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
+#if !XAMDROID
 using MsgPack.Serialization.CodeDomSerializers;
+#endif
 using MsgPack.Serialization.EmittingSerializers;
 
 namespace MsgPack.Serialization
@@ -245,6 +247,7 @@ namespace MsgPack.Serialization
 				);
 		}
 
+#if !XAMDROID
 		/// <summary>
 		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
 		/// </summary>
@@ -310,6 +313,7 @@ namespace MsgPack.Serialization
 		{
 			return new SerializerCodesGenerationLogic().Generate( targetTypes, configuration ?? new SerializerCodeGenerationConfiguration() );
 		}
+#endif // if !XAMDROID
 
 		private abstract class SerializerGenerationLogic<TConfig>
 			where TConfig : class, ISerializerGeneratorConfiguration
@@ -383,6 +387,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !XAMDROID
 		private sealed class SerializerCodesGenerationLogic : SerializerGenerationLogic<SerializerCodeGenerationConfiguration>
 		{
 			protected override EmitterFlavor EmitterFlavor
@@ -406,5 +411,6 @@ namespace MsgPack.Serialization
 					) as ISerializerCodeGenerator;
 			}
 		}
+#endif // if !XAMDROID
 	}
 }

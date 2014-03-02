@@ -92,10 +92,42 @@ namespace MsgPack.Serialization
 
 			if ( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
 			{
+#if !XAMIOS
 				return GenericSerializer.CreateNullableSerializer<T>( context );
+#else
+#warning FIXME: IMPL
+				throw new NotImplementedException( "Nullable<T> serializers are not supported yet for iOS" );
+#endif
 			}
 
 			return this._repository.Get<T, MessagePackSerializer<T>>( context );
+		}
+
+		internal IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType )
+		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			if ( targetType == null )
+			{
+				throw new ArgumentNullException( "targetType" );
+			}
+
+			if ( targetType.GetIsEnum() )
+			{
+#warning FIXME: IMPL
+				throw new NotImplementedException( "Enum serializers are not supported yet for iOS" );
+			}
+
+			if ( targetType.GetIsGenericType() && targetType.GetGenericTypeDefinition() == typeof( Nullable<> ) )
+			{
+#warning FIXME: IMPL
+				throw new NotImplementedException( "Nullable<T> serializers are not supported yet for iOS" );
+			}
+
+			return this._repository.Get( context, targetType ) as IMessagePackSingleObjectSerializer;
 		}
 
 		/// <summary>

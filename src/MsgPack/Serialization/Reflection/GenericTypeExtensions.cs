@@ -33,9 +33,6 @@ namespace MsgPack.Serialization.Reflection
 	/// </summary>
 	internal static class GenericTypeExtensions
 	{
-		// Type.EmptyTypes is not available on WinRT.
-		private static readonly Type[] _emptyTypes = new Type[ 0 ];
-
 		/// <summary>
 		///		Determine whether the source type implements specified generic type or its built type.
 		/// </summary>

@@ -28,14 +28,16 @@ using System.Diagnostics.Contracts;
 #if NETFX_CORE
 using System.Linq.Expressions;
 #endif
+#if !XAMIOS
 using MsgPack.Serialization.AbstractSerializers;
 #if !NETFX_CORE
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !XAMDROID
 using MsgPack.Serialization.CodeDomSerializers;
 #endif
 using MsgPack.Serialization.EmittingSerializers;
-#endif
-#if !WINDOWS_PHONE && !NETFX_35
+#endif // NETFX_CORE
+#endif // !XAMIOS
+#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS
 using MsgPack.Serialization.ExpressionSerializers;
 using System.Globalization;
 #endif
@@ -81,6 +83,10 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
+#if XAMIOS
+			return context.GetSerializer<T>();
+#else
+
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
 			//Func<SerializationContext, SerializerBuilder<T>> builderProvider;
@@ -98,7 +104,7 @@ namespace MsgPack.Serialization
 					builder = new ExpressionTreeSerializerBuilder<T>();
 					break;
 				}
-#endif // !WINDOWS_PHONE && !NETFX_35
+#endif // if !WINDOWS_PHONE && !NETFX_35
 				case EmitterFlavor.FieldBased:
 				{
 					builder = new AssemblyBuilderSerializerBuilder<T>();
@@ -112,8 +118,10 @@ namespace MsgPack.Serialization
 				default:
 				{
 #if !NETFX_35
+#if !XAMDROID
 					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
 					{
+#endif // if !XAMDROID
 						throw new NotSupportedException(
 							String.Format(
 								CultureInfo.CurrentCulture,
@@ -121,23 +129,29 @@ namespace MsgPack.Serialization
 								context.EmitterFlavor
 							) 
 						);
+#if !XAMDROID
 					}
-#endif
-
+#endif // if !XAMDROID
+#endif // if !NETFX_35
+#if !XAMDROID
 					builder = new CodeDomSerializerBuilder<T>();
 					break;
+#endif // if !XAMDROID
 				}
 			}
 #endif // NETFX_CORE else
 
 			return new AutoMessagePackSerializer<T>( context, builder );
+#endif // XAMIOS else
 		}
 
+#if !XAMIOS
 #if !SILVERLIGHT && !NETFX_35
 		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
 #else
 		private static readonly object _syncRoot = new object();
 		private static readonly Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
+#endif
 #endif
 
 		/// <summary>
@@ -189,6 +203,9 @@ namespace MsgPack.Serialization
 
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
 
+#if XAMIOS
+			return context.GetSerializer( targetType );
+#else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
 #if NETFX_CORE
 			var factory =
@@ -244,8 +261,9 @@ namespace MsgPack.Serialization
 							Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type )
 						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>
 				);
-#endif
+#endif // if NETFX_CORE
 			return factory( context );
+#endif // else XAMIOS
 		}
 	}
 }
