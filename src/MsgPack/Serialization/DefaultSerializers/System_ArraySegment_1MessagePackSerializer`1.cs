@@ -19,10 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-#if NETFX_CORE
-using System.Linq.Expressions;
-using System.Reflection;
-#endif
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -33,139 +29,69 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> InitializePacking()
 		{
-#if !NETFX_CORE
 			if ( typeof( T ) == typeof( byte ) )
 			{
 				return
-					Delegate.CreateDelegate(
-						typeof( Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> ),
-						ArraySegmentMessageSerializer.PackByteArraySegmentToMethod
+					new Action<Packer, ArraySegment<byte>, MessagePackSerializer<byte>>(
+						ArraySegmentMessageSerializer.PackByteArraySegmentTo
 					) as Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>;
 			}
 			else if ( typeof( T ) == typeof( char ) )
 			{
 				return
-					Delegate.CreateDelegate(
-						typeof( Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> ),
-						ArraySegmentMessageSerializer.PackCharArraySegmentToMethod
+					new Action<Packer, ArraySegment<char>, MessagePackSerializer<char>>(
+						ArraySegmentMessageSerializer.PackCharArraySegmentTo
 					) as Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>;
 			}
 			else
 			{
-				return
-					Delegate.CreateDelegate(
-						typeof( Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> ),
-						ArraySegmentMessageSerializer.PackGenericArraySegmentTo1Method.MakeGenericMethod( typeof( T ) )
-					) as Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>;
+				return ArraySegmentMessageSerializer.PackGenericArraySegmentTo;
 			}
-#else
-			MethodInfo packingMethod;
-			if ( typeof( T ).Equals( typeof( byte ) ) )
-			{
-				packingMethod = ArraySegmentMessageSerializer.PackByteArraySegmentToMethod;
-			}
-			else if ( typeof( T ).Equals( typeof( char ) ) )
-			{
-				packingMethod = ArraySegmentMessageSerializer.PackCharArraySegmentToMethod;
-			}
-			else
-			{
-				packingMethod = ArraySegmentMessageSerializer.PackGenericArraySegmentTo1Method.MakeGenericMethod( typeof( T ) );
-			}
-
-			var packerParameter = Expression.Parameter( typeof( Packer ), "packer" );
-			var targetParameter = Expression.Parameter( typeof( ArraySegment<T> ), "target" );
-			var serializerParameter = Expression.Parameter( typeof( MessagePackSerializer<T> ), "serializer" );
-			return
-				Expression.Lambda<Action<Packer, ArraySegment<T>, MessagePackSerializer<T>>>(
-					Expression.Call(
-						null,
-						packingMethod,
-						packerParameter, targetParameter, serializerParameter
-					),
-					packerParameter, targetParameter, serializerParameter
-				).Compile();
-#endif
 		}
 
 		private static Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> InitializeUnacking()
 		{
-#if !NETFX_CORE
 			if ( typeof( T ) == typeof( byte ) )
 			{
 				return
-					Delegate.CreateDelegate(
-						typeof( Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> ),
-						ArraySegmentMessageSerializer.UnpackByteArraySegmentFromMethod
-					) as Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>;
+					new Func<Unpacker, MessagePackSerializer<byte>, ArraySegment<byte>>(
+							ArraySegmentMessageSerializer.UnpackByteArraySegmentFrom
+						) as Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>;
 			}
 			else if ( typeof( T ) == typeof( char ) )
 			{
-
 				return
-					Delegate.CreateDelegate(
-						typeof( Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> ),
-						ArraySegmentMessageSerializer.UnpackCharArraySegmentFromMethod
-					) as Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>;
+					new Func<Unpacker, MessagePackSerializer<char>, ArraySegment<char>>(
+							ArraySegmentMessageSerializer.UnpackCharArraySegmentFrom
+						) as Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>;
 			}
 			else
 			{
-				return
-					Delegate.CreateDelegate(
-						typeof( Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> ),
-						ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom1Method.MakeGenericMethod( typeof( T ) )
-					) as Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>;
+				return ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom;
 			}
-#else
-			MethodInfo unpackingMethod;
-			if ( typeof( T ).Equals( typeof( byte ) ) )
-			{
-				unpackingMethod = ArraySegmentMessageSerializer.UnpackByteArraySegmentFromMethod;
-			}
-			else if ( typeof( T ).Equals( typeof( char ) ) )
-			{
-				unpackingMethod = ArraySegmentMessageSerializer.UnpackCharArraySegmentFromMethod;
-			}
-			else
-			{
-				unpackingMethod = ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom1Method.MakeGenericMethod( typeof( T ) );
-			}
-
-			var unpackerParameter = Expression.Parameter( typeof( Unpacker ), "unpacker" );
-			var serializerParameter = Expression.Parameter( typeof( MessagePackSerializer<T> ), "serializer" );
-			return
-				Expression.Lambda<Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>>>(
-					Expression.Call(
-						null,
-						unpackingMethod,
-						unpackerParameter, serializerParameter 
-					),
-					unpackerParameter, serializerParameter
-				).Compile();
-#endif
 		}
 
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
-		public System_ArraySegment_1MessagePackSerializer( SerializationContext context )
-			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
+		public System_ArraySegment_1MessagePackSerializer(SerializationContext context)
+			: base((context ?? SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions)
 		{
-			if ( context == null )
+			if (context == null)
 			{
-				throw new ArgumentNullException( "context" );
+				throw new ArgumentNullException("context");
 			}
 
 			this._itemSerializer = context.GetSerializer<T>();
 		}
 
-		protected internal sealed override void PackToCore( Packer packer, ArraySegment<T> objectTree )
+		protected internal sealed override void PackToCore(Packer packer, ArraySegment<T> objectTree)
 		{
-			_packing( packer, objectTree, this._itemSerializer );
+			_packing(packer, objectTree, this._itemSerializer);
 		}
 
-		protected internal sealed override ArraySegment<T> UnpackFromCore( Unpacker unpacker )
+		protected internal sealed override ArraySegment<T> UnpackFromCore(Unpacker unpacker)
 		{
-			return _unpacking( unpacker, this._itemSerializer );
+			return _unpacking(unpacker, this._itemSerializer);
 		}
 	}
 }
