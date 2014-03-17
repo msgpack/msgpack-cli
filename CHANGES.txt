@@ -87,6 +87,18 @@ Release 0.4 - 2013/10/6
   * Nullable<MessagePack> based unpacker API is deprecated because of their poor performance. You should use fast non-nullable APIs instead (properties/methods with 'Data' suffixes).
   * This version is tested on .NET 4.5 and Mono 2.10.8.1.
 
+Release 0.4.1 - 2013/12/07
+
+  BUG FIXES
+  * Fix Readme code error (issue #20.)
+  * Fix MessagePack.Create<T>() might fail due to type lock synchronization does not coordinate multiple threads (issue #19.)
+  * Fix deserializing as MessagePackObject fails when unpacking data is list or map (issue #13.)
+
+Release 0.4.2 - 2014/3/17
+
+  BUG FIXES
+  * Add API to re-register serializer (issue #24). It allows you to override default(built-in) serializer as you like.
+
 Release 0.5 - 2014/?/?
 
   FEATURES
