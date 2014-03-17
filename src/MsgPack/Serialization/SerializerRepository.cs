@@ -126,12 +126,17 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public bool Register<T>( MessagePackSerializer<T> serializer )
 		{
+			return this.Register( typeof( T ), serializer );
+		}
+
+		internal bool Register( Type targetType, IMessagePackSerializer serializer )
+		{
 			if ( serializer == null )
 			{
 				throw new ArgumentNullException( "serializer" );
 			}
 
-			return this._repository.Register( typeof( T ), serializer, allowOverwrite: false );
+			return this._repository.Register( targetType, serializer, allowOverwrite: false );
 		}
 
 		private static readonly Dictionary<PackerCompatibilityOptions, SerializerRepository> _defaults =
