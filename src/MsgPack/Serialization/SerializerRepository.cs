@@ -119,6 +119,24 @@ namespace MsgPack.Serialization
 			return this._repository.Register( typeof( T ), serializer, allowOverwrite: false );
 		}
 
+		/// <summary>
+		///		Registers a <see cref="MessagePackSerializer{T}"/> forcibley.
+		/// </summary>
+		/// <typeparam name="T">The type of serialization target.</typeparam>
+		/// <param name="serializer"><see cref="MessagePackSerializer{T}"/> instance.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="serializer"/> is <c>null</c>.
+		/// </exception>
+		public void RegisterOverride<T>( MessagePackSerializer<T> serializer )
+		{
+			if ( serializer == null )
+			{
+				throw new ArgumentNullException( "serializer" );
+			}
+
+			this._repository.Register( typeof( T ), serializer, allowOverwrite: true );
+		}
+
 		private static readonly Dictionary<PackerCompatibilityOptions, SerializerRepository> _defaults =
 			new Dictionary<PackerCompatibilityOptions, SerializerRepository>( 4 )
 			{

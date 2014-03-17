@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 #if !MSTEST
@@ -182,6 +183,36 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext();
 			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( List<> ) ) );
+		}
+
+		[Test]
+		public void TestIssue24()
+		{
+			var context = new SerializationContext();
+			context.Serializers.RegisterOverride( new NetDateTimeSerializer() );
+			using ( var buffer = new MemoryStream() )
+			{
+				var serializer = MessagePackSerializer.Create<DateTime>( context );
+				var dt = new DateTime( 999999999999999999L, DateTimeKind.Utc );
+				serializer.Pack( buffer,dt );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( dt ) );
+			}
+
+		}
+
+		private sealed class NetDateTimeSerializer : MessagePackSerializer<DateTime>
+		{
+			protected internal override void PackToCore( Packer packer, DateTime objectTree )
+			{
+				packer.Pack( objectTree.ToUniversalTime().Ticks );
+			}
+
+			protected internal override DateTime UnpackFromCore( Unpacker unpacker )
+			{
+				return new DateTime( unpacker.LastReadData.AsInt64(), DateTimeKind.Utc );
+			}
 		}
 
 		private sealed class ConcurrentHelper<T> : IDisposable
