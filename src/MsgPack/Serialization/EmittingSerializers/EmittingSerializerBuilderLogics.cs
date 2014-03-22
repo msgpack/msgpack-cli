@@ -191,7 +191,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static void CreateUnpackArrayProceduresCore( SerializationContext context, Type targetType, SerializerEmitter emitter, CollectionTraits traits )
 		{
 			CreateArrayUnpackFrom( context, targetType, emitter, traits );
-			CreateArrayUnpackTo( targetType, emitter, traits );
+			CreateArrayUnpackTo( context, targetType, emitter, traits );
 		}
 
 		private static void CreateArrayUnpackFrom( SerializationContext context, Type targetType, SerializerEmitter emitter, CollectionTraits traits )
@@ -212,6 +212,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 						il.EmitThrow();
 						return;
 					}
+
+					// Refresh collection traits.
+					traits = instanceType.GetCollectionTraits();
 				}
 
 				/*
@@ -240,7 +243,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il0 => Emittion.EmitGetUnpackerItemsCountAsInt32( il0, 1, localHolder )
 				);
 
-				EmitInvokeArrayUnpackToHelper( targetType, emitter, traits, il, 1, il0 => il0.EmitAnyLdloc( collection ) );
+				EmitInvokeArrayUnpackToHelper( instanceType, emitter, traits, il, 1, il0 => il0.EmitAnyLdloc( collection ) );
 
 				il.EmitAnyLdloc( collection );
 				il.EmitRet();
@@ -251,12 +254,34 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		private static void CreateArrayUnpackTo( Type targetType, SerializerEmitter emitter, CollectionTraits traits )
+		private static void CreateArrayUnpackTo( SerializationContext context, Type targetType, SerializerEmitter emitter, CollectionTraits traits )
 		{
 			var il = emitter.GetUnpackToMethodILGenerator();
 			try
 			{
-				EmitInvokeArrayUnpackToHelper( targetType, emitter, traits, il, 1, il0 => il0.EmitAnyLdarg( 2 ) );
+				var instanceType = targetType;
+
+				if ( targetType.IsInterface || targetType.IsAbstract )
+				{
+					instanceType = context.DefaultCollectionTypes.GetConcreteType( targetType );
+					if ( instanceType == null )
+					{
+						il.EmitTypeOf( targetType );
+						il.EmitAnyCall( SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod );
+						il.EmitThrow();
+						return;
+					}
+				}
+
+				if ( traits.AddMethod == null && !targetType.IsArray )
+				{
+					il.EmitTypeOf( targetType );
+					il.EmitAnyCall( SerializationExceptions.NewMissingAddMethodMethod );
+					il.EmitThrow();
+					return;
+				}
+
+				EmitInvokeArrayUnpackToHelper( instanceType, emitter, traits, il, 1, il0 => il0.EmitAnyLdarg( 2 ) );
 				il.EmitRet();
 			}
 			finally
@@ -282,6 +307,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 			else if ( targetType.IsGenericType )
 			{
+				Contract.Assert( traits.AddMethod != null, "traits.AddMethod != null" );
+
 				serializerGetting( il, 0 );
 				loadCollectionEmitting( il );
 				if ( targetType.IsValueType )
@@ -315,6 +342,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 			else
 			{
+				Contract.Assert( traits.AddMethod != null, "traits.AddMethod != null" );
+
 				loadCollectionEmitting( il );
 				if ( targetType.IsValueType )
 				{

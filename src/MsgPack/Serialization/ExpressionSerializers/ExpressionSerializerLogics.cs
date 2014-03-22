@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -363,6 +364,170 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							)
 					)
 				);
+		}
+
+		internal static Expression<Action<Unpacker, T, IMessagePackSerializer>> CreateCollectionUnpackToCore<T>( Type type, CollectionTraits traits, ParameterExpression elementSerializerParameter )
+		{
+			var unpackerParameter = Expression.Parameter( typeof( Unpacker ), "unpacker" );
+			var instanceParameter = Expression.Parameter( typeof( T ), "instance" );
+
+			/*
+			 *	for ( int i = 0; i < count; i++ )
+			 *	{
+			 *		if ( !unpacker.Read() )
+			 *		{
+			 *			throw SerializationExceptions.NewMissingItem( i );
+			 *		}
+			 *	
+			 *		T item;
+			 *		if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+			 *		{
+			 *			item = this.ElementSerializer.UnpackFrom( unpacker );
+			 *		}
+			 *		else
+			 *		{
+			 *			using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
+			 *			{
+			 *				item = this.ElementSerializer.UnpackFrom( subtreeUnpacker );
+			 *			}
+			 *		}
+			 *
+			 *		instance[ i ] = item; -- OR -- instance.Add( item );
+			 *	}
+			 */
+
+			// FIXME: use UnpackHelper
+			Expression<Action<Unpacker, T, IMessagePackSerializer>> unpackToCore;
+
+			var safeInstanceParameter =
+				typeof( T ) == type
+				? ( Expression )instanceParameter
+				: Expression.Convert( instanceParameter, type );
+
+			if ( type.IsArray )
+			{
+				unpackToCore =
+					Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer>>(
+						Expression.Call(
+							null,
+							Metadata._UnpackHelpers.UnpackArrayTo_1.MakeGenericMethod( traits.ElementType ),
+							unpackerParameter,
+							Expression.TypeAs(
+								elementSerializerParameter,
+								typeof( MessagePackSerializer<> ).MakeGenericType( traits.ElementType )
+							),
+							safeInstanceParameter
+						),
+						unpackerParameter,
+						instanceParameter,
+						elementSerializerParameter
+					);
+			}
+			else if ( traits.AddMethod == null )
+			{
+				unpackToCore =
+					Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer>>(
+						Expression.Throw(
+							Expression.Call(
+								SerializationExceptions.NewMissingAddMethodMethod,
+								Expression.Call(
+									// Using RuntimeTypeHandle to avoid WinRT expression tree issue.
+									Metadata._Type.GetTypeFromHandle,
+									Expression.Constant( type.TypeHandle )
+								)
+							)
+						),
+						unpackerParameter,
+						instanceParameter,
+						elementSerializerParameter
+					);
+			}
+			else if ( type.GetIsGenericType() )
+			{
+				MethodInfo unpackCollectionToMethod;
+				Type delegateType;
+				if ( traits.AddMethod.ReturnType == null || traits.AddMethod.ReturnType == typeof( void ) )
+				{
+					unpackCollectionToMethod = Metadata._UnpackHelpers.UnpackCollectionTo_1.MakeGenericMethod( traits.ElementType );
+					delegateType = typeof( Action<> ).MakeGenericType( traits.ElementType );
+				}
+				else
+				{
+					unpackCollectionToMethod =
+						Metadata._UnpackHelpers.UnpackCollectionTo_2.MakeGenericMethod(
+							traits.ElementType,
+							traits.AddMethod.ReturnType
+						);
+					delegateType = typeof( Func<,> ).MakeGenericType( traits.ElementType, traits.AddMethod.ReturnType );
+				}
+
+				var itemParameter = Expression.Parameter( traits.ElementType, "item" );
+				unpackToCore =
+					Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer>>(
+						Expression.Call(
+							null,
+							unpackCollectionToMethod,
+							unpackerParameter,
+							Expression.TypeAs(
+								elementSerializerParameter,
+								typeof( MessagePackSerializer<> ).MakeGenericType( traits.ElementType )
+							),
+							Expression.TypeAs( safeInstanceParameter, typeof( IEnumerable<> ).MakeGenericType( traits.ElementType ) ),
+							Expression.Lambda(
+								delegateType,
+								Expression.Call(
+									safeInstanceParameter,
+									traits.AddMethod,
+									itemParameter
+								),
+								itemParameter
+							)
+						),
+						unpackerParameter,
+						instanceParameter,
+						elementSerializerParameter
+					);
+			}
+			else
+			{
+				MethodInfo unpackCollectionToMethod;
+				Type delegateType;
+				if ( traits.AddMethod.ReturnType == null || traits.AddMethod.ReturnType == typeof( void ) )
+				{
+					unpackCollectionToMethod = Metadata._UnpackHelpers.UnpackNonGenericCollectionTo;
+					delegateType = typeof( Action<> ).MakeGenericType( traits.ElementType );
+				}
+				else
+				{
+					unpackCollectionToMethod =
+						Metadata._UnpackHelpers.UnpackNonGenericCollectionTo_1.MakeGenericMethod( traits.AddMethod.ReturnType );
+					delegateType = typeof( Func<,> ).MakeGenericType( traits.ElementType, traits.AddMethod.ReturnType );
+				}
+
+				var itemParameter = Expression.Parameter( traits.ElementType, "item" );
+				unpackToCore =
+					Expression.Lambda<Action<Unpacker, T, IMessagePackSerializer>>(
+						Expression.Call(
+							null,
+							unpackCollectionToMethod,
+							unpackerParameter,
+							Expression.TypeAs( instanceParameter, typeof( IEnumerable ) ),
+							Expression.Lambda(
+								delegateType,
+								Expression.Call(
+									instanceParameter,
+									traits.AddMethod,
+									itemParameter
+								),
+								itemParameter
+							)
+						),
+						unpackerParameter,
+						instanceParameter,
+						elementSerializerParameter
+					);
+			}
+			return unpackToCore;
 		}
 	}
 }

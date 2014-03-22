@@ -227,12 +227,17 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
+		///		<see cref="MethodInfo"/> of <see cref="NewMissingAddMethod"/> method.
+		/// </summary>
+		internal static readonly MethodInfo NewMissingAddMethodMethod = FromExpression.ToMethod( ( Type type ) => NewMissingAddMethod( type ) );
+
+		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that target collection type does not declare appropriate Add(T) method.
 		/// </summary>
 		/// <param name="type">The target type.</param>
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
-		internal static Exception NewMissingAddMethod( Type type )
+		public static Exception NewMissingAddMethod( Type type )
 		{
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );

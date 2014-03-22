@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
+using MsgPack.Serialization;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -265,12 +267,16 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestPackItems_NotNullEnumerable_Fail()
+		public void TestPackItems_NotNullEnumerable_AsArray()
 		{
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				Assert.Throws<SerializationException>( () => packer.Pack( Enumerable.Range( 1, 3 ) ) );
+				packer.Pack( Enumerable.Range( 1, 3 ) );
+				Assert.AreEqual(
+					new byte[] { 0x93, 1, 2, 3 },
+					buffer.ToArray()
+				);
 			}
 		}
 

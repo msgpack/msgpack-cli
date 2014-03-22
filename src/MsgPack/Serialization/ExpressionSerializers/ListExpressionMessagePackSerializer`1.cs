@@ -31,12 +31,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	{
 		private readonly Func<int, T> _createInstanceWithCapacity;
 		private readonly Func<T> _createInstance;
+		private readonly Action<Unpacker, T, IMessagePackSerializer> _alternativeUnpackTo;
 
 		public ListExpressionMessagePackSerializer( SerializationContext context, CollectionTraits traits )
 			: base( context, traits )
 		{
 			Type type = typeof( T );
-			if( type.GetIsAbstract() )
+			if ( type.GetIsAbstract() )
 			{
 				type = context.DefaultCollectionTypes.GetConcreteType( typeof( T ) ) ?? type;
 			}
@@ -87,6 +88,16 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					}
 				}
 			}
+
+			if ( traits.AddMethod == null )
+			{
+				// Assumes alternative IEnumerable<T> instance is appendable.
+				var alternativeTraits = type.GetCollectionTraits();
+				var elementSerializerParameter = Expression.Parameter( typeof( IMessagePackSerializer ), "elementSerializer" );
+				this._alternativeUnpackTo =
+					ExpressionSerializerLogics.CreateCollectionUnpackToCore<T>( type, alternativeTraits, elementSerializerParameter )
+					.Compile();
+			}
 		}
 
 		protected internal override T UnpackFromCore( Unpacker unpacker )
@@ -97,7 +108,14 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 
 			var instance = this._createInstanceWithCapacity == null ? this._createInstance() : this._createInstanceWithCapacity( UnpackHelpers.GetItemsCount( unpacker ) );
-			this.UnpackToCore( unpacker, instance );
+			if ( this._alternativeUnpackTo == null )
+			{
+				this.UnpackToCore( unpacker, instance );
+			}
+			else
+			{
+				this._alternativeUnpackTo( unpacker, instance, this.ElementSerializer );
+			}
 			return instance;
 		}
 	}

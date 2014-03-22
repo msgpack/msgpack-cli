@@ -23,7 +23,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 #if !MSTEST
@@ -199,7 +198,6 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( buffer );
 				Assert.That( result, Is.EqualTo( dt ) );
 			}
-
 		}
 
 		private sealed class NetDateTimeSerializer : MessagePackSerializer<DateTime>
