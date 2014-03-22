@@ -34,8 +34,47 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
 		{
-			var result = unpacker.LastReadData;
-			return result.IsNil ? null : ( object )result;
+			if ( unpacker.IsArrayHeader )
+			{
+				var result = new MessagePackObject[ UnpackHelpers.GetItemsCount( unpacker ) ];
+				for ( int i = 0; i < result.Length; i++ )
+				{
+					if ( !unpacker.ReadObject( out result[ i ] ) )
+					{
+						throw SerializationExceptions.NewUnexpectedEndOfStream();
+					}
+				}
+
+				return new MessagePackObject( result );
+			}
+			else if ( unpacker.IsMapHeader )
+			{
+				var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+				var result = new MessagePackObjectDictionary( itemsCount );
+				for ( int i = 0; i < itemsCount; i++ )
+				{
+					MessagePackObject key;
+					if ( !unpacker.ReadObject( out key ) )
+					{
+						throw SerializationExceptions.NewUnexpectedEndOfStream();
+					}
+
+					MessagePackObject value;
+					if ( !unpacker.ReadObject( out value ) )
+					{
+						throw SerializationExceptions.NewUnexpectedEndOfStream();
+					}
+
+					result.Add( key, value );
+				}
+
+				return new MessagePackObject( result );
+			}
+			else
+			{
+				var result = unpacker.LastReadData;
+				return result.IsNil ? MessagePackObject.Nil : result;
+			}
 		}
 	}
 }
