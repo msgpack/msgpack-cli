@@ -15,48 +15,12 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer : MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> {
         
-        private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer0;
-        
-        private MsgPack.Serialization.MessagePackSerializer<object> _serializer1;
-        
-        private MsgPack.Serialization.MessagePackSerializer<object[][]> _serializer2;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime[]> _serializer3;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer4;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime[][]> _serializer5;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer6;
-        
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[]> _serializer7;
-        
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[][]> _serializer8;
-        
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject> _serializer9;
-        
-        private MsgPack.Serialization.MessagePackSerializer<int[]> _serializer10;
-        
-        private MsgPack.Serialization.MessagePackSerializer<int[][]> _serializer11;
-        
-        private MsgPack.Serialization.MessagePackSerializer<int> _serializer12;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject> _serializer0;
         
         public System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer(MsgPack.Serialization.SerializationContext context) : 
                 base(System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
             MsgPack.Serialization.SerializationContext safeContext = System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<object[]>();
-            this._serializer1 = safeContext.GetSerializer<object>();
-            this._serializer2 = safeContext.GetSerializer<object[][]>();
-            this._serializer3 = safeContext.GetSerializer<System.DateTime[]>();
-            this._serializer4 = safeContext.GetSerializer<System.Nullable<System.DateTime>>();
-            this._serializer5 = safeContext.GetSerializer<System.DateTime[][]>();
-            this._serializer6 = safeContext.GetSerializer<System.DateTime>();
-            this._serializer7 = safeContext.GetSerializer<MsgPack.MessagePackObject[]>();
-            this._serializer8 = safeContext.GetSerializer<MsgPack.MessagePackObject[][]>();
-            this._serializer9 = safeContext.GetSerializer<MsgPack.MessagePackObject>();
-            this._serializer10 = safeContext.GetSerializer<int[]>();
-            this._serializer11 = safeContext.GetSerializer<int[][]>();
-            this._serializer12 = safeContext.GetSerializer<int>();
+            this._serializer0 = safeContext.GetSerializer<MsgPack.MessagePackObject>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> objectTree) {
@@ -68,8 +32,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                 ; enumerator.MoveNext(); 
                 ) {
                     current = enumerator.Current;
-                    this._serializer9.PackTo(packer, current.Key);
-                    this._serializer9.PackTo(packer, current.Value);
+                    this._serializer0.PackTo(packer, current.Key);
+                    this._serializer0.PackTo(packer, current.Value);
                 }
             }
             finally {

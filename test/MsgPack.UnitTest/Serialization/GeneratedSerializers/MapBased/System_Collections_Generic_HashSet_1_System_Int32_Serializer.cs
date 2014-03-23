@@ -15,52 +15,29 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class System_Collections_Generic_HashSet_1_System_Int32_Serializer : MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<int>> {
         
-        private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer0;
-        
-        private MsgPack.Serialization.MessagePackSerializer<object> _serializer1;
-        
-        private MsgPack.Serialization.MessagePackSerializer<object[][]> _serializer2;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime[]> _serializer3;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer4;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime[][]> _serializer5;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer6;
-        
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[]> _serializer7;
-        
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[][]> _serializer8;
-        
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject> _serializer9;
-        
-        private MsgPack.Serialization.MessagePackSerializer<int[]> _serializer10;
-        
-        private MsgPack.Serialization.MessagePackSerializer<int[][]> _serializer11;
-        
-        private MsgPack.Serialization.MessagePackSerializer<int> _serializer12;
+        private MsgPack.Serialization.MessagePackSerializer<int> _serializer0;
         
         public System_Collections_Generic_HashSet_1_System_Int32_Serializer(MsgPack.Serialization.SerializationContext context) : 
                 base(System_Collections_Generic_HashSet_1_System_Int32_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
             MsgPack.Serialization.SerializationContext safeContext = System_Collections_Generic_HashSet_1_System_Int32_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<object[]>();
-            this._serializer1 = safeContext.GetSerializer<object>();
-            this._serializer2 = safeContext.GetSerializer<object[][]>();
-            this._serializer3 = safeContext.GetSerializer<System.DateTime[]>();
-            this._serializer4 = safeContext.GetSerializer<System.Nullable<System.DateTime>>();
-            this._serializer5 = safeContext.GetSerializer<System.DateTime[][]>();
-            this._serializer6 = safeContext.GetSerializer<System.DateTime>();
-            this._serializer7 = safeContext.GetSerializer<MsgPack.MessagePackObject[]>();
-            this._serializer8 = safeContext.GetSerializer<MsgPack.MessagePackObject[][]>();
-            this._serializer9 = safeContext.GetSerializer<MsgPack.MessagePackObject>();
-            this._serializer10 = safeContext.GetSerializer<int[]>();
-            this._serializer11 = safeContext.GetSerializer<int[][]>();
-            this._serializer12 = safeContext.GetSerializer<int>();
+            this._serializer0 = safeContext.GetSerializer<int>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.Generic.HashSet<int> objectTree) {
-            this._serializer10.PackTo(packer, System.Linq.Enumerable.ToArray(objectTree));
+            packer.PackArrayHeader(objectTree.Count);
+            System.Collections.Generic.HashSet<int>.Enumerator enumerator = objectTree.GetEnumerator();
+            int current;
+            try {
+                for (
+                ; enumerator.MoveNext(); 
+                ) {
+                    current = enumerator.Current;
+                    this._serializer0.PackTo(packer, current);
+                }
+            }
+            finally {
+                enumerator.Dispose();
+            }
         }
         
         protected internal override System.Collections.Generic.HashSet<int> UnpackFromCore(MsgPack.Unpacker unpacker) {

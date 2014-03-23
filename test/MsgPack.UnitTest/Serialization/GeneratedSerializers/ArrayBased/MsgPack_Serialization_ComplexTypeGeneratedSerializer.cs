@@ -15,352 +15,331 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_ComplexTypeGeneratedSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.ComplexTypeGenerated> {
         
-        private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer0;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>> _serializer0;
         
-        private MsgPack.Serialization.MessagePackSerializer<object> _serializer1;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>> _serializer1;
         
-        private MsgPack.Serialization.MessagePackSerializer<object[][]> _serializer2;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<object>> _serializer2;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime[]> _serializer3;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ArrayList> _serializer3;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer4;
+        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<byte>> _serializer4;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime[][]> _serializer5;
+        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<decimal>> _serializer5;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer6;
+        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<int>> _serializer6;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[]> _serializer7;
+        private MsgPack.Serialization.MessagePackSerializer<System.Numerics.BigInteger> _serializer7;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[][]> _serializer8;
+        private MsgPack.Serialization.MessagePackSerializer<byte[]> _serializer8;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject> _serializer9;
+        private MsgPack.Serialization.MessagePackSerializer<byte> _serializer9;
         
-        private MsgPack.Serialization.MessagePackSerializer<int[]> _serializer10;
+        private MsgPack.Serialization.MessagePackSerializer<char[]> _serializer10;
         
-        private MsgPack.Serialization.MessagePackSerializer<int[][]> _serializer11;
+        private MsgPack.Serialization.MessagePackSerializer<char> _serializer11;
         
-        private MsgPack.Serialization.MessagePackSerializer<int> _serializer12;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>> _serializer12;
         
-        private MsgPack.Serialization.MessagePackSerializer<string> _serializer13;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<System.DateTime>> _serializer13;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Uri> _serializer14;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<object>> _serializer14;
         
-        private MsgPack.Serialization.MessagePackSerializer<byte[]> _serializer15;
+        private MsgPack.Serialization.MessagePackSerializer<System.Numerics.Complex> _serializer15;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<System.DateTime, string>> _serializer16;
+        private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer16;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>> _serializer17;
+        private MsgPack.Serialization.MessagePackSerializer<System.DateTimeOffset> _serializer17;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>> _serializer18;
+        private MsgPack.Serialization.MessagePackSerializer<decimal> _serializer18;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<object>> _serializer19;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer19;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ArrayList> _serializer20;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.DictionaryEntry> _serializer20;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<byte>> _serializer21;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<object, object>> _serializer21;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<decimal>> _serializer22;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>> _serializer22;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.ArraySegment<int>> _serializer23;
+        private MsgPack.Serialization.MessagePackSerializer<bool> _serializer23;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Numerics.BigInteger> _serializer24;
+        private MsgPack.Serialization.MessagePackSerializer<System.Runtime.InteropServices.ComTypes.FILETIME> _serializer24;
         
-        private MsgPack.Serialization.MessagePackSerializer<byte> _serializer25;
+        private MsgPack.Serialization.MessagePackSerializer<System.Guid> _serializer25;
         
-        private MsgPack.Serialization.MessagePackSerializer<char[]> _serializer26;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>> _serializer26;
         
-        private MsgPack.Serialization.MessagePackSerializer<char> _serializer27;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<System.DateTime>> _serializer27;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>> _serializer28;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<object>> _serializer28;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<System.DateTime>> _serializer29;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Hashtable> _serializer29;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<object>> _serializer30;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>> _serializer30;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Numerics.Complex> _serializer31;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<System.DateTime>> _serializer31;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTimeOffset> _serializer32;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<object>> _serializer32;
         
-        private MsgPack.Serialization.MessagePackSerializer<decimal> _serializer33;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer33;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer34;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<object, object>> _serializer34;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.DictionaryEntry> _serializer35;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>> _serializer35;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<object, object>> _serializer36;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>> _serializer36;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>> _serializer37;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<System.DateTime>> _serializer37;
         
-        private MsgPack.Serialization.MessagePackSerializer<bool> _serializer38;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<object>> _serializer38;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Runtime.InteropServices.ComTypes.FILETIME> _serializer39;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Image> _serializer39;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Guid> _serializer40;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>> _serializer40;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>> _serializer41;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<System.DateTime>> _serializer41;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<System.DateTime>> _serializer42;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<object>> _serializer42;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.HashSet<object>> _serializer43;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>> _serializer43;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Hashtable> _serializer44;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> _serializer44;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>> _serializer45;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>> _serializer45;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<System.DateTime>> _serializer46;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<System.DateTime>> _serializer46;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ICollection<object>> _serializer47;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<object>> _serializer47;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>> _serializer48;
+        private MsgPack.Serialization.MessagePackSerializer<int> _serializer48;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<object, object>> _serializer49;
+        private MsgPack.Serialization.MessagePackSerializer<long> _serializer49;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>> _serializer50;
+        private MsgPack.Serialization.MessagePackSerializer<ushort> _serializer50;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>> _serializer51;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject> _serializer51;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<System.DateTime>> _serializer52;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.MessagePackObject[]> _serializer52;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<object>> _serializer53;
+        private MsgPack.Serialization.MessagePackSerializer<object> _serializer53;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Image> _serializer54;
+        private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer54;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>> _serializer55;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>> _serializer55;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<System.DateTime>> _serializer56;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>> _serializer56;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.ISet<object>> _serializer57;
+        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<object>> _serializer57;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>> _serializer58;
+        private MsgPack.Serialization.MessagePackSerializer<string> _serializer58;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>> _serializer59;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<System.DateTime>> _serializer59;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>> _serializer60;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>> _serializer60;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<System.DateTime>> _serializer61;
+        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<object>> _serializer61;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<object>> _serializer62;
+        private MsgPack.Serialization.MessagePackSerializer<System.TimeSpan> _serializer62;
         
-        private MsgPack.Serialization.MessagePackSerializer<long> _serializer63;
+        private MsgPack.Serialization.MessagePackSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>> _serializer63;
         
-        private MsgPack.Serialization.MessagePackSerializer<ushort> _serializer64;
+        private MsgPack.Serialization.MessagePackSerializer<System.Uri> _serializer64;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>> _serializer65;
+        private MsgPack.Serialization.MessagePackSerializer<System.Version> _serializer65;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>> _serializer66;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<byte>>> _serializer66;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<object>> _serializer67;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<decimal>>> _serializer67;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<System.DateTime>> _serializer68;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<int>>> _serializer68;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>> _serializer69;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Numerics.BigInteger>> _serializer69;
         
-        private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.StringKeyedCollection<object>> _serializer70;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<char>> _serializer70;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.TimeSpan> _serializer71;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Numerics.Complex>> _serializer71;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>> _serializer72;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer72;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Version> _serializer73;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTimeOffset>> _serializer73;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<byte>>> _serializer74;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<decimal>> _serializer74;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<decimal>>> _serializer75;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.DictionaryEntry>> _serializer75;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.ArraySegment<int>>> _serializer76;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>> _serializer76;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Numerics.BigInteger>> _serializer77;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Guid>> _serializer77;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<char>> _serializer78;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>> _serializer78;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Numerics.Complex>> _serializer79;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>> _serializer79;
         
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTimeOffset>> _serializer80;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<decimal>> _serializer81;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.DictionaryEntry>> _serializer82;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>> _serializer83;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Guid>> _serializer84;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>> _serializer85;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>> _serializer86;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.TimeSpan>> _serializer87;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.TimeSpan>> _serializer80;
         
         public MsgPack_Serialization_ComplexTypeGeneratedSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(MsgPack_Serialization_ComplexTypeGeneratedSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
             MsgPack.Serialization.SerializationContext safeContext = MsgPack_Serialization_ComplexTypeGeneratedSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<object[]>();
-            this._serializer1 = safeContext.GetSerializer<object>();
-            this._serializer2 = safeContext.GetSerializer<object[][]>();
-            this._serializer3 = safeContext.GetSerializer<System.DateTime[]>();
-            this._serializer4 = safeContext.GetSerializer<System.Nullable<System.DateTime>>();
-            this._serializer5 = safeContext.GetSerializer<System.DateTime[][]>();
-            this._serializer6 = safeContext.GetSerializer<System.DateTime>();
-            this._serializer7 = safeContext.GetSerializer<MsgPack.MessagePackObject[]>();
-            this._serializer8 = safeContext.GetSerializer<MsgPack.MessagePackObject[][]>();
-            this._serializer9 = safeContext.GetSerializer<MsgPack.MessagePackObject>();
-            this._serializer10 = safeContext.GetSerializer<int[]>();
-            this._serializer11 = safeContext.GetSerializer<int[][]>();
-            this._serializer12 = safeContext.GetSerializer<int>();
-            this._serializer13 = safeContext.GetSerializer<string>();
-            this._serializer14 = safeContext.GetSerializer<System.Uri>();
-            this._serializer15 = safeContext.GetSerializer<byte[]>();
-            this._serializer16 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<System.DateTime, string>>();
-            this._serializer17 = safeContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>>();
-            this._serializer18 = safeContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>();
-            this._serializer19 = safeContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<object>>();
-            this._serializer20 = safeContext.GetSerializer<System.Collections.ArrayList>();
-            this._serializer21 = safeContext.GetSerializer<System.ArraySegment<byte>>();
-            this._serializer22 = safeContext.GetSerializer<System.ArraySegment<decimal>>();
-            this._serializer23 = safeContext.GetSerializer<System.ArraySegment<int>>();
-            this._serializer24 = safeContext.GetSerializer<System.Numerics.BigInteger>();
-            this._serializer25 = safeContext.GetSerializer<byte>();
-            this._serializer26 = safeContext.GetSerializer<char[]>();
-            this._serializer27 = safeContext.GetSerializer<char>();
-            this._serializer28 = safeContext.GetSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>>();
-            this._serializer29 = safeContext.GetSerializer<System.Collections.ObjectModel.Collection<System.DateTime>>();
-            this._serializer30 = safeContext.GetSerializer<System.Collections.ObjectModel.Collection<object>>();
-            this._serializer31 = safeContext.GetSerializer<System.Numerics.Complex>();
-            this._serializer32 = safeContext.GetSerializer<System.DateTimeOffset>();
-            this._serializer33 = safeContext.GetSerializer<decimal>();
-            this._serializer34 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>();
-            this._serializer35 = safeContext.GetSerializer<System.Collections.DictionaryEntry>();
-            this._serializer36 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<object, object>>();
-            this._serializer37 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>>();
-            this._serializer38 = safeContext.GetSerializer<bool>();
-            this._serializer39 = safeContext.GetSerializer<System.Runtime.InteropServices.ComTypes.FILETIME>();
-            this._serializer40 = safeContext.GetSerializer<System.Guid>();
-            this._serializer41 = safeContext.GetSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>>();
-            this._serializer42 = safeContext.GetSerializer<System.Collections.Generic.HashSet<System.DateTime>>();
-            this._serializer43 = safeContext.GetSerializer<System.Collections.Generic.HashSet<object>>();
-            this._serializer44 = safeContext.GetSerializer<System.Collections.Hashtable>();
-            this._serializer45 = safeContext.GetSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>>();
-            this._serializer46 = safeContext.GetSerializer<System.Collections.Generic.ICollection<System.DateTime>>();
-            this._serializer47 = safeContext.GetSerializer<System.Collections.Generic.ICollection<object>>();
-            this._serializer48 = safeContext.GetSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>();
-            this._serializer49 = safeContext.GetSerializer<System.Collections.Generic.IDictionary<object, object>>();
-            this._serializer50 = safeContext.GetSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>>();
-            this._serializer51 = safeContext.GetSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>>();
-            this._serializer52 = safeContext.GetSerializer<System.Collections.Generic.IList<System.DateTime>>();
-            this._serializer53 = safeContext.GetSerializer<System.Collections.Generic.IList<object>>();
-            this._serializer54 = safeContext.GetSerializer<MsgPack.Image>();
-            this._serializer55 = safeContext.GetSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>>();
-            this._serializer56 = safeContext.GetSerializer<System.Collections.Generic.ISet<System.DateTime>>();
-            this._serializer57 = safeContext.GetSerializer<System.Collections.Generic.ISet<object>>();
-            this._serializer58 = safeContext.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>();
-            this._serializer59 = safeContext.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>();
-            this._serializer60 = safeContext.GetSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>>();
-            this._serializer61 = safeContext.GetSerializer<System.Collections.Generic.List<System.DateTime>>();
-            this._serializer62 = safeContext.GetSerializer<System.Collections.Generic.List<object>>();
-            this._serializer63 = safeContext.GetSerializer<long>();
-            this._serializer64 = safeContext.GetSerializer<ushort>();
-            this._serializer65 = safeContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>>();
-            this._serializer66 = safeContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>>();
-            this._serializer67 = safeContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<object>>();
-            this._serializer68 = safeContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<System.DateTime>>();
-            this._serializer69 = safeContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>>();
-            this._serializer70 = safeContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<object>>();
-            this._serializer71 = safeContext.GetSerializer<System.TimeSpan>();
-            this._serializer72 = safeContext.GetSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>>();
-            this._serializer73 = safeContext.GetSerializer<System.Version>();
-            this._serializer74 = safeContext.GetSerializer<System.Nullable<System.ArraySegment<byte>>>();
-            this._serializer75 = safeContext.GetSerializer<System.Nullable<System.ArraySegment<decimal>>>();
-            this._serializer76 = safeContext.GetSerializer<System.Nullable<System.ArraySegment<int>>>();
-            this._serializer77 = safeContext.GetSerializer<System.Nullable<System.Numerics.BigInteger>>();
-            this._serializer78 = safeContext.GetSerializer<System.Nullable<char>>();
-            this._serializer79 = safeContext.GetSerializer<System.Nullable<System.Numerics.Complex>>();
-            this._serializer80 = safeContext.GetSerializer<System.Nullable<System.DateTimeOffset>>();
-            this._serializer81 = safeContext.GetSerializer<System.Nullable<decimal>>();
-            this._serializer82 = safeContext.GetSerializer<System.Nullable<System.Collections.DictionaryEntry>>();
-            this._serializer83 = safeContext.GetSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>>();
-            this._serializer84 = safeContext.GetSerializer<System.Nullable<System.Guid>>();
-            this._serializer85 = safeContext.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>>();
-            this._serializer86 = safeContext.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>>();
-            this._serializer87 = safeContext.GetSerializer<System.Nullable<System.TimeSpan>>();
+            this._serializer0 = safeContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>>();
+            this._serializer1 = safeContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>();
+            this._serializer2 = safeContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<object>>();
+            this._serializer3 = safeContext.GetSerializer<System.Collections.ArrayList>();
+            this._serializer4 = safeContext.GetSerializer<System.ArraySegment<byte>>();
+            this._serializer5 = safeContext.GetSerializer<System.ArraySegment<decimal>>();
+            this._serializer6 = safeContext.GetSerializer<System.ArraySegment<int>>();
+            this._serializer7 = safeContext.GetSerializer<System.Numerics.BigInteger>();
+            this._serializer8 = safeContext.GetSerializer<byte[]>();
+            this._serializer9 = safeContext.GetSerializer<byte>();
+            this._serializer10 = safeContext.GetSerializer<char[]>();
+            this._serializer11 = safeContext.GetSerializer<char>();
+            this._serializer12 = safeContext.GetSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>>();
+            this._serializer13 = safeContext.GetSerializer<System.Collections.ObjectModel.Collection<System.DateTime>>();
+            this._serializer14 = safeContext.GetSerializer<System.Collections.ObjectModel.Collection<object>>();
+            this._serializer15 = safeContext.GetSerializer<System.Numerics.Complex>();
+            this._serializer16 = safeContext.GetSerializer<System.DateTime>();
+            this._serializer17 = safeContext.GetSerializer<System.DateTimeOffset>();
+            this._serializer18 = safeContext.GetSerializer<decimal>();
+            this._serializer19 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>();
+            this._serializer20 = safeContext.GetSerializer<System.Collections.DictionaryEntry>();
+            this._serializer21 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<object, object>>();
+            this._serializer22 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>>();
+            this._serializer23 = safeContext.GetSerializer<bool>();
+            this._serializer24 = safeContext.GetSerializer<System.Runtime.InteropServices.ComTypes.FILETIME>();
+            this._serializer25 = safeContext.GetSerializer<System.Guid>();
+            this._serializer26 = safeContext.GetSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>>();
+            this._serializer27 = safeContext.GetSerializer<System.Collections.Generic.HashSet<System.DateTime>>();
+            this._serializer28 = safeContext.GetSerializer<System.Collections.Generic.HashSet<object>>();
+            this._serializer29 = safeContext.GetSerializer<System.Collections.Hashtable>();
+            this._serializer30 = safeContext.GetSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>>();
+            this._serializer31 = safeContext.GetSerializer<System.Collections.Generic.ICollection<System.DateTime>>();
+            this._serializer32 = safeContext.GetSerializer<System.Collections.Generic.ICollection<object>>();
+            this._serializer33 = safeContext.GetSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>();
+            this._serializer34 = safeContext.GetSerializer<System.Collections.Generic.IDictionary<object, object>>();
+            this._serializer35 = safeContext.GetSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>>();
+            this._serializer36 = safeContext.GetSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>>();
+            this._serializer37 = safeContext.GetSerializer<System.Collections.Generic.IList<System.DateTime>>();
+            this._serializer38 = safeContext.GetSerializer<System.Collections.Generic.IList<object>>();
+            this._serializer39 = safeContext.GetSerializer<MsgPack.Image>();
+            this._serializer40 = safeContext.GetSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>>();
+            this._serializer41 = safeContext.GetSerializer<System.Collections.Generic.ISet<System.DateTime>>();
+            this._serializer42 = safeContext.GetSerializer<System.Collections.Generic.ISet<object>>();
+            this._serializer43 = safeContext.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>();
+            this._serializer44 = safeContext.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>();
+            this._serializer45 = safeContext.GetSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>>();
+            this._serializer46 = safeContext.GetSerializer<System.Collections.Generic.List<System.DateTime>>();
+            this._serializer47 = safeContext.GetSerializer<System.Collections.Generic.List<object>>();
+            this._serializer48 = safeContext.GetSerializer<int>();
+            this._serializer49 = safeContext.GetSerializer<long>();
+            this._serializer50 = safeContext.GetSerializer<ushort>();
+            this._serializer51 = safeContext.GetSerializer<MsgPack.MessagePackObject>();
+            this._serializer52 = safeContext.GetSerializer<MsgPack.MessagePackObject[]>();
+            this._serializer53 = safeContext.GetSerializer<object>();
+            this._serializer54 = safeContext.GetSerializer<object[]>();
+            this._serializer55 = safeContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>>();
+            this._serializer56 = safeContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>>();
+            this._serializer57 = safeContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<object>>();
+            this._serializer58 = safeContext.GetSerializer<string>();
+            this._serializer59 = safeContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<System.DateTime>>();
+            this._serializer60 = safeContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>>();
+            this._serializer61 = safeContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<object>>();
+            this._serializer62 = safeContext.GetSerializer<System.TimeSpan>();
+            this._serializer63 = safeContext.GetSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>>();
+            this._serializer64 = safeContext.GetSerializer<System.Uri>();
+            this._serializer65 = safeContext.GetSerializer<System.Version>();
+            this._serializer66 = safeContext.GetSerializer<System.Nullable<System.ArraySegment<byte>>>();
+            this._serializer67 = safeContext.GetSerializer<System.Nullable<System.ArraySegment<decimal>>>();
+            this._serializer68 = safeContext.GetSerializer<System.Nullable<System.ArraySegment<int>>>();
+            this._serializer69 = safeContext.GetSerializer<System.Nullable<System.Numerics.BigInteger>>();
+            this._serializer70 = safeContext.GetSerializer<System.Nullable<char>>();
+            this._serializer71 = safeContext.GetSerializer<System.Nullable<System.Numerics.Complex>>();
+            this._serializer72 = safeContext.GetSerializer<System.Nullable<System.DateTime>>();
+            this._serializer73 = safeContext.GetSerializer<System.Nullable<System.DateTimeOffset>>();
+            this._serializer74 = safeContext.GetSerializer<System.Nullable<decimal>>();
+            this._serializer75 = safeContext.GetSerializer<System.Nullable<System.Collections.DictionaryEntry>>();
+            this._serializer76 = safeContext.GetSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>>();
+            this._serializer77 = safeContext.GetSerializer<System.Nullable<System.Guid>>();
+            this._serializer78 = safeContext.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>>();
+            this._serializer79 = safeContext.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>>();
+            this._serializer80 = safeContext.GetSerializer<System.Nullable<System.TimeSpan>>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
             packer.PackArrayHeader(75);
-            this._serializer17.PackTo(packer, objectTree.AddOnlyCollection_DateTimeField);
-            this._serializer18.PackTo(packer, objectTree.AddOnlyCollection_MessagePackObjectField);
-            this._serializer19.PackTo(packer, objectTree.AddOnlyCollection_ObjectField);
-            this._serializer20.PackTo(packer, objectTree.ArrayListField);
-            this._serializer21.PackTo(packer, objectTree.ArraySegmentByteField);
-            this._serializer22.PackTo(packer, objectTree.ArraySegmentDecimalField);
-            this._serializer23.PackTo(packer, objectTree.ArraySegmentInt32Field);
-            this._serializer24.PackTo(packer, objectTree.BigIntegerField);
-            this._serializer15.PackTo(packer, objectTree.ByteArrayField);
-            this._serializer25.PackTo(packer, objectTree.ByteField);
-            this._serializer26.PackTo(packer, objectTree.CharArrayField);
-            this._serializer27.PackTo(packer, objectTree.CharField);
-            this._serializer28.PackTo(packer, objectTree.Collection_MessagePackObjectField);
-            this._serializer29.PackTo(packer, objectTree.CollectionDateTimeField);
-            this._serializer30.PackTo(packer, objectTree.CollectionObjectField);
-            this._serializer31.PackTo(packer, objectTree.ComplexField);
-            this._serializer6.PackTo(packer, objectTree.DateTimeField);
-            this._serializer32.PackTo(packer, objectTree.DateTimeOffsetField);
-            this._serializer33.PackTo(packer, objectTree.DecimalField);
-            this._serializer34.PackTo(packer, objectTree.Dictionary_MessagePackObject_MessagePackObjectField);
-            this._serializer35.PackTo(packer, objectTree.DictionaryEntryField);
-            this._serializer36.PackTo(packer, objectTree.DictionaryObjectObjectField);
-            this._serializer37.PackTo(packer, objectTree.DictionaryStringDateTimeField);
-            this._serializer38.PackTo(packer, objectTree.FalseField);
-            this._serializer39.PackTo(packer, objectTree.FILETIMEField);
-            this._serializer40.PackTo(packer, objectTree.GuidField);
-            this._serializer41.PackTo(packer, objectTree.HashSet_MessagePackObjectField);
-            this._serializer42.PackTo(packer, objectTree.HashSetDateTimeField);
-            this._serializer43.PackTo(packer, objectTree.HashSetObjectField);
-            this._serializer44.PackTo(packer, objectTree.HashtableField);
-            this._serializer45.PackTo(packer, objectTree.ICollection_MessagePackObjectField);
-            this._serializer46.PackTo(packer, objectTree.ICollectionDateTimeField);
-            this._serializer47.PackTo(packer, objectTree.ICollectionObjectField);
-            this._serializer48.PackTo(packer, objectTree.IDictionary_MessagePackObject_MessagePackObjectField);
-            this._serializer49.PackTo(packer, objectTree.IDictionaryObjectObjectField);
-            this._serializer50.PackTo(packer, objectTree.IDictionaryStringDateTimeField);
-            this._serializer51.PackTo(packer, objectTree.IList_MessagePackObjectField);
-            this._serializer52.PackTo(packer, objectTree.IListDateTimeField);
-            this._serializer53.PackTo(packer, objectTree.IListObjectField);
-            this._serializer54.PackTo(packer, objectTree.Image_Field);
-            this._serializer55.PackTo(packer, objectTree.ISet_MessagePackObjectField);
-            this._serializer56.PackTo(packer, objectTree.ISetDateTimeField);
-            this._serializer57.PackTo(packer, objectTree.ISetObjectField);
-            this._serializer58.PackTo(packer, objectTree.KeyValuePairStringComplexField);
-            this._serializer59.PackTo(packer, objectTree.KeyValuePairStringDateTimeOffsetField);
-            this._serializer60.PackTo(packer, objectTree.List_MessagePackObjectField);
-            this._serializer61.PackTo(packer, objectTree.ListDateTimeField);
-            this._serializer62.PackTo(packer, objectTree.ListObjectField);
-            this._serializer25.PackTo(packer, objectTree.MaxByteField);
-            this._serializer12.PackTo(packer, objectTree.MaxInt32Field);
-            this._serializer63.PackTo(packer, objectTree.MaxInt64Field);
-            this._serializer64.PackTo(packer, objectTree.MaxUInt16Field);
-            this._serializer9.PackTo(packer, objectTree.MessagePackObject_Field);
-            this._serializer7.PackTo(packer, objectTree.MessagePackObjectArray_Field);
-            this._serializer12.PackTo(packer, objectTree.MinInt32Field);
-            this._serializer63.PackTo(packer, objectTree.MinInt64Field);
-            this._serializer1.PackTo(packer, objectTree.NullField);
-            this._serializer0.PackTo(packer, objectTree.ObjectArrayField);
-            this._serializer1.PackTo(packer, objectTree.ObjectField);
-            this._serializer65.PackTo(packer, objectTree.ObservableCollection_MessagePackObjectField);
-            this._serializer66.PackTo(packer, objectTree.ObservableCollectionDateTimeField);
-            this._serializer67.PackTo(packer, objectTree.ObservableCollectionObjectField);
-            this._serializer13.PackTo(packer, objectTree.StringField);
-            this._serializer68.PackTo(packer, objectTree.StringKeyedCollection_DateTimeField);
-            this._serializer69.PackTo(packer, objectTree.StringKeyedCollection_MessagePackObjectField);
-            this._serializer70.PackTo(packer, objectTree.StringKeyedCollection_ObjectField);
-            this._serializer71.PackTo(packer, objectTree.TimeSpanField);
-            this._serializer25.PackTo(packer, objectTree.TinyByteField);
-            this._serializer12.PackTo(packer, objectTree.TinyInt32Field);
-            this._serializer63.PackTo(packer, objectTree.TinyInt64Field);
-            this._serializer64.PackTo(packer, objectTree.TinyUInt16Field);
-            this._serializer38.PackTo(packer, objectTree.TrueField);
-            this._serializer72.PackTo(packer, objectTree.Tuple_Int32_String_MessagePackObject_ObjectField);
-            this._serializer14.PackTo(packer, objectTree.UriField);
-            this._serializer73.PackTo(packer, objectTree.VersionField);
+            this._serializer0.PackTo(packer, objectTree.AddOnlyCollection_DateTimeField);
+            this._serializer1.PackTo(packer, objectTree.AddOnlyCollection_MessagePackObjectField);
+            this._serializer2.PackTo(packer, objectTree.AddOnlyCollection_ObjectField);
+            this._serializer3.PackTo(packer, objectTree.ArrayListField);
+            this._serializer4.PackTo(packer, objectTree.ArraySegmentByteField);
+            this._serializer5.PackTo(packer, objectTree.ArraySegmentDecimalField);
+            this._serializer6.PackTo(packer, objectTree.ArraySegmentInt32Field);
+            this._serializer7.PackTo(packer, objectTree.BigIntegerField);
+            this._serializer8.PackTo(packer, objectTree.ByteArrayField);
+            this._serializer9.PackTo(packer, objectTree.ByteField);
+            this._serializer10.PackTo(packer, objectTree.CharArrayField);
+            this._serializer11.PackTo(packer, objectTree.CharField);
+            this._serializer12.PackTo(packer, objectTree.Collection_MessagePackObjectField);
+            this._serializer13.PackTo(packer, objectTree.CollectionDateTimeField);
+            this._serializer14.PackTo(packer, objectTree.CollectionObjectField);
+            this._serializer15.PackTo(packer, objectTree.ComplexField);
+            this._serializer16.PackTo(packer, objectTree.DateTimeField);
+            this._serializer17.PackTo(packer, objectTree.DateTimeOffsetField);
+            this._serializer18.PackTo(packer, objectTree.DecimalField);
+            this._serializer19.PackTo(packer, objectTree.Dictionary_MessagePackObject_MessagePackObjectField);
+            this._serializer20.PackTo(packer, objectTree.DictionaryEntryField);
+            this._serializer21.PackTo(packer, objectTree.DictionaryObjectObjectField);
+            this._serializer22.PackTo(packer, objectTree.DictionaryStringDateTimeField);
+            this._serializer23.PackTo(packer, objectTree.FalseField);
+            this._serializer24.PackTo(packer, objectTree.FILETIMEField);
+            this._serializer25.PackTo(packer, objectTree.GuidField);
+            this._serializer26.PackTo(packer, objectTree.HashSet_MessagePackObjectField);
+            this._serializer27.PackTo(packer, objectTree.HashSetDateTimeField);
+            this._serializer28.PackTo(packer, objectTree.HashSetObjectField);
+            this._serializer29.PackTo(packer, objectTree.HashtableField);
+            this._serializer30.PackTo(packer, objectTree.ICollection_MessagePackObjectField);
+            this._serializer31.PackTo(packer, objectTree.ICollectionDateTimeField);
+            this._serializer32.PackTo(packer, objectTree.ICollectionObjectField);
+            this._serializer33.PackTo(packer, objectTree.IDictionary_MessagePackObject_MessagePackObjectField);
+            this._serializer34.PackTo(packer, objectTree.IDictionaryObjectObjectField);
+            this._serializer35.PackTo(packer, objectTree.IDictionaryStringDateTimeField);
+            this._serializer36.PackTo(packer, objectTree.IList_MessagePackObjectField);
+            this._serializer37.PackTo(packer, objectTree.IListDateTimeField);
+            this._serializer38.PackTo(packer, objectTree.IListObjectField);
+            this._serializer39.PackTo(packer, objectTree.Image_Field);
+            this._serializer40.PackTo(packer, objectTree.ISet_MessagePackObjectField);
+            this._serializer41.PackTo(packer, objectTree.ISetDateTimeField);
+            this._serializer42.PackTo(packer, objectTree.ISetObjectField);
+            this._serializer43.PackTo(packer, objectTree.KeyValuePairStringComplexField);
+            this._serializer44.PackTo(packer, objectTree.KeyValuePairStringDateTimeOffsetField);
+            this._serializer45.PackTo(packer, objectTree.List_MessagePackObjectField);
+            this._serializer46.PackTo(packer, objectTree.ListDateTimeField);
+            this._serializer47.PackTo(packer, objectTree.ListObjectField);
+            this._serializer9.PackTo(packer, objectTree.MaxByteField);
+            this._serializer48.PackTo(packer, objectTree.MaxInt32Field);
+            this._serializer49.PackTo(packer, objectTree.MaxInt64Field);
+            this._serializer50.PackTo(packer, objectTree.MaxUInt16Field);
+            this._serializer51.PackTo(packer, objectTree.MessagePackObject_Field);
+            this._serializer52.PackTo(packer, objectTree.MessagePackObjectArray_Field);
+            this._serializer48.PackTo(packer, objectTree.MinInt32Field);
+            this._serializer49.PackTo(packer, objectTree.MinInt64Field);
+            this._serializer53.PackTo(packer, objectTree.NullField);
+            this._serializer54.PackTo(packer, objectTree.ObjectArrayField);
+            this._serializer53.PackTo(packer, objectTree.ObjectField);
+            this._serializer55.PackTo(packer, objectTree.ObservableCollection_MessagePackObjectField);
+            this._serializer56.PackTo(packer, objectTree.ObservableCollectionDateTimeField);
+            this._serializer57.PackTo(packer, objectTree.ObservableCollectionObjectField);
+            this._serializer58.PackTo(packer, objectTree.StringField);
+            this._serializer59.PackTo(packer, objectTree.StringKeyedCollection_DateTimeField);
+            this._serializer60.PackTo(packer, objectTree.StringKeyedCollection_MessagePackObjectField);
+            this._serializer61.PackTo(packer, objectTree.StringKeyedCollection_ObjectField);
+            this._serializer62.PackTo(packer, objectTree.TimeSpanField);
+            this._serializer9.PackTo(packer, objectTree.TinyByteField);
+            this._serializer48.PackTo(packer, objectTree.TinyInt32Field);
+            this._serializer49.PackTo(packer, objectTree.TinyInt64Field);
+            this._serializer50.PackTo(packer, objectTree.TinyUInt16Field);
+            this._serializer23.PackTo(packer, objectTree.TrueField);
+            this._serializer63.PackTo(packer, objectTree.Tuple_Int32_String_MessagePackObject_ObjectField);
+            this._serializer64.PackTo(packer, objectTree.UriField);
+            this._serializer65.PackTo(packer, objectTree.VersionField);
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeGenerated UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -377,13 +356,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable = this._serializer17.UnpackFrom(unpacker);
+                        nullable = this._serializer0.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
                         disposable = unpacker.ReadSubtree();
                         try {
-                            nullable = this._serializer17.UnpackFrom(disposable);
+                            nullable = this._serializer0.UnpackFrom(disposable);
                         }
                         finally {
                             if (((disposable == null) 
@@ -417,13 +396,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable0 = this._serializer18.UnpackFrom(unpacker);
+                        nullable0 = this._serializer1.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable0 = default(MsgPack.Unpacker);
                         disposable0 = unpacker.ReadSubtree();
                         try {
-                            nullable0 = this._serializer18.UnpackFrom(disposable0);
+                            nullable0 = this._serializer1.UnpackFrom(disposable0);
                         }
                         finally {
                             if (((disposable0 == null) 
@@ -457,13 +436,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable1 = this._serializer19.UnpackFrom(unpacker);
+                        nullable1 = this._serializer2.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable1 = default(MsgPack.Unpacker);
                         disposable1 = unpacker.ReadSubtree();
                         try {
-                            nullable1 = this._serializer19.UnpackFrom(disposable1);
+                            nullable1 = this._serializer2.UnpackFrom(disposable1);
                         }
                         finally {
                             if (((disposable1 == null) 
@@ -497,13 +476,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable2 = this._serializer20.UnpackFrom(unpacker);
+                        nullable2 = this._serializer3.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable2 = default(MsgPack.Unpacker);
                         disposable2 = unpacker.ReadSubtree();
                         try {
-                            nullable2 = this._serializer20.UnpackFrom(disposable2);
+                            nullable2 = this._serializer3.UnpackFrom(disposable2);
                         }
                         finally {
                             if (((disposable2 == null) 
@@ -532,13 +511,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable3 = this._serializer74.UnpackFrom(unpacker);
+                        nullable3 = this._serializer66.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable3 = default(MsgPack.Unpacker);
                         disposable3 = unpacker.ReadSubtree();
                         try {
-                            nullable3 = this._serializer74.UnpackFrom(disposable3);
+                            nullable3 = this._serializer66.UnpackFrom(disposable3);
                         }
                         finally {
                             if (((disposable3 == null) 
@@ -559,13 +538,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable4 = this._serializer75.UnpackFrom(unpacker);
+                        nullable4 = this._serializer67.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable4 = default(MsgPack.Unpacker);
                         disposable4 = unpacker.ReadSubtree();
                         try {
-                            nullable4 = this._serializer75.UnpackFrom(disposable4);
+                            nullable4 = this._serializer67.UnpackFrom(disposable4);
                         }
                         finally {
                             if (((disposable4 == null) 
@@ -586,13 +565,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable5 = this._serializer76.UnpackFrom(unpacker);
+                        nullable5 = this._serializer68.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable5 = default(MsgPack.Unpacker);
                         disposable5 = unpacker.ReadSubtree();
                         try {
-                            nullable5 = this._serializer76.UnpackFrom(disposable5);
+                            nullable5 = this._serializer68.UnpackFrom(disposable5);
                         }
                         finally {
                             if (((disposable5 == null) 
@@ -613,13 +592,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable6 = this._serializer77.UnpackFrom(unpacker);
+                        nullable6 = this._serializer69.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable6 = default(MsgPack.Unpacker);
                         disposable6 = unpacker.ReadSubtree();
                         try {
-                            nullable6 = this._serializer77.UnpackFrom(disposable6);
+                            nullable6 = this._serializer69.UnpackFrom(disposable6);
                         }
                         finally {
                             if (((disposable6 == null) 
@@ -657,13 +636,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable9 = this._serializer26.UnpackFrom(unpacker);
+                        nullable9 = this._serializer10.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable7 = default(MsgPack.Unpacker);
                         disposable7 = unpacker.ReadSubtree();
                         try {
-                            nullable9 = this._serializer26.UnpackFrom(disposable7);
+                            nullable9 = this._serializer10.UnpackFrom(disposable7);
                         }
                         finally {
                             if (((disposable7 == null) 
@@ -685,13 +664,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable10 = this._serializer78.UnpackFrom(unpacker);
+                        nullable10 = this._serializer70.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable8 = default(MsgPack.Unpacker);
                         disposable8 = unpacker.ReadSubtree();
                         try {
-                            nullable10 = this._serializer78.UnpackFrom(disposable8);
+                            nullable10 = this._serializer70.UnpackFrom(disposable8);
                         }
                         finally {
                             if (((disposable8 == null) 
@@ -712,13 +691,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable11 = this._serializer28.UnpackFrom(unpacker);
+                        nullable11 = this._serializer12.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable9 = default(MsgPack.Unpacker);
                         disposable9 = unpacker.ReadSubtree();
                         try {
-                            nullable11 = this._serializer28.UnpackFrom(disposable9);
+                            nullable11 = this._serializer12.UnpackFrom(disposable9);
                         }
                         finally {
                             if (((disposable9 == null) 
@@ -752,13 +731,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable12 = this._serializer29.UnpackFrom(unpacker);
+                        nullable12 = this._serializer13.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable10 = default(MsgPack.Unpacker);
                         disposable10 = unpacker.ReadSubtree();
                         try {
-                            nullable12 = this._serializer29.UnpackFrom(disposable10);
+                            nullable12 = this._serializer13.UnpackFrom(disposable10);
                         }
                         finally {
                             if (((disposable10 == null) 
@@ -792,13 +771,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable13 = this._serializer30.UnpackFrom(unpacker);
+                        nullable13 = this._serializer14.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable11 = default(MsgPack.Unpacker);
                         disposable11 = unpacker.ReadSubtree();
                         try {
-                            nullable13 = this._serializer30.UnpackFrom(disposable11);
+                            nullable13 = this._serializer14.UnpackFrom(disposable11);
                         }
                         finally {
                             if (((disposable11 == null) 
@@ -832,13 +811,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable14 = this._serializer79.UnpackFrom(unpacker);
+                        nullable14 = this._serializer71.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable12 = default(MsgPack.Unpacker);
                         disposable12 = unpacker.ReadSubtree();
                         try {
-                            nullable14 = this._serializer79.UnpackFrom(disposable12);
+                            nullable14 = this._serializer71.UnpackFrom(disposable12);
                         }
                         finally {
                             if (((disposable12 == null) 
@@ -859,13 +838,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable15 = this._serializer4.UnpackFrom(unpacker);
+                        nullable15 = this._serializer72.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable13 = default(MsgPack.Unpacker);
                         disposable13 = unpacker.ReadSubtree();
                         try {
-                            nullable15 = this._serializer4.UnpackFrom(disposable13);
+                            nullable15 = this._serializer72.UnpackFrom(disposable13);
                         }
                         finally {
                             if (((disposable13 == null) 
@@ -886,13 +865,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable16 = this._serializer80.UnpackFrom(unpacker);
+                        nullable16 = this._serializer73.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable14 = default(MsgPack.Unpacker);
                         disposable14 = unpacker.ReadSubtree();
                         try {
-                            nullable16 = this._serializer80.UnpackFrom(disposable14);
+                            nullable16 = this._serializer73.UnpackFrom(disposable14);
                         }
                         finally {
                             if (((disposable14 == null) 
@@ -913,13 +892,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable17 = this._serializer81.UnpackFrom(unpacker);
+                        nullable17 = this._serializer74.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable15 = default(MsgPack.Unpacker);
                         disposable15 = unpacker.ReadSubtree();
                         try {
-                            nullable17 = this._serializer81.UnpackFrom(disposable15);
+                            nullable17 = this._serializer74.UnpackFrom(disposable15);
                         }
                         finally {
                             if (((disposable15 == null) 
@@ -940,13 +919,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable18 = this._serializer34.UnpackFrom(unpacker);
+                        nullable18 = this._serializer19.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable16 = default(MsgPack.Unpacker);
                         disposable16 = unpacker.ReadSubtree();
                         try {
-                            nullable18 = this._serializer34.UnpackFrom(disposable16);
+                            nullable18 = this._serializer19.UnpackFrom(disposable16);
                         }
                         finally {
                             if (((disposable16 == null) 
@@ -980,13 +959,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable19 = this._serializer82.UnpackFrom(unpacker);
+                        nullable19 = this._serializer75.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable17 = default(MsgPack.Unpacker);
                         disposable17 = unpacker.ReadSubtree();
                         try {
-                            nullable19 = this._serializer82.UnpackFrom(disposable17);
+                            nullable19 = this._serializer75.UnpackFrom(disposable17);
                         }
                         finally {
                             if (((disposable17 == null) 
@@ -1007,13 +986,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable20 = this._serializer36.UnpackFrom(unpacker);
+                        nullable20 = this._serializer21.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable18 = default(MsgPack.Unpacker);
                         disposable18 = unpacker.ReadSubtree();
                         try {
-                            nullable20 = this._serializer36.UnpackFrom(disposable18);
+                            nullable20 = this._serializer21.UnpackFrom(disposable18);
                         }
                         finally {
                             if (((disposable18 == null) 
@@ -1047,13 +1026,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable21 = this._serializer37.UnpackFrom(unpacker);
+                        nullable21 = this._serializer22.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable19 = default(MsgPack.Unpacker);
                         disposable19 = unpacker.ReadSubtree();
                         try {
-                            nullable21 = this._serializer37.UnpackFrom(disposable19);
+                            nullable21 = this._serializer22.UnpackFrom(disposable19);
                         }
                         finally {
                             if (((disposable19 == null) 
@@ -1095,13 +1074,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable23 = this._serializer83.UnpackFrom(unpacker);
+                        nullable23 = this._serializer76.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable20 = default(MsgPack.Unpacker);
                         disposable20 = unpacker.ReadSubtree();
                         try {
-                            nullable23 = this._serializer83.UnpackFrom(disposable20);
+                            nullable23 = this._serializer76.UnpackFrom(disposable20);
                         }
                         finally {
                             if (((disposable20 == null) 
@@ -1122,13 +1101,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable24 = this._serializer84.UnpackFrom(unpacker);
+                        nullable24 = this._serializer77.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable21 = default(MsgPack.Unpacker);
                         disposable21 = unpacker.ReadSubtree();
                         try {
-                            nullable24 = this._serializer84.UnpackFrom(disposable21);
+                            nullable24 = this._serializer77.UnpackFrom(disposable21);
                         }
                         finally {
                             if (((disposable21 == null) 
@@ -1149,13 +1128,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable25 = this._serializer41.UnpackFrom(unpacker);
+                        nullable25 = this._serializer26.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable22 = default(MsgPack.Unpacker);
                         disposable22 = unpacker.ReadSubtree();
                         try {
-                            nullable25 = this._serializer41.UnpackFrom(disposable22);
+                            nullable25 = this._serializer26.UnpackFrom(disposable22);
                         }
                         finally {
                             if (((disposable22 == null) 
@@ -1189,13 +1168,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable26 = this._serializer42.UnpackFrom(unpacker);
+                        nullable26 = this._serializer27.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable23 = default(MsgPack.Unpacker);
                         disposable23 = unpacker.ReadSubtree();
                         try {
-                            nullable26 = this._serializer42.UnpackFrom(disposable23);
+                            nullable26 = this._serializer27.UnpackFrom(disposable23);
                         }
                         finally {
                             if (((disposable23 == null) 
@@ -1229,13 +1208,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable27 = this._serializer43.UnpackFrom(unpacker);
+                        nullable27 = this._serializer28.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable24 = default(MsgPack.Unpacker);
                         disposable24 = unpacker.ReadSubtree();
                         try {
-                            nullable27 = this._serializer43.UnpackFrom(disposable24);
+                            nullable27 = this._serializer28.UnpackFrom(disposable24);
                         }
                         finally {
                             if (((disposable24 == null) 
@@ -1269,13 +1248,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable28 = this._serializer44.UnpackFrom(unpacker);
+                        nullable28 = this._serializer29.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable25 = default(MsgPack.Unpacker);
                         disposable25 = unpacker.ReadSubtree();
                         try {
-                            nullable28 = this._serializer44.UnpackFrom(disposable25);
+                            nullable28 = this._serializer29.UnpackFrom(disposable25);
                         }
                         finally {
                             if (((disposable25 == null) 
@@ -1304,13 +1283,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable29 = this._serializer45.UnpackFrom(unpacker);
+                        nullable29 = this._serializer30.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable26 = default(MsgPack.Unpacker);
                         disposable26 = unpacker.ReadSubtree();
                         try {
-                            nullable29 = this._serializer45.UnpackFrom(disposable26);
+                            nullable29 = this._serializer30.UnpackFrom(disposable26);
                         }
                         finally {
                             if (((disposable26 == null) 
@@ -1344,13 +1323,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable30 = this._serializer46.UnpackFrom(unpacker);
+                        nullable30 = this._serializer31.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable27 = default(MsgPack.Unpacker);
                         disposable27 = unpacker.ReadSubtree();
                         try {
-                            nullable30 = this._serializer46.UnpackFrom(disposable27);
+                            nullable30 = this._serializer31.UnpackFrom(disposable27);
                         }
                         finally {
                             if (((disposable27 == null) 
@@ -1384,13 +1363,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable31 = this._serializer47.UnpackFrom(unpacker);
+                        nullable31 = this._serializer32.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable28 = default(MsgPack.Unpacker);
                         disposable28 = unpacker.ReadSubtree();
                         try {
-                            nullable31 = this._serializer47.UnpackFrom(disposable28);
+                            nullable31 = this._serializer32.UnpackFrom(disposable28);
                         }
                         finally {
                             if (((disposable28 == null) 
@@ -1424,13 +1403,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable32 = this._serializer48.UnpackFrom(unpacker);
+                        nullable32 = this._serializer33.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable29 = default(MsgPack.Unpacker);
                         disposable29 = unpacker.ReadSubtree();
                         try {
-                            nullable32 = this._serializer48.UnpackFrom(disposable29);
+                            nullable32 = this._serializer33.UnpackFrom(disposable29);
                         }
                         finally {
                             if (((disposable29 == null) 
@@ -1464,13 +1443,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable33 = this._serializer49.UnpackFrom(unpacker);
+                        nullable33 = this._serializer34.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable30 = default(MsgPack.Unpacker);
                         disposable30 = unpacker.ReadSubtree();
                         try {
-                            nullable33 = this._serializer49.UnpackFrom(disposable30);
+                            nullable33 = this._serializer34.UnpackFrom(disposable30);
                         }
                         finally {
                             if (((disposable30 == null) 
@@ -1504,13 +1483,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable34 = this._serializer50.UnpackFrom(unpacker);
+                        nullable34 = this._serializer35.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable31 = default(MsgPack.Unpacker);
                         disposable31 = unpacker.ReadSubtree();
                         try {
-                            nullable34 = this._serializer50.UnpackFrom(disposable31);
+                            nullable34 = this._serializer35.UnpackFrom(disposable31);
                         }
                         finally {
                             if (((disposable31 == null) 
@@ -1544,13 +1523,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable35 = this._serializer51.UnpackFrom(unpacker);
+                        nullable35 = this._serializer36.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable32 = default(MsgPack.Unpacker);
                         disposable32 = unpacker.ReadSubtree();
                         try {
-                            nullable35 = this._serializer51.UnpackFrom(disposable32);
+                            nullable35 = this._serializer36.UnpackFrom(disposable32);
                         }
                         finally {
                             if (((disposable32 == null) 
@@ -1584,13 +1563,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable36 = this._serializer52.UnpackFrom(unpacker);
+                        nullable36 = this._serializer37.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable33 = default(MsgPack.Unpacker);
                         disposable33 = unpacker.ReadSubtree();
                         try {
-                            nullable36 = this._serializer52.UnpackFrom(disposable33);
+                            nullable36 = this._serializer37.UnpackFrom(disposable33);
                         }
                         finally {
                             if (((disposable33 == null) 
@@ -1624,13 +1603,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable37 = this._serializer53.UnpackFrom(unpacker);
+                        nullable37 = this._serializer38.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable34 = default(MsgPack.Unpacker);
                         disposable34 = unpacker.ReadSubtree();
                         try {
-                            nullable37 = this._serializer53.UnpackFrom(disposable34);
+                            nullable37 = this._serializer38.UnpackFrom(disposable34);
                         }
                         finally {
                             if (((disposable34 == null) 
@@ -1664,13 +1643,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable38 = this._serializer54.UnpackFrom(unpacker);
+                        nullable38 = this._serializer39.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable35 = default(MsgPack.Unpacker);
                         disposable35 = unpacker.ReadSubtree();
                         try {
-                            nullable38 = this._serializer54.UnpackFrom(disposable35);
+                            nullable38 = this._serializer39.UnpackFrom(disposable35);
                         }
                         finally {
                             if (((disposable35 == null) 
@@ -1692,13 +1671,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable39 = this._serializer55.UnpackFrom(unpacker);
+                        nullable39 = this._serializer40.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable36 = default(MsgPack.Unpacker);
                         disposable36 = unpacker.ReadSubtree();
                         try {
-                            nullable39 = this._serializer55.UnpackFrom(disposable36);
+                            nullable39 = this._serializer40.UnpackFrom(disposable36);
                         }
                         finally {
                             if (((disposable36 == null) 
@@ -1732,13 +1711,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable40 = this._serializer56.UnpackFrom(unpacker);
+                        nullable40 = this._serializer41.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable37 = default(MsgPack.Unpacker);
                         disposable37 = unpacker.ReadSubtree();
                         try {
-                            nullable40 = this._serializer56.UnpackFrom(disposable37);
+                            nullable40 = this._serializer41.UnpackFrom(disposable37);
                         }
                         finally {
                             if (((disposable37 == null) 
@@ -1772,13 +1751,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable41 = this._serializer57.UnpackFrom(unpacker);
+                        nullable41 = this._serializer42.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable38 = default(MsgPack.Unpacker);
                         disposable38 = unpacker.ReadSubtree();
                         try {
-                            nullable41 = this._serializer57.UnpackFrom(disposable38);
+                            nullable41 = this._serializer42.UnpackFrom(disposable38);
                         }
                         finally {
                             if (((disposable38 == null) 
@@ -1812,13 +1791,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable42 = this._serializer85.UnpackFrom(unpacker);
+                        nullable42 = this._serializer78.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable39 = default(MsgPack.Unpacker);
                         disposable39 = unpacker.ReadSubtree();
                         try {
-                            nullable42 = this._serializer85.UnpackFrom(disposable39);
+                            nullable42 = this._serializer78.UnpackFrom(disposable39);
                         }
                         finally {
                             if (((disposable39 == null) 
@@ -1839,13 +1818,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable43 = this._serializer86.UnpackFrom(unpacker);
+                        nullable43 = this._serializer79.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable40 = default(MsgPack.Unpacker);
                         disposable40 = unpacker.ReadSubtree();
                         try {
-                            nullable43 = this._serializer86.UnpackFrom(disposable40);
+                            nullable43 = this._serializer79.UnpackFrom(disposable40);
                         }
                         finally {
                             if (((disposable40 == null) 
@@ -1866,13 +1845,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable44 = this._serializer60.UnpackFrom(unpacker);
+                        nullable44 = this._serializer45.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable41 = default(MsgPack.Unpacker);
                         disposable41 = unpacker.ReadSubtree();
                         try {
-                            nullable44 = this._serializer60.UnpackFrom(disposable41);
+                            nullable44 = this._serializer45.UnpackFrom(disposable41);
                         }
                         finally {
                             if (((disposable41 == null) 
@@ -1906,13 +1885,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable45 = this._serializer61.UnpackFrom(unpacker);
+                        nullable45 = this._serializer46.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable42 = default(MsgPack.Unpacker);
                         disposable42 = unpacker.ReadSubtree();
                         try {
-                            nullable45 = this._serializer61.UnpackFrom(disposable42);
+                            nullable45 = this._serializer46.UnpackFrom(disposable42);
                         }
                         finally {
                             if (((disposable42 == null) 
@@ -1946,13 +1925,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable46 = this._serializer62.UnpackFrom(unpacker);
+                        nullable46 = this._serializer47.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable43 = default(MsgPack.Unpacker);
                         disposable43 = unpacker.ReadSubtree();
                         try {
-                            nullable46 = this._serializer62.UnpackFrom(disposable43);
+                            nullable46 = this._serializer47.UnpackFrom(disposable43);
                         }
                         finally {
                             if (((disposable43 == null) 
@@ -2035,13 +2014,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable52 = this._serializer7.UnpackFrom(unpacker);
+                        nullable52 = this._serializer52.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable44 = default(MsgPack.Unpacker);
                         disposable44 = unpacker.ReadSubtree();
                         try {
-                            nullable52 = this._serializer7.UnpackFrom(disposable44);
+                            nullable52 = this._serializer52.UnpackFrom(disposable44);
                         }
                         finally {
                             if (((disposable44 == null) 
@@ -2079,13 +2058,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable55 = this._serializer1.UnpackFrom(unpacker);
+                        nullable55 = this._serializer53.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable45 = default(MsgPack.Unpacker);
                         disposable45 = unpacker.ReadSubtree();
                         try {
-                            nullable55 = this._serializer1.UnpackFrom(disposable45);
+                            nullable55 = this._serializer53.UnpackFrom(disposable45);
                         }
                         finally {
                             if (((disposable45 == null) 
@@ -2107,13 +2086,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable56 = this._serializer0.UnpackFrom(unpacker);
+                        nullable56 = this._serializer54.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable46 = default(MsgPack.Unpacker);
                         disposable46 = unpacker.ReadSubtree();
                         try {
-                            nullable56 = this._serializer0.UnpackFrom(disposable46);
+                            nullable56 = this._serializer54.UnpackFrom(disposable46);
                         }
                         finally {
                             if (((disposable46 == null) 
@@ -2135,13 +2114,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable57 = this._serializer1.UnpackFrom(unpacker);
+                        nullable57 = this._serializer53.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable47 = default(MsgPack.Unpacker);
                         disposable47 = unpacker.ReadSubtree();
                         try {
-                            nullable57 = this._serializer1.UnpackFrom(disposable47);
+                            nullable57 = this._serializer53.UnpackFrom(disposable47);
                         }
                         finally {
                             if (((disposable47 == null) 
@@ -2163,13 +2142,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable58 = this._serializer65.UnpackFrom(unpacker);
+                        nullable58 = this._serializer55.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable48 = default(MsgPack.Unpacker);
                         disposable48 = unpacker.ReadSubtree();
                         try {
-                            nullable58 = this._serializer65.UnpackFrom(disposable48);
+                            nullable58 = this._serializer55.UnpackFrom(disposable48);
                         }
                         finally {
                             if (((disposable48 == null) 
@@ -2203,13 +2182,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable59 = this._serializer66.UnpackFrom(unpacker);
+                        nullable59 = this._serializer56.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable49 = default(MsgPack.Unpacker);
                         disposable49 = unpacker.ReadSubtree();
                         try {
-                            nullable59 = this._serializer66.UnpackFrom(disposable49);
+                            nullable59 = this._serializer56.UnpackFrom(disposable49);
                         }
                         finally {
                             if (((disposable49 == null) 
@@ -2243,13 +2222,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable60 = this._serializer67.UnpackFrom(unpacker);
+                        nullable60 = this._serializer57.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable50 = default(MsgPack.Unpacker);
                         disposable50 = unpacker.ReadSubtree();
                         try {
-                            nullable60 = this._serializer67.UnpackFrom(disposable50);
+                            nullable60 = this._serializer57.UnpackFrom(disposable50);
                         }
                         finally {
                             if (((disposable50 == null) 
@@ -2292,13 +2271,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable62 = this._serializer68.UnpackFrom(unpacker);
+                        nullable62 = this._serializer59.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable51 = default(MsgPack.Unpacker);
                         disposable51 = unpacker.ReadSubtree();
                         try {
-                            nullable62 = this._serializer68.UnpackFrom(disposable51);
+                            nullable62 = this._serializer59.UnpackFrom(disposable51);
                         }
                         finally {
                             if (((disposable51 == null) 
@@ -2332,13 +2311,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable63 = this._serializer69.UnpackFrom(unpacker);
+                        nullable63 = this._serializer60.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable52 = default(MsgPack.Unpacker);
                         disposable52 = unpacker.ReadSubtree();
                         try {
-                            nullable63 = this._serializer69.UnpackFrom(disposable52);
+                            nullable63 = this._serializer60.UnpackFrom(disposable52);
                         }
                         finally {
                             if (((disposable52 == null) 
@@ -2372,13 +2351,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable64 = this._serializer70.UnpackFrom(unpacker);
+                        nullable64 = this._serializer61.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable53 = default(MsgPack.Unpacker);
                         disposable53 = unpacker.ReadSubtree();
                         try {
-                            nullable64 = this._serializer70.UnpackFrom(disposable53);
+                            nullable64 = this._serializer61.UnpackFrom(disposable53);
                         }
                         finally {
                             if (((disposable53 == null) 
@@ -2412,13 +2391,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable65 = this._serializer87.UnpackFrom(unpacker);
+                        nullable65 = this._serializer80.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable54 = default(MsgPack.Unpacker);
                         disposable54 = unpacker.ReadSubtree();
                         try {
-                            nullable65 = this._serializer87.UnpackFrom(disposable54);
+                            nullable65 = this._serializer80.UnpackFrom(disposable54);
                         }
                         finally {
                             if (((disposable54 == null) 
@@ -2479,13 +2458,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable71 = this._serializer72.UnpackFrom(unpacker);
+                        nullable71 = this._serializer63.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable55 = default(MsgPack.Unpacker);
                         disposable55 = unpacker.ReadSubtree();
                         try {
-                            nullable71 = this._serializer72.UnpackFrom(disposable55);
+                            nullable71 = this._serializer63.UnpackFrom(disposable55);
                         }
                         finally {
                             if (((disposable55 == null) 
@@ -2507,13 +2486,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable72 = this._serializer14.UnpackFrom(unpacker);
+                        nullable72 = this._serializer64.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable56 = default(MsgPack.Unpacker);
                         disposable56 = unpacker.ReadSubtree();
                         try {
-                            nullable72 = this._serializer14.UnpackFrom(disposable56);
+                            nullable72 = this._serializer64.UnpackFrom(disposable56);
                         }
                         finally {
                             if (((disposable56 == null) 
@@ -2535,13 +2514,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     }
                     if (((unpacker.IsArrayHeader == false) 
                                 && (unpacker.IsMapHeader == false))) {
-                        nullable73 = this._serializer73.UnpackFrom(unpacker);
+                        nullable73 = this._serializer65.UnpackFrom(unpacker);
                     }
                     else {
                         MsgPack.Unpacker disposable57 = default(MsgPack.Unpacker);
                         disposable57 = unpacker.ReadSubtree();
                         try {
-                            nullable73 = this._serializer73.UnpackFrom(disposable57);
+                            nullable73 = this._serializer65.UnpackFrom(disposable57);
                         }
                         finally {
                             if (((disposable57 == null) 
@@ -2578,13 +2557,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         }
                         if (((unpacker.IsArrayHeader == false) 
                                     && (unpacker.IsMapHeader == false))) {
-                            nullable149 = this._serializer73.UnpackFrom(unpacker);
+                            nullable149 = this._serializer65.UnpackFrom(unpacker);
                         }
                         else {
                             MsgPack.Unpacker disposable116 = default(MsgPack.Unpacker);
                             disposable116 = unpacker.ReadSubtree();
                             try {
-                                nullable149 = this._serializer73.UnpackFrom(disposable116);
+                                nullable149 = this._serializer65.UnpackFrom(disposable116);
                             }
                             finally {
                                 if (((disposable116 == null) 
@@ -2606,13 +2585,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                             }
                             if (((unpacker.IsArrayHeader == false) 
                                         && (unpacker.IsMapHeader == false))) {
-                                nullable148 = this._serializer14.UnpackFrom(unpacker);
+                                nullable148 = this._serializer64.UnpackFrom(unpacker);
                             }
                             else {
                                 MsgPack.Unpacker disposable115 = default(MsgPack.Unpacker);
                                 disposable115 = unpacker.ReadSubtree();
                                 try {
-                                    nullable148 = this._serializer14.UnpackFrom(disposable115);
+                                    nullable148 = this._serializer64.UnpackFrom(disposable115);
                                 }
                                 finally {
                                     if (((disposable115 == null) 
@@ -2634,13 +2613,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                 }
                                 if (((unpacker.IsArrayHeader == false) 
                                             && (unpacker.IsMapHeader == false))) {
-                                    nullable147 = this._serializer72.UnpackFrom(unpacker);
+                                    nullable147 = this._serializer63.UnpackFrom(unpacker);
                                 }
                                 else {
                                     MsgPack.Unpacker disposable114 = default(MsgPack.Unpacker);
                                     disposable114 = unpacker.ReadSubtree();
                                     try {
-                                        nullable147 = this._serializer72.UnpackFrom(disposable114);
+                                        nullable147 = this._serializer63.UnpackFrom(disposable114);
                                     }
                                     finally {
                                         if (((disposable114 == null) 
@@ -2702,13 +2681,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                         }
                                                         if (((unpacker.IsArrayHeader == false) 
                                                                     && (unpacker.IsMapHeader == false))) {
-                                                            nullable141 = this._serializer87.UnpackFrom(unpacker);
+                                                            nullable141 = this._serializer80.UnpackFrom(unpacker);
                                                         }
                                                         else {
                                                             MsgPack.Unpacker disposable113 = default(MsgPack.Unpacker);
                                                             disposable113 = unpacker.ReadSubtree();
                                                             try {
-                                                                nullable141 = this._serializer87.UnpackFrom(disposable113);
+                                                                nullable141 = this._serializer80.UnpackFrom(disposable113);
                                                             }
                                                             finally {
                                                                 if (((disposable113 == null) 
@@ -2729,13 +2708,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                             }
                                                             if (((unpacker.IsArrayHeader == false) 
                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                nullable140 = this._serializer70.UnpackFrom(unpacker);
+                                                                nullable140 = this._serializer61.UnpackFrom(unpacker);
                                                             }
                                                             else {
                                                                 MsgPack.Unpacker disposable112 = default(MsgPack.Unpacker);
                                                                 disposable112 = unpacker.ReadSubtree();
                                                                 try {
-                                                                    nullable140 = this._serializer70.UnpackFrom(disposable112);
+                                                                    nullable140 = this._serializer61.UnpackFrom(disposable112);
                                                                 }
                                                                 finally {
                                                                     if (((disposable112 == null) 
@@ -2769,13 +2748,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                 }
                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                    nullable139 = this._serializer69.UnpackFrom(unpacker);
+                                                                    nullable139 = this._serializer60.UnpackFrom(unpacker);
                                                                 }
                                                                 else {
                                                                     MsgPack.Unpacker disposable111 = default(MsgPack.Unpacker);
                                                                     disposable111 = unpacker.ReadSubtree();
                                                                     try {
-                                                                        nullable139 = this._serializer69.UnpackFrom(disposable111);
+                                                                        nullable139 = this._serializer60.UnpackFrom(disposable111);
                                                                     }
                                                                     finally {
                                                                         if (((disposable111 == null) 
@@ -2809,13 +2788,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                     }
                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                        nullable138 = this._serializer68.UnpackFrom(unpacker);
+                                                                        nullable138 = this._serializer59.UnpackFrom(unpacker);
                                                                     }
                                                                     else {
                                                                         MsgPack.Unpacker disposable110 = default(MsgPack.Unpacker);
                                                                         disposable110 = unpacker.ReadSubtree();
                                                                         try {
-                                                                            nullable138 = this._serializer68.UnpackFrom(disposable110);
+                                                                            nullable138 = this._serializer59.UnpackFrom(disposable110);
                                                                         }
                                                                         finally {
                                                                             if (((disposable110 == null) 
@@ -2858,13 +2837,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                             }
                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                nullable136 = this._serializer67.UnpackFrom(unpacker);
+                                                                                nullable136 = this._serializer57.UnpackFrom(unpacker);
                                                                             }
                                                                             else {
                                                                                 MsgPack.Unpacker disposable109 = default(MsgPack.Unpacker);
                                                                                 disposable109 = unpacker.ReadSubtree();
                                                                                 try {
-                                                                                    nullable136 = this._serializer67.UnpackFrom(disposable109);
+                                                                                    nullable136 = this._serializer57.UnpackFrom(disposable109);
                                                                                 }
                                                                                 finally {
                                                                                     if (((disposable109 == null) 
@@ -2898,13 +2877,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                 }
                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                    nullable135 = this._serializer66.UnpackFrom(unpacker);
+                                                                                    nullable135 = this._serializer56.UnpackFrom(unpacker);
                                                                                 }
                                                                                 else {
                                                                                     MsgPack.Unpacker disposable108 = default(MsgPack.Unpacker);
                                                                                     disposable108 = unpacker.ReadSubtree();
                                                                                     try {
-                                                                                        nullable135 = this._serializer66.UnpackFrom(disposable108);
+                                                                                        nullable135 = this._serializer56.UnpackFrom(disposable108);
                                                                                     }
                                                                                     finally {
                                                                                         if (((disposable108 == null) 
@@ -2938,13 +2917,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                     }
                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                        nullable134 = this._serializer65.UnpackFrom(unpacker);
+                                                                                        nullable134 = this._serializer55.UnpackFrom(unpacker);
                                                                                     }
                                                                                     else {
                                                                                         MsgPack.Unpacker disposable107 = default(MsgPack.Unpacker);
                                                                                         disposable107 = unpacker.ReadSubtree();
                                                                                         try {
-                                                                                            nullable134 = this._serializer65.UnpackFrom(disposable107);
+                                                                                            nullable134 = this._serializer55.UnpackFrom(disposable107);
                                                                                         }
                                                                                         finally {
                                                                                             if (((disposable107 == null) 
@@ -2978,13 +2957,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                         }
                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                            nullable133 = this._serializer1.UnpackFrom(unpacker);
+                                                                                            nullable133 = this._serializer53.UnpackFrom(unpacker);
                                                                                         }
                                                                                         else {
                                                                                             MsgPack.Unpacker disposable106 = default(MsgPack.Unpacker);
                                                                                             disposable106 = unpacker.ReadSubtree();
                                                                                             try {
-                                                                                                nullable133 = this._serializer1.UnpackFrom(disposable106);
+                                                                                                nullable133 = this._serializer53.UnpackFrom(disposable106);
                                                                                             }
                                                                                             finally {
                                                                                                 if (((disposable106 == null) 
@@ -3006,13 +2985,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                             }
                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                nullable132 = this._serializer0.UnpackFrom(unpacker);
+                                                                                                nullable132 = this._serializer54.UnpackFrom(unpacker);
                                                                                             }
                                                                                             else {
                                                                                                 MsgPack.Unpacker disposable105 = default(MsgPack.Unpacker);
                                                                                                 disposable105 = unpacker.ReadSubtree();
                                                                                                 try {
-                                                                                                    nullable132 = this._serializer0.UnpackFrom(disposable105);
+                                                                                                    nullable132 = this._serializer54.UnpackFrom(disposable105);
                                                                                                 }
                                                                                                 finally {
                                                                                                     if (((disposable105 == null) 
@@ -3034,13 +3013,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                 }
                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                    nullable131 = this._serializer1.UnpackFrom(unpacker);
+                                                                                                    nullable131 = this._serializer53.UnpackFrom(unpacker);
                                                                                                 }
                                                                                                 else {
                                                                                                     MsgPack.Unpacker disposable104 = default(MsgPack.Unpacker);
                                                                                                     disposable104 = unpacker.ReadSubtree();
                                                                                                     try {
-                                                                                                        nullable131 = this._serializer1.UnpackFrom(disposable104);
+                                                                                                        nullable131 = this._serializer53.UnpackFrom(disposable104);
                                                                                                     }
                                                                                                     finally {
                                                                                                         if (((disposable104 == null) 
@@ -3078,13 +3057,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                             }
                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                nullable128 = this._serializer7.UnpackFrom(unpacker);
+                                                                                                                nullable128 = this._serializer52.UnpackFrom(unpacker);
                                                                                                             }
                                                                                                             else {
                                                                                                                 MsgPack.Unpacker disposable103 = default(MsgPack.Unpacker);
                                                                                                                 disposable103 = unpacker.ReadSubtree();
                                                                                                                 try {
-                                                                                                                    nullable128 = this._serializer7.UnpackFrom(disposable103);
+                                                                                                                    nullable128 = this._serializer52.UnpackFrom(disposable103);
                                                                                                                 }
                                                                                                                 finally {
                                                                                                                     if (((disposable103 == null) 
@@ -3155,13 +3134,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                     }
                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                        nullable122 = this._serializer62.UnpackFrom(unpacker);
+                                                                                                                                        nullable122 = this._serializer47.UnpackFrom(unpacker);
                                                                                                                                     }
                                                                                                                                     else {
                                                                                                                                         MsgPack.Unpacker disposable102 = default(MsgPack.Unpacker);
                                                                                                                                         disposable102 = unpacker.ReadSubtree();
                                                                                                                                         try {
-                                                                                                                                            nullable122 = this._serializer62.UnpackFrom(disposable102);
+                                                                                                                                            nullable122 = this._serializer47.UnpackFrom(disposable102);
                                                                                                                                         }
                                                                                                                                         finally {
                                                                                                                                             if (((disposable102 == null) 
@@ -3195,13 +3174,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                         }
                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                            nullable121 = this._serializer61.UnpackFrom(unpacker);
+                                                                                                                                            nullable121 = this._serializer46.UnpackFrom(unpacker);
                                                                                                                                         }
                                                                                                                                         else {
                                                                                                                                             MsgPack.Unpacker disposable101 = default(MsgPack.Unpacker);
                                                                                                                                             disposable101 = unpacker.ReadSubtree();
                                                                                                                                             try {
-                                                                                                                                                nullable121 = this._serializer61.UnpackFrom(disposable101);
+                                                                                                                                                nullable121 = this._serializer46.UnpackFrom(disposable101);
                                                                                                                                             }
                                                                                                                                             finally {
                                                                                                                                                 if (((disposable101 == null) 
@@ -3235,13 +3214,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                             }
                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                nullable120 = this._serializer60.UnpackFrom(unpacker);
+                                                                                                                                                nullable120 = this._serializer45.UnpackFrom(unpacker);
                                                                                                                                             }
                                                                                                                                             else {
                                                                                                                                                 MsgPack.Unpacker disposable100 = default(MsgPack.Unpacker);
                                                                                                                                                 disposable100 = unpacker.ReadSubtree();
                                                                                                                                                 try {
-                                                                                                                                                    nullable120 = this._serializer60.UnpackFrom(disposable100);
+                                                                                                                                                    nullable120 = this._serializer45.UnpackFrom(disposable100);
                                                                                                                                                 }
                                                                                                                                                 finally {
                                                                                                                                                     if (((disposable100 == null) 
@@ -3275,13 +3254,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                 }
                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                    nullable119 = this._serializer86.UnpackFrom(unpacker);
+                                                                                                                                                    nullable119 = this._serializer79.UnpackFrom(unpacker);
                                                                                                                                                 }
                                                                                                                                                 else {
                                                                                                                                                     MsgPack.Unpacker disposable99 = default(MsgPack.Unpacker);
                                                                                                                                                     disposable99 = unpacker.ReadSubtree();
                                                                                                                                                     try {
-                                                                                                                                                        nullable119 = this._serializer86.UnpackFrom(disposable99);
+                                                                                                                                                        nullable119 = this._serializer79.UnpackFrom(disposable99);
                                                                                                                                                     }
                                                                                                                                                     finally {
                                                                                                                                                         if (((disposable99 == null) 
@@ -3302,13 +3281,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                     }
                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                        nullable118 = this._serializer85.UnpackFrom(unpacker);
+                                                                                                                                                        nullable118 = this._serializer78.UnpackFrom(unpacker);
                                                                                                                                                     }
                                                                                                                                                     else {
                                                                                                                                                         MsgPack.Unpacker disposable98 = default(MsgPack.Unpacker);
                                                                                                                                                         disposable98 = unpacker.ReadSubtree();
                                                                                                                                                         try {
-                                                                                                                                                            nullable118 = this._serializer85.UnpackFrom(disposable98);
+                                                                                                                                                            nullable118 = this._serializer78.UnpackFrom(disposable98);
                                                                                                                                                         }
                                                                                                                                                         finally {
                                                                                                                                                             if (((disposable98 == null) 
@@ -3329,13 +3308,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                         }
                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                            nullable117 = this._serializer57.UnpackFrom(unpacker);
+                                                                                                                                                            nullable117 = this._serializer42.UnpackFrom(unpacker);
                                                                                                                                                         }
                                                                                                                                                         else {
                                                                                                                                                             MsgPack.Unpacker disposable97 = default(MsgPack.Unpacker);
                                                                                                                                                             disposable97 = unpacker.ReadSubtree();
                                                                                                                                                             try {
-                                                                                                                                                                nullable117 = this._serializer57.UnpackFrom(disposable97);
+                                                                                                                                                                nullable117 = this._serializer42.UnpackFrom(disposable97);
                                                                                                                                                             }
                                                                                                                                                             finally {
                                                                                                                                                                 if (((disposable97 == null) 
@@ -3369,13 +3348,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                             }
                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                nullable116 = this._serializer56.UnpackFrom(unpacker);
+                                                                                                                                                                nullable116 = this._serializer41.UnpackFrom(unpacker);
                                                                                                                                                             }
                                                                                                                                                             else {
                                                                                                                                                                 MsgPack.Unpacker disposable96 = default(MsgPack.Unpacker);
                                                                                                                                                                 disposable96 = unpacker.ReadSubtree();
                                                                                                                                                                 try {
-                                                                                                                                                                    nullable116 = this._serializer56.UnpackFrom(disposable96);
+                                                                                                                                                                    nullable116 = this._serializer41.UnpackFrom(disposable96);
                                                                                                                                                                 }
                                                                                                                                                                 finally {
                                                                                                                                                                     if (((disposable96 == null) 
@@ -3409,13 +3388,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                 }
                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                    nullable115 = this._serializer55.UnpackFrom(unpacker);
+                                                                                                                                                                    nullable115 = this._serializer40.UnpackFrom(unpacker);
                                                                                                                                                                 }
                                                                                                                                                                 else {
                                                                                                                                                                     MsgPack.Unpacker disposable95 = default(MsgPack.Unpacker);
                                                                                                                                                                     disposable95 = unpacker.ReadSubtree();
                                                                                                                                                                     try {
-                                                                                                                                                                        nullable115 = this._serializer55.UnpackFrom(disposable95);
+                                                                                                                                                                        nullable115 = this._serializer40.UnpackFrom(disposable95);
                                                                                                                                                                     }
                                                                                                                                                                     finally {
                                                                                                                                                                         if (((disposable95 == null) 
@@ -3449,13 +3428,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                     }
                                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                        nullable114 = this._serializer54.UnpackFrom(unpacker);
+                                                                                                                                                                        nullable114 = this._serializer39.UnpackFrom(unpacker);
                                                                                                                                                                     }
                                                                                                                                                                     else {
                                                                                                                                                                         MsgPack.Unpacker disposable94 = default(MsgPack.Unpacker);
                                                                                                                                                                         disposable94 = unpacker.ReadSubtree();
                                                                                                                                                                         try {
-                                                                                                                                                                            nullable114 = this._serializer54.UnpackFrom(disposable94);
+                                                                                                                                                                            nullable114 = this._serializer39.UnpackFrom(disposable94);
                                                                                                                                                                         }
                                                                                                                                                                         finally {
                                                                                                                                                                             if (((disposable94 == null) 
@@ -3477,13 +3456,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                         }
                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                            nullable113 = this._serializer53.UnpackFrom(unpacker);
+                                                                                                                                                                            nullable113 = this._serializer38.UnpackFrom(unpacker);
                                                                                                                                                                         }
                                                                                                                                                                         else {
                                                                                                                                                                             MsgPack.Unpacker disposable93 = default(MsgPack.Unpacker);
                                                                                                                                                                             disposable93 = unpacker.ReadSubtree();
                                                                                                                                                                             try {
-                                                                                                                                                                                nullable113 = this._serializer53.UnpackFrom(disposable93);
+                                                                                                                                                                                nullable113 = this._serializer38.UnpackFrom(disposable93);
                                                                                                                                                                             }
                                                                                                                                                                             finally {
                                                                                                                                                                                 if (((disposable93 == null) 
@@ -3517,13 +3496,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                             }
                                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                nullable112 = this._serializer52.UnpackFrom(unpacker);
+                                                                                                                                                                                nullable112 = this._serializer37.UnpackFrom(unpacker);
                                                                                                                                                                             }
                                                                                                                                                                             else {
                                                                                                                                                                                 MsgPack.Unpacker disposable92 = default(MsgPack.Unpacker);
                                                                                                                                                                                 disposable92 = unpacker.ReadSubtree();
                                                                                                                                                                                 try {
-                                                                                                                                                                                    nullable112 = this._serializer52.UnpackFrom(disposable92);
+                                                                                                                                                                                    nullable112 = this._serializer37.UnpackFrom(disposable92);
                                                                                                                                                                                 }
                                                                                                                                                                                 finally {
                                                                                                                                                                                     if (((disposable92 == null) 
@@ -3557,13 +3536,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                 }
                                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                    nullable111 = this._serializer51.UnpackFrom(unpacker);
+                                                                                                                                                                                    nullable111 = this._serializer36.UnpackFrom(unpacker);
                                                                                                                                                                                 }
                                                                                                                                                                                 else {
                                                                                                                                                                                     MsgPack.Unpacker disposable91 = default(MsgPack.Unpacker);
                                                                                                                                                                                     disposable91 = unpacker.ReadSubtree();
                                                                                                                                                                                     try {
-                                                                                                                                                                                        nullable111 = this._serializer51.UnpackFrom(disposable91);
+                                                                                                                                                                                        nullable111 = this._serializer36.UnpackFrom(disposable91);
                                                                                                                                                                                     }
                                                                                                                                                                                     finally {
                                                                                                                                                                                         if (((disposable91 == null) 
@@ -3597,13 +3576,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                     }
                                                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                        nullable110 = this._serializer50.UnpackFrom(unpacker);
+                                                                                                                                                                                        nullable110 = this._serializer35.UnpackFrom(unpacker);
                                                                                                                                                                                     }
                                                                                                                                                                                     else {
                                                                                                                                                                                         MsgPack.Unpacker disposable90 = default(MsgPack.Unpacker);
                                                                                                                                                                                         disposable90 = unpacker.ReadSubtree();
                                                                                                                                                                                         try {
-                                                                                                                                                                                            nullable110 = this._serializer50.UnpackFrom(disposable90);
+                                                                                                                                                                                            nullable110 = this._serializer35.UnpackFrom(disposable90);
                                                                                                                                                                                         }
                                                                                                                                                                                         finally {
                                                                                                                                                                                             if (((disposable90 == null) 
@@ -3637,13 +3616,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                         }
                                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                            nullable109 = this._serializer49.UnpackFrom(unpacker);
+                                                                                                                                                                                            nullable109 = this._serializer34.UnpackFrom(unpacker);
                                                                                                                                                                                         }
                                                                                                                                                                                         else {
                                                                                                                                                                                             MsgPack.Unpacker disposable89 = default(MsgPack.Unpacker);
                                                                                                                                                                                             disposable89 = unpacker.ReadSubtree();
                                                                                                                                                                                             try {
-                                                                                                                                                                                                nullable109 = this._serializer49.UnpackFrom(disposable89);
+                                                                                                                                                                                                nullable109 = this._serializer34.UnpackFrom(disposable89);
                                                                                                                                                                                             }
                                                                                                                                                                                             finally {
                                                                                                                                                                                                 if (((disposable89 == null) 
@@ -3677,13 +3656,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                             }
                                                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                nullable108 = this._serializer48.UnpackFrom(unpacker);
+                                                                                                                                                                                                nullable108 = this._serializer33.UnpackFrom(unpacker);
                                                                                                                                                                                             }
                                                                                                                                                                                             else {
                                                                                                                                                                                                 MsgPack.Unpacker disposable88 = default(MsgPack.Unpacker);
                                                                                                                                                                                                 disposable88 = unpacker.ReadSubtree();
                                                                                                                                                                                                 try {
-                                                                                                                                                                                                    nullable108 = this._serializer48.UnpackFrom(disposable88);
+                                                                                                                                                                                                    nullable108 = this._serializer33.UnpackFrom(disposable88);
                                                                                                                                                                                                 }
                                                                                                                                                                                                 finally {
                                                                                                                                                                                                     if (((disposable88 == null) 
@@ -3717,13 +3696,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                 }
                                                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                    nullable107 = this._serializer47.UnpackFrom(unpacker);
+                                                                                                                                                                                                    nullable107 = this._serializer32.UnpackFrom(unpacker);
                                                                                                                                                                                                 }
                                                                                                                                                                                                 else {
                                                                                                                                                                                                     MsgPack.Unpacker disposable87 = default(MsgPack.Unpacker);
                                                                                                                                                                                                     disposable87 = unpacker.ReadSubtree();
                                                                                                                                                                                                     try {
-                                                                                                                                                                                                        nullable107 = this._serializer47.UnpackFrom(disposable87);
+                                                                                                                                                                                                        nullable107 = this._serializer32.UnpackFrom(disposable87);
                                                                                                                                                                                                     }
                                                                                                                                                                                                     finally {
                                                                                                                                                                                                         if (((disposable87 == null) 
@@ -3757,13 +3736,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                     }
                                                                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                        nullable106 = this._serializer46.UnpackFrom(unpacker);
+                                                                                                                                                                                                        nullable106 = this._serializer31.UnpackFrom(unpacker);
                                                                                                                                                                                                     }
                                                                                                                                                                                                     else {
                                                                                                                                                                                                         MsgPack.Unpacker disposable86 = default(MsgPack.Unpacker);
                                                                                                                                                                                                         disposable86 = unpacker.ReadSubtree();
                                                                                                                                                                                                         try {
-                                                                                                                                                                                                            nullable106 = this._serializer46.UnpackFrom(disposable86);
+                                                                                                                                                                                                            nullable106 = this._serializer31.UnpackFrom(disposable86);
                                                                                                                                                                                                         }
                                                                                                                                                                                                         finally {
                                                                                                                                                                                                             if (((disposable86 == null) 
@@ -3797,13 +3776,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                         }
                                                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                            nullable105 = this._serializer45.UnpackFrom(unpacker);
+                                                                                                                                                                                                            nullable105 = this._serializer30.UnpackFrom(unpacker);
                                                                                                                                                                                                         }
                                                                                                                                                                                                         else {
                                                                                                                                                                                                             MsgPack.Unpacker disposable85 = default(MsgPack.Unpacker);
                                                                                                                                                                                                             disposable85 = unpacker.ReadSubtree();
                                                                                                                                                                                                             try {
-                                                                                                                                                                                                                nullable105 = this._serializer45.UnpackFrom(disposable85);
+                                                                                                                                                                                                                nullable105 = this._serializer30.UnpackFrom(disposable85);
                                                                                                                                                                                                             }
                                                                                                                                                                                                             finally {
                                                                                                                                                                                                                 if (((disposable85 == null) 
@@ -3837,13 +3816,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                             }
                                                                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                nullable104 = this._serializer44.UnpackFrom(unpacker);
+                                                                                                                                                                                                                nullable104 = this._serializer29.UnpackFrom(unpacker);
                                                                                                                                                                                                             }
                                                                                                                                                                                                             else {
                                                                                                                                                                                                                 MsgPack.Unpacker disposable84 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                 disposable84 = unpacker.ReadSubtree();
                                                                                                                                                                                                                 try {
-                                                                                                                                                                                                                    nullable104 = this._serializer44.UnpackFrom(disposable84);
+                                                                                                                                                                                                                    nullable104 = this._serializer29.UnpackFrom(disposable84);
                                                                                                                                                                                                                 }
                                                                                                                                                                                                                 finally {
                                                                                                                                                                                                                     if (((disposable84 == null) 
@@ -3872,13 +3851,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                 }
                                                                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                    nullable103 = this._serializer43.UnpackFrom(unpacker);
+                                                                                                                                                                                                                    nullable103 = this._serializer28.UnpackFrom(unpacker);
                                                                                                                                                                                                                 }
                                                                                                                                                                                                                 else {
                                                                                                                                                                                                                     MsgPack.Unpacker disposable83 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                     disposable83 = unpacker.ReadSubtree();
                                                                                                                                                                                                                     try {
-                                                                                                                                                                                                                        nullable103 = this._serializer43.UnpackFrom(disposable83);
+                                                                                                                                                                                                                        nullable103 = this._serializer28.UnpackFrom(disposable83);
                                                                                                                                                                                                                     }
                                                                                                                                                                                                                     finally {
                                                                                                                                                                                                                         if (((disposable83 == null) 
@@ -3912,13 +3891,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                     }
                                                                                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                        nullable102 = this._serializer42.UnpackFrom(unpacker);
+                                                                                                                                                                                                                        nullable102 = this._serializer27.UnpackFrom(unpacker);
                                                                                                                                                                                                                     }
                                                                                                                                                                                                                     else {
                                                                                                                                                                                                                         MsgPack.Unpacker disposable82 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                         disposable82 = unpacker.ReadSubtree();
                                                                                                                                                                                                                         try {
-                                                                                                                                                                                                                            nullable102 = this._serializer42.UnpackFrom(disposable82);
+                                                                                                                                                                                                                            nullable102 = this._serializer27.UnpackFrom(disposable82);
                                                                                                                                                                                                                         }
                                                                                                                                                                                                                         finally {
                                                                                                                                                                                                                             if (((disposable82 == null) 
@@ -3952,13 +3931,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                         }
                                                                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                            nullable101 = this._serializer41.UnpackFrom(unpacker);
+                                                                                                                                                                                                                            nullable101 = this._serializer26.UnpackFrom(unpacker);
                                                                                                                                                                                                                         }
                                                                                                                                                                                                                         else {
                                                                                                                                                                                                                             MsgPack.Unpacker disposable81 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                             disposable81 = unpacker.ReadSubtree();
                                                                                                                                                                                                                             try {
-                                                                                                                                                                                                                                nullable101 = this._serializer41.UnpackFrom(disposable81);
+                                                                                                                                                                                                                                nullable101 = this._serializer26.UnpackFrom(disposable81);
                                                                                                                                                                                                                             }
                                                                                                                                                                                                                             finally {
                                                                                                                                                                                                                                 if (((disposable81 == null) 
@@ -3992,13 +3971,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                             }
                                                                                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                nullable100 = this._serializer84.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                nullable100 = this._serializer77.UnpackFrom(unpacker);
                                                                                                                                                                                                                             }
                                                                                                                                                                                                                             else {
                                                                                                                                                                                                                                 MsgPack.Unpacker disposable80 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                 disposable80 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                 try {
-                                                                                                                                                                                                                                    nullable100 = this._serializer84.UnpackFrom(disposable80);
+                                                                                                                                                                                                                                    nullable100 = this._serializer77.UnpackFrom(disposable80);
                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                 finally {
                                                                                                                                                                                                                                     if (((disposable80 == null) 
@@ -4019,13 +3998,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                    nullable99 = this._serializer83.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                    nullable99 = this._serializer76.UnpackFrom(unpacker);
                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                 else {
                                                                                                                                                                                                                                     MsgPack.Unpacker disposable79 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                     disposable79 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                     try {
-                                                                                                                                                                                                                                        nullable99 = this._serializer83.UnpackFrom(disposable79);
+                                                                                                                                                                                                                                        nullable99 = this._serializer76.UnpackFrom(disposable79);
                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                     finally {
                                                                                                                                                                                                                                         if (((disposable79 == null) 
@@ -4054,13 +4033,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                            nullable97 = this._serializer37.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                            nullable97 = this._serializer22.UnpackFrom(unpacker);
                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                         else {
                                                                                                                                                                                                                                             MsgPack.Unpacker disposable78 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                             disposable78 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                             try {
-                                                                                                                                                                                                                                                nullable97 = this._serializer37.UnpackFrom(disposable78);
+                                                                                                                                                                                                                                                nullable97 = this._serializer22.UnpackFrom(disposable78);
                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                             finally {
                                                                                                                                                                                                                                                 if (((disposable78 == null) 
@@ -4094,13 +4073,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                nullable96 = this._serializer36.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                nullable96 = this._serializer21.UnpackFrom(unpacker);
                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                             else {
                                                                                                                                                                                                                                                 MsgPack.Unpacker disposable77 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                 disposable77 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                 try {
-                                                                                                                                                                                                                                                    nullable96 = this._serializer36.UnpackFrom(disposable77);
+                                                                                                                                                                                                                                                    nullable96 = this._serializer21.UnpackFrom(disposable77);
                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                 finally {
                                                                                                                                                                                                                                                     if (((disposable77 == null) 
@@ -4134,13 +4113,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                    nullable95 = this._serializer82.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                    nullable95 = this._serializer75.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                 else {
                                                                                                                                                                                                                                                     MsgPack.Unpacker disposable76 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                     disposable76 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                     try {
-                                                                                                                                                                                                                                                        nullable95 = this._serializer82.UnpackFrom(disposable76);
+                                                                                                                                                                                                                                                        nullable95 = this._serializer75.UnpackFrom(disposable76);
                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                     finally {
                                                                                                                                                                                                                                                         if (((disposable76 == null) 
@@ -4161,13 +4140,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                        nullable94 = this._serializer34.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                        nullable94 = this._serializer19.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                     else {
                                                                                                                                                                                                                                                         MsgPack.Unpacker disposable75 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                         disposable75 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                         try {
-                                                                                                                                                                                                                                                            nullable94 = this._serializer34.UnpackFrom(disposable75);
+                                                                                                                                                                                                                                                            nullable94 = this._serializer19.UnpackFrom(disposable75);
                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                         finally {
                                                                                                                                                                                                                                                             if (((disposable75 == null) 
@@ -4201,13 +4180,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                            nullable93 = this._serializer81.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                            nullable93 = this._serializer74.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                         else {
                                                                                                                                                                                                                                                             MsgPack.Unpacker disposable74 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                             disposable74 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                             try {
-                                                                                                                                                                                                                                                                nullable93 = this._serializer81.UnpackFrom(disposable74);
+                                                                                                                                                                                                                                                                nullable93 = this._serializer74.UnpackFrom(disposable74);
                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                             finally {
                                                                                                                                                                                                                                                                 if (((disposable74 == null) 
@@ -4228,13 +4207,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                nullable92 = this._serializer80.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                nullable92 = this._serializer73.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                             else {
                                                                                                                                                                                                                                                                 MsgPack.Unpacker disposable73 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                 disposable73 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                 try {
-                                                                                                                                                                                                                                                                    nullable92 = this._serializer80.UnpackFrom(disposable73);
+                                                                                                                                                                                                                                                                    nullable92 = this._serializer73.UnpackFrom(disposable73);
                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                 finally {
                                                                                                                                                                                                                                                                     if (((disposable73 == null) 
@@ -4255,13 +4234,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                    nullable91 = this._serializer4.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                    nullable91 = this._serializer72.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                 else {
                                                                                                                                                                                                                                                                     MsgPack.Unpacker disposable72 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                     disposable72 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                     try {
-                                                                                                                                                                                                                                                                        nullable91 = this._serializer4.UnpackFrom(disposable72);
+                                                                                                                                                                                                                                                                        nullable91 = this._serializer72.UnpackFrom(disposable72);
                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                     finally {
                                                                                                                                                                                                                                                                         if (((disposable72 == null) 
@@ -4282,13 +4261,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                        nullable90 = this._serializer79.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                        nullable90 = this._serializer71.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                     else {
                                                                                                                                                                                                                                                                         MsgPack.Unpacker disposable71 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                         disposable71 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                         try {
-                                                                                                                                                                                                                                                                            nullable90 = this._serializer79.UnpackFrom(disposable71);
+                                                                                                                                                                                                                                                                            nullable90 = this._serializer71.UnpackFrom(disposable71);
                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                         finally {
                                                                                                                                                                                                                                                                             if (((disposable71 == null) 
@@ -4309,13 +4288,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                            nullable89 = this._serializer30.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                            nullable89 = this._serializer14.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                         else {
                                                                                                                                                                                                                                                                             MsgPack.Unpacker disposable70 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                             disposable70 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                             try {
-                                                                                                                                                                                                                                                                                nullable89 = this._serializer30.UnpackFrom(disposable70);
+                                                                                                                                                                                                                                                                                nullable89 = this._serializer14.UnpackFrom(disposable70);
                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                             finally {
                                                                                                                                                                                                                                                                                 if (((disposable70 == null) 
@@ -4349,13 +4328,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                nullable88 = this._serializer29.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                nullable88 = this._serializer13.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                             else {
                                                                                                                                                                                                                                                                                 MsgPack.Unpacker disposable69 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                 disposable69 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                 try {
-                                                                                                                                                                                                                                                                                    nullable88 = this._serializer29.UnpackFrom(disposable69);
+                                                                                                                                                                                                                                                                                    nullable88 = this._serializer13.UnpackFrom(disposable69);
                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                 finally {
                                                                                                                                                                                                                                                                                     if (((disposable69 == null) 
@@ -4389,13 +4368,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                    nullable87 = this._serializer28.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                    nullable87 = this._serializer12.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                 else {
                                                                                                                                                                                                                                                                                     MsgPack.Unpacker disposable68 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                     disposable68 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                     try {
-                                                                                                                                                                                                                                                                                        nullable87 = this._serializer28.UnpackFrom(disposable68);
+                                                                                                                                                                                                                                                                                        nullable87 = this._serializer12.UnpackFrom(disposable68);
                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                     finally {
                                                                                                                                                                                                                                                                                         if (((disposable68 == null) 
@@ -4429,13 +4408,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                        nullable86 = this._serializer78.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                        nullable86 = this._serializer70.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                     else {
                                                                                                                                                                                                                                                                                         MsgPack.Unpacker disposable67 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                         disposable67 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                         try {
-                                                                                                                                                                                                                                                                                            nullable86 = this._serializer78.UnpackFrom(disposable67);
+                                                                                                                                                                                                                                                                                            nullable86 = this._serializer70.UnpackFrom(disposable67);
                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                         finally {
                                                                                                                                                                                                                                                                                             if (((disposable67 == null) 
@@ -4456,13 +4435,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                            nullable85 = this._serializer26.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                            nullable85 = this._serializer10.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                         else {
                                                                                                                                                                                                                                                                                             MsgPack.Unpacker disposable66 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                             disposable66 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                             try {
-                                                                                                                                                                                                                                                                                                nullable85 = this._serializer26.UnpackFrom(disposable66);
+                                                                                                                                                                                                                                                                                                nullable85 = this._serializer10.UnpackFrom(disposable66);
                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                             finally {
                                                                                                                                                                                                                                                                                                 if (((disposable66 == null) 
@@ -4501,13 +4480,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                        nullable82 = this._serializer77.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                                        nullable82 = this._serializer69.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                     else {
                                                                                                                                                                                                                                                                                                         MsgPack.Unpacker disposable65 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                                         disposable65 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                                         try {
-                                                                                                                                                                                                                                                                                                            nullable82 = this._serializer77.UnpackFrom(disposable65);
+                                                                                                                                                                                                                                                                                                            nullable82 = this._serializer69.UnpackFrom(disposable65);
                                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                                         finally {
                                                                                                                                                                                                                                                                                                             if (((disposable65 == null) 
@@ -4528,13 +4507,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                            nullable81 = this._serializer76.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                                            nullable81 = this._serializer68.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                                         else {
                                                                                                                                                                                                                                                                                                             MsgPack.Unpacker disposable64 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                                             disposable64 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                                             try {
-                                                                                                                                                                                                                                                                                                                nullable81 = this._serializer76.UnpackFrom(disposable64);
+                                                                                                                                                                                                                                                                                                                nullable81 = this._serializer68.UnpackFrom(disposable64);
                                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                                             finally {
                                                                                                                                                                                                                                                                                                                 if (((disposable64 == null) 
@@ -4555,13 +4534,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                nullable80 = this._serializer75.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                                                nullable80 = this._serializer67.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                                             else {
                                                                                                                                                                                                                                                                                                                 MsgPack.Unpacker disposable63 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                                                 disposable63 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                                                 try {
-                                                                                                                                                                                                                                                                                                                    nullable80 = this._serializer75.UnpackFrom(disposable63);
+                                                                                                                                                                                                                                                                                                                    nullable80 = this._serializer67.UnpackFrom(disposable63);
                                                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                                                 finally {
                                                                                                                                                                                                                                                                                                                     if (((disposable63 == null) 
@@ -4582,13 +4561,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                    nullable79 = this._serializer74.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                                                    nullable79 = this._serializer66.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                                                 else {
                                                                                                                                                                                                                                                                                                                     MsgPack.Unpacker disposable62 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                                                     disposable62 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                                                     try {
-                                                                                                                                                                                                                                                                                                                        nullable79 = this._serializer74.UnpackFrom(disposable62);
+                                                                                                                                                                                                                                                                                                                        nullable79 = this._serializer66.UnpackFrom(disposable62);
                                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                                     finally {
                                                                                                                                                                                                                                                                                                                         if (((disposable62 == null) 
@@ -4609,13 +4588,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                                     if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                                                 && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                        nullable78 = this._serializer20.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                                                        nullable78 = this._serializer3.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                                     else {
                                                                                                                                                                                                                                                                                                                         MsgPack.Unpacker disposable61 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                                                         disposable61 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                                                         try {
-                                                                                                                                                                                                                                                                                                                            nullable78 = this._serializer20.UnpackFrom(disposable61);
+                                                                                                                                                                                                                                                                                                                            nullable78 = this._serializer3.UnpackFrom(disposable61);
                                                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                                                         finally {
                                                                                                                                                                                                                                                                                                                             if (((disposable61 == null) 
@@ -4644,13 +4623,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                                                         if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                                                     && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                            nullable77 = this._serializer19.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                                                            nullable77 = this._serializer2.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                                                         else {
                                                                                                                                                                                                                                                                                                                             MsgPack.Unpacker disposable60 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                                                             disposable60 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                                                             try {
-                                                                                                                                                                                                                                                                                                                                nullable77 = this._serializer19.UnpackFrom(disposable60);
+                                                                                                                                                                                                                                                                                                                                nullable77 = this._serializer2.UnpackFrom(disposable60);
                                                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                                                             finally {
                                                                                                                                                                                                                                                                                                                                 if (((disposable60 == null) 
@@ -4684,13 +4663,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                                                             if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                                                         && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                                nullable76 = this._serializer18.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                                                                nullable76 = this._serializer1.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                                                             else {
                                                                                                                                                                                                                                                                                                                                 MsgPack.Unpacker disposable59 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                                                                 disposable59 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                                                                 try {
-                                                                                                                                                                                                                                                                                                                                    nullable76 = this._serializer18.UnpackFrom(disposable59);
+                                                                                                                                                                                                                                                                                                                                    nullable76 = this._serializer1.UnpackFrom(disposable59);
                                                                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                                                                 finally {
                                                                                                                                                                                                                                                                                                                                     if (((disposable59 == null) 
@@ -4724,13 +4703,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                                                                 if (((unpacker.IsArrayHeader == false) 
                                                                                                                                                                                                                                                                                                                                             && (unpacker.IsMapHeader == false))) {
-                                                                                                                                                                                                                                                                                                                                    nullable75 = this._serializer17.UnpackFrom(unpacker);
+                                                                                                                                                                                                                                                                                                                                    nullable75 = this._serializer0.UnpackFrom(unpacker);
                                                                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                                                                 else {
                                                                                                                                                                                                                                                                                                                                     MsgPack.Unpacker disposable58 = default(MsgPack.Unpacker);
                                                                                                                                                                                                                                                                                                                                     disposable58 = unpacker.ReadSubtree();
                                                                                                                                                                                                                                                                                                                                     try {
-                                                                                                                                                                                                                                                                                                                                        nullable75 = this._serializer17.UnpackFrom(disposable58);
+                                                                                                                                                                                                                                                                                                                                        nullable75 = this._serializer0.UnpackFrom(disposable58);
                                                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                                                     finally {
                                                                                                                                                                                                                                                                                                                                         if (((disposable58 == null) 

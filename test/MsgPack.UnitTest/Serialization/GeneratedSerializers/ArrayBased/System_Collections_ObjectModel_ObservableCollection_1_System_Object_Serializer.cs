@@ -15,18 +15,12 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer : MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.ObservableCollection<object>> {
         
-        private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer0;
-        
-        private MsgPack.Serialization.MessagePackSerializer<object> _serializer1;
-        
-        private MsgPack.Serialization.MessagePackSerializer<object[][]> _serializer2;
+        private MsgPack.Serialization.MessagePackSerializer<object> _serializer0;
         
         public System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer(MsgPack.Serialization.SerializationContext context) : 
                 base(System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
             MsgPack.Serialization.SerializationContext safeContext = System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<object[]>();
-            this._serializer1 = safeContext.GetSerializer<object>();
-            this._serializer2 = safeContext.GetSerializer<object[][]>();
+            this._serializer0 = safeContext.GetSerializer<object>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.ObjectModel.ObservableCollection<object> objectTree) {
@@ -38,7 +32,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                 ; enumerator.MoveNext(); 
                 ) {
                     current = enumerator.Current;
-                    this._serializer1.PackTo(packer, current);
+                    this._serializer0.PackTo(packer, current);
                 }
             }
             finally {
@@ -69,13 +63,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                 }
                 if (((unpacker.IsArrayHeader == false) 
                             && (unpacker.IsMapHeader == false))) {
-                    nullable = this._serializer1.UnpackFrom(unpacker);
+                    nullable = this._serializer0.UnpackFrom(unpacker);
                 }
                 else {
                     MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
                     disposable = unpacker.ReadSubtree();
                     try {
-                        nullable = this._serializer1.UnpackFrom(disposable);
+                        nullable = this._serializer0.UnpackFrom(disposable);
                     }
                     finally {
                         if (((disposable == null) 

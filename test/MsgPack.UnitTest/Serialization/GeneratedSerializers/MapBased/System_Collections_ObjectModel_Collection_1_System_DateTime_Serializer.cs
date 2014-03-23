@@ -15,30 +15,15 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class System_Collections_ObjectModel_Collection_1_System_DateTime_Serializer : MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.Collection<System.DateTime>> {
         
-        private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer0;
+        private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer0;
         
-        private MsgPack.Serialization.MessagePackSerializer<object> _serializer1;
-        
-        private MsgPack.Serialization.MessagePackSerializer<object[][]> _serializer2;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime[]> _serializer3;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer4;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime[][]> _serializer5;
-        
-        private MsgPack.Serialization.MessagePackSerializer<System.DateTime> _serializer6;
+        private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer1;
         
         public System_Collections_ObjectModel_Collection_1_System_DateTime_Serializer(MsgPack.Serialization.SerializationContext context) : 
                 base(System_Collections_ObjectModel_Collection_1_System_DateTime_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
             MsgPack.Serialization.SerializationContext safeContext = System_Collections_ObjectModel_Collection_1_System_DateTime_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<object[]>();
-            this._serializer1 = safeContext.GetSerializer<object>();
-            this._serializer2 = safeContext.GetSerializer<object[][]>();
-            this._serializer3 = safeContext.GetSerializer<System.DateTime[]>();
-            this._serializer4 = safeContext.GetSerializer<System.Nullable<System.DateTime>>();
-            this._serializer5 = safeContext.GetSerializer<System.DateTime[][]>();
-            this._serializer6 = safeContext.GetSerializer<System.DateTime>();
+            this._serializer0 = safeContext.GetSerializer<System.DateTime>();
+            this._serializer1 = safeContext.GetSerializer<System.Nullable<System.DateTime>>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.ObjectModel.Collection<System.DateTime> objectTree) {
@@ -50,7 +35,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                 ; enumerator.MoveNext(); 
                 ) {
                     current = enumerator.Current;
-                    this._serializer6.PackTo(packer, current);
+                    this._serializer0.PackTo(packer, current);
                 }
             }
             finally {
@@ -81,13 +66,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                 }
                 if (((unpacker.IsArrayHeader == false) 
                             && (unpacker.IsMapHeader == false))) {
-                    nullable = this._serializer4.UnpackFrom(unpacker);
+                    nullable = this._serializer1.UnpackFrom(unpacker);
                 }
                 else {
                     MsgPack.Unpacker disposable = default(MsgPack.Unpacker);
                     disposable = unpacker.ReadSubtree();
                     try {
-                        nullable = this._serializer4.UnpackFrom(disposable);
+                        nullable = this._serializer1.UnpackFrom(disposable);
                     }
                     finally {
                         if (((disposable == null) 
