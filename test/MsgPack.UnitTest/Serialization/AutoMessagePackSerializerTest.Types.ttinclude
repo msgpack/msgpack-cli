@@ -10,6 +10,16 @@
 <#+
 void GenerateTypes()
 {
+	GenerateTypesCore( false );
+}
+
+void GenerateTypesForIos()
+{
+	GenerateTypesCore( true );
+}
+
+private void GenerateTypesCore( bool forIos )
+{
 	var __fields =
 		new Tuple<Object, string, string, bool>[]
 		{
@@ -125,6 +135,13 @@ void GenerateTypes()
 		}
 
 		var __asType = __item.Item1 as Type;
+
+		if( __desktopOnly.Contains( __asType ) && forIos )
+		{
+			// skip
+			continue;
+		}
+
 		if( __asType != null && __desktopOnly.Contains( __asType ) )
 		{
 #>

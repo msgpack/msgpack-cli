@@ -313,6 +313,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\StringKeyedCollection.cs">
       <Link>Serialization\StringKeyedCollection.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TestValueType.cs">
+      <Link>Serialization\TestValueType.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs">
       <Link>Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs</Link>
     </Compile>

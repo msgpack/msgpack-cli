@@ -1,12 +1,22 @@
 ﻿<#+ 
 void Geneate( string serializationMethod, string emitterFlavor, string builderTypeName, bool canDump )
 {
+	GenerateCore( serializationMethod, emitterFlavor, builderTypeName, canDump, false );
+}
+
+void GeneateForIos( string serializationMethod )
+{
+	GenerateCore( serializationMethod, "GenerationBased", null, false, true );
+}
+
+private void GenerateCore( string serializationMethod, string emitterFlavor, string builderTypeName, bool canDump, bool forIos )
+{
 #>
 #region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -60,16 +70,61 @@ namespace MsgPack.Serialization
 	[Timeout( 30000 )]
 	public class <#= serializationMethod #><#= emitterFlavor #>AutoMessagePackSerializerTest
 	{
+<#+
+	if ( forIos )
+	{
+#>
+		private static readonly SerializationContext _cachedContext = new SerializationContext() { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
+<#+
+	}
+#>
+
 		private SerializationContext GetSerializationContext()
 		{
+<#+
+	if ( !forIos )
+	{
+#>
 			return new SerializationContext() { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
+<#+
+	}
+	else
+	{
+#>
+			return _cachedContext;
+<#+
+	}
+#>
 		}
+
+		private SerializationContext  NewSerializationContext()
+		{
+			return new SerializationContext();
+		}
+
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
+<#+
+	if ( !forIos )
+	{
+#>
 			return new AutoMessagePackSerializer<T>( context, new <#= builderTypeName #><T>() );
+<#+
+	}
+	else
+	{
+#>
+			return PreGeneratedSerializerActivator.Create<T>( context );
+<#+
+	}
+#>
 		}
 		
+<#+
+	if ( !forIos )
+	{
+#>
 		private bool CanDump
 		{
 			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
@@ -120,6 +175,9 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif
+<#+
+	} // if !forIos
+#>
 
 		[Test]
 		public void TestUnpackTo()
@@ -214,6 +272,11 @@ namespace MsgPack.Serialization
 			TestCoreWithVerify( target, context );
 		}
 
+<#+
+	if ( !forIos )
+	{
+		// Not needed because generation itself has been done.
+#>
 		[Test]
 		public void TestTypeWithMissingMessagePackMemberAttributeMember()
 		{
@@ -393,6 +456,9 @@ namespace MsgPack.Serialization
 				Assert.That( unpacked.Member, Is.EqualTo( value.Member ) );
 			}
 		}
+<#+
+	}
+#>
 
 		[Test]
 		public void TestEnum()
@@ -643,6 +709,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+<#+
+	if ( !forIos )
+	{
+		// Not needed because generation itself has been done.
+#>
 		[Test]
 		public void TestHasInitOnlyField_Fail()
 		{
@@ -654,6 +725,9 @@ namespace MsgPack.Serialization
 		{
 			Assert.Throws<SerializationException>( () => this.CreateTarget<HasGetOnlyProperty>( GetSerializationContext() ) );
 		}
+<#+
+	}
+#>
 
 		[Test]
 		public void TestCollection_Success()
@@ -697,6 +771,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+<#+
+	if ( !forIos )
+	{
+		// Not needed because generation itself has been done.
+#>
 		[Test]
 		public void TestPackable_PackToMessageUsed()
 		{
@@ -740,11 +819,27 @@ namespace MsgPack.Serialization
 				serializer.Unpack( stream );
 			}
 		}
+<#+
+	}
+#>
 
 		[Test]
 		public void TestBinary_DefaultContext()
 		{
+<#+
+	if ( !forIos )
+	{
+#>
 			var serializer = MessagePackSerializer.Create<byte[]>();
+<#+
+	}
+	else
+	{
+#>
+			var serializer = PreGeneratedSerializerActivator.Create<byte[]>();
+<#+
+	}
+#>
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1 } );
@@ -755,7 +850,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<byte[]>( context );
 			using ( var stream = new MemoryStream() )
@@ -768,7 +863,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_DefaultContext()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			var serializer = MessagePackSerializer.Create<DateTime>( context );
 			using ( var stream = new MemoryStream() )
@@ -784,7 +879,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<DateTime>( context );
@@ -801,7 +896,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_Default_Success()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
 			using ( var stream = new MemoryStream() )
@@ -819,7 +914,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_WithoutRegistration_Fail()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractCollection<int>>( context ) );
@@ -828,7 +923,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistration_Success()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
@@ -847,7 +942,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistrationForSpecific_Success()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer1 = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
@@ -879,7 +974,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_NotACollection_Fail()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractNonCollection>( context ) );
 		}
@@ -914,12 +1009,6 @@ namespace MsgPack.Serialization
 				buffer.Position = 0;
 				unpacked.Verify( buffer );
 			}
-		}
-		public struct TestValueType
-		{
-			public string StringField;
-			public int[] Int32ArrayField;
-			public Dictionary<int, int> DictionaryField;
 		}
 
 		public class HasInitOnlyField

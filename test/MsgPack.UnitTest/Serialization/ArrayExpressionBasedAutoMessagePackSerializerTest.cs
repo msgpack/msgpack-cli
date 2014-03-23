@@ -4,7 +4,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -58,10 +58,17 @@ namespace MsgPack.Serialization
 	[Timeout( 30000 )]
 	public class ArrayExpressionBasedAutoMessagePackSerializerTest
 	{
+
 		private SerializationContext GetSerializationContext()
 		{
 			return new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ExpressionBased };
 		}
+
+		private SerializationContext  NewSerializationContext()
+		{
+			return new SerializationContext();
+		}
+
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
@@ -753,7 +760,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<byte[]>( context );
 			using ( var stream = new MemoryStream() )
@@ -766,7 +773,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_DefaultContext()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			var serializer = MessagePackSerializer.Create<DateTime>( context );
 			using ( var stream = new MemoryStream() )
@@ -782,7 +789,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<DateTime>( context );
@@ -799,7 +806,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_Default_Success()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
 			using ( var stream = new MemoryStream() )
@@ -817,7 +824,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_WithoutRegistration_Fail()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractCollection<int>>( context ) );
@@ -826,7 +833,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistration_Success()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
@@ -845,7 +852,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistrationForSpecific_Success()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer1 = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
@@ -877,7 +884,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_NotACollection_Fail()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractNonCollection>( context ) );
 		}
@@ -912,12 +919,6 @@ namespace MsgPack.Serialization
 				buffer.Position = 0;
 				unpacked.Verify( buffer );
 			}
-		}
-		public struct TestValueType
-		{
-			public string StringField;
-			public int[] Int32ArrayField;
-			public Dictionary<int, int> DictionaryField;
 		}
 
 		public class HasInitOnlyField

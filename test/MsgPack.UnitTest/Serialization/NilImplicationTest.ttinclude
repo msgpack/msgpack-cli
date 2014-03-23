@@ -1,12 +1,22 @@
 ﻿<#+ 
 void Geneate( string emitterFlavor )
 {
+	GenerateCore( emitterFlavor, false );
+}
+
+void GeneateForIos()
+{
+	GenerateCore( "GenerationBased", true );
+}
+
+private void GenerateCore( string emitterFlavor, bool forIos )
+{
 #>
 #region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,6 +37,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+<#+
+	if ( !forIos )
+	{
+#>
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #endif
@@ -39,11 +53,26 @@ using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
+<#+
+	}
+	else
+	{
+#>
+using NUnit.Framework;
+<#+
+	}
+#>
 
 namespace MsgPack.Serialization
 {
 	public abstract class <#= emitterFlavor #>NilImplicationTest
 	{
+<#+
+	var factory = !forIos ? "MessagePackSerializer" : "PreGeneratedSerializerActivator";
+
+	if ( !forIos )
+	{
+#>
 #if !NETFX_CORE
 
 #if MSTEST
@@ -90,39 +119,42 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif
+<#+
+	} // if !forIos
+#>
 
 		// ------ Creation ------
 
 		[Test]
 		public void TestCreation_ValueType_OnlyNullIsInvalid()
 		{
-			Assert.NotNull( MessagePackSerializer.Create<NilImplicationTestTargetForValueTypeMemberDefault>( this.CreateSerializationContext() ) );
+			Assert.NotNull( <#= factory #>.Create<NilImplicationTestTargetForValueTypeMemberDefault>( this.CreateSerializationContext() ) );
 			Assert.Throws<SerializationException>(
-				() => MessagePackSerializer.Create<NilImplicationTestTargetForValueTypeNull>( this.CreateSerializationContext() )
+				() => <#= factory #>.Create<NilImplicationTestTargetForValueTypeNull>( this.CreateSerializationContext() )
 			);
-			Assert.NotNull( MessagePackSerializer.Create<NilImplicationTestTargetForValueTypeProhibit>( this.CreateSerializationContext() ) );
+			Assert.NotNull( <#= factory #>.Create<NilImplicationTestTargetForValueTypeProhibit>( this.CreateSerializationContext() ) );
 		}
 
 		[Test]
 		public void TestCreation_ReferenceType_AllOk()
 		{
-			Assert.NotNull( MessagePackSerializer.Create<NilImplicationTestTargetForReferenceType>( this.CreateSerializationContext() ) );
+			Assert.NotNull( <#= factory #>.Create<NilImplicationTestTargetForReferenceType>( this.CreateSerializationContext() ) );
 		}
 
 		[Test]
 		public void TestCreation_NullableValueType_AllOk()
 		{
-			Assert.NotNull( MessagePackSerializer.Create<NilImplicationTestTargetForNullableValueType>( this.CreateSerializationContext() ) );
+			Assert.NotNull( <#= factory #>.Create<NilImplicationTestTargetForNullableValueType>( this.CreateSerializationContext() ) );
 		}
 
 		[Test]
 		public void TestCreation_ReadOnlyCollectionProperty_OnlyNullIsInvalid()
 		{
-			Assert.NotNull( MessagePackSerializer.Create<NilImplicationTestTargetForReadOnlyCollectionPropertyMemberDefault>( this.CreateSerializationContext() ) );
+			Assert.NotNull( <#= factory #>.Create<NilImplicationTestTargetForReadOnlyCollectionPropertyMemberDefault>( this.CreateSerializationContext() ) );
 			Assert.Throws<SerializationException>(
-				() => MessagePackSerializer.Create<NilImplicationTestTargetForReadOnlyCollectionPropertyNull>( this.CreateSerializationContext() )
+				() => <#= factory #>.Create<NilImplicationTestTargetForReadOnlyCollectionPropertyNull>( this.CreateSerializationContext() )
 			);
-			Assert.NotNull( MessagePackSerializer.Create<NilImplicationTestTargetForReadOnlyCollectionPropertyProhibit>( this.CreateSerializationContext() ) );
+			Assert.NotNull( <#= factory #>.Create<NilImplicationTestTargetForReadOnlyCollectionPropertyProhibit>( this.CreateSerializationContext() ) );
 		}
 
 		// ------ Packing ------
@@ -136,7 +168,7 @@ namespace MsgPack.Serialization
 		{
 			var context = this.CreateSerializationContext();
 			context.SerializationMethod = method;
-			var seraizlier = MessagePackSerializer.Create<T>( context );
+			var seraizlier = <#= factory #>.Create<T>( context );
 
 			using ( var buffer = new MemoryStream() )
 			{
@@ -242,7 +274,7 @@ namespace MsgPack.Serialization
 		{
 			var context = this.CreateSerializationContext();
 			context.SerializationMethod = method;
-			var seraizlier = MessagePackSerializer.Create<T>( context );
+			var seraizlier = <#= factory #>.Create<T>( context );
 
 			using ( var buffer = new MemoryStream() )
 			{
@@ -281,7 +313,7 @@ namespace MsgPack.Serialization
 		{
 			var context = this.CreateSerializationContext();
 			context.SerializationMethod = method;
-			var seraizlier = MessagePackSerializer.Create<T>( context );
+			var seraizlier = <#= factory #>.Create<T>( context );
 
 			using ( var buffer = new MemoryStream() )
 			{
@@ -523,7 +555,7 @@ namespace MsgPack.Serialization
 
 				var context = this.CreateSerializationContext();
 				context.SerializationMethod = SerializationMethod.Map;
-				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( context );
+				var target = <#= factory #>.Create<ComplexTypeWithTwoMember>( context );
 				var result = target.Unpack( buffer );
 
 				Assert.That( result.Value1, Is.EqualTo( valueOfValue1 ) );
@@ -554,7 +586,7 @@ namespace MsgPack.Serialization
 
 				var context = this.CreateSerializationContext();
 				context.SerializationMethod = SerializationMethod.Map;
-				var target = MessagePackSerializer.Create<ComplexTypeWithTwoMember>( context );
+				var target = <#= factory #>.Create<ComplexTypeWithTwoMember>( context );
 				var result = target.Unpack( buffer );
 
 				Assert.That( result.Value1, Is.EqualTo( valueOfValue1 ) );
@@ -564,7 +596,20 @@ namespace MsgPack.Serialization
 
 		private SerializationContext CreateSerializationContext()
 		{
+<#+
+	if ( !forIos )
+	{
+#>
 			return new SerializationContext { EmitterFlavor = EmitterFlavor.<#= emitterFlavor #> };
+<#+
+	}
+	else
+	{
+#>
+			return new SerializationContext();
+<#+
+	}
+#>
 		}
 	}
 }	

@@ -1,0 +1,121 @@
+﻿<#@ template hostSpecific="false"#>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Numerics" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Numerics" #> 
+<#
+var collectionElementTypes =
+	new []
+	{
+		typeof( object ).FullName,
+		typeof( DateTime ).FullName,
+		"MessagePackObject",
+		typeof( int ).FullName,
+	};
+
+var targetTypes =
+	new string[]
+	{
+		"ComplexType",
+		"ComplexTypeGenerated",
+		"ComplexTypeGeneratedEnclosure",
+		"ComplexTypeWithDataContract",
+		"ComplexTypeWithDataContractWithOrder",
+		"ComplexTypeWithOneBaseOrder",
+		"ComplexTypeWithNonSerialized",
+		"ComplexTypeWithTwoMember",
+		"ComplexTypeWithoutAnyAttribute",
+		"DataMemberAttributeNamedPropertyTestTarget",
+		"Image",
+		"TestValueType",
+		"Object",
+		"MessagePackObject",
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+
+namespace MsgPack.Serialization
+{
+	internal static partial class PreGeneratedSerializerActivator
+	{
+		private static IList<Type> InitializeKnownTypes()
+		{
+			var result = new List<Type>();
+<#
+	foreach ( var collectionElementType in collectionElementTypes )
+	{
+#>
+			result.Add( typeof( AddOnlyCollection<#= "<" + collectionElementType + ">" #> ) ); 
+			result.Add( typeof( AddOnlyCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
+			result.Add( typeof( SimpleCollection<#= "<" + collectionElementType + ">" #> ) ); 
+			result.Add( typeof( SimpleCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
+			result.Add( typeof( Collection<#= "<" + collectionElementType + ">" #> ) ); 
+			result.Add( typeof( Collection<#= "<" + collectionElementType + "[]>" #> ) ); 
+			//result.Add( typeof( ICollection<#= "<" + collectionElementType + ">" #> ) ); 
+			//result.Add( typeof( ICollection<#= "<" + collectionElementType + "[]>" #> ) ); 
+			result.Add( typeof( List<#= "<" + collectionElementType + ">" #> ) ); 
+			result.Add( typeof( List<#= "<" + collectionElementType + "[]>" #> ) ); 
+			//result.Add( typeof( IList<#= "<" + collectionElementType + ">" #> ) ); 
+			//result.Add( typeof( IList<#= "<" + collectionElementType + "[]>" #> ) ); 
+			result.Add( typeof( HashSet<#= "<" + collectionElementType + ">" #> ) ); 
+			result.Add( typeof( HashSet<#= "<" + collectionElementType + "[]>" #> ) ); 
+			//result.Add( typeof( ISet<#= "<" + collectionElementType + ">" #> ) ); 
+			//result.Add( typeof( ISet<#= "<" + collectionElementType + "[]>" #> ) ); 
+			result.Add( typeof( ObservableCollection<#= "<" + collectionElementType + ">" #> ) ); 
+			result.Add( typeof( ObservableCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
+			result.Add( typeof( StringKeyedCollection<#= "<" + collectionElementType + ">" #> ) ); 
+			result.Add( typeof( StringKeyedCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
+<#
+	}
+#>
+			result.Add( typeof( Dictionary<MessagePackObject, MessagePackObject> ) );
+			result.Add( typeof( Dictionary<object, object> ) );
+			result.Add( typeof( Dictionary<String, DateTime> ) );
+			//result.Add( typeof( IDictionary<MessagePackObject, MessagePackObject> ) );
+			//result.Add( typeof( IDictionary<object, object> ) );
+			//result.Add( typeof( IDictionary<String, DateTime> ) );
+			result.Add( typeof( Dictionary<String, int> ) );
+<#
+	foreach ( var targetType in targetTypes )
+	{
+#>
+			result.Add( typeof( <#= targetType #> ) ); 
+			//result.Add( typeof( <#= targetType #>[] ) ); 
+<#
+	}
+#>
+			return result;
+		}
+	}
+}
