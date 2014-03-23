@@ -19,12 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -33,7 +27,8 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	internal class PreGeneratedSerializerGenerator
 	{
-		[Test]
+		// To test generated serializers, enable this test and run, then copy bin/Debug/MsgPack contents to project's Serialization/GeneratedSerializers/ directory.
+		//[Test]
 		public void GenerateFiles()
 		{
 			SerializerGenerator.GenerateCode(
