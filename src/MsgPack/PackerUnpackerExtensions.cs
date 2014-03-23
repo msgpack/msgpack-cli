@@ -217,7 +217,7 @@ namespace MsgPack
 
 			Contract.EndContractBlock();
 
-			PackObjectCore( source, value, new SerializationContext() );
+			PackObjectCore( source, value, SerializationContext.Default );
 		}
 
 		/// <summary>
