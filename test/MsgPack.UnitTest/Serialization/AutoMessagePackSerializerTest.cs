@@ -1110,7 +1110,7 @@ namespace MsgPack.Serialization
 				MessagePackSerializer<object[]> context =
 					serializationContext.GetSerializer<object[]>();
 
-				byte[] packed = context.PackSingleObject( array ); // throws NullReferenceException
+				byte[] packed = context.PackSingleObject( array ); 
 				object[] unpacked = context.UnpackSingleObject( packed );
 
 				Assert.That( unpacked.Length, Is.EqualTo( 2 ) );
@@ -1532,7 +1532,10 @@ namespace MsgPack.Serialization
 						case "Children":
 						{
 							Assert.That( unpacker.Read() );
-							person.Children = this.UnpackPeople( unpacker );
+							if ( !unpacker.LastReadData.IsNil )
+							{
+								person.Children = this.UnpackPeople( unpacker );
+							}
 							break;
 						}
 					}
