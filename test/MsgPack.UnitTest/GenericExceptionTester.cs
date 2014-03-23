@@ -128,9 +128,9 @@ namespace MsgPack
 			this.TestMessageConstructor_WithNull_SetToDefaultMessage();
 			this.TestInnerExceptionConstructor_WithMessageAndInnerException_SetToMessageAndInnerException();
 			this.TestInnerExceptionConstructor_Null_SetToDefaultMessageAndNullInnerException();
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !UNIOS
 			this.TestSerialization();
-#endif
+#endif // if !NETFX_CORE && !XAMIOS && !UNIOS
 		}
 
 		private void TestDefaultConstructor()
@@ -201,7 +201,7 @@ namespace MsgPack
 			}
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !UNIOS
 		private void TestSerialization()
 		{
 			Assert.That( typeof( T ), Is.BinarySerializable );
@@ -288,7 +288,7 @@ namespace MsgPack
 			
 			return permissions;
 		}
-#endif
+#endif // if MONO || NETFX_35
 
 		public static void TestSerializationOnPartialTrustCore()
 		{
@@ -308,6 +308,6 @@ namespace MsgPack
 			var assemblyName = type.Assembly.GetName();
 			return new StrongName( new StrongNamePublicKeyBlob( assemblyName.GetPublicKey() ), assemblyName.Name, assemblyName.Version );
 		}
-#endif
+#endif // if !NETFX_CORE && !XAMIOS && !UNIOS
 	}
 }

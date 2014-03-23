@@ -151,7 +151,7 @@ namespace MsgPack
 			Console.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !UNIOS
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -173,7 +173,7 @@ namespace MsgPack
 #else
 			evidence.AddHostEvidence( new Zone( SecurityZone.Internet ) );
 			var permisions = SecurityManager.GetStandardSandbox( evidence );
-#endif
+#endif // if MONO || NETFX_35
 			AppDomain workerDomain = AppDomain.CreateDomain( "PartialTrust", evidence, appDomainSetUp, permisions, GetStrongName( this.GetType() ) );
 			try
 			{
@@ -182,7 +182,7 @@ namespace MsgPack
 #if !MONO
 				// P/Invoke is not disabled on Mono even if in the InternetZone.
 				Assert.That( ( bool )workerDomain.GetData( "MessagePackString.IsFastEqualsDisabled" ), Is.True );
-#endif
+#endif // if !MONO
 				Console.WriteLine( "TestEqualsPartialTrust" );
 				ShowResult( workerDomain.GetData( "TestEqualsWorker.Performance" ) as Tuple<double, double, double, double> );
 			}
@@ -213,7 +213,7 @@ namespace MsgPack
 					SecurityPermissionFlag.Execution
 #if NETFX_35
 					| SecurityPermissionFlag.SkipVerification
-#endif
+#endif // if NETFX_35
 				)
 			);
 			permissions.AddPermission(
@@ -225,7 +225,7 @@ namespace MsgPack
 			
 			return permissions;
 		}
-#endif
+#endif // if MONO || NETFX_35
 
 		public static void TestEqualsWorker()
 		{
@@ -233,7 +233,7 @@ namespace MsgPack
 			AppDomain.CurrentDomain.SetData( "TestEqualsWorker.Performance", result );
 			AppDomain.CurrentDomain.SetData( "MessagePackString.IsFastEqualsDisabled", MessagePackString.IsFastEqualsDisabled );
 		}
-#endif
+#endif // if !NETFX_CORE && !XAMIOS && !UNIOS
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{

@@ -22,14 +22,16 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+#if !XAMIOS && !UNIOS
 using MsgPack.Serialization.AbstractSerializers;
 #if !NETFX_CORE
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#endif
+#endif // if !NETFX_CORE
 #if !NETFX_35
 using MsgPack.Serialization.ExpressionSerializers;
-#endif
+#endif // if !NETFX_35
+#endif // if !XAMIOS && !UNIOS
 #if !MSTEST
 using NUnit.Framework;
 #else

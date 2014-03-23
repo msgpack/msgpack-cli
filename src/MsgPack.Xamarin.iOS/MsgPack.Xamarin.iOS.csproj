@@ -232,15 +232,6 @@
     <Compile Include="..\MsgPack\Serialization\EmitterFlavor.cs">
       <Link>Serialization\EmitterFlavor.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\FromExpression.cs">
-      <Link>Serialization\FromExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\FromExpression.ToConstructor.cs">
-      <Link>Serialization\FromExpression.ToConstructor.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\FromExpression.ToMethod.cs">
-      <Link>Serialization\FromExpression.ToMethod.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\IMessagePackSerializer.cs">
       <Link>Serialization\IMessagePackSerializer.cs</Link>
     </Compile>
@@ -249,9 +240,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ISerializerGeneratorConfiguration.cs">
       <Link>Serialization\ISerializerGeneratorConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
-      <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackMemberAttribute.cs">
       <Link>Serialization\MessagePackMemberAttribute.cs</Link>
@@ -348,9 +336,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_ArraySegment_1MessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\System_ArraySegment_1MessagePackSerializer`1.cs</Link>
