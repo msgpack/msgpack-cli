@@ -198,7 +198,6 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( buffer );
 				Assert.That( result, Is.EqualTo( dt ) );
 			}
-
 		}
 
 		private sealed class NetDateTimeSerializer : MessagePackSerializer<DateTime>

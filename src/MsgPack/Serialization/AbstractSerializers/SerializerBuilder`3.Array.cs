@@ -28,8 +28,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private void BuildArraySerializer( TContext context, CollectionTraits traits )
 		{
 			this.BuildCollectionPackTo( context, traits );
-			this.BuildCollectionUnpackFrom( context );
-			this.BuildCollectionUnpackTo( context, traits );
+			this.BuildCollectionUnpackFrom( context, traits );
+			if ( traits.AddMethod != null )
+			{
+				this.BuildCollectionUnpackTo( context, traits );
+			}
 		}
 
 		private void BuildCollectionPackTo( TContext context, CollectionTraits traits )
@@ -70,7 +73,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								traits,
 								context.PackToTarget,
 								item =>
-									this.EmitSequentialStatements( 
+									this.EmitSequentialStatements(
 										context,
 										typeof( void ),
 										this.EmitPackItemStatements( context, context.Packer, traits.ElementType, NilImplication.Null, null, item )
@@ -96,7 +99,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return this.EmitInvokeMethodExpression( context, null, Metadata._Enumerable.ToArray1Method.MakeGenericMethod( elementType ), enumerable );
 		}
 
-		private void BuildCollectionUnpackFrom( TContext context )
+		private void BuildCollectionUnpackFrom( TContext context, CollectionTraits traits )
 		{
 			this.BeginUnpackFromMethod( context );
 
@@ -130,9 +133,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				var collection =
 					this.DeclareLocal(
 						context,
-						typeof( TObject ),
+						instanceType,
 						"collection"
 					);
+				var ctor = GetCollectionConstructor( instanceType );
+				var collectionCapacity = this.EmitGetItemsCountExpression( context, context.Unpacker );
 
 				construct =
 					this.EmitSequentialStatements(
@@ -140,14 +145,31 @@ namespace MsgPack.Serialization.AbstractSerializers
 						collection.ContextType,
 						this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker ),
 						collection,
-						this.EmitUnpackCollectionWithUnpackToExpression(
+						traits.AddMethod == null
+						? this.EmitSequentialStatements(
 							context,
-							GetCollectionConstructor( instanceType ),
-							this.EmitGetItemsCountExpression( context, context.Unpacker ),
+							typeof( void ),
+							this.EmitStoreVariableStatement(
+								context,
+								collection,
+								this.EmitCreateNewObjectExpression(
+									context,
+									collection,
+									ctor,
+									ctor.GetParameters().Length == 0
+									? NoConstructs
+									: new[] { collectionCapacity }
+								)
+							),
+							this.EmitUnpackToSpecifiedCollection( context, instanceType.GetCollectionTraits(), context.Unpacker, collection )
+						) : this.EmitUnpackCollectionWithUnpackToExpression(
+							context,
+							ctor,
+							collectionCapacity,
 							context.Unpacker,
 							collection
 						),
-						this.EmitRetrunStatement( 
+						this.EmitRetrunStatement(
 							context,
 							this.EmitLoadVariableExpression( context, collection )
 						)
@@ -173,30 +195,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct construct = null;
 			try
 			{
-				var count =
-					this.DeclareLocal(
-						context,
-						typeof( int ),
-						"count"
-					);
-
-				construct =
-					this.EmitSequentialStatements(
-						context,
-						typeof( void ),
-						this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker ),
-						count,
-						this.EmitStoreVariableStatement(
-							context,
-							count,
-							this.EmitGetItemsCountExpression( context, context.Unpacker )
-						),
-						this.EmitForLoop(
-							context,
-							count,
-							flc => this.EmitUnpackToCollectionLoopBody( context, flc, traits, context.Unpacker )
-						)
-					);
+				construct = this.EmitUnpackToSpecifiedCollection( context, traits, context.Unpacker, context.UnpackToTarget );
 			}
 			finally
 			{
@@ -204,7 +203,39 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private TConstruct EmitUnpackToCollectionLoopBody( TContext context, ForLoopContext forLoopContext, CollectionTraits traits, TConstruct unpacker )
+		private TConstruct EmitUnpackToSpecifiedCollection(
+			TContext context,
+			CollectionTraits traitsOfTheCollection,
+			TConstruct unpacker,
+			TConstruct collection
+		)
+		{
+			var count =
+				this.DeclareLocal(
+					context,
+					typeof( int ),
+					"count"
+				);
+			return
+				this.EmitSequentialStatements(
+					context,
+					typeof( void ),
+					this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker ),
+					count,
+					this.EmitStoreVariableStatement(
+						context,
+						count,
+						this.EmitGetItemsCountExpression( context, context.Unpacker )
+					),
+					this.EmitForLoop(
+						context,
+						count,
+						flc => this.EmitUnpackToCollectionLoopBody( context, flc, traitsOfTheCollection, unpacker, collection )
+					)
+				);
+		}
+
+		private TConstruct EmitUnpackToCollectionLoopBody( TContext context, ForLoopContext forLoopContext, CollectionTraits traitsOfTheCollection, TConstruct unpacker, TConstruct collection )
 		{
 			/*
 			    if ( !unpacker.Read() )
@@ -231,7 +262,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return
 				this.EmitUnpackItemValueExpression(
 					context,
-					traits.ElementType,
+					traitsOfTheCollection.ElementType,
 					context.CollectionItemNilImplication,
 					unpacker,
 					forLoopContext.Counter,
@@ -242,8 +273,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitAppendCollectionItem(
 							context,
 							null,
-							traits,
-							context.UnpackToTarget,
+							traitsOfTheCollection,
+							collection,
 							unpackedItem
 						)
 				);

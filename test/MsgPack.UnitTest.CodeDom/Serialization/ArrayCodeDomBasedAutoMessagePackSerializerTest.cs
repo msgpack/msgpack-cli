@@ -4,7 +4,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -58,10 +58,17 @@ namespace MsgPack.Serialization
 	[Timeout( 30000 )]
 	public class ArrayCodeDomBasedAutoMessagePackSerializerTest
 	{
+
 		private SerializationContext GetSerializationContext()
 		{
 			return new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.CodeDomBased };
 		}
+
+		private SerializationContext  NewSerializationContext()
+		{
+			return new SerializationContext();
+		}
+
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
@@ -753,7 +760,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<byte[]>( context );
 			using ( var stream = new MemoryStream() )
@@ -766,7 +773,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_DefaultContext()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			var serializer = MessagePackSerializer.Create<DateTime>( context );
 			using ( var stream = new MemoryStream() )
@@ -782,7 +789,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<DateTime>( context );
@@ -799,7 +806,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_Default_Success()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
 			using ( var stream = new MemoryStream() )
@@ -817,7 +824,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_WithoutRegistration_Fail()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractCollection<int>>( context ) );
@@ -826,7 +833,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistration_Success()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
@@ -845,7 +852,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistrationForSpecific_Success()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer1 = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
@@ -877,7 +884,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_NotACollection_Fail()
 		{
-			var context = new SerializationContext();
+			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractNonCollection>( context ) );
 		}
@@ -913,11 +920,57 @@ namespace MsgPack.Serialization
 				unpacked.Verify( buffer );
 			}
 		}
-		public struct TestValueType
+
+		[Test]
+		public void TestIssue25_Plain()
 		{
-			public string StringField;
-			public int[] Int32ArrayField;
-			public Dictionary<int, int> DictionaryField;
+			var hasEnumerable = new HasEnumerable { Numbers = new[] { 1, 2 } };
+			var target = MessagePackSerializer.Create<HasEnumerable>( this.GetSerializationContext() );
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, hasEnumerable );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+				var resultNumbers = result.Numbers.ToArray();
+				Assert.That( resultNumbers.Length, Is.EqualTo( 2 ) );
+				Assert.That( resultNumbers[ 0 ], Is.EqualTo( 1 ) );
+				Assert.That( resultNumbers[ 1 ], Is.EqualTo( 2 ) );
+			}
+		}
+
+		public class HasEnumerable
+		{
+			public IEnumerable<int> Numbers { get; set; }
+		}
+
+		[Test]
+		public void TestIssue25_SelfComposite()
+		{
+			SerializationContext serializationContext =
+				SerializationContext.Default;
+			try
+			{
+
+				serializationContext.Serializers.Register( new PersonSerializer() );
+				serializationContext.Serializers.Register( new ChildrenSerializer() );
+
+				object[] array = new object[] { new Person { Name = "Joe" }, 3 };
+
+				MessagePackSerializer<object[]> context =
+					serializationContext.GetSerializer<object[]>();
+
+				byte[] packed = context.PackSingleObject( array ); 
+				object[] unpacked = context.UnpackSingleObject( packed );
+
+				Assert.That( unpacked.Length, Is.EqualTo( 2 ) );
+				Assert.That( ( ( MessagePackObject )unpacked[ 0 ] ).AsDictionary()[ "Name" ].AsString(), Is.EqualTo( "Joe" ) );
+				Assert.That( ( ( MessagePackObject )unpacked[ 0 ] ).AsDictionary()[ "Children" ].IsNil );
+				Assert.That( ( MessagePackObject )unpacked[ 1 ], Is.EqualTo( new MessagePackObject( 3 ) ) );
+			}
+			finally
+			{
+				SerializationContext.Default = new SerializationContext();
+			}
 		}
 
 		public class HasInitOnlyField
@@ -1131,7 +1184,7 @@ namespace MsgPack.Serialization
 
 			public void Add( KeyValuePair<TKey, TValue> item )
 			{
-				throw new NotImplementedException();
+				this.Add( item.Key, item.Value );
 			}
 
 			public void Clear()
@@ -1250,6 +1303,124 @@ namespace MsgPack.Serialization
 		public class WithAbstractNonCollection
 		{
 			public Stream NonCollection { get; set; }
+		}
+
+		// Issue #25
+
+		public class Person : IEnumerable<Person>
+		{
+			public string Name { get; set; }
+
+			internal IEnumerable<Person> Children { get; set; }
+
+			public IEnumerator<Person> GetEnumerator()
+			{
+				return Children.GetEnumerator();
+			}
+
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
+		}
+
+		public class PersonSerializer : MessagePackSerializer<Person>
+		{
+			protected internal override void PackToCore( Packer packer, Person objectTree )
+			{
+				packer.PackMapHeader( 2 );
+				packer.Pack( "Name" );
+				packer.Pack( objectTree.Name );
+				packer.Pack( "Children" );
+				if ( objectTree.Children == null )
+				{
+					packer.PackNull();
+				}
+				else
+				{
+					this.PackPeople( packer, objectTree.Children );
+				}
+			}
+
+			internal void PackPeople( Packer packer, IEnumerable<Person> people )
+			{
+				var children = people.ToArray();
+
+				packer.PackArrayHeader( children.Length );
+				foreach ( var child in children )
+				{
+					this.PackTo( packer, child );
+				}
+			}
+
+			protected internal override Person UnpackFromCore( Unpacker unpacker )
+			{
+				Assert.That( unpacker.IsMapHeader );
+				Assert.That( unpacker.ItemsCount, Is.EqualTo( 2 ) );
+				var person = new Person();
+				for ( int i = 0; i < 2; i++ )
+				{
+					string key;
+					Assert.That( unpacker.ReadString( out key ) );
+					switch ( key )
+					{
+						case "Name":
+						{
+
+							string name;
+							Assert.That( unpacker.ReadString( out name ) );
+							person.Name = name;
+							break;
+						}
+						case "Children":
+						{
+							Assert.That( unpacker.Read() );
+							if ( !unpacker.LastReadData.IsNil )
+							{
+								person.Children = this.UnpackPeople( unpacker );
+							}
+							break;
+						}
+					}
+				}
+
+				return person;
+			}
+
+			internal IEnumerable<Person> UnpackPeople( Unpacker unpacker )
+			{
+				Assert.That( unpacker.IsArrayHeader );
+				var itemsCount = ( int )unpacker.ItemsCount;
+				var people = new List<Person>( itemsCount );
+				for ( int i = 0; i < itemsCount; i++ )
+				{
+					people.Add( this.UnpackFrom( unpacker ) );
+				}
+
+				return people;
+			}
+		}
+
+		public class ChildrenSerializer : MessagePackSerializer<IEnumerable<Person>>
+		{
+			private readonly PersonSerializer _personSerializer = new PersonSerializer();
+
+			protected internal override void PackToCore( Packer packer, IEnumerable<Person> objectTree )
+			{
+				if ( objectTree is Person )
+				{
+					this._personSerializer.PackTo( packer, objectTree as Person );
+				}
+				else
+				{
+					this._personSerializer.PackPeople( packer, objectTree );
+				}
+			}
+
+			protected internal override IEnumerable<Person> UnpackFromCore( Unpacker unpacker )
+			{
+				return this._personSerializer.UnpackPeople( unpacker );
+			}
 		}
 		[Test]
 		public void TestNullField()

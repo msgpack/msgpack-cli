@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
+using MsgPack.Serialization;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -265,7 +267,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestPackItems_NotNullEnumerable_OK()
+		public void TestPackItems_NotNullEnumerable_AsArray()
 		{
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
