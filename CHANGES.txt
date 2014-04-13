@@ -105,3 +105,9 @@ Release 0.4.3 - 2014/3/22
   * Fix creating serializer for IEnumerable<T> (and not IList<T> nor IDictionary<TKey, TValue>) causes NullReferenceException.
   * Fix built-in object serializer cannot deserialize array/map correctly.
   * Fix PackerUnpackerExtensions.Pack<T>() ignore Default serialization context and uses brand-new instance every time.
+
+Release 0.4.4 - 2014/4/13
+
+  BUG FIXES
+  * Fix creating serializer for IDIctionary<TKey, TValue> causes NullReferenceException.
+  * Fix serializers' default constructor IL (it is not used in the library, but can be called via reflection).
