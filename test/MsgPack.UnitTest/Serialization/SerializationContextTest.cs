@@ -23,8 +23,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -38,7 +40,7 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack.Serialization
 {
 	[TestFixture]
-	[Timeout( 15000 )]
+	//[Timeout( 15000 )]
 	public class SerializationContextTest
 	{
 		[Test]
@@ -193,13 +195,65 @@ namespace MsgPack.Serialization
 			{
 				var serializer = MessagePackSerializer.Create<DateTime>( context );
 				var dt = new DateTime( 999999999999999999L, DateTimeKind.Utc );
-				serializer.Pack( buffer,dt );
+				serializer.Pack( buffer, dt );
 				buffer.Position = 0;
 				var result = serializer.Unpack( buffer );
 				Assert.That( result, Is.EqualTo( dt ) );
 			}
 		}
 
+		[Test]
+		public void TestIssue27_Dictionary()
+		{
+			var context = new SerializationContext();
+			using ( var buffer = new MemoryStream() )
+			{
+				var serializer = MessagePackSerializer.Create<IDictionary<String, String>>( context );
+				var dic = new Dictionary<string, string> { { "A", "A" } };
+				serializer.Pack( buffer, dic );
+				buffer.Position = 0;
+
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result.Count, Is.EqualTo( 1 ) );
+				Assert.That( result[ "A" ], Is.EqualTo( "A" ) );
+			}
+		}
+
+		[Test]
+		public void TestIssue27_List()
+		{
+			var context = new SerializationContext();
+			using ( var buffer = new MemoryStream() )
+			{
+				var serializer = MessagePackSerializer.Create<IList<String>>( context );
+				var list = new List<string> { "A" };
+				serializer.Pack( buffer, list );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result.Count, Is.EqualTo( 1 ) );
+				Assert.That( result[ 0 ], Is.EqualTo( "A" ) );
+			}
+		}
+
+
+		[Test]
+		public void TestIssue27_Collection()
+		{
+			var context = new SerializationContext();
+			using ( var buffer = new MemoryStream() )
+			{
+				var serializer = MessagePackSerializer.Create<ICollection<string>>( context );
+				var list = new List<string> { "A" };
+				serializer.Pack( buffer, list );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result.Count, Is.EqualTo( 1 ) );
+				Assert.That( result.First(), Is.EqualTo( "A" ) );
+			}
+		}
 		private sealed class NetDateTimeSerializer : MessagePackSerializer<DateTime>
 		{
 			protected internal override void PackToCore( Packer packer, DateTime objectTree )
@@ -281,7 +335,7 @@ namespace MsgPack.Serialization
 
 		public abstract class NewAbstractCollection<T> : Collection<T>
 		{
-			
+
 		}
 
 		public sealed class NewConcreteCollection<T> : NewAbstractCollection<T>

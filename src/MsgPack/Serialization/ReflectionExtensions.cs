@@ -154,7 +154,22 @@ namespace MsgPack.Serialization
 			Type idictionaryT = null;
 			Type ienumerable = null;
 			Type idictionary = null;
-			foreach ( var type in source.FindInterfaces( FilterCollectionType, null ) )
+
+			var sourceInterfaces = source.FindInterfaces( FilterCollectionType, null );
+			if ( source.GetIsInterface() && FilterCollectionType( source, null ) )
+			{
+				var originalSourceInterfaces = sourceInterfaces.ToArray();
+				var concatenatedSourceInterface = new Type[ originalSourceInterfaces.Length + 1 ];
+				concatenatedSourceInterface[ 0 ] = source;
+				for ( int i = 0; i < originalSourceInterfaces.Length; i++ )
+				{
+					concatenatedSourceInterface[ i + 1 ] = originalSourceInterfaces[ i ];
+				}
+
+				sourceInterfaces = concatenatedSourceInterface;
+			}
+
+			foreach ( var type in sourceInterfaces )
 			{
 				if ( type == typeof( IDictionary<MessagePackObject, MessagePackObject> ) )
 				{
