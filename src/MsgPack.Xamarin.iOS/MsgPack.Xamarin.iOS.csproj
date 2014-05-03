@@ -45,6 +45,7 @@
     <Folder Include="Properties\" />
     <Folder Include="Serialization\" />
     <Folder Include="Serialization\DefaultSerializers\" />
+    <Folder Include="Serialization\Reflection\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -390,6 +391,18 @@
     </Compile>
     <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
       <Link>UnsafeNativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\IdentifierUtility.cs">
+      <Link>Serialization\IdentifierUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs">
+      <Link>Serialization\Reflection\GenericTypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\UnpackHelpers.direct.cs">
+      <Link>Serialization\UnpackHelpers.direct.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
