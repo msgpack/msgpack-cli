@@ -26,6 +26,7 @@ using System.Linq;
 using System.Reflection;
 #endif
 using MsgPack.Serialization;
+using System.Collections;
 
 namespace MsgPack
 {
@@ -109,6 +110,146 @@ namespace MsgPack
 			context.GetSerializer<T>().PackTo( source, value );
 		}
 
+		/// <summary>
+		///		Packs specified collection with the default context.
+		/// </summary>
+		/// <typeparam name="T">The type of items of the collection.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="collection">The collection to be serialized.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize <paramref name="collection"/>.
+		/// </exception>
+		public static void PackCollection<T>( this Packer source, IEnumerable<T> collection )
+		{
+			PackCollectionCore (source, collection, SerializationContext.Default);
+		}
+
+		/// <summary>
+		///		Packs specified collection with the specified context.
+		/// </summary>
+		/// <typeparam name="T">The type of items of the collection.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="collection">The collection to be serialized.</param>
+		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		///		Or <paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize <paramref name="collection"/>.
+		/// </exception>
+		public static void PackCollection<T>( this Packer source, IEnumerable<T> collection, SerializationContext context )
+		{
+			PackCollectionCore (source, collection, context);
+		}
+
+		private static void PackCollectionCore<T>( Packer source, IEnumerable<T> collection, SerializationContext context )
+		{
+			// ReSharper disable CompareNonConstrainedGenericWithNull
+			if ( collection == null )
+			// ReSharper restore CompareNonConstrainedGenericWithNull
+			{
+				source.PackNull();
+				return;
+			}
+
+			var asPackable = collection as IPackable;
+			if ( asPackable != null )
+			{
+				asPackable.PackToMessage( source, new PackingOptions() );
+				return;
+			}
+
+			int count;
+			ICollection<T> asCollectionT;
+			ICollection asCollection;
+			if(( asCollectionT = collection as ICollection<T> )!=null)
+			{
+				count = asCollectionT.Count;
+			}
+			else if ( ( asCollection = collection as ICollection ) != null )
+			{
+				count = asCollection.Count;
+			}
+			else
+			{
+				var asArray = collection.ToArray();
+				count = asArray.Length;
+				collection = asArray;
+			}
+
+			source.PackArrayHeader( count );
+			foreach( var item in collection )
+			{
+				context.GetSerializer<T>().PackTo( source, item );
+			}
+		}
+
+		/// <summary>
+		///		Packs specified dictionary with the default context.
+		/// </summary>
+		/// <typeparam name="TKey">The type of keys of the dictionary.</typeparam>
+		/// <typeparam name="TValue">The type of values of the dictionary.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="dictionary">The dictionary to be serialized.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize <paramref name="dictionary"/>.
+		/// </exception>
+		public static void PackDictionary<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary )
+		{
+			PackDictionaryCore (source, dictionary, SerializationContext.Default);
+		}
+
+		/// <summary>
+		///		Packs specified dictionary with the specified context.
+		/// </summary>
+		/// <typeparam name="TKey">The type of keys of the dictionary.</typeparam>
+		/// <typeparam name="TValue">The type of values of the dictionary.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="dictionary">The dictionary to be serialized.</param>
+		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		///		Or <paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize <paramref name="dictionary"/>.
+		/// </exception>
+		public static void PackDictionary<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary, SerializationContext context )
+		{
+			PackDictionaryCore (source, dictionary, context);
+		}
+
+		private static void PackDictionaryCore<TKey,TValue>( Packer source, IDictionary<TKey,TValue> dictionary, SerializationContext context )
+		{
+			// ReSharper disable CompareNonConstrainedGenericWithNull
+			if ( dictionary == null )
+			// ReSharper restore CompareNonConstrainedGenericWithNull
+			{
+				source.PackNull();
+				return;
+			}
+
+			var asPackable = dictionary as IPackable;
+			if ( asPackable != null )
+			{
+				asPackable.PackToMessage( source, new PackingOptions() );
+				return;
+			}
+
+			source.PackMapHeader( dictionary.Count );
+			foreach( var entry in dictionary )
+			{
+				context.GetSerializer<TKey>().PackTo( source, entry.Key );
+				context.GetSerializer<TValue>().PackTo( source, entry.Value );
+			}
+		}
 		/// <summary>
 		///		Packs specified collection with the default context.
 		/// </summary>

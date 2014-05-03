@@ -286,7 +286,7 @@ namespace MsgPack
 			{
 				sw.Restart();
 				var output = new MemoryStream();
-				Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToArray() );
+				Packer.Create( output ).PackCollection( Enumerable.Range( 0, count ).ToArray() );
 				Assert.That(
 					Enumerable.Range( 0, count ).ToArray(),
 					Is.EqualTo( UnpackOne( output ).AsEnumerable().Select( item => item.AsInt32() ).ToArray() )
@@ -301,7 +301,7 @@ namespace MsgPack
 		public void TestNestedArray()
 		{
 			var output = new MemoryStream();
-			Packer.Create( output ).Pack( new[] { new int[ 0 ], new[] { 0 }, new[] { 0, 1 } } );
+			Packer.Create( output ).PackCollection( new[] { new int[ 0 ], new[] { 0 }, new[] { 0, 1 } } );
 			MessagePackObject obj = UnpackOne( output );
 			var outer = obj.AsList();
 			Assert.AreEqual( 3, outer.Count );
@@ -317,7 +317,7 @@ namespace MsgPack
 		public void TestNestedMap()
 		{
 			var output = new MemoryStream();
-			Packer.Create( output ).Pack(
+			Packer.Create( output ).PackDictionary(
 				new Dictionary<string, Dictionary<int, bool>>()
 				{
 					{ "0", new Dictionary<int,bool>() },
@@ -363,7 +363,7 @@ namespace MsgPack
 				};
 
 			var output = new MemoryStream();
-			Packer.Create( output ).Pack( heteroList );
+			Packer.Create( output ).PackCollection( heteroList );
 			MessagePackObject obj = UnpackOne( output );
 			bool isSuccess = false;
 			try

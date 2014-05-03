@@ -258,7 +258,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				packer.Pack( new int[] { 1, 2, 3 } );
+				packer.PackCollection( new int[] { 1, 2, 3 } );
 				Assert.AreEqual(
 					new byte[] { 0x93, 1, 2, 3 },
 					buffer.ToArray()
@@ -286,7 +286,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = Packer.Create( buffer ) )
 			{
-				packer.Pack( default( MessagePackObject[] ) );
+				packer.PackCollection( default( MessagePackObject[] ) );
 				Assert.AreEqual(
 					new byte[] { 0xC0 },
 					buffer.ToArray()
