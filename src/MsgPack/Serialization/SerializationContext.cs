@@ -282,6 +282,18 @@ namespace MsgPack.Serialization
 				if ( serializer == null )
 				{
 #if XAMIOS || UNIOS
+					if( typeof(T).GetIsInterface())
+					{
+						var concreteCollectionType = this._defaultCollectionTypes.Get(typeof(T));
+						if(concreteCollectionType != null )
+						{
+							serializer = this._serializers.Get( this, concreteCollectionType) as MessagePackSerializer<T>;
+							if(serializer != null )
+							{
+								return serializer;
+							}
+						}
+					}
 					throw new InvalidOperationException( 
 						String.Format( 
 							CultureInfo.CurrentCulture, 
