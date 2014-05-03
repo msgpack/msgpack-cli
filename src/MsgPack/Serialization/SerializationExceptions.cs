@@ -240,10 +240,12 @@ namespace MsgPack.Serialization
 			return new SerializationException( "Stream unexpectedly ends." );
 		}
 
+#if !XAMIOS && !UNIOS
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewMissingAddMethod"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewMissingAddMethodMethod = FromExpression.ToMethod( ( Type type ) => NewMissingAddMethod( type ) );
+#endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>

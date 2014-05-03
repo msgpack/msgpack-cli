@@ -354,26 +354,11 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithTwoMember.cs">
       <Link>Serialization\ComplexTypeWithTwoMember.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\CompositeTest.cs">
-      <Link>Serialization\CompositeTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ContextBasedNilImplicationTest.cs">
-      <Link>Serialization\ContextBasedNilImplicationTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataContractAndNonSerializedMixedTarget.cs">
       <Link>Serialization\DataContractAndNonSerializedMixedTarget.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ExpressionBasedNilImplicationTest.cs">
-      <Link>Serialization\ExpressionBasedNilImplicationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\FieldBasedNilImplicationTest.cs">
-      <Link>Serialization\FieldBasedNilImplicationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\FromExpressionTest.cs">
-      <Link>Serialization\FromExpressionTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable.cs">
       <Link>Serialization\IVerifiable.cs</Link>
@@ -404,9 +389,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializerGeneratorTest.cs">
-      <Link>Serialization\SerializerGeneratorTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SimpleCollection`1.cs">
       <Link>Serialization\SimpleCollection`1.cs</Link>

@@ -22,7 +22,9 @@ using System;
 using System.IO;
 #if !MSTEST
 using NUnit.Framework;
+#if !XAMIOS && !UNIOS
 using MsgPack.Serialization.EmittingSerializers;
+#endif // !XAMIOS && !UNIOS
 #else
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;

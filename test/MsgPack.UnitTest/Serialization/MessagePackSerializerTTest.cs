@@ -24,11 +24,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using MsgPack.Serialization.DefaultSerializers;
+#if !XAMIOS && !UNIOS
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #else
 using MsgPack.Serialization.ExpressionSerializers;
-#endif
+#endif // !NETFX_CORE
+#endif // !XAMIOS && !UNIOS
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -49,7 +51,9 @@ namespace MsgPack.Serialization
 
 		private static MessagePackSerializer<T> CreateTarget<T>()
 		{
-#if !NETFX_CORE
+#if XAMIOS || UNIOS
+			return PreGeneratedSerializerActivator.Create<T>( new SerializationContext() );
+#elif !NETFX_CORE
 			return new AutoMessagePackSerializer<T>( new SerializationContext(), new AssemblyBuilderSerializerBuilder<T>() );
 #else
 			return new AutoMessagePackSerializer<T>( new SerializationContext(), new ExpressionTreeSerializerBuilder<T>() );

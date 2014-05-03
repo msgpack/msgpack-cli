@@ -23,10 +23,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -40,7 +38,7 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack.Serialization
 {
 	[TestFixture]
-	//[Timeout( 15000 )]
+	[Timeout( 15000 )]
 	public class SerializationContextTest
 	{
 		[Test]
@@ -59,6 +57,7 @@ namespace MsgPack.Serialization
 			Assert.Throws<ArgumentNullException>( () => target.GetSerializer( null ) );
 		}
 
+#if !XAMIOS && !UNIOS
 		[Test]
 		public void TestGetSerializer_Concurrent()
 		{
@@ -67,6 +66,7 @@ namespace MsgPack.Serialization
 				target.GetSerializer<ComplexType>
 			).Test();
 		}
+#endif // !XAMIOS && !UNIOS
 
 		[Test]
 		public void TestGetSerializer_Type()
@@ -76,6 +76,7 @@ namespace MsgPack.Serialization
 			Assert.That( target.GetSerializer( typeof( ComplexType ) ), Is.Not.Null );
 		}
 
+#if !XAMIOS && !UNIOS
 		[Test]
 		public void TestGetSerializer_TypeConcurrent()
 		{
@@ -84,6 +85,7 @@ namespace MsgPack.Serialization
 				() => ( MessagePackSerializer<ComplexType> )target.GetSerializer( typeof( ComplexType ) )
 			).Test();
 		}
+#endif // !XAMIOS && !UNIOS
 
 		[Test]
 		public void TestDefaultCollectionTypes_Default_Check()
@@ -267,6 +269,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !XAMIOS && !UNIOS
 		private sealed class ConcurrentHelper<T> : IDisposable
 			where T : class
 		{
@@ -332,10 +335,11 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
+#endif // !XAMIOS && !UNIOS
 
 		public abstract class NewAbstractCollection<T> : Collection<T>
 		{
-
+			
 		}
 
 		public sealed class NewConcreteCollection<T> : NewAbstractCollection<T>

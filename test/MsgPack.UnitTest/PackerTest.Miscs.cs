@@ -36,7 +36,7 @@ namespace MsgPack
 	[TestFixture]
 	public class PackerTest
 	{
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !UNIOS
 		[Test]
 		public void DefaultCompatibilityOptions_Classic()
 		{
