@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -92,9 +92,9 @@ namespace MsgPack
 
 		private static void PackCore<T>( Packer source, T value, SerializationContext context )
 		{
-// ReSharper disable CompareNonConstrainedGenericWithNull
+			// ReSharper disable CompareNonConstrainedGenericWithNull
 			if ( value == null )
-// ReSharper restore CompareNonConstrainedGenericWithNull
+			// ReSharper restore CompareNonConstrainedGenericWithNull
 			{
 				source.PackNull();
 				return;
@@ -124,7 +124,7 @@ namespace MsgPack
 		/// </exception>
 		public static void PackCollection<T>( this Packer source, IEnumerable<T> collection )
 		{
-			PackCollectionCore (source, collection, SerializationContext.Default);
+			PackCollectionCore( source, collection, SerializationContext.Default );
 		}
 
 		/// <summary>
@@ -143,10 +143,15 @@ namespace MsgPack
 		/// </exception>
 		public static void PackCollection<T>( this Packer source, IEnumerable<T> collection, SerializationContext context )
 		{
-			PackCollectionCore (source, collection, context);
+			PackCollectionCore( source, collection, context );
 		}
 
 		private static void PackCollectionCore<T>( Packer source, IEnumerable<T> collection, SerializationContext context )
+		{
+			PackCollectionCore( source, collection, context.GetSerializer<T>() );
+		}
+
+		internal static void PackCollectionCore<T>( Packer source, IEnumerable<T> collection, MessagePackSerializer<T> itemSerializer )
 		{
 			// ReSharper disable CompareNonConstrainedGenericWithNull
 			if ( collection == null )
@@ -166,7 +171,7 @@ namespace MsgPack
 			int count;
 			ICollection<T> asCollectionT;
 			ICollection asCollection;
-			if(( asCollectionT = collection as ICollection<T> )!=null)
+			if ( ( asCollectionT = collection as ICollection<T> ) != null )
 			{
 				count = asCollectionT.Count;
 			}
@@ -182,9 +187,9 @@ namespace MsgPack
 			}
 
 			source.PackArrayHeader( count );
-			foreach( var item in collection )
+			foreach ( var item in collection )
 			{
-				context.GetSerializer<T>().PackTo( source, item );
+				itemSerializer.PackTo( source, item );
 			}
 		}
 
@@ -203,7 +208,7 @@ namespace MsgPack
 		/// </exception>
 		public static void PackDictionary<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary )
 		{
-			PackDictionaryCore (source, dictionary, SerializationContext.Default);
+			PackDictionaryCore( source, dictionary, SerializationContext.Default );
 		}
 
 		/// <summary>
@@ -223,10 +228,22 @@ namespace MsgPack
 		/// </exception>
 		public static void PackDictionary<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary, SerializationContext context )
 		{
-			PackDictionaryCore (source, dictionary, context);
+			PackDictionaryCore( source, dictionary, context );
 		}
 
-		private static void PackDictionaryCore<TKey,TValue>( Packer source, IDictionary<TKey,TValue> dictionary, SerializationContext context )
+		private static void PackDictionaryCore<TKey, TValue>(
+			Packer source,
+			IDictionary<TKey, TValue> dictionary,
+			SerializationContext context )
+		{
+			PackDictionaryCore( source, dictionary, context.GetSerializer<TKey>(), context.GetSerializer<TValue>() );
+		}
+
+		internal static void PackDictionaryCore<TKey, TValue>(
+			Packer source,
+			IDictionary<TKey, TValue> dictionary,
+			MessagePackSerializer<TKey> keySerializer,
+			MessagePackSerializer<TValue> valueSerializer )
 		{
 			// ReSharper disable CompareNonConstrainedGenericWithNull
 			if ( dictionary == null )
@@ -244,10 +261,10 @@ namespace MsgPack
 			}
 
 			source.PackMapHeader( dictionary.Count );
-			foreach( var entry in dictionary )
+			foreach ( var entry in dictionary )
 			{
-				context.GetSerializer<TKey>().PackTo( source, entry.Key );
-				context.GetSerializer<TValue>().PackTo( source, entry.Value );
+				keySerializer.PackTo( source, entry.Key );
+				valueSerializer.PackTo( source, entry.Value );
 			}
 		}
 		/// <summary>
@@ -313,9 +330,9 @@ namespace MsgPack
 				return;
 			}
 
-// ReSharper disable SuspiciousTypeConversion.Global
+			// ReSharper disable SuspiciousTypeConversion.Global
 			var asPackable = items as IPackable;
-// ReSharper restore SuspiciousTypeConversion.Global
+			// ReSharper restore SuspiciousTypeConversion.Global
 			if ( asPackable != null )
 			{
 				asPackable.PackToMessage( source, new PackingOptions() );

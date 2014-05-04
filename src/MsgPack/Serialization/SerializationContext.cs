@@ -19,6 +19,8 @@
 #endregion -- License Terms --
 
 using System;
+
+using MsgPack.Serialization.DefaultSerializers;
 #if !SILVERLIGHT && !NETFX_35
 using System.Collections.Concurrent;
 #endif
@@ -278,7 +280,7 @@ namespace MsgPack.Serialization
 			MessagePackSerializer<T> serializer = null;
 			while ( serializer == null )
 			{
-				serializer = this._serializers.Get<T>( this );
+				serializer = this._serializers.Get<T>( this ) ?? GenericSerializer.Create<T>( this );
 				if ( serializer == null )
 				{
 #if XAMIOS || UNIOS

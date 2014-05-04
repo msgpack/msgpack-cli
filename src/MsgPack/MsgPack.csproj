@@ -184,11 +184,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ArraySerializer.Primitives.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_QueueMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Dictionary_2MessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Compile Include="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />

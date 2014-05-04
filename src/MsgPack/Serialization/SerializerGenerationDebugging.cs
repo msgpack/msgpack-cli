@@ -71,6 +71,26 @@ namespace MsgPack.Serialization
 			set { _dumpEnabled = value; }
 		}
 
+		[ThreadStatic]
+		private static bool _avoidsGenericSerializer;
+
+		/// <summary>
+		///		Gets or sets a value indicating whether generic serializer for array, <see cref="List{T}"/>, <see cref="Dictionary{TKey,TValue}"/>, 
+		///		or <see cref="Nullable{T}"/> is not used.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if generic serializer is not used; otherwise, <c>false</c>.
+		/// </value>
+		public static bool AvoidsGenericSerializer
+		{
+			get
+			{
+				//throw new Exception( "INTENDED FAILURE" );
+				return true;
+			}
+			set { _avoidsGenericSerializer = value; }
+		}
+
 #if !NETFX_CORE
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
@@ -244,8 +264,8 @@ namespace MsgPack.Serialization
 			EnsureDependentAssembliesListsInitialized();
 
 			File.AppendAllText(
-				GetHistoryFilePath(), 
-				String.Join( Environment.NewLine, _compiledCodeDomSerializerAssemblies.ToArray() ) 
+				GetHistoryFilePath(),
+				String.Join( Environment.NewLine, _compiledCodeDomSerializerAssemblies.ToArray() )
 			);
 			_compiledCodeDomSerializerAssemblies.Clear();
 			ResetRuntimeAssemblies();

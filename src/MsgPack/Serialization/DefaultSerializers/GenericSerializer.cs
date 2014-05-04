@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
@@ -28,7 +29,38 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// </summary>
 	internal static class GenericSerializer
 	{
-		public static MessagePackSerializer<T> CreateArraySerializer<T>( SerializationContext context )
+		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
+		{
+			if ( typeof( T ).IsArray )
+			{
+				return CreateArraySerializer<T>( context );
+			}
+
+			Type nullableUnderlyingType;
+			if ( (nullableUnderlyingType = Nullable.GetUnderlyingType( typeof( T ) )) != null )
+			{
+				return CreateNullableSerializer<T>( context, nullableUnderlyingType );
+			}
+
+			if ( typeof( T ).GetIsGenericType() )
+			{
+				var typeDefinition = typeof( T ).GetGenericTypeDefinition();
+				if ( typeDefinition == typeof( List<> ) )
+				{
+					return CreateListSerializer<T>( context, typeof( T ).GetGenericArguments()[ 0 ] );
+				}
+
+				if ( typeDefinition == typeof( Dictionary<,> ) )
+				{
+					var genericTypeArguments = typeof( T ).GetGenericArguments();
+					return CreateDictionarySerializer<T>( context, genericTypeArguments[ 0 ], genericTypeArguments[1] );
+				}
+			}
+
+			return TryCreateImmutableCollectionSerializer<T>( context );
+		}
+
+		private static MessagePackSerializer<T> CreateArraySerializer<T>( SerializationContext context )
 		{
 #if DEBUG
 			Contract.Assert( typeof( T ).IsArray );
@@ -36,31 +68,45 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return ArraySerializer.Create<T>( context );
 		}
 
-		public static MessagePackSerializer<T> CreateNullableSerializer<T>( SerializationContext context )
+		private static MessagePackSerializer<T> CreateNullableSerializer<T>( SerializationContext context, Type underlyingType )
 		{
+			var factoryType = typeof( NullableInstanceFactory<> ).MakeGenericType( underlyingType );
+			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
 #if DEBUG
-			Contract.Assert( Nullable.GetUnderlyingType( typeof( T ) ) != null );
-#endif // if DEBUG
-#if XAMIOS || UNIOS
-#warning TODO: IMPL
-			throw new NotImplementedException("Nullable<T> has not been supported in iOS yet.");
-#else
-			return new NullableMessagePackSerializer<T>( context );
-#endif // if XAMIOS || UNIOS
+			Contract.Assert( instanceFactory != null );
+#endif
+			return instanceFactory.Create( context ) as MessagePackSerializer<T>;
 		}
 
-		public static MessagePackSerializer<T> CreateEnumSerializer<T>( SerializationContext context )
+		private static MessagePackSerializer<T> CreateListSerializer<T>( SerializationContext context, Type itemType )
 		{
+			var factoryType = typeof( ListInstanceFactory<> ).MakeGenericType( itemType );
+			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
 #if DEBUG
-			Contract.Assert( typeof( T ).GetIsEnum() );
-#endif // if DEBUG
-			return
-				new EnumMessagePackSerializer<T>(
-					( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions
-				);
+			Contract.Assert( instanceFactory != null );
+			if ( SerializerDebugging.AvoidsGenericSerializer )
+			{
+				return null;
+			}
+#endif
+			return instanceFactory.Create( context ) as MessagePackSerializer<T>;
 		}
 
-		public static MessagePackSerializer<T> TryCreateImmutableCollectionSerializer<T>( SerializationContext context )
+		private static MessagePackSerializer<T> CreateDictionarySerializer<T>( SerializationContext context, Type keyType, Type valueType )
+		{
+			var factoryType = typeof( DictionaryInstanceFactory<,> ).MakeGenericType( keyType, valueType );
+			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
+#if DEBUG
+			Contract.Assert( instanceFactory != null );
+			if ( SerializerDebugging.AvoidsGenericSerializer )
+			{
+				return null;
+			}
+#endif
+			return instanceFactory.Create( context ) as MessagePackSerializer<T>;
+		}
+
+		private static MessagePackSerializer<T> TryCreateImmutableCollectionSerializer<T>( SerializationContext context )
 		{
 #if NETFX_35 || NETFX_40 || SILVERLIGHT
 			// ImmutableCollections does not support above platforms.
@@ -120,6 +166,45 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 #endif
+		}
+
+		/// <summary>
+		///		Defines non-generic factory method.
+		/// </summary>
+		private interface IInstanceFactory
+		{
+			object Create( SerializationContext context );
+		}
+
+		private sealed class NullableInstanceFactory<T> : IInstanceFactory
+			where T : struct
+		{
+			public NullableInstanceFactory() { }
+
+			public object Create( SerializationContext context )
+			{
+				return new NullableMessagePackSerializer<T>( context );
+			}
+		}
+
+		private sealed class ListInstanceFactory<T> : IInstanceFactory
+		{
+			public ListInstanceFactory() { }
+
+			public object Create( SerializationContext context )
+			{
+				return new System_Collections_Generic_List_1MessagePackSerializer<T>( context );
+			}
+		}
+
+		private sealed class DictionaryInstanceFactory<TKey, TValue> : IInstanceFactory
+		{
+			public DictionaryInstanceFactory() { }
+
+			public object Create( SerializationContext context )
+			{
+				return new System_Collections_Generic_Dictionary_2MessagePackSerializer<TKey, TValue>( context );
+			}
 		}
 	}
 }

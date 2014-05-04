@@ -85,16 +85,6 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-			if ( typeof( T ).GetIsEnum() )
-			{
-				return GenericSerializer.CreateEnumSerializer<T>( context );
-			}
-
-			if ( typeof( T ).GetIsGenericType() && typeof( T ).GetGenericTypeDefinition() == typeof( Nullable<> ) )
-			{
-				return GenericSerializer.CreateNullableSerializer<T>( context );
-			}
-
 			return this._repository.Get<T, MessagePackSerializer<T>>( context );
 		}
 

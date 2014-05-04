@@ -34,9 +34,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 	[ContractClass( typeof( SerializerBuilderContract<,,> ) )]
 	internal abstract partial class SerializerBuilder<TContext, TConstruct, TObject> :
 #if !NETFX_CORE && !SILVERLIGHT
- ISerializerCodeGenerator,
+		ISerializerCodeGenerator,
 #endif
- ISerializerBuilder<TObject>
+		ISerializerBuilder<TObject>
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
 	{
@@ -55,15 +55,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </returns>
 		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context )
 		{
-			if ( typeof( TObject ).IsArray )
+			var genericSerializer = GenericSerializer.Create<TObject>( context );
+			if ( genericSerializer != null )
 			{
-				return GenericSerializer.CreateArraySerializer<TObject>( context );
-			}
-
-			var immutableCollectionsSerializer = GenericSerializer.TryCreateImmutableCollectionSerializer<TObject>( context );
-			if ( immutableCollectionsSerializer != null )
-			{
-				return immutableCollectionsSerializer;
+				return genericSerializer;
 			}
 
 			var codeGenerationContext = this.CreateCodeGenerationContextForSerializerCreation( context );
@@ -129,20 +124,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				case CollectionKind.NotCollection:
 				{
+					if ( typeof( TObject ).GetIsEnum() )
+					{
+						throw new NotImplementedException();
+#warning TODO: NotImpl
+						//this.BuildEnumSerializer( context );
+					}
 #if !WINDOWS_PHONE && !NETFX_35
-					if ( ( typeof( TObject ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
+					else if ( ( typeof( TObject ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
 						  typeof( TObject ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
 						&& typeof( TObject ).GetIsPublic() && typeof( TObject ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
 					{
 						this.BuildTupleSerializer( context );
 					}
+#endif
 					else
 					{
-#endif
 						this.BuildObjectSerializer( context );
-#if !WINDOWS_PHONE && !NETFX_35
 					}
-#endif
 					break;
 				}
 			}

@@ -128,18 +128,10 @@ namespace MsgPack.Serialization
 				return defaultSerializer;
 			}
 
-			if ( typeof( T ).IsArray )
+			var genericSerializer = GenericSerializer.Create<T>( context );
+			if ( genericSerializer != null )
 			{
-				if ( SerializerRepository.Default.Get( context, typeof( T ).GetElementType() ) == null )
-				{
-					var elementType =
-						typeof( T ).GetElementType().IsInterface
-						? context.DefaultCollectionTypes.Get( typeof( T ).GetElementType() )
-						: typeof( T ).GetElementType();
-					context.Serializers.Register( elementType, CreateCore( elementType, context ) as IMessagePackSerializer );
-				}
-
-				return MessagePackSerializer.Create<T>( context );
+				return genericSerializer;
 			}
 
 			if ( typeof( T ).IsInterface )
