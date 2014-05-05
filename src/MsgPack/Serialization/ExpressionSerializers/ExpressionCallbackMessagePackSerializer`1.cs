@@ -45,7 +45,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> packToCore,
 			Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackFromCore,
 			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackToCore
-			)
+		)
 			: base( context == null ? PackerCompatibilityOptions.Classic : context.CompatibilityOptions.PackerCompatibilityOptions )
 		{
 			this._context = context;

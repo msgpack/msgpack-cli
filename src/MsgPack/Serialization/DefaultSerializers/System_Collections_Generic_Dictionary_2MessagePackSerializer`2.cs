@@ -28,6 +28,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// </summary>
 	/// <typeparam name="TKey">The type of keys of the <see cref="Dictionary{TKey,TValue}"/>.</typeparam>
 	/// <typeparam name="TValue">The type of values of the <see cref="Dictionary{TKey,TValue}"/>.</typeparam>
+	// ReSharper disable once InconsistentNaming
 	internal class System_Collections_Generic_Dictionary_2MessagePackSerializer<TKey, TValue> : MessagePackSerializer<Dictionary<TKey, TValue>>
 	{
 		private readonly MessagePackSerializer<TKey> _keySerializer;

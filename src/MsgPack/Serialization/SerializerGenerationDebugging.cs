@@ -85,6 +85,7 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#warning TODO:
 				//throw new Exception( "INTENDED FAILURE" );
 				return true;
 			}
@@ -273,8 +274,8 @@ namespace MsgPack.Serialization
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
-		private static int _wasDeleted = 0;
-		private const string _historyFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
+		private static int _wasDeleted;
+		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
 
 		public static void DeletePastTemporaries()
 		{
@@ -303,7 +304,7 @@ namespace MsgPack.Serialization
 
 		private static string GetHistoryFilePath()
 		{
-			return Path.Combine( Path.GetTempPath(), _historyFile );
+			return Path.Combine( Path.GetTempPath(), HistoryFile );
 		}
 
 		private static void EnsureDependentAssembliesListsInitialized()

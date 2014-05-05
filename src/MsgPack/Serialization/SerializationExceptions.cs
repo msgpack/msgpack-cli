@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ namespace MsgPack.Serialization
 	public static class SerializationExceptions
 	{
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewValueTypeCannotBeNull3Method = FromExpression.ToMethod( ( string name, Type memberType, Type declaringType ) => SerializationExceptions.NewValueTypeCannotBeNull( name, memberType, declaringType ) );
+		internal static readonly MethodInfo NewValueTypeCannotBeNull3Method = FromExpression.ToMethod( ( string name, Type memberType, Type declaringType ) => NewValueTypeCannotBeNull( name, memberType, declaringType ) );
 #endif // if  !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -262,7 +262,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewIsNotArrayHeaderMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsNotArrayHeader() );
+		internal static readonly MethodInfo NewIsNotArrayHeaderMethod = FromExpression.ToMethod( () => NewIsNotArrayHeader() );
 #endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -276,7 +276,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewIsNotMapHeaderMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsNotMapHeader() );
+		internal static readonly MethodInfo NewIsNotMapHeaderMethod = FromExpression.ToMethod( () => NewIsNotMapHeader() );
 #endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -292,7 +292,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod = FromExpression.ToMethod( ( Type type ) => SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( type ) );
+		internal static readonly MethodInfo NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod = FromExpression.ToMethod( ( Type type ) => NewNotSupportedBecauseCannotInstanciateAbstractType( type ) );
 #endif // !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -310,7 +310,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewTupleCardinarityIsNotMatchMethod = FromExpression.ToMethod( ( int expected, int actual ) => SerializationExceptions.NewTupleCardinarityIsNotMatch( expected, actual ) );
+		internal static readonly MethodInfo NewTupleCardinarityIsNotMatchMethod = FromExpression.ToMethod( ( int expected, int actual ) => NewTupleCardinarityIsNotMatch( expected, actual ) );
 #endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -329,7 +329,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewIsIncorrectStreamMethod = FromExpression.ToMethod( ( Exception innerException ) => SerializationExceptions.NewIsIncorrectStream( innerException ) );
+		internal static readonly MethodInfo NewIsIncorrectStreamMethod = FromExpression.ToMethod( ( Exception innerException ) => NewIsIncorrectStream( innerException ) );
 #endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -346,7 +346,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewIsTooLargeCollectionMethod = FromExpression.ToMethod( () => SerializationExceptions.NewIsTooLargeCollection() );
+		internal static readonly MethodInfo NewIsTooLargeCollectionMethod = FromExpression.ToMethod( () => NewIsTooLargeCollection() );
 #endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -374,7 +374,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => SerializationExceptions.NewNullIsProhibited( memberName ) );
+		internal static readonly MethodInfo NewNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => NewNullIsProhibited( memberName ) );
 #endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -392,7 +392,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewReadOnlyMemberItemsMustNotBeNullMethod = FromExpression.ToMethod( ( string memberName ) => SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( memberName ) );
+		internal static readonly MethodInfo NewReadOnlyMemberItemsMustNotBeNullMethod = FromExpression.ToMethod( ( string memberName ) => NewReadOnlyMemberItemsMustNotBeNull( memberName ) );
 #endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -410,7 +410,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewStreamDoesNotContainCollectionForMemberMethod = FromExpression.ToMethod( ( string memberName ) => SerializationExceptions.NewStreamDoesNotContainCollectionForMember( memberName ) );
+		internal static readonly MethodInfo NewStreamDoesNotContainCollectionForMemberMethod = FromExpression.ToMethod( ( string memberName ) => NewStreamDoesNotContainCollectionForMember( memberName ) );
 #endif // if !XAMIOS && !UNIOS
 
 		/// <summary>
@@ -428,7 +428,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !XAMIOS && !UNIOS
-		internal static readonly MethodInfo NewUnexpectedArrayLengthMethod = FromExpression.ToMethod( ( int expectedLength, int actualLength ) => SerializationExceptions.NewUnexpectedArrayLength( expectedLength, actualLength ) );
+		internal static readonly MethodInfo NewUnexpectedArrayLengthMethod = FromExpression.ToMethod( ( int expectedLength, int actualLength ) => NewUnexpectedArrayLength( expectedLength, actualLength ) );
 #endif // !XAMIOS && !UNIOS
 
 		/// <summary>

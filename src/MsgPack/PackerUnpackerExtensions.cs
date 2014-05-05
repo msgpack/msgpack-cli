@@ -153,14 +153,14 @@ namespace MsgPack
 
 		internal static void PackCollectionCore<T>( Packer source, IEnumerable<T> collection, MessagePackSerializer<T> itemSerializer )
 		{
-			// ReSharper disable CompareNonConstrainedGenericWithNull
+			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( collection == null )
-			// ReSharper restore CompareNonConstrainedGenericWithNull
 			{
 				source.PackNull();
 				return;
 			}
 
+			// ReSharper disable once SuspiciousTypeConversion.Global
 			var asPackable = collection as IPackable;
 			if ( asPackable != null )
 			{
@@ -245,14 +245,14 @@ namespace MsgPack
 			MessagePackSerializer<TKey> keySerializer,
 			MessagePackSerializer<TValue> valueSerializer )
 		{
-			// ReSharper disable CompareNonConstrainedGenericWithNull
+			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( dictionary == null )
-			// ReSharper restore CompareNonConstrainedGenericWithNull
 			{
 				source.PackNull();
 				return;
 			}
 
+			// ReSharper disable once SuspiciousTypeConversion.Global
 			var asPackable = dictionary as IPackable;
 			if ( asPackable != null )
 			{

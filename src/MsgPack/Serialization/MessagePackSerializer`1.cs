@@ -42,8 +42,9 @@ namespace MsgPack.Serialization
 	/// </remarks>
 	/// <seealso cref="Unpacker"/>
 	/// <seealso cref="Unpacking"/>
-	public abstract class MessagePackSerializer<T> : IMessagePackSerializer, IMessagePackSingleObjectSerializer
+	public abstract class MessagePackSerializer<T> : IMessagePackSingleObjectSerializer
 	{
+		// ReSharper disable once StaticFieldInGenericType
 		private static readonly bool _isNullable = JudgeNullable();
 
 #if !XAMIOS && !UNIOS
@@ -92,7 +93,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Serialize specified object to the <see cref="Stream"/>.
+		///		Serializes specified object to the <see cref="Stream"/>.
 		/// </summary>
 		/// <param name="stream">Destination <see cref="Stream"/>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
@@ -126,7 +127,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Serialize specified object with specified <see cref="Packer"/>.
+		///		Serializes specified object with specified <see cref="Packer"/>.
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
@@ -144,6 +145,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "packer" );
 			}
 
+			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( objectTree == null )
 			{
 				packer.PackNull();
@@ -154,7 +156,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Serialize specified object with specified <see cref="Packer"/>.
+		///		Serializes specified object with specified <see cref="Packer"/>.
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
@@ -164,7 +166,7 @@ namespace MsgPack.Serialization
 		protected internal abstract void PackToCore( Packer packer, T objectTree );
 
 		/// <summary>
-		///		Deserialize object with specified <see cref="Unpacker"/>.
+		///		Deserializes object with specified <see cref="Unpacker"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
 		/// <returns>Deserialized object.</returns>
@@ -198,6 +200,7 @@ namespace MsgPack.Serialization
 					// null
 					return default( T );
 				}
+				// ReSharper disable once RedundantIfElseBlock
 				else
 				{
 					throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
@@ -208,7 +211,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Deserialize object with specified <see cref="Unpacker"/>.
+		///		Deserializes object with specified <see cref="Unpacker"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
 		/// <returns>Deserialized object.</returns>
@@ -227,7 +230,7 @@ namespace MsgPack.Serialization
 		protected internal abstract T UnpackFromCore( Unpacker unpacker );
 
 		/// <summary>
-		///		Deserialize collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
+		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
 		/// <param name="collection">Collection that the items to be stored.</param>
@@ -255,6 +258,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
+			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( collection == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -269,7 +273,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Deserialize collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
+		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
 		/// <param name="collection">Collection that the items to be stored. This value will not be <c>null</c>.</param>
@@ -285,7 +289,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Serialize specified object to the array of <see cref="Byte"/>.
+		///		Serializes specified object to the array of <see cref="Byte"/>.
 		/// </summary>
 		/// <param name="objectTree">Object to be serialized.</param>
 		/// <returns>An array of <see cref="Byte"/> which stores serialized value.</returns>
@@ -302,7 +306,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Deserialize a single object from the array of <see cref="Byte"/> which contains a serialized object.
+		///		Deserializes a single object from the array of <see cref="Byte"/> which contains a serialized object.
 		/// </summary>
 		/// <param name="buffer">An array of <see cref="Byte"/> serialized value to be stored.</param>
 		/// <returns>A bytes of serialized binary.</returns>
@@ -361,6 +365,7 @@ namespace MsgPack.Serialization
 				packer.PackNull();
 				return;
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				if ( !( objectTree is T ) )

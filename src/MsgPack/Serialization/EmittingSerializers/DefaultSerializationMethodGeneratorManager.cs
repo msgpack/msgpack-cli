@@ -33,7 +33,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 	{
 		private static readonly ConstructorInfo _debuggableAttributeCtor =
 			typeof( DebuggableAttribute ).GetConstructor( new[] { typeof( bool ), typeof( bool ) } );
-		private static readonly object[] _debuggableAttributeCtorArguments = new object[] { true, true };
+		private static readonly object[] _debuggableAttributeCtorArguments = { true, true };
 
 #if !WINDOWS_PHONE
 		private static int _assemblySequence = -1;
@@ -82,9 +82,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 #if !WINDOWS_PHONE
+		// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
 		private readonly AssemblyBuilder _assembly;
 		private readonly ModuleBuilder _module;
-		private readonly string _moduleFileName;
 		private readonly bool _isDebuggable;
 		private readonly bool _isExternalAssemblyBuilder;
 #endif
@@ -128,14 +128,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 				this._assembly = dedicatedAssemblyBuilder;
 			}
 
-			this._moduleFileName = assemblyName + ".dll";
-
 #if SILVERLIGHT
 			this._module = this._assembly.DefineDynamicModule( assemblyName, true );
 #else
 			if ( isDebuggable )
 			{
-				this._module = this._assembly.DefineDynamicModule( assemblyName, this._moduleFileName, true );
+				this._module = this._assembly.DefineDynamicModule( assemblyName, assemblyName + ".dll", true );
 			}
 			else
 			{
@@ -156,9 +154,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				dedicatedAssemblyBuilder.SetCustomAttribute(
 					new CustomAttributeBuilder(
-// ReSharper disable AssignNullToNotNullAttribute
+						// ReSharper disable once AssignNullToNotNullAttribute
 						typeof( DebuggableAttribute ).GetConstructor( new[] { typeof( DebuggableAttribute.DebuggingModes ) } ),
-// ReSharper restore AssignNullToNotNullAttribute
 						new object[] { DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints }
 					)
 				);
@@ -166,18 +163,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
-// ReSharper disable AssignNullToNotNullAttribute
+					// ReSharper disable once AssignNullToNotNullAttribute
 					typeof( System.Runtime.CompilerServices.CompilationRelaxationsAttribute ).GetConstructor( new[] { typeof( int ) } ),
-// ReSharper restore AssignNullToNotNullAttribute
 					new object[] { 8 }
 				)
 			);
 #if !SILVERLIGHT && !NETFX_35
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
-// ReSharper disable AssignNullToNotNullAttribute
+					// ReSharper disable once AssignNullToNotNullAttribute
 					typeof( System.Security.SecurityRulesAttribute ).GetConstructor( new[] { typeof( System.Security.SecurityRuleSet ) } ),
-// ReSharper restore AssignNullToNotNullAttribute
 					new object[] { System.Security.SecurityRuleSet.Level2 },
 					new[] { typeof( System.Security.SecurityRulesAttribute ).GetProperty( "SkipVerificationInFullTrust" ) },
 					new object[] { true }

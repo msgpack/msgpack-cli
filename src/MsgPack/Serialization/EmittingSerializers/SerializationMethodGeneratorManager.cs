@@ -84,7 +84,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		The appropriate <see cref="SerializationMethodGeneratorManager"/> to generate pre-cimplied serializers.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public static SerializationMethodGeneratorManager Get( System.Reflection.Emit.AssemblyBuilder assemblyBuilder )
+		public static SerializationMethodGeneratorManager Get( AssemblyBuilder assemblyBuilder )
 		{
 			return DefaultSerializationMethodGeneratorManager.Create( assemblyBuilder );
 		}
@@ -101,7 +101,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( targetType != null );
 			Contract.Ensures( Contract.Result<SerializerEmitter>() != null );
 
-			return this.CreateEmitterCore( targetType , emitterFlavor);
+			return this.CreateEmitterCore( targetType, emitterFlavor );
 		}
 
 		/// <summary>

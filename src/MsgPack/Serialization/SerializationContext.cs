@@ -510,13 +510,13 @@ namespace MsgPack.Serialization
 			}
 #endif // if !NETFX_CORE
 
-// ReSharper disable UnusedMember.Local
+			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().
 			public static IMessagePackSingleObjectSerializer Get( SerializationContext context )
 			{
 				return _func( context );
 			}
-// ReSharper restore UnusedMember.Local
+			// ReSharper restore UnusedMember.Local
 		}
 #endif // if !XAMIOS && !UNIOS
 	}
