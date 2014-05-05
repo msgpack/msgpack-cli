@@ -622,8 +622,8 @@
     <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationConfiguration.cs">
       <Link>Serialization\SerializerCodeGenerationConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\SerializerGenerationDebugging.cs">
-      <Link>Serialization\SerializerGenerationDebugging.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\SerializerDebugging.cs">
+      <Link>Serialization\SerializerDebugging.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerGenerator.cs">
       <Link>Serialization\SerializerGenerator.cs</Link>

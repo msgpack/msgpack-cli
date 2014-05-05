@@ -544,8 +544,8 @@
     <Compile Include="..\MsgPack\Serialization\SerializationMethodGeneratorOption.cs">
       <Link>Serialization\SerializationMethodGeneratorOption.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\SerializerGenerationDebugging.cs">
-      <Link>Serialization\SerializerGenerationDebugging.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\SerializerDebugging.cs">
+      <Link>Serialization\SerializerDebugging.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerRepository.cs">
       <Link>Serialization\SerializerRepository.cs</Link>

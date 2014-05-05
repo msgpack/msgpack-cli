@@ -19,11 +19,8 @@
 #endregion -- License Terms --
 
 using System;
-#if !NETFX_CORE
-using System.CodeDom.Compiler;
 #if !NETFX_35
 using System.Collections.Concurrent;
-#endif
 #endif
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -83,12 +80,7 @@ namespace MsgPack.Serialization
 		/// </value>
 		public static bool AvoidsGenericSerializer
 		{
-			get
-			{
-#warning TODO:
-				//throw new Exception( "INTENDED FAILURE" );
-				return true;
-			}
+			get { return _avoidsGenericSerializer; }
 			set { _avoidsGenericSerializer = value; }
 		}
 
