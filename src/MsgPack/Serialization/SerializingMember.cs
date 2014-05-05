@@ -36,5 +36,38 @@ namespace MsgPack.Serialization
 			this.Member = member;
 			this.Contract = contract;
 		}
+
+		public EnumMemberSerializationMethod GetEnumMemberSerializationMethod()
+		{
+#if NETFX_CORE
+			var messagePackEnumMemberAttribute = 
+				this.Member.GetCustomAttribute<MessagePackEnumMemberAttribute>();
+			if ( messagePackEnumMemberAttribute != null)
+			{
+				var serializationMethod = messagePackEnumMemberAttribute.SerializationMethod;
+#else
+			var messagePackEnumMemberAttributes =
+				this.Member.GetCustomAttributes( typeof( MessagePackEnumMemberAttribute ), true );
+			if ( messagePackEnumMemberAttributes.Length > 0 )
+			{
+				var serializationMethod =
+					// ReSharper disable once PossibleNullReferenceException
+					( messagePackEnumMemberAttributes[ 0 ] as MessagePackEnumMemberAttribute ).SerializationMethod;
+#endif // NETFX_CORE 
+				switch ( serializationMethod )
+				{
+					case EnumMemberSerializationMethod.ByName:
+					{
+						return EnumMemberSerializationMethod.ByName;
+					}
+					case EnumMemberSerializationMethod.ByUnderlyingValue:
+					{
+						return EnumMemberSerializationMethod.ByUnderlyingValue;
+					}
+				}
+			}
+
+			return EnumMemberSerializationMethod.Default;
+		}
 	}
 }

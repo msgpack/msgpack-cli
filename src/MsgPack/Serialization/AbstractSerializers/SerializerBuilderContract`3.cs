@@ -54,16 +54,36 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( Func<SerializationContext, MessagePackSerializer<TObject>> );
 		}
 
+		protected override Func<SerializationContext, EnumMessagePackSerializer<TObject>> CreateEnumSerializerConstructor( TContext codeGenerationContext )
+		{
+			Contract.Requires( codeGenerationContext != null );
+			Contract.Ensures( Contract.Result<Func<SerializationContext, EnumMessagePackSerializer<TObject>>>() != null );
+			return default( Func<SerializationContext, EnumMessagePackSerializer<TObject>> );
+		}
+
 		protected override void EmitMethodPrologue( TContext context, SerializerMethod method )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( Enum.IsDefined( typeof( SerializationMethod ), method ) );
 		}
 
+		protected override void EmitMethodPrologue( TContext context, EnumSerializerMethod enumSerializerMethod )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), enumSerializerMethod ) );
+		}
+
 		protected override void EmitMethodEpilogue( TContext context, SerializerMethod method, TConstruct construct )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( Enum.IsDefined( typeof( SerializationMethod ), method ) );
+			Contract.Requires( construct != null );
+		}
+
+		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, TConstruct construct )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( Enum.IsDefined( typeof( EnumSerializerMethod ), enumSerializerMethod ) );
 			Contract.Requires( construct != null );
 		}
 
@@ -107,6 +127,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( context != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( string ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeEnumLiteral( TContext context, Type type, object constant )
+		{
+			Contract.Requires( context != null );
+#if !NETFX_CORE
+			Contract.Requires( type.IsEnum );
+#endif
+			Contract.Requires( constant != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( long ) );
 			return default( TConstruct );
 		}
 
@@ -355,7 +387,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitGetSerializerExpression( TContext context, Type targetType )
+		protected override TConstruct EmitGetSerializerExpression( TContext context, Type targetType, SerializingMember? memberInfo )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( targetType != null );
@@ -417,6 +449,48 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( loopBodyEmitter != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( void ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct ReferArgument( TContext context, Type type, string name, int index )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( type != null );
+			Contract.Requires( !String.IsNullOrEmpty( name ) );
+			Contract.Requires( index >= 0 );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct EmitEnumFromUnderlyingCastExpression( TContext context, Type enumType, TConstruct underlyingValue )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( enumType != null );
+#if !NETFX_CORE
+			Contract.Requires( enumType.IsEnum );
+#endif
+			Contract.Requires( underlyingValue != null );
+#if !NETFX_CORE
+			Contract.Requires( underlyingValue.ContextType.IsPrimitive );
+#endif
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == enumType );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct EmitEnumToUnderlyingCastExpression( TContext context, Type underlyingType, TConstruct enumValue )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( underlyingType != null );
+#if !NETFX_CORE
+			Contract.Requires( underlyingType.IsPrimitive );
+#endif
+			Contract.Requires( enumValue != null );
+#if !NETFX_CORE
+			Contract.Requires( enumValue.ContextType.IsEnum );
+#endif
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == underlyingType );
 			return default( TConstruct );
 		}
 	}

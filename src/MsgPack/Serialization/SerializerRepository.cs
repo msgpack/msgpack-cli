@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization
 {
@@ -72,23 +71,41 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Gets the registered <see cref="MessagePackSerializer{T}"/> from this repository.
+		///		Gets the registered <see cref="MessagePackSerializer{T}"/> from this repository without provider parameter.
 		/// </summary>
 		/// <typeparam name="T">Type of the object to be marshaled/unmarshaled.</typeparam>
+		/// <param name="context">A serialization context.</param>
 		/// <returns>
 		///		<see cref="MessagePackSerializer{T}"/>. If no appropriate mashalers has benn registered, then <c>null</c>.
 		/// </returns>
 		public MessagePackSerializer<T> Get<T>( SerializationContext context )
+		{
+			return Get<T>( context, null );
+		}
+
+		/// <summary>
+		///		Gets the registered <see cref="MessagePackSerializer{T}"/> from this repository with specified provider parameter.
+		/// </summary>
+		/// <typeparam name="T">Type of the object to be marshaled/unmarshaled.</typeparam>
+		/// <param name="context">A serialization context.</param>
+		/// <param name="providerParameter">A provider specific parameter. See remarks section of <see cref="SerializationContext.GetSerializer{T}(Object)"/> for details.</param>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>. If no appropriate mashalers has benn registered, then <c>null</c>.
+		/// </returns>
+		/// <see cref="SerializationContext.GetSerializer{T}(Object)"/>
+		public MessagePackSerializer<T> Get<T>( SerializationContext context, object providerParameter )
 		{
 			if ( context == null )
 			{
 				throw new ArgumentNullException( "context" );
 			}
 
-			return this._repository.Get<T, MessagePackSerializer<T>>( context );
+			var result = this._repository.Get( context, typeof( T ) );
+			var asProvider = result as MessagePackSerializerProvider;
+			return ( asProvider != null ? asProvider.Get( providerParameter ) : result ) as MessagePackSerializer<T>;
 		}
 
-		internal IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType )
+		internal IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType, object providerParameter )
 		{
 			if ( context == null )
 			{
@@ -100,7 +117,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "targetType" );
 			}
 
-			return this._repository.Get( context, targetType ) as IMessagePackSingleObjectSerializer;
+			var result = this._repository.Get( context, targetType );
+			var asProvider = result as MessagePackSerializerProvider;
+			return ( asProvider != null ? asProvider.Get( providerParameter ) : result ) as IMessagePackSingleObjectSerializer;
 		}
 
 		/// <summary>
@@ -126,7 +145,15 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "serializer" );
 			}
 
-			return this._repository.Register( targetType, serializer, allowOverwrite: false );
+			var asEnumSerializer = serializer as ICustomizableEnumSerializer;
+			if ( asEnumSerializer != null )
+			{
+				return this._repository.Register( targetType, new EnumMessagePackSerializerProvider( asEnumSerializer ), allowOverwrite: false );
+			}
+			else
+			{
+				return this._repository.Register( targetType, serializer, allowOverwrite: false );
+			}
 		}
 
 		/// <summary>

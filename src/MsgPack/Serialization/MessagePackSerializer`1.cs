@@ -56,7 +56,18 @@ namespace MsgPack.Serialization
 		private readonly PackerCompatibilityOptions _packerCompatibilityOptions;
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="PackerCompatibilityOptions.Classic"/>.
+		///		Gets the packer compatibility options for this instance.
+		/// </summary>
+		/// <value>
+		///		The packer compatibility options for this instance
+		/// </value>
+		protected internal PackerCompatibilityOptions PackerCompatibilityOptions
+		{
+			get { return this._packerCompatibilityOptions; }
+		}
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="T:PackerCompatibilityOptions.Classic"/>.
 		/// </summary>
 		protected MessagePackSerializer() : this( PackerCompatibilityOptions.Classic ) { }
 

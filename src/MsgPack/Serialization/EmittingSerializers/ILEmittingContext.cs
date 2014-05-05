@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -38,13 +38,49 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </value>
 		internal TracingILGenerator IL { get; set; }
 
+		private readonly Func<SerializerEmitter> _emitterFactory;
+		private readonly Func<EnumSerializerEmitter> _enumEmitterFactory;
+
+		private SerializerEmitter _emitter;
+		private EnumSerializerEmitter _enumEmitter;
+
 		/// <summary>
 		///		Gets the <see cref="SerializerEmitter"/>.
 		/// </summary>
 		/// <value>
 		///		The <see cref="SerializerEmitter"/>.
 		/// </value>
-		internal SerializerEmitter Emitter { get; private set; }
+		internal SerializerEmitter Emitter
+		{
+			get
+			{
+				if ( this._emitter == null )
+				{
+					this._emitter = this._emitterFactory();
+				}
+
+				return this._emitter;
+			}
+		}
+
+		/// <summary>
+		///		Gets the <see cref="EnumSerializerEmitter"/>.
+		/// </summary>
+		/// <value>
+		///		The <see cref="EnumSerializerEmitter"/>.
+		/// </value>
+		internal EnumSerializerEmitter EnumEmitter
+		{
+			get
+			{
+				if ( this._enumEmitter == null )
+				{
+					this._enumEmitter = this._enumEmitterFactory();
+				}
+
+				return this._enumEmitter;
+			}
+		}
 
 		/// <summary>
 		///		Gets the type of the serializer.
@@ -60,28 +96,35 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// Initializes a new instance of the <see cref="ILEmittingContext"/> class.
 		/// </summary>
 		/// <param name="context">The serialization context.</param>
-		/// <param name="emitter">
-		///		The <see cref="SerializerEmitter"/> to be used.
+		/// <param name="emitterFactory">
+		///		The factory for <see cref="SerializerEmitter"/> to be used.
+		/// </param>
+		/// <param name="enumEmitterFactory">
+		///		The factory for <see cref="EnumSerializerEmitter"/> to be used.
 		/// </param>
 		public ILEmittingContext(
 			SerializationContext context,
-			SerializerEmitter emitter
+			Func<SerializerEmitter> emitterFactory,
+			Func<EnumSerializerEmitter> enumEmitterFactory
 		)
 			: base( context )
 		{
-			this.Emitter = emitter;
+			this._emitterFactory = emitterFactory;
+			this._enumEmitterFactory = enumEmitterFactory;
 		}
 
 		/// <summary>
 		///		Resets internal states for specified target type.
 		/// </summary>
 		/// <param name="targetType">Type of the serialization target.</param>
-		public sealed override void Reset( Type targetType )
+		protected sealed override void ResetCore( Type targetType )
 		{
 			this.Packer = ILConstruct.Argument( 1, typeof( Packer ), "packer" );
 			this.PackToTarget = ILConstruct.Argument( 2, targetType, "objectTree" );
 			this.Unpacker = ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" );
 			this.UnpackToTarget = ILConstruct.Argument( 2, targetType, "collection" );
+			this._emitter = null;
+			this._enumEmitter = null;
 		}
 	}
 }

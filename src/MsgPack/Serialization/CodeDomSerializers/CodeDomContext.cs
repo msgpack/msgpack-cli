@@ -25,8 +25,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
+
 using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers
@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		public const string ConditionalExpressionHelperWhenTrueParameterName = "whenTrue";
 		public const string ConditionalExpressionHelperWhenFalseParameterName = "whenFalse";
 
-		private readonly Dictionary<Type, string> _dependentSerializers = new Dictionary<Type, string>();
+		private readonly Dictionary<SerializerFieldKey, string> _dependentSerializers = new Dictionary<SerializerFieldKey, string>();
 
 		private readonly Dictionary<Type, CodeTypeDeclaration> _declaringTypes = new Dictionary<Type, CodeTypeDeclaration>();
 
@@ -65,25 +65,23 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this._configuration = configuration;
 		}
 
-		public string GetSerializerFieldName( Type targetType )
+		public string GetSerializerFieldName( Type targetType, EnumMemberSerializationMethod enumSerializationMethod )
 		{
+			var key = new SerializerFieldKey( targetType, enumSerializationMethod );
+
 			string fieldName;
-			if ( !this._dependentSerializers.TryGetValue( targetType, out fieldName ) )
+			if ( !this._dependentSerializers.TryGetValue( key, out fieldName ) )
 			{
 				fieldName = "_serializer" + this._dependentSerializers.Count.ToString( CultureInfo.InvariantCulture );
-				this._dependentSerializers.Add( targetType, fieldName );
+				this._dependentSerializers.Add( key, fieldName );
 			}
 
 			return fieldName;
 		}
 
-		public Dictionary<string, Type> GetDependentSerializers()
+		public Dictionary<SerializerFieldKey, String> GetDependentSerializers()
 		{
-			return
-				this._dependentSerializers.ToDictionary(
-					kv => kv.Value,
-					kv => typeof( MessagePackSerializer<> ).MakeGenericType( kv.Key )
-				);
+			return this._dependentSerializers;
 		}
 
 		private readonly Dictionary<string, int> _uniqueVariableSuffixes = new Dictionary<string, int>();
@@ -129,10 +127,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		///		Resets internal states for new type.
 		/// </summary>
 		/// <param name="targetType">Type of the target.</param>
-		public override void Reset( Type targetType )
+		protected override void ResetCore( Type targetType )
 		{
 			var declaringType = new CodeTypeDeclaration( IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" );
-			declaringType.BaseTypes.Add( typeof( MessagePackSerializer<> ).MakeGenericType( targetType ) );
+			declaringType.BaseTypes.Add(
+				targetType.GetIsEnum()
+				? typeof( EnumMessagePackSerializer<> ).MakeGenericType( targetType )
+				: typeof( MessagePackSerializer<> ).MakeGenericType( targetType ) );
 			declaringType.CustomAttributes.Add(
 				new CodeAttributeDeclaration(
 					new CodeTypeReference( typeof( GeneratedCodeAttribute ) ),

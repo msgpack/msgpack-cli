@@ -36,6 +36,7 @@ var targetTypes =
 		"TestValueType",
 		"Object",
 		"MessagePackObject",
+		"DayOfWeek",
 	};
 
 #>

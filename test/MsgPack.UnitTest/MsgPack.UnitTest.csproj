@@ -295,6 +295,7 @@
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_ObjectModel_ObservableCollection_1_System_Int32_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_DayOfWeekSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_ImageSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObject_Serializer.cs" />
@@ -367,6 +368,7 @@
     <Compile Include="Serialization\GeneratedSerializers\MapBased\System_Collections_ObjectModel_ObservableCollection_1_System_Int32_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\System_DayOfWeekSerializer.cs" />
     <Compile Include="Serialization\GenerationBasedNilImplicationTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

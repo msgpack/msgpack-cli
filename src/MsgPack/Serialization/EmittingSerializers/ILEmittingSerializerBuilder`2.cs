@@ -66,7 +66,48 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
+		protected override void EmitMethodPrologue( TContext context, EnumSerializerMethod method )
+		{
+			switch ( method )
+			{
+				case EnumSerializerMethod.PackUnderlyingValueTo:
+				{
+					context.IL = context.EnumEmitter.GetPackUnderyingValueToMethodILGenerator();
+					break;
+				}
+				case EnumSerializerMethod.GetUnderlyingValueString:
+				{
+					context.IL = context.EnumEmitter.GetGetUnderlyingValueStringMethodILGenerator();
+					break;
+				}
+				case EnumSerializerMethod.UnpackFromUnderlyingValue:
+				{
+					context.IL = context.EnumEmitter.GetUnpackFromUnderlyingValueMethodILGenerator();
+					break;
+				}
+				case EnumSerializerMethod.Parse:
+				{
+					context.IL = context.EnumEmitter.GetParseMethodILGenerator();
+					break;
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "method", method.ToString() );
+				}
+			}
+		}
+
 		protected override void EmitMethodEpilogue( TContext context, SerializerMethod method, ILConstruct construct )
+		{
+			this.EmitMethodEpilogue( context, construct );
+		}
+
+		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, ILConstruct construct )
+		{
+			this.EmitMethodEpilogue( context, construct );
+		}
+
+		private void EmitMethodEpilogue( TContext context, ILConstruct construct )
 		{
 			try
 			{
@@ -161,6 +202,73 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct MakeStringLiteral( TContext context, string constant )
 		{
 			return ILConstruct.Literal( typeof( string ), constant, il => il.EmitLdstr( constant ) );
+		}
+
+		protected override ILConstruct MakeEnumLiteral( TContext context, Type type, object constant )
+		{
+			var underyingType = Enum.GetUnderlyingType( type );
+
+			switch ( Type.GetTypeCode( underyingType ) )
+			{
+				case TypeCode.Byte:
+				{
+					// tiny integrals are represented as int32 in IL operands.
+					return this.MakeInt32Literal( context, ( byte )constant );
+				}
+				case TypeCode.SByte:
+				{
+					// tiny integrals are represented as int32 in IL operands.
+					return this.MakeInt32Literal( context, ( sbyte )constant );
+				}
+				case TypeCode.Int16:
+				{
+					// tiny integrals are represented as int32 in IL operands.
+					return this.MakeInt32Literal( context, ( short )constant );
+				}
+				case TypeCode.UInt16:
+				{
+					// tiny integrals are represented as int32 in IL operands.
+					return this.MakeInt32Literal( context, ( ushort )constant );
+				}
+				case TypeCode.Int32:
+				{
+					return this.MakeInt32Literal( context, ( int )constant );
+				}
+				case TypeCode.UInt32:
+				{
+					// signeds and unsigneds are identical in IL operands.
+					return this.MakeInt32Literal( context, unchecked( ( int )( uint )constant ) );
+				}
+				case TypeCode.Int64:
+				{
+					return this.MakeInt64Literal( context, ( long )constant );
+				}
+				case TypeCode.UInt64:
+				{
+					// signeds and unsigneds are identical in IL operands.
+					return this.MakeInt64Literal( context, unchecked( ( long )( ulong )constant ) );
+				}
+				case TypeCode.Boolean:
+				{
+					// bools are represented as int32 in IL operands.
+					return this.MakeInt32Literal( context, ( ( bool )constant ) ? 1 : 0 );
+				}
+				case TypeCode.Char:
+				{
+					// chars are represented as int32 in IL operands.
+					return this.MakeInt32Literal( context, ( char )constant );
+				}
+				default:
+				{
+					throw new NotSupportedException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Underying type '{0}' is not supported.",
+							underyingType
+						)
+					);
+				}
+			}
 		}
 
 		protected override ILConstruct EmitThisReferenceExpression( TContext context )
@@ -369,6 +477,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 					type,
 					name
 				);
+		}
+
+		protected override ILConstruct ReferArgument( TContext context, Type type, string name, int index )
+		{
+			return ILConstruct.Argument( index, type, name );
 		}
 
 		protected override ILConstruct EmitInvokeVoidMethod( TContext context, ILConstruct instance, MethodInfo method, params ILConstruct[] arguments )
@@ -697,9 +810,32 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		protected override ILConstruct EmitEnumFromUnderlyingCastExpression( TContext context, Type enumType, ILConstruct underlyingValue )
+		{
+			// No operations are needed in IL level.
+			return underlyingValue;
+		}
+
+		protected override ILConstruct EmitEnumToUnderlyingCastExpression( TContext context, Type underlyingType, ILConstruct enumValue )
+		{
+			// No operations are needed in IL level.
+			return enumValue;
+		}
+
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( TContext codeGenerationContext )
 		{
 			return context => codeGenerationContext.Emitter.CreateInstance<TObject>( context );
+		}
+
+		protected override Func<SerializationContext, EnumMessagePackSerializer<TObject>> CreateEnumSerializerConstructor( TContext codeGenerationContext )
+		{
+			return context =>
+				codeGenerationContext.EnumEmitter.CreateInstance(
+					context,
+					EnumMessagePackSerializerHelper.DetermineEnumSerializationMethod( context, typeof( TObject ), EnumMemberSerializationMethod.Default ),
+					Enum.GetNames( typeof( TObject ) ),
+					Enum.GetValues( typeof( TObject ) ) as TObject[]
+				);
 		}
 	}
 }

@@ -32,73 +32,36 @@ namespace MsgPack.Serialization.AbstractSerializers
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
 		private static readonly TConstruct[] NoConstructs = new TConstruct[ 0 ];
-		private static readonly Type[] EmptyTypes = new Type[ 0 ];
-
-		private void BeginPackToMethod( TContext context )
-		{
-			this.EmitMethodPrologue(
-				context,
-				SerializerMethod.PackToCore
-			);
-		}
-
-		private void EndPackToMethod( TContext context, TConstruct construct )
-		{
-			this.EmitMethodEpilogue(
-				context,
-				SerializerMethod.PackToCore,
-				construct
-			);
-		}
-
-		private void BeginUnpackFromMethod( TContext context )
-		{
-			this.EmitMethodPrologue(
-				context,
-				SerializerMethod.UnpackFromCore
-			);
-		}
-
-		private void EndUnpackFromMethod( TContext context, TConstruct construct )
-		{
-			this.EmitMethodEpilogue(
-				context,
-				SerializerMethod.UnpackFromCore,
-				construct
-			);
-		}
-
-		private void BeginUnpackToMethod( TContext context )
-		{
-			this.EmitMethodPrologue(
-				context,
-				SerializerMethod.UnpackToCore
-			);
-		}
-
-		private void EndUnpackToMethod( TContext context, TConstruct construct )
-		{
-			this.EmitMethodEpilogue(
-				context,
-				SerializerMethod.UnpackToCore,
-				construct
-			);
-		}
-
-		/// <summary>
-		///		Emits the method prologue.
-		/// </summary>
-		/// <param name="context">The generation context.</param>
-		/// <param name="method">The metadata of the method.</param>
-		protected abstract void EmitMethodPrologue( TContext context, SerializerMethod method );
 
 		///  <summary>
-		/// 	Emits the method epiloigue.
+		/// 	Emits the method prologue of general serializer.
 		///  </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="method">The metadata of the method.</param>
+		/// <param name="serializerMethod">The kind of implementing general serializer method.</param>
+		protected abstract void EmitMethodPrologue( TContext context, SerializerMethod serializerMethod );
+
+		///  <summary>
+		/// 	Emits the method prologue of enum serializer.
+		///  </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="enumSerializerMethod">The kind of implementing enum serializer method.</param>
+		protected abstract void EmitMethodPrologue( TContext context, EnumSerializerMethod enumSerializerMethod );
+
+		///  <summary>
+		/// 	Emits the method epiloigue of general serializer.
+		///  </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="serializerMethod">The kind of implementing general serializer method.</param>
 		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
-		protected abstract void EmitMethodEpilogue( TContext context, SerializerMethod method, TConstruct construct );
+		protected abstract void EmitMethodEpilogue( TContext context, SerializerMethod serializerMethod, TConstruct construct );
+
+		///  <summary>
+		/// 	Emits the method epiloigue of enum serializer.
+		///  </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="enumSerializerMethod">The kind of implementing enum serializer method.</param>
+		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
+		protected abstract void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod,TConstruct construct );
 
 		/// <summary>
 		///		Emits anonymous <c>null</c> reference literal.
@@ -131,6 +94,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="constant">The constant value.</param>
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct MakeStringLiteral( TContext context, string constant );
+
+		/// <summary>
+		///		Emits the constant enum value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="type">The type the enum.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		/// <exception cref="ArgumentException"><paramref name="type"/> is not enum.</exception>
+		protected abstract TConstruct MakeEnumLiteral( TContext context, Type type, object constant ); // boxing is better than complex unboxing issue
 
 		/// <summary>
 		///		Emits the loading this reference expression.
@@ -231,6 +204,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="statements">The statements.</param>
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitSequentialStatements( TContext context, Type contextType, IEnumerable<TConstruct> statements );
+
+		/// <summary>
+		///		Creates the argument reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="type">The type of the parameter for debugging puropose.</param>
+		/// <param name="name">The name of the parameter.</param>
+		/// <param name="index">The index of the parameters.</param>
+		/// <returns>
+		///		The generated construct which represents an argument reference.
+		/// </returns>
+		protected abstract TConstruct ReferArgument( TContext context, Type type, string name, int index );
 
 		/// <summary>
 		///		Declares the local variable.
@@ -631,11 +616,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="targetType">Type of the target of the serializer.</param>
+		/// <param name="memberInfo">The metadata of the packing/unpacking member.</param>
 		/// <returns>The generated code construct.</returns>
 		/// <remarks>
 		///		The serializer reference methodology is implication specific.
 		/// </remarks>
-		protected abstract TConstruct EmitGetSerializerExpression( TContext context, Type targetType );
+		protected abstract TConstruct EmitGetSerializerExpression( TContext context, Type targetType, SerializingMember? memberInfo );
 
 		/// <summary>
 		/// Emits the pack item expression.
@@ -646,8 +632,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="nilImplication">The nil implication of the member.</param>
 		/// <param name="memberName">Name of the member.</param>
 		/// <param name="item">The item to be packed.</param>
+		/// <param name="memberInfo">The metadata of packing member. <c>null</c> for non-object member (collection or tuple items).</param>
 		/// <returns>The generated code construct.</returns>
-		private IEnumerable<TConstruct> EmitPackItemStatements( TContext context, TConstruct packer, Type itemType, NilImplication nilImplication, string memberName, TConstruct item )
+		private IEnumerable<TConstruct> EmitPackItemStatements( TContext context, TConstruct packer, Type itemType, NilImplication nilImplication, string memberName, TConstruct item, SerializingMember? memberInfo )
 		{
 			switch ( nilImplication )
 			{
@@ -703,7 +690,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return
 				this.EmitInvokeVoidMethod(
 					context,
-					this.EmitGetSerializerExpression( context, itemType ),
+					this.EmitGetSerializerExpression( context, itemType, memberInfo ),
 					typeof( MessagePackSerializer<> )
 						.MakeGenericType( itemType )
 						.GetMethods()
@@ -801,6 +788,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		The reference to unpacked items count local variable which remember unpacked items count.
 		///		This value will be <c>null</c> for tuples and collections.
 		/// </param>
+		/// <param name="memberInfo">The metadata of unpacking member.</param>
 		/// <param name="storeValueStatementEmitter">
 		///		The delegate which generates statement for storing unpacked value.
 		///		1st parameter is unpacked value, and return value is generated statement.
@@ -815,6 +803,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct memberName,
 			TConstruct itemsCount,
 			TConstruct unpacked,
+			SerializingMember? memberInfo,
 			Func<TConstruct, TConstruct> storeValueStatementEmitter
 		)
 		{
@@ -823,7 +812,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					typeof( void ),
 					this.EmitUnpackItemValueExpressionCore(
-						context, itemType, nilImplication, unpacker, itemIndex, memberName, itemsCount, unpacked, storeValueStatementEmitter
+						context, itemType, nilImplication, unpacker, itemIndex, memberName, itemsCount, unpacked, memberInfo, storeValueStatementEmitter
 					)
 				);
 		}
@@ -845,6 +834,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		The reference to unpacked items count local variable which remember unpacked items count.
 		///		This value will be <c>null</c> for tuples and collections.
 		/// </param>
+		/// <param name="memberInfo">The metadata of unpacking member.</param>
 		/// <param name="storeValueStatementEmitter">
 		///		The delegate which generates statement for storing unpacked value.
 		///		1st parameter is unpacked value, and return value is generated statement.
@@ -858,7 +848,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct itemIndex,
 			TConstruct memberName,
 			TConstruct itemsCount,
-			TConstruct unpacked,
+			TConstruct unpacked, 
+			SerializingMember? memberInfo,
 			Func<TConstruct, TConstruct> storeValueStatementEmitter
 		)
 		{
@@ -1004,7 +995,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					) : this.EmitAndConditionalExpression(
 						context,
 						isNotInCollectionCondition,
-						this.EmitDeserializeItemExpression( context, unpacker, nullableType, nullable ),
+						this.EmitDeserializeItemExpression( context, unpacker, nullableType, nullable, memberInfo ),
 						this.EmitUsingStatement(
 							context,
 							typeof( Unpacker ),
@@ -1014,7 +1005,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								Metadata._Unpacker.ReadSubtree
 							),
 							subtreeUnpacker =>
-								this.EmitDeserializeItemExpression( context, subtreeUnpacker, nullableType, nullable )
+								this.EmitDeserializeItemExpression( context, subtreeUnpacker, nullableType, nullable, memberInfo )
 						)
 					)
 				);
@@ -1168,7 +1159,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitInvokeMethodExpression(
 								context,
 								disposable,
-								disposableType.GetMethod( "Dispose", EmptyTypes )
+								disposableType.GetMethod( "Dispose", ReflectionAbstractions.EmptyTypes )
 							),
 							null
 						)
@@ -1183,9 +1174,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="unpacker">The unpacker expression.</param>
 		/// <param name="itemType">Type of the item to be deserialized.</param>
 		/// <param name="unpacked">The variable which stores unpacked item.</param>
+		/// <param name="memberInfo">The metadata of unpacking member.</param>
 		/// <returns>The expression which returns deserialized item.</returns>
 		private TConstruct EmitDeserializeItemExpression(
-			TContext context, TConstruct unpacker, Type itemType, TConstruct unpacked
+			TContext context, TConstruct unpacker, Type itemType, TConstruct unpacked, SerializingMember? memberInfo
 		)
 		{
 			return
@@ -1194,7 +1186,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					unpacked,
 					this.EmitInvokeMethodExpression(
 						context,
-						this.EmitGetSerializerExpression( context, itemType ),
+						this.EmitGetSerializerExpression( context, itemType, memberInfo ),
 						typeof( MessagePackSerializer<> ).MakeGenericType( itemType ).GetMethod( "UnpackFrom" ),
 						unpacker
 					)
@@ -1373,7 +1365,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Assert( !instanceType.GetIsValueType() );
 #endif
 
-			var ctor = typeof( TObject ).GetConstructor( EmptyTypes );
+			var ctor = typeof( TObject ).GetConstructor( ReflectionAbstractions.EmptyTypes );
 			if ( ctor == null )
 			{
 				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( instanceType );
@@ -1391,7 +1383,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			var ctor =
 				instanceType.GetConstructor( SerializerBuilderConstants.CollectionConstructorWithCapacityParameterTypes )
-				?? instanceType.GetConstructor( EmptyTypes );
+				?? instanceType.GetConstructor( ReflectionAbstractions.EmptyTypes );
 
 			if ( ctor == null )
 			{

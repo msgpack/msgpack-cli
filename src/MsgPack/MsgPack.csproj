@@ -166,7 +166,12 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilderConstants.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\AbstractSerializers\SerializerFieldKey.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerMethod.cs" />
+    <Compile Include="Serialization\CallbackEnumMessagePackSerializer.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomContext.cs" />
     <Compile Include="Serialization\CodeDomSerializers\CodeDomSerializerBuilder`1.cs" />
@@ -191,7 +196,22 @@
     <Compile Include="Serialization\DefaultSerializers\System_Collections_StackMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Dictionary_2MessagePackSerializer`2.cs" />
+    <Compile Include="Serialization\AbstractSerializers\EnumSerializerMethod.cs" />
+    <Compile Include="Serialization\EmittingSerializers\ContextBasedEnumSerializerEmitter.cs" />
+    <Compile Include="Serialization\EmittingSerializers\EnumSerializerEmitter.cs" />
+    <Compile Include="Serialization\EmittingSerializers\FieldBasedEnumSerializerEmitter.cs" />
+    <Compile Include="Serialization\EnumMemberSerializationMethod.cs" />
+    <Compile Include="Serialization\EnumMessagePackSerializerHelper.cs" />
+    <Compile Include="Serialization\EnumMessagePackSerializerProvider.cs" />
+    <Compile Include="Serialization\EnumSerializationMethod.cs" />
+    <Compile Include="Serialization\EnumMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ExpressionSerializers\ExpressionCallbackEnumMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ICustomizableEnumSerializer.cs" />
     <Compile Include="Serialization\ISerializerGeneratorConfiguration.cs" />
+    <Compile Include="Serialization\MessagePackEnumAttribute.cs" />
+    <Compile Include="Serialization\MessagePackEnumMemberAttribute.cs" />
+    <Compile Include="Serialization\MessagePackSerializerProvider.cs" />
+    <Compile Include="Serialization\Metadata\_EnumMessagePackSerializerHelper.cs" />
     <Compile Include="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Compile Include="Serialization\EmittingSerializers\AndConditionILConstruct.cs" />
@@ -275,8 +295,6 @@
     <Compile Include="Serialization\CollectionTraits.cs" />
     <Compile Include="Serialization\CollectionKind.cs" />
     <Compile Include="Serialization\DataMemberContract.cs" />
-    <Compile Include="Serialization\DefaultSerializers\EnumMessagePackSerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\NullableMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs" />
@@ -293,7 +311,6 @@
     <Compile Include="Serialization\DefaultSerializers\System_UriMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs" />
     <Compile Include="Serialization\EmittingSerializers\DefaultSerializationMethodGeneratorManager.cs" />
-    <Compile Include="Serialization\EmittingSerializers\Emittion.cs" />
     <Compile Include="Serialization\FromExpression.cs" />
     <Compile Include="Serialization\FromExpression.ToMethod.cs">
       <AutoGen>True</AutoGen>

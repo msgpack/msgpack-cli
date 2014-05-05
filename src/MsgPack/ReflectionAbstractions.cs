@@ -19,6 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if NETFX_CORE
+using System.Collections.Generic;
+#endif
 using System.Linq;
 using System.Reflection;
 
@@ -209,6 +212,6 @@ namespace MsgPack
 		{
 			return Attribute.GetCustomAttribute( source, typeof( T ) ) as T;
 		}		
-#endif
+#endif // NETFX_CORE
 	}
 }

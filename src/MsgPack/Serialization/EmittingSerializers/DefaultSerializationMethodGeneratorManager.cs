@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -221,6 +221,25 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 #else
 			return new ContextBasedSerializerEmitter( targetType );
+#endif
+		}
+
+		protected override EnumSerializerEmitter CreateEnumEmitterCore( Type targetType, EmitterFlavor emitterFlavor )
+		{
+#if !WINDOWS_PHONE
+			switch ( emitterFlavor )
+			{
+				case EmitterFlavor.FieldBased:
+				{
+					return new FieldBasedEnumSerializerEmitter( this._module, this._isExternalAssemblyBuilder ? default( int? ) : Interlocked.Increment( ref this._typeSequence ), targetType, this._isDebuggable );
+				}
+				default:
+				{
+					return new ContextBasedEnumSerializerEmitter( targetType );
+				}
+			}
+#else
+			return new ContextBasedEnumSerializerEmitter( targetType );
 #endif
 		}
 	}

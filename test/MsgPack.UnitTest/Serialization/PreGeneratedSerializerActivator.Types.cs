@@ -148,6 +148,8 @@ namespace MsgPack.Serialization
 			//result.Add( typeof( Object[] ) ); 
 			result.Add( typeof( MessagePackObject ) ); 
 			//result.Add( typeof( MessagePackObject[] ) ); 
+			result.Add( typeof( DayOfWeek ) ); 
+			//result.Add( typeof( DayOfWeek[] ) ); 
 			return result;
 		}
 	}

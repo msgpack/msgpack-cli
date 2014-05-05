@@ -35,15 +35,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		public AssemblyBuilderSerializerBuilder() { }
 
-		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType )
+		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType, SerializingMember? memberInfo )
 		{
-			var instructions = context.Emitter.RegisterSerializer( targetType );
+			var instructions = 
+				context.Emitter.RegisterSerializer( 
+					targetType, 
+					memberInfo == null
+					? EnumMemberSerializationMethod.Default 
+					: memberInfo.Value.GetEnumMemberSerializationMethod()
+				);
+
 			return
 				ILConstruct.Instruction(
 					"getserializer",
 					typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
 					false,
-				// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
+					// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
 					il => instructions( il, 0 )
 				);
 		}
@@ -54,7 +61,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 				new AssemblyBuilderEmittingContext(
 					context,
 					typeof( TObject ),
-					SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), EmitterFlavor.FieldBased )
+					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), EmitterFlavor.FieldBased ),
+					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( typeof( TObject ), EmitterFlavor.FieldBased )
 				);
 		}
 

@@ -62,24 +62,51 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 
 			var codeGenerationContext = this.CreateCodeGenerationContextForSerializerCreation( context );
-			this.BuildSerializer( codeGenerationContext );
-			Func<SerializationContext, MessagePackSerializer<TObject>> constructor = this.CreateSerializerConstructor( codeGenerationContext );
-
-			if ( constructor != null )
+			if ( typeof( TObject ).GetIsEnum() )
 			{
-				var serializer = constructor( context );
-#if DEBUG
-				Contract.Assert( serializer != null );
-#endif
-				if ( !context.Serializers.Register( serializer ) )
+				this.BuildEnumSerializer( codeGenerationContext );
+				Func<SerializationContext, EnumMessagePackSerializer<TObject>> constructor =
+					this.CreateEnumSerializerConstructor( codeGenerationContext );
+
+				if ( constructor != null )
 				{
-					serializer = context.Serializers.Get<TObject>( context );
+					var serializer = constructor( context );
 #if DEBUG
 					Contract.Assert( serializer != null );
 #endif
-				}
+					if ( !context.Serializers.Register( serializer ) )
+					{
+						serializer = ( EnumMessagePackSerializer<TObject> )context.Serializers.Get<TObject>( context );
+#if DEBUG
+						Contract.Assert( serializer != null );
+#endif
+					}
 
-				return serializer;
+					return serializer;
+				}
+			}
+			else
+			{
+				this.BuildSerializer( codeGenerationContext );
+				Func<SerializationContext, MessagePackSerializer<TObject>> constructor =
+					this.CreateSerializerConstructor( codeGenerationContext );
+
+				if ( constructor != null )
+				{
+					var serializer = constructor( context );
+#if DEBUG
+					Contract.Assert( serializer != null );
+#endif
+					if ( !context.Serializers.Register( serializer ) )
+					{
+						serializer = context.Serializers.Get<TObject>( context );
+#if DEBUG
+						Contract.Assert( serializer != null );
+#endif
+					}
+
+					return serializer;
+				}
 			}
 
 			throw SerializationExceptions.NewTypeCannotSerialize( typeof( TObject ) );
@@ -126,9 +153,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				{
 					if ( typeof( TObject ).GetIsEnum() )
 					{
-						throw new NotImplementedException();
-#warning TODO: NotImpl
-						//this.BuildEnumSerializer( context );
+						this.BuildEnumSerializer( context );
 					}
 #if !WINDOWS_PHONE && !NETFX_35
 					else if ( ( typeof( TObject ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
@@ -147,7 +172,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-
 		/// <summary>
 		///		Creates the serializer type and returns its constructor.
 		/// </summary>
@@ -159,6 +183,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor(
 			TContext codeGenerationContext
 		);
+
+		/// <summary>
+		///		Creates the enum serializer type and returns its constructor.
+		/// </summary>
+		/// <param name="codeGenerationContext">The code generation context.</param>
+		/// <returns>
+		///		<see cref="Func{T, TResult}"/> which refers newly created constructor.
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		protected abstract Func<SerializationContext, EnumMessagePackSerializer<TObject>> CreateEnumSerializerConstructor(
+			TContext codeGenerationContext
+		);
+
 
 #if !NETFX_CORE && !SILVERLIGHT
 		/// <summary>

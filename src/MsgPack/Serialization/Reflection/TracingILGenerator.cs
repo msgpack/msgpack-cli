@@ -209,6 +209,19 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( methodBuilder != null );
 		}
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="TracingILGenerator"/> class.
+		/// </summary>
+		/// <param name="constructorBuilder">The constructor builder.</param>
+		/// <param name="traceWriter">The trace writer.</param>
+		/// <param name="isDebuggable"><c>true</c> if the underlying builders are debuggable; othersie <c>false</c>.</param>
+		public TracingILGenerator( ConstructorBuilder constructorBuilder, TextWriter traceWriter, bool isDebuggable )
+			: this( constructorBuilder != null ? constructorBuilder.GetILGenerator() : null, false, traceWriter, isDebuggable )
+		{
+			Contract.Assert( constructorBuilder != null );
+		}
+
 #endif
 
 		// TODO: NLiblet

@@ -44,7 +44,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 * 		this._serializer1.PackTo(packer, current.Value);
 			 * 	}
 			 */
-			this.BeginPackToMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.PackToCore );
 			TConstruct construct = null;
 			try
 			{
@@ -71,7 +71,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndPackToMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.PackToCore, construct );
 			}
 		}
 
@@ -101,7 +101,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						keyType,
 						NilImplication.Null,
 						null,
-						this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Key" ) )
+						this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Key" ) ),
+						null
 					).Concat(
 						this.EmitPackItemStatements(
 							context,
@@ -109,7 +110,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 							valueType,
 							NilImplication.Null,
 							null,
-							this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Value" ) )
+							this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Value" ) ),
+							null
 						)
 					)
 				);
@@ -117,7 +119,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void BuildMapUnpackFrom( TContext context )
 		{
-			this.BeginUnpackFromMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
 			TConstruct construct = null;
 			try
 			{
@@ -166,7 +168,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context.Unpacker,
 							collection
 						),
-						this.EmitRetrunStatement( 
+						this.EmitRetrunStatement(
 							context,
 							this.EmitLoadVariableExpression( context, collection )
 						)
@@ -174,7 +176,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndUnpackFromMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.UnpackFromCore, construct );
 			}
 		}
 
@@ -187,7 +189,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					...
 				}
 			 */
-			this.BeginUnpackToMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.UnpackToCore );
 			TConstruct construct = null;
 			try
 			{
@@ -218,7 +220,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndUnpackToMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.UnpackToCore, construct );
 			}
 		}
 
@@ -286,6 +288,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitInvariantStringFormat( context, "key{0}", forLoopContext.Counter ),
 						null,
 						null,
+						null,
 						unpackedKey =>
 							this.EmitStoreVariableStatement(
 								context,
@@ -300,6 +303,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						unpacker,
 						forLoopContext.Counter,
 						this.EmitInvariantStringFormat( context, "value{0}", forLoopContext.Counter ),
+						null,
 						null,
 						null,
 						unpackedValue =>

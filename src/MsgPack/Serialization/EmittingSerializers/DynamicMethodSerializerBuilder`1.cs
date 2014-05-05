@@ -39,7 +39,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 				new DynamicMethodEmittingContext(
 					context,
 					typeof( TObject ),
-					SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), EmitterFlavor.ContextBased )
+					() => SerializationMethodGeneratorManager.Get().CreateEmitter( typeof( TObject ), EmitterFlavor.ContextBased ),
+					() => SerializationMethodGeneratorManager.Get().CreateEnumEmitter( typeof( TObject ), EmitterFlavor.ContextBased )
 				);
 		}
 
@@ -64,14 +65,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		protected override ILConstruct EmitGetSerializerExpression( DynamicMethodEmittingContext context, Type targetType )
+		protected override ILConstruct EmitGetSerializerExpression( DynamicMethodEmittingContext context, Type targetType, SerializingMember? memberInfo )
 		{
 			return
-				this.EmitInvokeMethodExpression(
+				memberInfo == null || !targetType.GetIsEnum()
+				? this.EmitInvokeMethodExpression(
 					context,
 					context.Context,
 					Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
-				);
+				)
+				: this.BuildCreateEnumSerializerInstance( context, targetType, memberInfo.Value.GetEnumMemberSerializationMethod() );
 		}
 	}
 }

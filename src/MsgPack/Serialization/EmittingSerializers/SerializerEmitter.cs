@@ -119,14 +119,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Regisgter using <see cref="MessagePackSerializer{T}"/> target type to the current emitting session.
 		/// </summary>
-		/// <param name="targetType">Type to be serialized/deserialized.</param>
+		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
+		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
 		/// <returns>
 		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
 		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
 		///		The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public abstract Action<TracingILGenerator, int> RegisterSerializer( Type targetType );
+		public abstract Action<TracingILGenerator, int> RegisterSerializer(
+			Type targetType,
+			EnumMemberSerializationMethod enumMemberSerializationMethod
+		);
 	}
 
 	[ContractClassFor( typeof( SerializerEmitter ) )]
@@ -156,9 +160,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return null;
 		}
 
-		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType )
+		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod )
 		{
 			Contract.Requires( targetType != null );
+			Contract.Requires( Enum.IsDefined( typeof( EnumMemberSerializationMethod ), enumMemberSerializationMethod ) );
 			Contract.Ensures( Contract.Result<Action<TracingILGenerator, int>>() != null );
 			throw new NotImplementedException();
 		}

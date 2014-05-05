@@ -572,7 +572,7 @@ namespace MsgPack.Serialization.Reflection
 		///	</summary>
 		///	<param name="value"><see cref="System.Byte"/> as value.</param>
 		[SuppressMessage( "Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "IL itself contains '.', so it must be replaced with '_'." )]
-		public void EmitLdc_R4( System.Byte value )
+		public void EmitLdc_R4( System.Single value )
 		{
 			Contract.Assert( !this.IsEnded );
 

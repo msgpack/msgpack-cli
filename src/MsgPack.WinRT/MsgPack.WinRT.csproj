@@ -220,6 +220,9 @@
     <Compile Include="..\MsgPack\ReflectionAbstractions.cs">
       <Link>ReflectionAbstractions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\EnumSerializerMethod.cs">
+      <Link>Serialization\AbstractSerializers\EnumSerializerMethod.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\ICodeConstruct.cs">
       <Link>Serialization\AbstractSerializers\ICodeConstruct.cs</Link>
     </Compile>
@@ -241,6 +244,9 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
+      <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Map.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Map.cs</Link>
     </Compile>
@@ -250,6 +256,9 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerFieldKey.cs">
+      <Link>Serialization\AbstractSerializers\SerializerFieldKey.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerGenerationContext.cs">
       <Link>Serialization\AbstractSerializers\SerializerGenerationContext.cs</Link>
     </Compile>
@@ -258,6 +267,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\AutoMessagePackSerializer`1.cs">
       <Link>Serialization\AutoMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CallbackEnumMessagePackSerializer.cs">
+      <Link>Serialization\CallbackEnumMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CallbackMessagePackSerializer`1.cs">
       <Link>Serialization\CallbackMessagePackSerializer`1.cs</Link>
@@ -288,12 +300,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DefaultSerializers.cs">
       <Link>Serialization\DefaultSerializers\DefaultSerializers.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\EnumMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs">
-      <Link>Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
@@ -376,6 +382,24 @@
     <Compile Include="..\MsgPack\Serialization\EmitterFlavor.cs">
       <Link>Serialization\EmitterFlavor.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMemberSerializationMethod.cs">
+      <Link>Serialization\EnumMemberSerializationMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerHelper.cs">
+      <Link>Serialization\EnumMessagePackSerializerHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerProvider.cs">
+      <Link>Serialization\EnumMessagePackSerializerProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializer`1.cs">
+      <Link>Serialization\EnumMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumSerializationMethod.cs">
+      <Link>Serialization\EnumSerializationMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackEnumMessagePackSerializer`1.cs">
+      <Link>Serialization\ExpressionSerializers\ExpressionCallbackEnumMessagePackSerializer`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs">
       <Link>Serialization\ExpressionSerializers\ExpressionCallbackMessagePackSerializer`1.cs</Link>
     </Compile>
@@ -400,6 +424,9 @@
     <Compile Include="..\MsgPack\Serialization\FromExpression.ToMethod.cs">
       <Link>Serialization\FromExpression.ToMethod.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ICustomizableEnumSerializer.cs">
+      <Link>Serialization\ICustomizableEnumSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\IdentifierUtility.cs">
       <Link>Serialization\IdentifierUtility.cs</Link>
     </Compile>
@@ -412,11 +439,20 @@
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackEnumAttribute.cs">
+      <Link>Serialization\MessagePackEnumAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackEnumMemberAttribute.cs">
+      <Link>Serialization\MessagePackEnumMemberAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackMemberAttribute.cs">
       <Link>Serialization\MessagePackMemberAttribute.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.cs">
       <Link>Serialization\MessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializerProvider.cs">
+      <Link>Serialization\MessagePackSerializerProvider.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer`1.cs">
       <Link>Serialization\MessagePackSerializer`1.cs</Link>
@@ -429,6 +465,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Enumerable.cs">
       <Link>Serialization\Metadata\_Enumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_EnumMessagePackSerializerHelper.cs">
+      <Link>Serialization\Metadata\_EnumMessagePackSerializerHelper.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_IDictionaryEnumerator.cs">
       <Link>Serialization\Metadata\_IDictionaryEnumerator.cs</Link>

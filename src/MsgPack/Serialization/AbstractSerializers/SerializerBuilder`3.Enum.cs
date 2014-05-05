@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,37 +20,33 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
+		private static readonly Type[] StandardEnumSerializerConstructorTypes = { typeof( PackerCompatibilityOptions ), typeof( EnumSerializationMethod ), typeof( IDictionary<TObject, string> ), typeof( IDictionary<string, TObject> ) };
+
 		private void BuildEnumSerializer( TContext context )
 		{
-			var underyingType = Enum.GetUnderlyingType( typeof( TObject ) );
-			context.BaseType =
-				typeof( EnumSerializer<,> ).MakeGenericType( typeof( TObject ), underyingType );
+			Contract.Assert( typeof( TObject ).GetIsEnum() );
+			var underlyingType = Enum.GetUnderlyingType( typeof( TObject ) );
+			Contract.Assert( underlyingType != null, "Underlying type of " + typeof( TObject ) + " is null." );
 
-			this.BuildPackUnderlyingValueTo( context, underyingType );
-			this.BuildGetUnderlyingValueString( context, underyingType );
-			this.BuildUnpackFromUnderlyingValue( context, underyingType );
-			this.BuildTryParse( context, underyingType );
+			this.BuildPackUnderlyingValueTo( context, underlyingType );
+			this.BuildGetUnderlyingValueString( context, underlyingType );
+			this.BuildUnpackFromUnderlyingValue( context, underlyingType );
+			this.BuildTryParse( context, underlyingType );
 		}
 
-		private void BuildPackUnderlyingValueTo( TContext context, Type underyingType )
+		private void BuildPackUnderlyingValueTo( TContext context, Type underlyingType )
 		{
 			this.EmitMethodPrologue(
 				context,
-				"PackUnderyingValueTo",
-				typeof( void ),
-				Tuple.Create( "packer", typeof( Packer ) ),
-				Tuple.Create( "enumValue", typeof( EnumSerializationMethod ) )
+				EnumSerializerMethod.PackUnderlyingValueTo
 			);
 
 			TConstruct construct = null;
@@ -59,88 +55,26 @@ namespace MsgPack.Serialization.AbstractSerializers
 				construct =
 					this.EmitInvokeVoidMethod(
 						context,
-						this.ReferArgument( "packer", 1 ),
-						typeof( Packer ).GetMethod( "Pack", new[] { underyingType } ),
-						this.EmitEnumToUnderlyingCastExpression( context, underyingType, this.ReferArgument( "enumValue", 2 ) )
+						this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
+						typeof( Packer ).GetMethod( "Pack", new[] { underlyingType } ),
+						this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, typeof( TObject ), "enumValue", 2 ) )
 					);
 			}
 			finally
 			{
 				this.EmitMethodEpilogue(
 					context,
+					EnumSerializerMethod.PackUnderlyingValueTo,
 					construct
 				);
 			}
 		}
 
-		private void BuildGetUnderlyingValueString( TContext context, Type underyingType )
+		private void BuildGetUnderlyingValueString( TContext context, Type underlyingType )
 		{
 			this.EmitMethodPrologue(
 				context,
-				"GetUnderlyingValueString",
-				typeof( string ),
-				Tuple.Create( "enumValue", typeof( EnumSerializationMethod ) )
-			);
-
-			TConstruct construct = null;
-			try
-			{
-				construct =
-					this.EmitInvokeMethodExpression(
-						context,
-						this.ReferArgument( "enumValue", 1 ),
-						underyingType.GetMethod( "ToString", RefelectionExtensions.EmptyTypes )
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue(
-					context,
-					construct
-				);
-			}
-		}
-
-		private void BuildUnpackFromUnderlyingValue( TContext context, Type underyingType )
-		{
-			this.EmitMethodPrologue(
-				context,
-				"GetUnderlyingValueString",
-				typeof( TObject ),
-				Tuple.Create( "messagePackObject", typeof( MessagePackObject ) )
-			);
-
-			TConstruct construct = null;
-			try
-			{
-				construct =
-					this.EmitEnumFromUnderlyingCastExpression(
-						context,
-						underyingType,
-						this.EmitInvokeMethodExpression(
-							context,
-							this.ReferArgument( "messagePackObject", 1 ),
-							typeof( MessagePackObject ).GetMethod( "As" + underyingType.Name, RefelectionExtensions.EmptyTypes )
-						)
-					);
-			}
-			finally
-			{
-				this.EmitMethodEpilogue(
-					context,
-					construct
-				);
-			}
-		}
-
-		private void BuildTryParse( TContext context, Type underyingType )
-		{
-			this.EmitMethodPrologue(
-				context,
-				"TryParse",
-				typeof( bool ),
-				Tuple.Create( "value", typeof( string ) ),
-				Tuple.Create( "underlying", underyingType.MakeByRefType() )
+				EnumSerializerMethod.GetUnderlyingValueString
 			);
 
 			TConstruct construct = null;
@@ -151,10 +85,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.EmitInvokeMethodExpression(
 							context,
-							null,
-							underyingType.GetMethod( "TryParse", new[] { typeof( string ), underyingType.MakeByRefType() } ),
-							this.ReferArgument( "value", 1 ),
-							this.ReferArgument( "underying", 2 )
+							this.EmitEnumToUnderlyingCastExpression(
+								context,
+								underlyingType,
+								this.ReferArgument( context, typeof( TObject ), "enumValue", 1 )
+							),
+							underlyingType.GetMethod( "ToString", ReflectionAbstractions.EmptyTypes )
 						)
 					);
 			}
@@ -162,226 +98,135 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				this.EmitMethodEpilogue(
 					context,
+					EnumSerializerMethod.GetUnderlyingValueString,
 					construct
 				);
 			}
 		}
 
-		private TConstruct BuildCreateEnumSerializerInstance( TContext context, SerializingMember member )
+		private void BuildUnpackFromUnderlyingValue( TContext context, Type underlyingType )
 		{
-			EnumSerializationMethod method = context.SerializationContext.EnumSerializationMethod;
-			var attributesOnMember = member.Member.GetCustomAttributes( typeof( MessagePackEnumMemberAttribute ), true );
-			if ( attributesOnMember.Length > 0 )
-			{
-				switch ( ( attributesOnMember[ 0 ] as MessagePackEnumMemberAttribute ).SerializationMethod )
-				{
-					case EnumMemberSerializationMethod.ByName:
-					{
-						method = EnumSerializationMethod.ByName;
-						break;
-					}
-					case EnumMemberSerializationMethod.ByUnderlyingValue:
-					{
-						method = EnumSerializationMethod.ByUnderlyingValue;
-						break;
-					}
-					default:
-					{
-						var attributesOnType = member.Member.GetMemberValueType().GetCustomAttributes( typeof( MessagePackEnumAttribute ), false );
-						if ( attributesOnType.Length > 0 )
-						{
-							method = ( attributesOnMember[ 0 ] as MessagePackEnumAttribute ).SerializationMethod;
-						}
+			this.EmitMethodPrologue(
+				context,
+				EnumSerializerMethod.UnpackFromUnderlyingValue
+			);
 
-						break;
-					}
-				}
+			TConstruct construct = null;
+			try
+			{
+				construct =
+					this.EmitRetrunStatement(
+						context,
+						this.EmitEnumFromUnderlyingCastExpression(
+							context,
+							typeof( TObject ),
+							this.EmitInvokeMethodExpression(
+								context,
+								this.ReferArgument( context, typeof( MessagePackObject ), "messagePackObject", 1 ),
+								typeof( MessagePackObject ).GetMethod( "As" + underlyingType.Name, ReflectionAbstractions.EmptyTypes )
+							)
+						)
+					);
 			}
+			finally
+			{
+				this.EmitMethodEpilogue(
+					context,
+					EnumSerializerMethod.UnpackFromUnderlyingValue,
+					construct
+				);
+			}
+		}
+
+		private void BuildTryParse( TContext context, Type underlyingType )
+		{
+			this.EmitMethodPrologue(
+				context,
+				EnumSerializerMethod.Parse
+			);
+
+			TConstruct construct = null;
+			try
+			{
+				construct =
+					this.EmitRetrunStatement(
+						context,
+						this.EmitEnumFromUnderlyingCastExpression(
+							context,
+							typeof( TObject ),
+							this.EmitInvokeMethodExpression(
+								context,
+								null,
+								underlyingType.GetMethod( "Parse", new[] { typeof( String ) } ),
+								this.ReferArgument( context, typeof( String ), "value", 1 )
+							)
+						)
+					);
+			}
+			finally
+			{
+				this.EmitMethodEpilogue(
+					context,
+					EnumSerializerMethod.Parse,
+					construct
+				);
+			}
+		}
+
+		/// <summary>
+		///		Builds enum serializer creation expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="enumType">The enum type of target member.</param>
+		/// <param name="enumMemberSerializationMethod">The enum serialization method for target member.</param>
+		/// <returns>
+		///		Enum creation construct.
+		/// </returns>
+		/// <remarks>
+		///		This method will be invoked via <see cref="EmitGetSerializerExpression"/> or constructor emitting.
+		/// </remarks>
+		protected TConstruct BuildCreateEnumSerializerInstance( TContext context, Type enumType, EnumMemberSerializationMethod enumMemberSerializationMethod )
+		{
+			var method = EnumMessagePackSerializerHelper.DetermineEnumSerializationMethod( context.SerializationContext, enumType, enumMemberSerializationMethod );
+
+			var protoType = context.SerializationContext.GetSerializer<TObject>();
 
 			return
 				this.BuildCreateEnumSerializerInstance(
 					context,
-					member.Member.GetMemberValueType(),
+					protoType.GetType().GetConstructor( StandardEnumSerializerConstructorTypes ),
 					method,
-					GetNameValueMap(),
-					GetValueNameMap()
+					Enum.GetNames( typeof( TObject ) ),
+					Enum.GetValues( typeof( TObject ) ) as TObject[]
 				);
 		}
 
-		protected abstract TConstruct BuildCreateEnumSerializerInstance(
+		private TConstruct BuildCreateEnumSerializerInstance(
 			TContext context,
-			Type type,
+			ConstructorInfo serializerConstructor,
 			EnumSerializationMethod method,
-			IDictionary<string, TObject> nameValueMap,
-			IDictionary<TObject, string> valuenameMap
-		);
-
-		private static IDictionary<string, TObject> GetNameValueMap()
+			IList<string> names,
+			IList<TObject> values
+			)
 		{
 			return
-				Enum.GetValues( typeof( TObject ) )
-					.Cast<TObject>()
-					.ToDictionary( e => e.ToString() );
-		}
-
-		private static IDictionary<TObject, string> GetValueNameMap()
-		{
-			var result = new Dictionary<TObject, string>();
-			foreach ( TObject entry in Enum.GetValues( typeof( TObject ) ) )
-			{
-				result[ entry ] = entry.ToString();
-			}
-
-			return result;
-		}
-	}
-
-	internal abstract class EnumSerializer<TEnum, TUnderlying> : MessagePackSerializer<TEnum>
-	{
-		private readonly EnumSerializationMethod _serializationMethod;
-		private readonly IDictionary<TEnum, string> _valueNameMap;
-		private readonly IDictionary<string, TEnum> _nameValueMap;
-
-		protected EnumSerializer( PackerCompatibilityOptions options, EnumSerializationMethod serializationMethod, IDictionary<TEnum, string> valueNameMap, IDictionary<string, TEnum> nameValueMap )
-			: base( options )
-		{
-			this._serializationMethod = serializationMethod;
-			this._valueNameMap = valueNameMap;
-			this._nameValueMap = nameValueMap;
-		}
-
-		protected internal override void PackToCore( Packer packer, TEnum objectTree )
-		{
-			if ( this._serializationMethod == EnumSerializationMethod.ByUnderlyingValue )
-			{
-				PackUnderlyingValueTo( packer, objectTree );
-			}
-			else
-			{
-				string asString;
-				if ( !this._valueNameMap.TryGetValue( objectTree, out asString ) )
-				{
-					asString = this.GetUnderlyingValueString( objectTree );
-				}
-
-				packer.PackString( asString );
-			}
-		}
-
-		protected abstract void PackUnderlyingValueTo( Packer packer, TEnum enumValue );
-		protected abstract string GetUnderlyingValueString( TEnum enumValue );
-
-		protected internal override TEnum UnpackFromCore( Unpacker unpacker )
-		{
-			if ( unpacker.LastReadData.IsRaw )
-			{
-				var asString = unpacker.LastReadData.AsString();
-				TEnum result;
-				if ( !this._nameValueMap.TryGetValue( asString, out result ) )
-				{
-					TUnderlying underlying;
-					if ( !this.TryParse( asString, out underlying ) )
-					{
-						throw new SerializationException(
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Name '{0}' is not member of enum type '{1}'.",
-								asString,
-								typeof( TEnum )
-								)
-							);
-					}
-				}
-
-				return result;
-			}
-			else if ( unpacker.LastReadData.IsTypeOf<TUnderlying>().GetValueOrDefault() )
-			{
-				return UnpackFromUnderlyingValue( unpacker.LastReadData );
-			}
-			else
-			{
-				throw new SerializationException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"Type '{0}' is not underlying type of enum type '{1}'.",
-						unpacker.LastReadData.UnderlyingType,
-						typeof( TEnum )
-					)
+				this.EmitCreateNewObjectExpression(
+					context,
+					null, // serializer always reference type.
+					serializerConstructor,
+					this.EmitGetPropretyExpression(
+						context,
+						this.EmitThisReferenceExpression( context ),
+						FromExpression.ToProperty( ( MessagePackSerializer<TObject> x ) => x.PackerCompatibilityOptions )
+					),
+					this.MakeEnumLiteral( context, typeof( EnumSerializationMethod ), method ),
+					this.EmitCreateNewArrayExpression( context, typeof( string ), names.Count, names.Select( name => this.MakeStringLiteral( context, name ) ) ),
+					this.EmitCreateNewArrayExpression( context, typeof( TObject ), values.Count, values.Select( value => this.MakeEnumLiteral( context, typeof( TObject ), value ) ) )
 				);
-			}
 		}
 
-		protected abstract TEnum UnpackFromUnderlyingValue( MessagePackObject messagePackObject );
-		protected abstract bool TryParse( string value, out TUnderlying underlying );
-	}
+		protected abstract TConstruct EmitEnumToUnderlyingCastExpression( TContext context, Type underlyingType, TConstruct enumValue );
 
-
-	// Dummy
-	/*
-	internal sealed class EnumSerializationMethodSerializer : EnumSerializer<EnumSerializationMethod, int>
-	{
-		public EnumSerializationMethodSerializer( PackerCompatibilityOptions options, EnumSerializationMethod serializationMethod, IDictionary<EnumSerializationMethod, string> valueNameMap, IDictionary<string, EnumSerializationMethod> nameValueMap )
-			: base( options, serializationMethod, valueNameMap, nameValueMap ) { }
-
-		protected override void PackUnderlyingValueTo( Packer packer, EnumSerializationMethod enumValue )
-		{
-			packer.Pack( this.ToUnderlyingValue( enumValue ) );
-		}
-
-		protected override string GetUnderlyingValueString( EnumSerializationMethod enumValue )
-		{
-			return this.ToUnderlyingValue( enumValue ).ToString();
-		}
-
-		private int ToUnderlyingValue( EnumSerializationMethod enumValue )
-		{
-			return ( int )enumValue;
-		}
-
-		protected override EnumSerializationMethod UnpackFromUnderlyingValue( MessagePackObject messagePackObject )
-		{
-			return this.FromUnderlyingValue( messagePackObject.AsInt32() );
-		}
-
-		protected override bool TryParse( string value, out int underlying )
-		{
-			return Int32.TryParse( value, out underlying );
-		}
-
-		private EnumSerializationMethod FromUnderlyingValue( int underlying )
-		{
-			return ( EnumSerializationMethod )underlying;
-		}
-	}
-	 */
-
-	public enum EnumSerializationMethod
-	{
-		ByName = 0,
-		ByUnderlyingValue
-	}
-
-	public enum EnumMemberSerializationMethod
-	{
-		Default = 0,
-		ByName,
-		ByUnderlyingValue
-	}
-
-	[AttributeUsage( AttributeTargets.Enum, Inherited = false, AllowMultiple = false )]
-	public sealed class MessagePackEnumAttribute : Attribute
-	{
-		public EnumSerializationMethod SerializationMethod { get; set; }
-
-		public MessagePackEnumAttribute() { }
-	}
-
-	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, Inherited = true, AllowMultiple = false )]
-	public sealed class MessagePackEnumMemberAttribute : Attribute
-	{
-		public EnumMemberSerializationMethod SerializationMethod { get; set; }
-
-		public MessagePackEnumMemberAttribute() { }
+		protected abstract TConstruct EmitEnumFromUnderlyingCastExpression( TContext context, Type enumType, TConstruct underlyingValue );
 	}
 }

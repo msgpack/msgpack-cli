@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,16 +27,20 @@ namespace MsgPack.Serialization.EmittingSerializers
 	/// </summary>
 	internal class AssemblyBuilderEmittingContext : ILEmittingContext
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="AssemblyBuilderEmittingContext"/> class.
-		/// </summary>
+		///  <summary>
+		///  Initializes a new instance of the <see cref="AssemblyBuilderEmittingContext"/> class.
+		///  </summary>
 		/// <param name="context">The serialization context.</param>
 		/// <param name="targetType">Type of the serialization target.</param>
-		/// <param name="emitter">
-		///		The <see cref="SerializerEmitter"/> to be used.
+		/// <param name="emitterFactory">
+		///		The factory for <see cref="SerializerEmitter"/> to be used.
 		/// </param>
-		public AssemblyBuilderEmittingContext( SerializationContext context, Type targetType, SerializerEmitter emitter )
-			: base( context, emitter)
+		/// <param name="enumEmitterFactory">
+		///		The factory for <see cref="EnumSerializerEmitter"/> to be used.
+		/// </param>
+		public AssemblyBuilderEmittingContext( SerializationContext context, Type targetType,
+			Func<SerializerEmitter> emitterFactory, Func<EnumSerializerEmitter> enumEmitterFactory )
+			: base( context, emitterFactory, enumEmitterFactory )
 		{
 			this.Reset( targetType );
 		}

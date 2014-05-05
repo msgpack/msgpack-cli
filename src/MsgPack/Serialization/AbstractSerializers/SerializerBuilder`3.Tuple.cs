@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				 _serializer7.PackTo( packer, tuple.Rest.Item1 );
 			*/
 
-			this.BeginPackToMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.PackToCore );
 			TConstruct construct = null;
 			try
 			{
@@ -61,7 +61,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndPackToMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.PackToCore, construct );
 			}
 		}
 
@@ -129,7 +129,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 					null,
 					propertyInvocationChain.Aggregate(
 						tuple, ( propertySource, property ) => this.EmitGetPropretyExpression( context, propertySource, property )
-					)
+					),
+					null
 				);
 		}
 
@@ -161,7 +162,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 *			);
 			 *	}
 			 */
-			this.BeginUnpackFromMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
 			TConstruct construct = null;
 			try
 			{
@@ -174,7 +175,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndUnpackFromMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.UnpackFromCore, construct );
 			}
 		}
 
@@ -211,6 +212,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context.Unpacker,
 						this.MakeInt32Literal( context, i ),
 						this.MakeStringLiteral( context, "Item" + i.ToString( CultureInfo.InvariantCulture ) ),
+						null,
 						null,
 						null,
 						unpackedItem =>
