@@ -28,36 +28,63 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal sealed class EnumMessagePackSerializerProvider : MessagePackSerializerProvider
 	{
+		private readonly Type _enumType;
 		private readonly object _serializerForName;
 		private readonly object _serializerForIntegral;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="EnumMessagePackSerializerProvider"/> class.
+		///		Initializes a new instance of the <see cref="EnumMessagePackSerializerProvider"/> class.
 		/// </summary>
+		/// <param name="enumType">A type of the enum.</param>
 		/// <param name="serializer">The serializer implements <see cref="ICustomizableEnumSerializer"/>.</param>
-		public EnumMessagePackSerializerProvider( ICustomizableEnumSerializer serializer )
+		public EnumMessagePackSerializerProvider( Type enumType, ICustomizableEnumSerializer serializer )
 		{
-			this._serializerForName = serializer.GetCopyAs( EnumSerializationMethod.ByName ); ;
+			this._enumType = enumType;
+			this._serializerForName = serializer.GetCopyAs( EnumSerializationMethod.ByName );
 			this._serializerForIntegral = serializer.GetCopyAs( EnumSerializationMethod.ByUnderlyingValue );
 		}
 
 		/// <summary>
-		/// Gets a serializer instance for specified parameter.
+		///		Gets a serializer instance for specified parameter.
 		/// </summary>
+		/// <param name="context">A serialization context which holds global settings.</param>
 		/// <param name="providerParameter">A provider specific parameter.</param>
 		/// <returns>	
 		/// A serializer object for specified parameter.
 		/// </returns>
-		public override object Get( object providerParameter )
+		public override object Get( SerializationContext context, object providerParameter )
 		{
-			if ( ( providerParameter is EnumSerializationMethod ) &&
-				 ( ( EnumSerializationMethod )providerParameter ) == EnumSerializationMethod.ByUnderlyingValue )
+			if ( ( providerParameter is EnumSerializationMethod ) )
 			{
-				return this._serializerForIntegral;
+				switch ( ( EnumSerializationMethod )providerParameter )
+				{
+					case EnumSerializationMethod.ByName:
+					{
+						return this._serializerForName;
+					}
+					case EnumSerializationMethod.ByUnderlyingValue:
+					{
+						return this._serializerForIntegral;
+					}
+				}
 			}
-			else
+
+
+
+			switch ( 
+				EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod( 
+					context, this._enumType, EnumMemberSerializationMethod.Default 
+				) 
+			)
 			{
-				return this._serializerForName;
+				case EnumSerializationMethod.ByUnderlyingValue:
+				{
+					return this._serializerForIntegral;
+				}
+				default:
+				{
+					return this._serializerForName;
+				}
 			}
 		}
 	}

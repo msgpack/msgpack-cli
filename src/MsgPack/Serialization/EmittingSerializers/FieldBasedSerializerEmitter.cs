@@ -39,7 +39,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 	internal sealed class FieldBasedSerializerEmitter : SerializerEmitter
 	{
 		private static readonly Type[] _constructorParameterTypes = { typeof( SerializationContext ) };
-		private static readonly Type[] _serializerConstructorParameterTypes = { typeof( PackerCompatibilityOptions ) };
 
 		private readonly Dictionary<SerializerFieldKey, FieldBuilder> _serializers;
 		private readonly ConstructorBuilder _defaultConstructorBuilder;
@@ -64,7 +63,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			string typeName =
 #if !NETFX_35
-				 String.Join(
+ String.Join(
 					Type.Delimiter.ToString( CultureInfo.InvariantCulture ),
 					typeof( SerializerEmitter ).Namespace,
 					"Generated",
@@ -235,24 +234,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 					var il = new TracingILGenerator( this._contextConstructorBuilder, TextWriter.Null, this._isDebuggable );
 					// : base()
 					il.EmitLdarg_0();
-					// ( context ?? SerializationContext.Default )
-					EmitSafeGetPackerCompabitilityOptionsFromContext( il );
+					il.EmitLdarg_1();
 #if DEBUG
 					Contract.Assert( this._typeBuilder.BaseType != null, "this._typeBuilder.BaseType != null" );
 #endif
 					il.EmitCallConstructor(
 						this._typeBuilder.BaseType.GetConstructor(
-							BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, _serializerConstructorParameterTypes, null
+							BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, _constructorParameterTypes, null
 						)
 					);
-
-					// gets PackerCompatibilityOptions if needed
-					if ( this._serializers.Any( entry => Type.GetTypeFromHandle( entry.Key.TypeHandle ).GetIsEnum() ) )
-					{
-						var packerCompatibilityOptions = il.DeclareLocal( typeof( PackerCompatibilityOptions ) );
-						EmitSafeGetPackerCompabitilityOptionsFromContext( il );
-						il.EmitAnyStloc( packerCompatibilityOptions );
-					}
 
 					// this._serializerN = context.GetSerializer<T>();
 					foreach ( var entry in this._serializers )
@@ -274,7 +264,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							il.EmitLdarg_1();
 							il.EmitTypeOf( targetType );
 							il.EmitAnyLdc_I4( ( int )entry.Key.EnumSerializationMethod );
-							il.EmitCallvirt( Metadata._EnumMessagePackSerializerHelper.DetermineEnumSerializationMethodMethod );
+							il.EmitCall( Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod );
 							il.EmitBox( typeof( EnumSerializationMethod ) );
 						}
 
@@ -300,21 +290,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 					),
 					contextParameter
 				).Compile();
-		}
-
-		internal static void EmitSafeGetPackerCompabitilityOptionsFromContext( TracingILGenerator il )
-		{
-			var nullValue = il.DefineLabel();
-			var endExpression = il.DefineLabel();
-			il.EmitLdarg_1();
-			il.EmitBrfalse_S( nullValue );
-			il.EmitLdarg_1();
-			il.EmitBr_S( endExpression );
-			il.MarkLabel( nullValue );
-			il.EmitGetProperty( Metadata._SerializationContext.DefaultProperty );
-			il.MarkLabel( endExpression );
-			il.EmitGetProperty( Metadata._SerializationContext.CompatibilityOptionsProperty );
-			il.EmitGetProperty( Metadata._SerializationCompatibilityOptions.PackerCompatibilityOptionsProperty );
 		}
 
 		/// <summary>

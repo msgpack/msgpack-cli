@@ -18,9 +18,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
         public MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
-            MsgPack.Serialization.SerializationContext safeContext = MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<string>();
+                base(context) {
+            this._serializer0 = this.OwnerContext.GetSerializer<string>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget objectTree) {

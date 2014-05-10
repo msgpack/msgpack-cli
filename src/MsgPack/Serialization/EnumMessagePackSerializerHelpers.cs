@@ -19,15 +19,19 @@
 #endregion -- License Terms --
 
 using System;
-using System.Linq;
+using System.ComponentModel;
+#if NETFX_CORE
 using System.Reflection;
+#endif
 
 namespace MsgPack.Serialization
 {
 	/// <summary>
+	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Helper methods for enum message pack serializer.
 	/// </summary>
-	internal static class EnumMessagePackSerializerHelper
+	[EditorBrowsable( EditorBrowsableState.Never )]
+	public static class EnumMessagePackSerializerHelpers
 	{
 		/// <summary>
 		///		Determines <see cref="EnumSerializationMethod"/> for the target.
@@ -69,7 +73,7 @@ namespace MsgPack.Serialization
 					{
 						// ReSharper disable once PossibleNullReferenceException
 						method = ( messagePackEnumAttributes[ 0 ] as MessagePackEnumAttribute ).SerializationMethod;
-#endif // NETFX_CORE 
+#endif // NETFX_CORE
 					}
 
 					break;

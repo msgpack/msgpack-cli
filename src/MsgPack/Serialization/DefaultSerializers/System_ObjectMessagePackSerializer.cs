@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,18 +22,20 @@ using System;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_ObjectMessagePackSerializer : MessagePackSerializer<object>
 	{
-		public System_ObjectMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions ) { }
+		public System_ObjectMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext ) { }
 
-		protected internal sealed override void PackToCore( Packer packer, object value )
+		protected internal override void PackToCore( Packer packer, object value )
 		{
 			packer.PackObject( value );
 		}
 
-		protected internal sealed override object UnpackFromCore( Unpacker unpacker )
+		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
+			// ReSharper disable RedundantIfElseBlock
 			if ( unpacker.IsArrayHeader )
 			{
 				var result = new MessagePackObject[ UnpackHelpers.GetItemsCount( unpacker ) ];
@@ -75,6 +77,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				var result = unpacker.LastReadData;
 				return result.IsNil ? MessagePackObject.Nil : result;
 			}
+			// ReSharper restore RedundantIfElseBlock
 		}
 	}
 }

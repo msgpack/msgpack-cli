@@ -21,6 +21,8 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
+
 using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization.AbstractSerializers
@@ -40,6 +42,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
 	{
+		/// <summary>
+		///		<see cref="PropertyInfo"/> of <see cref="MessagePackSerializer{TObject}.OwnerContext"/>.
+		/// </summary>
+		protected static readonly PropertyInfo OwnerContextProperty =
+			FromExpression.ToProperty(
+				( MessagePackSerializer<TObject> serializer ) => serializer.OwnerContext
+			);
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializerBuilder{TContext, TConstruct, TObject}"/> class.
 		/// </summary>
@@ -65,7 +75,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			if ( typeof( TObject ).GetIsEnum() )
 			{
 				this.BuildEnumSerializer( codeGenerationContext );
-				Func<SerializationContext, EnumMessagePackSerializer<TObject>> constructor =
+				Func<SerializationContext, MessagePackSerializer<TObject>> constructor =
 					this.CreateEnumSerializerConstructor( codeGenerationContext );
 
 				if ( constructor != null )
@@ -76,7 +86,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif
 					if ( !context.Serializers.Register( serializer ) )
 					{
-						serializer = ( EnumMessagePackSerializer<TObject> )context.Serializers.Get<TObject>( context );
+						serializer = context.Serializers.Get<TObject>( context );
 #if DEBUG
 						Contract.Assert( serializer != null );
 #endif
@@ -192,7 +202,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		<see cref="Func{T, TResult}"/> which refers newly created constructor.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		protected abstract Func<SerializationContext, EnumMessagePackSerializer<TObject>> CreateEnumSerializerConstructor(
+		protected abstract Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor(
 			TContext codeGenerationContext
 		);
 

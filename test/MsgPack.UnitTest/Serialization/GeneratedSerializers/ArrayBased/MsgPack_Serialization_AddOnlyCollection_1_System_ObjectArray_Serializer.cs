@@ -20,10 +20,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         private MsgPack.Serialization.MessagePackSerializer<object[]> _serializer1;
         
         public MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
-            MsgPack.Serialization.SerializationContext safeContext = MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<object[][]>();
-            this._serializer1 = safeContext.GetSerializer<object[]>();
+                base(context) {
+            this._serializer0 = this.OwnerContext.GetSerializer<object[][]>();
+            this._serializer1 = this.OwnerContext.GetSerializer<object[]>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.AddOnlyCollection<object[]> objectTree) {

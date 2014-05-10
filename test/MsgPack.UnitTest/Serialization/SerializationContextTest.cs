@@ -196,7 +196,7 @@ namespace MsgPack.Serialization
 			context.Serializers.RegisterOverride( new NetDateTimeSerializer() );
 			using ( var buffer = new MemoryStream() )
 			{
-				var serializer = MessagePackSerializer.Create<DateTime>( context );
+				var serializer = context.GetSerializer<DateTime>();
 				var dt = new DateTime( 999999999999999999L, DateTimeKind.Utc );
 				serializer.Pack( buffer, dt );
 				buffer.Position = 0;
@@ -211,7 +211,7 @@ namespace MsgPack.Serialization
 			var context = new SerializationContext();
 			using ( var buffer = new MemoryStream() )
 			{
-				var serializer = MessagePackSerializer.Create<IDictionary<String, String>>( context );
+				var serializer = context.GetSerializer<IDictionary<String, String>>();
 				var dic = new Dictionary<string, string> { { "A", "A" } };
 				serializer.Pack( buffer, dic );
 				buffer.Position = 0;
@@ -229,7 +229,7 @@ namespace MsgPack.Serialization
 			var context = new SerializationContext();
 			using ( var buffer = new MemoryStream() )
 			{
-				var serializer = MessagePackSerializer.Create<IList<String>>( context );
+				var serializer = context.GetSerializer<IList<String>>();
 				var list = new List<string> { "A" };
 				serializer.Pack( buffer, list );
 				buffer.Position = 0;
@@ -247,7 +247,7 @@ namespace MsgPack.Serialization
 			var context = new SerializationContext();
 			using ( var buffer = new MemoryStream() )
 			{
-				var serializer = MessagePackSerializer.Create<ICollection<string>>( context );
+				var serializer = context.GetSerializer<ICollection<string>>();
 				var list = new List<string> { "A" };
 				serializer.Pack( buffer, list );
 				buffer.Position = 0;
@@ -259,6 +259,9 @@ namespace MsgPack.Serialization
 		}
 		private sealed class NetDateTimeSerializer : MessagePackSerializer<DateTime>
 		{
+			public NetDateTimeSerializer()
+				: base( SerializationContext.Default ) {}
+
 			protected internal override void PackToCore( Packer packer, DateTime objectTree )
 			{
 				packer.Pack( objectTree.ToUniversalTime().Ticks );
@@ -276,13 +279,11 @@ namespace MsgPack.Serialization
 		{
 			private T _gotten;
 			private readonly Func<T> _getter;
-			private readonly Random _random;
 			private readonly Barrier _barrier;
 
 			public ConcurrentHelper( Func<T> getter )
 			{
 				this._getter = getter;
-				this._random = new Random();
 				this._barrier = new Barrier( 1 );
 			}
 
@@ -299,6 +300,7 @@ namespace MsgPack.Serialization
 					this._barrier.AddParticipant();
 					tasks.Add(
 						Task.Factory.StartNew(
+							// ReSharper disable once PossibleNullReferenceException
 							@this => ( @this as ConcurrentHelper<T> ).TestCore(),
 							this
 						)
@@ -340,7 +342,7 @@ namespace MsgPack.Serialization
 
 		public abstract class NewAbstractCollection<T> : Collection<T>
 		{
-			
+
 		}
 
 		public sealed class NewConcreteCollection<T> : NewAbstractCollection<T>

@@ -201,7 +201,7 @@
     <Compile Include="Serialization\EmittingSerializers\EnumSerializerEmitter.cs" />
     <Compile Include="Serialization\EmittingSerializers\FieldBasedEnumSerializerEmitter.cs" />
     <Compile Include="Serialization\EnumMemberSerializationMethod.cs" />
-    <Compile Include="Serialization\EnumMessagePackSerializerHelper.cs" />
+    <Compile Include="Serialization\EnumMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\EnumMessagePackSerializerProvider.cs" />
     <Compile Include="Serialization\EnumSerializationMethod.cs" />
     <Compile Include="Serialization\EnumMessagePackSerializer`1.cs" />
@@ -210,8 +210,9 @@
     <Compile Include="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Compile Include="Serialization\MessagePackEnumAttribute.cs" />
     <Compile Include="Serialization\MessagePackEnumMemberAttribute.cs" />
+    <Compile Include="Serialization\MessagePackSerializerExtensions.cs" />
     <Compile Include="Serialization\MessagePackSerializerProvider.cs" />
-    <Compile Include="Serialization\Metadata\_EnumMessagePackSerializerHelper.cs" />
+    <Compile Include="Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Compile Include="Serialization\EmittingSerializers\AndConditionILConstruct.cs" />

@@ -61,7 +61,7 @@ namespace MsgPack.Serialization
 
 		private SerializationContext GetSerializationContext()
 		{
-			return new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ExpressionBased };
+			return new SerializationContext { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ExpressionBased };
 		}
 
 		private SerializationContext  NewSerializationContext()
@@ -857,7 +857,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_DefaultContext()
 		{
-			var serializer = MessagePackSerializer.Create<byte[]>();
+			var serializer = MessagePackSerializer.CreateInternal<byte[]>( SerializationContext.Default );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1 } );
@@ -870,7 +870,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.Create<byte[]>( context );
+			var serializer = MessagePackSerializer.CreateInternal<byte[]>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1 } );
@@ -883,7 +883,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
-			var serializer = MessagePackSerializer.Create<DateTime>( context );
+			var serializer = MessagePackSerializer.CreateInternal<DateTime>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				var date = DateTime.UtcNow;
@@ -900,7 +900,7 @@ namespace MsgPack.Serialization
 			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.Create<DateTime>( context );
+			var serializer = MessagePackSerializer.CreateInternal<DateTime>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				var date = DateTime.UtcNow;
@@ -916,7 +916,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
+			var serializer = MessagePackSerializer.CreateInternal<WithAbstractCollection<int>>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
@@ -935,7 +935,7 @@ namespace MsgPack.Serialization
 			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractCollection<int>>( context ) );
+			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.CreateInternal<WithAbstractCollection<int>>( context ) );
 		}
 
 		[Test]
@@ -944,7 +944,7 @@ namespace MsgPack.Serialization
 			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
+			var serializer = MessagePackSerializer.CreateInternal<WithAbstractCollection<int>>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
@@ -963,7 +963,7 @@ namespace MsgPack.Serialization
 			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer1 = MessagePackSerializer.Create<WithAbstractCollection<int>>( context );
+			var serializer1 = MessagePackSerializer.CreateInternal<WithAbstractCollection<int>>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
@@ -976,7 +976,7 @@ namespace MsgPack.Serialization
 			}
 
 			// check other types are not affected
-			var serializer2 = MessagePackSerializer.Create<WithAbstractCollection<string>>( context );
+			var serializer2 = MessagePackSerializer.CreateInternal<WithAbstractCollection<string>>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractCollection<string>() { Collection = new[] { "1", "2" } };
@@ -994,7 +994,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.Create<WithAbstractNonCollection>( context ) );
+			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.CreateInternal<WithAbstractNonCollection>( context ) );
 		}
 
 		// FIXME: init-only field, get-only property, Value type which implements IList<T> and has .ctor(int), Enumerator class which explicitly implements IEnumerator
@@ -1033,7 +1033,7 @@ namespace MsgPack.Serialization
 		public void TestIssue25_Plain()
 		{
 			var hasEnumerable = new HasEnumerable { Numbers = new[] { 1, 2 } };
-			var target = MessagePackSerializer.Create<HasEnumerable>( this.GetSerializationContext() );
+			var target = MessagePackSerializer.CreateInternal<HasEnumerable>( this.GetSerializationContext() );
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, hasEnumerable );
@@ -1380,6 +1380,9 @@ namespace MsgPack.Serialization
 		{
 			private const byte _typeCodeForDateTimeForUs = 1;
 
+			public CustomDateTimeSerealizer()
+				: base( SerializationContext.Default ) {}
+
 			protected internal override void PackToCore( Packer packer, DateTime objectTree )
 			{
 				byte[] data;
@@ -1434,6 +1437,9 @@ namespace MsgPack.Serialization
 
 		public class PersonSerializer : MessagePackSerializer<Person>
 		{
+			public PersonSerializer()
+				: base( SerializationContext.Default ) {}
+
 			protected internal override void PackToCore( Packer packer, Person objectTree )
 			{
 				packer.PackMapHeader( 2 );
@@ -1512,6 +1518,9 @@ namespace MsgPack.Serialization
 		public class ChildrenSerializer : MessagePackSerializer<IEnumerable<Person>>
 		{
 			private readonly PersonSerializer _personSerializer = new PersonSerializer();
+
+			public ChildrenSerializer()
+				: base( SerializationContext.Default ) {}
 
 			protected internal override void PackToCore( Packer packer, IEnumerable<Person> objectTree )
 			{

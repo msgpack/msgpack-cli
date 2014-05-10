@@ -152,6 +152,11 @@ namespace MsgPack
 			return source.GetRuntimeProperty( name );
 		}
 
+		public static IEnumerable<PropertyInfo> GetProperties( this Type source )
+		{
+			return source.GetRuntimeProperties();
+		}
+
 		public static ConstructorInfo GetConstructor( this Type source, Type[] parameteres )
 		{
 			return source.GetTypeInfo().DeclaredConstructors.SingleOrDefault( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameteres ) );

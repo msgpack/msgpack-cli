@@ -482,7 +482,7 @@ namespace MsgPack
 
 		private static T UnpackCore<T>( Unpacker source, SerializationContext context )
 		{
-			return MessagePackSerializer.Create<T>( context ).UnpackFrom( source );
+			return context.GetSerializer<T>().UnpackFrom( source );
 		}
 	}
 }

@@ -30,18 +30,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 		PackUnderlyingValueTo,
 
 		/// <summary>
-		///		String GetUnderlyingValueString(TEnum)
-		/// </summary>
-		GetUnderlyingValueString,
-
-		/// <summary>
 		///		TEnum UnpackFromUnderlyingValue(MessagePackObject)
 		/// </summary>
 		UnpackFromUnderlyingValue,
-
-		/// <summary>
-		///		TEnum Parse(String)
-		/// </summary>
-		Parse
 	}
 }

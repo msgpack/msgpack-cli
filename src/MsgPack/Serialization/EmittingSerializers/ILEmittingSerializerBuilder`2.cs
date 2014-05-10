@@ -75,19 +75,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 					context.IL = context.EnumEmitter.GetPackUnderyingValueToMethodILGenerator();
 					break;
 				}
-				case EnumSerializerMethod.GetUnderlyingValueString:
-				{
-					context.IL = context.EnumEmitter.GetGetUnderlyingValueStringMethodILGenerator();
-					break;
-				}
 				case EnumSerializerMethod.UnpackFromUnderlyingValue:
 				{
 					context.IL = context.EnumEmitter.GetUnpackFromUnderlyingValueMethodILGenerator();
-					break;
-				}
-				case EnumSerializerMethod.Parse:
-				{
-					context.IL = context.EnumEmitter.GetParseMethodILGenerator();
 					break;
 				}
 				default:
@@ -248,18 +238,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 					// signeds and unsigneds are identical in IL operands.
 					return this.MakeInt64Literal( context, unchecked( ( long )( ulong )constant ) );
 				}
-				case TypeCode.Boolean:
-				{
-					// bools are represented as int32 in IL operands.
-					return this.MakeInt32Literal( context, ( ( bool )constant ) ? 1 : 0 );
-				}
-				case TypeCode.Char:
-				{
-					// chars are represented as int32 in IL operands.
-					return this.MakeInt32Literal( context, ( char )constant );
-				}
 				default:
 				{
+					// bool and char are not supported.
+					// Of course these are very rare, and bool is not supported in ExpressionTree (it hurts portability),
+					// and char is not supported by MsgPack protocol itself.
 					throw new NotSupportedException(
 						String.Format(
 							CultureInfo.CurrentCulture,
@@ -827,14 +810,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return context => codeGenerationContext.Emitter.CreateInstance<TObject>( context );
 		}
 
-		protected override Func<SerializationContext, EnumMessagePackSerializer<TObject>> CreateEnumSerializerConstructor( TContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( TContext codeGenerationContext )
 		{
 			return context =>
-				codeGenerationContext.EnumEmitter.CreateInstance(
+				codeGenerationContext.EnumEmitter.CreateInstance<TObject>(
 					context,
-					EnumMessagePackSerializerHelper.DetermineEnumSerializationMethod( context, typeof( TObject ), EnumMemberSerializationMethod.Default ),
-					Enum.GetNames( typeof( TObject ) ),
-					Enum.GetValues( typeof( TObject ) ) as TObject[]
+					EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod( context, typeof( TObject ), EnumMemberSerializationMethod.Default )
 				);
 		}
 	}

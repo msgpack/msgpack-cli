@@ -34,16 +34,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<TKey> _keySerializer;
 		private readonly MessagePackSerializer<TValue> _valueSerializer;
 
-		public System_Collections_Generic_Dictionary_2MessagePackSerializer( SerializationContext context )
-			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
+		public System_Collections_Generic_Dictionary_2MessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext )
 		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			this._keySerializer = context.GetSerializer<TKey>();
-			this._valueSerializer = context.GetSerializer<TValue>();
+			this._keySerializer = ownerContext.GetSerializer<TKey>();
+			this._valueSerializer = ownerContext.GetSerializer<TValue>();
 		}
 
 		protected internal override void PackToCore( Packer packer, Dictionary<TKey, TValue> objectTree )

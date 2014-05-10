@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
 
@@ -33,42 +32,20 @@ namespace MsgPack.Serialization
 	///		This class supports auto-detect on deserialization. So the constructor parameter only affects serialization behavior.
 	/// </remarks>
 	public abstract class EnumMessagePackSerializer<TEnum> : MessagePackSerializer<TEnum>, ICustomizableEnumSerializer
+		where TEnum : struct
 	{
 		private readonly Type _underlyingType;
 		private EnumSerializationMethod _serializationMethod; // not readonly -- changed in cloned instance in GetCopyAs()
-		private readonly IDictionary<TEnum, string> _valueNameMap;
-		private readonly IDictionary<string, TEnum> _nameValueMap;
 
 		/// <summary>
 		///	 Initializes a new instance of the <see cref="EnumMessagePackSerializer{TEnum}"/> class.
 		/// </summary>
-		/// <param name="packerCompatibilityOptions">The <see cref="PackerCompatibilityOptions"/> for new packer creation.</param>
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
 		/// <param name="serializationMethod">The <see cref="EnumSerializationMethod"/> which determines serialization form of the enums.</param>
-		/// <param name="enumNames">The names of enum members. The elements are corresponds to <paramref name="enumValues"/>.</param>
-		/// <param name="enumValues">The names of enum values. The elements are corresponds to <paramref name="enumNames"/>.</param>
-		/// <exception cref="ArgumentNullException">
-		/// <paramref name="enumNames"/> is <c>null</c>.
-		/// Or <paramref name="enumValues "/> is <c>null</c>.
-		/// </exception>
-		/// <exception cref="ArgumentException">Count of <paramref name="enumNames"/> and <paramref name="enumValues "/> are not equal.</exception>
-		protected EnumMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions, EnumSerializationMethod serializationMethod, IList<string> enumNames, IList<TEnum> enumValues )
-			: base( packerCompatibilityOptions )
+		/// <exception cref="InvalidOperationException"><c>TEnum</c> is not enum type.</exception>
+		protected EnumMessagePackSerializer( SerializationContext ownerContext, EnumSerializationMethod serializationMethod )
+			: base( ownerContext )
 		{
-			if ( enumNames == null )
-			{
-				throw new ArgumentNullException( "enumNames" );
-			}
-
-			if ( enumValues == null )
-			{
-				throw new ArgumentNullException( "enumValues" );
-			}
-
-			if ( enumNames.Count != enumValues.Count )
-			{
-				throw new ArgumentException( "Count of 'enumNames' and 'enumValues' are not equal." );
-			}
-
 			if ( !typeof( TEnum ).GetIsEnum() )
 			{
 				throw new InvalidOperationException(
@@ -78,17 +55,6 @@ namespace MsgPack.Serialization
 
 			this._serializationMethod = serializationMethod;
 			this._underlyingType = Enum.GetUnderlyingType( typeof( TEnum ) );
-
-			var valueNameMap = new Dictionary<TEnum, string>( enumNames.Count );
-			var nameValueMap = new Dictionary<string, TEnum>( enumNames.Count );
-			for ( int i = 0; i < enumNames.Count; i++ )
-			{
-				valueNameMap[ enumValues[ i ] ] = enumNames[ i ];
-				nameValueMap[ enumNames[ i ] ] = enumValues[ i ];
-			}
-
-			this._valueNameMap = valueNameMap;
-			this._nameValueMap = nameValueMap;
 		}
 
 		/// <summary>
@@ -104,13 +70,7 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-				string asString;
-				if ( !this._valueNameMap.TryGetValue( objectTree, out asString ) )
-				{
-					asString = this.GetUnderlyingValueString( objectTree );
-				}
-
-				packer.PackString( asString );
+				packer.PackString( objectTree.ToString() );
 			}
 		}
 
@@ -119,14 +79,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="packer">The packer.</param>
 		/// <param name="enumValue">The enum value to be packed.</param>
-		protected abstract void PackUnderlyingValueTo( Packer packer, TEnum enumValue );
-
-		/// <summary>
-		///		Gets the string representation of the underlying integral value.
-		/// </summary>
-		/// <param name="enumValue">The enum value to be stringified.</param>
-		/// <returns>A string representation of the underlying integral value.</returns>
-		protected abstract string GetUnderlyingValueString( TEnum enumValue );
+		protected internal abstract void PackUnderlyingValueTo( Packer packer, TEnum enumValue );
 
 		/// <summary>
 		///		Deserializes object with specified <see cref="Unpacker"/>.
@@ -147,26 +100,38 @@ namespace MsgPack.Serialization
 			if ( unpacker.LastReadData.IsRaw )
 			{
 				var asString = unpacker.LastReadData.AsString();
+
 				TEnum result;
-				if ( !this._nameValueMap.TryGetValue( asString, out result ) )
+#if NETFX_35 || UNIOS
+				try
 				{
-					try
-					{
-						result = this.Parse( asString );
-					}
-					catch ( Exception ex )
-					{
-						throw new SerializationException(
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Name '{0}' is not member of enum type '{1}'.",
-								asString,
-								typeof( TEnum )
-								),
-							ex
-						);
-					}
+					result = ( TEnum ) Enum.Parse( typeof( TEnum ), asString, false );
 				}
+				catch ( ArgumentException ex )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Name '{0}' is not member of enum type '{1}'.",
+							asString,
+							typeof( TEnum )
+							),
+						ex
+					);
+				}
+#else
+				if ( !Enum.TryParse( asString, false, out result ) )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Name '{0}' is not member of enum type '{1}'.",
+							asString,
+							typeof( TEnum )
+						)
+					);
+				}
+#endif
 
 				return result;
 			}
@@ -197,19 +162,7 @@ namespace MsgPack.Serialization
 		///		An enum value.
 		/// </returns>
 		/// <exception cref="SerializationException">The type of integral value is not compatible with underlying type of the enum.</exception>
-		protected abstract TEnum UnpackFromUnderlyingValue( MessagePackObject messagePackObject );
-
-		/// <summary>
-		///		Parses the specified string formed integral value and returns as an enum value.
-		/// </summary>
-		/// <param name="integralValue">The string formed integral value.</param>
-		/// <returns>An enum value.</returns>
-		/// <exception cref="SerializationException">The type of integral value is not compatible with underlying type of the enum.</exception>
-		/// <remarks>
-		///		Currently, only form 'D'(decimal) is supported.
-		/// </remarks>
-		protected abstract TEnum Parse( string integralValue );
-
+		protected internal abstract TEnum UnpackFromUnderlyingValue( MessagePackObject messagePackObject );
 
 		ICustomizableEnumSerializer ICustomizableEnumSerializer.GetCopyAs( EnumSerializationMethod method )
 		{

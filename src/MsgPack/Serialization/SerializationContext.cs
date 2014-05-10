@@ -44,7 +44,8 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationContext
 	{
-		private static SerializationContext _default = new SerializationContext();
+		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
+		private static SerializationContext _default = new SerializationContext( default( SerializerRepository ) );
 
 		/// <summary>
 		///		Gets or sets the default instance.
@@ -283,8 +284,6 @@ namespace MsgPack.Serialization
 		internal SerializationContext(
 			SerializerRepository serializers, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
-			Contract.Requires( serializers != null );
-
 			this._compatibilityOptions =
 				new SerializationCompatibilityOptions
 				{
@@ -300,6 +299,13 @@ namespace MsgPack.Serialization
 #endif
 #endif
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
+		}
+
+		// For default init.
+		private SerializationContext( SerializerRepository allwaysNull )
+			: this( allwaysNull, PackerCompatibilityOptions.Classic ) // TODO: configurable
+		{
+			this._serializers = new SerializerRepository( SerializerRepository.GetDefault( this ) );
 		}
 
 		internal bool ContainsSerializer( Type rootType )
@@ -435,7 +441,7 @@ namespace MsgPack.Serialization
 							if ( lockTaken )
 							{
 								// This thread creating new type serializer.
-								serializer = MessagePackSerializer.Create<T>( this );
+								serializer = MessagePackSerializer.CreateInternal<T>( this );
 							}
 							else
 							{
@@ -443,7 +449,7 @@ namespace MsgPack.Serialization
 
 								// Prevent release owned lock.
 								aquiredLock = null;
-								return new LazyDelegatingMessagePackSerializer<T>( this );
+								return new LazyDelegatingMessagePackSerializer<T>( this, providerParameter );
 							}
 						}
 						else

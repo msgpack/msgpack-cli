@@ -140,21 +140,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 					break;
 				}
-				case EnumSerializerMethod.GetUnderlyingValueString:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "GetUnderlyingValueString",
-							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-							Attributes = MemberAttributes.Family | MemberAttributes.Override,
-							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
-							ReturnType = new CodeTypeReference( typeof( String ) )
-						};
-					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( TObject ), "enumValue" ) );
-
-					break;
-				}
 				case EnumSerializerMethod.UnpackFromUnderlyingValue:
 				{
 					codeMethod =
@@ -167,21 +152,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							ReturnType = new CodeTypeReference( typeof( TObject ) )
 						};
 					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( MessagePackObject ), "messagePackObject" ) );
-
-					break;
-				}
-				case EnumSerializerMethod.Parse:
-				{
-					codeMethod =
-						new CodeMemberMethod
-						{
-							Name = "Parse",
-							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-							Attributes = MemberAttributes.Family | MemberAttributes.Override,
-							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
-							ReturnType = new CodeTypeReference( typeof( TObject ) )
-						};
-					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( String ), "value" ) );
 
 					break;
 				}
@@ -819,14 +789,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				).Compile();
 		}
 
-		protected override Func<SerializationContext, EnumMessagePackSerializer<TObject>> CreateEnumSerializerConstructor( CodeDomContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( CodeDomContext codeGenerationContext )
 		{
 			this.Finish( codeGenerationContext, true );
 			var targetType = this.PrepareSerializerConstructorCreation( codeGenerationContext );
 
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			return
-				Expression.Lambda<Func<SerializationContext, EnumMessagePackSerializer<TObject>>>(
+				Expression.Lambda<Func<SerializationContext, MessagePackSerializer<TObject>>>(
 					Expression.New( targetType.GetConstructors().Single(), contextParameter ),
 					contextParameter
 				).Compile();
@@ -937,24 +907,12 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			{
 				var targetType = Type.GetTypeFromHandle( dependentSerializer.Key.TypeHandle );
 
-				if ( !targetType.GetIsEnum() )
-				{
-					context.DeclaringType.Members.Add(
-						new CodeMemberField(
-							typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
-							dependentSerializer.Value
-						)
-					);
-				}
-				else
-				{
-					context.DeclaringType.Members.Add(
-						new CodeMemberField(
-							typeof( EnumMessagePackSerializer<> ).MakeGenericType( targetType ),
-							dependentSerializer.Value
-						)
-					);
-				}
+				context.DeclaringType.Members.Add(
+					new CodeMemberField(
+						typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
+						dependentSerializer.Value
+					)
+				);
 			}
 
 			// ctor
@@ -964,75 +922,24 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					{
 						Attributes = MemberAttributes.Public
 					};
-				var contextArgument = new CodeArgumentReferenceExpression( "context" );
-				var contextExpression =
-					new CodeMethodInvokeExpression(
-						new CodeTypeReferenceExpression( context.DeclaringType.Name ),
-						CodeDomContext.ConditionalExpressionHelperMethodName,
-						new CodeBinaryOperatorExpression(
-							contextArgument,
-							CodeBinaryOperatorType.IdentityInequality,
-							new CodePrimitiveExpression( null )
-						),
-						contextArgument,
-						new CodePropertyReferenceExpression(
-							new CodeTypeReferenceExpression( typeof( SerializationContext ) ),
-							"Default"
-						)
-					);
+
 				ctor.Parameters.Add( new CodeParameterDeclarationExpression( typeof( SerializationContext ), "context" ) );
-				ctor.BaseConstructorArgs.Add(
-					new CodePropertyReferenceExpression(
-						new CodePropertyReferenceExpression(
-							contextExpression,
-							"CompatibilityOptions"
-							),
-						"PackerCompatibilityOptions"
-						)
-					);
+				var contextArgument = new CodeArgumentReferenceExpression( "context" );
+				ctor.BaseConstructorArgs.Add( contextArgument );
 
 				if ( isEnum )
 				{
 					ctor.BaseConstructorArgs.Add(
 						new CodeFieldReferenceExpression(
 							new CodeTypeReferenceExpression( typeof( EnumSerializationMethod ) ),
-							EnumMessagePackSerializerHelper.DetermineEnumSerializationMethod(
+							EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
 								context.SerializationContext,
 								typeof( TObject ),
 								EnumMemberSerializationMethod.Default
 							).ToString()
 						)
 					);
-					ctor.BaseConstructorArgs.Add(
-						new CodeArrayCreateExpression(
-							typeof( string ),
-							// ReSharper disable once CoVariantArrayConversion
-							Enum.GetNames( typeof( TObject ) ).Select(
-								name => new CodePrimitiveExpression( name )
-							).ToArray()
-						)
-					);
-					ctor.BaseConstructorArgs.Add(
-						new CodeArrayCreateExpression(
-							typeof( TObject ),
-							// ReSharper disable once AssignNullToNotNullAttribute
-							// ReSharper disable once CoVariantArrayConversion
-							( Enum.GetValues( typeof( TObject ) ) as TObject[] ).Select(
-								value =>
-									new CodeFieldReferenceExpression(
-										new CodeTypeReferenceExpression( typeof( TObject ) ),
-									value.ToString()
-								)
-							).ToArray()
-						)
-					);
 				}
-
-
-				ctor.Statements.Add(
-					new CodeVariableDeclarationStatement( typeof( SerializationContext ), "safeContext", contextExpression )
-				);
-				var contextVariable = new CodeVariableReferenceExpression( "safeContext" );
 
 				foreach ( var dependentSerializer in context.GetDependentSerializers() )
 				{
@@ -1045,7 +952,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
 								new CodeMethodInvokeExpression(
 									new CodeMethodReferenceExpression(
-										contextVariable,
+										contextArgument,
 										"GetSerializer",
 										new CodeTypeReference( targetType )
 									)
@@ -1058,11 +965,23 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						ctor.Statements.Add(
 							new CodeAssignStatement(
 								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
-								this.BuildCreateEnumSerializerInstance(
-									context,
-									targetType,
-									dependentSerializer.Key.EnumSerializationMethod
-								).AsExpression()
+								new CodeMethodInvokeExpression(
+									new CodeMethodReferenceExpression(
+										contextArgument,
+										"GetSerializer",
+										new CodeTypeReference( targetType )
+									),
+									new CodeMethodInvokeExpression(
+										new CodeTypeReferenceExpression( typeof( EnumMessagePackSerializerHelpers ) ),
+										"DetermineEnumSerializationMethod",
+										contextArgument,
+										new CodeTypeOfExpression( @targetType ),
+										new CodeFieldReferenceExpression(
+											new CodeTypeReferenceExpression( typeof( EnumMemberSerializationMethod ) ),
+											dependentSerializer.Key.EnumSerializationMethod.ToString()
+										)
+									)
+								)
 							)
 						);
 					}

@@ -170,7 +170,7 @@ var __notInWPs =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -234,8 +234,8 @@ foreach( Type __type in __types )
 #>
 	internal sealed class <#= __typeName #> : MessagePackSerializer< <#= ToCSharpToken( __type ) #> >
 	{
-		public <#= __typeName #>( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions ) { }
+		public <#= __typeName #>( SerializationContext ownerContext )
+			: base( ownerContext ) { }
 
 		protected internal sealed override void PackToCore( Packer packer, <#= __type.FullName #> value )
 		{

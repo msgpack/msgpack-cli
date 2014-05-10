@@ -16,38 +16,15 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
     public class System_DayOfWeekSerializer : MsgPack.Serialization.EnumMessagePackSerializer<System.DayOfWeek> {
         
         public System_DayOfWeekSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(System_DayOfWeekSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions, MsgPack.Serialization.EnumSerializationMethod.ByName, new string[] {
-                            "Sunday",
-                            "Monday",
-                            "Tuesday",
-                            "Wednesday",
-                            "Thursday",
-                            "Friday",
-                            "Saturday"}, new System.DayOfWeek[] {
-                            System.DayOfWeek.Sunday,
-                            System.DayOfWeek.Monday,
-                            System.DayOfWeek.Tuesday,
-                            System.DayOfWeek.Wednesday,
-                            System.DayOfWeek.Thursday,
-                            System.DayOfWeek.Friday,
-                            System.DayOfWeek.Saturday}) {
-            MsgPack.Serialization.SerializationContext safeContext = System_DayOfWeekSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
+                base(context, MsgPack.Serialization.EnumSerializationMethod.ByName) {
         }
         
-        protected override void PackUnderlyingValueTo(MsgPack.Packer packer, System.DayOfWeek enumValue) {
+        protected internal override void PackUnderlyingValueTo(MsgPack.Packer packer, System.DayOfWeek enumValue) {
             packer.Pack(((int)(enumValue)));
         }
         
-        protected override string GetUnderlyingValueString(System.DayOfWeek enumValue) {
-            return ((int)(enumValue)).ToString();
-        }
-        
-        protected override System.DayOfWeek UnpackFromUnderlyingValue(MsgPack.MessagePackObject messagePackObject) {
+        protected internal override System.DayOfWeek UnpackFromUnderlyingValue(MsgPack.MessagePackObject messagePackObject) {
             return ((System.DayOfWeek)(messagePackObject.AsInt32()));
-        }
-        
-        protected override System.DayOfWeek Parse(string value) {
-            return ((System.DayOfWeek)(int.Parse(value)));
         }
         
         private static T @__Conditional<T>(bool condition, T whenTrue, T whenFalse)

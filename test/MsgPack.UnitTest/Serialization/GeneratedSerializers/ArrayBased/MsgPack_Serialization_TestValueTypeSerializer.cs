@@ -22,11 +22,10 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer2;
         
         public MsgPack_Serialization_TestValueTypeSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(MsgPack_Serialization_TestValueTypeSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
-            MsgPack.Serialization.SerializationContext safeContext = MsgPack_Serialization_TestValueTypeSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<int, int>>();
-            this._serializer1 = safeContext.GetSerializer<int[]>();
-            this._serializer2 = safeContext.GetSerializer<string>();
+                base(context) {
+            this._serializer0 = this.OwnerContext.GetSerializer<System.Collections.Generic.Dictionary<int, int>>();
+            this._serializer1 = this.OwnerContext.GetSerializer<int[]>();
+            this._serializer2 = this.OwnerContext.GetSerializer<string>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree) {

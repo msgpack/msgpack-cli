@@ -54,6 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\ArrayCodeDomBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayCodeDomBasedEnumSerializationTest.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\CodeDomBasedNilImplicationTest.cs">
       <DependentUpon>CodeDomBasedNilImplicationTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -68,6 +73,11 @@
       <DependentUpon>ArrayCodeDomBasedAutoMessagePackSerializerTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\MapCodeDomBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapCodeDomBasedEnumSerializationTest.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +95,10 @@
       <Link>MsgPack.snk</Link>
     </None>
     <None Include="packages.config" />
+    <None Include="Serialization\ArrayCodeDomBasedEnumSerializationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayCodeDomBasedEnumSerializationTest.cs</LastGenOutput>
+    </None>
     <None Include="Serialization\CodeDomBasedNilImplicationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CodeDomBasedNilImplicationTest.cs</LastGenOutput>
@@ -96,6 +110,10 @@
     <None Include="Serialization\ArrayCodeDomBasedAutoMessagePackSerializerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayCodeDomBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\MapCodeDomBasedEnumSerializationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapCodeDomBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

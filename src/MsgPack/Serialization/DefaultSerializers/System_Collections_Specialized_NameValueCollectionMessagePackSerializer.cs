@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,12 +25,13 @@ using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Collections_Specialized_NameValueCollectionMessagePackSerializer : MessagePackSerializer<NameValueCollection>
 	{
-		public System_Collections_Specialized_NameValueCollectionMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions ) { }
+		public System_Collections_Specialized_NameValueCollectionMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext ) { }
 
-		protected internal sealed override void PackToCore( Packer packer, NameValueCollection objectTree )
+		protected internal override void PackToCore( Packer packer, NameValueCollection objectTree )
 		{
 			if ( objectTree == null )
 			{
@@ -62,7 +63,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		protected internal sealed override NameValueCollection UnpackFromCore( Unpacker unpacker )
+		protected internal override NameValueCollection UnpackFromCore( Unpacker unpacker )
 		{
 			var result = new NameValueCollection( checked( ( int )unpacker.ItemsCount ) );
 

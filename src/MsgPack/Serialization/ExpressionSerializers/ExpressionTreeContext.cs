@@ -47,18 +47,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			get { return this._context; }
 		}
 
-		private ExpressionConstruct _this;
-
 		/// <summary>
 		///		Gets the code construct which represents 'this' reference.
 		/// </summary>
 		/// <value>
 		///		The code construct which represents 'this' reference.
 		/// </value>
-		public ExpressionConstruct This
-		{
-			get { return this._this; }
-		}
+		public ExpressionConstruct This { get; private set; }
 
 		private ParameterExpression[] _currentParamters;
 
@@ -66,9 +61,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private Delegate _unpackFromCore;
 		private Delegate _unpackToCore;
 		private Delegate _packUnderyingValueTo;
-		private Delegate _getUnderlyingValueString;
 		private Delegate _unpackFromUnderlyingValue;
-		private Delegate _parse;
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ExpressionTreeContext"/> class.
@@ -82,11 +75,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected override void ResetCore( Type targetType )
 		{
-			this._this =
-				Expression.Parameter(
-					typeof( ExpressionCallbackMessagePackSerializer<> ).MakeGenericType( targetType ), "this"
-				);
-
+			this.This = null;
 			this.Packer = Expression.Parameter( typeof( Packer ), "packer" );
 			this.PackToTarget = Expression.Parameter( targetType, "objectTree" );
 			this.Unpacker = Expression.Parameter( typeof( Unpacker ), "unpacker" );
@@ -100,11 +89,19 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		public void SetCurrentMethod( Type targetType, SerializerMethod method )
 		{
+			this.This =
+				Expression.Parameter(
+					typeof( ExpressionCallbackMessagePackSerializer<> ).MakeGenericType( targetType ), "this"
+				);
 			this._currentParamters = this.GetParameters( method ).ToArray();
 		}
 
 		public void SetCurrentMethod( Type targetType, EnumSerializerMethod method )
 		{
+			this.This =
+				Expression.Parameter(
+					typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( targetType ), "this"
+				);
 			this._currentParamters = this.GetParameters( targetType, method ).ToArray();
 		}
 
@@ -161,19 +158,23 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			{
 				case EnumSerializerMethod.PackUnderlyingValueTo:
 				{
-					return typeof( Action<ExpressionCallbackMessagePackSerializer<TObject>, Packer, TObject> );
-				}
-				case EnumSerializerMethod.GetUnderlyingValueString:
-				{
-					return typeof( Func<ExpressionCallbackMessagePackSerializer<TObject>, TObject, String> );
+					return
+						typeof( Action<,,> )
+						.MakeGenericType(
+							typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) ),
+							typeof( Packer ),
+							typeof( TObject )
+						);
 				}
 				case EnumSerializerMethod.UnpackFromUnderlyingValue:
 				{
-					return typeof( Func<ExpressionCallbackMessagePackSerializer<TObject>, MessagePackObject, TObject> );
-				}
-				case EnumSerializerMethod.Parse:
-				{
-					return typeof( Func<ExpressionCallbackMessagePackSerializer<TObject>, string, TObject> );
+					return
+						typeof( Func<,,> )
+						.MakeGenericType(
+							typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) ),
+							typeof( MessagePackObject ),
+							typeof( TObject )
+						);
 				}
 				default:
 				{
@@ -192,7 +193,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// </returns>
 		private IEnumerable<ParameterExpression> GetParameters( SerializerMethod method )
 		{
-			yield return this._this.Expression as ParameterExpression;
+			yield return this.This.Expression as ParameterExpression;
 			yield return this._context.Expression as ParameterExpression;
 
 			switch ( method )
@@ -232,7 +233,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// </returns>
 		private IEnumerable<ParameterExpression> GetParameters( Type targetType, EnumSerializerMethod method )
 		{
-			yield return this._this.Expression as ParameterExpression;
+			yield return this.This.Expression as ParameterExpression;
 
 			switch ( method )
 			{
@@ -242,19 +243,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					yield return Expression.Parameter( targetType, "enumValue" );
 					break;
 				}
-				case EnumSerializerMethod.GetUnderlyingValueString:
-				{
-					yield return Expression.Parameter( targetType, "enumValue" );
-					break;
-				}
 				case EnumSerializerMethod.UnpackFromUnderlyingValue:
 				{
 					yield return Expression.Parameter( typeof( MessagePackObject ), "messagePackObject" );
-					break;
-				}
-				case EnumSerializerMethod.Parse:
-				{
-					yield return Expression.Parameter( typeof( String ), "value" );
 					break;
 				}
 				default:
@@ -309,19 +300,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					this._packUnderyingValueTo = @delegate;
 					break;
 				}
-				case EnumSerializerMethod.GetUnderlyingValueString:
-				{
-					this._getUnderlyingValueString = @delegate;
-					break;
-				}
 				case EnumSerializerMethod.UnpackFromUnderlyingValue:
 				{
 					this._unpackFromUnderlyingValue = @delegate;
-					break;
-				}
-				case EnumSerializerMethod.Parse:
-				{
-					this._parse = @delegate;
 					break;
 				}
 				default:
@@ -374,21 +355,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <returns>
 		///		The delegate which was set for <c>UnpackToCore</c> method.
 		/// </returns>
-		public Action<ExpressionCallbackEnumMessagePackSerializer<T>, Packer, T> GetPackUnderyingValueTo<T>()
+		public Delegate GetPackUnderyingValueTo<T>()
 		{
-			return this._packUnderyingValueTo as Action<ExpressionCallbackEnumMessagePackSerializer<T>, Packer, T>;
-		}
-
-		/// <summary>
-		///		Gets the delegate which refers created <c>GetUnderlyingValueString(T)</c> instance method for <see cref="ExpressionCallbackEnumMessagePackSerializer{T}"/>.
-		/// </summary>
-		/// <typeparam name="T">The type of serialization target.</typeparam>
-		/// <returns>
-		///		The delegate which was set for <c>PackToCore</c> method.
-		/// </returns>
-		public Func<ExpressionCallbackEnumMessagePackSerializer<T>, T, String> GetGetUnderlyingValueString<T>()
-		{
-			return this._getUnderlyingValueString as Func<ExpressionCallbackEnumMessagePackSerializer<T>, T, String>;
+			return this._packUnderyingValueTo;
 		}
 
 		/// <summary>
@@ -398,21 +367,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <returns>
 		///		The delegate which was set for <c>UnpackFromCore</c> method.
 		/// </returns>
-		public Func<ExpressionCallbackEnumMessagePackSerializer<T>, MessagePackObject, T> GetUnpackFromUnderlyingValue<T>()
+		public Delegate GetUnpackFromUnderlyingValue<T>()
 		{
-			return this._unpackFromUnderlyingValue as Func<ExpressionCallbackEnumMessagePackSerializer<T>, MessagePackObject, T>;
-		}
-
-		/// <summary>
-		///		Gets the delegate which refers created <c>Parse(String)</c> instance method for <see cref="ExpressionCallbackEnumMessagePackSerializer{T}"/>.
-		/// </summary>
-		/// <typeparam name="T">The type of deserialization target.</typeparam>
-		/// <returns>
-		///		The delegate which was set for <c>UnpackToCore</c> method.
-		/// </returns>
-		public Func<ExpressionCallbackEnumMessagePackSerializer<T>, String, T> GetParse<T>()
-		{
-			return this._parse as Func<ExpressionCallbackEnumMessagePackSerializer<T>, String, T>;
+			return this._unpackFromUnderlyingValue;
 		}
 	}
 }

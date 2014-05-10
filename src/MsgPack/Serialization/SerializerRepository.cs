@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace MsgPack.Serialization
 {
@@ -102,7 +101,7 @@ namespace MsgPack.Serialization
 
 			var result = this._repository.Get( context, typeof( T ) );
 			var asProvider = result as MessagePackSerializerProvider;
-			return ( asProvider != null ? asProvider.Get( providerParameter ) : result ) as MessagePackSerializer<T>;
+			return ( asProvider != null ? asProvider.Get( context, providerParameter ) : result ) as MessagePackSerializer<T>;
 		}
 
 		internal IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType, object providerParameter )
@@ -119,7 +118,7 @@ namespace MsgPack.Serialization
 
 			var result = this._repository.Get( context, targetType );
 			var asProvider = result as MessagePackSerializerProvider;
-			return ( asProvider != null ? asProvider.Get( providerParameter ) : result ) as IMessagePackSingleObjectSerializer;
+			return ( asProvider != null ? asProvider.Get( context, providerParameter ) : result ) as IMessagePackSingleObjectSerializer;
 		}
 
 		/// <summary>
@@ -146,14 +145,16 @@ namespace MsgPack.Serialization
 			}
 
 			var asEnumSerializer = serializer as ICustomizableEnumSerializer;
+			// ReSharper disable RedundantIfElseBlock
 			if ( asEnumSerializer != null )
 			{
-				return this._repository.Register( targetType, new EnumMessagePackSerializerProvider( asEnumSerializer ), allowOverwrite: false );
+				return this._repository.Register( targetType, new EnumMessagePackSerializerProvider( targetType, asEnumSerializer ), allowOverwrite: false );
 			}
 			else
 			{
 				return this._repository.Register( targetType, serializer, allowOverwrite: false );
 			}
+			// ReSharper restore RedundantIfElseBlock
 		}
 
 		/// <summary>
@@ -174,29 +175,8 @@ namespace MsgPack.Serialization
 			this._repository.Register( typeof( T ), serializer, allowOverwrite: true );
 		}
 
-		private static readonly Dictionary<PackerCompatibilityOptions, SerializerRepository> _defaults =
-			new Dictionary<PackerCompatibilityOptions, SerializerRepository>( 4 )
-			{
-				{
-					PackerCompatibilityOptions.None,
-					new SerializerRepository( InitializeDefaultTable( PackerCompatibilityOptions.None ) )
-				},
-				{
-					PackerCompatibilityOptions.PackBinaryAsRaw,
-					new SerializerRepository( InitializeDefaultTable( PackerCompatibilityOptions.PackBinaryAsRaw ) )
-				},
-				{
-					PackerCompatibilityOptions.ProhibitExtendedTypeObjects,
-					new SerializerRepository( InitializeDefaultTable( PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
-				},
-				{
-					PackerCompatibilityOptions.Classic,
-					new SerializerRepository( InitializeDefaultTable( PackerCompatibilityOptions.Classic ) )
-				},
-			};
-
 		/// <summary>
-		///		Gets the system default repository.
+		///		Gets the system default repository bound to default context.
 		/// </summary>
 		/// <value>
 		///		The system default repository.
@@ -209,7 +189,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Gets the system default repository.
+		///		Gets the system default repository bound to default context.
 		/// </summary>
 		/// <param name="packerCompatibilityOptions"><see cref="PackerCompatibilityOptions"/> for default serializers must use.</param>
 		/// <returns>
@@ -217,15 +197,31 @@ namespace MsgPack.Serialization
 		///		This value will not be <c>null</c>.
 		///		Note that the repository is frozen.
 		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="packerCompatibilityOptions"/> is invalid.</exception>
 		public static SerializerRepository GetDefault( PackerCompatibilityOptions packerCompatibilityOptions )
 		{
-			SerializerRepository repository;
-			if ( !_defaults.TryGetValue( packerCompatibilityOptions, out repository ) )
+			var newContext = new SerializationContext( SerializationContext.Default.Serializers, packerCompatibilityOptions );
+			return GetDefault( newContext );
+		}
+
+		/// <summary>
+		///		Gets the system default repository bound for specified context.
+		/// </summary>
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which will be bound to default serializers.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
+		/// <returns>
+		///		The system default repository.
+		///		This value will not be <c>null</c>.
+		///		Note that the repository is frozen.
+		/// </returns>
+		public static SerializerRepository GetDefault( SerializationContext ownerContext )
+		{
+			if ( ownerContext == null )
 			{
-				throw new ArgumentOutOfRangeException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not valid combination.", packerCompatibilityOptions ) );
+				throw new ArgumentNullException( "ownerContext" );
 			}
 
-			return repository;
+			return new SerializerRepository( InitializeDefaultTable( ownerContext ) );
 		}
 
 		internal bool Contains( Type rootType )

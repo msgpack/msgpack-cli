@@ -169,8 +169,14 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayContextBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayContextBasedEnumSerializationTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayFieldBasedEnumSerializationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs">
       <Link>Serialization\ArraySegmentEqualityComparer`1.cs</Link>
@@ -211,6 +217,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
+      <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\FieldBasedNilImplicationTest.cs">
       <Link>Serialization\FieldBasedNilImplicationTest.cs</Link>
     </Compile>
@@ -226,8 +235,14 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapContextBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapContextBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapContextBasedEnumSerializationTest.cs">
+      <Link>Serialization\MapContextBasedEnumSerializationTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapFieldBasedEnumSerializationTest.cs">
+      <Link>Serialization\MapFieldBasedEnumSerializationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
       <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>

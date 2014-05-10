@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using System;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal class System_ArraySegment_1MessagePackSerializer<T> : MessagePackSerializer<ArraySegment<T>>
 	{
 		private static readonly Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> _packing = InitializePacking();
@@ -29,6 +30,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> InitializePacking()
 		{
+			// ReSharper disable RedundantIfElseBlock
 			if ( typeof( T ) == typeof( byte ) )
 			{
 				return
@@ -47,10 +49,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				return ArraySegmentMessageSerializer.PackGenericArraySegmentTo;
 			}
+			// ReSharper restore RedundantIfElseBlock
 		}
 
 		private static Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> InitializeUnacking()
 		{
+			// ReSharper disable RedundantIfElseBlock
 			if ( typeof( T ) == typeof( byte ) )
 			{
 				return
@@ -69,29 +73,25 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				return ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom;
 			}
+			// ReSharper restore RedundantIfElseBlock
 		}
 
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
-		public System_ArraySegment_1MessagePackSerializer(SerializationContext context)
-			: base((context ?? SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions)
+		public System_ArraySegment_1MessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext )
 		{
-			if (context == null)
-			{
-				throw new ArgumentNullException("context");
-			}
-
-			this._itemSerializer = context.GetSerializer<T>();
+			this._itemSerializer = ownerContext.GetSerializer<T>();
 		}
 
-		protected internal sealed override void PackToCore(Packer packer, ArraySegment<T> objectTree)
+		protected internal sealed override void PackToCore( Packer packer, ArraySegment<T> objectTree )
 		{
-			_packing(packer, objectTree, this._itemSerializer);
+			_packing( packer, objectTree, this._itemSerializer );
 		}
 
-		protected internal sealed override ArraySegment<T> UnpackFromCore(Unpacker unpacker)
+		protected internal sealed override ArraySegment<T> UnpackFromCore( Unpacker unpacker )
 		{
-			return _unpacking(unpacker, this._itemSerializer);
+			return _unpacking( unpacker, this._itemSerializer );
 		}
 	}
 }

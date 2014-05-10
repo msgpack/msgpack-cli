@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -34,19 +34,20 @@ namespace MsgPack.Serialization
 	/// </remarks>
 	internal sealed class LazyDelegatingMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
-		private readonly SerializationContext _context;
+		private readonly object _providerParameter;
 		private MessagePackSerializer<T> _delegated;
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="LazyDelegatingMessagePackSerializer&lt;T&gt;"/> class.
 		/// </summary>
-		/// <param name="context">
+		/// <param name="ownerContext">
 		///		The serialization context to support lazy retrieval.
 		///	</param>
-		public LazyDelegatingMessagePackSerializer( SerializationContext context )
-			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
+		/// <param name="providerParameter">A provider parameter to be passed in future.</param>
+		public LazyDelegatingMessagePackSerializer( SerializationContext ownerContext, object providerParameter )
+			: base( ownerContext )
 		{
-			this._context = context;
+			this._providerParameter = providerParameter;
 		}
 
 		private MessagePackSerializer<T> GetDelegatedSerializer()
@@ -54,7 +55,8 @@ namespace MsgPack.Serialization
 			var result = this._delegated;
 			if ( result == null )
 			{
-				result = this._context.GetSerializer<T>();
+				result = this.OwnerContext.GetSerializer<T>( this._providerParameter );
+
 				if ( result is LazyDelegatingMessagePackSerializer<T> )
 				{
 					throw new InvalidOperationException(
@@ -73,17 +75,17 @@ namespace MsgPack.Serialization
 			return result;
 		}
 
-		protected internal sealed override void PackToCore( Packer packer, T objectTree )
+		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
 			this.GetDelegatedSerializer().PackToCore( packer, objectTree );
 		}
 
-		protected internal sealed override T UnpackFromCore( Unpacker unpacker )
+		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
 			return this.GetDelegatedSerializer().UnpackFromCore( unpacker );
 		}
 
-		protected internal sealed override void UnpackToCore( Unpacker unpacker, T collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			this.GetDelegatedSerializer().UnpackToCore( unpacker, collection );
 		}

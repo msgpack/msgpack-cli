@@ -32,15 +32,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
-		public System_Collections_Generic_List_1MessagePackSerializer( SerializationContext context )
-			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
+		public System_Collections_Generic_List_1MessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext )
 		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			this._itemSerializer = context.GetSerializer<T>();
+			this._itemSerializer = ownerContext.GetSerializer<T>();
 		}
 
 		protected internal override void PackToCore( Packer packer, List<T> objectTree )

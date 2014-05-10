@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -28,48 +27,30 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	/// </summary>
 	/// <typeparam name="TEnum">The type of the serialization target.</typeparam>
 	internal class ExpressionCallbackEnumMessagePackSerializer<TEnum> : EnumMessagePackSerializer<TEnum>
+		where TEnum : struct 
 	{
 		private readonly Action<ExpressionCallbackEnumMessagePackSerializer<TEnum>, Packer, TEnum> _packUnderlyingValueTo;
-		private readonly Func<ExpressionCallbackEnumMessagePackSerializer<TEnum>, TEnum, string> _getUnderlyingValueString;
 		private readonly Func<ExpressionCallbackEnumMessagePackSerializer<TEnum>, MessagePackObject, TEnum> _unpackFromUnderlyingValue;
-		private readonly Func<ExpressionCallbackEnumMessagePackSerializer<TEnum>, string, TEnum> _parse;
 
 		public ExpressionCallbackEnumMessagePackSerializer(
-			PackerCompatibilityOptions packerCompatibilityOptions,
+			SerializationContext ownerContext,
 			EnumSerializationMethod serializationMethod,
-			IList<string> enumNames,
-			IList<TEnum> enumValues,
 			Action<ExpressionCallbackEnumMessagePackSerializer<TEnum>, Packer, TEnum> packUnderlyingValueTo,
-			Func<ExpressionCallbackEnumMessagePackSerializer<TEnum>, TEnum, String> getUnderlyingValueString,
-			Func<ExpressionCallbackEnumMessagePackSerializer<TEnum>, MessagePackObject, TEnum> unpackFromUnderlyingValue,
-			Func<ExpressionCallbackEnumMessagePackSerializer<TEnum>, String, TEnum> parse
-			)
-			: base( packerCompatibilityOptions, serializationMethod, enumNames, enumValues )
+			Func<ExpressionCallbackEnumMessagePackSerializer<TEnum>, MessagePackObject, TEnum> unpackFromUnderlyingValue
+		) : base( ownerContext, serializationMethod )
 		{
 			this._packUnderlyingValueTo = packUnderlyingValueTo;
-			this._getUnderlyingValueString = getUnderlyingValueString;
 			this._unpackFromUnderlyingValue = unpackFromUnderlyingValue;
-			this._parse = parse;
 		}
 
-		protected override void PackUnderlyingValueTo( Packer packer, TEnum enumValue )
+		protected internal override void PackUnderlyingValueTo( Packer packer, TEnum enumValue )
 		{
 			this._packUnderlyingValueTo( this, packer, enumValue );
 		}
-
-		protected override string GetUnderlyingValueString( TEnum enumValue )
-		{
-			return this._getUnderlyingValueString( this, enumValue );
-		}
-
-		protected override TEnum UnpackFromUnderlyingValue( MessagePackObject messagePackObject )
+		
+		protected internal override TEnum UnpackFromUnderlyingValue( MessagePackObject messagePackObject )
 		{
 			return this._unpackFromUnderlyingValue( this, messagePackObject );
-		}
-
-		protected override TEnum Parse( string integralValue )
-		{
-			return this._parse( this, integralValue );
 		}
 	}
 }

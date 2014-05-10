@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -37,13 +36,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 	internal sealed class FieldBasedEnumSerializerEmitter : EnumSerializerEmitter
 	{
 		private readonly Type[] _constructorParameterTypes;
-		private readonly Type[] _baseConstructorParameterTypes;
 		private readonly ConstructorBuilder _contextConstructorBuilder;
 		private readonly TypeBuilder _typeBuilder;
 		private readonly MethodBuilder _packUnderlyingValueToMethodBuilder;
-		private readonly MethodBuilder _getUnderlyingValueStringMethodBuilder;
 		private readonly MethodBuilder _unpackFromUnderlyingValueMethodBuilder;
-		private readonly MethodBuilder _parseMethodBuilder;
 		private readonly bool _isDebuggable;
 
 		/// <summary>
@@ -62,17 +58,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				new[]
 				{
 					typeof( SerializationContext ),
-					typeof( EnumSerializationMethod ), 
-					typeof( IList<String> ),
-					typeof( IList<> ).MakeGenericType( targetType )
-				};
-			this._baseConstructorParameterTypes =
-				new[]
-				{
-					typeof( PackerCompatibilityOptions ),
-					typeof( EnumSerializationMethod ), 
-					typeof( IList<String> ),
-					typeof( IList<> ).MakeGenericType( targetType )
+					typeof( EnumSerializationMethod )
 				};
 
 			string typeName =
@@ -118,15 +104,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new[] { typeof( Packer ), targetType }
 				);
 
-			this._getUnderlyingValueStringMethodBuilder =
-				this._typeBuilder.DefineMethod(
-					"GetUnderlyingValueString",
-					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
-					CallingConventions.HasThis,
-					typeof( String ),
-					new[] { targetType }
-				);
-
 			this._unpackFromUnderlyingValueMethodBuilder =
 				this._typeBuilder.DefineMethod(
 					"UnpackFromUnderlyingValue",
@@ -134,15 +111,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 					CallingConventions.HasThis,
 					targetType,
 					UnpackFromUnderlyingValueParameterTypes
-				);
-
-			this._parseMethodBuilder =
-				this._typeBuilder.DefineMethod(
-					"Parse",
-					MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.HideBySig,
-					CallingConventions.HasThis,
-					targetType,
-					ParseParameterTypes
 				);
 
 			var baseType = this._typeBuilder.BaseType;
@@ -157,23 +125,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 				)
 			);
 			this._typeBuilder.DefineMethodOverride(
-				this._getUnderlyingValueStringMethodBuilder,
-				baseType.GetMethod(
-					this._getUnderlyingValueStringMethodBuilder.Name,
-					BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-				)
-			);
-			this._typeBuilder.DefineMethodOverride(
 				this._unpackFromUnderlyingValueMethodBuilder,
 				baseType.GetMethod(
 					this._unpackFromUnderlyingValueMethodBuilder.Name,
-					BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-				)
-			);
-			this._typeBuilder.DefineMethodOverride(
-				this._parseMethodBuilder,
-				baseType.GetMethod(
-					this._parseMethodBuilder.Name,
 					BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
 				)
 			);
@@ -197,16 +151,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new TracingILGenerator( this._packUnderlyingValueToMethodBuilder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
 		}
 
-		public override TracingILGenerator GetGetUnderlyingValueStringMethodILGenerator()
-		{
-			if ( SerializerDebugging.TraceEnabled )
-			{
-				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._getUnderlyingValueStringMethodBuilder );
-			}
-
-			return new TracingILGenerator( this._getUnderlyingValueStringMethodBuilder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
-		}
-
 		public override TracingILGenerator GetUnpackFromUnderlyingValueMethodILGenerator()
 		{
 			if ( SerializerDebugging.TraceEnabled )
@@ -216,40 +160,28 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			return new TracingILGenerator( this._unpackFromUnderlyingValueMethodBuilder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
 		}
-
-		public override TracingILGenerator GetParseMethodILGenerator()
-		{
-			if ( SerializerDebugging.TraceEnabled )
-			{
-				SerializerDebugging.TraceEvent( "{0}->{1}::{2}", MethodBase.GetCurrentMethod(), this._typeBuilder.Name, this._parseMethodBuilder );
-			}
-
-			return new TracingILGenerator( this._parseMethodBuilder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
-		}
-
-		public override Func<SerializationContext, EnumSerializationMethod, IList<string>, IList<T>, EnumMessagePackSerializer<T>> CreateConstructor<T>()
+		
+		public override Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
 			if ( !this._typeBuilder.IsCreated() )
 			{
 				/*
-				 *	.ctor( PackerCompatibilityOptions c, EnumSerializerMethod method, IList<string> names, IList<T> values ) 
-				 *	  : base( c, method, names, values )
+				 *	.ctor( PackerCompatibilityOptions c, EnumSerializerMethod method ) 
+				 *	  : base( c, method )
 				 *	{
 				 *	}
 				 */
 				var il = new TracingILGenerator( this._contextConstructorBuilder, TextWriter.Null, this._isDebuggable );
-				// : base( c, method, names, values )
+				// : base( c, method )
 				il.EmitLdarg_0();
-				FieldBasedSerializerEmitter.EmitSafeGetPackerCompabitilityOptionsFromContext( il );
+				il.EmitLdarg_1();
 				il.EmitLdarg_2();
-				il.EmitLdarg_3();
-				il.EmitLdarg_S( 4 );
 
 				Contract.Assert( this._typeBuilder.BaseType != null );
 
 				il.EmitCallConstructor(
 					this._typeBuilder.BaseType.GetConstructor(
-						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, this._baseConstructorParameterTypes, null
+						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, this._constructorParameterTypes, null
 					)
 				);
 
@@ -259,24 +191,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var ctor = this._typeBuilder.CreateType().GetConstructor( this._constructorParameterTypes );
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			var methodParameter = Expression.Parameter( typeof( EnumSerializationMethod ), "method" );
-			var namesParameter = Expression.Parameter( typeof( IList<string> ), "names" );
-			var valuesParameter = Expression.Parameter( typeof( IList<T> ), "values" );
 #if DEBUG
 			Contract.Assert( ctor != null, "ctor != null" );
 #endif
 			return
-				Expression.Lambda<Func<SerializationContext, EnumSerializationMethod, IList<string>, IList<T>, EnumMessagePackSerializer<T>>>(
+				Expression.Lambda<Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer<T>>>(
 					Expression.New(
 						ctor,
 						contextParameter,
-						methodParameter,
-						namesParameter,
-						valuesParameter
+						methodParameter
 					),
 					contextParameter,
-					methodParameter,
-					namesParameter,
-					valuesParameter
+					methodParameter
 				).Compile();
 		}
 	}

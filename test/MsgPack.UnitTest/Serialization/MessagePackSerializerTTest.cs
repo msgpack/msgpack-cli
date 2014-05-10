@@ -46,9 +46,6 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class MessagePackSerializerTTest
 	{
-		// UInt32 consists of only invalid header value.
-		private const uint _invalidHeaderValue = 0xC6C6C6C6;
-
 		private static MessagePackSerializer<T> CreateTarget<T>()
 		{
 #if XAMIOS || UNIOS
@@ -290,7 +287,7 @@ namespace MsgPack.Serialization
 				var collection = new int[ 2 ];
 				target.UnpackTo( unpacker, collection );
 				// colection[1] is still 0.
-				Assert.That( collection, Is.EqualTo( new int[] { 1, 0 } ) );
+				Assert.That( collection, Is.EqualTo( new[] { 1, 0 } ) );
 			}
 		}
 
@@ -405,7 +402,6 @@ namespace MsgPack.Serialization
 		{
 			var target = CreateTarget<TimeSpan>();
 			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
 			IMessagePackSingleObjectSerializer iface = target;
 			Assert.Throws<ArgumentException>( () => iface.PackSingleObject( value.ToString() ) );
 		}
@@ -414,8 +410,6 @@ namespace MsgPack.Serialization
 		public void TestIMessagePackSingleObjectSerializer_PackSingleObject_ValueTypeButNull_Fail()
 		{
 			var target = CreateTarget<TimeSpan>();
-			var value = TimeSpan.FromTicks( 12345 );
-			var expected = GetBytes( target, value );
 			IMessagePackSingleObjectSerializer iface = target;
 			Assert.Throws<ArgumentException>( () => iface.PackSingleObject( null ) );
 		}
@@ -437,7 +431,6 @@ namespace MsgPack.Serialization
 			var target = CreateTarget<TimeSpan>();
 			var expected = TimeSpan.FromTicks( 12345 );
 			var input = GetBytes( target, expected );
-			IMessagePackSingleObjectSerializer iface = target;
 			var actual = target.UnpackSingleObject( input );
 			Assert.That( actual, Is.EqualTo( expected ) );
 		}
@@ -455,18 +448,18 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIssue10_Null_ReadString()
 		{
-			TestIssue10_ReadXxxCore( new Inner() { A = null, Bytes = null } );
+			TestIssue10_ReadXxxCore( new Inner { A = null, Bytes = null } );
 		}
 
 		[Test]
 		public void TestIssue10_Empty_ReadString()
 		{
-			TestIssue10_ReadXxxCore( new Inner() { A = String.Empty, Bytes = Binary.Empty } );
+			TestIssue10_ReadXxxCore( new Inner { A = String.Empty, Bytes = Binary.Empty } );
 		}
 
 		private void TestIssue10_ReadXxxCore( Inner inner )
 		{
-			var serializer = MessagePackSerializer.Create<Outer>();
+			var serializer = MessagePackSerializer.CreateInternal<Outer>( SerializationContext.Default );
 			var outer = new Outer();
 			outer.Inner = inner;
 			var bytes = serializer.PackSingleObject( outer );
@@ -482,20 +475,20 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIssue10_Null_Reader()
 		{
-			TestIssue10_Reader( new Inner() { A = null, Bytes = null } );
+			TestIssue10_Reader( new Inner { A = null, Bytes = null } );
 		}
 
 		[Test]
 		public void TestIssue10_Empty_Reader()
 		{
-			TestIssue10_Reader( new Inner() { A = String.Empty, Bytes = Binary.Empty } );
+			TestIssue10_Reader( new Inner { A = String.Empty, Bytes = Binary.Empty } );
 
 		}
 
 		[Test]
 		public void TestIssue13_StringListMapAsMpoDictionary()
 		{
-			var target = MessagePackSerializer.Create<Dictionary<MessagePackObject, MessagePackObject>>();
+			var target = MessagePackSerializer.CreateInternal<Dictionary<MessagePackObject, MessagePackObject>>( SerializationContext.Default );
 			using ( var buffer = new MemoryStream( Convert.FromBase64String( "gadyZXN1bHRzkss/8AAAAAAAAMtAAAAAAAAAAA==" ) ) )
 			{
 				var result = target.Unpack( buffer );
@@ -508,7 +501,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIssue13_ListAsMpo()
 		{
-			var target = new MsgPack_MessagePackObjectMessagePackSerializer( PackerCompatibilityOptions.Classic );
+			var target = new MsgPack_MessagePackObjectMessagePackSerializer( new SerializationContext( PackerCompatibilityOptions.Classic ) );
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 2 } ) )
 			{
 				var result = target.Unpack( buffer );
@@ -521,7 +514,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIssue13_MapAsMpo()
 		{
-			var target = new MsgPack_MessagePackObjectMessagePackSerializer( PackerCompatibilityOptions.Classic );
+			var target = new MsgPack_MessagePackObjectMessagePackSerializer( new SerializationContext( PackerCompatibilityOptions.Classic ) );
 			using ( var buffer = new MemoryStream( new byte[] { 0x81, 2, 3 } ) )
 			{
 				var result = target.Unpack( buffer );
@@ -534,7 +527,7 @@ namespace MsgPack.Serialization
 
 		private void TestIssue10_Reader( Inner inner )
 		{
-			var serializer = MessagePackSerializer.Create<Outer>();
+			var serializer = MessagePackSerializer.CreateInternal<Outer>( SerializationContext.Default );
 			var outer = new Outer();
 			outer.Inner = inner;
 			var bytes = serializer.PackSingleObject( outer );

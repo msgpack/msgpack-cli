@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,16 +19,16 @@
 #endregion -- License Terms --
 
 using System;
-using System.Diagnostics.Contracts;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_VersionMessagePackSerializer : MessagePackSerializer<Version>
 	{
-		public System_VersionMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions ) { }
+		public System_VersionMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext ) { }
 
-		protected internal sealed override void PackToCore( Packer packer, Version objectTree )
+		protected internal override void PackToCore( Packer packer, Version objectTree )
 		{
 			packer.PackArrayHeader( 4 );
 			packer.Pack( objectTree.Major );
@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.Pack( objectTree.Revision );
 		}
 
-		protected internal sealed override Version UnpackFromCore( Unpacker unpacker )
+		protected internal override Version UnpackFromCore( Unpacker unpacker )
 		{
 			long length = unpacker.LastReadData.AsInt64();
 			int[] array = new int[ 4 ];

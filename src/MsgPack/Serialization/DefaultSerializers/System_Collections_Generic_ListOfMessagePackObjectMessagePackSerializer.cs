@@ -22,10 +22,11 @@ using System.Collections.Generic;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal class System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer : MessagePackSerializer<List<MessagePackObject>>
 	{
-		public System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions ) { }
+		public System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext ) { }
 
 		protected internal override void PackToCore( Packer packer, List<MessagePackObject> objectTree )
 		{

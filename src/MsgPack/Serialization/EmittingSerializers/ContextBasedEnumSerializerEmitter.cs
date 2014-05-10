@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -32,21 +31,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 	{
 		private readonly Type _targetType;
 		private readonly DynamicMethod _packUnderyingValueToMethod;
-		private readonly DynamicMethod _getUnderlyingValueStringMethod;
 		private readonly DynamicMethod _unpackFromUnderlyingValueMethod;
-		private readonly DynamicMethod _parseMethod;
-
 		public ContextBasedEnumSerializerEmitter( Type targetType )
 		{
 			this._targetType = targetType;
+			// NOTE: first argument is dummy to align with FieldBased(its 0th arg is this reference).
 			this._packUnderyingValueToMethod =
-				new DynamicMethod( "PackUnderyingValue", null, new[] { typeof( Packer ), this._targetType } );
-			this._getUnderlyingValueStringMethod =
-				new DynamicMethod( "GetUnderlyingValueString", typeof( String ), new[] { this._targetType } );
+				new DynamicMethod( "PackUnderyingValue", null, new[] { typeof( SerializationContext ), typeof( Packer ), this._targetType } );
 			this._unpackFromUnderlyingValueMethod =
-				new DynamicMethod( "UnpackFromUnderlyingValue", this._targetType, new[] { typeof( MessagePackObject ) } );
-			this._parseMethod =
-				new DynamicMethod( "Parse", this._targetType, new[] { typeof( String ) } );
+				new DynamicMethod( "UnpackFromUnderlyingValue", this._targetType, new[] { typeof( SerializationContext ), typeof( MessagePackObject ) } );
 		}
 
 		public override TracingILGenerator GetPackUnderyingValueToMethodILGenerator()
@@ -59,16 +52,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new TracingILGenerator( this._packUnderyingValueToMethod, SerializerDebugging.ILTraceWriter );
 		}
 
-		public override TracingILGenerator GetGetUnderlyingValueStringMethodILGenerator()
-		{
-			if ( SerializerDebugging.TraceEnabled )
-			{
-				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._getUnderlyingValueStringMethod );
-			}
-
-			return new TracingILGenerator( this._getUnderlyingValueStringMethod, SerializerDebugging.ILTraceWriter );
-		}
-
 		public override TracingILGenerator GetUnpackFromUnderlyingValueMethodILGenerator()
 		{
 			if ( SerializerDebugging.TraceEnabled )
@@ -79,45 +62,28 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return new TracingILGenerator( this._unpackFromUnderlyingValueMethod, SerializerDebugging.ILTraceWriter );
 		}
 
-		public override TracingILGenerator GetParseMethodILGenerator()
-		{
-			if ( SerializerDebugging.TraceEnabled )
-			{
-				SerializerDebugging.TraceEvent( "{0}::{1}", MethodBase.GetCurrentMethod(), this._parseMethod );
-			}
-
-			return new TracingILGenerator( this._parseMethod, SerializerDebugging.ILTraceWriter );
-		}
-
-		public override Func<SerializationContext, EnumSerializationMethod, IList<string>, IList<T>, EnumMessagePackSerializer<T>> CreateConstructor<T>()
+		public override Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
 			Contract.Assert( this._targetType == typeof( T ) );
 
 			var packUnderyingValueTo =
-				this._packUnderyingValueToMethod.CreateDelegate( typeof( Action<Packer, T> ) ) as
-					Action<Packer, T>;
-			var getUnderlyingValueString =
-				this._getUnderlyingValueStringMethod.CreateDelegate( typeof( Func<T, String> ) ) as
-					Func<T, String>;
+				this._packUnderyingValueToMethod.CreateDelegate( typeof( Action<SerializationContext, Packer, T> ) ) as
+					Action<SerializationContext, Packer, T>;
 			var unpackFromUnderlyingValue =
-				this._unpackFromUnderlyingValueMethod.CreateDelegate( typeof( Func<MessagePackObject, T> ) ) as
-					Func<MessagePackObject, T>;
-			var parsed =
-				this._parseMethod.CreateDelegate( typeof( Func<String, T> ) ) as
-					Func<String, T>;
+				this._unpackFromUnderlyingValueMethod.CreateDelegate( typeof( Func<SerializationContext, MessagePackObject, T> ) ) as
+					Func<SerializationContext, MessagePackObject, T>;
+
+			var targetType = typeof( CallbackEnumMessagePackSerializer<> ).MakeGenericType( typeof( T ) );
 
 			return
-				(context, method, names, values  )=>
-					new CallbackEnumMessagePackSerializer<T>(
-						context.CompatibilityOptions.PackerCompatibilityOptions,
+				( context, method ) =>
+					Activator.CreateInstance(
+						targetType,
+						context,
 						method,
-						names,
-						values,
 						packUnderyingValueTo,
-						getUnderlyingValueString,
-						unpackFromUnderlyingValue,
-						parsed
-					);
+						unpackFromUnderlyingValue
+					) as MessagePackSerializer<T>;
 		}
 	}
 }

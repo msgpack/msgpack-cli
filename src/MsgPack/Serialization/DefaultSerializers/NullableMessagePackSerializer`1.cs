@@ -27,15 +27,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		private readonly MessagePackSerializer<T> _valueSerializer;
 
-		public NullableMessagePackSerializer( SerializationContext context )
-			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
+		public NullableMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext )
 		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			this._valueSerializer = context.GetSerializer<T>();
+			this._valueSerializer = ownerContext.GetSerializer<T>();
 		}
 
 		protected internal override void PackToCore( Packer packer, T? objectTree )

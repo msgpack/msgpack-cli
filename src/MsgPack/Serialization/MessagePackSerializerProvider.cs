@@ -35,8 +35,9 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Gets a serializer instance for specified parameter.
 		/// </summary>
+		/// <param name="context">A serialization context which holds global settings.</param>
 		/// <param name="providerParameter">A provider specific parameter.</param>
 		/// <returns>A serializer object for specified parameter.</returns>
-		public abstract object Get( object providerParameter );
+		public abstract object Get( SerializationContext context, object providerParameter );
 	}
 }

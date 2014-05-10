@@ -265,12 +265,6 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DefaultSerializers.cs">
       <Link>Serialization\DefaultSerializers\DefaultSerializers.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\EnumMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs">
-      <Link>Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
     </Compile>
@@ -372,9 +366,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\DynamicMethodSerializerBuilder`1.cs">
       <Link>Serialization\EmittingSerializers\DynamicMethodSerializerBuilder`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\Emittion.cs">
-      <Link>Serialization\EmittingSerializers\Emittion.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs">
       <Link>Serialization\EmittingSerializers\FieldBasedSerializerEmitter.cs</Link>
@@ -555,9 +546,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationConfiguration.cs">
       <Link>Serialization\SerializerCodeGenerationConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\SerializerGenerationDebugging.cs">
-      <Link>Serialization\SerializerGenerationDebugging.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerGenerator.cs">
       <Link>Serialization\SerializerGenerator.cs</Link>

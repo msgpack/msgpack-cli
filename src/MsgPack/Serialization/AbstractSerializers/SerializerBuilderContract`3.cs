@@ -54,11 +54,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( Func<SerializationContext, MessagePackSerializer<TObject>> );
 		}
 
-		protected override Func<SerializationContext, EnumMessagePackSerializer<TObject>> CreateEnumSerializerConstructor( TContext codeGenerationContext )
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( TContext codeGenerationContext )
 		{
 			Contract.Requires( codeGenerationContext != null );
-			Contract.Ensures( Contract.Result<Func<SerializationContext, EnumMessagePackSerializer<TObject>>>() != null );
-			return default( Func<SerializationContext, EnumMessagePackSerializer<TObject>> );
+			Contract.Ensures( Contract.Result<Func<SerializationContext, MessagePackSerializer<TObject>>>() != null );
+			return default( Func<SerializationContext, MessagePackSerializer<TObject>> );
 		}
 
 		protected override void EmitMethodPrologue( TContext context, SerializerMethod method )

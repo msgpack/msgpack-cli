@@ -385,8 +385,8 @@
     <Compile Include="..\MsgPack\Serialization\EnumMemberSerializationMethod.cs">
       <Link>Serialization\EnumMemberSerializationMethod.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerHelper.cs">
-      <Link>Serialization\EnumMessagePackSerializerHelper.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerHelpers.cs">
+      <Link>Serialization\EnumMessagePackSerializerHelpers.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerProvider.cs">
       <Link>Serialization\EnumMessagePackSerializerProvider.cs</Link>
@@ -451,6 +451,9 @@
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.cs">
       <Link>Serialization\MessagePackSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializerExtensions.cs">
+      <Link>Serialization\MessagePackSerializerExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializerProvider.cs">
       <Link>Serialization\MessagePackSerializerProvider.cs</Link>
     </Compile>
@@ -466,8 +469,8 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_Enumerable.cs">
       <Link>Serialization\Metadata\_Enumerable.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_EnumMessagePackSerializerHelper.cs">
-      <Link>Serialization\Metadata\_EnumMessagePackSerializerHelper.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs">
+      <Link>Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_IDictionaryEnumerator.cs">
       <Link>Serialization\Metadata\_IDictionaryEnumerator.cs</Link>

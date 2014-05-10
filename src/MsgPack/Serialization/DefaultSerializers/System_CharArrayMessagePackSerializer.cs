@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,12 +22,13 @@ using System;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_CharArrayMessagePackSerializer : MessagePackSerializer<char[]>
 	{
-		public System_CharArrayMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions ) { }
+		public System_CharArrayMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext ) { }
 
-		protected internal sealed override void PackToCore( Packer packer, char[] value )
+		protected internal override void PackToCore( Packer packer, char[] value )
 		{
 			if ( value == null )
 			{
@@ -39,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		protected internal sealed override char[] UnpackFromCore( Unpacker unpacker )
+		protected internal override char[] UnpackFromCore( Unpacker unpacker )
 		{
 			var result = unpacker.LastReadData;
 			return result.IsNil ? null : result.AsCharArray();

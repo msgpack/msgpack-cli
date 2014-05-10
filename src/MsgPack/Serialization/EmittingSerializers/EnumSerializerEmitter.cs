@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
 using MsgPack.Serialization.AbstractSerializers;
@@ -78,15 +77,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public abstract TracingILGenerator GetPackUnderyingValueToMethodILGenerator();
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="EnumMessagePackSerializer{TEnum}.GetUnderlyingValueString"/> overrides.
-		/// </summary>
-		/// <returns>
-		///		The IL generator to implement <see cref="EnumMessagePackSerializer{TEnum}.GetUnderlyingValueString"/> overrides.
-		///		This value will not be <c>null</c>.
-		/// </returns>
-		public abstract TracingILGenerator GetGetUnderlyingValueStringMethodILGenerator();
-
-		/// <summary>
 		///		Gets the IL generator to implement <see cref="EnumMessagePackSerializer{TEnum}.UnpackFromUnderlyingValue"/> overrides.
 		/// </summary>
 		/// <returns>
@@ -96,29 +86,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public abstract TracingILGenerator GetUnpackFromUnderlyingValueMethodILGenerator();
 
 		/// <summary>
-		///		Gets the IL generator to implement <see cref="EnumMessagePackSerializer{TEnum}.Parse"/> overrides.
-		/// </summary>
-		/// <returns>
-		///		The IL generator to implement <see cref="EnumMessagePackSerializer{TEnum}.Parse"/> overrides.
-		///		This value will not be <c>null</c>.
-		/// </returns>
-		public abstract TracingILGenerator GetParseMethodILGenerator();
-
-		/// <summary>
 		///		Creates the serializer type built now and returns its new instance.
 		/// </summary>
 		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
 		/// <param name="context">The <see cref="SerializationContext"/> to holds serializers.</param>
 		/// <param name="serializationMethod">The <see cref="EnumSerializationMethod"/> which determines serialization form of the enums.</param>
-		/// <param name="enumNames">The names of enum members. The elements are corresponds to <paramref name="enumValues"/>.</param>
-		/// <param name="enumValues">The names of enum values. The elements are corresponds to <paramref name="enumNames"/>.</param>
 		/// <returns>
 		///		Newly built <see cref="MessagePackSerializer{T}"/> instance.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public EnumMessagePackSerializer<T> CreateInstance<T>( SerializationContext context, EnumSerializationMethod serializationMethod, IList<string> enumNames, IList<T> enumValues )
+		public MessagePackSerializer<T> CreateInstance<T>( SerializationContext context, EnumSerializationMethod serializationMethod )
 		{
-			return this.CreateConstructor<T>()( context, serializationMethod, enumNames, enumValues );
+			return this.CreateConstructor<T>()( context, serializationMethod );
 		}
 
 		/// <summary>
@@ -126,7 +105,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <typeparam name="T">Target type to be serialized/deserialized.</typeparam>
 		/// <returns>A delegate for serializer constructor.</returns>
-		public abstract Func<SerializationContext, EnumSerializationMethod, IList<String>, IList<T>, EnumMessagePackSerializer<T>> CreateConstructor<T>();
+		public abstract Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer<T>> CreateConstructor<T>();
 	}
 
 	[ContractClassFor( typeof( EnumSerializerEmitter ) )]
@@ -138,27 +117,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return null;
 		}
 
-		public override TracingILGenerator GetGetUnderlyingValueStringMethodILGenerator()
-		{
-			Contract.Ensures( Contract.Result<TracingILGenerator>() != null );
-			return null;
-		}
-
 		public override TracingILGenerator GetUnpackFromUnderlyingValueMethodILGenerator()
 		{
 			Contract.Ensures( Contract.Result<TracingILGenerator>() != null );
 			return null;
 		}
 
-		public override TracingILGenerator GetParseMethodILGenerator()
+		public override Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
-			Contract.Ensures( Contract.Result<TracingILGenerator>() != null );
-			return null;
-		}
-
-		public override Func<SerializationContext, EnumSerializationMethod, IList<string>, IList<T>, EnumMessagePackSerializer<T>> CreateConstructor<T>()
-		{
-			Contract.Ensures( Contract.Result<Func<PackerCompatibilityOptions, EnumSerializerMethod, IList<string>, IList<T>, MessagePackSerializer<T>>>() != null );
+			Contract.Ensures( Contract.Result<Func<PackerCompatibilityOptions, EnumSerializerMethod, MessagePackSerializer<T>>>() != null );
 			return null;
 		}
 	}

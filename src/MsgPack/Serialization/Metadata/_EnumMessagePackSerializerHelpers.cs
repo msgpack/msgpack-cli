@@ -24,12 +24,12 @@ using System.Reflection;
 namespace MsgPack.Serialization.Metadata
 {
 	// ReSharper disable once InconsistentNaming
-	internal static class _EnumMessagePackSerializerHelper
+	internal static class _EnumMessagePackSerializerHelpers
 	{
 		public static readonly MethodInfo DetermineEnumSerializationMethodMethod =
 			FromExpression.ToMethod(
 				( SerializationContext context, Type enumType, EnumMemberSerializationMethod enumMemberSerializationMethod ) =>
-					EnumMessagePackSerializerHelper.DetermineEnumSerializationMethod(
+					EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
 						context,
 						enumType,
 						enumMemberSerializationMethod

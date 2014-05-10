@@ -66,18 +66,78 @@ namespace MsgPack.Serialization
 			get { return this._packerCompatibilityOptions; }
 		}
 
+		private readonly WeakReference _ownerContext;
+
+		/// <summary>
+		///		Gets a <see cref="SerializationContext"/> which owns this serializer.
+		/// </summary>
+		/// <value>
+		///		A <see cref="SerializationContext"/> which owns this serializer.
+		///		Or <see cref="SerializationContext.Default"/> when owner context is not known or is garbage-collected.
+		/// </value>
+		protected internal SerializationContext OwnerContext
+		{
+			get
+			{
+				try
+				{
+					return this._ownerContext.Target as SerializationContext ?? SerializationContext.Default;
+				}
+				catch ( InvalidOperationException )
+				{
+					// It should not be occurred as long as serializer is holded by out of context.
+					// So continuous exception is OK.
+					return SerializationContext.Default;
+				}
+			}
+		}
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="T:PackerCompatibilityOptions.Classic"/>.
 		/// </summary>
+		/// <remarks>
+		///		This method supports backword compatibility with 0.3.
+		/// </remarks>
+		[Obsolete( "Use MessagePackSerializer (SerlaizationContext) instead." )]
 		protected MessagePackSerializer() : this( PackerCompatibilityOptions.Classic ) { }
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with default context..
+		/// </summary>
+		/// <param name="packerCompatibilityOptions">The <see cref="PackerCompatibilityOptions"/> for new packer creation.</param>
+		/// <remarks>
+		///		This method supports backword compatibility with 0.4.
+		/// </remarks>
+		[Obsolete( "Use MessagePackSerializer (SerlaizationContext, PackerCompatibilityOptions) instead." )]
+		protected MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: this( null, packerCompatibilityOptions ) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class.
 		/// </summary>
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
+		protected MessagePackSerializer( SerializationContext ownerContext )
+			: this( ownerContext, ( ownerContext ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions ) { }
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with explicitly specified compatibility option.
+		/// </summary>
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
 		/// <param name="packerCompatibilityOptions">The <see cref="PackerCompatibilityOptions"/> for new packer creation.</param>
-		protected MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
+		/// <remarks>
+		///		This method also supports backword compatibility with 0.4.
+		/// </remarks>
+		protected MessagePackSerializer( SerializationContext ownerContext, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
+			if ( ownerContext == null )
+			{
+				throw new ArgumentNullException( "ownerContext" );
+			}
+			
 			this._packerCompatibilityOptions = packerCompatibilityOptions;
+			this._ownerContext = new WeakReference( ownerContext );
 		}
 
 		private static bool JudgeNullable()
@@ -116,6 +176,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void Pack( Stream stream, T objectTree )
 		{
+			// Packer does not have finalizer, so just avoiding packer disposing prevents stream closing.
 			this.PackTo( Packer.Create( stream, this._packerCompatibilityOptions ), objectTree );
 		}
 
@@ -132,8 +193,13 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public T Unpack( Stream stream )
 		{
+			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
 			var unpacker = Unpacker.Create( stream );
-			unpacker.Read();
+			if ( !unpacker.Read() )
+			{
+				throw SerializationExceptions.NewUnexpectedEndOfStream();
+			}
+
 			return this.UnpackFrom( unpacker );
 		}
 

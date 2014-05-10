@@ -69,12 +69,32 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			return
 				memberInfo == null || !targetType.GetIsEnum()
-				? this.EmitInvokeMethodExpression(
-					context,
-					context.Context,
-					Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
-				)
-				: this.BuildCreateEnumSerializerInstance( context, targetType, memberInfo.Value.GetEnumMemberSerializationMethod() );
+					? this.EmitInvokeMethodExpression(
+						context,
+						context.Context,
+						Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
+					)
+					: this.EmitInvokeMethodExpression(
+						context,
+						context.Context,
+						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+						this.EmitBoxExpression( 
+							context,
+							typeof( EnumSerializationMethod ),
+							this.EmitInvokeMethodExpression( 
+								context,
+								null,
+								Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod,
+								context.Context,
+								this.EmitTypeOfExpression( context, targetType ),
+								this.MakeEnumLiteral(
+									context,
+									typeof( EnumMemberSerializationMethod ),
+									memberInfo.Value.GetEnumMemberSerializationMethod()
+								)
+							)
+						)
+					);
 		}
 	}
 }
