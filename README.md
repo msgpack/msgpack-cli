@@ -15,7 +15,7 @@ You can serialize/deserialize objects as following:
 
 ```c#
 // Creates serializer.
-var serializer = MessagePackSerializer.Create<T>();
+var serializer = SerializationContext.Default.GetSerializer<T>();
 // Pack obj to stream.
 serializer.Pack(stream, obj);
 // Unpack from stream.
@@ -24,7 +24,7 @@ var unpackedObject = serializer.Unpack(stream);
 
 ```vb
 ' Creates serializer.
-Dim serializer = MessagePackSerializer.Create(Of T)()
+Dim serializer = SerializationContext.Default.GetSerializer(Of T)()
 ' Pack obj to stream.
 serializer.Pack(stream, obj)
 ' Unpack from stream.
