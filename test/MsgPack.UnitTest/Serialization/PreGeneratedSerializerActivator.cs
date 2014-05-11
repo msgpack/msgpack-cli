@@ -101,7 +101,7 @@ namespace MsgPack.Serialization
 		/// <returns>A new pre-generated serializer instance.</returns>
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context )
 		{
-#if !XAMIOS && !UNIOS
+#if !XAMIOS && !UNITY_IPHONE
 			// Simulate Xamarin iOS or Unity iOS behavior...
 
 			if ( typeof( T ) == typeof( MessagePackObject )
@@ -152,7 +152,7 @@ namespace MsgPack.Serialization
 			}
 
 			return context.GetSerializer<T>();
-#endif // if !XAMIOS && !UNIOS
+#endif // if !XAMIOS && !UNITY_IPHONE
 		}
 
 		private static object CreateCore( Type targetType, SerializationContext context )

@@ -27,7 +27,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
-#if XAMIOS || UNIOS
+#if XAMIOS || UNITY_IPHONE
 using System.Globalization;
 #endif
 #if NETFX_CORE
@@ -368,7 +368,7 @@ namespace MsgPack.Serialization
 				serializer = this._serializers.Get<T>( this, providerParameter ) ?? GenericSerializer.Create<T>( this );
 				if ( serializer == null )
 				{
-#if XAMIOS || UNIOS
+#if XAMIOS || UNITY_IPHONE
 					if( typeof(T).GetIsInterface())
 					{
 						var concreteCollectionType = this._defaultCollectionTypes.Get( typeof( T ) );
@@ -480,16 +480,16 @@ namespace MsgPack.Serialization
 							Monitor.Exit( aquiredLock );
 						}
 					}
-#endif // if XAMIOS || UNIOS
+#endif // if XAMIOS || UNITY_IPHONE
 				}
 			}
 
-#if !XAMIOS && !UNIOS
+#if !XAMIOS && !UNITY_IPHONE
 			if ( !this._serializers.Register( serializer ) )
 			{
 				serializer = this._serializers.Get<T>( this, providerParameter );
 			}
-#endif // if !XAMIOS && !UNIOS
+#endif // if !XAMIOS && !UNITY_IPHONE
 
 			return serializer;
 		}
@@ -541,14 +541,14 @@ namespace MsgPack.Serialization
 
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
 
-#if !XAMIOS && !UNIOS
+#if !XAMIOS && !UNITY_IPHONE
 			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 #else
 			return this._serializers.Get( this, targetType, providerParameter );
-#endif // if !XAMIOS && !UNIOS
+#endif // if !XAMIOS && !UNITY_IPHONE
 		}
 
-#if !XAMIOS && !UNIOS
+#if !XAMIOS && !UNITY_IPHONE
 		private sealed class SerializerGetter
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
@@ -631,6 +631,6 @@ namespace MsgPack.Serialization
 			}
 			// ReSharper restore UnusedMember.Local
 		}
-#endif // if !XAMIOS && !UNIOS
+#endif // if !XAMIOS && !UNITY_IPHONE
 	}
 }

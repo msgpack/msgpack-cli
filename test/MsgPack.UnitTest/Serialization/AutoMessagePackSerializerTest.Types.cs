@@ -901,12 +901,12 @@ namespace MsgPack.Serialization
 			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 #endif
 			{
-#if !NETFX_35 && !XAMIOS && !UNIOS
+#if !NETFX_35 && !XAMIOS && !UNITY_IPHONE
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
 				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
 #else
 				Assert.Inconclusive( ".NET 3.5 does not support dynamic." );
-#endif // !NETFX_35 && !XAMIOS && !UNIOS
+#endif // !NETFX_35 && !XAMIOS && !UNITY_IPHONE
 				return;
 			}
 

@@ -102,7 +102,7 @@ namespace MsgPack.Serialization
 				var asString = unpacker.LastReadData.AsString();
 
 				TEnum result;
-#if NETFX_35 || UNIOS
+#if NETFX_35 || UNITY_IPHONE
 				try
 				{
 					result = ( TEnum ) Enum.Parse( typeof( TEnum ), asString, false );

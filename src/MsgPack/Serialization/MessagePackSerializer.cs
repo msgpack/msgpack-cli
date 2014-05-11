@@ -32,7 +32,7 @@ using System.Globalization;
 #if NETFX_CORE
 using System.Linq.Expressions;
 #endif
-#if !XAMIOS && !UNIOS
+#if !XAMIOS && !UNITY_IPHONE
 using MsgPack.Serialization.AbstractSerializers;
 #if !NETFX_CORE
 #if !SILVERLIGHT && !XAMDROID
@@ -93,7 +93,7 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context )
 		{
-#if XAMIOS || UNIOS
+#if XAMIOS || UNITY_IPHONE
 			return context.GetSerializer<T>();
 #else
 
@@ -215,7 +215,7 @@ namespace MsgPack.Serialization
 
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
 
-#if XAMIOS || UNIOS
+#if XAMIOS || UNITY_IPHONE
 			return context.GetSerializer( targetType );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.

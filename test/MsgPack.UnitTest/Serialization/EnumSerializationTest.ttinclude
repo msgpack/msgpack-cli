@@ -420,7 +420,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 	if ( useBuilder )
 	{
 #>
-#if !NETFX_CORE && !XAMIOS && !UNIOS && !XAMDROID && !UNIDROID
+#if !NETFX_CORE && !XAMIOS && !UNITY_IPHONE && !XAMDROID && !UNITY_ANDDROID
 <#+
 	}
 #>
@@ -546,7 +546,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 	if ( useBuilder )
 	{
 #>
-#endif // !NETFX_CORE && !XAMIOS && !UNIOS && !XAMDROID && !UNIDROID
+#endif // !NETFX_CORE && !XAMIOS && !UNITY_IPHONE && !XAMDROID && !UNITY_ANDDROID
 <#+
 	}
 }

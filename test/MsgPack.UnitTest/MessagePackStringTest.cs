@@ -151,7 +151,7 @@ namespace MsgPack
 			Console.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
 		}
 
-#if !NETFX_CORE && !XAMIOS && !UNIOS
+#if !NETFX_CORE && !XAMIOS && !UNITY_IPHONE
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -233,7 +233,7 @@ namespace MsgPack
 			AppDomain.CurrentDomain.SetData( "TestEqualsWorker.Performance", result );
 			AppDomain.CurrentDomain.SetData( "MessagePackString.IsFastEqualsDisabled", MessagePackString.IsFastEqualsDisabled );
 		}
-#endif // if !NETFX_CORE && !XAMIOS && !UNIOS
+#endif // if !NETFX_CORE && !XAMIOS && !UNITY_IPHONE
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{

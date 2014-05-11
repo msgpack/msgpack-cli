@@ -47,11 +47,11 @@ namespace MsgPack.Serialization
 		// ReSharper disable once StaticFieldInGenericType
 		private static readonly bool _isNullable = JudgeNullable();
 
-#if !XAMIOS && !UNIOS
+#if !XAMIOS && !UNITY_IPHONE
 		// This field exists for each closed generic types.
 		internal static readonly MethodInfo UnpackToCoreMethod =
 			FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
-#endif // if !XAMIOS && !UNIOS
+#endif // if !XAMIOS && !UNITY_IPHONE
 
 		private readonly PackerCompatibilityOptions _packerCompatibilityOptions;
 
