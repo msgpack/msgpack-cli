@@ -150,6 +150,18 @@ namespace MsgPack.Serialization
 			//result.Add( typeof( MessagePackObject[] ) ); 
 			result.Add( typeof( DayOfWeek ) ); 
 			//result.Add( typeof( DayOfWeek[] ) ); 
+			result.Add( typeof( VersioningTestTarget ) ); 
+			result.Add( typeof( EnumDefault ) ); 
+			result.Add( typeof( EnumByName ) ); 
+			result.Add( typeof( EnumByUnderlyingValue ) ); 
+			result.Add( typeof( EnumByte ) ); 
+			result.Add( typeof( EnumSByte ) ); 
+			result.Add( typeof( EnumInt16 ) ); 
+			result.Add( typeof( EnumUInt16 ) ); 
+			result.Add( typeof( EnumInt32 ) ); 
+			result.Add( typeof( EnumUInt32 ) ); 
+			result.Add( typeof( EnumInt64 ) ); 
+			result.Add( typeof( EnumUInt64 ) ); 
 			return result;
 		}
 	}

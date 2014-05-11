@@ -37,7 +37,23 @@ var targetTypes =
 		"Object",
 		"MessagePackObject",
 		"DayOfWeek",
-	};
+		"VersioningTestTarget",
+		"EnumDefault",
+		"EnumByName",
+		"EnumByUnderlyingValue"
+	}.Concat( 
+		new []
+		{
+			typeof( byte ),
+			typeof( sbyte ),
+			typeof( short ),
+			typeof( ushort ),
+			typeof( int ), 
+			typeof( uint ),
+			typeof( long ),
+			typeof( ulong ),
+		}.Select( t => "Enum" + t.Name )
+	).ToArray();
 
 #>
 #region -- License Terms --
