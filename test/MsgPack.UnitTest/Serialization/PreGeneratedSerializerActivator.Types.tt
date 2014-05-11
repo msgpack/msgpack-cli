@@ -99,16 +99,10 @@ namespace MsgPack.Serialization
 			result.Add( typeof( SimpleCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( Collection<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( Collection<#= "<" + collectionElementType + "[]>" #> ) ); 
-			//result.Add( typeof( ICollection<#= "<" + collectionElementType + ">" #> ) ); 
-			//result.Add( typeof( ICollection<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( List<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( List<#= "<" + collectionElementType + "[]>" #> ) ); 
-			//result.Add( typeof( IList<#= "<" + collectionElementType + ">" #> ) ); 
-			//result.Add( typeof( IList<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( HashSet<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( HashSet<#= "<" + collectionElementType + "[]>" #> ) ); 
-			//result.Add( typeof( ISet<#= "<" + collectionElementType + ">" #> ) ); 
-			//result.Add( typeof( ISet<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( ObservableCollection<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( ObservableCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( StringKeyedCollection<#= "<" + collectionElementType + ">" #> ) ); 
@@ -119,16 +113,12 @@ namespace MsgPack.Serialization
 			result.Add( typeof( Dictionary<MessagePackObject, MessagePackObject> ) );
 			result.Add( typeof( Dictionary<object, object> ) );
 			result.Add( typeof( Dictionary<String, DateTime> ) );
-			//result.Add( typeof( IDictionary<MessagePackObject, MessagePackObject> ) );
-			//result.Add( typeof( IDictionary<object, object> ) );
-			//result.Add( typeof( IDictionary<String, DateTime> ) );
 			result.Add( typeof( Dictionary<String, int> ) );
 <#
 	foreach ( var targetType in targetTypes )
 	{
 #>
 			result.Add( typeof( <#= targetType #> ) ); 
-			//result.Add( typeof( <#= targetType #>[] ) ); 
 <#
 	}
 #>
