@@ -42,6 +42,7 @@ namespace MsgPack.Serialization
 			SerializationContext.Default = new SerializationContext();
 		}
 
+#if !XAMIOS && !UNITY_IPHONE
 #pragma warning disable 618
 		[Test]
 		public void TestCreate1_WithoutContext_NewInstance()
@@ -63,6 +64,8 @@ namespace MsgPack.Serialization
 			Assert.That( second, Is.Not.Null );
 			Assert.That( first, Is.Not.SameAs( second ) );
 		}
+#endif // !XAMIOS && !UNITY_IPHONE
+
 
 		[Test]
 		public void TestCreate1_WithContext_Null_Fail()
@@ -70,6 +73,7 @@ namespace MsgPack.Serialization
 			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Create<int>( null ) );
 		}
 
+#if !XAMIOS && !UNITY_IPHONE
 		[Test]
 		public void TestCreate_WithoutContext_NewInstance()
 		{
@@ -79,6 +83,7 @@ namespace MsgPack.Serialization
 			Assert.That( second, Is.Not.Null );
 			Assert.That( first, Is.Not.SameAs( second ) );
 		}
+#endif // !XAMIOS && !UNITY_IPHONE
 
 		[Test]
 		public void TestCreate_WithoutContext_SameTypeAsCreate1()
@@ -90,6 +95,7 @@ namespace MsgPack.Serialization
 			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
 		}
 
+#if !XAMIOS && !UNITY_IPHONE
 		[Test]
 		public void TestCreate_WithContext_NewInstance()
 		{
@@ -100,6 +106,7 @@ namespace MsgPack.Serialization
 			Assert.That( second, Is.Not.Null );
 			Assert.That( first, Is.Not.SameAs( second ) );
 		}
+#endif // !XAMIOS && !UNITY_IPHONE
 
 		[Test]
 		public void TestCreate_WithContext_SameTypeAsCreate1()
