@@ -200,6 +200,10 @@ private void GenerateTypesCore( bool forIos )
 		}
 	}
 	// In object
+
+	if ( !forIos )
+	{
+		// Not needed because generation itself has been done.
 #>
 		[Test]
 		public void TestComplexTypeGeneratedEnclosure_WithShortcut()
@@ -323,6 +327,9 @@ private void GenerateTypesCore( bool forIos )
 				SerializerDebugging.AvoidsGenericSerializer = false;
 			}
 		}
+<#+
+	} // !forIOS
+#>
 
 		private void TestCoreWithAutoVerify<T>( T value, SerializationContext context )
 		{

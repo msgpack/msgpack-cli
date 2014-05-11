@@ -36,11 +36,11 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
-#if !NETFX_CORE && !UNIOS && !XAMIOS
+#if !NETFX_CORE && !UNITY_IPHONE && !XAMIOS
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif
-#if !NETFX_35 && !UNIOS && !XAMIOS
+#if !NETFX_35 && !UNITY_IPHONE && !XAMIOS
 using MsgPack.Serialization.ExpressionSerializers;
 #endif
 #if !MSTEST
@@ -142,74 +142,6 @@ namespace MsgPack.Serialization
 		public void TestUri()
 		{
 			TestCore( new Uri( "http://www.example.com" ), stream => new Uri( Unpacking.UnpackString( stream ) ), null );
-		}
-
-		[Test]
-		public void TestComplexObject_WithShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = false;
-			try 
-			{
-				this.TestComplexObjectCore( this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
-
-		[Test]
-		public void TestComplexObject_WithoutShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = true;
-			try 
-			{
-				this.TestComplexObjectCore( this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
-
-		private void TestComplexObjectCore( SerializationContext context )
-		{
-			var target = new ComplexType() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
-			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
-			TestCoreWithVerify( target, context );
-		}
-
-		[Test]
-		public void TestComplexTypeWithoutAnyAttribute_WithShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = false;
-			try 
-			{
-				this.TestComplexTypeWithoutAnyAttribute( this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}		}
-
-		[Test]
-		public void TestComplexTypeWithoutAnyAttribute_WithoutShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = true;
-			try 
-			{
-				this.TestComplexTypeWithoutAnyAttribute( this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}		}
-
-		private void TestComplexTypeWithoutAnyAttribute( SerializationContext context )
-		{
-			var target = new ComplexTypeWithoutAnyAttribute() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
-			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
-			TestCoreWithVerify( target, context );
 		}
 
 
@@ -2627,125 +2559,6 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>[] ), this.GetSerializationContext() );
 		}	
 		
-		[Test]
-		public void TestComplexTypeGeneratedEnclosure_WithShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = false;
-			try 
-			{
-				var target = new ComplexTypeGeneratedEnclosure();
-				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
-
-		[Test]
-		public void TestComplexTypeGeneratedEnclosure_WithoutShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = true;
-			try 
-			{
-				var target = new ComplexTypeGeneratedEnclosure();
-				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
-		
-		[Test]
-		public void TestComplexTypeGeneratedEnclosureArray_WithShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = false;
-			try 
-			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
-		
-		[Test]
-		public void TestComplexTypeGeneratedEnclosureArray_WithoutShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = true;
-			try 
-			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
-		
-		[Test]
-		public void TestComplexTypeGenerated_WithShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = false;
-			try 
-			{
-				var target = new ComplexTypeGenerated();
-				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
-
-		[Test]
-		public void TestComplexTypeGenerated_WithoutShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = true;
-			try 
-			{
-				var target = new ComplexTypeGenerated();
-				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
-		
-		[Test]
-		public void TestComplexTypeGeneratedArray_WithShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = false;
-			try 
-			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
-		
-		[Test]
-		public void TestComplexTypeGeneratedArray_WithoutShortcut()
-		{
-			SerializerDebugging.AvoidsGenericSerializer = true;
-			try 
-			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
-			}
-			finally
-			{
-				SerializerDebugging.AvoidsGenericSerializer = false;
-			}
-		}
 
 		private void TestCoreWithAutoVerify<T>( T value, SerializationContext context )
 		{

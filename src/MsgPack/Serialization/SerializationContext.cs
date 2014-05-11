@@ -371,11 +371,11 @@ namespace MsgPack.Serialization
 #if XAMIOS || UNIOS
 					if( typeof(T).GetIsInterface())
 					{
-						var concreteCollectionType = this._defaultCollectionTypes.Get(typeof(T));
-						if(concreteCollectionType != null )
+						var concreteCollectionType = this._defaultCollectionTypes.Get( typeof( T ) );
+						if ( concreteCollectionType != null )
 						{
-							serializer = this._serializers.Get( this, concreteCollectionType) as MessagePackSerializer<T>;
-							if(serializer != null )
+							serializer = this._serializers.Get( this, concreteCollectionType, providerParameter ) as MessagePackSerializer<T>;
+							if ( serializer != null )
 							{
 								return serializer;
 							}
@@ -544,7 +544,7 @@ namespace MsgPack.Serialization
 #if !XAMIOS && !UNIOS
 			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 #else
-			return this._serializers.Get( this, targetType );
+			return this._serializers.Get( this, targetType, providerParameter );
 #endif // if !XAMIOS && !UNIOS
 		}
 

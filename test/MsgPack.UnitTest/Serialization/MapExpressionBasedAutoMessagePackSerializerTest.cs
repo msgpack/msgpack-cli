@@ -36,11 +36,11 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
-#if !NETFX_CORE
+#if !NETFX_CORE && !UNITY_IPHONE && !XAMIOS
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_IPHONE && !XAMIOS
 using MsgPack.Serialization.ExpressionSerializers;
 #endif
 #if !MSTEST

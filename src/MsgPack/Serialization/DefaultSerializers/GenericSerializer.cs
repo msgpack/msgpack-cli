@@ -82,13 +82,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			var factoryType = typeof( ListInstanceFactory<> ).MakeGenericType( itemType );
 			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
-#if DEBUG
+#if DEBUG && !XAMIOS && !UNITY_IPHONE && !UNITY_ANDROID
 			Contract.Assert( instanceFactory != null );
 			if ( SerializerDebugging.AvoidsGenericSerializer )
 			{
 				return null;
 			}
-#endif
+#endif // DEBUG && !XAMIOS && !UNITY_IPHONE && !UNITY_ANDROID
 			return instanceFactory.Create( context ) as MessagePackSerializer<T>;
 		}
 
@@ -96,13 +96,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			var factoryType = typeof( DictionaryInstanceFactory<,> ).MakeGenericType( keyType, valueType );
 			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
-#if DEBUG
+#if DEBUG && !XAMIOS && !UNITY_IPHONE && !UNITY_ANDROID
 			Contract.Assert( instanceFactory != null );
 			if ( SerializerDebugging.AvoidsGenericSerializer )
 			{
 				return null;
 			}
-#endif
+#endif // DEBUG && !XAMIOS && !UNITY_IPHONE && !UNITY_ANDROID
 			return instanceFactory.Create( context ) as MessagePackSerializer<T>;
 		}
 

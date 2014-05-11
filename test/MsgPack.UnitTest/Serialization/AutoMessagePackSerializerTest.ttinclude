@@ -48,11 +48,11 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
-#if !NETFX_CORE
+#if !NETFX_CORE && !UNITY_IPHONE && !XAMIOS
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_IPHONE && !XAMIOS
 using MsgPack.Serialization.ExpressionSerializers;
 #endif
 #if !MSTEST
@@ -246,6 +246,11 @@ namespace MsgPack.Serialization
 			TestCore( new Uri( "http://www.example.com" ), stream => new Uri( Unpacking.UnpackString( stream ) ), null );
 		}
 
+<#+
+	if ( !forIos )
+	{
+		// Not needed because generation itself has been done.
+#>
 		[Test]
 		public void TestComplexObject_WithShortcut()
 		{
@@ -314,11 +319,6 @@ namespace MsgPack.Serialization
 			TestCoreWithVerify( target, context );
 		}
 
-<#+
-	if ( !forIos )
-	{
-		// Not needed because generation itself has been done.
-#>
 		[Test]
 		public void TestTypeWithMissingMessagePackMemberAttributeMember()
 		{
@@ -565,7 +565,7 @@ namespace MsgPack.Serialization
 			}
 		}
 <#+
-	}
+	} // !forIOS
 #>
 
 		[Test]
