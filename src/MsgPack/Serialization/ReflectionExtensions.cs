@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -54,9 +54,10 @@ namespace MsgPack.Serialization
 
 		public static bool CanSetValue( this MemberInfo source )
 		{
-			PropertyInfo asProperty = source as PropertyInfo;
-			FieldInfo asField = source as FieldInfo;
+			var asProperty = source as PropertyInfo;
+			var asField = source as FieldInfo;
 			// GetSetMethod() on WinRT is not compabitle with CLR. CLR returns null but WinRT returns non-null for non-public setter.
+			Contract.Assert( asProperty != null || asField != null );
 			return asProperty != null ? ( asProperty.CanWrite && asProperty.GetSetMethod() != null && asProperty.GetSetMethod().IsPublic ) : !asField.IsInitOnly;
 		}
 
@@ -313,12 +314,11 @@ namespace MsgPack.Serialization
 				Contract.Assert( false, interfaceType + "::" + name + "(" + String.Join( ", ", parameterTypes.Select( t => t.ToString() ).ToArray() ) + ") is not found in " + targetType );
 #endif
 #endif
+				// ReSharper disable once HeuristicUnreachableCode
 				return null;
 			}
-			else
-			{
-				return map.TargetMethods[ index ];
-			}
+			
+			return map.TargetMethods[ index ];
 		}
 
 		private static PropertyInfo GetCollectionTCountProperty( Type targetType, Type elementType )

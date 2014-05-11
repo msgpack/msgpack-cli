@@ -28,14 +28,13 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer5;
         
         public MsgPack_Serialization_ComplexTypeWithoutAnyAttributeSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(MsgPack_Serialization_ComplexTypeWithoutAnyAttributeSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
-            MsgPack.Serialization.SerializationContext safeContext = MsgPack_Serialization_ComplexTypeWithoutAnyAttributeSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<string>();
-            this._serializer1 = safeContext.GetSerializer<byte[]>();
-            this._serializer2 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<System.DateTime, string>>();
-            this._serializer3 = safeContext.GetSerializer<System.Uri>();
-            this._serializer4 = safeContext.GetSerializer<System.DateTime>();
-            this._serializer5 = safeContext.GetSerializer<System.Nullable<System.DateTime>>();
+                base(context) {
+            this._serializer0 = this.OwnerContext.GetSerializer<string>();
+            this._serializer1 = this.OwnerContext.GetSerializer<byte[]>();
+            this._serializer2 = this.OwnerContext.GetSerializer<System.Collections.Generic.Dictionary<System.DateTime, string>>();
+            this._serializer3 = this.OwnerContext.GetSerializer<System.Uri>();
+            this._serializer4 = this.OwnerContext.GetSerializer<System.DateTime>();
+            this._serializer5 = this.OwnerContext.GetSerializer<System.Nullable<System.DateTime>>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeWithoutAnyAttribute objectTree) {

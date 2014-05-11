@@ -41,8 +41,19 @@
   <Project Name="MsgPack.UnitTest.Net35" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\ArrayExpressionBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\ArrayGenerationBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\ExpressionBasedNilImplicationTest.cs" />
+    <Exclude Path="Serialization\GenerationBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\MapExpressionBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\MapGenerationBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\GeneratedSerializers\*" />
+    <Exclude Path="Serialization\GeneratedSerializers\ArrayBased\*" />
+    <Exclude Path="Serialization\GeneratedSerializers\MapBased\*" />
+    <Exclude Path="Serialization\PreGenerated*" />
     <Preserve Path="Dummies\System.Threading.Tasks\Task.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\TaskFactory.cs" />
     <Preserve Path="Mono\System\AggregateException.cs" />
@@ -71,16 +82,30 @@
     <Preserve File="*.json" />
     <Preserve File="*.mpac" />
     <Preserve File="*.pfx" />
+    <Preserve File="*.png" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
+    <Exclude Path="Serialization\GeneratedSerializers\*" />
+    <Exclude Path="Serialization\GeneratedSerializers\ArrayBased\*" />
+    <Exclude Path="Serialization\GeneratedSerializers\MapBased\*" />
+    <Exclude Path="Serialization\PreGenerated*" />
     <Exclude Path="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\ArrayFieldBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\ArrayContextBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\ArrayGenerationBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\CodeDomBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\ContextBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\FieldBasedNilImplicationTest.cs" />
+    <Exclude Path="Serialization\GenerationBasedNilImplicationTest.cs" />
     <Exclude Path="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\MapFieldBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\MapContextBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\MapContextBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\MapGenerationBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
   </Project>
   <Project Name="MsgPack.UnitTest.BclExtensions.WinRT" Base="MsgPack.UnitTest.BclExtensions">

@@ -16,8 +16,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
     public class MsgPack_ImageSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Image> {
         
         public MsgPack_ImageSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(MsgPack_ImageSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
-            MsgPack.Serialization.SerializationContext safeContext = MsgPack_ImageSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
+                base(context) {
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Image objectTree) {

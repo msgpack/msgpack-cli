@@ -232,6 +232,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayExpressionBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayExpressionBasedEnumSerializationTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs">
       <Link>Serialization\ArraySegmentEqualityComparer`1.cs</Link>
     </Compile>
@@ -268,6 +271,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
+      <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ExpressionBasedNilImplicationTest.cs">
       <Link>Serialization\ExpressionBasedNilImplicationTest.cs</Link>
     </Compile>
@@ -282,6 +288,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapExpressionBasedEnumSerializationTest.cs">
+      <Link>Serialization\MapExpressionBasedEnumSerializationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
       <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>

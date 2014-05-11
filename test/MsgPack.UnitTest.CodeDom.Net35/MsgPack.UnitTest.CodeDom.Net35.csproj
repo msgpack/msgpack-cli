@@ -52,11 +52,17 @@
     <Compile Include="..\MsgPack.UnitTest.CodeDom\Serialization\ArrayCodeDomBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\ArrayCodeDomBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest.CodeDom\Serialization\ArrayCodeDomBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayCodeDomBasedEnumSerializationTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest.CodeDom\Serialization\CodeDomBasedNilImplicationTest.cs">
       <Link>Serialization\CodeDomBasedNilImplicationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest.CodeDom\Serialization\MapCodeDomBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapCodeDomBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.CodeDom\Serialization\MapCodeDomBasedEnumSerializationTest.cs">
+      <Link>Serialization\MapCodeDomBasedEnumSerializationTest.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

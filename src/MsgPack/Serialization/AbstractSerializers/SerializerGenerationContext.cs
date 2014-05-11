@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -114,6 +114,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Resets internal states for specified target type.
 		/// </summary>
 		/// <param name="targetType">Type of the serialization target.</param>
-		public abstract void Reset( Type targetType );
+		public void Reset( Type targetType )
+		{
+			this.ResetCore( targetType );
+		}
+
+		/// <summary>
+		///		Resets internal states for specified target type.
+		/// </summary>
+		/// <param name="targetType">Type of the serialization target.</param>
+		protected abstract void ResetCore( Type targetType );
 	}
 }

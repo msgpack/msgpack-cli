@@ -19,12 +19,16 @@
 #endregion -- License Terms --
 
 using System;
+
 #if SILVERLIGHT || NETFX_35
 using System.Collections.Generic;
 #else
 using System.Collections.Concurrent;
 #endif
 using System.Diagnostics.Contracts;
+#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS
+using System.Globalization;
+#endif
 #if NETFX_CORE
 using System.Linq.Expressions;
 #endif
@@ -39,7 +43,6 @@ using MsgPack.Serialization.EmittingSerializers;
 #endif // !XAMIOS
 #if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS
 using MsgPack.Serialization.ExpressionSerializers;
-using System.Globalization;
 #endif
 
 namespace MsgPack.Serialization
@@ -56,6 +59,7 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		New <see cref="MessagePackSerializer{T}"/> instance to serialize/deserialize the object tree which the top is <typeparamref name="T"/>.
 		/// </returns>
+		[Obsolete( "Use SerializationContext.Default.GetSerializer<T>() instead." )]
 		public static MessagePackSerializer<T> Create<T>()
 		{
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
@@ -76,6 +80,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
 		/// </exception>
+		[Obsolete( "Use SerializationContext.GetSerializer<T>() instead." )]
 		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
 		{
 			if ( context == null )
@@ -83,6 +88,11 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
+			return CreateInternal<T>( context );
+		}
+
+		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context )
+		{
 #if XAMIOS || UNIOS
 			return context.GetSerializer<T>();
 #else
@@ -167,6 +177,7 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		To avoid boxing and strongly typed API is prefered, use <see cref="Create{T}()"/> instead when possible.
 		/// </remarks>
+		[Obsolete( "Use SerializationContext.Default.GetSerializer(Type) instead." )]
 		public static IMessagePackSingleObjectSerializer Create( Type targetType )
 		{
 			return Create( targetType, SerializationContext.Default );
@@ -189,6 +200,7 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		To avoid boxing and strongly typed API is prefered, use <see cref="Create{T}(SerializationContext)"/> instead when possible.
 		/// </remarks>
+		[Obsolete( "Use SerializationContext.GetSerializer(Type) instead." )]
 		public static IMessagePackSingleObjectSerializer Create( Type targetType, SerializationContext context )
 		{
 			if ( targetType == null )

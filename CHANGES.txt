@@ -110,10 +110,11 @@ Release 0.5 - 2014/?/?
 
   FEATURES
   * CodeDOM serializer generator, which generates source code for custom serializer. It enables debugger break points, insert your own codes, etc.
-  * [planned] Start Unity/Xamarin supporting with CodeDOM serializer generator.
+  * Start Unity/Xamarin supporting with CodeDOM serializer generator and runtime code generation free Nullable/Enum serializers.
   * Support .NET 4.5 including immutable collections support.
-
   * Support on-the-fly IEnumerable<T> (such as the result of Enumerable.Range()) packing. Note that unpacking is still unsupported.
+  * Support underlying integral based enum serialization.
+  * Add new PackerUnpackerExtensinos' extension methods for collections and dictionaries to improve overloading stability (predictability).
 
   BUG FIXES
   * PackerUnpackerExtensions.Pack(Object) takes long time. (#14)

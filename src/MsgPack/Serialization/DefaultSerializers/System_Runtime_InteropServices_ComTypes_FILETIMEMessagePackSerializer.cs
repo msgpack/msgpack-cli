@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,14 +24,15 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer : MessagePackSerializer<FILETIME>
 	{
 		private static readonly DateTime _fileTimeEpocUtc = new DateTime( 1601, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
-		public System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions ) { }
+		public System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext ) { }
 
-		protected internal sealed override void PackToCore( Packer packer, FILETIME value )
+		protected internal override void PackToCore( Packer packer, FILETIME value )
 		{
 			packer.Pack( 
 				MessagePackConvert.FromDateTime(
@@ -41,10 +42,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 			);
 		}
 
-		protected internal sealed override FILETIME UnpackFromCore( Unpacker unpacker )
+		protected internal override FILETIME UnpackFromCore( Unpacker unpacker )
 		{
 			var value = MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ).ToFileTimeUtc();
-			return new FILETIME() { dwHighDateTime = unchecked( ( int )( value >> 32 ) ), dwLowDateTime = unchecked( ( int )( value & 0xffffffff ) ) };
+			return new FILETIME { dwHighDateTime = unchecked( ( int )( value >> 32 ) ), dwLowDateTime = unchecked( ( int )( value & 0xffffffff ) ) };
 		}
 	}
 }

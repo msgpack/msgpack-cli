@@ -18,9 +18,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         private MsgPack.Serialization.MessagePackSerializer<int[]> _serializer0;
         
         public System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
-            MsgPack.Serialization.SerializationContext safeContext = System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<int[]>();
+                base(context) {
+            this._serializer0 = this.OwnerContext.GetSerializer<int[]>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.ObjectModel.ObservableCollection<int[]> objectTree) {

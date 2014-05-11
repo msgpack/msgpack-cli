@@ -28,20 +28,18 @@ namespace MsgPack.Serialization
 	/// <typeparam name="T">The type of target type.</typeparam>
 	internal sealed class CallbackMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
-		private readonly SerializationContext _context;
 		private readonly Action<SerializationContext, Packer, T> _packToCore;
 		private readonly Func<SerializationContext, Unpacker, T> _unpackFromCore;
 		private readonly Action<SerializationContext, Unpacker, T> _unpackToCore;
 
 		public CallbackMessagePackSerializer(
-			SerializationContext context,
+			SerializationContext ownerContext,
 			Action<SerializationContext, Packer, T> packToCore,
 			Func<SerializationContext, Unpacker, T> unpackFromCore,
 			Action<SerializationContext, Unpacker, T> unpackToCore
 		)
-			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
+			: base( ownerContext )
 		{
-			this._context = context;
 			this._packToCore = packToCore;
 			this._unpackFromCore = unpackFromCore;
 			this._unpackToCore = unpackToCore;
@@ -49,19 +47,19 @@ namespace MsgPack.Serialization
 
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
-			this._packToCore( this._context, packer, objectTree );
+			this._packToCore( this.OwnerContext, packer, objectTree );
 		}
 
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
-			return this._unpackFromCore( this._context, unpacker );
+			return this._unpackFromCore( this.OwnerContext, unpacker );
 		}
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			if ( this._unpackToCore != null )
 			{
-				this._unpackToCore( this._context, unpacker, collection );
+				this._unpackToCore( this.OwnerContext, unpacker, collection );
 			}
 			else
 			{

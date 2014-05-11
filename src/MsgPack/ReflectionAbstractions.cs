@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if NETFX_CORE
 using System.Collections.Generic;
+#endif
 using System.Linq;
 using System.Reflection;
 
@@ -150,6 +152,11 @@ namespace MsgPack
 			return source.GetRuntimeProperty( name );
 		}
 
+		public static IEnumerable<PropertyInfo> GetProperties( this Type source )
+		{
+			return source.GetRuntimeProperties();
+		}
+
 		public static ConstructorInfo GetConstructor( this Type source, Type[] parameteres )
 		{
 			return source.GetTypeInfo().DeclaredConstructors.SingleOrDefault( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameteres ) );
@@ -210,6 +217,6 @@ namespace MsgPack
 		{
 			return Attribute.GetCustomAttribute( source, typeof( T ) ) as T;
 		}		
-#endif
+#endif // NETFX_CORE
 	}
 }

@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 			Contract.Assert( !typeof( TObject ).IsArray );
 #endif
-			this.BeginPackToMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.PackToCore );
 			TConstruct construct = null;
 			try
 			{
@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					construct =
 						this.EmitInvokeMethodExpression(
 							context,
-							this.EmitGetSerializerExpression( context, arrayType ),
+							this.EmitGetSerializerExpression( context, arrayType, null ),
 							typeof( MessagePackSerializer<> ).MakeGenericType( arrayType ).GetMethod( "PackTo" ),
 							context.Packer,
 							this.EmitInvokeEnumerableToArrayExpression( context, context.PackToTarget, traits.ElementType )
@@ -76,7 +76,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 									this.EmitSequentialStatements(
 										context,
 										typeof( void ),
-										this.EmitPackItemStatements( context, context.Packer, traits.ElementType, NilImplication.Null, null, item )
+										this.EmitPackItemStatements( context, context.Packer, traits.ElementType, NilImplication.Null, null, item, null )
 									)
 							)
 						);
@@ -84,7 +84,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndPackToMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.PackToCore, construct );
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void BuildCollectionUnpackFrom( TContext context, CollectionTraits traits )
 		{
-			this.BeginUnpackFromMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
 
 			TConstruct construct = null;
 			try
@@ -177,7 +177,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndUnpackFromMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.UnpackFromCore, construct );
 			}
 		}
 
@@ -191,7 +191,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 			 */
 
-			this.BeginUnpackToMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.UnpackToCore );
 			TConstruct construct = null;
 			try
 			{
@@ -199,7 +199,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndUnpackToMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.UnpackToCore, construct );
 			}
 		}
 
@@ -267,6 +267,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					unpacker,
 					forLoopContext.Counter,
 					this.EmitInvariantStringFormat( context, "item{0}", forLoopContext.Counter ),
+					null,
 					null,
 					null,
 					unpackedItem =>

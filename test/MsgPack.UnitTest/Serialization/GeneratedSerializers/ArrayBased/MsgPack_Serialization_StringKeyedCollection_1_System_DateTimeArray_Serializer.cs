@@ -18,9 +18,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         private MsgPack.Serialization.MessagePackSerializer<System.DateTime[]> _serializer0;
         
         public MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
-            MsgPack.Serialization.SerializationContext safeContext = MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<System.DateTime[]>();
+                base(context) {
+            this._serializer0 = this.OwnerContext.GetSerializer<System.DateTime[]>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.StringKeyedCollection<System.DateTime[]> objectTree) {

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,16 +23,15 @@ using System.Collections.Generic;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-// ReSharper disable InconsistentNaming
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Collections_Generic_Queue_1MessagePackSerializer<TItem> : MessagePackSerializer<Queue<TItem>>
-// ReSharper restore InconsistentNaming
 	{
 		private readonly MessagePackSerializer<TItem> _itemSerializer;
 
-		public System_Collections_Generic_Queue_1MessagePackSerializer( SerializationContext context )
-			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
+		public System_Collections_Generic_Queue_1MessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext )
 		{
-			this._itemSerializer = ( context ?? SerializationContext.Default ).GetSerializer<TItem>();
+			this._itemSerializer = ownerContext.GetSerializer<TItem>();
 		}
 
 		protected internal override void PackToCore( Packer packer, Queue<TItem> objectTree )

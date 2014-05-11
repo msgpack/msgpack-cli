@@ -178,89 +178,88 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.TimeSpan>> _serializer80;
         
         public MsgPack_Serialization_ComplexTypeGeneratedSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(MsgPack_Serialization_ComplexTypeGeneratedSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
-            MsgPack.Serialization.SerializationContext safeContext = MsgPack_Serialization_ComplexTypeGeneratedSerializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<string>();
-            this._serializer1 = safeContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>>();
-            this._serializer2 = safeContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>();
-            this._serializer3 = safeContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<object>>();
-            this._serializer4 = safeContext.GetSerializer<System.Collections.ArrayList>();
-            this._serializer5 = safeContext.GetSerializer<System.ArraySegment<byte>>();
-            this._serializer6 = safeContext.GetSerializer<System.ArraySegment<decimal>>();
-            this._serializer7 = safeContext.GetSerializer<System.ArraySegment<int>>();
-            this._serializer8 = safeContext.GetSerializer<System.Numerics.BigInteger>();
-            this._serializer9 = safeContext.GetSerializer<byte[]>();
-            this._serializer10 = safeContext.GetSerializer<byte>();
-            this._serializer11 = safeContext.GetSerializer<char[]>();
-            this._serializer12 = safeContext.GetSerializer<char>();
-            this._serializer13 = safeContext.GetSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>>();
-            this._serializer14 = safeContext.GetSerializer<System.Collections.ObjectModel.Collection<System.DateTime>>();
-            this._serializer15 = safeContext.GetSerializer<System.Collections.ObjectModel.Collection<object>>();
-            this._serializer16 = safeContext.GetSerializer<System.Numerics.Complex>();
-            this._serializer17 = safeContext.GetSerializer<System.DateTime>();
-            this._serializer18 = safeContext.GetSerializer<System.DateTimeOffset>();
-            this._serializer19 = safeContext.GetSerializer<decimal>();
-            this._serializer20 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>();
-            this._serializer21 = safeContext.GetSerializer<System.Collections.DictionaryEntry>();
-            this._serializer22 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<object, object>>();
-            this._serializer23 = safeContext.GetSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>>();
-            this._serializer24 = safeContext.GetSerializer<bool>();
-            this._serializer25 = safeContext.GetSerializer<System.Runtime.InteropServices.ComTypes.FILETIME>();
-            this._serializer26 = safeContext.GetSerializer<System.Guid>();
-            this._serializer27 = safeContext.GetSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>>();
-            this._serializer28 = safeContext.GetSerializer<System.Collections.Generic.HashSet<System.DateTime>>();
-            this._serializer29 = safeContext.GetSerializer<System.Collections.Generic.HashSet<object>>();
-            this._serializer30 = safeContext.GetSerializer<System.Collections.Hashtable>();
-            this._serializer31 = safeContext.GetSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>>();
-            this._serializer32 = safeContext.GetSerializer<System.Collections.Generic.ICollection<System.DateTime>>();
-            this._serializer33 = safeContext.GetSerializer<System.Collections.Generic.ICollection<object>>();
-            this._serializer34 = safeContext.GetSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>();
-            this._serializer35 = safeContext.GetSerializer<System.Collections.Generic.IDictionary<object, object>>();
-            this._serializer36 = safeContext.GetSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>>();
-            this._serializer37 = safeContext.GetSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>>();
-            this._serializer38 = safeContext.GetSerializer<System.Collections.Generic.IList<System.DateTime>>();
-            this._serializer39 = safeContext.GetSerializer<System.Collections.Generic.IList<object>>();
-            this._serializer40 = safeContext.GetSerializer<MsgPack.Image>();
-            this._serializer41 = safeContext.GetSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>>();
-            this._serializer42 = safeContext.GetSerializer<System.Collections.Generic.ISet<System.DateTime>>();
-            this._serializer43 = safeContext.GetSerializer<System.Collections.Generic.ISet<object>>();
-            this._serializer44 = safeContext.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>();
-            this._serializer45 = safeContext.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>();
-            this._serializer46 = safeContext.GetSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>>();
-            this._serializer47 = safeContext.GetSerializer<System.Collections.Generic.List<System.DateTime>>();
-            this._serializer48 = safeContext.GetSerializer<System.Collections.Generic.List<object>>();
-            this._serializer49 = safeContext.GetSerializer<int>();
-            this._serializer50 = safeContext.GetSerializer<long>();
-            this._serializer51 = safeContext.GetSerializer<ushort>();
-            this._serializer52 = safeContext.GetSerializer<MsgPack.MessagePackObject>();
-            this._serializer53 = safeContext.GetSerializer<MsgPack.MessagePackObject[]>();
-            this._serializer54 = safeContext.GetSerializer<object>();
-            this._serializer55 = safeContext.GetSerializer<object[]>();
-            this._serializer56 = safeContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>>();
-            this._serializer57 = safeContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>>();
-            this._serializer58 = safeContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<object>>();
-            this._serializer59 = safeContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<System.DateTime>>();
-            this._serializer60 = safeContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>>();
-            this._serializer61 = safeContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<object>>();
-            this._serializer62 = safeContext.GetSerializer<System.TimeSpan>();
-            this._serializer63 = safeContext.GetSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>>();
-            this._serializer64 = safeContext.GetSerializer<System.Uri>();
-            this._serializer65 = safeContext.GetSerializer<System.Version>();
-            this._serializer66 = safeContext.GetSerializer<System.Nullable<System.ArraySegment<byte>>>();
-            this._serializer67 = safeContext.GetSerializer<System.Nullable<System.ArraySegment<decimal>>>();
-            this._serializer68 = safeContext.GetSerializer<System.Nullable<System.ArraySegment<int>>>();
-            this._serializer69 = safeContext.GetSerializer<System.Nullable<System.Numerics.BigInteger>>();
-            this._serializer70 = safeContext.GetSerializer<System.Nullable<char>>();
-            this._serializer71 = safeContext.GetSerializer<System.Nullable<System.Numerics.Complex>>();
-            this._serializer72 = safeContext.GetSerializer<System.Nullable<System.DateTime>>();
-            this._serializer73 = safeContext.GetSerializer<System.Nullable<System.DateTimeOffset>>();
-            this._serializer74 = safeContext.GetSerializer<System.Nullable<decimal>>();
-            this._serializer75 = safeContext.GetSerializer<System.Nullable<System.Collections.DictionaryEntry>>();
-            this._serializer76 = safeContext.GetSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>>();
-            this._serializer77 = safeContext.GetSerializer<System.Nullable<System.Guid>>();
-            this._serializer78 = safeContext.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>>();
-            this._serializer79 = safeContext.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>>();
-            this._serializer80 = safeContext.GetSerializer<System.Nullable<System.TimeSpan>>();
+                base(context) {
+            this._serializer0 = this.OwnerContext.GetSerializer<string>();
+            this._serializer1 = this.OwnerContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>>();
+            this._serializer2 = this.OwnerContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>();
+            this._serializer3 = this.OwnerContext.GetSerializer<MsgPack.Serialization.AddOnlyCollection<object>>();
+            this._serializer4 = this.OwnerContext.GetSerializer<System.Collections.ArrayList>();
+            this._serializer5 = this.OwnerContext.GetSerializer<System.ArraySegment<byte>>();
+            this._serializer6 = this.OwnerContext.GetSerializer<System.ArraySegment<decimal>>();
+            this._serializer7 = this.OwnerContext.GetSerializer<System.ArraySegment<int>>();
+            this._serializer8 = this.OwnerContext.GetSerializer<System.Numerics.BigInteger>();
+            this._serializer9 = this.OwnerContext.GetSerializer<byte[]>();
+            this._serializer10 = this.OwnerContext.GetSerializer<byte>();
+            this._serializer11 = this.OwnerContext.GetSerializer<char[]>();
+            this._serializer12 = this.OwnerContext.GetSerializer<char>();
+            this._serializer13 = this.OwnerContext.GetSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>>();
+            this._serializer14 = this.OwnerContext.GetSerializer<System.Collections.ObjectModel.Collection<System.DateTime>>();
+            this._serializer15 = this.OwnerContext.GetSerializer<System.Collections.ObjectModel.Collection<object>>();
+            this._serializer16 = this.OwnerContext.GetSerializer<System.Numerics.Complex>();
+            this._serializer17 = this.OwnerContext.GetSerializer<System.DateTime>();
+            this._serializer18 = this.OwnerContext.GetSerializer<System.DateTimeOffset>();
+            this._serializer19 = this.OwnerContext.GetSerializer<decimal>();
+            this._serializer20 = this.OwnerContext.GetSerializer<System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>();
+            this._serializer21 = this.OwnerContext.GetSerializer<System.Collections.DictionaryEntry>();
+            this._serializer22 = this.OwnerContext.GetSerializer<System.Collections.Generic.Dictionary<object, object>>();
+            this._serializer23 = this.OwnerContext.GetSerializer<System.Collections.Generic.Dictionary<string, System.DateTime>>();
+            this._serializer24 = this.OwnerContext.GetSerializer<bool>();
+            this._serializer25 = this.OwnerContext.GetSerializer<System.Runtime.InteropServices.ComTypes.FILETIME>();
+            this._serializer26 = this.OwnerContext.GetSerializer<System.Guid>();
+            this._serializer27 = this.OwnerContext.GetSerializer<System.Collections.Generic.HashSet<MsgPack.MessagePackObject>>();
+            this._serializer28 = this.OwnerContext.GetSerializer<System.Collections.Generic.HashSet<System.DateTime>>();
+            this._serializer29 = this.OwnerContext.GetSerializer<System.Collections.Generic.HashSet<object>>();
+            this._serializer30 = this.OwnerContext.GetSerializer<System.Collections.Hashtable>();
+            this._serializer31 = this.OwnerContext.GetSerializer<System.Collections.Generic.ICollection<MsgPack.MessagePackObject>>();
+            this._serializer32 = this.OwnerContext.GetSerializer<System.Collections.Generic.ICollection<System.DateTime>>();
+            this._serializer33 = this.OwnerContext.GetSerializer<System.Collections.Generic.ICollection<object>>();
+            this._serializer34 = this.OwnerContext.GetSerializer<System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>>();
+            this._serializer35 = this.OwnerContext.GetSerializer<System.Collections.Generic.IDictionary<object, object>>();
+            this._serializer36 = this.OwnerContext.GetSerializer<System.Collections.Generic.IDictionary<string, System.DateTime>>();
+            this._serializer37 = this.OwnerContext.GetSerializer<System.Collections.Generic.IList<MsgPack.MessagePackObject>>();
+            this._serializer38 = this.OwnerContext.GetSerializer<System.Collections.Generic.IList<System.DateTime>>();
+            this._serializer39 = this.OwnerContext.GetSerializer<System.Collections.Generic.IList<object>>();
+            this._serializer40 = this.OwnerContext.GetSerializer<MsgPack.Image>();
+            this._serializer41 = this.OwnerContext.GetSerializer<System.Collections.Generic.ISet<MsgPack.MessagePackObject>>();
+            this._serializer42 = this.OwnerContext.GetSerializer<System.Collections.Generic.ISet<System.DateTime>>();
+            this._serializer43 = this.OwnerContext.GetSerializer<System.Collections.Generic.ISet<object>>();
+            this._serializer44 = this.OwnerContext.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>();
+            this._serializer45 = this.OwnerContext.GetSerializer<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>();
+            this._serializer46 = this.OwnerContext.GetSerializer<System.Collections.Generic.List<MsgPack.MessagePackObject>>();
+            this._serializer47 = this.OwnerContext.GetSerializer<System.Collections.Generic.List<System.DateTime>>();
+            this._serializer48 = this.OwnerContext.GetSerializer<System.Collections.Generic.List<object>>();
+            this._serializer49 = this.OwnerContext.GetSerializer<int>();
+            this._serializer50 = this.OwnerContext.GetSerializer<long>();
+            this._serializer51 = this.OwnerContext.GetSerializer<ushort>();
+            this._serializer52 = this.OwnerContext.GetSerializer<MsgPack.MessagePackObject>();
+            this._serializer53 = this.OwnerContext.GetSerializer<MsgPack.MessagePackObject[]>();
+            this._serializer54 = this.OwnerContext.GetSerializer<object>();
+            this._serializer55 = this.OwnerContext.GetSerializer<object[]>();
+            this._serializer56 = this.OwnerContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>>();
+            this._serializer57 = this.OwnerContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<System.DateTime>>();
+            this._serializer58 = this.OwnerContext.GetSerializer<System.Collections.ObjectModel.ObservableCollection<object>>();
+            this._serializer59 = this.OwnerContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<System.DateTime>>();
+            this._serializer60 = this.OwnerContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>>();
+            this._serializer61 = this.OwnerContext.GetSerializer<MsgPack.Serialization.StringKeyedCollection<object>>();
+            this._serializer62 = this.OwnerContext.GetSerializer<System.TimeSpan>();
+            this._serializer63 = this.OwnerContext.GetSerializer<System.Tuple<int, string, MsgPack.MessagePackObject, object>>();
+            this._serializer64 = this.OwnerContext.GetSerializer<System.Uri>();
+            this._serializer65 = this.OwnerContext.GetSerializer<System.Version>();
+            this._serializer66 = this.OwnerContext.GetSerializer<System.Nullable<System.ArraySegment<byte>>>();
+            this._serializer67 = this.OwnerContext.GetSerializer<System.Nullable<System.ArraySegment<decimal>>>();
+            this._serializer68 = this.OwnerContext.GetSerializer<System.Nullable<System.ArraySegment<int>>>();
+            this._serializer69 = this.OwnerContext.GetSerializer<System.Nullable<System.Numerics.BigInteger>>();
+            this._serializer70 = this.OwnerContext.GetSerializer<System.Nullable<char>>();
+            this._serializer71 = this.OwnerContext.GetSerializer<System.Nullable<System.Numerics.Complex>>();
+            this._serializer72 = this.OwnerContext.GetSerializer<System.Nullable<System.DateTime>>();
+            this._serializer73 = this.OwnerContext.GetSerializer<System.Nullable<System.DateTimeOffset>>();
+            this._serializer74 = this.OwnerContext.GetSerializer<System.Nullable<decimal>>();
+            this._serializer75 = this.OwnerContext.GetSerializer<System.Nullable<System.Collections.DictionaryEntry>>();
+            this._serializer76 = this.OwnerContext.GetSerializer<System.Nullable<System.Runtime.InteropServices.ComTypes.FILETIME>>();
+            this._serializer77 = this.OwnerContext.GetSerializer<System.Nullable<System.Guid>>();
+            this._serializer78 = this.OwnerContext.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>>();
+            this._serializer79 = this.OwnerContext.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>>();
+            this._serializer80 = this.OwnerContext.GetSerializer<System.Nullable<System.TimeSpan>>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
@@ -1503,7 +1502,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                         ; enumerator16.MoveNext(); 
                         ) {
                             current16 = enumerator16.Current;
-                            result.IDictionary_MessagePackObject_MessagePackObjectField.Add(current16);
+                            result.IDictionary_MessagePackObject_MessagePackObjectField.Add(current16.Key, current16.Value);
                         }
                     }
                     finally {
@@ -1543,7 +1542,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                         ; enumerator17.MoveNext(); 
                         ) {
                             current17 = enumerator17.Current;
-                            result.IDictionaryObjectObjectField.Add(current17);
+                            result.IDictionaryObjectObjectField.Add(current17.Key, current17.Value);
                         }
                     }
                     finally {
@@ -1583,7 +1582,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                         ; enumerator18.MoveNext(); 
                         ) {
                             current18 = enumerator18.Current;
-                            result.IDictionaryStringDateTimeField.Add(current18);
+                            result.IDictionaryStringDateTimeField.Add(current18.Key, current18.Value);
                         }
                     }
                     finally {
@@ -3675,7 +3674,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                                                                                                                                                                             ; enumerator53.MoveNext(); 
                                                                                                                                                                                             ) {
                                                                                                                                                                                                 current53 = enumerator53.Current;
-                                                                                                                                                                                                result.IDictionaryStringDateTimeField.Add(current53);
+                                                                                                                                                                                                result.IDictionaryStringDateTimeField.Add(current53.Key, current53.Value);
                                                                                                                                                                                             }
                                                                                                                                                                                         }
                                                                                                                                                                                         finally {
@@ -3715,7 +3714,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                                                                                                                                                                                 ; enumerator52.MoveNext(); 
                                                                                                                                                                                                 ) {
                                                                                                                                                                                                     current52 = enumerator52.Current;
-                                                                                                                                                                                                    result.IDictionaryObjectObjectField.Add(current52);
+                                                                                                                                                                                                    result.IDictionaryObjectObjectField.Add(current52.Key, current52.Value);
                                                                                                                                                                                                 }
                                                                                                                                                                                             }
                                                                                                                                                                                             finally {
@@ -3755,7 +3754,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                                                                                                                                                                                     ; enumerator51.MoveNext(); 
                                                                                                                                                                                                     ) {
                                                                                                                                                                                                         current51 = enumerator51.Current;
-                                                                                                                                                                                                        result.IDictionary_MessagePackObject_MessagePackObjectField.Add(current51);
+                                                                                                                                                                                                        result.IDictionary_MessagePackObject_MessagePackObjectField.Add(current51.Key, current51.Value);
                                                                                                                                                                                                     }
                                                                                                                                                                                                 }
                                                                                                                                                                                                 finally {

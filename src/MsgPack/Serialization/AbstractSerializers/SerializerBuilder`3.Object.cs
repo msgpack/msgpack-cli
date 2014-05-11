@@ -196,7 +196,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void BuildIPackablePackTo( TContext context )
 		{
-			this.BeginPackToMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.PackToCore );
 			TConstruct construct = null;
 			try
 			{
@@ -211,13 +211,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndPackToMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.PackToCore, construct );
 			}
 		}
 
 		private void BuildObjectPackTo( TContext context, SerializingMember[] entries )
 		{
-			this.BeginPackToMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.PackToCore );
 			TConstruct construct = null;
 			try
 			{
@@ -232,7 +232,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndPackToMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.PackToCore, construct );
 			}
 		}
 
@@ -253,14 +253,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				else
 				{
-					foreach ( var packItem in 
+					foreach ( var packItem in
 						this.EmitPackItemStatements(
 							context,
 							context.Packer,
 							entries[ i ].Member.GetMemberValueType(),
 							entries[ i ].Contract.NilImplication,
 							entries[ i ].Member.ToString(),
-							this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member )
+							this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member ),
+							entries[ i ]
 						)
 					)
 					{
@@ -290,7 +291,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						typeof( string ),
 						NilImplication.Null,
 						"MemberName",
-						this.MakeStringLiteral( context, entries[ i ].Contract.Name )
+						this.MakeStringLiteral( context, entries[ i ].Contract.Name ),
+						entries[ i ]
 						)
 					)
 				{
@@ -304,7 +306,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						entries[ i ].Member.GetMemberValueType(),
 						entries[ i ].Contract.NilImplication,
 						entries[ i ].Member.ToString(),
-						this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member )
+						this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member ),
+						entries[ i ]
 					)
 				)
 				{
@@ -316,7 +319,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private void BuildIUnpackableUnpackFrom( TContext context )
 		{
 
-			this.BeginUnpackFromMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
 			TConstruct construct = null;
 			try
 			{
@@ -329,7 +332,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndUnpackFromMethod( context, construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.UnpackFromCore, construct );
 			}
 		}
 
@@ -386,7 +389,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 *	#endif
 			 */
 
-			this.BeginUnpackFromMethod( context );
+			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
 			TConstruct construct = null;
 			try
 			{
@@ -399,7 +402,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EndUnpackFromMethod( context, construct );
+				this.EmitMethodEpilogue( context,  SerializerMethod.UnpackFromCore ,construct );
 			}
 		}
 
@@ -511,6 +514,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.MakeStringLiteral( context, entries[ count ].Member.ToString() ),
 							itemsCount,
 							unpacked,
+							entries[ i ],
 							unpackedItem =>
 								this.EmitSetMemberValueStatement( context, result, entries[ count ].Member, unpackedItem )
 						);
@@ -569,6 +573,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								this.MakeStringLiteral( context, "MemberName" ),
 								null,
 								null,
+								null,
 								unpackedKey =>
 									this.EmitStoreVariableStatement( context, key, unpackedKey )
 							);
@@ -588,6 +593,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 											this.MakeStringLiteral( context, entry.Member.ToString() ),
 											null,
 											null,
+											entry,
 											unpackedValue =>
 												this.EmitSetMemberValueStatement( context, result, entry.Member, unpackedValue )
 										)

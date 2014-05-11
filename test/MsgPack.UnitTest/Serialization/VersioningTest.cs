@@ -22,9 +22,6 @@ using System;
 using System.IO;
 #if !MSTEST
 using NUnit.Framework;
-#if !XAMIOS && !UNIOS
-using MsgPack.Serialization.EmittingSerializers;
-#endif // !XAMIOS && !UNIOS
 #else
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
@@ -41,9 +38,9 @@ namespace MsgPack.Serialization
 	{
 		private static void TestExtraFieldCore<T>( SerializationMethod method, EmitterFlavor flavor )
 		{
-			var context = new SerializationContext() { SerializationMethod = method, EmitterFlavor = flavor };
+			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.Create<T>( context );
+			var serializer = MessagePackSerializer.CreateInternal<T>( context );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -98,9 +95,9 @@ namespace MsgPack.Serialization
 
 		private static void TestExtraFieldRoundTripCore<T>( SerializationMethod method, EmitterFlavor flavor )
 		{
-			var context = new SerializationContext() { SerializationMethod = method, EmitterFlavor = flavor };
+			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.Create<T>( context );
+			var serializer = MessagePackSerializer.CreateInternal<T>( context );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -137,9 +134,9 @@ namespace MsgPack.Serialization
 
 		private static void TestMissingFieldCore( SerializationMethod method, EmitterFlavor flavor )
 		{
-			var context = new SerializationContext() { SerializationMethod = method, EmitterFlavor = flavor };
+			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.Create<VersioningTestTarget>( context );
+			var serializer = MessagePackSerializer.CreateInternal<VersioningTestTarget>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				if ( method == SerializationMethod.Array )
@@ -166,9 +163,9 @@ namespace MsgPack.Serialization
 
 		private static void TestFieldInvalidTypeCore( SerializationMethod method, EmitterFlavor flavor )
 		{
-			var context = new SerializationContext() { SerializationMethod = method, EmitterFlavor = flavor };
+			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.Create<VersioningTestTarget>( context );
+			var serializer = MessagePackSerializer.CreateInternal<VersioningTestTarget>( context );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -200,9 +197,9 @@ namespace MsgPack.Serialization
 
 		private static void TestFieldSwappedCore( EmitterFlavor flavor )
 		{
-			var context = new SerializationContext() { SerializationMethod = SerializationMethod.Map, EmitterFlavor = flavor };
+			var context = new SerializationContext { SerializationMethod = SerializationMethod.Map, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.Create<VersioningTestTarget>( context );
+			var serializer = MessagePackSerializer.CreateInternal<VersioningTestTarget>( context );
 
 			using ( var stream = new MemoryStream() )
 			{

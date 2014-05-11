@@ -22,11 +22,10 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer2;
         
         public System_Collections_Generic_Dictionary_2_System_String_System_DateTime_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(System_Collections_Generic_Dictionary_2_System_String_System_DateTime_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default).CompatibilityOptions.PackerCompatibilityOptions) {
-            MsgPack.Serialization.SerializationContext safeContext = System_Collections_Generic_Dictionary_2_System_String_System_DateTime_Serializer.@__Conditional((context != null), context, MsgPack.Serialization.SerializationContext.Default);
-            this._serializer0 = safeContext.GetSerializer<string>();
-            this._serializer1 = safeContext.GetSerializer<System.DateTime>();
-            this._serializer2 = safeContext.GetSerializer<System.Nullable<System.DateTime>>();
+                base(context) {
+            this._serializer0 = this.OwnerContext.GetSerializer<string>();
+            this._serializer1 = this.OwnerContext.GetSerializer<System.DateTime>();
+            this._serializer2 = this.OwnerContext.GetSerializer<System.Nullable<System.DateTime>>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.Generic.Dictionary<string, System.DateTime> objectTree) {

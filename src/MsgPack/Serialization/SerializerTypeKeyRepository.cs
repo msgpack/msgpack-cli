@@ -44,13 +44,7 @@ namespace MsgPack.Serialization
 		{
 		}
 
-		public TEntry Get<T, TEntry>( SerializationContext context )
-			where TEntry : class
-		{
-			return Get( context, typeof( T ) ) as TEntry;
-		}
-
-		public Object Get( SerializationContext context, Type keyType )
+		public object Get( SerializationContext context, Type keyType )
 		{
 			object matched;
 			object genericDefinitionMatched;

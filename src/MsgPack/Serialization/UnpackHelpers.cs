@@ -35,7 +35,7 @@ namespace MsgPack.Serialization
 	public static partial class UnpackHelpers
 	{
 		private static readonly MessagePackSerializer<MessagePackObject> _messagePackObjectSerializer =
-			new MsgPack_MessagePackObjectMessagePackSerializer( PackerCompatibilityOptions.None );
+			new MsgPack_MessagePackObjectMessagePackSerializer( SerializationContext.Default );
 
 		/// <summary>
 		///		Unpacks the array to the specified array.
@@ -48,6 +48,7 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[Obsolete]
 		public static void UnpackArrayTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, T[] array )
 		{
 #if DEBUG
@@ -104,6 +105,7 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[Obsolete]
 		public static void UnpackCollectionTo( Unpacker unpacker, IEnumerable collection, Action<object> addition )
 		{
 #if DEBUG
@@ -162,6 +164,7 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[Obsolete]
 		public static void UnpackCollectionTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Action<T> addition )
 		{
 #if DEBUG
@@ -219,6 +222,7 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[Obsolete]
 		public static void UnpackCollectionTo<TDiscarded>( Unpacker unpacker, IEnumerable collection, Func<object, TDiscarded> addition )
 		{
 #if DEBUG
@@ -278,6 +282,7 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[Obsolete]
 		public static void UnpackCollectionTo<T, TDiscarded>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Func<T, TDiscarded> addition )
 		{
 #if DEBUG
@@ -337,6 +342,7 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[Obsolete]
 		public static void UnpackMapTo<TKey, TValue>( Unpacker unpacker, MessagePackSerializer<TKey> keySerializer, MessagePackSerializer<TValue> valueSerializer, IDictionary<TKey, TValue> dictionary )
 		{
 #if DEBUG
@@ -411,6 +417,7 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[Obsolete]
 		public static void UnpackMapTo( Unpacker unpacker, IDictionary dictionary )
 		{
 #if DEBUG
@@ -523,6 +530,7 @@ namespace MsgPack.Serialization
 		/// <param name="targetType">The type of the target.</param>
 		/// <returns>The unboxed value.</returns>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[Obsolete]
 		public static T ConvertWithEnsuringNotNull<T>( object boxed, string name, Type targetType )
 		{
 			if ( typeof( T ).GetIsValueType() && boxed == null && Nullable.GetUnderlyingType( typeof( T ) ) == null )
@@ -541,6 +549,7 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be passed to the method.</param>
 		/// <returns>A deserialized value.</returns>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[Obsolete]
 		public static T InvokeUnpackFrom<T>( MessagePackSerializer<T> serializer, Unpacker unpacker )
 		{
 			return serializer.UnpackFromCore( unpacker );

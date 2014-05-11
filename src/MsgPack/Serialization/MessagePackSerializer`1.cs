@@ -42,8 +42,9 @@ namespace MsgPack.Serialization
 	/// </remarks>
 	/// <seealso cref="Unpacker"/>
 	/// <seealso cref="Unpacking"/>
-	public abstract class MessagePackSerializer<T> : IMessagePackSerializer, IMessagePackSingleObjectSerializer
+	public abstract class MessagePackSerializer<T> : IMessagePackSingleObjectSerializer
 	{
+		// ReSharper disable once StaticFieldInGenericType
 		private static readonly bool _isNullable = JudgeNullable();
 
 #if !XAMIOS && !UNIOS
@@ -55,17 +56,88 @@ namespace MsgPack.Serialization
 		private readonly PackerCompatibilityOptions _packerCompatibilityOptions;
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="PackerCompatibilityOptions.Classic"/>.
+		///		Gets the packer compatibility options for this instance.
 		/// </summary>
+		/// <value>
+		///		The packer compatibility options for this instance
+		/// </value>
+		protected internal PackerCompatibilityOptions PackerCompatibilityOptions
+		{
+			get { return this._packerCompatibilityOptions; }
+		}
+
+		private readonly WeakReference _ownerContext;
+
+		/// <summary>
+		///		Gets a <see cref="SerializationContext"/> which owns this serializer.
+		/// </summary>
+		/// <value>
+		///		A <see cref="SerializationContext"/> which owns this serializer.
+		///		Or <see cref="SerializationContext.Default"/> when owner context is not known or is garbage-collected.
+		/// </value>
+		protected internal SerializationContext OwnerContext
+		{
+			get
+			{
+				try
+				{
+					return this._ownerContext.Target as SerializationContext ?? SerializationContext.Default;
+				}
+				catch ( InvalidOperationException )
+				{
+					// It should not be occurred as long as serializer is holded by out of context.
+					// So continuous exception is OK.
+					return SerializationContext.Default;
+				}
+			}
+		}
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="T:PackerCompatibilityOptions.Classic"/>.
+		/// </summary>
+		/// <remarks>
+		///		This method supports backword compatibility with 0.3.
+		/// </remarks>
+		[Obsolete( "Use MessagePackSerializer (SerlaizationContext) instead." )]
 		protected MessagePackSerializer() : this( PackerCompatibilityOptions.Classic ) { }
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with default context..
+		/// </summary>
+		/// <param name="packerCompatibilityOptions">The <see cref="PackerCompatibilityOptions"/> for new packer creation.</param>
+		/// <remarks>
+		///		This method supports backword compatibility with 0.4.
+		/// </remarks>
+		[Obsolete( "Use MessagePackSerializer (SerlaizationContext, PackerCompatibilityOptions) instead." )]
+		protected MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+			: this( null, packerCompatibilityOptions ) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class.
 		/// </summary>
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
+		protected MessagePackSerializer( SerializationContext ownerContext )
+			: this( ownerContext, ( ownerContext ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions ) { }
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with explicitly specified compatibility option.
+		/// </summary>
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
 		/// <param name="packerCompatibilityOptions">The <see cref="PackerCompatibilityOptions"/> for new packer creation.</param>
-		protected MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
+		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
+		/// <remarks>
+		///		This method also supports backword compatibility with 0.4.
+		/// </remarks>
+		protected MessagePackSerializer( SerializationContext ownerContext, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
+			if ( ownerContext == null )
+			{
+				throw new ArgumentNullException( "ownerContext" );
+			}
+			
 			this._packerCompatibilityOptions = packerCompatibilityOptions;
+			this._ownerContext = new WeakReference( ownerContext );
 		}
 
 		private static bool JudgeNullable()
@@ -92,7 +164,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Serialize specified object to the <see cref="Stream"/>.
+		///		Serializes specified object to the <see cref="Stream"/>.
 		/// </summary>
 		/// <param name="stream">Destination <see cref="Stream"/>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
@@ -104,6 +176,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public void Pack( Stream stream, T objectTree )
 		{
+			// Packer does not have finalizer, so just avoiding packer disposing prevents stream closing.
 			this.PackTo( Packer.Create( stream, this._packerCompatibilityOptions ), objectTree );
 		}
 
@@ -120,13 +193,18 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public T Unpack( Stream stream )
 		{
+			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
 			var unpacker = Unpacker.Create( stream );
-			unpacker.Read();
+			if ( !unpacker.Read() )
+			{
+				throw SerializationExceptions.NewUnexpectedEndOfStream();
+			}
+
 			return this.UnpackFrom( unpacker );
 		}
 
 		/// <summary>
-		///		Serialize specified object with specified <see cref="Packer"/>.
+		///		Serializes specified object with specified <see cref="Packer"/>.
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
@@ -144,6 +222,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "packer" );
 			}
 
+			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( objectTree == null )
 			{
 				packer.PackNull();
@@ -154,7 +233,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Serialize specified object with specified <see cref="Packer"/>.
+		///		Serializes specified object with specified <see cref="Packer"/>.
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
@@ -164,7 +243,7 @@ namespace MsgPack.Serialization
 		protected internal abstract void PackToCore( Packer packer, T objectTree );
 
 		/// <summary>
-		///		Deserialize object with specified <see cref="Unpacker"/>.
+		///		Deserializes object with specified <see cref="Unpacker"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
 		/// <returns>Deserialized object.</returns>
@@ -198,6 +277,7 @@ namespace MsgPack.Serialization
 					// null
 					return default( T );
 				}
+				// ReSharper disable once RedundantIfElseBlock
 				else
 				{
 					throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
@@ -208,7 +288,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Deserialize object with specified <see cref="Unpacker"/>.
+		///		Deserializes object with specified <see cref="Unpacker"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
 		/// <returns>Deserialized object.</returns>
@@ -227,7 +307,7 @@ namespace MsgPack.Serialization
 		protected internal abstract T UnpackFromCore( Unpacker unpacker );
 
 		/// <summary>
-		///		Deserialize collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
+		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree.</param>
 		/// <param name="collection">Collection that the items to be stored.</param>
@@ -255,6 +335,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "unpacker" );
 			}
 
+			// ReSharper disable once CompareNonConstrainedGenericWithNull
 			if ( collection == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -269,7 +350,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Deserialize collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
+		///		Deserializes collection items with specified <see cref="Unpacker"/> and stores them to <paramref name="collection"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
 		/// <param name="collection">Collection that the items to be stored. This value will not be <c>null</c>.</param>
@@ -285,7 +366,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Serialize specified object to the array of <see cref="Byte"/>.
+		///		Serializes specified object to the array of <see cref="Byte"/>.
 		/// </summary>
 		/// <param name="objectTree">Object to be serialized.</param>
 		/// <returns>An array of <see cref="Byte"/> which stores serialized value.</returns>
@@ -302,7 +383,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Deserialize a single object from the array of <see cref="Byte"/> which contains a serialized object.
+		///		Deserializes a single object from the array of <see cref="Byte"/> which contains a serialized object.
 		/// </summary>
 		/// <param name="buffer">An array of <see cref="Byte"/> serialized value to be stored.</param>
 		/// <returns>A bytes of serialized binary.</returns>
@@ -361,6 +442,7 @@ namespace MsgPack.Serialization
 				packer.PackNull();
 				return;
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				if ( !( objectTree is T ) )

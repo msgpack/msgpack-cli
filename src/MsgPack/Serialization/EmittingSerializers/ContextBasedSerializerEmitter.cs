@@ -22,6 +22,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Reflection.Emit;
+
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -36,7 +37,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly DynamicMethod _unpackFromMethod;
 		private DynamicMethod _unpackToMethod;
 
-
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ContextBasedSerializerEmitter"/> class.
 		/// </summary>
@@ -46,9 +46,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( targetType != null );
 
 			this._targetType = targetType;
-
-			this._packToMethod = new DynamicMethod( "PackToCore", null, new[] { typeof( SerializationContext ), typeof( Packer ), targetType } );
-			this._unpackFromMethod = new DynamicMethod( "UnpackFromCore", targetType, new[] { typeof( SerializationContext ), typeof( Unpacker ) } );
+			this._packToMethod = new DynamicMethod(
+				"PackToCore",
+				null,
+				new[] { typeof( SerializationContext ), typeof( Packer ), this._targetType } );
+			this._unpackFromMethod = new DynamicMethod(
+				"UnpackFromCore",
+				this._targetType,
+				new[] { typeof( SerializationContext ), typeof( Unpacker ) } );
+			this._unpackToMethod = null;
 		}
 
 		/// <summary>
@@ -95,7 +101,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			if ( this._unpackToMethod == null )
 			{
-				this._unpackToMethod = new DynamicMethod( "UnpackToCore", null, new[] { typeof( SerializationContext ), typeof( Unpacker ), this._targetType } );
+				this._unpackToMethod = new DynamicMethod(
+					"UnpackToCore",
+					null,
+					new[] { typeof( SerializationContext ), typeof( Unpacker ), this._targetType } );
 			}
 
 			if ( SerializerDebugging.TraceEnabled )
@@ -118,17 +127,17 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			var packTo =
 				this._packToMethod.CreateDelegate( typeof( Action<SerializationContext, Packer, T> ) ) as
-				Action<SerializationContext, Packer, T>;
+					Action<SerializationContext, Packer, T>;
 			var unpackFrom =
 				this._unpackFromMethod.CreateDelegate( typeof( Func<SerializationContext, Unpacker, T> ) ) as
-				Func<SerializationContext, Unpacker, T>;
+					Func<SerializationContext, Unpacker, T>;
 			var unpackTo = default( Action<SerializationContext, Unpacker, T> );
 
 			if ( this._unpackToMethod != null )
 			{
 				unpackTo =
 					this._unpackToMethod.CreateDelegate( typeof( Action<SerializationContext, Unpacker, T> ) ) as
-					Action<SerializationContext, Unpacker, T>;
+						Action<SerializationContext, Unpacker, T>;
 			}
 
 			return context => new CallbackMessagePackSerializer<T>( context, packTo, unpackFrom, unpackTo );
@@ -137,21 +146,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <summary>
 		///		Regisgter using <see cref="MessagePackSerializer{T}"/> target type to the current emitting session.
 		/// </summary>
-		/// <param name="targetType">Type to be serialized/deserialized.</param>
+		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
+		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
 		/// <returns>
 		///   <see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
 		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
 		///		The 2nd argument should be argument index of the serializer holder.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType )
+		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod )
 		{
-			return
-				( il, contextIndex ) =>
-				{
-					il.EmitAnyLdarg( contextIndex );
-					il.EmitAnyCall( Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType ) );
-				};
+			// This return value should not be used.
+			return ( g, i ) => { throw new NotImplementedException(); };
 		}
 	}
 }

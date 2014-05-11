@@ -1,9 +1,8 @@
-﻿
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,60 +20,44 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Collections_Generic_KeyValuePair_2MessagePackSerializer<TKey, TValue> : MessagePackSerializer<KeyValuePair<TKey, TValue>>
 	{
 		private readonly MessagePackSerializer<TKey> _keySerializer;
 		private readonly MessagePackSerializer<TValue> _valueSerializer;
 
-		public System_Collections_Generic_KeyValuePair_2MessagePackSerializer( SerializationContext context )
-			: base( ( context ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions )
+		public System_Collections_Generic_KeyValuePair_2MessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext )
 		{
-			if ( context == null )
-			{
-				throw new ArgumentNullException( "context" );
-			}
-
-			this._keySerializer = context.GetSerializer<TKey>();
-			this._valueSerializer = context.GetSerializer<TValue>();
+			this._keySerializer = ownerContext.GetSerializer<TKey>();
+			this._valueSerializer = ownerContext.GetSerializer<TValue>();
 		}
 
-		private static Action<Packer, KeyValuePair<TKey, TValue>> CreatePackToCore()
-		{
-			throw new NotImplementedException();
-		}
-
-		private static Func<Unpacker, KeyValuePair<TKey, TValue>> CreateUnpackFromCore()
-		{
-			throw new NotImplementedException();
-		}
-
-		protected internal sealed override void PackToCore( Packer packer, KeyValuePair<TKey, TValue> objectTree )
+		protected internal override void PackToCore( Packer packer, KeyValuePair<TKey, TValue> objectTree )
 		{
 			packer.PackArrayHeader( 2 );
 			this._keySerializer.PackTo( packer, objectTree.Key );
 			this._valueSerializer.PackTo( packer, objectTree.Value );
 		}
 
-		protected internal sealed override KeyValuePair<TKey, TValue> UnpackFromCore( Unpacker unpacker )
+		protected internal override KeyValuePair<TKey, TValue> UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.Read() )
 			{
 				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
-			TKey key = unpacker.LastReadData.IsNil ? default( TKey ) : this._keySerializer.UnpackFrom( unpacker );
+			var key = unpacker.LastReadData.IsNil ? default( TKey ) : this._keySerializer.UnpackFrom( unpacker );
 
 			if ( !unpacker.Read() )
 			{
 				throw SerializationExceptions.NewUnexpectedEndOfStream();
 			}
 
-			TValue value = unpacker.LastReadData.IsNil ? default( TValue ) : this._valueSerializer.UnpackFrom( unpacker );
+			var value = unpacker.LastReadData.IsNil ? default( TValue ) : this._valueSerializer.UnpackFrom( unpacker );
 
 			return new KeyValuePair<TKey, TValue>( key, value );
 		}

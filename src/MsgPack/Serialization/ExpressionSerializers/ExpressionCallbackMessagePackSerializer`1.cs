@@ -28,7 +28,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 	/// <typeparam name="T">The type of the serialization target.</typeparam>
 	internal class ExpressionCallbackMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
-		private readonly SerializationContext _context;
 		private readonly Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> _packToCore;
 		private readonly Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> _unpackFromCore;
 		private readonly Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> _unpackToCore;
@@ -36,19 +35,18 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ExpressionCallbackMessagePackSerializer{T}"/> class.
 		/// </summary>
-		/// <param name="context">The serialization context.</param>
+		/// <param name="ownerContext">The serialization context.</param>
 		/// <param name="packToCore">The delegate to <c>PackToCore</c> method body. This value must not be <c>null</c>.</param>
 		/// <param name="unpackFromCore">The delegate to <c>UnpackFromCore</c> method body. This value must not be <c>null</c>.</param>
 		/// <param name="unpackToCore">The delegate to <c>UnpackToCore</c> method body. This value can be <c>null</c>.</param>
 		public ExpressionCallbackMessagePackSerializer(
-			SerializationContext context,
+			SerializationContext ownerContext,
 			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Packer, T> packToCore,
 			Func<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackFromCore,
 			Action<ExpressionCallbackMessagePackSerializer<T>, SerializationContext, Unpacker, T> unpackToCore
-			)
-			: base( context == null ? PackerCompatibilityOptions.Classic : context.CompatibilityOptions.PackerCompatibilityOptions )
+		)
+			: base( ownerContext )
 		{
-			this._context = context;
 			this._packToCore = packToCore;
 			this._unpackFromCore = unpackFromCore;
 			this._unpackToCore = unpackToCore;
@@ -56,19 +54,19 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
-			this._packToCore( this, this._context, packer, objectTree );
+			this._packToCore( this, this.OwnerContext, packer, objectTree );
 		}
 
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
-			return this._unpackFromCore( this, this._context, unpacker );
+			return this._unpackFromCore( this, this.OwnerContext, unpacker );
 		}
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
 		{
 			if ( this._unpackToCore != null )
 			{
-				this._unpackToCore( this, this._context, unpacker, collection );
+				this._unpackToCore( this, this.OwnerContext, unpacker, collection );
 			}
 			else
 			{

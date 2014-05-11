@@ -1,0 +1,553 @@
+﻿<#@ IntelliSenseLanguage processor="tangibleT4Editor" language="C#" #>
+<#+ 
+private void GenerateCore( string serializationMethod, string emitterFlavor, bool canDump, bool forIos )
+{
+	var testCases =
+		new []
+		{
+			// Context, TypeAttribute, MemberAttribute, EnumMember
+			Tuple.Create( default( string ), default( string ), default( string ), "ByName" ),
+			Tuple.Create( default( string ), default( string ), "Default", "ByName" ),
+			Tuple.Create( default( string ), default( string ), "ByName", "ByName" ),
+			Tuple.Create( default( string ), default( string ), "ByUnderlyingValue", "ByUnderlyingValue" ),
+			Tuple.Create( default( string ), "ByName", default( string ), "ByName" ),
+			Tuple.Create( default( string ), "ByName", "Default", "ByName" ),
+			Tuple.Create( default( string ), "ByName", "ByName", "ByName" ),
+			Tuple.Create( default( string ), "ByName", "ByUnderlyingValue", "ByUnderlyingValue" ),
+			Tuple.Create( default( string ), "ByUnderlyingValue", default( string ), "ByUnderlyingValue" ),
+			Tuple.Create( default( string ), "ByUnderlyingValue", "Default", "ByUnderlyingValue" ),
+			Tuple.Create( default( string ), "ByUnderlyingValue", "ByName", "ByName" ),
+			Tuple.Create( default( string ), "ByUnderlyingValue", "ByUnderlyingValue", "ByUnderlyingValue" ),
+			Tuple.Create( "ByName", default( string ), default( string ), "ByName" ),
+			Tuple.Create( "ByName", default( string ), "Default", "ByName" ),
+			Tuple.Create( "ByName", default( string ), "ByName", "ByName" ),
+			Tuple.Create( "ByName", default( string ), "ByUnderlyingValue", "ByUnderlyingValue" ),
+			Tuple.Create( "ByName", "ByName", default( string ), "ByName" ),
+			Tuple.Create( "ByName", "ByName", "Default", "ByName" ),
+			Tuple.Create( "ByName", "ByName", "ByName", "ByName" ),
+			Tuple.Create( "ByName", "ByName", "ByUnderlyingValue", "ByUnderlyingValue" ),
+			Tuple.Create( "ByName", "ByUnderlyingValue", default( string ), "ByUnderlyingValue" ),
+			Tuple.Create( "ByName", "ByUnderlyingValue", "Default", "ByUnderlyingValue" ),
+			Tuple.Create( "ByName", "ByUnderlyingValue", "ByName", "ByName" ),
+			Tuple.Create( "ByName", "ByUnderlyingValue", "ByUnderlyingValue", "ByUnderlyingValue" ),
+			Tuple.Create( "ByUnderlyingValue", default( string ), default( string ), "ByUnderlyingValue" ),
+			Tuple.Create( "ByUnderlyingValue", default( string ), "Default", "ByUnderlyingValue" ),
+			Tuple.Create( "ByUnderlyingValue", default( string ), "ByName", "ByName" ),
+			Tuple.Create( "ByUnderlyingValue", default( string ), "ByUnderlyingValue", "ByUnderlyingValue" ),
+			Tuple.Create( "ByUnderlyingValue", "ByName", default( string ), "ByName" ),
+			Tuple.Create( "ByUnderlyingValue", "ByName", "Default", "ByName" ),
+			Tuple.Create( "ByUnderlyingValue", "ByName", "ByName", "ByName" ),
+			Tuple.Create( "ByUnderlyingValue", "ByName", "ByUnderlyingValue", "ByUnderlyingValue" ),
+			Tuple.Create( "ByUnderlyingValue", "ByUnderlyingValue", default( string ), "ByUnderlyingValue" ),
+			Tuple.Create( "ByUnderlyingValue", "ByUnderlyingValue", "Default", "ByUnderlyingValue" ),
+			Tuple.Create( "ByUnderlyingValue", "ByUnderlyingValue", "ByName", "ByName" ),
+			Tuple.Create( "ByUnderlyingValue", "ByUnderlyingValue", "ByUnderlyingValue", "ByUnderlyingValue" ),
+		};
+
+	var underlyingTypes =
+		new []
+		{
+			Tuple.Create( "byte", typeof( byte ) ),
+			Tuple.Create( "sbyte", typeof( sbyte ) ),
+			Tuple.Create( "short", typeof( short ) ),
+			Tuple.Create( "ushort", typeof( ushort ) ),
+			Tuple.Create( "int", typeof( int ) ),
+			Tuple.Create( "uint", typeof( uint ) ),
+			Tuple.Create( "long", typeof( long ) ),
+			Tuple.Create( "ulong", typeof( ulong ) ),
+		};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2014 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+<#+
+	if ( !forIos )
+	{
+#>
+using System.Diagnostics;
+<#+
+	}
+#>
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
+<#+
+	if ( !forIos )
+	{
+#>
+#if !NETFX_CORE
+using MsgPack.Serialization.EmittingSerializers;
+#endif // !NETFX_CORE
+<#+
+	}
+#>
+
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack.Serialization
+{
+	[Timeout( 30000 )]
+	public class <#= serializationMethod #><#= emitterFlavor #>EnumSerializerTest
+	{
+<#+
+	if ( forIos )
+	{
+#>
+		private static readonly SerializationContext _cachedContext = new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
+<#+
+	}
+#>
+		private SerializationContext GetSerializationContext()
+		{
+<#+
+	if ( !forIos )
+	{
+#>
+			return new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
+<#+
+	}
+	else
+	{
+#>
+			return _cachedContext;
+<#+
+	}
+#>
+		}
+
+		private SerializationContext  NewSerializationContext()
+		{
+			return new SerializationContext();
+		}
+
+
+		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
+		{
+<#+
+	if ( !forIos )
+	{
+#>
+			return MessagePackSerializer.CreateInternal<T>( context );
+<#+
+	}
+	else
+	{
+#>
+			return PreGeneratedSerializerActivator.CreateInternal<T>( context );
+<#+
+	}
+#>
+		}
+		
+<#+
+	if ( !forIos )
+	{
+#>
+		private bool CanDump
+		{
+			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
+		}
+
+#if !NETFX_CORE
+		[SetUp]
+		public void SetUp()
+		{
+			SerializerDebugging.DeletePastTemporaries();
+			//SerializerDebugging.TraceEnabled = true;
+			//SerializerDebugging.DumpEnabled = true;
+			if ( SerializerDebugging.TraceEnabled )
+			{
+				Tracer.Emit.Listeners.Clear();
+				Tracer.Emit.Switch.Level = SourceLevels.All;
+				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+			}
+
+			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
+			if( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )
+			{
+				SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
+			}
+		}
+
+		[TearDown]
+		public void TearDown()
+		{
+			if ( SerializerDebugging.DumpEnabled && this.CanDump )
+			{
+				try
+				{
+					SerializerDebugging.Dump();
+				}
+				catch ( NotSupportedException ex )
+				{
+					Console.Error.WriteLine( ex );
+				}
+				finally
+				{
+					DefaultSerializationMethodGeneratorManager.Refresh();
+				}
+			}
+
+			SerializerDebugging.Reset();
+			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+		}
+#endif
+<#+
+	} // if !forIos
+#>
+		private static void TestEnumForByName<T>( SerializationContext context, T value, string property )
+		{
+			var serializer = context.GetSerializer<T>();
+
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var deserialized = serializer.Unpack( stream );
+
+				if ( property == null )
+				{
+					Assert.That( deserialized, Is.EqualTo( value ) );
+					stream.Position = 0;
+					Assert.That( Unpacking.UnpackString( stream ), Is.EqualTo( value.ToString() ) );
+				}
+				else
+				{
+					var propertyInfo = typeof( T ).GetProperty( property );
+					Assert.That( propertyInfo.GetValue( deserialized, null ), Is.EqualTo( propertyInfo.GetValue( value, null ) ) );
+					stream.Position = 0;
+<#+
+	if ( serializationMethod == "Array" )
+	{
+#>
+					// Properties are sorted by lexical order
+					var index = Array.IndexOf( typeof( T ).GetProperties().OrderBy( p => p.Name ).ToArray(), propertyInfo );
+					var result = Unpacking.UnpackArray( stream );
+					Assert.That(
+						result[ index ].Equals( propertyInfo.GetValue( value, null ).ToString() ),
+						result[ index ] + " == " + propertyInfo.GetValue( value, null )
+					);
+<#+
+	}
+	else
+	{
+#>
+					var result = Unpacking.UnpackDictionary( stream );
+					Assert.That(
+						result[ property ].Equals( propertyInfo.GetValue( value, null ).ToString() ),
+						result[ property ] + " == " + propertyInfo.GetValue( value, null )
+					);
+<#+
+	}
+#>
+				}
+			}
+		}
+
+		private static void TestEnumForByName( SerializationContext context, Type builtType, params string[] builtMembers )
+		{
+			var serializer = context.GetSerializer( builtType );
+			var value = Enum.Parse( builtType, String.Join( ",", builtMembers ) );
+
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.PackTo( Packer.Create( stream, false ), value );
+				stream.Position = 0;
+				var deserialized = serializer.Unpack( stream );
+
+				Assert.That( deserialized, Is.EqualTo( value ) );
+				stream.Position = 0;
+				Assert.That( Unpacking.UnpackString( stream ), Is.EqualTo( value.ToString() ) );
+			}
+		}
+
+		private static void TestEnumForByUnderlyingValue<T>( SerializationContext context, T value, string property )
+		{
+			var serializer = context.GetSerializer<T>();
+
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var deserialized = serializer.Unpack( stream );
+
+				if ( property == null )
+				{
+					Assert.That( deserialized, Is.EqualTo( value ) );
+					stream.Position = 0;
+					var result = Unpacking.UnpackObject( stream );
+					Assert.That( 
+						result.ToString().Equals( ( ( IFormattable )value ).ToString( "D", null ) ),
+						result + " == " + ( ( IFormattable )value ).ToString( "D", null ) 
+					);
+				}
+				else
+				{
+					var propertyInfo = typeof( T ).GetProperty( property );
+					Assert.That( propertyInfo.GetValue( deserialized, null ), Is.EqualTo( propertyInfo.GetValue( value, null ) ) );
+					stream.Position = 0;
+<#+
+	if ( serializationMethod == "Array" )
+	{
+#>
+					var result = Unpacking.UnpackArray( stream );
+					// Properties are sorted by lexical order
+					var index = Array.IndexOf( typeof( T ).GetProperties().OrderBy( p => p.Name ).ToArray(), propertyInfo );
+					Assert.That(
+						result[ index ].ToString().Equals( ( ( IFormattable )propertyInfo.GetValue( value, null ) ).ToString( "D", null ) ),
+						result[ index ] + " == " + ( ( IFormattable )propertyInfo.GetValue( value , null) ).ToString( "D", null )
+					);
+<#+
+	}
+	else
+	{
+#>
+					var result = Unpacking.UnpackDictionary( stream );
+					Assert.That(
+						result[ property ].ToString().Equals( ( ( IFormattable )propertyInfo.GetValue( value, null ) ).ToString( "D", null ) ),
+						result[ property ] + " == " + ( ( IFormattable )propertyInfo.GetValue( value, null ) ).ToString( "D", null )
+					);
+<#+
+	}
+#>
+				}
+			}
+		}
+
+		private static void TestEnumForByUnderlyingValue( SerializationContext context, Type builtType, params string[] builtMembers )
+		{
+			var serializer = context.GetSerializer( builtType );
+			var value = ( IFormattable )Enum.Parse( builtType, String.Join( ",", builtMembers ) );
+
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.PackTo( Packer.Create( stream, false ), value );
+				stream.Position = 0;
+				var deserialized = serializer.Unpack( stream );
+
+				Assert.That( deserialized, Is.EqualTo( value ) );
+				stream.Position = 0;
+				var result = Unpacking.UnpackObject( stream );
+				Assert.That( 
+					result.ToString().Equals( value.ToString( "D", null ) ),
+					result + " == " + value.ToString( "D", null ) 
+				);
+			}
+		}
+
+<#+
+	foreach ( var testCase in testCases )
+	{
+		if ( testCase.Item2 == null && ( testCase.Item3 == null || testCase.Item3 == "Default" ) && forIos )
+		{
+			// Context behavior is not testable in generated serializers because it was determined when testing target had been generated.
+			continue;
+		}
+#>
+
+		[Test]
+		public void TestSerializationMethod_ContextIs<#= testCase.Item1 ?? "Default" #>_TypeIs<#= testCase.Item2 ?? "None" #>_MemberIs<#= testCase.Item3 ?? "None" #>()
+		{
+			var context = this.GetSerializationContext();
+<#+
+		if ( testCase.Item1 != null )
+		{
+#>
+			context.EnumSerializationMethod = EnumSerializationMethod.<#= testCase.Item1 #>;
+			try
+			{
+<#+
+		}
+#>
+			<#= testCase.Item1 != null ? "\t" : "" #>TestEnumFor<#= testCase.Item4 #>( context, <#= testCase.Item3 != null ? "new EnumMemberObject()" : "Enum" + ( testCase.Item2 ?? "Default" ) + ".Foo" #>, <#= testCase.Item3 == null ? "null" : "\"" + ( testCase.Item2 ?? "Default" ) + ( testCase.Item3 ?? "NoAttribute" ) + "Property\""  #> );
+<#+
+		if ( testCase.Item1 != null )
+		{
+#>
+			}
+			finally
+			{
+				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			}
+<#+
+		}
+#>
+		}
+<#+
+	}
+
+	foreach ( var underlyingType in underlyingTypes )
+	{
+		CreateEnumTest( underlyingType.Item2, false, true );
+	}
+#>
+	}
+}
+<#+
+}
+
+private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFlags, params string[] builtMemberNames )
+{
+	if ( useBuilder )
+	{
+#>
+#if !NETFX_CORE && !XAMIOS && !UNIOS && !XAMDROID && !UNIDROID
+<#+
+	}
+#>
+
+		[Test]
+		public void TestEnum<#= underlyingType.Name #>_WithoutFlags_ByName()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			try
+			{
+<#+
+	if ( useBuilder )
+	{
+#>
+				TestEnumForByName( context, Create<#= underlyingType.Name #>EnumType( false ), "<#= builtMemberNames[ 0 ] #>" );
+<#+
+	}
+	else
+	{
+#>
+				TestEnumForByName( context, Enum<#= underlyingType.Name #>.Foo, null );
+<#+
+	}
+#>
+			}
+			finally
+			{
+				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			}
+		}
+
+		[Test]
+		public void TestEnum<#= underlyingType.Name #>_WithoutFlags_ByUnderlyingValue()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			try
+			{
+<#+
+	if ( useBuilder )
+	{
+#>
+				TestEnumForByUnderlyingValue( context, Create<#= underlyingType.Name #>EnumType( false ), "<#= builtMemberNames[ 0 ] #>" );
+<#+
+	}
+	else
+	{
+#>
+				TestEnumForByUnderlyingValue( context, Enum<#= underlyingType.Name #>.Foo, null );
+<#+
+	}
+#>
+			}
+			finally
+			{
+				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			}
+		}
+<#+
+	if ( canBeFlags )
+	{
+#>
+
+		[Test]
+		public void TestEnum<#= underlyingType.Name #>_WithFlags_ByName()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			try
+			{
+<#+
+	if ( useBuilder )
+	{
+#>
+				TestEnumForByName( context, Create<#= underlyingType.Name #>EnumType( true ), <#= string.Join( ", ", builtMemberNames.Select( name => "\"" + name + "\"" ) ) #> );
+<#+
+	}
+	else
+	{
+#>
+				TestEnumForByName( context, Enum<#= underlyingType.Name #>Flags.Foo | Enum<#= underlyingType.Name #>Flags.Bar, null );
+<#+
+	}
+#>
+			}
+			finally
+			{
+				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			}
+		}
+
+		[Test]
+		public void TestEnum<#= underlyingType.Name #>_WithFlags_ByUnderlyingValue()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			try
+			{
+<#+
+	if ( useBuilder )
+	{
+#>
+				TestEnumForByUnderlyingValue( context, Create<#= underlyingType.Name #>EnumType( true ), <#= string.Join( ", ", builtMemberNames.Select( name => "\"" + name + "\"" ) ) #> );
+<#+
+	}
+	else
+	{
+#>
+				TestEnumForByUnderlyingValue( context, Enum<#= underlyingType.Name #>Flags.Foo | Enum<#= underlyingType.Name #>Flags.Bar, null );
+<#+
+	}
+#>
+			}
+			finally
+			{
+				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			}
+		}
+<#+
+	}
+
+	if ( useBuilder )
+	{
+#>
+#endif // !NETFX_CORE && !XAMIOS && !UNIOS && !XAMDROID && !UNIDROID
+<#+
+	}
+}
+#>

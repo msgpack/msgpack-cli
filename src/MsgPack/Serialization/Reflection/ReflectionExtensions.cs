@@ -2,7 +2,7 @@
 //
 // NLiblet
 //
-// Copyright (C) 2011 FUJIWARA, Yusuke
+// Copyright (C) 2011-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,12 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
-#if NETFX_CORE
-using System.Reflection;
-#endif
 
 namespace MsgPack.Serialization.Reflection
 {
@@ -56,7 +51,5 @@ namespace MsgPack.Serialization.Reflection
 
 			return target.IsAssignableFrom( source );
 		}
-
-		// TODO: NLiblet
 	}
 }

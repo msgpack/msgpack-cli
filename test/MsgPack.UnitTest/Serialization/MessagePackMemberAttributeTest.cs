@@ -37,7 +37,7 @@ namespace MsgPack.Serialization
 	{
 		private static void TestDataContractAndMessagePackMemberAndNonSerializedAreMixedCore( SerializationMethod method )
 		{
-			var context = new SerializationContext() { SerializationMethod = method };
+			var context = new SerializationContext { SerializationMethod = method };
 
 			using ( var buffer = new MemoryStream() )
 			{
@@ -47,7 +47,7 @@ namespace MsgPack.Serialization
 				target.ShouldSerialized3 = 333;
 				target.ShouldNotSerialized1 = 444;
 				target.ShouldNotSerialized2 = 555;
-				var serializer = MessagePackSerializer.Create<MessagePackMemberAndDataMemberMixedTarget>( context );
+				var serializer = MessagePackSerializer.CreateInternal<MessagePackMemberAndDataMemberMixedTarget>( context );
 				serializer.Pack( buffer, target );
 
 				buffer.Position = 0;
@@ -96,13 +96,13 @@ namespace MsgPack.Serialization
 
 		private static void TestDataContractAndNonSerializableAreMixedCore( SerializationMethod method )
 		{
-			var context = new SerializationContext() { SerializationMethod = method };
+			var context = new SerializationContext { SerializationMethod = method };
 
 			using ( var buffer = new MemoryStream() )
 			{
 				var target = new DataContractAndNonSerializedMixedTarget();
 				target.ShouldSerialized = 111;
-				var serializer = MessagePackSerializer.Create<DataContractAndNonSerializedMixedTarget>( context );
+				var serializer = MessagePackSerializer.CreateInternal<DataContractAndNonSerializedMixedTarget>( context );
 				serializer.Pack( buffer, target );
 
 				buffer.Position = 0;

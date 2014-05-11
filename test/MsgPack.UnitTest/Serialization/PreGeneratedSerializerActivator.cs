@@ -97,19 +97,9 @@ namespace MsgPack.Serialization
 		///		Instantiates new pre-generated serializer instance.
 		/// </summary>
 		/// <typeparam name="T">The type to serialize.</typeparam>
-		/// <returns>A new pre-generated serializer instance.</returns>
-		public static MessagePackSerializer<T> Create<T>()
-		{
-			return Create<T>( SerializationContext.Default );
-		}
-
-		/// <summary>
-		///		Instantiates new pre-generated serializer instance.
-		/// </summary>
-		/// <typeparam name="T">The type to serialize.</typeparam>
 		/// <param name="context">Ignored.</param>
 		/// <returns>A new pre-generated serializer instance.</returns>
-		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
+		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context )
 		{
 #if !XAMIOS && !UNIOS
 			// Simulate Xamarin iOS or Unity iOS behavior...
@@ -119,7 +109,7 @@ namespace MsgPack.Serialization
 				|| ( typeof( T ).GetIsGenericType() && typeof( T ).FullName.StartsWith( "System.Tuple`" ) )
 			)
 			{
-				return MessagePackSerializer.Create<T>( context );
+				return MessagePackSerializer.CreateInternal<T>( context );
 			}
 
 			var defaultSerializer = SerializerRepository.Default.Get<T>( context );
@@ -128,18 +118,10 @@ namespace MsgPack.Serialization
 				return defaultSerializer;
 			}
 
-			if ( typeof( T ).IsArray )
+			var genericSerializer = GenericSerializer.Create<T>( context );
+			if ( genericSerializer != null )
 			{
-				if ( SerializerRepository.Default.Get( context, typeof( T ).GetElementType() ) == null )
-				{
-					var elementType =
-						typeof( T ).GetElementType().IsInterface
-						? context.DefaultCollectionTypes.Get( typeof( T ).GetElementType() )
-						: typeof( T ).GetElementType();
-					context.Serializers.Register( elementType, CreateCore( elementType, context ) as IMessagePackSerializer );
-				}
-
-				return MessagePackSerializer.Create<T>( context );
+				return genericSerializer;
 			}
 
 			if ( typeof( T ).IsInterface )

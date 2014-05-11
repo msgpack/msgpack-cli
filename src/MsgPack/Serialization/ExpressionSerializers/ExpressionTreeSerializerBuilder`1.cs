@@ -56,6 +56,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, SerializerMethod method )
 		{
 			context.Reset( typeof( TObject ) );
+			context.SetCurrentMethod( typeof( TObject ), method );
+		}
+
+		protected override void EmitMethodPrologue( ExpressionTreeContext context, EnumSerializerMethod method )
+		{
+			context.Reset( typeof( TObject ) );
+			context.SetCurrentMethod( typeof( TObject ), method );
 		}
 
 		protected override void EmitMethodEpilogue( ExpressionTreeContext context, SerializerMethod method, ExpressionConstruct construct )
@@ -65,6 +72,22 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return;
 			}
 
+			context.SetDelegate( method, EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+
+		}
+
+		protected override void EmitMethodEpilogue( ExpressionTreeContext context, EnumSerializerMethod method, ExpressionConstruct construct )
+		{
+			if ( construct == null )
+			{
+				return;
+			}
+
+			context.SetDelegate( method, EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+		}
+
+		private Delegate EmitMethodEpilogue<T>( ExpressionTreeContext context, Type delegateType, T method, ExpressionConstruct construct )
+		{
 			if ( SerializerDebugging.TraceEnabled )
 			{
 				SerializerDebugging.TraceEvent( "----{0}----", method );
@@ -74,11 +97,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 
 			var lambda =
 				Expression.Lambda(
-					ExpressionTreeContext.CreateDelegateType<TObject>( method ),
+					delegateType,
 					construct.Expression,
 					method.ToString(),
 					false,
-					context.GetParameters( typeof( TObject ), method )
+					context.GetCurrentParameters()
 				);
 
 #if !NETFX_CORE && !SILVERLIGHT
@@ -94,11 +117,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				lambda.CompileToMethod( mb );
 			}
 #endif
-
-			context.SetDelegate(
-				method,
-				lambda.Compile()
-			);
+			return lambda.Compile();
 		}
 
 		protected override ExpressionConstruct MakeNullLiteral( ExpressionTreeContext context, Type contextType )
@@ -119,6 +138,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		protected override ExpressionConstruct MakeStringLiteral( ExpressionTreeContext context, string constant )
 		{
 			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeEnumLiteral( ExpressionTreeContext context, Type type, object constant )
+		{
+			return Expression.Constant( constant, type );
 		}
 
 		protected override ExpressionConstruct EmitThisReferenceExpression( ExpressionTreeContext context )
@@ -202,6 +226,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		)
 		{
 			return Expression.Variable( type, name );
+		}
+
+		protected override ExpressionConstruct ReferArgument( ExpressionTreeContext context, Type type, string name, int index )
+		{
+			return context.GetCurrentParameters()[ index ];
 		}
 
 		protected override ExpressionConstruct EmitCreateNewObjectExpression(
@@ -300,12 +329,35 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.NewArrayInit( elementType, initialElements.Select( c => c.Expression ) );
 		}
 
-		protected override ExpressionConstruct EmitGetSerializerExpression( ExpressionTreeContext context, Type targetType )
+		protected override ExpressionConstruct EmitGetSerializerExpression( ExpressionTreeContext context, Type targetType, SerializingMember? memberInfo )
 		{
 			return
-				Expression.Call(
-					context.Context, Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
-				);
+				memberInfo == null || !targetType.GetIsEnum()
+					? Expression.Call(
+						context.Context,
+						Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
+					)
+					: this.EmitInvokeMethodExpression(
+						context,
+						context.Context,
+						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+						this.EmitBoxExpression(
+							context,
+							typeof( EnumSerializationMethod ),
+							this.EmitInvokeMethodExpression(
+								context,
+								null,
+								Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod,
+								context.Context,
+								this.EmitTypeOfExpression( context, targetType ),
+								this.MakeEnumLiteral(
+									context,
+									typeof( EnumMemberSerializationMethod ),
+									memberInfo.Value.GetEnumMemberSerializationMethod()
+								)
+							)
+						)
+					);
 		}
 
 		protected override ExpressionConstruct EmitConditionalExpression(
@@ -409,12 +461,25 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				);
 		}
 
+		protected override ExpressionConstruct EmitEnumFromUnderlyingCastExpression(
+			ExpressionTreeContext context,
+			Type enumType,
+			ExpressionConstruct underlyingValue )
+		{
+			return Expression.Convert( underlyingValue, enumType );
+		}
+
+		protected override ExpressionConstruct EmitEnumToUnderlyingCastExpression(
+			ExpressionTreeContext context,
+			Type underlyingType,
+			ExpressionConstruct enumValue )
+		{
+			// ExpressionTree cannot handle enum to underlying type conversion...
+			return Expression.Convert( enumValue, underlyingType );
+		}
+
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( ExpressionTreeContext codeGenerationContext )
 		{
-			var packTo = codeGenerationContext.GetPackToCore<TObject>();
-			var unpackFrom = codeGenerationContext.GetUnpackFromCore<TObject>();
-			var unpackTo = codeGenerationContext.GetUnpackToCore<TObject>();
-
 #if !NETFX_CORE && !SILVERLIGHT
 			if ( SerializerDebugging.DumpEnabled )
 			{
@@ -422,7 +487,48 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			}
 #endif
 
-			return context => new ExpressionCallbackMessagePackSerializer<TObject>( context, packTo, unpackFrom, unpackTo );
+			// Get at this point to prevent unexpected context change.
+			var packToCore = codeGenerationContext.GetPackToCore<TObject>();
+			var unpackFromCore = codeGenerationContext.GetUnpackFromCore<TObject>();
+			var unpackToCore = codeGenerationContext.GetUnpackToCore<TObject>();
+			return
+				context =>
+					new ExpressionCallbackMessagePackSerializer<TObject>(
+						context,
+						packToCore,
+						unpackFromCore,
+						unpackToCore
+					);
+		}
+
+		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( ExpressionTreeContext codeGenerationContext )
+		{
+#if !NETFX_CORE && !SILVERLIGHT
+			if ( SerializerDebugging.DumpEnabled )
+			{
+				this._typeBuilder.CreateType();
+			}
+#endif
+
+			// Get at this point to prevent unexpected context change.
+			var packUnderyingValueTo = codeGenerationContext.GetPackUnderyingValueTo<TObject>();
+			var unpackFromUnderlyingValue = codeGenerationContext.GetUnpackFromUnderlyingValue<TObject>();
+
+			var targetType = typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
+
+			return
+				context =>
+					Activator.CreateInstance(
+						targetType,
+						context,
+						EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
+							context,
+							typeof( TObject ),
+							EnumMemberSerializationMethod.Default 
+						),
+						packUnderyingValueTo,
+						unpackFromUnderlyingValue
+					) as MessagePackSerializer<TObject>;
 		}
 
 		protected override ExpressionTreeContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )

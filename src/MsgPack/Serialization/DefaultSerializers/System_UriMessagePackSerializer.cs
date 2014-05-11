@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,17 +22,18 @@ using System;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_UriMessagePackSerializer : MessagePackSerializer<Uri>
 	{
-		public System_UriMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions ) { }
+		public System_UriMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext ) { }
 
-		protected internal sealed override void PackToCore( Packer packer, Uri objectTree )
+		protected internal override void PackToCore( Packer packer, Uri objectTree )
 		{
 			packer.PackString( objectTree.ToString() );
 		}
 
-		protected internal sealed override Uri UnpackFromCore( Unpacker unpacker )
+		protected internal override Uri UnpackFromCore( Unpacker unpacker )
 		{
 			return new Uri( unpacker.LastReadData.DeserializeAsString() );
 		}

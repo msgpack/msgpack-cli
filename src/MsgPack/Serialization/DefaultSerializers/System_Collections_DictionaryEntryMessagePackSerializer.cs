@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,12 +23,13 @@ using System.Collections;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Collections_DictionaryEntryMessagePackSerializer : MessagePackSerializer<DictionaryEntry>
 	{
-		public System_Collections_DictionaryEntryMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions ) { }
+		public System_Collections_DictionaryEntryMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext ) { }
 
-		protected internal sealed override void PackToCore( Packer packer, DictionaryEntry objectTree )
+		protected internal override void PackToCore( Packer packer, DictionaryEntry objectTree )
 		{
 			packer.PackArrayHeader( 2 );
 			packer.Pack( EnsureMessagePackObject( objectTree.Key ) );
@@ -50,7 +51,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return ( MessagePackObject )obj;
 		}
 
-		protected internal sealed override DictionaryEntry UnpackFromCore( Unpacker unpacker )
+		protected internal override DictionaryEntry UnpackFromCore( Unpacker unpacker )
 		{
 			if ( unpacker.IsArrayHeader )
 			{

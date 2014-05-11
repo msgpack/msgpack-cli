@@ -19,11 +19,8 @@
 #endregion -- License Terms --
 
 using System;
-#if !NETFX_CORE
-using System.CodeDom.Compiler;
 #if !NETFX_35
 using System.Collections.Concurrent;
-#endif
 #endif
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -69,6 +66,22 @@ namespace MsgPack.Serialization
 		{
 			get { return _dumpEnabled; }
 			set { _dumpEnabled = value; }
+		}
+
+		[ThreadStatic]
+		private static bool _avoidsGenericSerializer;
+
+		/// <summary>
+		///		Gets or sets a value indicating whether generic serializer for array, <see cref="List{T}"/>, <see cref="Dictionary{TKey,TValue}"/>, 
+		///		or <see cref="Nullable{T}"/> is not used.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if generic serializer is not used; otherwise, <c>false</c>.
+		/// </value>
+		public static bool AvoidsGenericSerializer
+		{
+			get { return _avoidsGenericSerializer; }
+			set { _avoidsGenericSerializer = value; }
 		}
 
 #if !NETFX_CORE
@@ -244,8 +257,8 @@ namespace MsgPack.Serialization
 			EnsureDependentAssembliesListsInitialized();
 
 			File.AppendAllText(
-				GetHistoryFilePath(), 
-				String.Join( Environment.NewLine, _compiledCodeDomSerializerAssemblies.ToArray() ) 
+				GetHistoryFilePath(),
+				String.Join( Environment.NewLine, _compiledCodeDomSerializerAssemblies.ToArray() )
 			);
 			_compiledCodeDomSerializerAssemblies.Clear();
 			ResetRuntimeAssemblies();
@@ -253,8 +266,8 @@ namespace MsgPack.Serialization
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
-		private static int _wasDeleted = 0;
-		private const string _historyFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
+		private static int _wasDeleted;
+		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
 
 		public static void DeletePastTemporaries()
 		{
@@ -283,7 +296,7 @@ namespace MsgPack.Serialization
 
 		private static string GetHistoryFilePath()
 		{
-			return Path.Combine( Path.GetTempPath(), _historyFile );
+			return Path.Combine( Path.GetTempPath(), HistoryFile );
 		}
 
 		private static void EnsureDependentAssembliesListsInitialized()

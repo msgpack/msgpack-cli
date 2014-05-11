@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,12 +23,11 @@ using System.Collections;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-// ReSharper disable InconsistentNaming
+	// ReSharper disable once InconsistentNaming
 	internal sealed class System_Collections_QueueMessagePackSerializer : MessagePackSerializer<Queue>
-// ReSharper restore InconsistentNaming
 	{
-		public System_Collections_QueueMessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
-			: base( packerCompatibilityOptions )
+		public System_Collections_QueueMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext )
 		{
 		}
 

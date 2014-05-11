@@ -51,7 +51,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <returns><see cref="AssemblyBuilderEmittingContext"/>.</returns>
 		public AssemblyBuilderEmittingContext CreateEmittingContext( Type type )
 		{
-			return new AssemblyBuilderEmittingContext( this._context, type, this._generatorManager.CreateEmitter( type, EmitterFlavor.FieldBased ) );
+			return new AssemblyBuilderEmittingContext(
+				this._context,
+				type,
+				() => this._generatorManager.CreateEmitter( type, EmitterFlavor.FieldBased ),
+				() => this._generatorManager.CreateEnumEmitter( type, EmitterFlavor.FieldBased ) 
+			);
 		}
 
 		/// <summary>

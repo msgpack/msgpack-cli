@@ -19,6 +19,8 @@
 #endregion -- License Terms --
 
 using System;
+
+using MsgPack.Serialization.DefaultSerializers;
 #if !SILVERLIGHT && !NETFX_35
 using System.Collections.Concurrent;
 #endif
@@ -42,7 +44,8 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationContext
 	{
-		private static SerializationContext _default = new SerializationContext();
+		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
+		private static SerializationContext _default = new SerializationContext( default( SerializerRepository ) );
 
 		/// <summary>
 		///		Gets or sets the default instance.
@@ -166,6 +169,52 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		private EnumSerializationMethod _enumSerializationMethod;
+
+		/// <summary>
+		///		Gets or sets the <see cref="EnumSerializationMethod"/> to determine default serialization strategy of enum types.
+		/// </summary>
+		/// <value>
+		///		The <see cref="EnumSerializationMethod"/> to determine default serialization strategy of enum types.
+		/// </value>
+		/// <remarks>
+		///		A serialization strategy for specific <strong>member</strong> is determined as following:
+		///		<list type="numeric">
+		///			<item>If the member is marked with <see cref="MessagePackEnumMemberAttribute"/> and its value is not <see cref="EnumMemberSerializationMethod.Default"/>, then it will be used.</item>
+		///			<item>Otherwise, if the enum type itself is marked with <see cref="MessagePackEnumAttribute"/>, then it will be used.</item>
+		///			<item>Otherwise, the value of this property will be used.</item>
+		/// 	</list>
+		///		Note that the default value of this property is <see cref="T:EnumSerializationMethod.ByName"/>, it is not size efficient but tolerant to unexpected enum definition change.
+		/// </remarks>
+		public EnumSerializationMethod EnumSerializationMethod
+		{
+			get
+			{
+				Contract.Ensures( Enum.IsDefined( typeof( EnumSerializationMethod ), Contract.Result<EnumSerializationMethod>() ) );
+
+				return this._enumSerializationMethod;
+			}
+			set
+			{
+				switch ( value )
+				{
+					case EnumSerializationMethod.ByName:
+					case EnumSerializationMethod.ByUnderlyingValue:
+					{
+						break;
+					}
+					default:
+					{
+						throw new ArgumentOutOfRangeException( "value" );
+					}
+				}
+
+				Contract.EndContractBlock();
+
+				this._enumSerializationMethod = value;
+			}
+		}
+
 		private SerializationMethodGeneratorOption _generatorOption;
 
 		/// <summary>
@@ -235,8 +284,6 @@ namespace MsgPack.Serialization
 		internal SerializationContext(
 			SerializerRepository serializers, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
-			Contract.Requires( serializers != null );
-
 			this._compatibilityOptions =
 				new SerializationCompatibilityOptions
 				{
@@ -254,13 +301,20 @@ namespace MsgPack.Serialization
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 		}
 
+		// For default init.
+		private SerializationContext( SerializerRepository allwaysNull )
+			: this( allwaysNull, PackerCompatibilityOptions.Classic ) // TODO: configurable
+		{
+			this._serializers = new SerializerRepository( SerializerRepository.GetDefault( this ) );
+		}
+
 		internal bool ContainsSerializer( Type rootType )
 		{
 			return this._serializers.Contains( rootType );
 		}
 
 		/// <summary>
-		///		Gets the <see cref="MessagePackSerializer{T}"/> with this instance.
+		///		Gets the <see cref="MessagePackSerializer{T}"/> with this instance without provider parameter.
 		/// </summary>
 		/// <typeparam name="T">Type of serialization/deserialization target.</typeparam>
 		/// <returns>
@@ -273,12 +327,45 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>()
 		{
+			return GetSerializer<T>( null );
+		}
+		/// <summary>
+		///		Gets the <see cref="MessagePackSerializer{T}"/> with this instance.
+		/// </summary>
+		/// <typeparam name="T">Type of serialization/deserialization target.</typeparam>
+		/// <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <remarks>
+		///		<para>
+		///			This method automatically register new instance via <see cref="SerializerRepository.Register{T}(MessagePackSerializer{T})"/>.
+		///		</para>
+		///		<para>
+		///			Currently, only following provider parameters are supported.
+		///			<list type="table">
+		///				<listheader>
+		///					<term>Target type</term>
+		///					<description>Provider parameter</description>
+		///				</listheader>
+		///				<item>
+		///					<term><see cref="EnumMessagePackSerializer{TEnum}"/> or its descendants.</term>
+		///					<description><see cref="EnumSerializationMethod"/>. The returning instance corresponds to this value for serialization.</description>
+		///				</item>
+		///			</list>
+		///			<note><c>null</c> is valid value for <paramref name="providerParameter"/> and it indeicates default behavior of parameter.</note>
+		///		</para>
+		/// </remarks>
+		public MessagePackSerializer<T> GetSerializer<T>( object providerParameter )
+		{
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 
 			MessagePackSerializer<T> serializer = null;
 			while ( serializer == null )
 			{
-				serializer = this._serializers.Get<T>( this );
+				serializer = this._serializers.Get<T>( this, providerParameter ) ?? GenericSerializer.Create<T>( this );
 				if ( serializer == null )
 				{
 #if XAMIOS || UNIOS
@@ -354,7 +441,7 @@ namespace MsgPack.Serialization
 							if ( lockTaken )
 							{
 								// This thread creating new type serializer.
-								serializer = MessagePackSerializer.Create<T>( this );
+								serializer = MessagePackSerializer.CreateInternal<T>( this );
 							}
 							else
 							{
@@ -362,7 +449,7 @@ namespace MsgPack.Serialization
 
 								// Prevent release owned lock.
 								aquiredLock = null;
-								return new LazyDelegatingMessagePackSerializer<T>( this );
+								return new LazyDelegatingMessagePackSerializer<T>( this, providerParameter );
 							}
 						}
 						else
@@ -400,7 +487,7 @@ namespace MsgPack.Serialization
 #if !XAMIOS && !UNIOS
 			if ( !this._serializers.Register( serializer ) )
 			{
-				serializer = this._serializers.Get<T>( this );
+				serializer = this._serializers.Get<T>( this, providerParameter );
 			}
 #endif // if !XAMIOS && !UNIOS
 
@@ -420,10 +507,32 @@ namespace MsgPack.Serialization
 		///		<paramref name="targetType"/> is <c>null</c>.
 		/// </exception>
 		/// <remarks>
-		///		Although <see cref="GetSerializer{T}"/> is preferred,
+		///		Although <see cref="GetSerializer{T}()"/> is preferred,
 		///		this method can be used from non-generic type or methods.
 		/// </remarks>
 		public IMessagePackSingleObjectSerializer GetSerializer( Type targetType )
+		{
+			return this.GetSerializer( targetType, null );
+		}
+
+		/// <summary>
+		///		Gets the serializer for the specified <see cref="Type"/>.
+		/// </summary>
+		/// <param name="targetType">Type of the serialization target.</param>
+		/// <param name="providerParameter">A provider specific parameter. See remarks section of <see cref="GetSerializer{T}(Object)"/> for details.</param>
+		/// <returns>
+		///		<see cref="IMessagePackSingleObjectSerializer"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="targetType"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		Although <see cref="GetSerializer{T}(Object)"/> is preferred,
+		///		this method can be used from non-generic type or methods.
+		/// </remarks>
+		public IMessagePackSingleObjectSerializer GetSerializer( Type targetType, object providerParameter )
 		{
 			if ( targetType == null )
 			{
@@ -433,7 +542,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
 
 #if !XAMIOS && !UNIOS
-			return SerializerGetter.Instance.Get( this, targetType );
+			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 #else
 			return this._serializers.Get( this, targetType );
 #endif // if !XAMIOS && !UNIOS
@@ -444,32 +553,35 @@ namespace MsgPack.Serialization
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
 
-			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _cache =
-				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
+			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
+				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();
 
 			private SerializerGetter() { }
 
-			public IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType )
+			public IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType, object providerParameter )
 			{
-				Func<SerializationContext, IMessagePackSingleObjectSerializer> func;
+				Func<SerializationContext, object, IMessagePackSingleObjectSerializer> func;
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
 #if !NETFX_CORE
 					func =
 						Delegate.CreateDelegate(
-							typeof( Func<SerializationContext, IMessagePackSingleObjectSerializer> ),
+							typeof( Func<SerializationContext, object, IMessagePackSingleObjectSerializer> ),
 							typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
-						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>;
+						) as Func<SerializationContext, object, IMessagePackSingleObjectSerializer>;
 #else
 					var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
+					var providerParameterParameter = Expression.Parameter( typeof( Object ), "providerParameter" );
 					func =
-						Expression.Lambda<Func<SerializationContext, IMessagePackSingleObjectSerializer>>(
+						Expression.Lambda<Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>(
 							Expression.Call(
 								null,
 								typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetRuntimeMethods().Single( m => m.Name == "Get" ),
-								contextParameter
+								contextParameter,
+								providerParameterParameter
 							),
-							contextParameter
+							contextParameter,
+							providerParameterParameter
 						).Compile();
 #endif // if !NETFX_CORE
 #if DEBUG
@@ -478,43 +590,46 @@ namespace MsgPack.Serialization
 					this._cache[ targetType.TypeHandle ] = func;
 				}
 
-				return func( context );
+				return func( context, providerParameter );
 			}
 		}
 
 		private static class SerializerGetter<T>
 		{
-#if !NETFX_CORE 
-			private static readonly Func<SerializationContext, MessagePackSerializer<T>> _func =
+#if !NETFX_CORE
+			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
 				Delegate.CreateDelegate(
-					typeof( Func<SerializationContext, MessagePackSerializer<T>> ),
-					Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( typeof( T ) )
-				) as Func<SerializationContext, MessagePackSerializer<T>>;
+					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
+					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
+				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #else
-			private static readonly Func<SerializationContext, MessagePackSerializer<T>> _func =
+			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
 				CreateFunc();
 
-			private static Func<SerializationContext, MessagePackSerializer<T>> CreateFunc()
+			private static Func<SerializationContext, object, MessagePackSerializer<T>> CreateFunc()
 			{
 				var thisParameter = Expression.Parameter( typeof( SerializationContext ), "this" );
+				var providerParameterParameter = Expression.Parameter( typeof( Object ), "providerParameter" );
 				return
-					Expression.Lambda<Func<SerializationContext, MessagePackSerializer<T>>>(
+					Expression.Lambda<Func<SerializationContext, object, MessagePackSerializer<T>>>(
 						Expression.Call(
 							thisParameter,
-							Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( typeof( T ) )
+							Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) ),
+							providerParameterParameter
 						),
-						thisParameter
+						thisParameter,
+						providerParameterParameter
 					).Compile();
 			}
 #endif // if !NETFX_CORE
 
-// ReSharper disable UnusedMember.Local
+			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().
-			public static IMessagePackSingleObjectSerializer Get( SerializationContext context )
+			public static IMessagePackSingleObjectSerializer Get( SerializationContext context, object providerParameter )
 			{
-				return _func( context );
+				return _func( context, providerParameter );
 			}
-// ReSharper restore UnusedMember.Local
+			// ReSharper restore UnusedMember.Local
 		}
 #endif // if !XAMIOS && !UNIOS
 	}

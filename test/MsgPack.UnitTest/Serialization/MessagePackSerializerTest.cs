@@ -42,6 +42,7 @@ namespace MsgPack.Serialization
 			SerializationContext.Default = new SerializationContext();
 		}
 
+#pragma warning disable 618
 		[Test]
 		public void TestCreate1_WithoutContext_NewInstance()
 		{
@@ -128,5 +129,6 @@ namespace MsgPack.Serialization
 		{
 			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Create( typeof( int ), null ) );
 		}
+#pragma warning restore 618
 	}
 }
