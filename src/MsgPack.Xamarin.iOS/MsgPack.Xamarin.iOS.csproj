@@ -311,12 +311,6 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DefaultSerializers.cs">
       <Link>Serialization\DefaultSerializers\DefaultSerializers.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\EnumMessagePackSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs">
-      <Link>Serialization\DefaultSerializers\EnumMessagePackSerializer`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
     </Compile>
@@ -403,6 +397,45 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\UnpackHelpers.direct.cs">
       <Link>Serialization\UnpackHelpers.direct.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_Dictionary_2MessagePackSerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Generic_Dictionary_2MessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMemberSerializationMethod.cs">
+      <Link>Serialization\EnumMemberSerializationMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializer`1.cs">
+      <Link>Serialization\EnumMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerHelpers.cs">
+      <Link>Serialization\EnumMessagePackSerializerHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerProvider.cs">
+      <Link>Serialization\EnumMessagePackSerializerProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumSerializationMethod.cs">
+      <Link>Serialization\EnumSerializationMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ICustomizableEnumSerializer.cs">
+      <Link>Serialization\ICustomizableEnumSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializerProvider.cs">
+      <Link>Serialization\MessagePackSerializerProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackEnumAttribute.cs">
+      <Link>Serialization\MessagePackEnumAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackEnumMemberAttribute.cs">
+      <Link>Serialization\MessagePackEnumMemberAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializerExtensions.cs">
+      <Link>Serialization\MessagePackSerializerExtensions.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

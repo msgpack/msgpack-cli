@@ -369,12 +369,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
       <Link>Serialization\IVerifiable`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
-      <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAttributeTest.cs">
-      <Link>Serialization\MessagePackMemberAttributeTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackSerializerTest.cs">
       <Link>Serialization\MessagePackSerializerTest.cs</Link>
     </Compile>
@@ -572,9 +566,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_MsgPack_MessagePackObjectArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_MsgPack_MessagePackObject_Serializer.cs">
-      <Link>Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_System_DateTimeArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_System_DateTimeArray_Serializer.cs</Link>
@@ -789,9 +780,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_MsgPack_MessagePackObjectArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_MsgPack_MessagePackObject_Serializer.cs">
-      <Link>Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_MsgPack_MessagePackObject_Serializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_System_DateTimeArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_System_DateTimeArray_Serializer.cs</Link>
     </Compile>
@@ -862,7 +850,22 @@
       <Link>TestValueType.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\PreGeneratedSerializerActivator.Types.cs">
-      <Link>Serialization\GeneratedSerializers\PreGeneratedSerializerActivator.Types.cs</Link>
+      <Link>Serialization\PreGeneratedSerializerActivator.Types.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\System_DayOfWeekSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\System_DayOfWeekSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\System_DayOfWeekSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\System_DayOfWeekSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayGenerationBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayGenerationBasedEnumSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapGenerationBasedEnumSerializationTest.cs">
+      <Link>Serialization\MapGenerationBasedEnumSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
+      <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
