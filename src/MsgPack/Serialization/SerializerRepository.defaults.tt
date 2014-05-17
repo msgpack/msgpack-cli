@@ -228,8 +228,9 @@ namespace MsgPack.Serialization
 	{
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( SerializationContext ownerContext )
 		{
-			var dictionary = new Dictionary<RuntimeTypeHandle, object>( <#= __structTypes.Length + __classTypes.Length + __tuples.Length + 6 #> );
+			var dictionary = new Dictionary<RuntimeTypeHandle, object>( <#= __structTypes.Length + __classTypes.Length + __tuples.Length + 9 #> );
 			dictionary.Add( typeof( MessagePackObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer( ownerContext ) );
+			dictionary.Add( typeof( MessagePackObjectDictionary ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackObjectDictionaryMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( MessagePackExtendedTypeObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( List<MessagePackObject> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( Object ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Object ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );

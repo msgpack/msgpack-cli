@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Reflection;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -166,6 +167,35 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 #endif
+		}
+
+		public static IMessagePackSerializer CreateCollectionInterfaceSerializer( SerializationContext context, Type targetType )
+		{
+			Type serializerType;
+			var traits = targetType.GetCollectionTraits();
+			switch ( traits.CollectionType )
+			{
+				case CollectionKind.Array:
+				{
+					serializerType = typeof( CollectionSerializer<> ).MakeGenericType( traits.ElementType );
+					break;
+				}
+				case CollectionKind.Map:
+				{
+					serializerType =
+						typeof( DictionarySerializer<,> ).MakeGenericType(
+							traits.ElementType.GetGenericArguments()[ 0 ],
+							traits.ElementType.GetGenericArguments()[ 1 ] 
+						);
+					break;
+				}
+				default:
+				{
+					return null;
+				}
+			}
+
+			return Activator.CreateInstance( serializerType, context, targetType ) as IMessagePackSerializer;
 		}
 
 		/// <summary>

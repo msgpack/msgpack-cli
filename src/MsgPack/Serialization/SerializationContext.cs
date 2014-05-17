@@ -374,9 +374,10 @@ namespace MsgPack.Serialization
 						var concreteCollectionType = this._defaultCollectionTypes.Get( typeof( T ) );
 						if ( concreteCollectionType != null )
 						{
-							serializer = this._serializers.Get( this, concreteCollectionType, providerParameter ) as MessagePackSerializer<T>;
+							serializer = GenericSerializer.CreateCollectionInterfaceSerializer( this, concreteCollectionType ) as MessagePackSerializer<T>;
 							if ( serializer != null )
 							{
+								this.Serializers.Register( typeof( T ), serializer );
 								return serializer;
 							}
 						}

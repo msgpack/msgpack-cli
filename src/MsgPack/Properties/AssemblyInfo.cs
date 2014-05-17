@@ -24,7 +24,7 @@ using System.Security;
 
 [assembly: AssemblyTitle( "MessagePack for CLI(.NET/Mono)" )]
 [assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library." )]
-[assembly: AssemblyConfiguration( "Beta" )]
+[assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2013" )]
 
 

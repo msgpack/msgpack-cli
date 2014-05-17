@@ -262,8 +262,14 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ArraySerializer`1.cs">
       <Link>Serialization\DefaultSerializers\ArraySerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\CollectionSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\CollectionSerializer`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DefaultSerializers.cs">
       <Link>Serialization\DefaultSerializers\DefaultSerializers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DictionarySerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\DictionarySerializer`2.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
@@ -273,6 +279,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectDictionaryMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectDictionaryMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>

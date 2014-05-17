@@ -126,7 +126,9 @@ namespace MsgPack.Serialization
 
 			if ( typeof( T ).IsInterface )
 			{
-				return CreateCore( context.DefaultCollectionTypes.Get( typeof( T ) ), context ) as MessagePackSerializer<T>;
+				return
+					GenericSerializer.CreateCollectionInterfaceSerializer( context, context.DefaultCollectionTypes.Get( typeof( T ) ) )
+						as MessagePackSerializer<T>;
 			}
 
 			return CreateCore( typeof( T ), context ) as MessagePackSerializer<T>;
