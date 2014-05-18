@@ -36,44 +36,24 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public partial class VersioningTest
 	{
-		private static void TestExtraFieldCore<T>( SerializationMethod method, EmitterFlavor flavor )
+		private static MessagePackSerializer<T> CreateSerializer<T>( EmitterFlavor flavor )
 		{
-			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
-
-			var serializer = PreGeneratedSerializerActivator.CreateInternal<T>( context );
-
-			using ( var stream = new MemoryStream() )
-			{
-				if ( method == SerializationMethod.Array )
-				{
-					stream.Write( new byte[] { 0x94, 0x1, 0xFF, 0xA1, ( byte )'a', 0xC0 } );
-				}
-				else
-				{
-					var packer = Packer.Create( stream, false );
-					packer.PackMapHeader( 4 );
-					packer.Pack( "Field1" );
-					packer.Pack( 1 );
-					packer.Pack( "Field2" );
-					packer.Pack( -1 );
-					packer.Pack( "Field3" );
-					packer.Pack( "a" );
-					packer.Pack( "Extra" );
-					packer.PackNull();
-				}
-
-				stream.Position = 0;
-
-				var result = serializer.Unpack( stream );
-
-			}
+#if NETFX_35 || NETFX_CORE
+			var context = new SerializationContext();
+#else
+			var context = PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array );
+#endif
+#if !XAMIOS && !UNITY_IPHONE
+			context.EmitterFlavor = flavor;
+			return MessagePackSerializer.CreateInternal<T>( context );
+#else
+			return context.GetSerializer<T>();
+#endif // !XAMIOS && !UNITY_IPHONE
 		}
 
-		private static void TestExtraFieldRoundTripCore<T>( SerializationMethod method, EmitterFlavor flavor )
+		private static void TestExtraFieldCore<T>( SerializationMethod method, EmitterFlavor flavor )
 		{
-			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
-
-			var serializer = PreGeneratedSerializerActivator.CreateInternal<T>( context );
+			var serializer = CreateSerializer<T>( flavor );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -95,24 +75,16 @@ namespace MsgPack.Serialization
 					packer.PackNull();
 				}
 
-				byte[] bytes = stream.ToArray();
-
 				stream.Position = 0;
 
-				var result = serializer.Unpack( stream );
-
-				stream.SetLength( 0 );
-				serializer.Pack( stream, result );
-
-				Assert.That( stream.ToArray(), Is.EqualTo( bytes ) );
+				serializer.Unpack( stream );
 			}
 		}
 
 		private static void TestMissingFieldCore( SerializationMethod method, EmitterFlavor flavor )
 		{
-			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
+			var serializer = CreateSerializer<VersioningTestTarget>( flavor );
 
-			var serializer = PreGeneratedSerializerActivator.CreateInternal<VersioningTestTarget>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				if ( method == SerializationMethod.Array )
@@ -139,9 +111,7 @@ namespace MsgPack.Serialization
 
 		private static void TestFieldInvalidTypeCore( SerializationMethod method, EmitterFlavor flavor )
 		{
-			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
-
-			var serializer = PreGeneratedSerializerActivator.CreateInternal<VersioningTestTarget>( context );
+			var serializer = CreateSerializer<VersioningTestTarget>( flavor );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -173,9 +143,7 @@ namespace MsgPack.Serialization
 
 		private static void TestFieldSwappedCore( EmitterFlavor flavor )
 		{
-			var context = new SerializationContext { SerializationMethod = SerializationMethod.Map, EmitterFlavor = flavor };
-
-			var serializer = PreGeneratedSerializerActivator.CreateInternal<VersioningTestTarget>( context );
+			var serializer = CreateSerializer<VersioningTestTarget>( flavor );
 
 			using ( var stream = new MemoryStream() )
 			{
