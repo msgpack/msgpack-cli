@@ -97,25 +97,31 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="DataMemberContract"/> struct from <see cref="DataMemberAttribute"/>.
+		///		Initializes a new instance of the <see cref="DataMemberContract"/> struct.
 		/// </summary>
 		/// <param name="member">The target member.</param>
-		/// <param name="attribute">The data contract member attribute. This value can be <c>null</c>.</param>
-		public DataMemberContract( MemberInfo member, DataMemberAttribute attribute )
+		/// <param name="name">The name of member.</param>
+		/// <param name="nilImplication">The implication of the nil value for the member.</param>
+		/// <param name="id">The ID of the member. This value cannot be negative and must be unique in the type.</param>
+		public DataMemberContract( MemberInfo member, string name, NilImplication nilImplication, int? id )
 		{
 			Contract.Requires( member != null );
-			Contract.Requires( attribute != null );
 
-			this._name = String.IsNullOrEmpty( attribute.Name ) ? member.Name : attribute.Name;
-			this._nilImplication = Serialization.NilImplication.MemberDefault;
-			this._id = attribute.Order;
+			if ( id < 0 )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID cannot be negative. The member is '{0}' in the '{1}' type.", member.Name, member.DeclaringType ) );
+			}
+
+			this._name = String.IsNullOrEmpty( name ) ? member.Name : name;
+			this._nilImplication = nilImplication;
+			this._id = id ?? UnspecifiedId;
 		}
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="DataMemberContract"/> struct from <see cref="MessagePackMemberAttribute"/>.
 		/// </summary>
 		/// <param name="member">The target member.</param>
-		/// <param name="attribute">The MessagePack member attribute. This value can be <c>null</c>.</param>
+		/// <param name="attribute">The MessagePack member attribute.</param>
 		public DataMemberContract( MemberInfo member, MessagePackMemberAttribute attribute )
 		{
 			Contract.Requires( member != null );
