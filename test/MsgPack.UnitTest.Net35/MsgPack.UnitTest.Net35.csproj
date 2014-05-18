@@ -7,7 +7,7 @@
     <ProjectGuid>{B8BDEBCD-343C-42A9-8C17-C1318B42F011}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsgPack.UnitTest.Net35</RootNamespace>
+    <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack.UnitTest.Net35</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
