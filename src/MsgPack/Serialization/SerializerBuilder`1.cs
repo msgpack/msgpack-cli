@@ -149,16 +149,31 @@ namespace MsgPack.Serialization
 					);
 			}
 
-			if ( typeof( TObject ).IsDefined( typeof( DataContractAttribute ) ) )
+			if ( typeof( TObject ).GetCustomAttributes( false ).Any( attr => attr.GetType().FullName == "System.Runtime.Serialization.DataContractAttribute" ) )
 			{
-				return
-					members.Where( item => item.IsDefined( typeof( DataMemberAttribute ) ) )
-					.Select( member =>
-						new SerializingMember(
-							member,
-							new DataMemberContract( member, member.GetCustomAttribute<DataMemberAttribute>() )
-						)
+				return members.Select( item => new
+				{
+					member = item,
+					data = item.GetCustomAttributesData()
+						.FirstOrDefault( data => data.Constructor.DeclaringType.FullName == "System.Runtime.Serialization.DataMemberAttribute" )
+				})
+				.Where( item => item.data != null )
+				.Select( item =>
+				{
+					var name = item.data.NamedArguments
+						.Where( arg => arg.MemberInfo.Name == "Name" )
+						.Select( arg => (string) arg.TypedValue.Value )
+						.FirstOrDefault();
+					var id = item.data.NamedArguments
+						.Where( arg => arg.MemberInfo.Name == "Order" )
+						.Select( arg => (int?) arg.TypedValue.Value )
+						.FirstOrDefault();
+
+					return new SerializingMember(
+						item.member,
+						new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
 					);
+				});
 			}
 
 #if SILVERLIGHT || NETFX_CORE
