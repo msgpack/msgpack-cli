@@ -142,6 +142,12 @@ private void GenerateTypesCore( bool forIos )
 			continue;
 		}
 
+		if( __typeName.StartsWith( "System.Tuple<" ) && forIos )
+		{
+			// skip
+			continue;
+		}
+
 		if( __asType != null && __desktopOnly.Contains( __asType ) )
 		{
 #>

@@ -631,6 +631,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
+<#+
+	if ( !forIos )
+	{
+#>
 #if !NETFX_35
 		[Test]
 		public void TestTuple1()
@@ -706,7 +710,10 @@ namespace MsgPack.Serialization
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( expected ) );
 			}
 		}
-#endif
+#endif // !NETFX_35
+<#+
+	}
+#>
 
 		[Test]
 		public void TestEmptyBytes()

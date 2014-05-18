@@ -215,82 +215,6 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !NETFX_35
-		[Test]
-		public void TestTuple1()
-		{
-			TestTupleCore( new Tuple<int>( 1 ) );
-		}
-
-		[Test]
-		public void TestTuple7()
-		{
-			TestTupleCore( new Tuple<int, string, int, string, int, string, int>( 1, "2", 3, "4", 5, "6", 7 ) );
-		}
-
-		[Test]
-		public void TestTuple8()
-		{
-			TestTupleCore(
-				new Tuple<
-				int, string, int, string, int, string, int,
-				Tuple<string>>(
-					1, "2", 3, "4", 5, "6", 7,
-					new Tuple<string>( "8" )
-				)
-			);
-		}
-
-		[Test]
-		public void TestTuple14()
-		{
-			TestTupleCore(
-				new Tuple<
-				int, string, int, string, int, string, int,
-				Tuple<
-				string, int, string, int, string, int, string
-				>
-				>(
-					1, "2", 3, "4", 5, "6", 7,
-					new Tuple<string, int, string, int, string, int, string>(
-						"8", 9, "10", 11, "12", 13, "14"
-					)
-				)
-			);
-		}
-
-		[Test]
-		public void TestTuple15()
-		{
-			TestTupleCore(
-				new Tuple<
-				int, string, int, string, int, string, int,
-				Tuple<
-				string, int, string, int, string, int, string,
-				Tuple<int>
-				>
-				>(
-					1, "2", 3, "4", 5, "6", 7,
-					new Tuple<string, int, string, int, string, int, string, Tuple<int>>(
-						"8", 9, "10", 11, "12", 13, "14",
-						new Tuple<int>( 15 )
-					)
-				)
-			);
-		}
-
-		private void TestTupleCore<T>( T expected )
-			where T : IStructuralEquatable
-		{
-			var serializer = this.CreateTarget<T>( GetSerializationContext() );
-			using ( var stream = new MemoryStream() )
-			{
-				serializer.Pack( stream, expected );
-				stream.Position = 0;
-				Assert.That( serializer.Unpack( stream ), Is.EqualTo( expected ) );
-			}
-		}
-#endif
 
 		[Test]
 		public void TestEmptyBytes()
@@ -1381,32 +1305,6 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } ), 2 ).ToArray(), this.GetSerializationContext() );
 		}
 		
-#if !NETFX_35
-		[Test]
-		public void TestTuple_Int32_String_MessagePackObject_ObjectField()
-		{
-			this.TestCoreWithAutoVerify( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , this.GetSerializationContext() );
-		}
-		
-		[Test]
-		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldArray()
-		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) , 2 ).ToArray(), this.GetSerializationContext() );
-		}
-		
-		[Test]
-		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldNull()
-		{
-			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> ), this.GetSerializationContext() );
-		}
-		
-		[Test]
-		public void TestTuple_Int32_String_MessagePackObject_ObjectFieldArrayNull()
-		{
-			this.TestCoreWithAutoVerify( default( System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object>[] ), this.GetSerializationContext() );
-		}	
-		
-#endif // !NETFX_35
 		[Test]
 		public void TestImage_Field()
 		{
