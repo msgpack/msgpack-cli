@@ -40,31 +40,13 @@ namespace MsgPack.Serialization
 	[Timeout( 30000 )]
 	public class ArrayGenerationBasedEnumSerializerTest
 	{
-		private static readonly SerializationContext _cachedContext = new SerializationContext { SerializationMethod = SerializationMethod.Array };
 		private SerializationContext GetSerializationContext()
 		{
-			return NewSerializationContext();
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array );
 		}
-
-		private SerializationContext  NewSerializationContext()
+		private void TestEnumForByName<T>( SerializationContext context, T value, string property )
 		{
-			return new SerializationContext();
-		}
-
-
-		private static MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
-		{
-			return PreGeneratedSerializerActivator.CreateInternal<T>( context );
-		}
-
-		private static IMessagePackSerializer CreateTarget( SerializationContext context, Type targetType )
-		{
-			return PreGeneratedSerializerActivator.CreateInternal( context, targetType );
-		}
-		
-		private static void TestEnumForByName<T>( SerializationContext context, T value, string property )
-		{
-			var serializer = CreateTarget<T>( context );
+			var serializer = context.GetSerializer<T>();
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -94,9 +76,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void TestEnumForByName( SerializationContext context, Type builtType, params string[] builtMembers )
+		private void TestEnumForByName( SerializationContext context, Type builtType, params string[] builtMembers )
 		{
-			var serializer = CreateTarget( context, builtType );
+			var serializer = context.GetSerializer( builtType );
 			var value = Enum.Parse( builtType, String.Join( ",", builtMembers ) );
 
 			using ( var stream = new MemoryStream() )
@@ -111,9 +93,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void TestEnumForByUnderlyingValue<T>( SerializationContext context, T value, string property )
+		private void TestEnumForByUnderlyingValue<T>( SerializationContext context, T value, string property )
 		{
-			var serializer = CreateTarget<T>( context );
+			var serializer = context.GetSerializer<T>();
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -147,9 +129,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void TestEnumForByUnderlyingValue( SerializationContext context, Type builtType, params string[] builtMembers )
+		private void TestEnumForByUnderlyingValue( SerializationContext context, Type builtType, params string[] builtMembers )
 		{
-			var serializer = CreateTarget( context, builtType );
+			var serializer = context.GetSerializer( builtType );
 			var value = ( IFormattable )Enum.Parse( builtType, String.Join( ",", builtMembers ) );
 
 			using ( var stream = new MemoryStream() )

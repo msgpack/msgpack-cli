@@ -137,7 +137,7 @@ namespace MsgPack.Serialization
 			return this.Register( typeof( T ), serializer );
 		}
 
-		internal bool Register( Type targetType, IMessagePackSerializer serializer )
+		internal bool Register( Type targetType, object serializer )
 		{
 			if ( serializer == null )
 			{

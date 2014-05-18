@@ -19,22 +19,20 @@
 #endregion -- License Terms --
 
 using System;
-
-using MsgPack.Serialization.DefaultSerializers;
 #if !SILVERLIGHT && !NETFX_35
 using System.Collections.Concurrent;
-#endif
+#endif // !SILVERLIGHT && !NETFX_35
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Threading;
-#if XAMIOS || UNITY_IPHONE
 using System.Globalization;
-#endif
 #if NETFX_CORE
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-#endif
+#endif // NETFX_CORE
+using System.Threading;
+
+using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization
 {
@@ -93,6 +91,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !XAMIOS && !UNITY_IPHONE
 #if !NETFX_CORE
 		private EmitterFlavor _emitterFlavor = EmitterFlavor.FieldBased;
 #else
@@ -113,6 +112,7 @@ namespace MsgPack.Serialization
 			get { return this._emitterFlavor; }
 			set { this._emitterFlavor = value; }
 		}
+#endif // !XAMIOS && !UNITY_IPHONE
 
 		private readonly SerializationCompatibilityOptions _compatibilityOptions;
 
@@ -132,6 +132,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !XAMIOS && !UNITY_IPHONE
 		private SerializationMethod _serializationMethod;
 
 		/// <summary>
@@ -168,6 +169,7 @@ namespace MsgPack.Serialization
 				this._serializationMethod = value;
 			}
 		}
+#endif // !XAMIOS && !UNITY_IPHONE
 
 		private EnumSerializationMethod _enumSerializationMethod;
 
@@ -215,6 +217,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !XAMIOS && !UNITY_IPHONE
 		private SerializationMethodGeneratorOption _generatorOption;
 
 		/// <summary>
@@ -254,6 +257,7 @@ namespace MsgPack.Serialization
 				this._generatorOption = value;
 			}
 		}
+#endif // !XAMIOS && !UNITY_IPHONE
 
 		private readonly DefaultConcreteTypeRepository _defaultCollectionTypes;
 
@@ -267,6 +271,17 @@ namespace MsgPack.Serialization
 		{
 			get { return this._defaultCollectionTypes; }
 		}
+
+#if !XAMIOS && !UNITY_IPHONE
+
+		/// <summary>
+		///		Gets or sets a value indicating whether runtime generation is disabled or not.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if runtime generation is disabled; otherwise, <c>false</c>.
+		/// </value>
+		internal bool IsRuntimeGenerationDisabled { get; set; }
+#endif // !XAMIOS && !UNITY_IPHONE
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.Default"/>.
@@ -368,120 +383,134 @@ namespace MsgPack.Serialization
 				serializer = this._serializers.Get<T>( this, providerParameter ) ?? GenericSerializer.Create<T>( this );
 				if ( serializer == null )
 				{
-#if XAMIOS || UNITY_IPHONE
-					if( typeof(T).GetIsInterface())
+#if !XAMIOS && !UNITY_IPHONE
+					if ( this.IsRuntimeGenerationDisabled )
 					{
-						var concreteCollectionType = this._defaultCollectionTypes.Get( typeof( T ) );
-						if ( concreteCollectionType != null )
+#endif // !XAMIOS && !UNITY_IPHONE
+						if ( typeof( T ).GetIsInterface() || typeof( T ).GetIsAbstract() )
 						{
-							serializer = GenericSerializer.CreateCollectionInterfaceSerializer( this, concreteCollectionType ) as MessagePackSerializer<T>;
-							if ( serializer != null )
+							var concreteCollectionType = this._defaultCollectionTypes.GetConcreteType( typeof( T ) );
+							if ( concreteCollectionType != null )
 							{
-								this.Serializers.Register( typeof( T ), serializer );
-								return serializer;
+								serializer =
+									GenericSerializer.CreateCollectionInterfaceSerializer( this, typeof( T ), concreteCollectionType )
+										as MessagePackSerializer<T>;
+
+								if ( serializer != null )
+								{
+									this.Serializers.Register( typeof( T ), serializer );
+									return serializer;
+								}
 							}
 						}
+
+						throw new InvalidOperationException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"The serializer for type '{0}' is not registered yet. On-the-fly generation is not supported in this platform.",
+								typeof( T )
+							)
+						);
+#if !XAMIOS && !UNITY_IPHONE
 					}
-					throw new InvalidOperationException( 
-						String.Format( 
-							CultureInfo.CurrentCulture, 
-							"The serializer for type '{0}' is not registered yet. On-the-fly generation is not supported in this platform.",
-							typeof( T )
-						)
-					);
-#else
-					object aquiredLock = null;
-					bool lockTaken = false;
-					try
+					// ReSharper disable once RedundantIfElseBlock
+					else
 					{
-						try { }
-						finally
+#endif // !XAMIOS && !UNITY_IPHONE
+						object aquiredLock = null;
+						bool lockTaken = false;
+						try
 						{
-							var newLock = new object();
-#if SILVERLIGHT || NETFX_35
-							Monitor.Enter( newLock );
-							try
-							{
-								lock( this._typeLock )
-								{
-									lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
-									if ( lockTaken )
-									{
-										aquiredLock = newLock;
-										this._typeLock.Add( typeof( T ), newLock );
-									}
-								}
-#else
-							bool newLockTaken = false;
-							try
-							{
-								Monitor.Enter( newLock, ref newLockTaken );
-								aquiredLock = this._typeLock.GetOrAdd( typeof( T ), _ => newLock );
-								lockTaken = newLock == aquiredLock;
-#endif // if  SILVERLIGHT || NETFX_35
-							}
+							try { }
 							finally
 							{
+								var newLock = new object();
 #if SILVERLIGHT || NETFX_35
-								if ( !lockTaken )
-#else
-								if ( !lockTaken && newLockTaken )
-#endif // if SILVERLIGHT || NETFX_35
+								Monitor.Enter( newLock );
+								try
 								{
-									// Release the lock which failed to become 'primary' lock.
-									Monitor.Exit( newLock );
+									lock( this._typeLock )
+									{
+										lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
+										if ( lockTaken )
+										{
+											aquiredLock = newLock;
+											this._typeLock.Add( typeof( T ), newLock );
+										}
+									}
+#else
+								bool newLockTaken = false;
+								try
+								{
+									Monitor.Enter( newLock, ref newLockTaken );
+									aquiredLock = this._typeLock.GetOrAdd( typeof( T ), _ => newLock );
+									lockTaken = newLock == aquiredLock;
+#endif // if  SILVERLIGHT || NETFX_35
+								}
+								finally
+								{
+#if SILVERLIGHT || NETFX_35
+									if ( !lockTaken )
+#else
+									if ( !lockTaken && newLockTaken )
+#endif // if SILVERLIGHT || NETFX_35
+									{
+										// Release the lock which failed to become 'primary' lock.
+										Monitor.Exit( newLock );
+									}
 								}
 							}
-						}
 
-						if ( Monitor.TryEnter( aquiredLock ) )
-						{
-							// Decrement monitor counter.
-							Monitor.Exit( aquiredLock );
-
-							if ( lockTaken )
+							if ( Monitor.TryEnter( aquiredLock ) )
 							{
-								// This thread creating new type serializer.
-								serializer = MessagePackSerializer.CreateInternal<T>( this );
+								// Decrement monitor counter.
+								Monitor.Exit( aquiredLock );
+
+								if ( lockTaken )
+								{
+									// This thread creating new type serializer.
+									serializer = MessagePackSerializer.CreateInternal<T>( this );
+								}
+								else
+								{
+									// This thread owns existing lock -- thus, constructing self-composite type.
+
+									// Prevent release owned lock.
+									aquiredLock = null;
+									return new LazyDelegatingMessagePackSerializer<T>( this, providerParameter );
+								}
 							}
 							else
 							{
-								// This thread owns existing lock -- thus, constructing self-composite type.
-
-								// Prevent release owned lock.
-								aquiredLock = null;
-								return new LazyDelegatingMessagePackSerializer<T>( this, providerParameter );
+								// Wait creation by other thread.
+								// Acquire as 'waiting' lock.
+								Monitor.Enter( aquiredLock );
 							}
 						}
-						else
+						finally
 						{
-							// Wait creation by other thread.
-							// Acquire as 'waiting' lock.
-							Monitor.Enter( aquiredLock );
-						}
-					}
-					finally
-					{
-						if ( lockTaken )
-						{
-#if SILVERLIGHT || NETFX_35
-							lock( this._typeLock )
+							if ( lockTaken )
 							{
-								this._typeLock.Remove( typeof( T ) );
-							}
+#if SILVERLIGHT || NETFX_35
+								lock( this._typeLock )
+								{
+									this._typeLock.Remove( typeof( T ) );
+								}
 #else
-							object dummy;
-							this._typeLock.TryRemove( typeof( T ), out dummy );
+								object dummy;
+								this._typeLock.TryRemove( typeof( T ), out dummy );
 #endif // if SILVERLIGHT || NETFX_35
-						}
+							}
 
-						if ( aquiredLock != null )
-						{
-							// Release primary lock or waiting lock.
-							Monitor.Exit( aquiredLock );
+							if ( aquiredLock != null )
+							{
+								// Release primary lock or waiting lock.
+								Monitor.Exit( aquiredLock );
+							}
 						}
+#if !XAMIOS && !UNITY_IPHONE
 					}
-#endif // if XAMIOS || UNITY_IPHONE
+#endif // !XAMIOS && !UNITY_IPHONE
 				}
 			}
 

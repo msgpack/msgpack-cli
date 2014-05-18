@@ -48,18 +48,6 @@ namespace MsgPack.Serialization
 		{
 			return new SerializationContext { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.CodeDomBased };
 		}
-
-		private SerializationContext  NewSerializationContext()
-		{
-			return new SerializationContext();
-		}
-
-
-		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
-		{
-			return MessagePackSerializer.CreateInternal<T>( context );
-		}
-		
 		private bool CanDump
 		{
 			get { return true; }
@@ -110,7 +98,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif
-		private static void TestEnumForByName<T>( SerializationContext context, T value, string property )
+		private void TestEnumForByName<T>( SerializationContext context, T value, string property )
 		{
 			var serializer = context.GetSerializer<T>();
 
@@ -142,7 +130,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void TestEnumForByName( SerializationContext context, Type builtType, params string[] builtMembers )
+		private void TestEnumForByName( SerializationContext context, Type builtType, params string[] builtMembers )
 		{
 			var serializer = context.GetSerializer( builtType );
 			var value = Enum.Parse( builtType, String.Join( ",", builtMembers ) );
@@ -159,7 +147,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void TestEnumForByUnderlyingValue<T>( SerializationContext context, T value, string property )
+		private void TestEnumForByUnderlyingValue<T>( SerializationContext context, T value, string property )
 		{
 			var serializer = context.GetSerializer<T>();
 
@@ -195,7 +183,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static void TestEnumForByUnderlyingValue( SerializationContext context, Type builtType, params string[] builtMembers )
+		private void TestEnumForByUnderlyingValue( SerializationContext context, Type builtType, params string[] builtMembers )
 		{
 			var serializer = context.GetSerializer( builtType );
 			var value = ( IFormattable )Enum.Parse( builtType, String.Join( ",", builtMembers ) );

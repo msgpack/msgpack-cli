@@ -70,15 +70,6 @@ namespace MsgPack.Serialization
 	[Timeout( 30000 )]
 	public class <#= serializationMethod #><#= emitterFlavor #>AutoMessagePackSerializerTest
 	{
-<#+
-	if ( forIos )
-	{
-#>
-		private static readonly SerializationContext _cachedContext = new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
-<#+
-	}
-#>
-
 		private SerializationContext GetSerializationContext()
 		{
 <#+
@@ -91,7 +82,7 @@ namespace MsgPack.Serialization
 	else
 	{
 #>
-			return _cachedContext;
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.<#= serializationMethod #> );
 <#+
 	}
 #>
@@ -115,7 +106,7 @@ namespace MsgPack.Serialization
 	else
 	{
 #>
-			return PreGeneratedSerializerActivator.CreateInternal<T>( context );
+			return context.GetSerializer<T>( context );
 <#+
 	}
 #>
@@ -944,7 +935,7 @@ namespace MsgPack.Serialization
 	else
 	{
 #>
-			var serializer = PreGeneratedSerializerActivator.CreateInternal<byte[]>( SerializationContext.Default );
+			var serializer = SerializationContext.Default.GetSerializer<byte[]>();
 <#+
 	}
 #>

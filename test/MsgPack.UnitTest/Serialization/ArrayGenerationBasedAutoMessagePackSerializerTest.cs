@@ -58,11 +58,9 @@ namespace MsgPack.Serialization
 	[Timeout( 30000 )]
 	public class ArrayGenerationBasedAutoMessagePackSerializerTest
 	{
-		private static readonly SerializationContext _cachedContext = new SerializationContext { SerializationMethod = SerializationMethod.Array };
-
 		private SerializationContext GetSerializationContext()
 		{
-			return _cachedContext;
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array );
 		}
 
 		private SerializationContext  NewSerializationContext()
@@ -73,7 +71,7 @@ namespace MsgPack.Serialization
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
-			return PreGeneratedSerializerActivator.CreateInternal<T>( context );
+			return context.GetSerializer<T>( context );
 		}
 		
 
@@ -441,7 +439,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_DefaultContext()
 		{
-			var serializer = PreGeneratedSerializerActivator.CreateInternal<byte[]>( SerializationContext.Default );
+			var serializer = SerializationContext.Default.GetSerializer<byte[]>();
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1 } );

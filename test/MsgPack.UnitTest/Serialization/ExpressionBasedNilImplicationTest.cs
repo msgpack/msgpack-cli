@@ -41,6 +41,15 @@ namespace MsgPack.Serialization
 {
 	public abstract class ExpressionBasedNilImplicationTest
 	{
+		private SerializationContext CreateSerializationContext()
+		{
+			return new SerializationContext { EmitterFlavor = EmitterFlavor.ExpressionBased };
+		}
+
+		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
+		{
+			return MessagePackSerializer.CreateInternal<T>( context );
+		}
 #if !NETFX_CORE
 
 #if MSTEST
@@ -93,33 +102,33 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestCreation_ValueType_OnlyNullIsInvalid()
 		{
-			Assert.NotNull( MessagePackSerializer.CreateInternal<NilImplicationTestTargetForValueTypeMemberDefault>( this.CreateSerializationContext() ) );
+			Assert.NotNull( CreateTarget<NilImplicationTestTargetForValueTypeMemberDefault>( this.CreateSerializationContext() ) );
 			Assert.Throws<SerializationException>(
-				() => MessagePackSerializer.CreateInternal<NilImplicationTestTargetForValueTypeNull>( this.CreateSerializationContext() )
+				() => CreateTarget<NilImplicationTestTargetForValueTypeNull>( this.CreateSerializationContext() )
 			);
-			Assert.NotNull( MessagePackSerializer.CreateInternal<NilImplicationTestTargetForValueTypeProhibit>( this.CreateSerializationContext() ) );
+			Assert.NotNull( CreateTarget<NilImplicationTestTargetForValueTypeProhibit>( this.CreateSerializationContext() ) );
 		}
 
 		[Test]
 		public void TestCreation_ReferenceType_AllOk()
 		{
-			Assert.NotNull( MessagePackSerializer.CreateInternal<NilImplicationTestTargetForReferenceType>( this.CreateSerializationContext() ) );
+			Assert.NotNull( CreateTarget<NilImplicationTestTargetForReferenceType>( this.CreateSerializationContext() ) );
 		}
 
 		[Test]
 		public void TestCreation_NullableValueType_AllOk()
 		{
-			Assert.NotNull( MessagePackSerializer.CreateInternal<NilImplicationTestTargetForNullableValueType>( this.CreateSerializationContext() ) );
+			Assert.NotNull( CreateTarget<NilImplicationTestTargetForNullableValueType>( this.CreateSerializationContext() ) );
 		}
 
 		[Test]
 		public void TestCreation_ReadOnlyCollectionProperty_OnlyNullIsInvalid()
 		{
-			Assert.NotNull( MessagePackSerializer.CreateInternal<NilImplicationTestTargetForReadOnlyCollectionPropertyMemberDefault>( this.CreateSerializationContext() ) );
+			Assert.NotNull( CreateTarget<NilImplicationTestTargetForReadOnlyCollectionPropertyMemberDefault>( this.CreateSerializationContext() ) );
 			Assert.Throws<SerializationException>(
-				() => MessagePackSerializer.CreateInternal<NilImplicationTestTargetForReadOnlyCollectionPropertyNull>( this.CreateSerializationContext() )
+				() => CreateTarget<NilImplicationTestTargetForReadOnlyCollectionPropertyNull>( this.CreateSerializationContext() )
 			);
-			Assert.NotNull( MessagePackSerializer.CreateInternal<NilImplicationTestTargetForReadOnlyCollectionPropertyProhibit>( this.CreateSerializationContext() ) );
+			Assert.NotNull( CreateTarget<NilImplicationTestTargetForReadOnlyCollectionPropertyProhibit>( this.CreateSerializationContext() ) );
 		}
 
 		// ------ Packing ------
@@ -133,7 +142,7 @@ namespace MsgPack.Serialization
 		{
 			var context = this.CreateSerializationContext();
 			context.SerializationMethod = method;
-			var seraizlier = MessagePackSerializer.CreateInternal<T>( context );
+			var seraizlier = CreateTarget<T>( context );
 
 			using ( var buffer = new MemoryStream() )
 			{
@@ -239,7 +248,7 @@ namespace MsgPack.Serialization
 		{
 			var context = this.CreateSerializationContext();
 			context.SerializationMethod = method;
-			var seraizlier = MessagePackSerializer.CreateInternal<T>( context );
+			var seraizlier = CreateTarget<T>( context );
 
 			using ( var buffer = new MemoryStream() )
 			{
@@ -278,7 +287,7 @@ namespace MsgPack.Serialization
 		{
 			var context = this.CreateSerializationContext();
 			context.SerializationMethod = method;
-			var seraizlier = MessagePackSerializer.CreateInternal<T>( context );
+			var seraizlier = CreateTarget<T>( context );
 
 			using ( var buffer = new MemoryStream() )
 			{
@@ -520,7 +529,7 @@ namespace MsgPack.Serialization
 
 				var context = this.CreateSerializationContext();
 				context.SerializationMethod = SerializationMethod.Map;
-				var target = MessagePackSerializer.CreateInternal<ComplexTypeWithTwoMember>( context );
+				var target = CreateTarget<ComplexTypeWithTwoMember>( context );
 				var result = target.Unpack( buffer );
 
 				Assert.That( result.Value1, Is.EqualTo( valueOfValue1 ) );
@@ -551,17 +560,12 @@ namespace MsgPack.Serialization
 
 				var context = this.CreateSerializationContext();
 				context.SerializationMethod = SerializationMethod.Map;
-				var target = MessagePackSerializer.CreateInternal<ComplexTypeWithTwoMember>( context );
+				var target = CreateTarget<ComplexTypeWithTwoMember>( context );
 				var result = target.Unpack( buffer );
 
 				Assert.That( result.Value1, Is.EqualTo( valueOfValue1 ) );
 				Assert.That( result.Value2, Is.EqualTo( valueOfValue2 ) );
 			}
-		}
-
-		private SerializationContext CreateSerializationContext()
-		{
-			return new SerializationContext { EmitterFlavor = EmitterFlavor.ExpressionBased };
 		}
 	}
 }	
