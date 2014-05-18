@@ -42,8 +42,8 @@ namespace MsgPack.Serialization
 			SerializationContext.Default = new SerializationContext();
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
 #pragma warning disable 618
+#if !XAMIOS && !UNITY_IPHONE
 		[Test]
 		public void TestCreate1_WithoutContext_NewInstance()
 		{

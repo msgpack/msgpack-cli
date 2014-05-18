@@ -138,11 +138,13 @@ namespace MsgPack.Serialization
 				? _arrayBasedActivators
 				: _mapBasedAactivators;
 
+			/*
 			Func<SerializationContext, IMessagePackSerializer> activator;
 			if ( activators.TryGetValue( typeof( T ), out activator ) )
 			{
 				return activator( context ) as MessagePackSerializer<T>;
 			}
+			*/
 
 			foreach ( var entry in activators )
 			{
@@ -157,7 +159,62 @@ namespace MsgPack.Serialization
 #endif // if !XAMIOS && !UNITY_IPHONE
 		}
 
-		private static object CreateCore( Type targetType, SerializationContext context )
+
+		/// <summary>
+		///		Instantiates new pre-generated serializer instance.
+		/// </summary>
+		/// <param name="context">Ignored.</param>
+		/// <param name="targetType">The type to serialize.</param>
+		/// <returns>A new pre-generated serializer instance.</returns>
+		internal static IMessagePackSerializer CreateInternal( SerializationContext context, Type targetType )
+		{
+#if !XAMIOS && !UNITY_IPHONE
+			// Simulate Xamarin iOS or Unity iOS behavior...
+
+			if ( targetType == typeof( MessagePackObject )
+			|| targetType.GetCollectionTraits().CollectionType != CollectionKind.NotCollection
+			|| ( targetType.GetIsGenericType() && targetType.FullName.StartsWith( "System.Tuple`" ) )
+			)
+			{
+				return MessagePackSerializer.CreateInternal( context, targetType );
+			}
+
+			if ( targetType.IsInterface )
+			{
+				return
+					GenericSerializer.CreateCollectionInterfaceSerializer( context, context.DefaultCollectionTypes.Get( targetType ) )
+						as IMessagePackSerializer;
+			}
+
+			return CreateCore( typeof( T ), context );
+#else
+			var activators =
+				context.SerializationMethod == SerializationMethod.Array
+				? _arrayBasedActivators
+				: _mapBasedAactivators;
+
+			/*
+			Func<SerializationContext, IMessagePackSerializer> activator;
+			if ( activators.TryGetValue( targetType, out activator ) )
+			{
+				return activator( context );
+			}
+			*/
+
+			foreach ( var entry in activators )
+			{
+				if ( !context.Serializers.Register( entry.Key, entry.Value( context ) ) )
+				{
+					// fast path
+					break;
+				}
+			}
+
+			return context.GetSerializer( targetType );
+#endif // if !XAMIOS && !UNITY_IPHONE
+		}
+
+		private static IMessagePackSerializer CreateCore( Type targetType, SerializationContext context )
 		{
 			var activators =
 				context.SerializationMethod == SerializationMethod.Array

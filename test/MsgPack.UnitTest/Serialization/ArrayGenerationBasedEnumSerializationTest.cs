@@ -43,7 +43,7 @@ namespace MsgPack.Serialization
 		private static readonly SerializationContext _cachedContext = new SerializationContext { SerializationMethod = SerializationMethod.Array };
 		private SerializationContext GetSerializationContext()
 		{
-			return _cachedContext;
+			return NewSerializationContext();
 		}
 
 		private SerializationContext  NewSerializationContext()
@@ -52,14 +52,19 @@ namespace MsgPack.Serialization
 		}
 
 
-		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
+		private static MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
 			return PreGeneratedSerializerActivator.CreateInternal<T>( context );
+		}
+
+		private static IMessagePackSerializer CreateTarget( SerializationContext context, Type targetType )
+		{
+			return PreGeneratedSerializerActivator.CreateInternal( context, targetType );
 		}
 		
 		private static void TestEnumForByName<T>( SerializationContext context, T value, string property )
 		{
-			var serializer = context.GetSerializer<T>();
+			var serializer = CreateTarget<T>( context );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -91,7 +96,7 @@ namespace MsgPack.Serialization
 
 		private static void TestEnumForByName( SerializationContext context, Type builtType, params string[] builtMembers )
 		{
-			var serializer = context.GetSerializer( builtType );
+			var serializer = CreateTarget( context, builtType );
 			var value = Enum.Parse( builtType, String.Join( ",", builtMembers ) );
 
 			using ( var stream = new MemoryStream() )
@@ -108,7 +113,7 @@ namespace MsgPack.Serialization
 
 		private static void TestEnumForByUnderlyingValue<T>( SerializationContext context, T value, string property )
 		{
-			var serializer = context.GetSerializer<T>();
+			var serializer = CreateTarget<T>( context );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -144,7 +149,7 @@ namespace MsgPack.Serialization
 
 		private static void TestEnumForByUnderlyingValue( SerializationContext context, Type builtType, params string[] builtMembers )
 		{
-			var serializer = context.GetSerializer( builtType );
+			var serializer = CreateTarget( context, builtType );
 			var value = ( IFormattable )Enum.Parse( builtType, String.Join( ",", builtMembers ) );
 
 			using ( var stream = new MemoryStream() )

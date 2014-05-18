@@ -867,6 +867,78 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
       <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByNameSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByNameSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByteSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumDefaultSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumDefaultSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt16Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt32Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt64Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumSByteSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumSByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt16Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt32Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByNameSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByNameSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByteSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumDefaultSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumDefaultSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt16Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt32Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt64Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumSByteSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumSByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt16Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt32Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

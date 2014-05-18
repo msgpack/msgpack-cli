@@ -437,6 +437,21 @@
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializerExtensions.cs">
       <Link>Serialization\MessagePackSerializerExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\CollectionSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\CollectionSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DictionarySerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\DictionarySerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectDictionaryMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectDictionaryMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
+      <Link>Serialization\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs">
+      <Link>Serialization\Reflection\ReflectionExtensions.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">

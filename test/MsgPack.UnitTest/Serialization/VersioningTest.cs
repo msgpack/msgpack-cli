@@ -40,7 +40,7 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.CreateInternal<T>( context );
+			var serializer = PreGeneratedSerializerActivator.CreateInternal<T>( context );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -97,7 +97,7 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.CreateInternal<T>( context );
+			var serializer = PreGeneratedSerializerActivator.CreateInternal<T>( context );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -136,7 +136,7 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.CreateInternal<VersioningTestTarget>( context );
+			var serializer = PreGeneratedSerializerActivator.CreateInternal<VersioningTestTarget>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				if ( method == SerializationMethod.Array )
@@ -165,7 +165,7 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext { SerializationMethod = method, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.CreateInternal<VersioningTestTarget>( context );
+			var serializer = PreGeneratedSerializerActivator.CreateInternal<VersioningTestTarget>( context );
 
 			using ( var stream = new MemoryStream() )
 			{
@@ -199,7 +199,7 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext { SerializationMethod = SerializationMethod.Map, EmitterFlavor = flavor };
 
-			var serializer = MessagePackSerializer.CreateInternal<VersioningTestTarget>( context );
+			var serializer = PreGeneratedSerializerActivator.CreateInternal<VersioningTestTarget>( context );
 
 			using ( var stream = new MemoryStream() )
 			{

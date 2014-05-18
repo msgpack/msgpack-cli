@@ -31,8 +31,7 @@ namespace MsgPack.Serialization
 {
 	internal static class ReflectionExtensions
 	{
-		// TODO: Metadata
-		private static readonly PropertyInfo _icollectionCount = FromExpression.ToProperty( ( ICollection value ) => value.Count );
+		private static readonly PropertyInfo _icollectionCount = typeof( ICollection ).GetProperty( "Count" );
 
 		public static Type GetMemberValueType( this MemberInfo source )
 		{
