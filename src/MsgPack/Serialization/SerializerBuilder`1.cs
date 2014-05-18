@@ -128,13 +128,27 @@ namespace MsgPack.Serialization
 				typeof( TObject ).FindMembers(
 					MemberTypes.Field | MemberTypes.Property,
 					BindingFlags.Public | BindingFlags.Instance,
-					( member, criteria ) => true,
+					( member, criteria ) =>
+					{
+						var property = member as PropertyInfo;
+						if ( property != null )
+						{
+							return property.GetGetMethod() != null && property.GetSetMethod() != null;
+						}
+						var field = member as FieldInfo;
+						if ( field != null )
+						{
+							return !field.IsInitOnly;
+						}
+						return false;
+					},
 					null
 				);
 			var filtered = members.Where( item => Attribute.IsDefined( item, typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #else
 			var members =
-				typeof( TObject ).GetRuntimeFields().Where( f => f.IsPublic && !f.IsStatic ).OfType<MemberInfo>().Concat( typeof( TObject ).GetRuntimeProperties().Where( p => p.GetMethod != null && p.GetMethod.IsPublic && !p.GetMethod.IsStatic ) );
+				typeof( TObject ).GetRuntimeFields().Where( f => f.IsPublic && !f.IsStatic && !f.IsInitOnly ).OfType<MemberInfo>().Concat(
+				typeof( TObject ).GetRuntimeProperties().Where( p => p.GetMethod != null && p.SetMethod != null && p.GetMethod.IsPublic && !p.GetMethod.IsStatic ) );
 			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #endif
 
