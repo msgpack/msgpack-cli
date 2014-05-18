@@ -21,7 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -38,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			Type nullableUnderlyingType;
-			if ( (nullableUnderlyingType = Nullable.GetUnderlyingType( typeof( T ) )) != null )
+			if ( ( nullableUnderlyingType = Nullable.GetUnderlyingType( typeof( T ) ) ) != null )
 			{
 				return CreateNullableSerializer<T>( context, nullableUnderlyingType );
 			}
@@ -54,7 +56,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				if ( typeDefinition == typeof( Dictionary<,> ) )
 				{
 					var genericTypeArguments = typeof( T ).GetGenericArguments();
-					return CreateDictionarySerializer<T>( context, genericTypeArguments[ 0 ], genericTypeArguments[1] );
+					return CreateDictionarySerializer<T>( context, genericTypeArguments[ 0 ], genericTypeArguments[ 1 ] );
 				}
 			}
 
@@ -161,41 +163,53 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if DEBUG
 					Contract.Assert( false, "Unknown type:" + typeof( T ) );
 #endif
-// ReSharper disable HeuristicUnreachableCode
+					// ReSharper disable HeuristicUnreachableCode
 					return null;
-// ReSharper restore HeuristicUnreachableCode
+					// ReSharper restore HeuristicUnreachableCode
 				}
 			}
 #endif
 		}
 
-		public static IMessagePackSerializer CreateCollectionInterfaceSerializer( SerializationContext context, Type targetType )
+		public static IMessagePackSerializer CreateCollectionInterfaceSerializer( SerializationContext context, Type abstractType, Type concreteType )
 		{
 			Type serializerType;
-			var traits = targetType.GetCollectionTraits();
-			switch ( traits.CollectionType )
+
+			if ( abstractType.GetGenericTypeDefinition() == typeof( IList<> ) )
 			{
-				case CollectionKind.Array:
-				{
-					serializerType = typeof( CollectionSerializer<> ).MakeGenericType( traits.ElementType );
-					break;
-				}
-				case CollectionKind.Map:
-				{
-					serializerType =
-						typeof( DictionarySerializer<,> ).MakeGenericType(
-							traits.ElementType.GetGenericArguments()[ 0 ],
-							traits.ElementType.GetGenericArguments()[ 1 ] 
-						);
-					break;
-				}
-				default:
-				{
-					return null;
-				}
+				serializerType = typeof( ListSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
+			}
+#if !NETFX_35
+			else if ( abstractType.GetGenericTypeDefinition() == typeof( ISet<> ) )
+			{
+				serializerType = typeof( SetSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
+			}
+#endif // !NETFX_35
+			else if ( abstractType.GetGenericTypeDefinition() == typeof( ICollection<> ) )
+			{
+				serializerType = typeof( CollectionSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
+			}
+			else if ( abstractType.GetGenericTypeDefinition() == typeof( IEnumerable<> ) )
+			{
+				serializerType = typeof( EnumerableSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
+
+			}
+			else if ( abstractType.GetGenericTypeDefinition() == typeof( IDictionary<,> ) )
+			{
+				serializerType =
+					typeof( DictionarySerializer<,> ).MakeGenericType(
+					abstractType.GetGenericArguments()[ 0 ],
+					abstractType.GetGenericArguments()[ 1 ]
+					);
+			}
+			else
+			{
+				throw new NotSupportedException(
+					String.Format( CultureInfo.CurrentCulture, "Abstract type '{0}' is not supported.", abstractType )
+				);
 			}
 
-			return Activator.CreateInstance( serializerType, context, targetType ) as IMessagePackSerializer;
+			return Activator.CreateInstance( serializerType, context, concreteType ) as IMessagePackSerializer;
 		}
 
 		/// <summary>

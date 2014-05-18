@@ -24,22 +24,22 @@ using System.Collections.Generic;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
-	///		Collection interface serializer.
+	///		List interface serializer.
 	/// </summary>
 	/// <typeparam name="T">The type of the item of collection.</typeparam>
-	internal sealed class CollectionSerializer<T> : MessagePackSerializer<ICollection<T>>
+	internal sealed class ListSerializer<T> : MessagePackSerializer<IList<T>>
 	{
 		private readonly MessagePackSerializer<T> _itemSerializer;
 		private readonly IMessagePackSerializer _collectionDeserializer;
 
-		public CollectionSerializer( SerializationContext ownerContext, Type targetType )
+		public ListSerializer( SerializationContext ownerContext, Type targetType )
 			: base( ownerContext )
 		{
 			this._itemSerializer = ownerContext.GetSerializer<T>();
 			this._collectionDeserializer = ownerContext.GetSerializer( targetType );
 		}
 
-		protected internal override void PackToCore( Packer packer, ICollection<T> objectTree )
+		protected internal override void PackToCore( Packer packer, IList<T> objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
 			foreach ( var item in objectTree )
@@ -48,9 +48,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		protected internal override ICollection<T> UnpackFromCore( Unpacker unpacker )
+		protected internal override IList<T> UnpackFromCore( Unpacker unpacker )
 		{
-			return this._collectionDeserializer.UnpackFrom( unpacker ) as ICollection<T>;
+			return this._collectionDeserializer.UnpackFrom( unpacker ) as IList<T>;
 		}
 	}
 }

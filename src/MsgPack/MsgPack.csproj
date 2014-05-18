@@ -182,6 +182,7 @@
     <Compile Include="Serialization\DefaultSerializers\ArraySerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\CollectionSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\DictionarySerializer`2.cs" />
+    <Compile Include="Serialization\DefaultSerializers\EnumerableSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\GenericSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
@@ -191,7 +192,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ArraySerializer.Primitives.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\DefaultSerializers\ListSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\MsgPack_MessagePackObjectDictionaryMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\SetSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />

@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -20,37 +20,46 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
+#if !NETFX_35
 	/// <summary>
-	///		Collection interface serializer.
+	///		Set interface serializer.
 	/// </summary>
 	/// <typeparam name="T">The type of the item of collection.</typeparam>
-	internal sealed class CollectionSerializer<T> : MessagePackSerializer<ICollection<T>>
+	internal sealed class SetSerializer<T> : MessagePackSerializer<ISet<T>>
 	{
 		private readonly MessagePackSerializer<T> _itemSerializer;
 		private readonly IMessagePackSerializer _collectionDeserializer;
 
-		public CollectionSerializer( SerializationContext ownerContext, Type targetType )
+		public SetSerializer( SerializationContext ownerContext, Type targetType )
 			: base( ownerContext )
 		{
 			this._itemSerializer = ownerContext.GetSerializer<T>();
 			this._collectionDeserializer = ownerContext.GetSerializer( targetType );
 		}
 
-		protected internal override void PackToCore( Packer packer, ICollection<T> objectTree )
+		protected internal override void PackToCore( Packer packer, ISet<T> objectTree )
 		{
-			packer.PackArrayHeader( objectTree.Count );
-			foreach ( var item in objectTree )
+			ICollection<T> asICollection;
+			if ( ( asICollection = objectTree as ICollection<T> ) == null )
+			{
+				asICollection = objectTree.ToArray();
+			}
+
+			packer.PackArrayHeader( asICollection.Count );
+			foreach ( var item in asICollection )
 			{
 				this._itemSerializer.PackTo( packer, item );
 			}
 		}
 
-		protected internal override ICollection<T> UnpackFromCore( Unpacker unpacker )
+		protected internal override ISet<T> UnpackFromCore( Unpacker unpacker )
 		{
-			return this._collectionDeserializer.UnpackFrom( unpacker ) as ICollection<T>;
+			return this._collectionDeserializer.UnpackFrom( unpacker ) as ISet<T>;
 		}
 	}
+#endif // !NETFX_35
 }
