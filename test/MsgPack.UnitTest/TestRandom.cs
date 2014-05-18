@@ -70,28 +70,36 @@ namespace MsgPack
 			return BitConverter.ToChar( this._castBuffer, 0 );
 		}
 
+#pragma warning disable 3021
 		[CLSCompliant( false )]
+#pragma warning restore 3021
 		public SByte NextSByte()
 		{
 			base.NextBytes( this._castBuffer );
 			return unchecked( ( sbyte )this._castBuffer[ 0 ] );
 		}
 
+#pragma warning disable 3021
 		[CLSCompliant( false )]
+#pragma warning restore 3021
 		public UInt16 NextUInt16()
 		{
 			base.NextBytes( this._castBuffer );
 			return BitConverter.ToUInt16( this._castBuffer, 0 );
 		}
 
+#pragma warning disable 3021
 		[CLSCompliant( false )]
+#pragma warning restore 3021
 		public UInt32 NextUInt32()
 		{
 			base.NextBytes( this._castBuffer );
 			return BitConverter.ToUInt32( this._castBuffer, 0 );
 		}
 
+#pragma warning disable 3021
 		[CLSCompliant( false )]
+#pragma warning restore 3021
 		public UInt64 NextUInt64()
 		{
 			base.NextBytes( this._castBuffer );

@@ -123,7 +123,9 @@ foreach( var __type in
 {
 #>
 
+#pragma warning disable 3021
 		[CLSCompliant( false )]
+#pragma warning restore 3021
 		public <#= __type.Name #> Next<#= __type.Name #>()
 		{
 			base.NextBytes( this._castBuffer );

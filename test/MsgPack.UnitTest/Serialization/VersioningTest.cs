@@ -66,30 +66,6 @@ namespace MsgPack.Serialization
 
 				var result = serializer.Unpack( stream );
 
-				/*
-				if ( result is IMessagePackExtensibleObject )
-				{
-					var extensionData = ( ( IMessagePackExtensibleObject )result ).ExtensionData;
-					Assert.That( extensionData.IsNil, Is.False );
-
-					if ( method == SerializationMethod.Array )
-					{
-						Assert.That( extensionData.AsList().Count, Is.EqualTo( 4 ) );
-						Assert.That( extensionData.AsList()[ 0 ] == 1 );
-						Assert.That( extensionData.AsList()[ 1 ] == -1 );
-						Assert.That( extensionData.AsList()[ 2 ] == "a" );
-						Assert.That( extensionData.AsList()[ 3 ].IsNil );
-					}
-					else
-					{
-						Assert.That( extensionData.AsDictionary().Count, Is.EqualTo( 4 ) );
-						Assert.That( extensionData.AsDictionary()[ "Field1" ] == 1 );
-						Assert.That( extensionData.AsDictionary()[ "Field2" ] == -1 );
-						Assert.That( extensionData.AsDictionary()[ "Field3" ] == "a" );
-						Assert.That( extensionData.AsDictionary()[ "Extra" ].IsNil );
-					}
-				}
-				 */
 			}
 		}
 

@@ -58,7 +58,6 @@ namespace MsgPack.Serialization
 	[Timeout( 30000 )]
 	public class ArrayExpressionBasedAutoMessagePackSerializerTest
 	{
-
 		private SerializationContext GetSerializationContext()
 		{
 			return new SerializationContext { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ExpressionBased };
@@ -654,7 +653,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( expected ) );
 			}
 		}
-#endif
+#endif // !NETFX_35
 
 		[Test]
 		public void TestEmptyBytes()
