@@ -67,7 +67,6 @@ namespace MsgPack.Serialization
 			result.Add( typeof( SimpleCollection<MessagePackObject[]> ) ); 
 			result.Add( typeof( Collection<MessagePackObject> ) ); 
 			result.Add( typeof( Collection<MessagePackObject[]> ) ); 
-			//result.Add( typeof( List<MessagePackObject> ) ); 
 			result.Add( typeof( List<MessagePackObject[]> ) ); 
 			result.Add( typeof( HashSet<MessagePackObject> ) ); 
 			result.Add( typeof( HashSet<MessagePackObject[]> ) ); 
@@ -89,7 +88,6 @@ namespace MsgPack.Serialization
 			result.Add( typeof( ObservableCollection<System.Int32[]> ) ); 
 			result.Add( typeof( StringKeyedCollection<System.Int32> ) ); 
 			result.Add( typeof( StringKeyedCollection<System.Int32[]> ) ); 
-			//result.Add( typeof( Dictionary<MessagePackObject, MessagePackObject> ) );
 			result.Add( typeof( Dictionary<object, object> ) );
 			result.Add( typeof( Dictionary<String, DateTime> ) );
 			result.Add( typeof( Dictionary<String, int> ) );
@@ -105,13 +103,12 @@ namespace MsgPack.Serialization
 			result.Add( typeof( DataMemberAttributeNamedPropertyTestTarget ) ); 
 			result.Add( typeof( Image ) ); 
 			result.Add( typeof( TestValueType ) ); 
-			result.Add( typeof( Object ) ); 
-			result.Add( typeof( MessagePackObject ) ); 
 			result.Add( typeof( DayOfWeek ) ); 
 			result.Add( typeof( VersioningTestTarget ) ); 
 			result.Add( typeof( EnumDefault ) ); 
 			result.Add( typeof( EnumByName ) ); 
 			result.Add( typeof( EnumByUnderlyingValue ) ); 
+			result.Add( typeof( EnumMemberObject ) ); 
 			result.Add( typeof( EnumByte ) ); 
 			result.Add( typeof( EnumSByte ) ); 
 			result.Add( typeof( EnumInt16 ) ); 
@@ -120,6 +117,16 @@ namespace MsgPack.Serialization
 			result.Add( typeof( EnumUInt32 ) ); 
 			result.Add( typeof( EnumInt64 ) ); 
 			result.Add( typeof( EnumUInt64 ) ); 
+			result.Add( typeof( EnumByteFlags ) ); 
+			result.Add( typeof( EnumSByteFlags ) ); 
+			result.Add( typeof( EnumInt16Flags ) ); 
+			result.Add( typeof( EnumUInt16Flags ) ); 
+			result.Add( typeof( EnumInt32Flags ) ); 
+			result.Add( typeof( EnumUInt32Flags ) ); 
+			result.Add( typeof( EnumInt64Flags ) ); 
+			result.Add( typeof( EnumUInt64Flags ) ); 
+			result.Add( typeof( ListValueType<int> ) );
+			result.Add( typeof( DictionaryValueType<int, int> ) );
 			return result;
 		}
 	}

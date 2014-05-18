@@ -302,6 +302,72 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_DictionaryValueType_2_System_Int32_System_Int32_Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_DictionaryValueType_2_System_Int32_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByNameSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByNameSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByteFlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByteFlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByteSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumDefaultSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumDefaultSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt16FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt16FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt16Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt32FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt32FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt32Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt64FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt64FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt64Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumMemberObjectSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumMemberObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumSByteFlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumSByteFlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumSByteSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumSByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt16FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt16FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt16Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt32FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt32FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt32Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
     </Compile>
@@ -353,6 +419,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_TestValueTypeSerializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_TestValueTypeSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
@@ -391,9 +460,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_MsgPack_MessagePackObjectArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_MsgPack_MessagePackObject_Serializer.cs">
-      <Link>Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_System_DateTimeArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_List_1_System_DateTimeArray_Serializer.cs</Link>
@@ -521,6 +587,72 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_DictionaryValueType_2_System_Int32_System_Int32_Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_DictionaryValueType_2_System_Int32_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByNameSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByNameSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByteFlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByteFlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByteSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumDefaultSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumDefaultSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt16FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt16FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt16Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt32FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt32FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt32Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt64FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt64FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt64Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumMemberObjectSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumMemberObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumSByteFlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumSByteFlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumSByteSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumSByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt16FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt16FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt16Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt32FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt32FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt32Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
     </Compile>
@@ -572,6 +704,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_TestValueTypeSerializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_TestValueTypeSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
@@ -610,9 +745,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_MsgPack_MessagePackObjectArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_MsgPack_MessagePackObject_Serializer.cs">
-      <Link>Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_System_DateTimeArray_Serializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_List_1_System_DateTimeArray_Serializer.cs</Link>

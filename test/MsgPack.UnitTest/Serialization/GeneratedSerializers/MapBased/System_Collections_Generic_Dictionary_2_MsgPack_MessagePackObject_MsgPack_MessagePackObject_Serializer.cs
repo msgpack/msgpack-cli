@@ -19,7 +19,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         
         public System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
-            this._serializer0 = this.OwnerContext.GetSerializer<MsgPack.MessagePackObject>();
+            this._serializer0 = context.GetSerializer<MsgPack.MessagePackObject>();
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject> objectTree) {

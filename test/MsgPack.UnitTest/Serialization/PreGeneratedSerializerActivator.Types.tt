@@ -19,6 +19,18 @@ var collectionElementTypes =
 		typeof( int ).FullName,
 	};
 
+var enumUnderyingTypes =
+	new []
+	{
+		typeof( byte ),
+		typeof( sbyte ),
+		typeof( short ),
+		typeof( ushort ),
+		typeof( int ), 
+		typeof( uint ),
+		typeof( long ),
+		typeof( ulong ),
+	};
 var targetTypes =
 	new string[]
 	{
@@ -34,25 +46,14 @@ var targetTypes =
 		"DataMemberAttributeNamedPropertyTestTarget",
 		"Image",
 		"TestValueType",
-		"Object",
-		"MessagePackObject",
 		"DayOfWeek",
 		"VersioningTestTarget",
 		"EnumDefault",
 		"EnumByName",
-		"EnumByUnderlyingValue"
-	}.Concat( 
-		new []
-		{
-			typeof( byte ),
-			typeof( sbyte ),
-			typeof( short ),
-			typeof( ushort ),
-			typeof( int ), 
-			typeof( uint ),
-			typeof( long ),
-			typeof( ulong ),
-		}.Select( t => "Enum" + t.Name )
+		"EnumByUnderlyingValue",
+		"EnumMemberObject",
+	}.Concat( enumUnderyingTypes.Select( t => "Enum" + t.Name )
+	).Concat( enumUnderyingTypes.Select( t => "Enum" + t.Name  + "Flags" )
 	).ToArray();
 
 #>
@@ -99,7 +100,14 @@ namespace MsgPack.Serialization
 			result.Add( typeof( SimpleCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( Collection<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( Collection<#= "<" + collectionElementType + "[]>" #> ) ); 
+<#
+		if ( collectionElementType != "MessagePackObject" )
+		{
+#>
 			result.Add( typeof( List<#= "<" + collectionElementType + ">" #> ) ); 
+<#
+		}
+#>
 			result.Add( typeof( List<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( HashSet<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( HashSet<#= "<" + collectionElementType + "[]>" #> ) ); 
@@ -110,7 +118,6 @@ namespace MsgPack.Serialization
 <#
 	}
 #>
-			result.Add( typeof( Dictionary<MessagePackObject, MessagePackObject> ) );
 			result.Add( typeof( Dictionary<object, object> ) );
 			result.Add( typeof( Dictionary<String, DateTime> ) );
 			result.Add( typeof( Dictionary<String, int> ) );
@@ -122,6 +129,8 @@ namespace MsgPack.Serialization
 <#
 	}
 #>
+			result.Add( typeof( ListValueType<int> ) );
+			result.Add( typeof( DictionaryValueType<int, int> ) );
 			return result;
 		}
 	}
