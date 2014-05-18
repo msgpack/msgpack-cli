@@ -57,7 +57,6 @@
     <Reference Include="System.Numerics, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
