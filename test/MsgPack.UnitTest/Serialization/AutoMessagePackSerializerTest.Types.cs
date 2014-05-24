@@ -1213,4 +1213,9 @@ namespace MsgPack.Serialization
 	{
 		public Stream NonCollection { get; set; }
 	}
+
+	public class HasEnumerable
+	{
+		public IEnumerable<int> Numbers { get; set; }
+	}
 }

@@ -876,7 +876,6 @@ namespace MsgPack.Serialization
 				Assert.That( stream.ToArray(), Is.EqualTo( new byte[] { MessagePackCode.Bin8, 1, 1 } ) );
 			}
 		}
-
 		[Test]
 		public void TestExt_DefaultContext()
 		{
@@ -1043,11 +1042,6 @@ namespace MsgPack.Serialization
 				Assert.That( resultNumbers[ 0 ], Is.EqualTo( 1 ) );
 				Assert.That( resultNumbers[ 1 ], Is.EqualTo( 2 ) );
 			}
-		}
-
-		public class HasEnumerable
-		{
-			public IEnumerable<int> Numbers { get; set; }
 		}
 
 		[Test]

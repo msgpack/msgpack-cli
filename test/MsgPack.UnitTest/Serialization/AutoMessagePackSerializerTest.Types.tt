@@ -758,6 +758,11 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	{
 		public Stream NonCollection { get; set; }
 	}
+
+	public class HasEnumerable
+	{
+		public IEnumerable<int> Numbers { get; set; }
+	}
 }
 <#+
 private static string ToTypeName( Type type )

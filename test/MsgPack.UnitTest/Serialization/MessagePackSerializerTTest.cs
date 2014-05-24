@@ -39,6 +39,7 @@ using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.Test
 using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
+using IgnoreAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.IgnoreAttribute;
 #endif
 
 namespace MsgPack.Serialization
@@ -459,7 +460,7 @@ namespace MsgPack.Serialization
 
 		private void TestIssue10_ReadXxxCore( Inner inner )
 		{
-			var serializer = MessagePackSerializer.CreateInternal<Outer>( SerializationContext.Default );
+			var serializer = CreateTarget<Outer>();
 			var outer = new Outer();
 			outer.Inner = inner;
 			var bytes = serializer.PackSingleObject( outer );
@@ -542,7 +543,7 @@ namespace MsgPack.Serialization
 
 		private void TestIssue10_Reader( Inner inner )
 		{
-			var serializer = MessagePackSerializer.CreateInternal<Outer>( SerializationContext.Default );
+			var serializer = CreateTarget<Outer>();
 			var outer = new Outer();
 			outer.Inner = inner;
 			var bytes = serializer.PackSingleObject( outer );

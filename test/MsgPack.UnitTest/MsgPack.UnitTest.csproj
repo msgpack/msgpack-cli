@@ -288,6 +288,7 @@
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt32Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64Serializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_HasEnumerableSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_InnerSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_OuterSerializer.cs" />
@@ -388,6 +389,7 @@
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt32Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64Serializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_HasEnumerableSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_InnerSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_OuterSerializer.cs" />
