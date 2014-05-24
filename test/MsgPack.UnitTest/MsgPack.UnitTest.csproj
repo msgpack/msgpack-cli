@@ -288,7 +288,9 @@
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt32Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64Serializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_InnerSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_OuterSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObject_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.cs" />
@@ -307,6 +309,9 @@
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_StringKeyedCollection_1_System_Object_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_TestValueTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_WithAbstractInt32CollectionSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_WithAbstractNonCollectionSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_Dictionary_2_System_Object_System_Object_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_Dictionary_2_System_String_System_DateTime_Serializer.cs" />
@@ -383,7 +388,9 @@
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt32Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64Serializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_InnerSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_OuterSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObject_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.cs" />
@@ -402,6 +409,9 @@
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_StringKeyedCollection_1_System_Object_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_TestValueTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_VersioningTestTargetSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_WithAbstractInt32CollectionSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_WithAbstractNonCollectionSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_Dictionary_2_System_Object_System_Object_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_Dictionary_2_System_String_System_DateTime_Serializer.cs" />

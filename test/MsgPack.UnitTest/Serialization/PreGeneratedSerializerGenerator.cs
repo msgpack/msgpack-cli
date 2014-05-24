@@ -28,7 +28,7 @@ namespace MsgPack.Serialization
 	internal class PreGeneratedSerializerGenerator
 	{
 		// To test generated serializers, enable this test and run, then copy bin/Debug/MsgPack contents to project's Serialization/GeneratedSerializers/ directory.
-		//[Test]
+		// [Test]
 		public void GenerateFiles()
 		{
 			SerializerGenerator.GenerateCode(

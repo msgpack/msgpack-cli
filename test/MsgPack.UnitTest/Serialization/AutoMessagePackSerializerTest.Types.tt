@@ -743,6 +743,21 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 #endif
 		}
 	}
+	
+	public class WithAbstractInt32Collection
+	{
+		public IList<int> Collection { get; set; }
+	}
+	
+	public class WithAbstractStringCollection
+	{
+		public IList<string> Collection { get; set; }
+	}
+
+	public class WithAbstractNonCollection
+	{
+		public Stream NonCollection { get; set; }
+	}
 }
 <#+
 private static string ToTypeName( Type type )

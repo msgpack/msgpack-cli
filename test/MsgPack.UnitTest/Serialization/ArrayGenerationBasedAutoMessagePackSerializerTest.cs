@@ -422,10 +422,10 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext();
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.CreateInternal<WithAbstractCollection<int>>( context );
+			var serializer = MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context );
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
+				var value = new WithAbstractInt32Collection() { Collection = new[] { 1, 2 } };
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var unpacked = serializer.Unpack( stream );
@@ -441,7 +441,7 @@ namespace MsgPack.Serialization
 			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.CreateInternal<WithAbstractCollection<int>>( context ) );
+			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context ) );
 		}
 
 		[Test]
@@ -450,10 +450,10 @@ namespace MsgPack.Serialization
 			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.CreateInternal<WithAbstractCollection<int>>( context );
+			var serializer = MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context );
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
+				var value = new WithAbstractInt32Collection() { Collection = new[] { 1, 2 } };
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var unpacked = serializer.Unpack( stream );
@@ -469,10 +469,10 @@ namespace MsgPack.Serialization
 			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer1 = MessagePackSerializer.CreateInternal<WithAbstractCollection<int>>( context );
+			var serializer1 = MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context );
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new WithAbstractCollection<int>() { Collection = new[] { 1, 2 } };
+				var value = new WithAbstractInt32Collection() { Collection = new[] { 1, 2 } };
 				serializer1.Pack( stream, value );
 				stream.Position = 0;
 				var unpacked = serializer1.Unpack( stream );
@@ -482,10 +482,10 @@ namespace MsgPack.Serialization
 			}
 
 			// check other types are not affected
-			var serializer2 = MessagePackSerializer.CreateInternal<WithAbstractCollection<string>>( context );
+			var serializer2 = MessagePackSerializer.CreateInternal<WithAbstractStringCollection>( context );
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new WithAbstractCollection<string>() { Collection = new[] { "1", "2" } };
+				var value = new WithAbstractStringCollection() { Collection = new[] { "1", "2" } };
 				serializer2.Pack( stream, value );
 				stream.Position = 0;
 				var unpacked = serializer2.Unpack( stream );
@@ -684,16 +684,6 @@ namespace MsgPack.Serialization
 				Assert.That( ext.TypeCode, Is.EqualTo( 1 ) );
 				return new DateTime( BigEndianBinary.ToInt64( ext.Body, 0 ) ).ToUniversalTime();
 			}
-		}
-
-		public class WithAbstractCollection<T>
-		{
-			public IList<T> Collection { get; set; }
-		}
-
-		public class WithAbstractNonCollection
-		{
-			public Stream NonCollection { get; set; }
 		}
 
 		// Issue #25

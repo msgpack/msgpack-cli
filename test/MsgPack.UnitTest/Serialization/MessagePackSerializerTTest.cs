@@ -558,19 +558,19 @@ namespace MsgPack.Serialization
 				assertion( unpacker, outer.O );
 			}
 		}
+	}
 
-		public class Outer
-		{
-			public string A = "A";
-			public Inner Inner = new Inner();
-			public string O = "O";
-		}
+	public class Outer
+	{
+		public string A = "A";
+		public Inner Inner = new Inner();
+		public string O = "O";
+	}
 
-		public class Inner
-		{
-			public string A = null;
-			public byte[] Bytes = null;
-			public string C = "C";
-		}
+	public class Inner
+	{
+		public string A = null;
+		public byte[] Bytes = null;
+		public string C = "C";
 	}
 }

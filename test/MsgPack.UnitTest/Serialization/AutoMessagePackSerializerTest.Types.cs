@@ -1198,4 +1198,19 @@ namespace MsgPack.Serialization
 #endif
 		}
 	}
+	
+	public class WithAbstractInt32Collection
+	{
+		public IList<int> Collection { get; set; }
+	}
+	
+	public class WithAbstractStringCollection
+	{
+		public IList<string> Collection { get; set; }
+	}
+
+	public class WithAbstractNonCollection
+	{
+		public Stream NonCollection { get; set; }
+	}
 }

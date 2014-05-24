@@ -127,6 +127,11 @@ namespace MsgPack.Serialization
 			result.Add( typeof( EnumUInt64Flags ) ); 
 			result.Add( typeof( ListValueType<int> ) );
 			result.Add( typeof( DictionaryValueType<int, int> ) );
+			result.Add( typeof( WithAbstractInt32Collection ) );
+			result.Add( typeof( WithAbstractStringCollection ) );
+			result.Add( typeof( WithAbstractNonCollection ) );
+			result.Add( typeof( Outer ) );
+			result.Add( typeof( Inner ) );
 			return result;
 		}
 	}
