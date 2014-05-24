@@ -528,6 +528,20 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Test]
+		public void TestIssue28()
+		{
+			var target = CreateTarget<WithReadOnlyProperty>();
+			using ( var buffer = new MemoryStream() )
+			{
+				var value = new WithReadOnlyProperty { Number = 123 };
+				target.Pack( buffer, value );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+				Assert.That( value.Number, Is.EqualTo( result.Number ) );
+			}
+		}
+
 		private void TestIssue10_Reader( Inner inner )
 		{
 			var serializer = MessagePackSerializer.Create<Outer>();
@@ -575,5 +589,11 @@ namespace MsgPack.Serialization
 			public byte[] Bytes = null;
 			public string C = "C";
 		}
+	}
+
+	public class WithReadOnlyProperty
+	{
+		public int Number { get; set; }
+		public string AsString{get { return this.Number.ToString(); }}
 	}
 }
