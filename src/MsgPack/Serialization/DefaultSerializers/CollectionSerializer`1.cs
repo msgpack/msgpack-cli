@@ -27,30 +27,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 	///		Collection interface serializer.
 	/// </summary>
 	/// <typeparam name="T">The type of the item of collection.</typeparam>
-	internal sealed class CollectionSerializer<T> : MessagePackSerializer<ICollection<T>>
+	internal sealed class CollectionSerializer<T> : EnumerableSerializerBase<ICollection<T>, T>
 	{
-		private readonly MessagePackSerializer<T> _itemSerializer;
-		private readonly IMessagePackSerializer _collectionDeserializer;
-
 		public CollectionSerializer( SerializationContext ownerContext, Type targetType )
-			: base( ownerContext )
-		{
-			this._itemSerializer = ownerContext.GetSerializer<T>();
-			this._collectionDeserializer = ownerContext.GetSerializer( targetType );
-		}
+			: base( ownerContext, targetType ) { }
 
-		protected internal override void PackToCore( Packer packer, ICollection<T> objectTree )
+		protected override void PackArrayHeader( Packer packer, ICollection<T> objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
-			foreach ( var item in objectTree )
-			{
-				this._itemSerializer.PackTo( packer, item );
-			}
-		}
-
-		protected internal override ICollection<T> UnpackFromCore( Unpacker unpacker )
-		{
-			return this._collectionDeserializer.UnpackFrom( unpacker ) as ICollection<T>;
 		}
 	}
 }
