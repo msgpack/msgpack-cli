@@ -64,11 +64,17 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._valueSerializer = traits.ElementType.GetIsGenericType() ? context.GetSerializer( traits.ElementType.GetGenericArguments()[ 1 ] ) : context.GetSerializer( typeof( MessagePackObject ) );
 			this._getCount = ExpressionSerializerLogics.CreateGetCount<T>( traits );
 
-			var constructor = ExpressionSerializerLogics.GetCollectionConstructor( context, typeof( T ) );
+			var targetType = typeof( T );
+			if ( targetType.GetIsAbstract() || targetType.GetIsInterface() )
+			{
+				targetType = context.DefaultCollectionTypes.GetConcreteType( targetType );
+			}
+
+			var constructor = ExpressionSerializerLogics.GetCollectionConstructor( context, targetType );
 
 			if ( constructor == null )
 			{
-				this._createInstance = () => { throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) ); };
+				this._createInstance = () => { throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( targetType ); };
 				this._createInstanceWithCapacity = null;
 			}
 			else if ( constructor.GetParameters().Length == 1 )
