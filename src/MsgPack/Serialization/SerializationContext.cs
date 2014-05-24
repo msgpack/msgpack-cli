@@ -497,7 +497,7 @@ namespace MsgPack.Serialization
 			return serializer;
 		}
 
-		private IMessagePackSerializer GetSerializerWithoutGeneration( Type targetType )
+		private IMessagePackSingleObjectSerializer GetSerializerWithoutGeneration( Type targetType )
 		{
 			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
 			{

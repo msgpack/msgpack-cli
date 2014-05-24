@@ -30,7 +30,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return Create( context, typeof( T ) ) as MessagePackSerializer<T>;
 		}
 
-		public static IMessagePackSerializer Create( SerializationContext context, Type targetType ) {
+		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType ) {
 #if DEBUG
 			Contract.Assert( targetType.IsArray );
 #endif
@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					typeof( ArraySerializer<> ).MakeGenericType( targetType.GetElementType() ),
 					context
 				) )
-				as IMessagePackSerializer;
+				as IMessagePackSingleObjectSerializer;
 		}
 
 		private static object GetPrimitiveArraySerializer( SerializationContext context, Type targetType )

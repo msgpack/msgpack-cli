@@ -36,7 +36,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return Create( context, typeof( T ) ) as MessagePackSerializer<T>;
 		}
 
-		public static IMessagePackSerializer Create( SerializationContext context, Type targetType )
+		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType )
 		{
 			if ( targetType.IsArray )
 			{
@@ -67,7 +67,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return TryCreateImmutableCollectionSerializer( context, targetType );
 		}
 
-		private static IMessagePackSerializer CreateArraySerializer( SerializationContext context, Type targetType )
+		private static IMessagePackSingleObjectSerializer CreateArraySerializer( SerializationContext context, Type targetType )
 		{
 #if DEBUG
 			Contract.Assert( targetType.IsArray );
@@ -75,17 +75,17 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return ArraySerializer.Create( context, targetType );
 		}
 
-		private static IMessagePackSerializer CreateNullableSerializer( SerializationContext context, Type underlyingType )
+		private static IMessagePackSingleObjectSerializer CreateNullableSerializer( SerializationContext context, Type underlyingType )
 		{
 			var factoryType = typeof( NullableInstanceFactory<> ).MakeGenericType( underlyingType );
 			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
 #if DEBUG
 			Contract.Assert( instanceFactory != null );
 #endif
-			return instanceFactory.Create( context ) as IMessagePackSerializer;
+			return instanceFactory.Create( context ) as IMessagePackSingleObjectSerializer;
 		}
 
-		private static IMessagePackSerializer CreateListSerializer( SerializationContext context, Type itemType )
+		private static IMessagePackSingleObjectSerializer CreateListSerializer( SerializationContext context, Type itemType )
 		{
 			var factoryType = typeof( ListInstanceFactory<> ).MakeGenericType( itemType );
 			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
@@ -96,10 +96,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return null;
 			}
 #endif // DEBUG && !XAMIOS && !UNITY_IPHONE && !UNITY_ANDROID
-			return instanceFactory.Create( context ) as IMessagePackSerializer;
+			return instanceFactory.Create( context ) as IMessagePackSingleObjectSerializer;
 		}
 
-		private static IMessagePackSerializer CreateDictionarySerializer( SerializationContext context, Type keyType, Type valueType )
+		private static IMessagePackSingleObjectSerializer CreateDictionarySerializer( SerializationContext context, Type keyType, Type valueType )
 		{
 			var factoryType = typeof( DictionaryInstanceFactory<,> ).MakeGenericType( keyType, valueType );
 			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
@@ -110,10 +110,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return null;
 			}
 #endif // DEBUG && !XAMIOS && !UNITY_IPHONE && !UNITY_ANDROID
-			return instanceFactory.Create( context ) as IMessagePackSerializer;
+			return instanceFactory.Create( context ) as IMessagePackSingleObjectSerializer;
 		}
 
-		private static IMessagePackSerializer TryCreateImmutableCollectionSerializer( SerializationContext context, Type targetType )
+		private static IMessagePackSingleObjectSerializer TryCreateImmutableCollectionSerializer( SerializationContext context, Type targetType )
 		{
 #if NETFX_35 || NETFX_40 || SILVERLIGHT
 			// ImmutableCollections does not support above platforms.
@@ -141,7 +141,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 							typeof( ImmutableCollectionSerializer<,> )
 								.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] ),
 							context
-						) as IMessagePackSerializer;
+						) as IMessagePackSingleObjectSerializer;
 				}
 				case "ImmutableStack`1":
 				{
@@ -150,7 +150,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 							typeof( ImmutableStackSerializer<,> )
 								.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] ),
 							context
-						) as IMessagePackSerializer;
+						) as IMessagePackSingleObjectSerializer;
 				}
 				case "ImmutableDictionary`2":
 				case "ImmutableSortedDictionary`2":
@@ -160,7 +160,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 							typeof( ImmutableDictionarySerializer<,,> )
 								.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ], targetType.GetGenericArguments()[ 1 ] ),
 							context
-						) as IMessagePackSerializer;
+						) as IMessagePackSingleObjectSerializer;
 				}
 				default:
 				{
@@ -175,7 +175,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif
 		}
 
-		public static IMessagePackSerializer CreateCollectionInterfaceSerializer( SerializationContext context, Type abstractType, Type concreteType )
+		public static IMessagePackSingleObjectSerializer CreateCollectionInterfaceSerializer( SerializationContext context, Type abstractType, Type concreteType )
 		{
 			Type serializerType;
 
@@ -206,20 +206,20 @@ namespace MsgPack.Serialization.DefaultSerializers
 					abstractType.GetGenericArguments()[ 1 ]
 					);
 			}
-			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IList ) )
+			else if ( abstractType == typeof( IList ) )
 			{
 				serializerType = typeof( NonGenericListSerializer );
 			}
-			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( ICollection ) )
+			else if ( abstractType == typeof( ICollection ) )
 			{
 				serializerType = typeof( NonGenericCollectionSerializer );
 			}
-			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IEnumerable ) )
+			else if ( abstractType == typeof( IEnumerable ) )
 			{
 				serializerType = typeof( NonGenericEnumerableSerializer );
 
 			}
-			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IDictionary ) )
+			else if ( abstractType == typeof( IDictionary ) )
 			{
 				serializerType = typeof( NonGenericDictionarySerializer );
 			}
@@ -230,7 +230,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				);
 			}
 
-			return Activator.CreateInstance( serializerType, context, concreteType ) as IMessagePackSerializer;
+			return Activator.CreateInstance( serializerType, context, concreteType ) as IMessagePackSingleObjectSerializer;
 		}
 
 		/// <summary>
