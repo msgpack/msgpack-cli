@@ -74,7 +74,9 @@ namespace MsgPack.Serialization
 		{
 			var target = new SerializationContext();
 			Assert.That( target.GetSerializer( typeof( int ) ), Is.Not.Null );
+#if !XAMIOS && !UNITY_IPHONE
 			Assert.That( target.GetSerializer( typeof( ComplexType ) ), Is.Not.Null );
+#endif // !XAMIOS && !UNITY_IPHONE
 		}
 
 #if !XAMIOS && !UNITY_IPHONE
