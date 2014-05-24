@@ -32,7 +32,7 @@ namespace MsgPack.Serialization
 	///		Build serializer for <typeparamref name="TObject"/>.
 	/// </summary>
 	/// <typeparam name="TObject">Object to be serialized/deserialized.</typeparam>
-	[ContractClass(typeof(SerializerBuilderContract<>))]
+	[ContractClass( typeof( SerializerBuilderContract<> ) )]
 	internal abstract class SerializerBuilder<TObject>
 	{
 		private readonly SerializationContext _context;
@@ -95,8 +95,8 @@ namespace MsgPack.Serialization
 				if ( this.Context.CompatibilityOptions.OneBoundDataMemberOrder && entries[ 0 ].Contract.Id == 0 )
 				{
 					throw new NotSupportedException( "Cannot specify order value 0 on DataMemberAttribute when SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder is set to true." );
-				} 
-				
+				}
+
 				var maxId = entries.Max( item => item.Contract.Id );
 				var result = new List<SerializingMember>( maxId + 1 );
 				for ( int source = 0, destination = this.Context.CompatibilityOptions.OneBoundDataMemberOrder ? 1 : 0; source < entries.Length; source++, destination++ )
@@ -149,31 +149,39 @@ namespace MsgPack.Serialization
 					);
 			}
 
-			if ( typeof( TObject ).GetCustomAttributes( false ).Any( attr => attr.GetType().FullName == "System.Runtime.Serialization.DataContractAttribute" ) )
+			if ( typeof( TObject ).GetCustomAttributesData().Any( attr =>
+				attr.GetAttributeType().FullName == "System.Runtime.Serialization.DataContractAttribute" ) )
 			{
-				return members.Select( item => new
-				{
-					member = item,
-					data = item.GetCustomAttributesData()
-						.FirstOrDefault( data => data.Constructor.DeclaringType.FullName == "System.Runtime.Serialization.DataMemberAttribute" )
-				})
-				.Where( item => item.data != null )
-				.Select( item =>
-				{
-					var name = item.data.NamedArguments
-						.Where( arg => arg.MemberInfo.Name == "Name" )
-						.Select( arg => (string) arg.TypedValue.Value )
-						.FirstOrDefault();
-					var id = item.data.NamedArguments
-						.Where( arg => arg.MemberInfo.Name == "Order" )
-						.Select( arg => (int?) arg.TypedValue.Value )
-						.FirstOrDefault();
+				return
+					members.Select( 
+						item =>
+						new
+						{
+							member = item,
+							data = item.GetCustomAttributesData()
+								.FirstOrDefault(
+									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute" )
+						} 
+					).Where( item => item.data != null )
+					.Select(
+						item =>
+						{
+							var name = item.data.GetNamedArguments()
+								.Where( arg => arg.GetMemberName() == "Name" )
+								.Select( arg => ( string )arg.GetTypedValue().Value )
+								.FirstOrDefault();
+							var id = item.data.GetNamedArguments()
+								.Where( arg => arg.GetMemberName() == "Order" )
+								.Select( arg => ( int? )arg.GetTypedValue().Value )
+								.FirstOrDefault();
 
-					return new SerializingMember(
-						item.member,
-						new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
+							return 
+								new SerializingMember(
+									item.member,
+									new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
+								);
+						} 
 					);
-				});
 			}
 
 #if SILVERLIGHT || NETFX_CORE
@@ -223,7 +231,7 @@ namespace MsgPack.Serialization
 		public abstract MessagePackSerializer<TObject> CreateTupleSerializer();
 	}
 
-	[ContractClassFor(typeof(SerializerBuilder<>))]
+	[ContractClassFor( typeof( SerializerBuilder<> ) )]
 	internal abstract class SerializerBuilderContract<T> : SerializerBuilder<T>
 	{
 		protected SerializerBuilderContract() : base( null ) { }

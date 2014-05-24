@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 
@@ -194,6 +195,26 @@ namespace MsgPack
 		{
 			return source.GetTypeInfo().IsDefined( attributeType );
 		}
+
+		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this Type source )
+		{
+			return source.GetTypeInfo().CustomAttributes;
+		}
+
+		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this MemberInfo source )
+		{
+			return source.CustomAttributes;
+		}
+
+		public static Type GetAttributeType( this CustomAttributeData source )
+		{
+			return source.AttributeType;
+		}
+
+		public static string GetMemberName( this CustomAttributeNamedArgument source )
+		{
+			return source.MemberName;
+		}
 #else
 		public static bool IsDefined( this MemberInfo source, Type attributeType )
 		{
@@ -204,7 +225,100 @@ namespace MsgPack
 			where T : Attribute
 		{
 			return Attribute.GetCustomAttribute( source, typeof( T ) ) as T;
-		}		
+		}
+
+#if !SILVERLIGHT
+		public static Type GetAttributeType( this CustomAttributeData source )
+		{
+			return source.Constructor.DeclaringType;
+		}
+
+		public static string GetMemberName( this CustomAttributeNamedArgument source )
+		{
+			return source.MemberInfo.Name;
+		}
+
+#else
+		public static Type GetAttributeType( this Attribute source )
+		{
+			return source.GetType();
+		}
+#endif // !SILVERLIGHT
+#endif
+
+#if NETFX_35
+		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this MemberInfo source )
+		{
+			return CustomAttributeData.GetCustomAttributes( source );
+		}
+#endif // NETFX_35
+
+#if SILVERLIGHT
+		public static IEnumerable<Attribute> GetCustomAttributesData( this MemberInfo source )
+		{
+			return source.GetCustomAttributes( false ).OfType<Attribute>();
+		}
+
+		public static IEnumerable<NamedArgument> GetNamedArguments( this Attribute attribute )
+		{
+			return
+				attribute.GetType()
+					.GetMembers( BindingFlags.Public | BindingFlags.Instance )
+					.Where( m => m.MemberType == MemberTypes.Field || m.MemberType == MemberTypes.Property )
+					.Select( m => new NamedArgument( attribute, m ) );
+		}
+#else
+		public static IEnumerable<CustomAttributeNamedArgument> GetNamedArguments( this CustomAttributeData source )
+		{
+			return source.NamedArguments;
+		}
+
+		public static CustomAttributeTypedArgument GetTypedValue( this CustomAttributeNamedArgument source )
+		{
+			return source.TypedValue;
+		}
+#endif // SILVERLIGHT
+
+#if SILVERLIGHT
+		public struct NamedArgument
+		{
+			private object _instance;
+			private MemberInfo _memberInfo;
+
+			public NamedArgument( object instance, MemberInfo memberInfo )
+			{
+				this._instance = instance;
+				this._memberInfo = memberInfo;
+			}
+
+			public string GetMemberName()
+			{
+				return this._memberInfo.Name;
+			}
+
+			public KeyValuePair<Type, object> GetTypedValue()
+			{
+				Type type;
+				object value;
+				PropertyInfo asProperty;
+				if ( ( asProperty = this._memberInfo as PropertyInfo ) != null )
+				{
+					type = asProperty.PropertyType;
+					value = asProperty.GetValue( this._instance, null );
+				}
+				else
+				{
+					var asField = this._memberInfo as FieldInfo;
+#if DEBUG
+					Contract.Assert( asField != null );
+#endif
+					type = asField.FieldType;
+					value = asField.GetValue( this._instance );
+				}
+
+				return new KeyValuePair<Type, object>( type, value );
+			}
+		}
 #endif
 	}
 }
