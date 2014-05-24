@@ -26,7 +26,6 @@ using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization
 {
-	// TODO: MessagePackEncoder/Decoder <|- ...NativeEncoder/Decoder, ...JsonEncoder/Decoder
 	/// <summary>
 	///		Defines base contract for object serialization.
 	/// </summary>
@@ -53,7 +52,7 @@ namespace MsgPack.Serialization
 			FromExpression.ToMethod( ( MessagePackSerializer<T> @this, Unpacker unpacker, T collection ) => @this.UnpackToCore( unpacker, collection ) );
 #endif // if !XAMIOS && !UNITY_IPHONE
 
-		private readonly PackerCompatibilityOptions _packerCompatibilityOptions;
+		private readonly PackerCompatibilityOptions? _packerCompatibilityOptionsForCompatibility;
 
 		/// <summary>
 		///		Gets the packer compatibility options for this instance.
@@ -63,33 +62,20 @@ namespace MsgPack.Serialization
 		/// </value>
 		protected internal PackerCompatibilityOptions PackerCompatibilityOptions
 		{
-			get { return this._packerCompatibilityOptions; }
+			get { return this._packerCompatibilityOptionsForCompatibility.GetValueOrDefault( this.OwnerContext.CompatibilityOptions.PackerCompatibilityOptions ); }
 		}
 
-		private readonly WeakReference _ownerContext;
+		private readonly SerializationContext _ownerContext;
 
 		/// <summary>
 		///		Gets a <see cref="SerializationContext"/> which owns this serializer.
 		/// </summary>
 		/// <value>
 		///		A <see cref="SerializationContext"/> which owns this serializer.
-		///		Or <see cref="SerializationContext.Default"/> when owner context is not known or is garbage-collected.
 		/// </value>
 		protected internal SerializationContext OwnerContext
 		{
-			get
-			{
-				try
-				{
-					return this._ownerContext.Target as SerializationContext ?? SerializationContext.Default;
-				}
-				catch ( InvalidOperationException )
-				{
-					// It should not be occurred as long as serializer is holded by out of context.
-					// So continuous exception is OK.
-					return SerializationContext.Default;
-				}
-			}
+			get{ return this._ownerContext; }
 		}
 
 		/// <summary>
@@ -118,7 +104,7 @@ namespace MsgPack.Serialization
 		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
 		protected MessagePackSerializer( SerializationContext ownerContext )
-			: this( ownerContext, ( ownerContext ?? SerializationContext.Default ).CompatibilityOptions.PackerCompatibilityOptions ) { }
+			: this( ownerContext, null ) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with explicitly specified compatibility option.
@@ -130,14 +116,17 @@ namespace MsgPack.Serialization
 		///		This method also supports backword compatibility with 0.4.
 		/// </remarks>
 		protected MessagePackSerializer( SerializationContext ownerContext, PackerCompatibilityOptions packerCompatibilityOptions )
+			: this( ownerContext, new PackerCompatibilityOptions?( packerCompatibilityOptions ) ) { }
+
+		private MessagePackSerializer( SerializationContext ownerContext, PackerCompatibilityOptions? packerCompatibilityOptions )
 		{
 			if ( ownerContext == null )
 			{
 				throw new ArgumentNullException( "ownerContext" );
 			}
-			
-			this._packerCompatibilityOptions = packerCompatibilityOptions;
-			this._ownerContext = new WeakReference( ownerContext );
+
+			this._packerCompatibilityOptionsForCompatibility = packerCompatibilityOptions;
+			this._ownerContext = ownerContext;
 		}
 
 		private static bool JudgeNullable()
@@ -177,7 +166,7 @@ namespace MsgPack.Serialization
 		public void Pack( Stream stream, T objectTree )
 		{
 			// Packer does not have finalizer, so just avoiding packer disposing prevents stream closing.
-			this.PackTo( Packer.Create( stream, this._packerCompatibilityOptions ), objectTree );
+			this.PackTo( Packer.Create( stream, this.PackerCompatibilityOptions ), objectTree );
 		}
 
 		/// <summary>
@@ -477,7 +466,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", collection.GetType(), typeof( T ) ), "collection" );
 			}
 
-			this.UnpackToCore( unpacker, ( T )collection );
+			this.UnpackTo( unpacker, ( T )collection );
 		}
 
 		byte[] IMessagePackSingleObjectSerializer.PackSingleObject( object objectTree )
