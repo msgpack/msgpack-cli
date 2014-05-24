@@ -109,5 +109,5 @@ Release 0.4.3 - 2014/3/22
 Release 0.4.4 - 2014/4/13
 
   BUG FIXES
-  * Fix creating serializer for IDIctionary<TKey, TValue> causes NullReferenceException.
+  * Fix creating serializer for IDictionary<TKey, TValue> causes NullReferenceException.
   * Fix serializers' default constructor IL (it is not used in the library, but can be called via reflection).
