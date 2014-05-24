@@ -119,4 +119,3 @@ Release 0.4.5
 
   NEW FEATURES
   * System.Runtime.Serialization assembly is not required now (pull-request #29). Thanks @takeshik!
-  * Read only members now ignored (issue #28, pull-request #30). hanks @takeshik!
