@@ -95,7 +95,7 @@ namespace MsgPack
 		{
 			foreach ( var target in targets )
 			{
-				int result = target.GetHashCode();
+				target.GetHashCode();
 				// OK. The value is implementation specific.
 			}
 		}

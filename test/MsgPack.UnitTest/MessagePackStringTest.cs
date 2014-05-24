@@ -65,7 +65,8 @@ namespace MsgPack
 		public void TestGetHashCode_Binary()
 		{
 			var target = new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB } );
-			var valueIsImplementationDetail = target.GetHashCode();
+			// OK, returned value is implementation detail.
+			target.GetHashCode();
 		}
 
 		[Test]
@@ -86,7 +87,8 @@ namespace MsgPack
 		public void TestGetHashCode_EmptyBinary()
 		{
 			var target = new MessagePackString( new byte[ 0 ] );
-			var valueIsImplementationDetail = target.GetHashCode();
+			// OK, returned value is implementation detail.
+			target.GetHashCode();
 		}
 
 		[Test]
