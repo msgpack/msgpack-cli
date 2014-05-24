@@ -387,30 +387,7 @@ namespace MsgPack.Serialization
 					if ( this.IsRuntimeGenerationDisabled )
 					{
 #endif // !XAMIOS && !UNITY_IPHONE
-						if ( typeof( T ).GetIsInterface() || typeof( T ).GetIsAbstract() )
-						{
-							var concreteCollectionType = this._defaultCollectionTypes.GetConcreteType( typeof( T ) );
-							if ( concreteCollectionType != null )
-							{
-								serializer =
-									GenericSerializer.CreateCollectionInterfaceSerializer( this, typeof( T ), concreteCollectionType )
-										as MessagePackSerializer<T>;
-
-								if ( serializer != null )
-								{
-									this.Serializers.Register( typeof( T ), serializer );
-									return serializer;
-								}
-							}
-						}
-
-						throw new InvalidOperationException(
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"The serializer for type '{0}' is not registered yet. On-the-fly generation is not supported in this platform.",
-								typeof( T )
-							)
-						);
+						return this.GetSerializerWithoutGeneration( typeof( T ) ) as MessagePackSerializer<T>;
 #if !XAMIOS && !UNITY_IPHONE
 					}
 					// ReSharper disable once RedundantIfElseBlock
@@ -524,6 +501,33 @@ namespace MsgPack.Serialization
 			return serializer;
 		}
 
+		private IMessagePackSerializer GetSerializerWithoutGeneration( Type targetType )
+		{
+			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
+			{
+				var concreteCollectionType = this._defaultCollectionTypes.GetConcreteType( targetType );
+				if ( concreteCollectionType != null )
+				{
+					var serializer =
+						GenericSerializer.CreateCollectionInterfaceSerializer( this, targetType, concreteCollectionType );
+
+					if ( serializer != null )
+					{
+						this.Serializers.Register( targetType, serializer );
+						return serializer;
+					}
+				}
+			}
+
+			throw new InvalidOperationException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"The serializer for type '{0}' is not registered yet. On-the-fly generation is not supported in this platform.",
+					targetType
+				)
+			);
+		}
+
 		/// <summary>
 		///		Gets the serializer for the specified <see cref="Type"/>.
 		/// </summary>
@@ -574,7 +578,13 @@ namespace MsgPack.Serialization
 #if !XAMIOS && !UNITY_IPHONE
 			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 #else
-			return this._serializers.Get( this, targetType, providerParameter );
+			var serializer = this._serializers.Get( this, targetType, providerParameter ) ?? GenericSerializer.Create( this, targetType );
+			if ( serializer != null )
+			{
+				return serializer;
+			}
+			
+			return this.GetSerializerWithoutGeneration( targetType );
 #endif // if !XAMIOS && !UNITY_IPHONE
 		}
 

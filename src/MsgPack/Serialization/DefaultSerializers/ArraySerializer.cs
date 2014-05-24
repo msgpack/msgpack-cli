@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,35 +27,35 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
 		{
-#if DEBUG
-			Contract.Assert( typeof( T ).IsArray );
-#endif
-			return
-				( GetPrimitiveArraySerializer<T>( context )
-				?? Activator.CreateInstance(
-					typeof( ArraySerializer<> ).MakeGenericType( typeof( T ).GetElementType() ),
-					context
-				) )
-				as MessagePackSerializer<T>;
+			return Create( context, typeof( T ) ) as MessagePackSerializer<T>;
 		}
 
-		private static object GetPrimitiveArraySerializer<T>( SerializationContext context )
+		public static IMessagePackSerializer Create( SerializationContext context, Type targetType ) {
+#if DEBUG
+			Contract.Assert( targetType.IsArray );
+#endif
+			return
+				( GetPrimitiveArraySerializer( context, targetType )
+				?? Activator.CreateInstance(
+					typeof( ArraySerializer<> ).MakeGenericType( targetType.GetElementType() ),
+					context
+				) )
+				as IMessagePackSerializer;
+		}
+
+		private static object GetPrimitiveArraySerializer( SerializationContext context, Type targetType )
 		{
 #if DEBUG
-			Contract.Assert( typeof( T ).IsArray );
+			Contract.Assert( targetType.IsArray );
 #endif
 
 			Func<SerializationContext, object> serializerFactory;
-			if ( !_arraySerializerFactories.TryGetValue( typeof( T ), out serializerFactory ) )
+			if ( !_arraySerializerFactories.TryGetValue( targetType, out serializerFactory ) )
 			{
 				return null;
 			}
 
-			var serializer = serializerFactory( context ) as MessagePackSerializer<T>;
-#if DEBUG
-			Contract.Assert( serializer != null, serializerFactory( context ) + " is " + typeof( MessagePackSerializer<T> ) );
-#endif
-			return serializer;
+			return serializerFactory( context );
 		}
 	}
 }

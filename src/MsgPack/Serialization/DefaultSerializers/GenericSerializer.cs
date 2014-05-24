@@ -33,54 +33,59 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
 		{
-			if ( typeof( T ).IsArray )
+			return Create( context, typeof( T ) ) as MessagePackSerializer<T>;
+		}
+
+		public static IMessagePackSerializer Create( SerializationContext context, Type targetType )
+		{
+			if ( targetType.IsArray )
 			{
-				return CreateArraySerializer<T>( context );
+				return CreateArraySerializer( context, targetType );
 			}
 
 			Type nullableUnderlyingType;
-			if ( ( nullableUnderlyingType = Nullable.GetUnderlyingType( typeof( T ) ) ) != null )
+			if ( ( nullableUnderlyingType = Nullable.GetUnderlyingType( targetType ) ) != null )
 			{
-				return CreateNullableSerializer<T>( context, nullableUnderlyingType );
+				return CreateNullableSerializer( context, nullableUnderlyingType );
 			}
 
-			if ( typeof( T ).GetIsGenericType() )
+			if ( targetType.GetIsGenericType() )
 			{
-				var typeDefinition = typeof( T ).GetGenericTypeDefinition();
+				var typeDefinition = targetType.GetGenericTypeDefinition();
 				if ( typeDefinition == typeof( List<> ) )
 				{
-					return CreateListSerializer<T>( context, typeof( T ).GetGenericArguments()[ 0 ] );
+					return CreateListSerializer( context, targetType.GetGenericArguments()[ 0 ] );
 				}
 
 				if ( typeDefinition == typeof( Dictionary<,> ) )
 				{
-					var genericTypeArguments = typeof( T ).GetGenericArguments();
-					return CreateDictionarySerializer<T>( context, genericTypeArguments[ 0 ], genericTypeArguments[ 1 ] );
+					var genericTypeArguments = targetType.GetGenericArguments();
+					return CreateDictionarySerializer( context, genericTypeArguments[ 0 ], genericTypeArguments[ 1 ] );
 				}
 			}
 
-			return TryCreateImmutableCollectionSerializer<T>( context );
+			return TryCreateImmutableCollectionSerializer( context, targetType );
 		}
 
-		private static MessagePackSerializer<T> CreateArraySerializer<T>( SerializationContext context )
+		private static IMessagePackSerializer CreateArraySerializer( SerializationContext context, Type targetType )
 		{
 #if DEBUG
-			Contract.Assert( typeof( T ).IsArray );
+			Contract.Assert( targetType.IsArray );
 #endif // if DEBUG
-			return ArraySerializer.Create<T>( context );
+			return ArraySerializer.Create( context, targetType );
 		}
 
-		private static MessagePackSerializer<T> CreateNullableSerializer<T>( SerializationContext context, Type underlyingType )
+		private static IMessagePackSerializer CreateNullableSerializer( SerializationContext context, Type underlyingType )
 		{
 			var factoryType = typeof( NullableInstanceFactory<> ).MakeGenericType( underlyingType );
 			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
 #if DEBUG
 			Contract.Assert( instanceFactory != null );
 #endif
-			return instanceFactory.Create( context ) as MessagePackSerializer<T>;
+			return instanceFactory.Create( context ) as IMessagePackSerializer;
 		}
 
-		private static MessagePackSerializer<T> CreateListSerializer<T>( SerializationContext context, Type itemType )
+		private static IMessagePackSerializer CreateListSerializer( SerializationContext context, Type itemType )
 		{
 			var factoryType = typeof( ListInstanceFactory<> ).MakeGenericType( itemType );
 			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
@@ -91,10 +96,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return null;
 			}
 #endif // DEBUG && !XAMIOS && !UNITY_IPHONE && !UNITY_ANDROID
-			return instanceFactory.Create( context ) as MessagePackSerializer<T>;
+			return instanceFactory.Create( context ) as IMessagePackSerializer;
 		}
 
-		private static MessagePackSerializer<T> CreateDictionarySerializer<T>( SerializationContext context, Type keyType, Type valueType )
+		private static IMessagePackSerializer CreateDictionarySerializer( SerializationContext context, Type keyType, Type valueType )
 		{
 			var factoryType = typeof( DictionaryInstanceFactory<,> ).MakeGenericType( keyType, valueType );
 			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
@@ -105,26 +110,26 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return null;
 			}
 #endif // DEBUG && !XAMIOS && !UNITY_IPHONE && !UNITY_ANDROID
-			return instanceFactory.Create( context ) as MessagePackSerializer<T>;
+			return instanceFactory.Create( context ) as IMessagePackSerializer;
 		}
 
-		private static MessagePackSerializer<T> TryCreateImmutableCollectionSerializer<T>( SerializationContext context )
+		private static IMessagePackSerializer TryCreateImmutableCollectionSerializer( SerializationContext context, Type targetType )
 		{
 #if NETFX_35 || NETFX_40 || SILVERLIGHT
 			// ImmutableCollections does not support above platforms.
 			return null;
 #else
-			if ( typeof( T ).Namespace != "System.Collections.Immutable" )
+			if ( targetType.Namespace != "System.Collections.Immutable" )
 			{
 				return null;
 			}
 
-			if ( !typeof( T ).GetIsGenericType() )
+			if ( !targetType.GetIsGenericType() )
 			{
 				return null;
 			}
 
-			switch ( typeof( T ).GetGenericTypeDefinition().Name )
+			switch ( targetType.GetGenericTypeDefinition().Name )
 			{
 				case "ImmutableList`1":
 				case "ImmutableHashSet`1":
@@ -134,18 +139,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 					return
 						Activator.CreateInstance(
 							typeof( ImmutableCollectionSerializer<,> )
-							.MakeGenericType( typeof( T ), typeof( T ).GetGenericArguments()[ 0 ] ),
+								.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] ),
 							context
-						) as MessagePackSerializer<T>;
+						) as IMessagePackSerializer;
 				}
 				case "ImmutableStack`1":
 				{
 					return
 						Activator.CreateInstance(
 							typeof( ImmutableStackSerializer<,> )
-							.MakeGenericType( typeof( T ), typeof( T ).GetGenericArguments()[ 0 ] ),
+								.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] ),
 							context
-						) as MessagePackSerializer<T>;
+						) as IMessagePackSerializer;
 				}
 				case "ImmutableDictionary`2":
 				case "ImmutableSortedDictionary`2":
@@ -153,14 +158,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 					return
 						Activator.CreateInstance(
 							typeof( ImmutableDictionarySerializer<,,> )
-							.MakeGenericType( typeof( T ), typeof( T ).GetGenericArguments()[ 0 ], typeof( T ).GetGenericArguments()[ 1 ] ),
+								.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ], targetType.GetGenericArguments()[ 1 ] ),
 							context
-						) as MessagePackSerializer<T>;
+						) as IMessagePackSerializer;
 				}
 				default:
 				{
 #if DEBUG
-					Contract.Assert( false, "Unknown type:" + typeof( T ) );
+					Contract.Assert( false, "Unknown type:" + targetType );
 #endif
 					// ReSharper disable HeuristicUnreachableCode
 					return null;
