@@ -19,11 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -175,32 +174,49 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			Type serializerType;
 
-			if ( abstractType.GetGenericTypeDefinition() == typeof( IList<> ) )
+			if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IList<> ) )
 			{
 				serializerType = typeof( ListSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
 			}
 #if !NETFX_35
-			else if ( abstractType.GetGenericTypeDefinition() == typeof( ISet<> ) )
+			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( ISet<> ) )
 			{
 				serializerType = typeof( SetSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
 			}
 #endif // !NETFX_35
-			else if ( abstractType.GetGenericTypeDefinition() == typeof( ICollection<> ) )
+			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( ICollection<> ) )
 			{
 				serializerType = typeof( CollectionSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
 			}
-			else if ( abstractType.GetGenericTypeDefinition() == typeof( IEnumerable<> ) )
+			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IEnumerable<> ) )
 			{
 				serializerType = typeof( EnumerableSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
 
 			}
-			else if ( abstractType.GetGenericTypeDefinition() == typeof( IDictionary<,> ) )
+			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IDictionary<,> ) )
 			{
 				serializerType =
 					typeof( DictionarySerializer<,> ).MakeGenericType(
 					abstractType.GetGenericArguments()[ 0 ],
 					abstractType.GetGenericArguments()[ 1 ]
 					);
+			}
+			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IList ) )
+			{
+				serializerType = typeof( NonGenericListSerializer );
+			}
+			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( ICollection ) )
+			{
+				serializerType = typeof( NonGenericCollectionSerializer );
+			}
+			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IEnumerable ) )
+			{
+				serializerType = typeof( NonGenericEnumerableSerializer );
+
+			}
+			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IDictionary ) )
+			{
+				serializerType = typeof( NonGenericDictionarySerializer );
 			}
 			else
 			{

@@ -271,6 +271,9 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DictionarySerializer`2.cs">
       <Link>Serialization\DefaultSerializers\DictionarySerializer`2.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumerableSerializerBase`2.cs">
+      <Link>Serialization\DefaultSerializers\EnumerableSerializerBase`2.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumerableSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\EnumerableSerializer`1.cs</Link>
     </Compile>
@@ -291,6 +294,21 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericCollectionSerializer.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericCollectionSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericDictionarySerializer.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericDictionarySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericEnumerableSerializer.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericEnumerableSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericEnumerableSerializerBase.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericEnumerableSerializerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericListSerializer.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericListSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer.cs</Link>

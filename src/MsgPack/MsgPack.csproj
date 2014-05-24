@@ -180,6 +180,12 @@
     <Compile Include="Serialization\CodeDomSerializers\StatementCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs" />
     <Compile Include="Serialization\DefaultSerializers\ArraySerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\EnumerableSerializerBase`2.cs" />
+    <Compile Include="Serialization\DefaultSerializers\NonGenericDictionarySerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\NonGenericEnumerableSerializerBase.cs" />
+    <Compile Include="Serialization\DefaultSerializers\NonGenericEnumerableSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\NonGenericListSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\NonGenericCollectionSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\CollectionSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\DictionarySerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\EnumerableSerializer`1.cs" />
