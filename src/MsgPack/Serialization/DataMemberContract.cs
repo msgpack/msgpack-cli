@@ -41,7 +41,6 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The name of the member.
 		/// </value>
-		/// <seealso cref="System.Runtime.Serialization.DataMemberAttribute"/>
 		public string Name
 		{
 			get

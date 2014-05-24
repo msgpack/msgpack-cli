@@ -19,10 +19,11 @@
 #endregion -- License Terms --
 
 using System;
-#if NETFX_CORE
 using System.Collections.Generic;
-#endif
+#if SILVERLIGHT
 using System.Diagnostics.Contracts;
+#endif // SILVERLIGHT
+using System.Linq;
 using System.Reflection;
 
 namespace MsgPack
@@ -238,7 +239,6 @@ namespace MsgPack
 			return Attribute.GetCustomAttribute( source, typeof( T ) ) as T;
 		}
 
-#endif // NETFX_CORE
 #if !SILVERLIGHT
 		public static Type GetAttributeType( this CustomAttributeData source )
 		{
@@ -256,7 +256,7 @@ namespace MsgPack
 			return source.GetType();
 		}
 #endif // !SILVERLIGHT
-#endif
+#endif // NETFX_CORE
 
 #if NETFX_35
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this MemberInfo source )

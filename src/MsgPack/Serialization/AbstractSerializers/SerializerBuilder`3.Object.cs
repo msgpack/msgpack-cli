@@ -111,18 +111,40 @@ namespace MsgPack.Serialization.AbstractSerializers
 					);
 			}
 
-			if ( typeof( TObject ).IsDefined( typeof( DataContractAttribute ) ) )
+			if ( typeof( TObject ).GetCustomAttributesData().Any( attr =>
+				attr.GetAttributeType().FullName == "System.Runtime.Serialization.DataContractAttribute" ) )
 			{
 				return
-					members.Where( item => item.IsDefined( typeof( DataMemberAttribute ) ) )
-					.Select( member =>
-						new SerializingMember(
-							member,
-							new DataMemberContract( member, member.GetCustomAttribute<DataMemberAttribute>() )
-						)
+					members.Select(
+						item =>
+						new
+						{
+							member = item,
+							data = item.GetCustomAttributesData()
+								.FirstOrDefault(
+									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute" )
+						}
+					).Where( item => item.data != null )
+					.Select(
+						item =>
+						{
+							var name = item.data.GetNamedArguments()
+								.Where( arg => arg.GetMemberName() == "Name" )
+								.Select( arg => ( string )arg.GetTypedValue().Value )
+								.FirstOrDefault();
+							var id = item.data.GetNamedArguments()
+								.Where( arg => arg.GetMemberName() == "Order" )
+								.Select( arg => ( int? )arg.GetTypedValue().Value )
+								.FirstOrDefault();
+
+							return
+								new SerializingMember(
+									item.member,
+									new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
+								);
+						}
 					);
 			}
-
 #if SILVERLIGHT || NETFX_CORE
 			return members.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 #else

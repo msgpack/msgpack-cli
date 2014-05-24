@@ -28,10 +28,10 @@ namespace MsgPack.Serialization
 	public sealed class SerializationCompatibilityOptions
 	{
 		/// <summary>
-		///		Gets or sets a value indicating whether <see cref="System.Runtime.Serialization.DataMemberAttribute.Order"/> should be started with 1 instead of 0.
+		///		Gets or sets a value indicating whether <c>System.Runtime.Serialization.DataMemberAttribute.Order</c> should be started with 1 instead of 0.
 		/// </summary>
 		/// <value>
-		/// 	<c>true</c> if <see cref="System.Runtime.Serialization.DataMemberAttribute.Order"/> should be started with 1 instead of 0; otherwise, <c>false</c>.
+		/// 	<c>true</c> if <c>System.Runtime.Serialization.DataMemberAttribute.Order</c> should be started with 1 instead of 0; otherwise, <c>false</c>.
 		/// 	Default is <c>false</c>.
 		/// </value>
 		/// <remarks>
