@@ -27,24 +27,11 @@
     <Exclude File="*.ttinclude" />
   </Project>
   <!--
-  <Project Name="MsgPack.Unity" Base="MsgPack.Net35">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\EmittingSerializers\*" />
-    <Exclude Path="Serialization\ExpressionSerializers\*" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-  </Project>
-  <Project Name="MsgPack.MonoDroid" Base="MsgPack">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-  </Project>
-  <Project Name="MsgPack.MonoTouch" Base="MsgPack">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-  </Project>
+    Note: MsgPack.Xamarin.iOS is created manually now.
   -->
+  <Project Name="MsgPack.Xamarin.Android" Base="MsgPack.Xamarin.iOS">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+  </Project>
   <Project Name="MsgPack.WinRT" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
