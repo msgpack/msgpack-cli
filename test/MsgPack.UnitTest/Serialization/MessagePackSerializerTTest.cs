@@ -49,7 +49,7 @@ namespace MsgPack.Serialization
 		private static MessagePackSerializer<T> CreateTarget<T>()
 		{
 #if XAMIOS || UNITY_IPHONE
-			return PreGeneratedSerializerActivator.CreateInternal<T>( new SerializationContext() );
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array ).GetSerializer<T>();
 #elif !NETFX_CORE
 			return new AutoMessagePackSerializer<T>( new SerializationContext(), new AssemblyBuilderSerializerBuilder<T>() );
 #else

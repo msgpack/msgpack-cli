@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{346B55F0-94FA-4B90-9C11-06031043B685}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -450,6 +450,33 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs">
       <Link>Serialization\Reflection\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumerableSerializerBase`2.cs">
+      <Link>Serialization\DefaultSerializers\EnumerableSerializerBase`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericCollectionSerializer.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericCollectionSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericDictionarySerializer.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericDictionarySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericEnumerableSerializer.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericEnumerableSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericEnumerableSerializerBase.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericEnumerableSerializerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericListSerializer.cs">
+      <Link>Serialization\DefaultSerializers\NonGenericListSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\EnumerableSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\EnumerableSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\ListSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\ListSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\SetSerializer`1.cs">
+      <Link>Serialization\DefaultSerializers\SetSerializer`1.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -132,7 +132,6 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
 		private SerializationMethod _serializationMethod;
 
 		/// <summary>
@@ -169,7 +168,6 @@ namespace MsgPack.Serialization
 				this._serializationMethod = value;
 			}
 		}
-#endif // !XAMIOS && !UNITY_IPHONE
 
 		private EnumSerializationMethod _enumSerializationMethod;
 
@@ -393,7 +391,6 @@ namespace MsgPack.Serialization
 					// ReSharper disable once RedundantIfElseBlock
 					else
 					{
-#endif // !XAMIOS && !UNITY_IPHONE
 						object aquiredLock = null;
 						bool lockTaken = false;
 						try
@@ -485,7 +482,6 @@ namespace MsgPack.Serialization
 								Monitor.Exit( aquiredLock );
 							}
 						}
-#if !XAMIOS && !UNITY_IPHONE
 					}
 #endif // !XAMIOS && !UNITY_IPHONE
 				}
