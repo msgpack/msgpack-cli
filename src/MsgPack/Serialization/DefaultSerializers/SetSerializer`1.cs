@@ -29,36 +29,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 	///		Set interface serializer.
 	/// </summary>
 	/// <typeparam name="T">The type of the item of collection.</typeparam>
-	internal sealed class SetSerializer<T> : MessagePackSerializer<ISet<T>>
+	internal sealed class SetSerializer<T> : EnumerableSerializerBase<ISet<T>, T>
 	{
-		private readonly MessagePackSerializer<T> _itemSerializer;
-		private readonly IMessagePackSerializer _collectionDeserializer;
-
 		public SetSerializer( SerializationContext ownerContext, Type targetType )
-			: base( ownerContext )
-		{
-			this._itemSerializer = ownerContext.GetSerializer<T>();
-			this._collectionDeserializer = ownerContext.GetSerializer( targetType );
-		}
+			: base( ownerContext, targetType ) { }
 
-		protected internal override void PackToCore( Packer packer, ISet<T> objectTree )
+		protected override void PackArrayHeader( Packer packer, ISet<T> objectTree )
 		{
-			ICollection<T> asICollection;
-			if ( ( asICollection = objectTree as ICollection<T> ) == null )
-			{
-				asICollection = objectTree.ToArray();
-			}
-
-			packer.PackArrayHeader( asICollection.Count );
-			foreach ( var item in asICollection )
-			{
-				this._itemSerializer.PackTo( packer, item );
-			}
-		}
-
-		protected internal override ISet<T> UnpackFromCore( Unpacker unpacker )
-		{
-			return this._collectionDeserializer.UnpackFrom( unpacker ) as ISet<T>;
+			packer.PackArrayHeader( objectTree.Count );
 		}
 	}
 #endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
