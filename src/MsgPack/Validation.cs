@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -36,10 +38,10 @@ namespace MsgPack
 	{
 		public static void ValidateBuffer<T>( T[] byteArray, int offset, long length, string nameOfByteArray, string nameOfLength, bool validateBufferSize )
 		{
-#if  !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( !String.IsNullOrWhiteSpace( nameOfByteArray ) );
 			Contract.Assume( !String.IsNullOrWhiteSpace( nameOfLength ) );
-#endif
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( byteArray == null )
 			{
@@ -127,7 +129,9 @@ namespace MsgPack
 				}
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( position >= 0 );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var category = CharUnicodeInfo.GetUnicodeCategory( methodName, position );
 // ReSharper disable RedundantIfElseBlock
@@ -194,7 +198,9 @@ namespace MsgPack
 				}
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( position >= 0 );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var category = CharUnicodeInfo.GetUnicodeCategory( @namespace, position );
 // ReSharper disable RedundantIfElseBlock

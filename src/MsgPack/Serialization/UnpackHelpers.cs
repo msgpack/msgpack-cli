@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,7 +22,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization
@@ -67,7 +69,10 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 #endif
 
 			int count = GetItemsCount( unpacker );
@@ -124,7 +129,10 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 #endif
 
 			int count = GetItemsCount( unpacker );
@@ -183,7 +191,10 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 #endif
 
 			int count = GetItemsCount( unpacker );
@@ -241,7 +252,10 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 #endif
 
 			int count = GetItemsCount( unpacker );
@@ -301,7 +315,10 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 #endif
 
 			int count = GetItemsCount( unpacker );
@@ -361,7 +378,10 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotMapHeader();
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 #endif
 
 			int count = GetItemsCount( unpacker );
@@ -436,7 +456,10 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotMapHeader();
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 #endif
 
 			int count = GetItemsCount( unpacker );

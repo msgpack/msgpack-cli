@@ -55,9 +55,9 @@ namespace MsgPack.Serialization
 					{ typeof( ICollection ).TypeHandle, typeof( List<MessagePackObject> ) },
 					{ typeof( IList ).TypeHandle, typeof( List<MessagePackObject> ) },
 					{ typeof( IDictionary ).TypeHandle, typeof( MessagePackObjectDictionary ) },
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NETFX_35 && !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 					{ typeof( ISet<> ).TypeHandle, typeof( HashSet<> ) },
-#endif
+#endif // !NETFX_35 && !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 				} );
 		}
 
@@ -251,7 +251,7 @@ namespace MsgPack.Serialization
 					"defaultCollectionType" );
 			}
 
-			this._defaultCollectionTypes.Register( abstractCollectionType, defaultCollectionType, allowOverwrite: true );
+			this._defaultCollectionTypes.Register( abstractCollectionType, defaultCollectionType, /*allowOverwrite:*/ true );
 		}
 
 		private static bool IsAnscestorType( Type mayBeAncestor, Type mayBeDescendant )

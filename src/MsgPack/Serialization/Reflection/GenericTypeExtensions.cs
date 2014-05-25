@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Linq;
 #if NETFX_CORE
 using System.Reflection;
@@ -43,12 +45,16 @@ namespace MsgPack.Serialization.Reflection
 		///		or built closed generic interface type;
 		///		otherwise <c>false</c>.
 		/// </returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[Pure]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static bool Implements( this Type source, Type genericType )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( source != null );
 			Contract.Assert( genericType != null );
 			Contract.Assert( genericType.GetIsInterface() );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return EnumerateGenericIntefaces( source, genericType, false ).Any();
 		}
@@ -73,10 +79,14 @@ namespace MsgPack.Serialization.Reflection
 		/// </summary>
 		/// <param name="source">Target type.</param>
 		/// <returns>Simple name of type.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[Pure]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static string GetName( this Type source )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( source != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			if ( !source.GetIsGenericType() )
 			{
 				return source.Name;
@@ -86,11 +96,11 @@ namespace MsgPack.Serialization.Reflection
 				String.Concat(
 					source.Name,
 					'[',
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 					String.Join( ", ", source.GetGenericArguments().Select( t => t.GetName() ) ),
 #else
 					String.Join( ", ", source.GetGenericArguments().Select( t => t.GetName() ).ToArray() ),
-#endif
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 					']'
 				);
 		}
@@ -100,10 +110,14 @@ namespace MsgPack.Serialization.Reflection
 		/// </summary>
 		/// <param name="source">Target type.</param>
 		/// <returns>Full name of type.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[Pure]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static string GetFullName( this Type source )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( source != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( source.IsArray )
 			{
@@ -134,11 +148,11 @@ namespace MsgPack.Serialization.Reflection
 					ReflectionAbstractions.TypeDelimiter,
 					source.Name,
 					'[',
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 					String.Join( ", ", source.GetGenericArguments().Select( t => t.GetFullName() ) ),
 #else
 					String.Join( ", ", source.GetGenericArguments().Select( t => t.GetFullName() ).ToArray() ),
-#endif
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 					']'
 				);
 		}

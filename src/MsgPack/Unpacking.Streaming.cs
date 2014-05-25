@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.IO;
 using System.Text;
 
@@ -59,7 +61,10 @@ namespace MsgPack
 		public static UnpackingStream UnpackByteStream( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			return UnpackByteStreamCore( source );
 		}
@@ -161,7 +166,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			var stream = UnpackByteStreamCore( source );
 			return new DefaultUnpackingStreamReader( stream, encoding, stream.RawLength );
@@ -186,7 +194,9 @@ namespace MsgPack
 			public SeekableUnpackingStream( Stream underlying, long rawLength )
 				: base( underlying, rawLength )
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( underlying.CanSeek );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 				this._initialPosition = underlying.Position;
 			}
 

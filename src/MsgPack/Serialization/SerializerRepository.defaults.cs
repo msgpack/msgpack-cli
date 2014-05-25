@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
-#if !WINDOWS_PHONE && !NETFX_35
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Numerics;
-#endif
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Reflection;
 using System.Text;
 
@@ -74,37 +74,37 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( System.Collections.Specialized.BitVector32 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Specialized_BitVector32MessagePackSerializer( ownerContext ) );
 #endif // !SILVERLIGHT && !NETFX_CORE
 #if !WINDOWS_PHONE
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 			dictionary.Add( typeof( System.Numerics.BigInteger ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_BigIntegerMessagePackSerializer( ownerContext ) );
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 #endif // !WINDOWS_PHONE
-#endif // !NETFX_35
 			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer<> ) );
 			dictionary.Add( typeof( System.Collections.DictionaryEntry ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_DictionaryEntryMessagePackSerializer( ownerContext ) );
 #if !SILVERLIGHT && !NETFX_CORE
 #if !SILVERLIGHT
 			dictionary.Add( typeof( System.Collections.Stack ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_StackMessagePackSerializer( ownerContext ) );
-#endif // !SILVERLIGHT && !NETFX_CORE
 #endif // !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETFX_CORE
 #if !SILVERLIGHT && !NETFX_CORE
 #if !SILVERLIGHT
 			dictionary.Add( typeof( System.Collections.Queue ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_QueueMessagePackSerializer( ownerContext ) );
-#endif // !SILVERLIGHT && !NETFX_CORE
 #endif // !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETFX_CORE
 			dictionary.Add( typeof( System.Collections.Generic.KeyValuePair<,> ).TypeHandle, typeof( System_Collections_Generic_KeyValuePair_2MessagePackSerializer<, > ) );
 			dictionary.Add( typeof( System.Collections.Generic.Stack<> ).TypeHandle, typeof( System_Collections_Generic_Stack_1MessagePackSerializer<> ) );
 			dictionary.Add( typeof( System.Collections.Generic.Queue<> ).TypeHandle, typeof( System_Collections_Generic_Queue_1MessagePackSerializer<> ) );
 #if !WINDOWS_PHONE
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 			dictionary.Add( typeof( System.Numerics.Complex ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_ComplexMessagePackSerializer( ownerContext ) );
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 #endif // !WINDOWS_PHONE
-#endif // !NETFX_35
 			dictionary.Add( typeof( System.Uri ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UriMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.Version ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_VersionMessagePackSerializer( ownerContext ) );
 #if !SILVERLIGHT && !NETFX_CORE
 #if !SILVERLIGHT
 			dictionary.Add( typeof( System.Collections.Specialized.NameValueCollection ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Specialized_NameValueCollectionMessagePackSerializer( ownerContext ) );
-#endif // !SILVERLIGHT && !NETFX_CORE
 #endif // !SILVERLIGHT
+#endif // !SILVERLIGHT && !NETFX_CORE
 			return dictionary;
 		}
 	}

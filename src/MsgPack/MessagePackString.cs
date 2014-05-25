@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@
 
 using System;
 using System.Diagnostics;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -54,14 +56,18 @@ namespace MsgPack
 
 		public MessagePackString( string decoded )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( decoded != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this._decoded = decoded;
 			this._type = BinaryType.String;
 		}
 
 		public MessagePackString( byte[] encoded )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( encoded != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this._encoded = encoded;
 		}
 
@@ -241,7 +247,7 @@ namespace MsgPack
 				return false;
 			}
 
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 			if ( _isFastEqualsDisabled == 0 )
 			{
 				try
@@ -257,7 +263,7 @@ namespace MsgPack
 					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
 				}
 			}
-#endif // if !WINDOWS_PHONE
+#endif // if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 
 			return SlowEquals( left._encoded, right._encoded );
 		}
@@ -275,7 +281,7 @@ namespace MsgPack
 			return true;
 		}
 
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 #if SILVERLIGHT
 		private static int _isFastEqualsDisabled =
 			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
@@ -306,7 +312,7 @@ namespace MsgPack
 
 			return result == 0;
 		}
-#endif // if !WINDOWS_PHONE
+#endif // if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 
 #if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]

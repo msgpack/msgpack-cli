@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 namespace MsgPack.Serialization.Reflection
 {
@@ -42,7 +44,9 @@ namespace MsgPack.Serialization.Reflection
 		/// </returns>
 		public static bool IsAssignableTo( this Type source, Type target )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( source != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( target == null )
 			{

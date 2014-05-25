@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ var __methods = new []
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -66,7 +66,9 @@ var __methods = new []
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.IO;
 
 namespace MsgPack
@@ -191,7 +193,9 @@ foreach( var __method in __methods )
 		public static UnpackingResult<#= "<" + __method.Item2 + ">" #> Unpack<#= __method.Item1 #>( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -243,7 +247,9 @@ foreach( var __method in __methods )
 		public static <#= __method.Item2 #> Unpack<#= __method.Item1 #>( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return Unpack<#= __method.Item1 #>Core( source );
 		}

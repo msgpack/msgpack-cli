@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 	/// <summary>
 	///		Set interface serializer.
 	/// </summary>
@@ -61,5 +61,5 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return this._collectionDeserializer.UnpackFrom( unpacker ) as ISet<T>;
 		}
 	}
-#endif // !NETFX_35
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 }

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,7 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -430,6 +432,9 @@ namespace MsgPack
 
 		private static bool IntegerSingleEquals( MessagePackObject integer, MessagePackObject real )
 		{
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			Contract.Assert( integer._handleOrTypeCode as ValueTypeCode != null, "integer._handleOrTypeCode as ValueTypeCode != null" );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
 			{
 				return unchecked( ( long )integer._value ) == ( float )real;
@@ -442,6 +447,9 @@ namespace MsgPack
 
 		private static bool IntegerDoubleEquals( MessagePackObject integer, MessagePackObject real )
 		{
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			Contract.Assert( integer._handleOrTypeCode as ValueTypeCode != null, "integer._handleOrTypeCode as ValueTypeCode != null" );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
 			{
 				return unchecked( ( long )integer._value ) == ( double )real;
@@ -506,7 +514,9 @@ namespace MsgPack
 			}
 
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 				return 0;
 			}
 		}
@@ -776,7 +786,9 @@ namespace MsgPack
 			}
 
 			// may be string
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			if ( isJson )
 			{
 				buffer.Append( '"' ).Append( this._handleOrTypeCode ).Append( '"' );
@@ -815,7 +827,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "type" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			if ( this._handleOrTypeCode == null )
 			{
@@ -999,7 +1014,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "packer" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			if ( this._handleOrTypeCode == null )
 			{
@@ -1127,7 +1145,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			if ( this.IsNil )
 			{
@@ -1139,7 +1160,9 @@ namespace MsgPack
 			try
 			{
 				var asMessagePackString = this._handleOrTypeCode as MessagePackString;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( asMessagePackString != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				if ( encoding is UTF8Encoding )
 				{
@@ -1173,7 +1196,10 @@ namespace MsgPack
 		public string AsStringUtf16()
 		{
 			VerifyUnderlyingType<byte[]>( this, null );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			if ( this.IsNil )
 			{
@@ -1183,7 +1209,9 @@ namespace MsgPack
 			try
 			{
 				MessagePackString asMessagePackString = this._handleOrTypeCode as MessagePackString;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( asMessagePackString != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				if ( asMessagePackString.UnsafeGetString() != null )
 				{
@@ -1494,7 +1522,9 @@ namespace MsgPack
 					return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte ) this._value ), asExtendedTypeObject );
 				}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( false, "Unknwon type:" + this._handleOrTypeCode );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 				return null;
 			}
 			else
@@ -1547,7 +1577,9 @@ namespace MsgPack
 					}
 					default:
 					{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 						Contract.Assert( false, "Unknwon type code:" + asType.TypeCode );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 						return null;
 					}
 				}

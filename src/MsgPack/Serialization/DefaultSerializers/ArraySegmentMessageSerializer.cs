@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal static class ArraySegmentMessageSerializer
 	{
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		public static readonly MethodInfo PackByteArraySegmentToMethod =
 			FromExpression.ToMethod( ( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer ) => PackByteArraySegmentTo( packer, objectTree, itemSerializer ) );
 		public static readonly MethodInfo PackCharArraySegmentToMethod =
@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			FromExpression.ToMethod( ( Unpacker unpacker, MessagePackSerializer<char> itemSerializer ) => UnpackCharArraySegmentFrom( unpacker, itemSerializer ) );
 		public static readonly MethodInfo UnpackGenericArraySegmentFrom1Method =
 			typeof( ArraySegmentMessageSerializer ).GetMethod( "UnpackGenericArraySegmentFrom" );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static void PackByteArraySegmentTo( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer )

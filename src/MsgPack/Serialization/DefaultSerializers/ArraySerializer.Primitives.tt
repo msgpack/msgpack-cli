@@ -40,8 +40,6 @@ Type[] _valueTypes =
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {

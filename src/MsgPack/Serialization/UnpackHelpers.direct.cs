@@ -3,7 +3,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -326,7 +326,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack SByte type value from underlying stream.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static SByte UnpackSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -356,7 +358,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack SByte type value from underlying stream.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static SByte? UnpackNullableSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -386,7 +390,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt16 type value from underlying stream.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt16 UnpackUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -416,7 +422,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt16 type value from underlying stream.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt16? UnpackNullableUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -446,7 +454,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt32 type value from underlying stream.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt32 UnpackUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -476,7 +486,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt32 type value from underlying stream.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt32? UnpackNullableUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -506,7 +518,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt64 type value from underlying stream.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt64 UnpackUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -536,7 +550,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt64 type value from underlying stream.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt64? UnpackNullableUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{

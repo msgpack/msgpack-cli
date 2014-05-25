@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -190,7 +190,7 @@ var __notInWPs =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -211,9 +211,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
-#if !WINDOWS_PHONE && !NETFX_35
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Numerics;
-#endif
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Reflection;
 using System.Text;
 
@@ -263,17 +263,17 @@ foreach( Type __type in __structTypes )
 	if( __notInNet35s.Contains( __type ) )
 	{
 #>
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 #>
 			dictionary.Add( typeof( <#= __type.FullName #> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= __type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>MessagePackSerializer( ownerContext ) );
 <#
 
-	if( __notInWPs.Contains( __type ) )
+	if( __notInNet35s.Contains( __type ) )
 	{
 #>
-#endif // !WINDOWS_PHONE
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 
@@ -284,10 +284,10 @@ foreach( Type __type in __structTypes )
 <#
 	}
 
-	if( __notInNet35s.Contains( __type ) )
+	if( __notInWPs.Contains( __type ) )
 	{
 #>
-#endif // !NETFX_35
+#endif // !WINDOWS_PHONE
 <#
 	}
 }
@@ -318,7 +318,7 @@ foreach( Type __type in __classTypes )
 	if( __notInNet35s.Contains( __type ) )
 	{
 #>
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 	
@@ -335,17 +335,10 @@ foreach( Type __type in __classTypes )
 <#
 	}
 
-	if( __notInWPs.Contains( __type ) )
+	if( __notInNet35s.Contains( __type ) )
 	{
 #>
-#endif // !WINDOWS_PHONE
-<#
-	}
-
-	if( __notInSLs.Contains( __type ) )
-	{
-#>
-#endif // !SILVERLIGHT && !NETFX_CORE
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 
@@ -356,10 +349,17 @@ foreach( Type __type in __classTypes )
 <#
 	}
 
-	if( __notInNet35s.Contains( __type ) )
+	if( __notInSLs.Contains( __type ) )
 	{
 #>
-#endif // !NETFX_35
+#endif // !SILVERLIGHT && !NETFX_CORE
+<#
+	}
+
+	if( __notInWPs.Contains( __type ) )
+	{
+#>
+#endif // !WINDOWS_PHONE
 <#
 	}
 }

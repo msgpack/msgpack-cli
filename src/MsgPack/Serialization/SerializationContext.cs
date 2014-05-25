@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,11 +19,13 @@
 #endregion -- License Terms --
 
 using System;
-#if !SILVERLIGHT && !NETFX_35
+#if !SILVERLIGHT && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Collections.Concurrent;
-#endif // !SILVERLIGHT && !NETFX_35
+#endif // !SILVERLIGHT && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 #if NETFX_CORE
 using System.Linq;
@@ -67,13 +69,13 @@ namespace MsgPack.Serialization
 		}
 
 		private readonly SerializerRepository _serializers;
-#if !XAMIOS
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 #if SILVERLIGHT || NETFX_35
 		private readonly Dictionary<Type, object> _typeLock;
 #else
 		private readonly ConcurrentDictionary<Type, object> _typeLock;
-#endif
-#endif
+#endif // SILVERLIGHT || NETFX_35
+#endif // XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		Gets the current <see cref="SerializerRepository"/>.
@@ -85,7 +87,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Ensures( Contract.Result<SerializerRepository>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				return this._serializers;
 			}
@@ -126,7 +130,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Ensures( Contract.Result<SerializationCompatibilityOptions>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				return this._compatibilityOptions;
 			}
@@ -144,7 +150,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Ensures( Enum.IsDefined( typeof( SerializationMethod ), Contract.Result<SerializationMethod>() ) );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				return this._serializationMethod;
 			}
@@ -163,7 +171,10 @@ namespace MsgPack.Serialization
 					}
 				}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 				this._serializationMethod = value;
 			}
@@ -190,7 +201,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Ensures( Enum.IsDefined( typeof( EnumSerializationMethod ), Contract.Result<EnumSerializationMethod>() ) );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				return this._enumSerializationMethod;
 			}
@@ -209,7 +222,10 @@ namespace MsgPack.Serialization
 					}
 				}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 				this._enumSerializationMethod = value;
 			}
@@ -228,7 +244,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Ensures( Enum.IsDefined( typeof( SerializationMethod ), Contract.Result<SerializationMethodGeneratorOption>() ) );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				return this._generatorOption;
 			}
@@ -250,7 +268,10 @@ namespace MsgPack.Serialization
 					}
 				}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 				this._generatorOption = value;
 			}
@@ -304,13 +325,13 @@ namespace MsgPack.Serialization
 						packerCompatibilityOptions
 				};
 			this._serializers = serializers;
-#if !XAMIOS
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 #if SILVERLIGHT || NETFX_35
 			this._typeLock = new Dictionary<Type, object>();
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
-#endif
-#endif
+#endif // SILVERLIGHT || NETFX_35
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 		}
 
@@ -373,7 +394,9 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>( object providerParameter )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			MessagePackSerializer<T> serializer = null;
 			while ( serializer == null )
@@ -381,12 +404,12 @@ namespace MsgPack.Serialization
 				serializer = this._serializers.Get<T>( this, providerParameter ) ?? GenericSerializer.Create<T>( this );
 				if ( serializer == null )
 				{
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 					if ( this.IsRuntimeGenerationDisabled )
 					{
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 						return this.GetSerializerWithoutGeneration( typeof( T ) ) as MessagePackSerializer<T>;
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 					}
 					// ReSharper disable once RedundantIfElseBlock
 					else
@@ -483,16 +506,16 @@ namespace MsgPack.Serialization
 							}
 						}
 					}
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 				}
 			}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 			if ( !this._serializers.Register( serializer ) )
 			{
 				serializer = this._serializers.Get<T>( this, providerParameter );
 			}
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 			return serializer;
 		}
@@ -569,9 +592,11 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "targetType" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 #else
 			var serializer = this._serializers.Get( this, targetType, providerParameter ) ?? GenericSerializer.Create( this, targetType );
@@ -581,10 +606,10 @@ namespace MsgPack.Serialization
 			}
 			
 			return this.GetSerializerWithoutGeneration( targetType );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		private sealed class SerializerGetter
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
@@ -667,6 +692,6 @@ namespace MsgPack.Serialization
 			}
 			// ReSharper restore UnusedMember.Local
 		}
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 	}
 }

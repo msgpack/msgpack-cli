@@ -20,7 +20,9 @@
 
 using System;
 using System.ComponentModel;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -34,9 +36,9 @@ namespace MsgPack.Serialization
 	[EditorBrowsable( EditorBrowsableState.Never )]
 	public static class SerializationExceptions
 	{
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewValueTypeCannotBeNull3Method = FromExpression.ToMethod( ( string name, Type memberType, Type declaringType ) => NewValueTypeCannotBeNull( name, memberType, declaringType ) );
-#endif // if  !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -48,10 +50,12 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewValueTypeCannotBeNull( string name, Type memberType, Type declaringType )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( !String.IsNullOrEmpty( name ) );
 			Contract.Requires( memberType != null );
 			Contract.Requires( declaringType != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Member '{0}' of type '{1}' cannot be null because it is value type('{2}').", name, declaringType, memberType ) );
 		}
@@ -64,18 +68,20 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewValueTypeCannotBeNull( Type type )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot be null '{0}' type value.", type ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewTypeCannotSerialize"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewTypeCannotSerializeMethod = FromExpression.ToMethod( ( Type type ) => NewTypeCannotSerialize( type ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -85,18 +91,20 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewTypeCannotSerialize( Type type )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize '{0}' type.", type ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewTypeCannotDeserialize(Type)"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewTypeCannotDeserializeMethod = FromExpression.ToMethod( ( Type type ) => NewTypeCannotDeserialize( type ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -106,18 +114,20 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewTypeCannotDeserialize( Type type )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize '{0}' type.", type ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewTypeCannotDeserialize(Type,String,Exception)"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewTypeCannotDeserialize3Method = FromExpression.ToMethod( ( Type type, string memberName, Exception inner ) => NewTypeCannotDeserialize( type, memberName, inner ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -129,20 +139,22 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewTypeCannotDeserialize( Type type, string memberName, Exception inner )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Requires( inner != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{1}' of type '{0}'.", type, memberName ), inner );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewMissingItem"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewMissingItemMethod = FromExpression.ToMethod( ( int index ) => NewMissingItem( index ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -152,8 +164,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewMissingItem( int index )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( index >= 0 );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Items at index '{0}' is missing.", index ) );
 		}
@@ -166,8 +180,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		internal static Exception NewTargetDoesNotHavePublicDefaultConstructor( Type type )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have default (parameterless) public constructor.", type ) );
 		}
@@ -180,8 +196,10 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		internal static Exception NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( Type type )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have both of default (parameterless) public constructor and  public constructor with an Int32 parameter.", type ) );
 		}
@@ -194,18 +212,20 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		internal static Exception NewNoSerializableFieldsException( Type type )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize type '{0}' because it does not have any serializable fields nor properties.", type ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewMissingProperty"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewMissingPropertyMethod = FromExpression.ToMethod( ( string name ) => NewMissingProperty( name ) );
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -215,18 +235,20 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewMissingProperty( string name )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( !String.IsNullOrEmpty( name ) );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Property '{0}' is missing.", name ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewUnexpectedEndOfStream"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewUnexpectedEndOfStreamMethod = FromExpression.ToMethod( () => NewUnexpectedEndOfStream() );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -235,17 +257,19 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewUnexpectedEndOfStream()
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( "Stream unexpectedly ends." );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewMissingAddMethod"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewMissingAddMethodMethod = FromExpression.ToMethod( ( Type type ) => NewMissingAddMethod( type ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -255,15 +279,17 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewMissingAddMethod( Type type )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have appropriate Add method.", type ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewIsNotArrayHeaderMethod = FromExpression.ToMethod( () => NewIsNotArrayHeader() );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -275,9 +301,9 @@ namespace MsgPack.Serialization
 			return new SerializationException( "Unpacker is not in the array header. The stream may not be array." );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewIsNotMapHeaderMethod = FromExpression.ToMethod( () => NewIsNotMapHeader() );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -286,14 +312,16 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewIsNotMapHeader()
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( "Unpacker is not in the map header. The stream may not be map." );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewNotSupportedBecauseCannotInstanciateAbstractTypeMethod = FromExpression.ToMethod( ( Type type ) => NewNotSupportedBecauseCannotInstanciateAbstractType( type ) );
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -303,15 +331,17 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewNotSupportedBecauseCannotInstanciateAbstractType( Type type )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported because '{0}' cannot be instanciated.", type ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewTupleCardinarityIsNotMatchMethod = FromExpression.ToMethod( ( int expected, int actual ) => NewTupleCardinarityIsNotMatch( expected, actual ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -322,15 +352,17 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewTupleCardinarityIsNotMatch( int expectedTupleCardinality, int actualArrayLength )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( expectedTupleCardinality > 0 );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The length of array ({0}) does not match to tuple cardinality ({1}).", actualArrayLength, expectedTupleCardinality ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewIsIncorrectStreamMethod = FromExpression.ToMethod( ( Exception innerException ) => NewIsIncorrectStream( innerException ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -340,14 +372,16 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewIsIncorrectStream( Exception innerException )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( "Failed to unpack items count of the collection.", innerException );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !!XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewIsTooLargeCollectionMethod = FromExpression.ToMethod( () => NewIsTooLargeCollection() );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -356,7 +390,9 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewIsTooLargeCollection()
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new MessageNotSupportedException( "The collection which has more than Int32.MaxValue items is not supported." );
 		}
@@ -368,14 +404,16 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		internal static Exception NewEmptyOrUnstartedUnpacker()
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( "The unpacker did not read any data yet. The unpacker might never read or underlying stream is empty." );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => NewNullIsProhibited( memberName ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -385,15 +423,17 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewNullIsProhibited( string memberName )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member '{0}' cannot be nil.", memberName ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewReadOnlyMemberItemsMustNotBeNullMethod = FromExpression.ToMethod( ( string memberName ) => NewReadOnlyMemberItemsMustNotBeNull( memberName ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -403,15 +443,17 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewReadOnlyMemberItemsMustNotBeNull( string memberName )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member '{0}' cannot be nil because it is read only member.", memberName ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewStreamDoesNotContainCollectionForMemberMethod = FromExpression.ToMethod( ( string memberName ) => NewStreamDoesNotContainCollectionForMember( memberName ) );
-#endif // if !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -421,15 +463,17 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewStreamDoesNotContainCollectionForMember( string memberName )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{0}' because the underlying stream does not contain collection.", memberName ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewUnexpectedArrayLengthMethod = FromExpression.ToMethod( ( int expectedLength, int actualLength ) => NewUnexpectedArrayLength( expectedLength, actualLength ) );
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -440,20 +484,22 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewUnexpectedArrayLength( int expectedLength, int actualLength )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( expectedLength >= 0 );
 			Contract.Requires( actualLength >= 0 );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "The MessagePack stream is invalid. Expected array length is {0}, but actual is {1}.", expectedLength, actualLength ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		/// <summary>
 		///		<see cref="MethodInfo"/> of <see cref="NewFailedToDeserializeMember"/> method.
 		/// </summary>
 		internal static readonly MethodInfo NewFailedToDeserializeMemberMethod =
 			FromExpression.ToMethod( ( Type targetType, string memberName, Exception inner ) => NewFailedToDeserializeMember( targetType, memberName, inner ) );
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -465,10 +511,12 @@ namespace MsgPack.Serialization
 		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
 		public static Exception NewFailedToDeserializeMember( Type targetType, string memberName, Exception inner )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( targetType != null );
 			Contract.Requires( !String.IsNullOrEmpty( memberName ) );
 			Contract.Requires( inner != null );
 			Contract.Ensures( Contract.Result<Exception>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{0}' of type '{1}'.", memberName, targetType ), inner );
 		}

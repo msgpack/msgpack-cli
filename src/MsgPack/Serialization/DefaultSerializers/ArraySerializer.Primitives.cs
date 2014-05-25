@@ -1,14 +1,4 @@
-﻿
-
-
-
-
-
-
-
-
- 
-
+﻿ 
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -31,8 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -48,47 +36,34 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return
 				new Dictionary<Type, Func<SerializationContext,object>>( 25 )
 				{
-
 					{ typeof( SByte[] ), context => new SByteArraySerializer( context ) },
 					{ typeof( SByte?[] ),context => new NullableSByteArraySerializer( context ) },
-
 					{ typeof( Int16[] ), context => new Int16ArraySerializer( context ) },
 					{ typeof( Int16?[] ),context => new NullableInt16ArraySerializer( context ) },
-
 					{ typeof( Int32[] ), context => new Int32ArraySerializer( context ) },
 					{ typeof( Int32?[] ),context => new NullableInt32ArraySerializer( context ) },
-
 					{ typeof( Int64[] ), context => new Int64ArraySerializer( context ) },
 					{ typeof( Int64?[] ),context => new NullableInt64ArraySerializer( context ) },
-
 					{ typeof( Byte[] ), context => new ByteArraySerializer( context ) },
 					{ typeof( Byte?[] ),context => new NullableByteArraySerializer( context ) },
-
 					{ typeof( UInt16[] ), context => new UInt16ArraySerializer( context ) },
 					{ typeof( UInt16?[] ),context => new NullableUInt16ArraySerializer( context ) },
-
 					{ typeof( UInt32[] ), context => new UInt32ArraySerializer( context ) },
 					{ typeof( UInt32?[] ),context => new NullableUInt32ArraySerializer( context ) },
-
 					{ typeof( UInt64[] ), context => new UInt64ArraySerializer( context ) },
 					{ typeof( UInt64?[] ),context => new NullableUInt64ArraySerializer( context ) },
-
 					{ typeof( Single[] ), context => new SingleArraySerializer( context ) },
 					{ typeof( Single?[] ),context => new NullableSingleArraySerializer( context ) },
-
 					{ typeof( Double[] ), context => new DoubleArraySerializer( context ) },
 					{ typeof( Double?[] ),context => new NullableDoubleArraySerializer( context ) },
-
 					{ typeof( Boolean[] ), context => new BooleanArraySerializer( context ) },
 					{ typeof( Boolean?[] ),context => new NullableBooleanArraySerializer( context ) },
-
 					{ typeof( string[] ), context => new StringArraySerializer( context ) },
 					{ typeof( byte[][] ), context => new BinaryArraySerializer( context ) },
 					{ typeof( MessagePackObject[] ), context => new MessagePackObjectArraySerializer( context ) },
 				};
 		}
 	}
-
 
 
 internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
@@ -113,9 +88,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new SByte[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -145,7 +118,6 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 	}
 }
 
-
 internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 {
 	public Int16ArraySerializer( SerializationContext ownerContext )
@@ -168,9 +140,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Int16[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -200,7 +170,6 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 	}
 }
 
-
 internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 {
 	public Int32ArraySerializer( SerializationContext ownerContext )
@@ -223,9 +192,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Int32[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -255,7 +222,6 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 	}
 }
 
-
 internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 {
 	public Int64ArraySerializer( SerializationContext ownerContext )
@@ -278,9 +244,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Int64[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -310,7 +274,6 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 	}
 }
 
-
 internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 {
 	public ByteArraySerializer( SerializationContext ownerContext )
@@ -333,9 +296,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Byte[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -365,7 +326,6 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 	}
 }
 
-
 internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 {
 	public UInt16ArraySerializer( SerializationContext ownerContext )
@@ -388,9 +348,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new UInt16[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -420,7 +378,6 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 	}
 }
 
-
 internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 {
 	public UInt32ArraySerializer( SerializationContext ownerContext )
@@ -443,9 +400,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new UInt32[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -475,7 +430,6 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 	}
 }
 
-
 internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 {
 	public UInt64ArraySerializer( SerializationContext ownerContext )
@@ -498,9 +452,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new UInt64[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -530,7 +482,6 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 	}
 }
 
-
 internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 {
 	public SingleArraySerializer( SerializationContext ownerContext )
@@ -553,9 +504,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Single[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -585,7 +534,6 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 	}
 }
 
-
 internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 {
 	public DoubleArraySerializer( SerializationContext ownerContext )
@@ -608,9 +556,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Double[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -640,7 +586,6 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 	}
 }
 
-
 internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 {
 	public BooleanArraySerializer( SerializationContext ownerContext )
@@ -663,9 +608,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Boolean[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -695,7 +638,6 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 	}
 }
 
-
 internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte?[]>
 {
 	public NullableSByteArraySerializer( SerializationContext ownerContext )
@@ -718,9 +660,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new SByte?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -750,7 +690,6 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 	}
 }
 
-
 internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16?[]>
 {
 	public NullableInt16ArraySerializer( SerializationContext ownerContext )
@@ -773,9 +712,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Int16?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -805,7 +742,6 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 	}
 }
 
-
 internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32?[]>
 {
 	public NullableInt32ArraySerializer( SerializationContext ownerContext )
@@ -828,9 +764,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Int32?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -860,7 +794,6 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 	}
 }
 
-
 internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64?[]>
 {
 	public NullableInt64ArraySerializer( SerializationContext ownerContext )
@@ -883,9 +816,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Int64?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -915,7 +846,6 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 	}
 }
 
-
 internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[]>
 {
 	public NullableByteArraySerializer( SerializationContext ownerContext )
@@ -938,9 +868,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Byte?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -970,7 +898,6 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 	}
 }
 
-
 internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt16?[]>
 {
 	public NullableUInt16ArraySerializer( SerializationContext ownerContext )
@@ -993,9 +920,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new UInt16?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -1025,7 +950,6 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 	}
 }
 
-
 internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt32?[]>
 {
 	public NullableUInt32ArraySerializer( SerializationContext ownerContext )
@@ -1048,9 +972,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new UInt32?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -1080,7 +1002,6 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 	}
 }
 
-
 internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt64?[]>
 {
 	public NullableUInt64ArraySerializer( SerializationContext ownerContext )
@@ -1103,9 +1024,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new UInt64?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -1135,7 +1054,6 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 	}
 }
 
-
 internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Single?[]>
 {
 	public NullableSingleArraySerializer( SerializationContext ownerContext )
@@ -1158,9 +1076,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Single?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -1190,7 +1106,6 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 	}
 }
 
-
 internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Double?[]>
 {
 	public NullableDoubleArraySerializer( SerializationContext ownerContext )
@@ -1213,9 +1128,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Double?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -1245,7 +1158,6 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 	}
 }
 
-
 internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boolean?[]>
 {
 	public NullableBooleanArraySerializer( SerializationContext ownerContext )
@@ -1268,9 +1180,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Boolean?[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -1300,7 +1210,6 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 	}
 }
 
-
 internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 {
 	public StringArraySerializer( SerializationContext ownerContext )
@@ -1323,9 +1232,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new String[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -1355,7 +1262,6 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 	}
 }
 
-
 internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 {
 	public BinaryArraySerializer( SerializationContext ownerContext )
@@ -1378,9 +1284,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new Byte[ count ][];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -1410,7 +1314,6 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 	}
 }
 
-
 internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<MessagePackObject[]>
 {
 	public MessagePackObjectArraySerializer( SerializationContext ownerContext )
@@ -1433,9 +1336,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 		}
 
 		var count = UnpackHelpers.GetItemsCount( unpacker );
-
 		var result = new MessagePackObject[ count ];
-
 		this.UnpackToCore( unpacker, result, count );
 		return result;
 	}
@@ -1464,6 +1365,5 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 		}
 	}
 }
-
 
 }

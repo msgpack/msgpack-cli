@@ -82,10 +82,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 					};
 			}
 
-			return
-				method
-				.MakeGenericMethod( typeof( TKey ), typeof( TValue ) )
-				.CreateDelegate( typeof( Func<KeyValuePair<TKey, TValue>[], T> ) ) as Func<KeyValuePair<TKey, TValue>[], T>;
+			var result = method.MakeGenericMethod( typeof( TKey ), typeof( TValue ) );
+#if !UNITY_ANDROID && !UNITY_IPHONE
+			return result.CreateDelegate( typeof( Func<KeyValuePair<TKey, TValue>[], T> ) ) as Func<KeyValuePair<TKey, TValue>[], T>;
+#else
+			return Delegate.CreateDelegate( typeof( Func<KeyValuePair<TKey, TValue>[], T> ), result ) as Func<KeyValuePair<TKey, TValue>[], T>;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		}
 
 		private readonly MessagePackSerializer<TKey> _keySerializer;

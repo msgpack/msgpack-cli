@@ -13,7 +13,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -31,9 +31,10 @@
 
 using System;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
-using System.Text;
 
 namespace MsgPack
 {
@@ -48,8 +49,10 @@ namespace MsgPack
 		{
 			var source = this._stream;
 			var buffer = this._scalarBuffer;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			long remainingItems = -1;
 			long skipped = 0;

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.IO;
 using System.Linq;
 
@@ -84,7 +86,9 @@ namespace MsgPack
 
 		public EnumerableStream( IEnumerable<byte> source )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( source != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this._underlyingList = source as IList<byte>;
 			if ( this._underlyingList == null )
 			{

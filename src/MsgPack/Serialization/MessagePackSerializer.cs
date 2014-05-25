@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,30 +20,32 @@
 
 using System;
 
-#if SILVERLIGHT || NETFX_35
+#if SILVERLIGHT || NETFX_35 || UNITY_ANDROID || UNITY_IPHONE
 using System.Collections.Generic;
 #else
 using System.Collections.Concurrent;
-#endif
+#endif // SILVERLIGHT || NETFX_35 || UNITY_ANDROID || UNITY_IPHONE
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
-#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
-#endif
+#endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 #if NETFX_CORE
 using System.Linq.Expressions;
 #endif
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 using MsgPack.Serialization.AbstractSerializers;
 #if !NETFX_CORE
-#if !SILVERLIGHT && !XAMDROID
+#if !SILVERLIGHT
 using MsgPack.Serialization.CodeDomSerializers;
-#endif
+#endif // !SILVERLIGHT
 using MsgPack.Serialization.EmittingSerializers;
 #endif // NETFX_CORE
-#endif // !XAMIOS
-#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS
+#endif // !!XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 using MsgPack.Serialization.ExpressionSerializers;
-#endif
+#endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 namespace MsgPack.Serialization
 {
@@ -62,7 +64,9 @@ namespace MsgPack.Serialization
 		[Obsolete( "Use SerializationContext.Default.GetSerializer<T>() instead." )]
 		public static MessagePackSerializer<T> Create<T>()
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return Create<T>( SerializationContext.Default );
 		}
@@ -93,7 +97,7 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context )
 		{
-#if XAMIOS || UNITY_IPHONE
+#if XAMIOS || XAMDROID || UNITY_IPHONE || UNITY_ANDROID
 			return context.GetSerializer<T>();
 #else
 
@@ -128,10 +132,8 @@ namespace MsgPack.Serialization
 				default:
 				{
 #if !NETFX_35
-#if !XAMDROID
 					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
 					{
-#endif // if !XAMDROID
 						throw new NotSupportedException(
 							String.Format(
 								CultureInfo.CurrentCulture,
@@ -139,30 +141,26 @@ namespace MsgPack.Serialization
 								context.EmitterFlavor
 							) 
 						);
-#if !XAMDROID
 					}
-#endif // if !XAMDROID
 #endif // if !NETFX_35
-#if !XAMDROID
 					builder = new CodeDomSerializerBuilder<T>();
 					break;
-#endif // if !XAMDROID
 				}
 			}
 #endif // NETFX_CORE else
 
 			return new AutoMessagePackSerializer<T>( context, builder );
-#endif // XAMIOS else
+#endif // XAMIOS || XAMDROID || UNITY_IPHONE || UNITY_ANDROID else
 		}
 
-#if !XAMIOS
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 #if !SILVERLIGHT && !NETFX_35
 		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
 #else
 		private static readonly object _syncRoot = new object();
 		private static readonly Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
-#endif
-#endif
+#endif // !SILVERLIGHT && !NETFX_35
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		/// <summary>
 		///		Creates new <see cref="IMessagePackSerializer"/> instance with <see cref="SerializationContext.Default"/>.
@@ -213,9 +211,11 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-#if XAMIOS || UNITY_IPHONE
+#if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
 			return context.GetSerializer( targetType );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
@@ -273,9 +273,9 @@ namespace MsgPack.Serialization
 							Metadata._MessagePackSerializer.Create1_Method.MakeGenericMethod( type )
 						) as Func<SerializationContext, IMessagePackSingleObjectSerializer>
 				);
-#endif // if NETFX_CORE
+#endif // NETFX_CORE
 			return factory( context );
-#endif // else XAMIOS
+#endif // XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE else
 		}
 	}
 }

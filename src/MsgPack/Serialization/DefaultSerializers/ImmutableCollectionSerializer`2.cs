@@ -81,7 +81,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 					};
 			}
 
-			return method.MakeGenericMethod( typeof( TItem ) ).CreateDelegate( typeof( Func<TItem[], T> ) ) as Func<TItem[], T>;
+			var result = method.MakeGenericMethod( typeof( TItem ) );
+#if !UNITY_ANDROID && !UNITY_IPHONE
+			return result.CreateDelegate( typeof( Func<TItem[], T> ) ) as Func<TItem[], T>;
+#else
+			return Delegate.CreateDelegate( typeof( Func<TItem[], T> ), result ) as Func<TItem[], T>;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		}
 
 		private readonly MessagePackSerializer<TItem> _itemSerializer;

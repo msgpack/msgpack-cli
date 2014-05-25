@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -45,7 +47,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Ensures( !String.IsNullOrEmpty( Contract.Result<string>() ) );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				return this._name;
 			}
@@ -63,7 +67,9 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Ensures( Contract.Result<int>() >= -1 );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				return this._id;
 			}
@@ -88,7 +94,9 @@ namespace MsgPack.Serialization
 		/// <param name="member">The target member.</param>
 		public DataMemberContract( MemberInfo member )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( member != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this._name = member.Name;
 			this._nilImplication = Serialization.NilImplication.MemberDefault;
@@ -104,7 +112,9 @@ namespace MsgPack.Serialization
 		/// <param name="id">The ID of the member. This value cannot be negative and must be unique in the type.</param>
 		public DataMemberContract( MemberInfo member, string name, NilImplication nilImplication, int? id )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( member != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( id < 0 )
 			{
@@ -123,8 +133,10 @@ namespace MsgPack.Serialization
 		/// <param name="attribute">The MessagePack member attribute.</param>
 		public DataMemberContract( MemberInfo member, MessagePackMemberAttribute attribute )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( member != null );
 			Contract.Requires( attribute != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( attribute.Id < 0 )
 			{

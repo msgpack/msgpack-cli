@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 namespace MsgPack
 {
@@ -70,7 +72,9 @@ namespace MsgPack
 
 			internal ValueCollection( MessagePackObjectDictionary dictionary )
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( dictionary != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				this._dictionary = dictionary;
 			}
@@ -89,7 +93,10 @@ namespace MsgPack
 					throw new ArgumentNullException( "array" );
 				}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 				CollectionOperation.CopyTo( this, this.Count, 0, array, 0, this.Count );
 			}
@@ -159,7 +166,10 @@ namespace MsgPack
 					throw new ArgumentException( "Specified array is too small to complete copy operation.", "array" );
 				}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 				CollectionOperation.CopyTo( this, this.Count, index, array, arrayIndex, count );
 			}
 

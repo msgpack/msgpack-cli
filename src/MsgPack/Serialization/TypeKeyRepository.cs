@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 #if NETFX_CORE
 using System.Reflection;
 #endif
@@ -176,7 +178,9 @@ namespace MsgPack.Serialization
 
 		public bool Register( Type type, object entry, bool allowOverwrite )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( entry != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( this.IsFrozen )
 			{

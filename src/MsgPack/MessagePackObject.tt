@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ Func<object, bool> __IsNotCLSCompliant =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -75,7 +75,9 @@ Func<object, bool> __IsNotCLSCompliant =
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Runtime.InteropServices;
 
 namespace MsgPack
@@ -96,13 +98,15 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
+		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
 		/// </summary>
 <#
 if( __IsNotCLSCompliant( t ) )
 {
 #>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 <#
 }
 #>
@@ -125,14 +129,16 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Convert this instance to <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
+		///		Convert this instance to <#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
 		/// </summary>
 		/// <returns><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance corresponds to this instance.</returns>
 <#
 if( __IsNotCLSCompliant( t ) )
 {
 #>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 <#
 }
 #>
@@ -164,7 +170,9 @@ foreach(var t in __types.Keys )
 if( __IsNotCLSCompliant( t ) )
 {
 #>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 <#
 }
 #>
@@ -194,7 +202,9 @@ foreach(var t in __types.Keys )
 	if( __IsNotCLSCompliant( t ) )
 	{
 #>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 #>
@@ -354,7 +364,9 @@ private void GenerateAsT( string val, Object typeOrTypeName, bool passParameterN
 			}
 
 			var asString = <#= val #>._handleOrTypeCode as MessagePackString;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( asString != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			return asString.GetBytes();
 <#+
 	}
@@ -370,7 +382,9 @@ private void GenerateAsT( string val, Object typeOrTypeName, bool passParameterN
 			}
 
 			var asString = <#= val #>._handleOrTypeCode as MessagePackString;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( asString != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			return asString.GetString();
 <#+
 	}

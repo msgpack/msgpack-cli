@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 namespace MsgPack
 {
@@ -80,10 +82,10 @@ namespace MsgPack
 
 		private SubtreeUnpacker( ItemsUnpacker root, SubtreeUnpacker parent )
 		{
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( root != null );
 			Contract.Assert( root.IsArrayHeader || root.IsMapHeader );
-#endif
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			this._root = root;
 			this._parent = parent;
 			this._unpacked = new Stack<long>( 2 );
@@ -203,9 +205,9 @@ namespace MsgPack
 		{
 			if ( this._itemsCount.Count == 0 )
 			{
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( this._unpacked.Count == 0 );
-#endif
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 				return;
 			}
 
@@ -217,9 +219,9 @@ namespace MsgPack
 
 				if ( this._itemsCount.Count == 0 )
 				{
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 					Contract.Assert( this._unpacked.Count == 0 );
-#endif
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 					break;
 				}
 

@@ -19,10 +19,10 @@ private void WriteUnpack( Type type )
 private void WriteUnpackCore( Type type, bool isNullable )
 {
 #>
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
-#endif
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -277,7 +277,7 @@ var remaining = size;
 do
 {
 	var reading = ( remaining > bytes.Length ) ? bytes.Length : remaining;
-    var bytesRead = source.Read( bytes, 0, reading );
+	var bytesRead = source.Read( bytes, 0, reading );
 	if ( bytesRead == 0 )
 	{
 		throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
@@ -285,14 +285,14 @@ do
 
 	remaining -= bytesRead;
 
-    var isCompleted = false;
-    var bytesOffset = 0;
+	var isCompleted = false;
+	var bytesOffset = 0;
 
-    while( !isCompleted )
-    {
+	while( !isCompleted )
+	{
 		int bytesUsed;
 		int charsUsed;
-        decoder.Convert(
+		decoder.Convert(
 			bytes, 
 			bytesOffset,
 			bytesRead - bytesOffset,
@@ -300,14 +300,14 @@ do
 			0,
 			chars.Length,
 			( bytesRead == 0 ), // flush when last read.
-            out bytesUsed,
+			out bytesUsed,
 			out charsUsed,
 			out isCompleted
 		);
 	
 		stringBuffer.Append( chars, 0, charsUsed );
-        bytesOffset += bytesUsed;
-    }
+		bytesOffset += bytesUsed;
+	}
 } while( remaining > 0 );
 
 var resultValue = stringBuffer.ToString();

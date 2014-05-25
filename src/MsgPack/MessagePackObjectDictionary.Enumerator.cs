@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,7 +21,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 namespace MsgPack
 {
@@ -105,7 +107,9 @@ namespace MsgPack
 			internal Enumerator( MessagePackObjectDictionary dictionary )
 				: this()
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( dictionary != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				this = default( Enumerator );
 				this._underlying = dictionary;
@@ -235,7 +239,7 @@ namespace MsgPack
 			///		Gets the element at the current position of the enumerator.
 			/// </summary>
 			/// <returns>
-			///		The element in the dictionary at the current position of the enumerator, as a <see cref="T:System.Collections.DictionaryEntry"/>ÅB
+			///		The element in the dictionary at the current position of the enumerator, as a <see cref="T:System.Collections.DictionaryEntry"/>.
 			///	</returns>
 			/// <exception cref="T:System.InvalidOperationException">
 			///		The enumerator is positioned before the first element of the collection or after the last element. 
@@ -276,7 +280,9 @@ namespace MsgPack
 			internal DictionaryEnumerator( MessagePackObjectDictionary dictionary )
 				: this()
 			{
+				#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( dictionary != null );
+				#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 				this._underlying = new Enumerator( dictionary );
 			}

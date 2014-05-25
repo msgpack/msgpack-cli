@@ -148,11 +148,11 @@ namespace MsgPack.Serialization
 			// ReSharper disable RedundantIfElseBlock
 			if ( asEnumSerializer != null )
 			{
-				return this._repository.Register( targetType, new EnumMessagePackSerializerProvider( targetType, asEnumSerializer ), allowOverwrite: false );
+				return this._repository.Register( targetType, new EnumMessagePackSerializerProvider( targetType, asEnumSerializer ), /*allowOverwrite:*/ false );
 			}
 			else
 			{
-				return this._repository.Register( targetType, serializer, allowOverwrite: false );
+				return this._repository.Register( targetType, serializer, /*allowOverwrite:*/ false );
 			}
 			// ReSharper restore RedundantIfElseBlock
 		}
@@ -172,7 +172,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "serializer" );
 			}
 
-			this._repository.Register( typeof( T ), serializer, allowOverwrite: true );
+			this._repository.Register( typeof( T ), serializer, /*allowOverwrite:*/ true );
 		}
 
 		/// <summary>

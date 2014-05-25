@@ -3,7 +3,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -44,7 +44,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Boolean" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadBoolean( out Boolean result )
 		{
 			if( !this.Read() )
@@ -69,7 +71,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Boolean" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableBoolean( out Boolean? result )
 		{
 			if( !this.Read() )
@@ -98,7 +102,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Byte" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadByte( out Byte result )
 		{
 			if( !this.Read() )
@@ -123,7 +129,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Byte" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableByte( out Byte? result )
 		{
 			if( !this.Read() )
@@ -152,7 +160,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="SByte" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadSByte( out SByte result )
 		{
 			if( !this.Read() )
@@ -177,7 +187,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="SByte" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableSByte( out SByte? result )
 		{
 			if( !this.Read() )
@@ -206,7 +218,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int16" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadInt16( out Int16 result )
 		{
 			if( !this.Read() )
@@ -231,7 +245,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int16" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableInt16( out Int16? result )
 		{
 			if( !this.Read() )
@@ -260,7 +276,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt16" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadUInt16( out UInt16 result )
 		{
 			if( !this.Read() )
@@ -285,7 +303,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt16" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableUInt16( out UInt16? result )
 		{
 			if( !this.Read() )
@@ -314,7 +334,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int32" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadInt32( out Int32 result )
 		{
 			if( !this.Read() )
@@ -339,7 +361,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int32" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableInt32( out Int32? result )
 		{
 			if( !this.Read() )
@@ -368,7 +392,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt32" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadUInt32( out UInt32 result )
 		{
 			if( !this.Read() )
@@ -393,7 +419,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt32" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableUInt32( out UInt32? result )
 		{
 			if( !this.Read() )
@@ -422,7 +450,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Int64" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadInt64( out Int64 result )
 		{
 			if( !this.Read() )
@@ -447,7 +477,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Int64" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableInt64( out Int64? result )
 		{
 			if( !this.Read() )
@@ -476,7 +508,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="UInt64" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadUInt64( out UInt64 result )
 		{
 			if( !this.Read() )
@@ -501,7 +535,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="UInt64" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableUInt64( out UInt64? result )
 		{
 			if( !this.Read() )
@@ -530,7 +566,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Single" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadSingle( out Single result )
 		{
 			if( !this.Read() )
@@ -555,7 +593,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Single" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableSingle( out Single? result )
 		{
 			if( !this.Read() )
@@ -584,7 +624,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="Double" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadDouble( out Double result )
 		{
 			if( !this.Read() )
@@ -609,7 +651,9 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="Double" /> type.
 		/// </exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public virtual bool ReadNullableDouble( out Double? result )
 		{
 			if( !this.Read() )

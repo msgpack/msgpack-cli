@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ Func<Type,bool> __isClsCompliant =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -66,7 +66,9 @@ Func<Type,bool> __isClsCompliant =
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.IO;
 
@@ -112,7 +114,9 @@ foreach( var __type in __numericTypes )
 	if( !__isClsCompliant( __type ) )
 	{
 #>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 #>
@@ -152,14 +156,18 @@ foreach( var __type in __numericTypes )
 	if( !__isClsCompliant( __type ) )
 	{
 #>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 #>
 		public static UnpackingResult<#= "<" + __type.Name + ">" #> Unpack<#= __type.Name #>( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -202,14 +210,18 @@ foreach( var __type in __numericTypes )
 	if( !__isClsCompliant( __type ) )
 	{
 #>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 #>
 		public static <#= __type.Name #> Unpack<#= __type.Name #>( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return Unpack<#= __type.Name #>Core( source );
 		}

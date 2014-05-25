@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ namespace MsgPack.Serialization
 		/// <returns>Name of the method.</returns>
 		public static string BuildMethodName( string operation, Type targetType, string targetMemberName )
 		{
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 			return String.Join( "_", operation, EscapeTypeName( targetType ), targetMemberName );
 #else
 			return String.Join( "_", new string[] { operation, EscapeTypeName( targetType ), targetMemberName } );

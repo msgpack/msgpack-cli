@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,7 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.IO;
 
 namespace MsgPack
@@ -101,7 +103,9 @@ namespace MsgPack
 		public static UnpackingResult<IList<MessagePackObject>> UnpackArray( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -146,7 +150,9 @@ namespace MsgPack
 		public static IList<MessagePackObject> UnpackArray( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return UnpackArrayCore( source );
 		}
@@ -215,7 +221,9 @@ namespace MsgPack
 		public static UnpackingResult<Int64?> UnpackArrayLength( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -257,7 +265,9 @@ namespace MsgPack
 		public static Int64? UnpackArrayLength( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return UnpackArrayLengthCore( source );
 		}
@@ -330,7 +340,9 @@ namespace MsgPack
 		public static UnpackingResult<MessagePackObjectDictionary> UnpackDictionary( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -375,7 +387,9 @@ namespace MsgPack
 		public static MessagePackObjectDictionary UnpackDictionary( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return UnpackDictionaryCore( source );
 		}
@@ -444,7 +458,9 @@ namespace MsgPack
 		public static UnpackingResult<Int64?> UnpackDictionaryCount( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -486,7 +502,9 @@ namespace MsgPack
 		public static Int64? UnpackDictionaryCount( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return UnpackDictionaryCountCore( source );
 		}
@@ -559,7 +577,9 @@ namespace MsgPack
 		public static UnpackingResult<byte[]> UnpackBinary( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -604,7 +624,9 @@ namespace MsgPack
 		public static byte[] UnpackBinary( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return UnpackBinaryCore( source );
 		}
@@ -671,7 +693,9 @@ namespace MsgPack
 		public static UnpackingResult<bool> UnpackBoolean( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -713,7 +737,9 @@ namespace MsgPack
 		public static bool UnpackBoolean( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return UnpackBooleanCore( source );
 		}
@@ -780,7 +806,9 @@ namespace MsgPack
 		public static UnpackingResult<object> UnpackNull( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -822,7 +850,9 @@ namespace MsgPack
 		public static object UnpackNull( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return UnpackNullCore( source );
 		}
@@ -889,7 +919,9 @@ namespace MsgPack
 		public static UnpackingResult<MessagePackObject> UnpackObject( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -931,7 +963,9 @@ namespace MsgPack
 		public static MessagePackObject UnpackObject( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return UnpackObjectCore( source );
 		}
@@ -1004,7 +1038,9 @@ namespace MsgPack
 		public static UnpackingResult<MessagePackExtendedTypeObject> UnpackExtendedTypeObject( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -1049,7 +1085,9 @@ namespace MsgPack
 		public static MessagePackExtendedTypeObject UnpackExtendedTypeObject( Stream source )
 		{
 			ValidateStream( source );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			return UnpackExtendedTypeObjectCore( source );
 		}

@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -31,9 +33,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType ) {
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( targetType.IsArray );
-#endif
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			return
 				( GetPrimitiveArraySerializer( context, targetType )
 				?? Activator.CreateInstance(
@@ -45,9 +47,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static object GetPrimitiveArraySerializer( SerializationContext context, Type targetType )
 		{
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( targetType.IsArray );
-#endif
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 
 			Func<SerializationContext, object> serializerFactory;
 			if ( !_arraySerializerFactories.TryGetValue( targetType, out serializerFactory ) )

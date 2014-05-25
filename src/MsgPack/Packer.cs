@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -255,7 +257,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "value" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			foreach ( var b in value )
 			{
@@ -275,7 +279,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "value" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			foreach ( var b in value )
 			{
@@ -338,11 +344,15 @@ namespace MsgPack
 		/// <param name="value"><see cref="SByte"/> value.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public Packer Pack( sbyte value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -355,7 +365,9 @@ namespace MsgPack
 			}
 
 			var b = this.TryPackInt8( value );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		}
 
 		/// <summary>
@@ -388,7 +400,9 @@ namespace MsgPack
 		public Packer Pack( byte value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -401,7 +415,9 @@ namespace MsgPack
 			}
 
 			var b = this.TryPackUInt8( value );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		}
 
 		/// <summary>
@@ -434,7 +450,9 @@ namespace MsgPack
 		public Packer Pack( short value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -452,7 +470,9 @@ namespace MsgPack
 			}
 
 			var b = this.TryPackInt16( value );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		}
 
 		/// <summary>
@@ -486,11 +506,15 @@ namespace MsgPack
 		/// <param name="value"><see cref="UInt16"/> value.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public Packer Pack( ushort value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -508,7 +532,9 @@ namespace MsgPack
 			}
 
 			var b = this.TryPackUInt16( value );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		}
 
 		/// <summary>
@@ -516,7 +542,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Maybe <see cref="UInt16"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		protected bool TryPackUInt16( ulong value )
 		{
 			if ( value > UInt16.MaxValue )
@@ -546,7 +574,9 @@ namespace MsgPack
 		public Packer Pack( int value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -569,7 +599,10 @@ namespace MsgPack
 			}
 
 			var b = this.TryPackInt32( value );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 		}
 
 		/// <summary>
@@ -605,11 +638,15 @@ namespace MsgPack
 		/// <param name="value"><see cref="UInt32"/> value.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public Packer Pack( uint value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -633,7 +670,10 @@ namespace MsgPack
 			}
 
 			var b = this.TryPackUInt32( value );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 		}
 
 		/// <summary>
@@ -641,7 +681,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Maybe <see cref="UInt32"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		protected bool TryPackUInt32( ulong value )
 		{
 			if ( value > UInt32.MaxValue )
@@ -673,7 +715,9 @@ namespace MsgPack
 		public Packer Pack( long value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -701,7 +745,10 @@ namespace MsgPack
 			}
 
 			var b = this.TryPackInt64( value );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 		}
 
 		/// <summary>
@@ -736,11 +783,15 @@ namespace MsgPack
 		/// <param name="value"><see cref="UInt64"/> value.</param>
 		/// <returns>This instance.</returns>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public Packer Pack( ulong value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.PrivatePackCore( value );
 			return this;
 		}
@@ -768,7 +819,10 @@ namespace MsgPack
 			}
 
 			var b = this.TryPackUInt64( value );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 		}
 
 		/// <summary>
@@ -776,7 +830,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Maybe <see cref="UInt64"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		protected bool TryPackUInt64( ulong value )
 		{
 			this.WriteByte( MessagePackCode.UnsignedInt64 );
@@ -914,7 +970,9 @@ namespace MsgPack
 				throw new ArgumentOutOfRangeException( "count", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "count" ) );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.VerifyNotDisposed();
 
 			this.PrivatePackArrayHeaderCore( count );
@@ -922,7 +980,9 @@ namespace MsgPack
 
 		private void PrivatePackArrayHeaderCore( int count )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( 0 <= count );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			if ( count < 16 )
 			{
 				this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedArray | count ) ) );
@@ -970,7 +1030,9 @@ namespace MsgPack
 				throw new ArgumentOutOfRangeException( "count", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "count" ) );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.VerifyNotDisposed();
 
 			this.PrivatePackMapHeaderCore( count );
@@ -978,7 +1040,9 @@ namespace MsgPack
 
 		private void PrivatePackMapHeaderCore( int count )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( 0 <= count );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( count < 16 )
 			{
@@ -1072,7 +1136,9 @@ namespace MsgPack
 				throw new ArgumentOutOfRangeException( "length", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "length" ) );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.VerifyNotDisposed();
 
 			this.PrivatePackRawHeaderCore( length, true );
@@ -1090,7 +1156,9 @@ namespace MsgPack
 				throw new ArgumentOutOfRangeException( "length", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "length" ) );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.VerifyNotDisposed();
 
 			this.PrivatePackRawHeaderCore( length, false );
@@ -1098,7 +1166,9 @@ namespace MsgPack
 
 		private void PrivatePackRawHeaderCore( int length, bool isString )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( 0 <= length );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( isString || ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
 			{
@@ -1191,7 +1261,9 @@ namespace MsgPack
 		public Packer PackRaw( IEnumerable<byte> value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection == null )
@@ -1218,7 +1290,9 @@ namespace MsgPack
 		public Packer PackRaw( IList<byte> value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var asByteArray = value as byte[];
 			if ( asByteArray == null )
@@ -1244,7 +1318,9 @@ namespace MsgPack
 		public Packer PackRaw( byte[] value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this.PrivatePackRaw( value );
 			return this;
@@ -1263,7 +1339,7 @@ namespace MsgPack
 
 		private void PrivatePackRawCore( byte[] value, bool isImmutable )
 		{
-			this.PrivatePackRawHeaderCore( value.Length, isString: true );
+			this.PrivatePackRawHeaderCore( value.Length, /*isString:*/ true );
 			this.WriteBytes( value, isImmutable );
 		}
 
@@ -1275,7 +1351,7 @@ namespace MsgPack
 				return;
 			}
 
-			this.PrivatePackRawHeaderCore( value.Count, isString: true );
+			this.PrivatePackRawHeaderCore( value.Count, /*isString:*/ true );
 			this.WriteBytes( value );
 		}
 
@@ -1326,7 +1402,9 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this.WriteBytes( value, false );
 			return this;
@@ -1349,7 +1427,9 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this.PrivatePackRawBodyCore( value );
 			return this;
@@ -1357,7 +1437,9 @@ namespace MsgPack
 
 		private int PrivatePackRawBodyCore( IEnumerable<byte> value )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( value != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection != null )
@@ -1378,7 +1460,9 @@ namespace MsgPack
 
 		private int PrivatePackRawBodyCore( ICollection<byte> value, bool isImmutable )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( value != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var asArray = value as byte[];
 			if ( asArray != null )
@@ -1459,7 +1543,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.VerifyNotDisposed();
 
 			this.PrivatePackString( value, encoding );
@@ -1467,7 +1553,9 @@ namespace MsgPack
 
 		private void PrivatePackString( IEnumerable<char> value, Encoding encoding )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( encoding != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( value == null )
 			{
@@ -1480,12 +1568,14 @@ namespace MsgPack
 
 		private void PrivatePackStringCore( IEnumerable<char> value, Encoding encoding )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( value != null );
 			Contract.Assert( encoding != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value.ToArray() );
-			this.PrivatePackRawHeaderCore( encoded.Length, isString: true );
+			this.PrivatePackRawHeaderCore( encoded.Length, /*isString:*/ true );
 			this.WriteBytes( encoded, true );
 		}
 
@@ -1501,7 +1591,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this.VerifyNotDisposed();
 
 			this.PrivatePackString( value, encoding );
@@ -1510,7 +1602,9 @@ namespace MsgPack
 
 		private void PrivatePackString( string value, Encoding encoding )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( encoding != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			if ( value == null )
 			{
@@ -1523,12 +1617,14 @@ namespace MsgPack
 
 		private void PrivatePackStringCore( string value, Encoding encoding )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( value != null );
 			Contract.Assert( encoding != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value );
-			this.PrivatePackRawHeaderCore( encoded.Length, isString: true );
+			this.PrivatePackRawHeaderCore( encoded.Length, /*isString:*/ true );
 			this.WriteBytes( encoded, true );
 		}
 
@@ -1548,7 +1644,9 @@ namespace MsgPack
 		public Packer PackBinary( IEnumerable<byte> value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var asCollection = value as ICollection<byte>;
 			if ( asCollection == null )
@@ -1575,7 +1673,9 @@ namespace MsgPack
 		public Packer PackBinary( IList<byte> value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var asByteArray = value as byte[];
 			if ( asByteArray == null )
@@ -1601,7 +1701,9 @@ namespace MsgPack
 		public Packer PackBinary( byte[] value )
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this.PrivatePackBinary( value );
 			return this;
@@ -1620,7 +1722,7 @@ namespace MsgPack
 
 		private void PrivatePackBinaryCore( byte[] value, bool isImmutable )
 		{
-			this.PrivatePackRawHeaderCore( value.Length, isString: false );
+			this.PrivatePackRawHeaderCore( value.Length, /*isString:*/ false );
 			this.WriteBytes( value, isImmutable );
 		}
 
@@ -1632,7 +1734,7 @@ namespace MsgPack
 				return;
 			}
 
-			this.PrivatePackRawHeaderCore( value.Count, isString: false );
+			this.PrivatePackRawHeaderCore( value.Count, /*isString:*/ false );
 			this.WriteBytes( value );
 		}
 
@@ -1747,7 +1849,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Maybe tiny <see cref="Byte"/> value.</param>
 		/// <returns>If <paramref name="value"/> has be packed successfully then true, otherwise false (normally, larger type required).</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		protected bool TryPackTinyUnsignedInteger( ulong value )
 		{
 			// positive fixnum
@@ -1768,7 +1872,9 @@ namespace MsgPack
 		public Packer PackNull()
 		{
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this.PrivatePackNullCore();
 			return this;
@@ -1796,7 +1902,9 @@ namespace MsgPack
 			}
 
 			this.VerifyNotDisposed();
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this.PrivatePackExtendedTypeValueCore( typeCode, body );
 			return this;

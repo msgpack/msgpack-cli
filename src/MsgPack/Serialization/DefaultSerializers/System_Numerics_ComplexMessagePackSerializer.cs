@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System;
 using System.Numerics;
 
@@ -56,3 +57,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 	}
 }
+#endif // !UNITY_ANDROID && !UNITY_IPHONE

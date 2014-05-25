@@ -21,7 +21,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -56,13 +58,17 @@ namespace MsgPack.Serialization
 			var asProperty = source as PropertyInfo;
 			var asField = source as FieldInfo;
 			// GetSetMethod() on WinRT is not compabitle with CLR. CLR returns null but WinRT returns non-null for non-public setter.
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( asProperty != null || asField != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			return asProperty != null ? ( asProperty.CanWrite && asProperty.GetSetMethod() != null && asProperty.GetSetMethod().IsPublic ) : !asField.IsInitOnly;
 		}
 
 		public static CollectionTraits GetCollectionTraits( this Type source )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( !source.GetContainsGenericParameters() );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			/*
 			 * SPEC
 			 * If the object has single public method TEnumerator GetEnumerator() ( where TEnumerator implements IEnumerator<TItem>),
@@ -306,13 +312,13 @@ namespace MsgPack.Serialization
 
 			if ( index < 0 )
 			{
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 #if !NETFX_35
 				Contract.Assert( false, interfaceType + "::" + name + "(" + String.Join<Type>( ", ", parameterTypes ) + ") is not found in " + targetType );
 #else
 				Contract.Assert( false, interfaceType + "::" + name + "(" + String.Join( ", ", parameterTypes.Select( t => t.ToString() ).ToArray() ) + ") is not found in " + targetType );
-#endif
-#endif
+#endif // !NETFX_35
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 				// ReSharper disable once HeuristicUnreachableCode
 				return null;
 			}
@@ -388,13 +394,15 @@ namespace MsgPack.Serialization
 		private static bool FilterCollectionType( Type type, object filterCriteria )
 		{
 #if !NETFX_CORE
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( type.IsInterface );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			return type.Assembly == typeof( Array ).Assembly && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
 #else
 			var typeInfo = type.GetTypeInfo();
 			Contract.Assert( typeInfo.IsInterface );
 			return typeInfo.Assembly.Equals( typeof( Array ).GetTypeInfo().Assembly ) && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
-#endif
+#endif // !NETFX_CORE
 		}
 
 		private static bool IsIEnumeratorT( Type @interface )

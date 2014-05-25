@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 namespace MsgPack.Serialization
 {
@@ -59,13 +61,19 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( keyType.GetIsGenericType() );
 				Contract.Assert( !keyType.GetIsGenericTypeDefinition() );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 				var type = genericDefinitionMatched as Type;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( type != null );
 				Contract.Assert( type.GetIsGenericTypeDefinition() );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 				var result = Activator.CreateInstance( type.MakeGenericType( keyType.GetGenericArguments() ), context );
+#if !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( result != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 				return result;
 			}
 		}

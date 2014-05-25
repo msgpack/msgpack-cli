@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Runtime.InteropServices;
 
 namespace MsgPack
@@ -103,8 +105,10 @@ namespace MsgPack
 		/// <param name="offset">Offset to read.</param>
 		public Float64Bits( byte[] bigEndianBytes, int offset )
 		{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( bigEndianBytes != null );
 			Contract.Assume( bigEndianBytes.Length - offset >= 8, bigEndianBytes.Length.ToString() + "-" + offset.ToString() + ">= 4" );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this = default( Float64Bits );
 

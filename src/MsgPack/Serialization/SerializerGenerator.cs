@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,14 +27,11 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
-#if !XAMDROID
 using MsgPack.Serialization.CodeDomSerializers;
-#endif
 using MsgPack.Serialization.EmittingSerializers;
 
 namespace MsgPack.Serialization
 {
-	// TODO: Enable this feature on WinRT using CodeDOM.
 	/// <summary>
 	///		Provides pre-compiled serialier assembly generation.
 	/// </summary>
@@ -138,6 +135,7 @@ namespace MsgPack.Serialization
 
 			Contract.EndContractBlock();
 
+
 			this._assemblyName = assemblyName;
 			this._targetTypes = new HashSet<Type>();
 			this._method = SerializationMethod.Array;
@@ -162,6 +160,7 @@ namespace MsgPack.Serialization
 			}
 
 			Contract.EndContractBlock();
+
 
 			this._targetTypes.Add( rootType );
 		}
@@ -247,7 +246,6 @@ namespace MsgPack.Serialization
 				);
 		}
 
-#if !XAMDROID
 		/// <summary>
 		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
 		/// </summary>
@@ -313,7 +311,6 @@ namespace MsgPack.Serialization
 		{
 			return new SerializerCodesGenerationLogic().Generate( targetTypes, configuration ?? new SerializerCodeGenerationConfiguration() );
 		}
-#endif // if !XAMDROID
 
 		private abstract class SerializerGenerationLogic<TConfig>
 			where TConfig : class, ISerializerGeneratorConfiguration
@@ -387,7 +384,6 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !XAMDROID
 		private sealed class SerializerCodesGenerationLogic : SerializerGenerationLogic<SerializerCodeGenerationConfiguration>
 		{
 			protected override EmitterFlavor EmitterFlavor
@@ -411,6 +407,5 @@ namespace MsgPack.Serialization
 					) as ISerializerCodeGenerator;
 			}
 		}
-#endif // if !XAMDROID
 	}
 }

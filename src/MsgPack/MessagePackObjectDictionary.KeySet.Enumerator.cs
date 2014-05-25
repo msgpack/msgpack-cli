@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,19 +21,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 namespace MsgPack
 {
 	partial class MessagePackObjectDictionary
 	{
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 		partial class KeySet
 #else
 		partial class KeyCollection
-#endif
+#endif // !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 		{
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 			/// <summary>
 			///		Enumerates the elements of a <see cref="MessagePackObjectDictionary.KeySet"/>.
 			/// </summary>
@@ -43,7 +45,7 @@ namespace MsgPack
 			///		Enumerates the elements of a <see cref="MessagePackObjectDictionary.KeyCollection"/>.
 			/// </summary>
 			public struct Enumerator : IEnumerator<MessagePackObject>
-#endif
+#endif // !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 			{
 				// This field must not be readonly because it will cause infinite loop to the user of this type 
 				// due to C# compiler emit ldfld instead of ldflda and state of this field will never change.
@@ -76,7 +78,9 @@ namespace MsgPack
 
 				internal Enumerator( MessagePackObjectDictionary dictionary )
 				{
+#if !UNITY_ANDROID && !UNITY_IPHONE
 					Contract.Assert( dictionary != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 					this._underlying = dictionary.GetEnumerator();
 				}

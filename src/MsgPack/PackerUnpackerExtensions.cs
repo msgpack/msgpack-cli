@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Linq;
 #if NETFX_CORE
 using System.Reflection;
@@ -54,7 +56,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			PackCore( source, value, SerializationContext.Default );
 		}
@@ -85,7 +90,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			PackCore( source, value, context );
 		}
@@ -286,7 +294,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			PackCore( source, items, SerializationContext.Default );
 		}
@@ -317,7 +328,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			PackCore( source, items, context );
 		}
@@ -373,7 +387,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			PackObjectCore( source, value, SerializationContext.Default );
 		}
@@ -403,7 +420,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			PackObjectCore( source, value, context );
 		}
@@ -444,7 +464,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "source" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			return UnpackCore<T>( source, new SerializationContext() );
 		}
@@ -475,7 +498,10 @@ namespace MsgPack
 				throw new ArgumentNullException( "context" );
 			}
 
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.EndContractBlock();
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
+
 
 			return UnpackCore<T>( source, context );
 		}

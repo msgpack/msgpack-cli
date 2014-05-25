@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+#if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -26,7 +27,6 @@ using System.Linq;
 
 namespace MsgPack
 {
-#if !WINDOWS_PHONE
 	/// <summary>
 	///		Implements basic (maybe naive) implementation for common Set&lt;T&gt; operation.
 	/// </summary>
@@ -313,5 +313,5 @@ namespace MsgPack
 			return matchCount == set.Count;
 		}
 	}
-#endif
 }
+#endif // !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE

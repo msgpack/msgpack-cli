@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Runtime.InteropServices;
 
 namespace MsgPack
@@ -60,7 +62,9 @@ namespace MsgPack
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="SByte" /> instance.
 		/// </summary>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public MessagePackObject( SByte value )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
@@ -83,7 +87,9 @@ namespace MsgPack
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt16" /> instance.
 		/// </summary>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public MessagePackObject( UInt16 value )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
@@ -106,7 +112,9 @@ namespace MsgPack
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt32" /> instance.
 		/// </summary>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public MessagePackObject( UInt32 value )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
@@ -129,7 +137,9 @@ namespace MsgPack
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt64" /> instance.
 		/// </summary>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public MessagePackObject( UInt64 value )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
@@ -308,7 +318,9 @@ namespace MsgPack
 		///		Convert this instance to <see cref="SByte" /> instance.
 		/// </summary>
 		/// <returns><see cref="SByte" /> instance corresponds to this instance.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public SByte AsSByte()
 		{
 			if( this.IsNil )
@@ -423,7 +435,9 @@ namespace MsgPack
 		///		Convert this instance to <see cref="UInt16" /> instance.
 		/// </summary>
 		/// <returns><see cref="UInt16" /> instance corresponds to this instance.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public UInt16 AsUInt16()
 		{
 			if( this.IsNil )
@@ -524,7 +538,9 @@ namespace MsgPack
 		///		Convert this instance to <see cref="UInt32" /> instance.
 		/// </summary>
 		/// <returns><see cref="UInt32" /> instance corresponds to this instance.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public UInt32 AsUInt32()
 		{
 			if( this.IsNil )
@@ -616,7 +632,9 @@ namespace MsgPack
 		///		Convert this instance to <see cref="UInt64" /> instance.
 		/// </summary>
 		/// <returns><see cref="UInt64" /> instance corresponds to this instance.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public UInt64 AsUInt64()
 		{
 			if( this.IsNil )
@@ -756,7 +774,9 @@ namespace MsgPack
 			}
 
 			var asString = this._handleOrTypeCode as MessagePackString;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( asString != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			return asString.GetString();
 		}
 
@@ -775,7 +795,9 @@ namespace MsgPack
 			}
 
 			var asString = this._handleOrTypeCode as MessagePackString;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( asString != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			return asString.GetBytes();
 		}
 
@@ -834,7 +856,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="SByte" /> instance.</param>
 		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static implicit operator MessagePackObject( SByte value )
 		{
 			MessagePackObject result;
@@ -865,7 +889,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="UInt16" /> instance.</param>
 		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static implicit operator MessagePackObject( UInt16 value )
 		{
 			MessagePackObject result;
@@ -896,7 +922,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="UInt32" /> instance.</param>
 		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static implicit operator MessagePackObject( UInt32 value )
 		{
 			MessagePackObject result;
@@ -927,7 +955,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="UInt64" /> instance.</param>
 		/// <returns><see cref="MessagePackObject"/> instance corresponds to <paramref name="value"/>.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static implicit operator MessagePackObject( UInt64 value )
 		{
 			MessagePackObject result;
@@ -1128,7 +1158,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
 		/// <returns><see cref="SByte" /> instance corresponds to <paramref name="value"/>.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static explicit operator SByte( MessagePackObject value )
 		{
 			if( value.IsNil )
@@ -1245,7 +1277,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
 		/// <returns><see cref="UInt16" /> instance corresponds to <paramref name="value"/>.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static explicit operator UInt16( MessagePackObject value )
 		{
 			if( value.IsNil )
@@ -1348,7 +1382,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
 		/// <returns><see cref="UInt32" /> instance corresponds to <paramref name="value"/>.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static explicit operator UInt32( MessagePackObject value )
 		{
 			if( value.IsNil )
@@ -1442,7 +1478,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value"><see cref="MessagePackObject"/> instance.</param>
 		/// <returns><see cref="UInt64" /> instance corresponds to <paramref name="value"/>.</returns>
+#if !UNITY_ANDROID && !UNITY_IPHONE
 		[CLSCompliant( false )]
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 		public static explicit operator UInt64( MessagePackObject value )
 		{
 			if( value.IsNil )
@@ -1585,7 +1623,9 @@ namespace MsgPack
 			}
 
 			var asString = value._handleOrTypeCode as MessagePackString;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( asString != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			return asString.GetString();
 		}
 
@@ -1605,7 +1645,9 @@ namespace MsgPack
 			}
 
 			var asString = value._handleOrTypeCode as MessagePackString;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( asString != null );
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 			return asString.GetBytes();
 		}
 

@@ -21,7 +21,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 
 namespace MsgPack.Serialization.DefaultSerializers
@@ -69,9 +71,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static IMessagePackSingleObjectSerializer CreateArraySerializer( SerializationContext context, Type targetType )
 		{
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( targetType.IsArray );
-#endif // if DEBUG
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			return ArraySerializer.Create( context, targetType );
 		}
 
@@ -79,9 +81,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			var factoryType = typeof( NullableInstanceFactory<> ).MakeGenericType( underlyingType );
 			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( instanceFactory != null );
-#endif
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			return instanceFactory.Create( context ) as IMessagePackSingleObjectSerializer;
 		}
 
@@ -164,15 +166,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 				default:
 				{
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 					Contract.Assert( false, "Unknown type:" + targetType );
-#endif
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 					// ReSharper disable HeuristicUnreachableCode
 					return null;
 					// ReSharper restore HeuristicUnreachableCode
 				}
 			}
-#endif
+#endif // NETFX_35 || NETFX_40 || SILVERLIGHT
 		}
 
 		public static IMessagePackSingleObjectSerializer CreateCollectionInterfaceSerializer( SerializationContext context, Type abstractType, Type concreteType )
@@ -183,12 +185,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				serializerType = typeof( ListSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
 			}
-#if !NETFX_35
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( ISet<> ) )
 			{
 				serializerType = typeof( SetSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
 			}
-#endif // !NETFX_35
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( ICollection<> ) )
 			{
 				serializerType = typeof( CollectionSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
