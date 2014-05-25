@@ -119,7 +119,7 @@ namespace mpu
 						value => configuration.Namespace = value
 					},
 					{
-						"n|namespace=", "[serializer, optional] Specify serialization method for generated serializers. Valid value is Array or Map. Default is 'Array'.",
+						"method=", "[serializer, optional] Specify serialization method for generated serializers. Valid value is Array or Map. Default is 'Array'.",
 						(SerializationMethod value) => configuration.SerializationMethod = value
 					},
 					{
@@ -191,7 +191,7 @@ namespace mpu
 					.OfType<AssemblyInformationalVersionAttribute>().Single().InformationalVersion
 			);
 			Console.WriteLine( "  {0}",
-				typeof( Program ).Assembly.GetCustomAttributes( typeof( AssemblyInformationalVersionAttribute ), false )
+				typeof( Program ).Assembly.GetCustomAttributes( typeof( AssemblyCopyrightAttribute ), false )
 					.OfType<AssemblyCopyrightAttribute>().Single().Copyright
 			);
 			Console.WriteLine();

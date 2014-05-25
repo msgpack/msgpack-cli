@@ -63,7 +63,6 @@ namespace mpu
 		/// <exception cref="ArgumentException">A format of passed argument is invalid.</exception>
 		/// <exception cref="IOException">
 		///		A specified file or directory is not valid, is not found, or conflicts with existent file system object.
-		///		Or, <see cref="LibraryName"/> contains invalid charactor(s) as directory name.
 		///		Or, unexpected I/O error is occurred.
 		/// </exception>
 		/// <remarks>
@@ -96,10 +95,14 @@ namespace mpu
 
 			foreach ( var sourceFileRelativePath in this.ParseProjectFile( sourceProjectPath ) )
 			{
+				var destinationFilePath = Path.Combine( outputDirectoryPath, sourceFileRelativePath );
+				// ReSharper disable once AssignNullToNotNullAttribute
+				Directory.CreateDirectory( Path.GetDirectoryName( destinationFilePath ) );
+
 				File.Copy(
 					// ReSharper disable once AssignNullToNotNullAttribute
 					Path.Combine( sourceDirectoryPath, sourceFileRelativePath ),
-					Path.Combine( outputDirectoryPath, sourceFileRelativePath ),
+					destinationFilePath,
 					this.Overwrite
 					);
 			}
@@ -120,15 +123,19 @@ namespace mpu
 
 			if ( projectXml.Root == null )
 			{
-				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Project file '{0}' is empty." ) );
+				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Project file '{0}' is empty.", filePath ) );
 			}
 
 			return
-				projectXml.Root.Elements( "ItemGroup" )
-					.Elements( "Compile" )
+				projectXml.Root.Elements( "{http://schemas.microsoft.com/developer/msbuild/2003}ItemGroup" )
+					.Elements( "{http://schemas.microsoft.com/developer/msbuild/2003}Compile" )
 					.Attributes( "Include" )
-					.Where( include => include.Value.EndsWith( ".cs", StringComparison.OrdinalIgnoreCase ) )
-					.Select( include => include.Value );
+					.Where( include => 
+						include.Value.EndsWith( ".cs", StringComparison.OrdinalIgnoreCase )
+						&& !include.Value.EndsWith( "AssemblyInfo.cs", StringComparison.OrdinalIgnoreCase )
+						&& !include.Value.EndsWith( "CommonAssemblyInfo.cs", StringComparison.OrdinalIgnoreCase )
+						&& !include.Value.EndsWith( "CommonAssemblyInfo.Pack.cs", StringComparison.OrdinalIgnoreCase )
+					).Select( include => include.Value );
 		}
 	}
 }
