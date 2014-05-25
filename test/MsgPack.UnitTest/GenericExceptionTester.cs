@@ -128,9 +128,9 @@ namespace MsgPack
 			this.TestMessageConstructor_WithNull_SetToDefaultMessage();
 			this.TestInnerExceptionConstructor_WithMessageAndInnerException_SetToMessageAndInnerException();
 			this.TestInnerExceptionConstructor_Null_SetToDefaultMessageAndNullInnerException();
-#if !NETFX_CORE && !XAMIOS && !UNITY_IPHONE
+#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 			this.TestSerialization();
-#endif // if !NETFX_CORE && !XAMIOS && !UNITY_IPHONE
+#endif // if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		}
 
 		private void TestDefaultConstructor()
@@ -201,7 +201,7 @@ namespace MsgPack
 			}
 		}
 
-#if !NETFX_CORE && !XAMIOS && !UNITY_IPHONE
+#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		private void TestSerialization()
 		{
 			Assert.That( typeof( T ), Is.BinarySerializable );
@@ -308,6 +308,6 @@ namespace MsgPack
 			var assemblyName = type.Assembly.GetName();
 			return new StrongName( new StrongNamePublicKeyBlob( assemblyName.GetPublicKey() ), assemblyName.Name, assemblyName.Version );
 		}
-#endif // if !NETFX_CORE && !XAMIOS && !UNITY_IPHONE
+#endif // if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 	}
 }

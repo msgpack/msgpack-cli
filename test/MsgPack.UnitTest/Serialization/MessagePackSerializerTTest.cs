@@ -24,13 +24,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using MsgPack.Serialization.DefaultSerializers;
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 #if !NETFX_CORE
 using MsgPack.Serialization.EmittingSerializers;
 #else
 using MsgPack.Serialization.ExpressionSerializers;
 #endif // !NETFX_CORE
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -49,7 +49,7 @@ namespace MsgPack.Serialization
 	{
 		private static MessagePackSerializer<T> CreateTarget<T>()
 		{
-#if XAMIOS || UNITY_IPHONE
+#if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
 			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array ).GetSerializer<T>();
 #elif !NETFX_CORE
 			return new AutoMessagePackSerializer<T>( new SerializationContext(), new AssemblyBuilderSerializerBuilder<T>() );

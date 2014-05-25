@@ -23,9 +23,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 using MsgPack.Serialization.AbstractSerializers;
-#endif
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 namespace MsgPack.Serialization
 {

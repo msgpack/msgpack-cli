@@ -58,7 +58,7 @@ namespace MsgPack.Serialization
 			Assert.Throws<ArgumentNullException>( () => target.GetSerializer( null ) );
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		[Test]
 		public void TestGetSerializer_Concurrent()
 		{
@@ -67,19 +67,19 @@ namespace MsgPack.Serialization
 				target.GetSerializer<ComplexType>
 			).Test();
 		}
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		[Test]
 		public void TestGetSerializer_Type()
 		{
 			var target = new SerializationContext();
 			Assert.That( target.GetSerializer( typeof( int ) ), Is.Not.Null );
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 			Assert.That( target.GetSerializer( typeof( ComplexType ) ), Is.Not.Null );
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		[Test]
 		public void TestGetSerializer_TypeConcurrent()
 		{
@@ -88,7 +88,7 @@ namespace MsgPack.Serialization
 				() => ( MessagePackSerializer<ComplexType> )target.GetSerializer( typeof( ComplexType ) )
 			).Test();
 		}
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		[Test]
 		public void TestDefaultCollectionTypes_Default_Check()
@@ -275,7 +275,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		private sealed class ConcurrentHelper<T> : IDisposable
 			where T : class
 		{
@@ -340,7 +340,7 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 		public abstract class NewAbstractCollection<T> : Collection<T>
 		{

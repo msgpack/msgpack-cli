@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A6210C9C-1614-46C5-97B2-6A37032AF143}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -32,7 +32,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>..\..\bin\monoandroid</OutputPath>
     <DefineConstants>__MOBILE__;__ANDROID__;XAMDROID;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -41,7 +41,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="System.Numerics" />
@@ -482,12 +481,8 @@
   <ItemGroup>
     <Folder Include="Serialization\" />
     <Folder Include="Serialization\Reflection\" />
-    <Folder Include="Serialization\AbstractSerializers\" />
-    <Folder Include="Serialization\EmittingSerializers\" />
-    <Folder Include="Serialization\ExpressionSerializers\" />
     <Folder Include="Properties\" />
     <Folder Include="Serialization\DefaultSerializers\" />
-    <Folder Include="Serialization\Metadata\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MsgPack\remarks.xml">
