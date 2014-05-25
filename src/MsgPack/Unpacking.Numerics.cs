@@ -22,7 +22,6 @@ using System;
 #if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
-using System.Globalization;
 using System.IO;
 
 namespace MsgPack
@@ -98,7 +97,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -143,7 +141,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackByteCore( source );
 		}
 		
@@ -159,11 +156,10 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.Byte ), ex );
+					throw NewTypeMismatchException( typeof( Byte ), ex );
 				}
 			}
 		}
-
 		///	<summary>
 		///		Unpacks <see cref="System.SByte" /> value from the head of specified byte array.
 		///	</summary>
@@ -236,7 +232,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -284,7 +279,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackSByteCore( source );
 		}
 		
@@ -300,7 +294,7 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.SByte ), ex );
+					throw NewTypeMismatchException( typeof( SByte ), ex );
 				}
 			}
 		}
@@ -370,7 +364,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -415,7 +408,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackInt16Core( source );
 		}
 		
@@ -431,7 +423,7 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.Int16 ), ex );
+					throw NewTypeMismatchException( typeof( Int16 ), ex );
 				}
 			}
 		}
@@ -507,7 +499,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -555,7 +546,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackUInt16Core( source );
 		}
 		
@@ -571,7 +561,7 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.UInt16 ), ex );
+					throw NewTypeMismatchException( typeof( UInt16 ), ex );
 				}
 			}
 		}
@@ -641,7 +631,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -686,7 +675,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackInt32Core( source );
 		}
 		
@@ -702,7 +690,7 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.Int32 ), ex );
+					throw NewTypeMismatchException( typeof( Int32 ), ex );
 				}
 			}
 		}
@@ -778,7 +766,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -826,7 +813,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackUInt32Core( source );
 		}
 		
@@ -842,7 +828,7 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.UInt32 ), ex );
+					throw NewTypeMismatchException( typeof( UInt32 ), ex );
 				}
 			}
 		}
@@ -912,7 +898,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -957,7 +942,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackInt64Core( source );
 		}
 		
@@ -973,7 +957,7 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.Int64 ), ex );
+					throw NewTypeMismatchException( typeof( Int64 ), ex );
 				}
 			}
 		}
@@ -1049,7 +1033,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -1097,7 +1080,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackUInt64Core( source );
 		}
 		
@@ -1113,7 +1095,7 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.UInt64 ), ex );
+					throw NewTypeMismatchException( typeof( UInt64 ), ex );
 				}
 			}
 		}
@@ -1183,7 +1165,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -1228,7 +1209,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackSingleCore( source );
 		}
 		
@@ -1244,7 +1224,7 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.Single ), ex );
+					throw NewTypeMismatchException( typeof( Single ), ex );
 				}
 			}
 		}
@@ -1314,7 +1294,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			using( var stream = new MemoryStream( source ) )
 			{
 				stream.Position = offset;
@@ -1359,7 +1338,6 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			return UnpackDoubleCore( source );
 		}
 		
@@ -1375,7 +1353,7 @@ namespace MsgPack
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( System.Double ), ex );
+					throw NewTypeMismatchException( typeof( Double ), ex );
 				}
 			}
 		}

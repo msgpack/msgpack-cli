@@ -315,11 +315,7 @@ namespace MsgPack
 			else
 			{
 				// Copying is better than forcing stream is seekable...
-				ICollection<TItem> asCollection = value as ICollection<TItem>;
-				if ( asCollection == null )
-				{
-					asCollection = value.ToArray();
-				}
+				var asCollection = value as ICollection<TItem> ?? value.ToArray();
 
 				var bodyLength = asCollection.Count;
 				unchecked
@@ -1786,14 +1782,7 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackArrayHeader<TItem>( IList<TItem> array )
 		{
-			if ( array == null )
-			{
-				return this.PackNull();
-			}
-			else
-			{
-				return this.PackArrayHeader( array.Count );
-			}
+			return array == null ? this.PackNull() : this.PackArrayHeader( array.Count );
 		}
 
 		#endregion -- List --
@@ -1808,14 +1797,7 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackMapHeader<TKey, TValue>( IDictionary<TKey, TValue> map )
 		{
-			if ( map == null )
-			{
-				return this.PackNull();
-			}
-			else
-			{
-				return this.PackMapHeader( map.Count );
-			}
+			return map == null ? this.PackNull() : this.PackMapHeader( map.Count );
 		}
 
 		#endregion -- IDictionary --

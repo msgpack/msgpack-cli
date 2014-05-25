@@ -99,7 +99,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this._name = member.Name;
-			this._nilImplication = Serialization.NilImplication.MemberDefault;
+			this._nilImplication = NilImplication.MemberDefault;
 			this._id = UnspecifiedId;
 		}
 

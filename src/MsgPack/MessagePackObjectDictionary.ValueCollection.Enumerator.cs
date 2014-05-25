@@ -34,6 +34,7 @@ namespace MsgPack
 			/// <summary>
 			///		Enumerates the elements of a <see cref="MessagePackObjectDictionary.ValueCollection"/>.
 			/// </summary>
+			// ReSharper disable once MemberHidesStaticFromOuterClass
 			public struct Enumerator : IEnumerator<MessagePackObject>
 			{
 				// This field must not be readonly because it will cause infinite loop to the user of this type 

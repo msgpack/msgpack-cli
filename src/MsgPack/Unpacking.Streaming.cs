@@ -77,6 +77,7 @@ namespace MsgPack
 			{
 				return new SeekableUnpackingStream( source, length );
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return new UnseekableUnpackingStream( source, length );
@@ -180,12 +181,12 @@ namespace MsgPack
 		{
 			private readonly long _initialPosition;
 
-			public sealed override bool CanSeek
+			public override bool CanSeek
 			{
 				get { return true; }
 			}
 
-			public sealed override long Position
+			public override long Position
 			{
 				get { return this.CurrentOffset; }
 				set { this.SeekTo( value ); }
@@ -200,7 +201,7 @@ namespace MsgPack
 				this._initialPosition = underlying.Position;
 			}
 
-			public sealed override long Seek( long offset, SeekOrigin origin )
+			public override long Seek( long offset, SeekOrigin origin )
 			{
 				switch ( origin )
 				{
@@ -244,12 +245,12 @@ namespace MsgPack
 
 		private sealed class UnseekableUnpackingStream : UnpackingStream
 		{
-			public sealed override bool CanSeek
+			public override bool CanSeek
 			{
 				get { return false; }
 			}
 
-			public sealed override long Position
+			public override long Position
 			{
 				get { throw new NotSupportedException(); }
 				set { throw new NotSupportedException(); }
@@ -257,7 +258,7 @@ namespace MsgPack
 
 			public UnseekableUnpackingStream( Stream underlying, long rawLength ) : base( underlying, rawLength ) { }
 
-			public sealed override long Seek( long offset, SeekOrigin origin )
+			public override long Seek( long offset, SeekOrigin origin )
 			{
 				throw new NotSupportedException();
 			}

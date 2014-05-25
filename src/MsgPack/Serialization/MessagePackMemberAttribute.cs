@@ -67,9 +67,9 @@ namespace MsgPack.Serialization
 			{
 				switch ( value )
 				{
-					case Serialization.NilImplication.MemberDefault:
-					case Serialization.NilImplication.Null:
-					case Serialization.NilImplication.Prohibit:
+					case NilImplication.MemberDefault:
+					case NilImplication.Null:
+					case NilImplication.Prohibit:
 					{
 						break;
 					}

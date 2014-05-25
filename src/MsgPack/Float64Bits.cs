@@ -107,7 +107,7 @@ namespace MsgPack
 		{
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( bigEndianBytes != null );
-			Contract.Assume( bigEndianBytes.Length - offset >= 8, bigEndianBytes.Length.ToString() + "-" + offset.ToString() + ">= 4" );
+			Contract.Assume( bigEndianBytes.Length - offset >= 8, bigEndianBytes.Length + "-" + offset + ">= 4" );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			this = default( Float64Bits );

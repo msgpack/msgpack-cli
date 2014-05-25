@@ -19,10 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace MsgPack
 {
@@ -68,7 +65,7 @@ namespace MsgPack
 			get { return this.InternalCollectionType != CollectionType.None ? this.InternalItemsCount : 0L; }
 		}
 
-		protected sealed override Stream UnderlyingStream
+		protected override Stream UnderlyingStream
 		{
 			get { return this._stream; }
 		}
@@ -91,7 +88,7 @@ namespace MsgPack
 			this._ownsStream = ownsStream;
 		}
 
-		protected sealed override void Dispose( bool disposing )
+		protected override void Dispose( bool disposing )
 		{
 			if ( disposing )
 			{
@@ -113,6 +110,7 @@ namespace MsgPack
 				this.InternalData = value;
 				return true;
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return false;
@@ -126,7 +124,7 @@ namespace MsgPack
 		///		<see cref="Unpacker"/> to unpack current subtree.
 		///		This will not be <c>null</c>.
 		/// </returns>
-		protected sealed override Unpacker ReadSubtreeCore()
+		protected override Unpacker ReadSubtreeCore()
 		{
 			return new SubtreeUnpacker( this );
 		}

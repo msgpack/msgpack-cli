@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ namespace MsgPack
 
 		internal static MessagePackObjectEqualityComparer Instance
 		{
-			get { return MessagePackObjectEqualityComparer._instance; }
+			get { return _instance; }
 		}
 
 		/// <summary>
@@ -51,7 +51,7 @@ namespace MsgPack
 		/// <returns>
 		///		<c>true</c> if the specified objects are equal; otherwise, <c>false</c>.
 		/// </returns>
-		public sealed override bool Equals( MessagePackObject x, MessagePackObject y )
+		public override bool Equals( MessagePackObject x, MessagePackObject y )
 		{
 			return x.Equals( y );
 		}
@@ -63,7 +63,7 @@ namespace MsgPack
 		/// <returns>
 		///		A hash code for <paramref name="obj"/>, suitable for use in hashing algorithms and data structures like a hash table. 
 		/// </returns>
-		public sealed override int GetHashCode( MessagePackObject obj )
+		public override int GetHashCode( MessagePackObject obj )
 		{
 			return obj.GetHashCode();
 		}

@@ -19,9 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Diagnostics.CodeAnalysis;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {

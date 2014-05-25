@@ -32,6 +32,7 @@ namespace MsgPack.Serialization
 	internal sealed class SerializerTypeKeyRepository : TypeKeyRepository
 	{
 		public SerializerTypeKeyRepository()
+			// ReSharper disable once RedundantBaseConstructorCall
 			: base()
 		{
 		}
@@ -59,6 +60,7 @@ namespace MsgPack.Serialization
 			{
 				return matched;
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 #if !UNITY_ANDROID && !UNITY_IPHONE

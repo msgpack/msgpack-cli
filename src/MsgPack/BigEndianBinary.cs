@@ -62,7 +62,7 @@ namespace MsgPack
 
 			unchecked
 			{
-				return ( int )( buffer[ offset ] << 24 | buffer[ 1 + offset ] << 16 | buffer[ 2 + offset ] << 8 | buffer[ 3 + offset ] );
+				return buffer[ offset ] << 24 | buffer[ 1 + offset ] << 16 | buffer[ 2 + offset ] << 8 | buffer[ 3 + offset ];
 			}
 		}
 
@@ -75,8 +75,8 @@ namespace MsgPack
 			unchecked
 			{
 				return
-					( long )( ( long )buffer[ offset ] << 56 | ( long )buffer[ 1 + offset ] << 48 | ( long )buffer[ 2 + offset ] << 40 | ( long )buffer[ 3 + offset ] << 32
-					| ( long )buffer[ 4 + offset ] << 24 | ( long )buffer[ 5 + offset ] << 16 | ( long )buffer[ 6 + offset ] << 8 | buffer[ 7 + offset ] );
+					( long )buffer[ offset ] << 56 | ( long )buffer[ 1 + offset ] << 48 | ( long )buffer[ 2 + offset ] << 40 | ( long )buffer[ 3 + offset ] << 32
+					| ( long )buffer[ 4 + offset ] << 24 | ( long )buffer[ 5 + offset ] << 16 | ( long )buffer[ 6 + offset ] << 8 | buffer[ 7 + offset ];
 			}
 		}
 

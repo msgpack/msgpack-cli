@@ -71,6 +71,7 @@ namespace MsgPack
 			{
 				return unchecked( ( char )( '0' + b ) );
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return unchecked( ( char )( 'A' + ( b - 10 ) ) );

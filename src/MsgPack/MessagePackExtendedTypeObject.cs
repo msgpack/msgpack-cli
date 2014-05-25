@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -68,14 +68,7 @@ namespace MsgPack
 		/// </value>
 		public byte[] GetBody()
 		{
-			if ( this._body == null )
-			{
-				return Binary.Empty;
-			}
-			else
-			{
-				return this._body.Clone() as byte[];
-			}
+			return this._body == null ? Binary.Empty : this._body.Clone() as byte[];
 		}
 
 		/// <summary>
@@ -253,7 +246,7 @@ namespace MsgPack
 				return false;
 			}
 
-			if ( Object.ReferenceEquals( this._body, other._body ) )
+			if ( ReferenceEquals( this._body, other._body ) )
 			{
 				return true;
 			}

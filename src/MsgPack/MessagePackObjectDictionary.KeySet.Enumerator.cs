@@ -39,6 +39,7 @@ namespace MsgPack
 			/// <summary>
 			///		Enumerates the elements of a <see cref="MessagePackObjectDictionary.KeySet"/>.
 			/// </summary>
+			// ReSharper disable once MemberHidesStaticFromOuterClass
 			public struct Enumerator : IEnumerator<MessagePackObject>
 #else
 			/// <summary>

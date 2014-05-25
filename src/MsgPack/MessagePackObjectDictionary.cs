@@ -28,7 +28,6 @@ using System.Diagnostics.Contracts;
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace MsgPack
 {
@@ -47,9 +46,9 @@ namespace MsgPack
 	public partial class MessagePackObjectDictionary :
 		IDictionary<MessagePackObject, MessagePackObject>, IDictionary
 	{
-		private const int _threashold = 10;
-		private const int _listInitialCapacity = _threashold;
-		private const int _dictionaryInitialCapacity = _threashold * 2;
+		private const int Threashold = 10;
+		private const int ListInitialCapacity = Threashold;
+		private const int DictionaryInitialCapacity = Threashold * 2;
 
 		private List<MessagePackObject> _keys;
 		private List<MessagePackObject> _values;
@@ -86,14 +85,7 @@ namespace MsgPack
 			get
 			{
 				this.AssertInvariant();
-				if ( this._dictionary == null )
-				{
-					return this._keys.Count;
-				}
-				else
-				{
-					return this._dictionary.Count;
-				}
+				return this._dictionary == null ? this._keys.Count : this._dictionary.Count;
 			}
 		}
 
@@ -333,8 +325,8 @@ namespace MsgPack
 		/// </remarks>
 		public MessagePackObjectDictionary()
 		{
-			this._keys = new List<MessagePackObject>( _listInitialCapacity );
-			this._values = new List<MessagePackObject>( _listInitialCapacity );
+			this._keys = new List<MessagePackObject>( ListInitialCapacity );
+			this._values = new List<MessagePackObject>( ListInitialCapacity );
 		}
 
 		/// <summary>
@@ -359,7 +351,7 @@ namespace MsgPack
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 
-			if ( initialCapacity <= _threashold )
+			if ( initialCapacity <= Threashold )
 			{
 				this._keys = new List<MessagePackObject>( initialCapacity );
 				this._values = new List<MessagePackObject>( initialCapacity );
@@ -396,7 +388,7 @@ namespace MsgPack
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 
-			if ( dictionary.Count <= _threashold )
+			if ( dictionary.Count <= Threashold )
 			{
 				this._keys = new List<MessagePackObject>( dictionary.Count );
 				this._values = new List<MessagePackObject>( dictionary.Count );
@@ -483,11 +475,6 @@ namespace MsgPack
 				return ( MessagePackObject )value;
 			}
 
-			if ( value is MessagePackObject? )
-			{
-				return ( MessagePackObject? )value ?? MessagePackObject.Nil;
-			}
-
 			byte[] asBytes;
 			if ( ( asBytes = value as byte[] ) != null )
 			{
@@ -569,9 +556,11 @@ namespace MsgPack
 				{
 					return ( ulong )value;
 				}
+				// ReSharper disable RedundantCaseLabel
 				case TypeCode.Char:
 				case TypeCode.Decimal:
 				case TypeCode.Object:
+				// ReSharper restore RedundantCaseLabel
 				default:
 				{
 					return null;
@@ -605,14 +594,10 @@ namespace MsgPack
 
 
 			this.AssertInvariant();
-			if ( this._dictionary == null )
-			{
-				return this._keys.Contains( key, MessagePackObjectEqualityComparer.Instance );
-			}
-			else
-			{
-				return this._dictionary.ContainsKey( key );
-			}
+			return
+				this._dictionary == null
+				? this._keys.Contains( key, MessagePackObjectEqualityComparer.Instance )
+				: this._dictionary.ContainsKey( key );
 		}
 
 		/// <summary>
@@ -628,14 +613,10 @@ namespace MsgPack
 		public bool ContainsValue( MessagePackObject value )
 		{
 			this.AssertInvariant();
-			if ( this._dictionary == null )
-			{
-				return this._values.Contains( value, MessagePackObjectEqualityComparer.Instance );
-			}
-			else
-			{
-				return this._dictionary.ContainsValue( value );
-			}
+			return
+				this._dictionary == null 
+				? this._values.Contains( value, MessagePackObjectEqualityComparer.Instance ) 
+				: this._dictionary.ContainsValue( value );
 		}
 
 		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
@@ -653,10 +634,13 @@ namespace MsgPack
 		[SuppressMessage( "Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Child types should never call this property." )]
 		bool IDictionary.Contains( object key )
 		{
+			// ReSharper disable HeuristicUnreachableCode
+			// ReSharper disable once ConditionIsAlwaysTrueOrFalse
 			if ( key == null )
 			{
 				return false;
 			}
+			// ReSharper restore HeuristicUnreachableCode
 
 			var typedKey = TryValidateObjectArgument( key );
 
@@ -665,7 +649,7 @@ namespace MsgPack
 				return false;
 			}
 			{
-				return this.ContainsKey( typedKey.Value );
+				return this.ContainsKey( typedKey.GetValueOrDefault() );
 			}
 		}
 
@@ -717,12 +701,14 @@ namespace MsgPack
 					value = MessagePackObject.Nil;
 					return false;
 				}
+				// ReSharper disable once RedundantIfElseBlock
 				else
 				{
 					value = this._values[ index ];
 					return true;
 				}
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return this._dictionary.TryGetValue( key, out value );
@@ -780,7 +766,7 @@ namespace MsgPack
 
 			if ( this._dictionary == null )
 			{
-				if ( this._keys.Count < _threashold )
+				if ( this._keys.Count < Threashold )
 				{
 					int index = this._keys.FindIndex( item => item == key );
 					if ( index < 0 )
@@ -805,7 +791,7 @@ namespace MsgPack
 					return;
 				}
 
-				if ( this._keys.Count == _threashold && allowOverwrite )
+				if ( this._keys.Count == Threashold && allowOverwrite )
 				{
 					int index = this._keys.FindIndex( item => item == key );
 					if ( 0 <= index )
@@ -820,7 +806,7 @@ namespace MsgPack
 				}
 
 				// Swith to hashtable base
-				this._dictionary = new Dictionary<MessagePackObject, MessagePackObject>( _dictionaryInitialCapacity, MessagePackObjectEqualityComparer.Instance );
+				this._dictionary = new Dictionary<MessagePackObject, MessagePackObject>( DictionaryInitialCapacity, MessagePackObjectEqualityComparer.Instance );
 
 				for ( int i = 0; i < this._keys.Count; i++ )
 				{

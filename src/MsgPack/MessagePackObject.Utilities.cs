@@ -27,11 +27,10 @@ using System.Diagnostics.Contracts;
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.Linq;
+#if NETFX_CORE
 using System.Reflection;
-using System.Runtime.Serialization;
-#if !NETFX_CORE
-using System.Security.Permissions;
 #endif
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MsgPack
@@ -207,7 +206,8 @@ namespace MsgPack
 		public override bool Equals( Object obj )
 		{
 			MessagePackObjectDictionary asDictionary;
-			if ( Object.ReferenceEquals( obj, null ) )
+			// ReSharper disable RedundantIfElseBlock
+			if ( ReferenceEquals( obj, null ) )
 			{
 				return this.IsNil;
 			}
@@ -223,6 +223,7 @@ namespace MsgPack
 			{
 				return this.Equals( ( MessagePackObject )obj );
 			}
+			// ReSharper restore RedundantIfElseBlock
 		}
 
 		/// <summary>
@@ -234,6 +235,7 @@ namespace MsgPack
 		/// </returns>
 		public bool Equals( MessagePackObject other )
 		{
+			// ReSharper disable RedundantIfElseBlock
 			if ( this._handleOrTypeCode == null )
 			{
 				return other._handleOrTypeCode == null;
@@ -369,6 +371,7 @@ namespace MsgPack
 					return true;
 				}
 			}
+			// ReSharper restore RedundantIfElseBlock
 
 			{
 				var asExtendedTypeObjectBody = this._handleOrTypeCode as byte[];
@@ -394,6 +397,7 @@ namespace MsgPack
 
 		private static bool IntegerIntegerEquals( ulong left, ValueTypeCode leftTypeCode, ulong right, ValueTypeCode rightTypeCode )
 		{
+			// ReSharper disable RedundantIfElseBlock
 			if ( leftTypeCode.IsSigned )
 			{
 				if ( rightTypeCode.IsSigned )
@@ -428,6 +432,7 @@ namespace MsgPack
 					return left == right;
 				}
 			}
+			// ReSharper restore RedundantIfElseBlock
 		}
 
 		private static bool IntegerSingleEquals( MessagePackObject integer, MessagePackObject real )
@@ -439,6 +444,7 @@ namespace MsgPack
 			{
 				return unchecked( ( long )integer._value ) == ( float )real;
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return integer._value == ( float )real;
@@ -454,6 +460,7 @@ namespace MsgPack
 			{
 				return unchecked( ( long )integer._value ) == ( double )real;
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return integer._value == ( double )real;
@@ -466,6 +473,7 @@ namespace MsgPack
 		/// <returns>Hash code of this instance.</returns>
 		public override int GetHashCode()
 		{
+			// ReSharper disable NonReadonlyFieldInGetHashCode
 			if ( this._handleOrTypeCode == null )
 			{
 				return 0;
@@ -519,6 +527,7 @@ namespace MsgPack
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 				return 0;
 			}
+			// ReSharper restore NonReadonlyFieldInGetHashCode
 		}
 
 		/// <summary>
@@ -789,6 +798,7 @@ namespace MsgPack
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
+			// ReSharper disable HeuristicUnreachableCode
 			if ( isJson )
 			{
 				buffer.Append( '"' ).Append( this._handleOrTypeCode ).Append( '"' );
@@ -797,6 +807,7 @@ namespace MsgPack
 			{
 				buffer.Append( this._handleOrTypeCode );
 			}
+			// ReSharper restore HeuristicUnreachableCode
 		}
 
 		#endregion -- Structure Methods --
@@ -980,6 +991,7 @@ namespace MsgPack
 				}
 
 				var typeCode = this._handleOrTypeCode as ValueTypeCode;
+				// ReSharper disable RedundantIfElseBlock
 				if ( typeCode == null )
 				{
 					var asMps = this._handleOrTypeCode as MessagePackString;
@@ -996,6 +1008,7 @@ namespace MsgPack
 				{
 					return typeCode.Type;
 				}
+				// ReSharper restore RedundantIfElseBlock
 			}
 		}
 
@@ -1230,6 +1243,7 @@ namespace MsgPack
 					throw new InvalidOperationException( "Not UTF-16 string." );
 				}
 
+				// ReSharper disable RedundantIfElseBlock
 				if ( asBytes[ 0 ] == 0xff && asBytes[ 1 ] == 0xfe )
 				{
 					return Encoding.Unicode.GetString( asBytes, 2, asBytes.Length - 2 );
@@ -1242,6 +1256,7 @@ namespace MsgPack
 				{
 					return Encoding.BigEndianUnicode.GetString( asBytes, 0, asBytes.Length );
 				}
+				// ReSharper restore RedundantIfElseBlock
 			}
 			catch ( ArgumentException ex )
 			{
@@ -1328,6 +1343,7 @@ namespace MsgPack
 				{
 					throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "Do not convert nil MessagePackObject to {0}.", typeof( T ) ), parameterName );
 				}
+				// ReSharper disable once RedundantIfElseBlock
 				else
 				{
 					ThrowCannotBeNilAs<T>();
@@ -1340,6 +1356,7 @@ namespace MsgPack
 				{
 					throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} MessagePackObject to {1}.", instance.UnderlyingType, typeof( T ) ), parameterName );
 				}
+				// ReSharper disable once RedundantIfElseBlock
 				else
 				{
 					ThrowInvalidTypeAs<T>( instance );
@@ -1358,6 +1375,7 @@ namespace MsgPack
 			{
 				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} (binary:0x{2:x}) MessagePackObject to {1}.", instance.UnderlyingType, typeof( T ), instance._value ) );
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} MessagePackObject to {1}.", instance.UnderlyingType, typeof( T ) ) );
@@ -1386,9 +1404,10 @@ namespace MsgPack
 
 			// Nullable<T> is boxed as null or underlying value type, 
 			// so ( obj is Nullable<T> ) is always false.
+			// ReSharper disable RedundantIfElseBlock
 			if ( boxedValue == null )
 			{
-				return MessagePackObject.Nil;
+				return Nil;
 			}
 			else if ( boxedValue is MessagePackObject )
 			{
@@ -1474,6 +1493,7 @@ namespace MsgPack
 			{
 				return new MessagePackObject( ( MessagePackExtendedTypeObject )boxedValue );
 			}
+			// ReSharper restore RedundantIfElseBlock
 
 			throw new MessageTypeException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' is not supported.", boxedValue.GetType() ) );
 		}
@@ -1580,6 +1600,7 @@ namespace MsgPack
 #if !UNITY_ANDROID && !UNITY_IPHONE
 						Contract.Assert( false, "Unknwon type code:" + asType.TypeCode );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
+						// ReSharper disable once HeuristicUnreachableCode
 						return null;
 					}
 				}
@@ -1636,6 +1657,7 @@ namespace MsgPack
 #endif
 		private enum MessagePackValueTypeCode
 		{
+			// ReSharper disable once UnusedMember.Local
 			Nil = 0,
 			Int8 = 1,
 			Int16 = 3,

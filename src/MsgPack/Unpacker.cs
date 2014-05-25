@@ -119,6 +119,7 @@ namespace MsgPack
 		}
 
 		private UnpackerMode _mode = UnpackerMode.Unknown;
+		// ReSharper disable once RedundantDefaultFieldInitializer
 		private bool _isSubtreeReading = false;
 
 		/// <summary>
@@ -278,7 +279,7 @@ namespace MsgPack
 			}
 
 			var subtreeReader = this.ReadSubtreeCore();
-			this._isSubtreeReading = !Object.ReferenceEquals( subtreeReader, this );
+			this._isSubtreeReading = !ReferenceEquals( subtreeReader, this );
 			return subtreeReader;
 		}
 
@@ -471,6 +472,7 @@ namespace MsgPack
 				this.LastReadData = result;
 				return result;
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return null;
@@ -492,6 +494,7 @@ namespace MsgPack
 				this.LastReadData = result;
 				return result;
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return this.LastReadData;
@@ -500,6 +503,7 @@ namespace MsgPack
 
 		internal bool UnpackSubtreeDataCore( out MessagePackObject result )
 		{
+			// ReSharper disable RedundantIfElseBlock
 			if ( this.IsArrayHeader )
 			{
 				var array = new MessagePackObject[ checked( ( int )this.LastReadData.AsUInt32() ) ];
@@ -537,6 +541,7 @@ namespace MsgPack
 				result = default( MessagePackObject );
 				return false;
 			}
+			// ReSharper restore RedundantIfElseBlock
 		}
 
 		private enum UnpackerMode

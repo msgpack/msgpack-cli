@@ -1,18 +1,4 @@
-﻿
-
-
-
-
-
-
-
-
-
-
-
-
-
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -33,17 +19,13 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	// This file generated from DefaultSerializers.tt T4Template.
 	// Do not modify this file. Edit DefaultMarshalers.tt instead.
-
-
 
 	internal sealed class System_DateTimeMessagePackSerializer : MessagePackSerializer< System.DateTime >
 	{
@@ -52,14 +34,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.DateTime value )
 		{
-
 			packer.Pack( MessagePackConvert.FromDateTime( value ) );
-
 		}
 
 		protected internal sealed override  System.DateTime UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ); 
@@ -72,11 +51,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_DateTimeOffsetMessagePackSerializer : MessagePackSerializer< System.DateTimeOffset >
 	{
@@ -85,14 +61,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.DateTimeOffset value )
 		{
-
 			packer.Pack( MessagePackConvert.FromDateTimeOffset( value ) );
-
 		}
 
 		protected internal sealed override  System.DateTimeOffset UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.AsInt64() ); 
@@ -105,11 +78,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_BooleanMessagePackSerializer : MessagePackSerializer< System.Boolean >
 	{
@@ -118,14 +88,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Boolean value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.Boolean UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsBoolean();
@@ -134,11 +101,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Boolean ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_ByteMessagePackSerializer : MessagePackSerializer< System.Byte >
 	{
@@ -147,14 +111,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Byte value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.Byte UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsByte();
@@ -163,11 +124,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Byte ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_CharMessagePackSerializer : MessagePackSerializer< System.Char >
 	{
@@ -176,14 +134,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Char value )
 		{
-
 			packer.Pack( ( System.UInt16 )value );
-
 		}
 
 		protected internal sealed override  System.Char UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return ( System.Char ) unpacker.LastReadData.AsUInt16(); 
@@ -196,11 +151,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_DecimalMessagePackSerializer : MessagePackSerializer< System.Decimal >
 	{
@@ -209,14 +161,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Decimal value )
 		{
-
 			packer.PackString( value.ToString( "G", CultureInfo.InvariantCulture ) );
-
 		}
 
 		protected internal sealed override  System.Decimal UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return System.Decimal.Parse( unpacker.LastReadData.AsString(), CultureInfo.InvariantCulture ); 
@@ -229,11 +178,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_DoubleMessagePackSerializer : MessagePackSerializer< System.Double >
 	{
@@ -242,14 +188,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Double value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.Double UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsDouble();
@@ -258,11 +201,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Double ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_GuidMessagePackSerializer : MessagePackSerializer< System.Guid >
 	{
@@ -271,14 +211,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Guid value )
 		{
-
 			packer.PackRaw( value.ToByteArray() );
-
 		}
 
 		protected internal sealed override  System.Guid UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return new System.Guid( unpacker.LastReadData.AsBinary() ); 
@@ -291,11 +228,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_Int16MessagePackSerializer : MessagePackSerializer< System.Int16 >
 	{
@@ -304,14 +238,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Int16 value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.Int16 UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsInt16();
@@ -320,11 +251,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Int16 ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_Int32MessagePackSerializer : MessagePackSerializer< System.Int32 >
 	{
@@ -333,14 +261,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Int32 value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.Int32 UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsInt32();
@@ -349,11 +274,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Int32 ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_Int64MessagePackSerializer : MessagePackSerializer< System.Int64 >
 	{
@@ -362,14 +284,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Int64 value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.Int64 UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsInt64();
@@ -378,11 +297,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Int64 ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_SByteMessagePackSerializer : MessagePackSerializer< System.SByte >
 	{
@@ -391,14 +307,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.SByte value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.SByte UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsSByte();
@@ -407,11 +320,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.SByte ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_SingleMessagePackSerializer : MessagePackSerializer< System.Single >
 	{
@@ -420,14 +330,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Single value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.Single UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsSingle();
@@ -436,11 +343,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.Single ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_TimeSpanMessagePackSerializer : MessagePackSerializer< System.TimeSpan >
 	{
@@ -449,14 +353,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.TimeSpan value )
 		{
-
 			packer.Pack( value.Ticks );
-
 		}
 
 		protected internal sealed override  System.TimeSpan UnpackFromCore( Unpacker unpacker )
 		{
-
 			System.Int64 ctorArgument;
 			try
 			{
@@ -468,11 +369,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			return new System.TimeSpan( ctorArgument );
-
 		}
 	}
-
-
 
 	internal sealed class System_UInt16MessagePackSerializer : MessagePackSerializer< System.UInt16 >
 	{
@@ -481,14 +379,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.UInt16 value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.UInt16 UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsUInt16();
@@ -497,11 +392,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.UInt16 ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_UInt32MessagePackSerializer : MessagePackSerializer< System.UInt32 >
 	{
@@ -510,14 +402,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.UInt32 value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.UInt32 UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsUInt32();
@@ -526,11 +415,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.UInt32 ), ex.Message ) );
 			}
-
 		}
 	}
-
-
 
 	internal sealed class System_UInt64MessagePackSerializer : MessagePackSerializer< System.UInt64 >
 	{
@@ -539,14 +425,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.UInt64 value )
 		{
-
 			packer.Pack( value );
-
 		}
 
 		protected internal sealed override  System.UInt64 UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return unpacker.LastReadData.AsUInt64();
@@ -555,14 +438,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not '{0}' type. {1}", typeof( System.UInt64 ), ex.Message ) );
 			}
-
 		}
 	}
 
-
-
 #if !SILVERLIGHT && !NETFX_CORE
-
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
 		public System_Collections_Specialized_BitVector32MessagePackSerializer( SerializationContext ownerContext )
@@ -570,14 +449,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Collections.Specialized.BitVector32 value )
 		{
-
 			packer.Pack( value.Data );
-
 		}
 
 		protected internal sealed override  System.Collections.Specialized.BitVector32 UnpackFromCore( Unpacker unpacker )
 		{
-
 			System.Int32 ctorArgument;
 			try
 			{
@@ -589,16 +465,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			return new System.Collections.Specialized.BitVector32( ctorArgument );
-
 		}
 	}
-
 #endif // !SILVERLIGHT && !NETFX_CORE
 
-
-
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
-
+#if !WINDOWS_PHONE && !NETFX_35
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
 		public System_Numerics_BigIntegerMessagePackSerializer( SerializationContext ownerContext )
@@ -606,14 +477,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal sealed override void PackToCore( Packer packer, System.Numerics.BigInteger value )
 		{
-
 			packer.PackRaw( value.ToByteArray() );
-
 		}
 
 		protected internal sealed override  System.Numerics.BigInteger UnpackFromCore( Unpacker unpacker )
 		{
-
 			try
 			{
 				return new System.Numerics.BigInteger( unpacker.LastReadData.AsBinary() ); 
@@ -626,10 +494,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
 			}
-
 		}
 	}
-
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
-
+#endif // !WINDOWS_PHONE && !NETFX_35
 }

@@ -34,9 +34,9 @@ namespace MsgPack
 		/// </summary>
 		public struct Enumerator : IEnumerator<KeyValuePair<MessagePackObject, MessagePackObject>>, IDictionaryEnumerator
 		{
-			private const int _beforeHead = -1;
-			private const int _isDictionary = -2;
-			private const int _end = -3;
+			private const int BeforeHead = -1;
+			private const int IsDictionary = -2;
+			private const int End = -3;
 
 			private readonly MessagePackObjectDictionary _underlying;
 			private Dictionary<MessagePackObject, MessagePackObject>.Enumerator _enumerator;
@@ -96,7 +96,7 @@ namespace MsgPack
 			{
 				this.VerifyVersion();
 
-				if ( this._position == _beforeHead || this._position == _end )
+				if ( this._position == BeforeHead || this._position == End )
 				{
 					throw new InvalidOperationException( "The enumerator is positioned before the first element of the collection or after the last element." );
 				}
@@ -144,12 +144,12 @@ namespace MsgPack
 			///	</exception>
 			public bool MoveNext()
 			{
-				if ( this._position == _end )
+				if ( this._position == End )
 				{
 					return false;
 				}
 
-				if ( this._position == _isDictionary )
+				if ( this._position == IsDictionary )
 				{
 					if ( !this._enumerator.MoveNext() )
 					{
@@ -160,11 +160,11 @@ namespace MsgPack
 					return true;
 				}
 
-				if ( this._position == _beforeHead )
+				if ( this._position == BeforeHead )
 				{
 					if ( this._underlying._keys.Count == 0 )
 					{
-						this._position = _end;
+						this._position = End;
 						return false;
 					}
 
@@ -178,7 +178,7 @@ namespace MsgPack
 
 				if ( this._position == this._underlying._keys.Count )
 				{
-					this._position = _end;
+					this._position = End;
 					return false;
 				}
 
@@ -205,11 +205,11 @@ namespace MsgPack
 				if ( this._underlying._dictionary != null )
 				{
 					this._enumerator = this._underlying._dictionary.GetEnumerator();
-					this._position = _isDictionary;
+					this._position = IsDictionary;
 				}
 				else
 				{
-					this._position = _beforeHead;
+					this._position = BeforeHead;
 				}
 			}
 		}

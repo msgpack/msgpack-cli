@@ -33,7 +33,7 @@ namespace MsgPack
 		{
 			ValidateCopyToArguments( sourceCount, index, array, arrayIndex, count );
 
-			int i = 0;
+			var i = 0;
 			foreach ( var item in source.Skip( index ).Take( count ) )
 			{
 				array[ i + arrayIndex ] = item;
@@ -56,7 +56,9 @@ namespace MsgPack
 			}
 		}
 
+		// ReSharper disable UnusedParameter.Local
 		private static void ValidateCopyToArguments<T>( int sourceCount, int index, T[] array, int arrayIndex, int count )
+		// ReSharper restore UnusedParameter.Local
 		{
 			if ( array == null )
 			{

@@ -36,12 +36,12 @@ namespace MsgPack
 
 		internal static Encoding Utf8NonBom
 		{
-			get { return MessagePackConvert._utf8NonBom; }
+			get { return _utf8NonBom; }
 		}
 
 		internal static Encoding Utf8NonBomStrict
 		{
-			get { return MessagePackConvert._utf8NonBomStrict; }
+			get { return _utf8NonBomStrict; }
 		}
 
 		/// <summary>

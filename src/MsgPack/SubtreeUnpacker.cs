@@ -38,17 +38,17 @@ namespace MsgPack
 		private readonly Stack<long> _unpacked;
 		private readonly Stack<long> _itemsCount;
 
-		public sealed override long ItemsCount
+		public override long ItemsCount
 		{
 			get { return this._itemsCount.Count == 0 ? 0 : this._itemsCount.Peek() / ( this._isMap.Peek() ? 2 : 1 ); }
 		}
 
-		public sealed override bool IsArrayHeader
+		public override bool IsArrayHeader
 		{
 			get { return this._root.InternalCollectionType == ItemsUnpacker.CollectionType.Array; }
 		}
 
-		public sealed override bool IsMapHeader
+		public override bool IsMapHeader
 		{
 			get { return this._root.InternalCollectionType == ItemsUnpacker.CollectionType.Map; }
 		}
@@ -59,7 +59,7 @@ namespace MsgPack
 		}
 
 		[Obsolete( "Consumer should not use this property. Query LastReadData instead." )]
-		public sealed override MessagePackObject? Data
+		public override MessagePackObject? Data
 		{
 			get { return this._root.InternalData; }
 			protected set { this._root.InternalData = value.GetValueOrDefault(); }
@@ -101,7 +101,7 @@ namespace MsgPack
 			}
 		}
 
-		protected sealed override void Dispose( bool disposing )
+		protected override void Dispose( bool disposing )
 		{
 			if ( disposing )
 			{
@@ -123,7 +123,7 @@ namespace MsgPack
 			base.Dispose( disposing );
 		}
 
-		protected internal sealed override void EndReadSubtree()
+		protected internal override void EndReadSubtree()
 		{
 			base.EndReadSubtree();
 
@@ -133,7 +133,7 @@ namespace MsgPack
 			this.DiscardCompletedStacks();
 		}
 
-		protected sealed override Unpacker ReadSubtreeCore()
+		protected override Unpacker ReadSubtreeCore()
 		{
 			if ( this._unpacked.Count == 0 )
 			{
@@ -148,7 +148,7 @@ namespace MsgPack
 			return new SubtreeUnpacker( this._root, this );
 		}
 
-		protected sealed override bool ReadCore()
+		protected override bool ReadCore()
 		{
 			this.DiscardCompletedStacks();
 
@@ -183,7 +183,7 @@ namespace MsgPack
 			return true;
 		}
 
-		protected sealed override long? SkipCore()
+		protected override long? SkipCore()
 		{
 			this.DiscardCompletedStacks();
 

@@ -69,7 +69,6 @@ using System;
 #if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
-using System.Globalization;
 using System.IO;
 
 namespace MsgPack
@@ -238,7 +237,7 @@ foreach( var __type in __numericTypes )
 				}
 				catch( InvalidOperationException ex )
 				{
-					throw NewTypeMismatchException( typeof( <#= __type #> ), ex );
+					throw NewTypeMismatchException( typeof( <#= __type.Name #> ), ex );
 				}
 			}
 		}

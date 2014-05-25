@@ -48,7 +48,8 @@ namespace MsgPack
 #else
 		public sealed partial class KeyCollection :
 #endif
-		ICollection<MessagePackObject>, ICollection
+			// ReSharper disable once RedundantExtendsListEntry
+			ICollection<MessagePackObject>, ICollection
 		{
 			private readonly MessagePackObjectDictionary _dictionary;
 

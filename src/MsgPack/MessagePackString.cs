@@ -25,7 +25,6 @@ using System.Diagnostics.Contracts;
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Security;
 using System.Text;
 using System.Threading;
@@ -49,6 +48,7 @@ namespace MsgPack
 		private DecoderFallbackException _decodingError;
 		private BinaryType _type;
 
+		// ReSharper disable once UnusedMember.Local
 		private string DebuggerDisplayString
 		{
 			get { return new MessagePackStringDebuggerProxy( this ).Value; }
@@ -163,7 +163,7 @@ namespace MsgPack
 			return this._type == BinaryType.String ? typeof( string ) : typeof( byte[] );
 		}
 
-		public sealed override string ToString()
+		public override string ToString()
 		{
 			if ( this._decoded != null )
 			{
@@ -178,8 +178,9 @@ namespace MsgPack
 			return String.Empty;
 		}
 
-		public sealed override int GetHashCode()
+		public override int GetHashCode()
 		{
+			// ReSharper disable NonReadonlyFieldInGetHashCode
 			if ( this._decoded != null )
 			{
 				return this._decoded.GetHashCode();
@@ -204,12 +205,13 @@ namespace MsgPack
 			}
 
 			return 0;
+			// ReSharper restore NonReadonlyFieldInGetHashCode
 		}
 
-		public sealed override bool Equals( object obj )
+		public override bool Equals( object obj )
 		{
 			var other = obj as MessagePackString;
-			if ( Object.ReferenceEquals( obj, null ) )
+			if ( ReferenceEquals( other, null ) )
 			{
 				return false;
 			}
@@ -286,7 +288,7 @@ namespace MsgPack
 		private static int _isFastEqualsDisabled =
 			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
 #else
-		private static int _isFastEqualsDisabled = 0;
+		private static int _isFastEqualsDisabled;
 #endif // if SILVERLIGHT
 
 		internal static bool IsFastEqualsDisabled
@@ -317,7 +319,7 @@ namespace MsgPack
 #if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]
 #endif // if !SILVERLIGHT && !NETFX_CORE
-		private enum BinaryType : int
+		private enum BinaryType
 		{
 			Unknwon = 0,
 			String,
@@ -352,15 +354,7 @@ namespace MsgPack
 						}
 						case BinaryType.String:
 						{
-							var result = this.AsString;
-							if ( result == null )
-							{
-								return this.AsByteArray;
-							}
-							else
-							{
-								return result;
-							}
+							return this.AsString ?? this.AsByteArray;
 						}
 						default:
 						{
@@ -378,7 +372,7 @@ namespace MsgPack
 					var value = this._target.TryGetString();
 					if ( value == null )
 					{
-						return value;
+						return null;
 					}
 
 					if ( !MustBeString( value ) )
@@ -400,6 +394,7 @@ namespace MsgPack
 					{
 						return false;
 					}
+					// ReSharper disable once RedundantIfElseBlock
 					else if ( 0x7E < c && c < 0xA0 )
 					{
 						return false;

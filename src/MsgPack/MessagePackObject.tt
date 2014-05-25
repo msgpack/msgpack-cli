@@ -131,7 +131,7 @@ foreach(var t in __types.Keys )
 		/// <summary>
 		///		Convert this instance to <#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
 		/// </summary>
-		/// <returns><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance corresponds to this instance.</returns>
+		/// <returns><#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance corresponds to this instance.</returns>
 <#
 if( __IsNotCLSCompliant( t ) )
 {
@@ -142,7 +142,7 @@ if( __IsNotCLSCompliant( t ) )
 <#
 }
 #>
-		public <#= GetTypeName( t ) #> As<#= t == typeof( byte[] ) ? "Binary" : GetTypeName( t ) #>()
+		public <#= GetTypeName( t ) #> As<#= t.ToString() == typeof( byte[] ).ToString() ? "Binary" : GetTypeName( t ) #>()
 		{
 <#
 	this.GenerateAsT( "this", t, false );
@@ -162,9 +162,9 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Convert <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #>instance to <see cref="<#= __typeName #>"/> instance.
+		///		Convert <#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #>instance to <see cref="<#= __typeName #>"/> instance.
 		/// </summary>
-		/// <param name="value"><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.</param>
+		/// <param name="value"><#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.</param>
 		/// <returns><see cref="<#=  __typeName #>"/> instance corresponds to <paramref name="value"/>.</returns>
 <#
 if( __IsNotCLSCompliant( t ) )
@@ -194,10 +194,10 @@ foreach(var t in __types.Keys )
 #>
 
 		/// <summary>
-		///		Convert this instance to <#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
+		///		Convert this instance to <#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
 		/// </summary>
 		/// <param name="value"><see cref="<#= __typeName #>"/> instance.</param>
-		/// <returns><#= t == typeof( byte[] ) ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance corresponds to <paramref name="value"/>.</returns>
+		/// <returns><#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance corresponds to <paramref name="value"/>.</returns>
 <#
 	if( __IsNotCLSCompliant( t ) )
 	{

@@ -304,6 +304,7 @@ namespace MsgPack
 				{
 					return false;
 				}
+				// ReSharper disable once RedundantIfElseBlock
 				else
 				{
 					matchCount++;

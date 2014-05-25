@@ -34,22 +34,22 @@ namespace MsgPack
 		private readonly IList<byte> _underlyingList;
 		private bool _isDisposed;
 
-		public sealed override bool CanRead
+		public override bool CanRead
 		{
 			get { return !this._isDisposed; }
 		}
 
-		public sealed override bool CanSeek
+		public override bool CanSeek
 		{
 			get { return !this._isDisposed && this._underlyingList != null; }
 		}
 
-		public sealed override bool CanWrite
+		public override bool CanWrite
 		{
 			get { return false; }
 		}
 
-		public sealed override long Length
+		public override long Length
 		{
 			get
 			{
@@ -90,17 +90,10 @@ namespace MsgPack
 			Contract.Assert( source != null );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 			this._underlyingList = source as IList<byte>;
-			if ( this._underlyingList == null )
-			{
-				this._underlyingEnumerator = source.GetEnumerator();
-			}
-			else
-			{
-				this._underlyingEnumerator = null;
-			}
+			this._underlyingEnumerator = this._underlyingList == null ? source.GetEnumerator() : null;
 		}
 
-		protected sealed override void Dispose( bool disposing )
+		protected override void Dispose( bool disposing )
 		{
 			base.Dispose( disposing );
 			if ( disposing )
@@ -133,19 +126,19 @@ namespace MsgPack
 			}
 		}
 
-		public sealed override int Read( byte[] buffer, int offset, int count )
+		public override int Read( byte[] buffer, int offset, int count )
 		{
 			this.VerifyIsNotDisposed();
 
 			if ( this._underlyingList != null )
 			{
-				int remains = this._underlyingList.Count - this._position;
+				var remains = this._underlyingList.Count - this._position;
 				if ( remains == 0 )
 				{
 					return 0;
 				}
 
-				int actualCount = Math.Min( count, remains );
+				var actualCount = Math.Min( count, remains );
 				byte[] asArray;
 				List<byte> asList;
 				if ( ( asArray = this._underlyingList as byte[] ) != null )
@@ -168,9 +161,10 @@ namespace MsgPack
 
 				return actualCount;
 			}
+			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
-				int read = 0;
+				var read = 0;
 				for ( ; read < count && this._underlyingEnumerator.MoveNext(); read++ )
 				{
 					buffer[ read + offset ] = this._underlyingEnumerator.Current;
@@ -180,7 +174,7 @@ namespace MsgPack
 			}
 		}
 
-		public sealed override int ReadByte()
+		public override int ReadByte()
 		{
 			this.VerifyIsNotDisposed();
 			if ( this._underlyingList != null )
@@ -202,7 +196,7 @@ namespace MsgPack
 			return -1;
 		}
 
-		public sealed override long Seek( long offset, SeekOrigin origin )
+		public override long Seek( long offset, SeekOrigin origin )
 		{
 			this.VerifyCanSeek();
 
@@ -225,17 +219,17 @@ namespace MsgPack
 			throw new ArgumentOutOfRangeException( "origin" );
 		}
 
-		public sealed override void SetLength( long value )
+		public override void SetLength( long value )
 		{
 			throw new NotSupportedException();
 		}
 
-		public sealed override void Write( byte[] buffer, int offset, int count )
+		public override void Write( byte[] buffer, int offset, int count )
 		{
 			throw new NotSupportedException();
 		}
 
-		public sealed override void Flush()
+		public override void Flush()
 		{
 			// nop
 		}
