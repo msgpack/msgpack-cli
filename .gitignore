@@ -23,3 +23,6 @@ TestResult/
 TestResults/
 *.userprefs
 .DS_Store
+src/MsgPack.Unity/Assets/MsgPack/*
+src/MsgPack.Unity/Library/
+MsgPack.unitypackage
