@@ -130,6 +130,7 @@ Release 0.5 - 2014/?/?
   * Support on-the-fly IEnumerable<T> (such as the result of Enumerable.Range()) packing. Note that unpacking is still unsupported.
   * Support underlying integral based enum serialization.
   * Add new PackerUnpackerExtensinos' extension methods for collections and dictionaries to improve overloading stability (predictability).
+  * System.Runtime.Serialization assembly is not required now (pull-request #29). Thanks @takeshik!
 
   BUG FIXES
   * PackerUnpackerExtensions.Pack(Object) takes long time. (#14)
