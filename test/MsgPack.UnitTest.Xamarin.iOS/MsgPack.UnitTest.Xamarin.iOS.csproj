@@ -106,7 +106,6 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Serialization\" />
-    <Folder Include="_Generated\" />
     <Folder Include="Serialization\GeneratedSerializers\" />
     <Folder Include="Serialization\GeneratedSerializers\ArrayBased\" />
     <Folder Include="Serialization\GeneratedSerializers\MapBased\" />
@@ -1026,6 +1025,12 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_HasEnumerableSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_HasEnumerableSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_HasEnumerableSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_HasEnumerableSerializer.cs</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
