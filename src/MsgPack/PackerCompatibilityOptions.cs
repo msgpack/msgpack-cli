@@ -25,6 +25,7 @@ namespace MsgPack
 	/// <summary>
 	///		Defines compatibility options for <see cref="Packer"/>.
 	/// </summary>
+	[Flags]
 	public enum PackerCompatibilityOptions
 	{
 		/// <summary>
