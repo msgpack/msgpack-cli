@@ -110,7 +110,8 @@ Release 0.5 - 2014/?/?
 
   FEATURES
   * CodeDOM serializer generator, which generates source code for custom serializer. It enables debugger break points, insert your own codes, etc.
-  * Start Unity/Xamarin supporting with CodeDOM serializer generator and runtime code generation free Nullable/Enum serializers.
+  * Start Xamarin supporting with CodeDOM serializer generator and runtime code generation free Nullable/Enum serializers.
+  * Start Unity supporting with same mechanism as Xamarin support and mpu.exe helper tool.
   * Support .NET 4.5 including immutable collections support.
   * Support on-the-fly IEnumerable<T> (such as the result of Enumerable.Range()) packing. Note that unpacking is still unsupported.
   * Support underlying integral based enum serialization.
