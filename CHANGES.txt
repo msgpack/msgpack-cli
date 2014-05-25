@@ -106,6 +106,20 @@ Release 0.4.3 - 2014/3/22
   * Fix built-in object serializer cannot deserialize array/map correctly.
   * Fix PackerUnpackerExtensions.Pack<T>() ignore Default serialization context and uses brand-new instance every time.
 
+Release 0.4.4 - 2014/4/13
+
+  BUG FIXES
+  * Fix creating serializer for IDictionary<TKey, TValue> causes NullReferenceException.
+  * Fix serializers' default constructor IL (it is not used in the library, but can be called via reflection).
+
+Release 0.4.5 - ???
+
+  BUF FIXES
+  * Fix creating serializer for abstract dictionary types causes exception in WinRT.
+
+  NEW FEATURES
+  * System.Runtime.Serialization assembly is not required now (pull-request #29). Thanks @takeshik!
+
 Release 0.5 - 2014/?/?
 
   FEATURES
