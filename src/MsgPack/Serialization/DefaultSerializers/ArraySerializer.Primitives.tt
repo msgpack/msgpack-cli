@@ -117,7 +117,39 @@ internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#
 		packer.PackArrayHeader( objectTree.Length );
 		foreach ( var item in objectTree )
 		{
+<#+
+	switch ( simpleName )
+	{
+		case "String":
+		{
+#>
+			packer.PackString( item );
+<#+
+			break;
+		}
+		case "Binary":
+		{
+#>
+			packer.PackBinary( item );
+<#+
+			break;
+		}
+		case "MessagePackObject":
+		{
+#>
+			item.PackToMessage( packer, null );
+<#+
+			break;
+		}
+		default:
+		{
+#>
 			packer.Pack( item );
+<#+
+			break;
+		}
+	}
+#>
 		}
 	}
 

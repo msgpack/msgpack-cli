@@ -1220,7 +1220,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 		packer.PackArrayHeader( objectTree.Length );
 		foreach ( var item in objectTree )
 		{
-			packer.Pack( item );
+			packer.PackString( item );
 		}
 	}
 
@@ -1272,7 +1272,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 		packer.PackArrayHeader( objectTree.Length );
 		foreach ( var item in objectTree )
 		{
-			packer.Pack( item );
+			packer.PackBinary( item );
 		}
 	}
 
@@ -1324,7 +1324,7 @@ internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<M
 		packer.PackArrayHeader( objectTree.Length );
 		foreach ( var item in objectTree )
 		{
-			packer.Pack( item );
+			item.PackToMessage( packer, null );
 		}
 	}
 

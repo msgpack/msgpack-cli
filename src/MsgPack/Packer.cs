@@ -360,7 +360,9 @@ namespace MsgPack
 				return;
 			}
 
+#pragma warning disable 168
 			var b = this.TryPackInt8( value );
+#pragma warning restore 168
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
@@ -410,7 +412,9 @@ namespace MsgPack
 				return;
 			}
 
+#pragma warning disable 168
 			var b = this.TryPackUInt8( value );
+#pragma warning restore 168
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
@@ -465,7 +469,9 @@ namespace MsgPack
 				return;
 			}
 
+#pragma warning disable 168
 			var b = this.TryPackInt16( value );
+#pragma warning restore 168
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
@@ -527,7 +533,9 @@ namespace MsgPack
 				return;
 			}
 
+#pragma warning disable 168
 			var b = this.TryPackUInt16( value );
+#pragma warning restore 168
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
@@ -594,7 +602,9 @@ namespace MsgPack
 				return;
 			}
 
+#pragma warning disable 168
 			var b = this.TryPackInt32( value );
+#pragma warning restore 168
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
@@ -665,7 +675,9 @@ namespace MsgPack
 				return;
 			}
 
+#pragma warning disable 168
 			var b = this.TryPackUInt32( value );
+#pragma warning restore 168
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
@@ -740,7 +752,9 @@ namespace MsgPack
 				return;
 			}
 
+#pragma warning disable 168
 			var b = this.TryPackInt64( value );
+#pragma warning restore 168
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
@@ -814,7 +828,9 @@ namespace MsgPack
 				return;
 			}
 
+#pragma warning disable 168
 			var b = this.TryPackUInt64( value );
+#pragma warning restore 168
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assume( b );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE

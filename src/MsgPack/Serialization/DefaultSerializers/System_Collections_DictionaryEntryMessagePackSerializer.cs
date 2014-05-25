@@ -32,8 +32,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected internal override void PackToCore( Packer packer, DictionaryEntry objectTree )
 		{
 			packer.PackArrayHeader( 2 );
-			packer.Pack( EnsureMessagePackObject( objectTree.Key ) );
-			packer.Pack( EnsureMessagePackObject( objectTree.Value ) );
+			EnsureMessagePackObject( objectTree.Key ).PackToMessage( packer, null );
+			EnsureMessagePackObject( objectTree.Value ).PackToMessage( packer, null );
 		}
 
 		private static MessagePackObject EnsureMessagePackObject( object obj )

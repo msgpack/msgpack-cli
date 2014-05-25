@@ -97,9 +97,9 @@ namespace MsgPack
 		private static readonly Regex UnicodeTr15Annex7IdentifierPattern =
 			new Regex(
 				UnicodeTr15Annex7Idneifier,
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !UNITY_ANDROID && !UNITY_IPHONE
 				RegexOptions.Compiled |
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !UNITY_ANDROID && !UNITY_IPHONE
 				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline
 			);
 
@@ -134,7 +134,7 @@ namespace MsgPack
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var category = CharUnicodeInfo.GetUnicodeCategory( methodName, position );
-// ReSharper disable RedundantIfElseBlock
+			// ReSharper disable RedundantIfElseBlock
 			if ( IsPrintable( category ) )
 			{
 				throw new ArgumentException(
@@ -160,15 +160,15 @@ namespace MsgPack
 					)
 				);
 			}
-// ReSharper restore RedundantIfElseBlock
+			// ReSharper restore RedundantIfElseBlock
 		}
 
 		private static readonly Regex NamespacePattern =
 			new Regex(
 				"^(" + UnicodeTr15Annex7Idneifier + @")(\." + UnicodeTr15Annex7Idneifier + ")*$",
-#if !SILVERLIGHT && !NETFX_CORE
+#if !SILVERLIGHT && !NETFX_CORE && !UNITY_ANDROID && !UNITY_IPHONE
 				RegexOptions.Compiled |
-#endif
+#endif // !SILVERLIGHT && !NETFX_CORE && !UNITY_ANDROID && !UNITY_IPHONE
 				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline
 			);
 
@@ -203,7 +203,7 @@ namespace MsgPack
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
 			var category = CharUnicodeInfo.GetUnicodeCategory( @namespace, position );
-// ReSharper disable RedundantIfElseBlock
+			// ReSharper disable RedundantIfElseBlock
 			if ( IsPrintable( category ) )
 			{
 				throw new ArgumentException(
@@ -229,7 +229,7 @@ namespace MsgPack
 					)
 				);
 			}
-// ReSharper restore RedundantIfElseBlock
+			// ReSharper restore RedundantIfElseBlock
 		}
 
 		/// <summary>

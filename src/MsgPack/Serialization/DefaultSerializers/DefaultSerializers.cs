@@ -469,7 +469,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	}
 #endif // !SILVERLIGHT && !NETFX_CORE
 
-#if !WINDOWS_PHONE && !NETFX_35
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
 		public System_Numerics_BigIntegerMessagePackSerializer( SerializationContext ownerContext )
@@ -496,5 +496,5 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 	}
-#endif // !WINDOWS_PHONE && !NETFX_35
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 }

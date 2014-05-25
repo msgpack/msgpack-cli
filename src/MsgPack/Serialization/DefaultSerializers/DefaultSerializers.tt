@@ -224,7 +224,7 @@ foreach( Type __type in __types )
 	if ( __notInWPs.Contains( __type ) )
 	{
 #>
-#if !WINDOWS_PHONE && !NETFX_35
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 
@@ -360,7 +360,7 @@ foreach( var ctor in ctors )
 	if ( __notInWPs.Contains( __type ) )
 	{
 #>
-#endif // !WINDOWS_PHONE && !NETFX_35
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 <#
 	}
 

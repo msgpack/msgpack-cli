@@ -379,7 +379,7 @@ namespace MsgPack.Serialization
 			return new SerializationException( "Failed to unpack items count of the collection.", innerException );
 		}
 
-#if !!XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		internal static readonly MethodInfo NewIsTooLargeCollectionMethod = FromExpression.ToMethod( () => NewIsTooLargeCollection() );
 #endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
