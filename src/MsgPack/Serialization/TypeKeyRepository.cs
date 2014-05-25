@@ -93,17 +93,17 @@ namespace MsgPack.Serialization
 #if !SILVERLIGHT && !NETFX_CORE
 			RuntimeHelpers.PrepareConstrainedRegions();
 #endif
-			try { }
-			finally
-			{
-				this._lock.EnterReadLock();
-				holdsReadLock = true;
-			}
-#if !SILVERLIGHT && !NETFX_CORE
-			RuntimeHelpers.PrepareConstrainedRegions();
-#endif
 			try
 			{
+#if !SILVERLIGHT && !NETFX_CORE
+				RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+				try { }
+				finally
+				{
+					this._lock.EnterReadLock();
+					holdsReadLock = true;
+				}
 				return new Dictionary<RuntimeTypeHandle, object>( this._table );
 			}
 			finally
@@ -129,17 +129,17 @@ namespace MsgPack.Serialization
 #if !SILVERLIGHT && !NETFX_CORE
 			RuntimeHelpers.PrepareConstrainedRegions();
 #endif
-			try { }
-			finally
-			{
-				this._lock.EnterReadLock();
-				holdsReadLock = true;
-			}
-#if !SILVERLIGHT && !NETFX_CORE
-			RuntimeHelpers.PrepareConstrainedRegions();
-#endif
 			try
 			{
+#if !SILVERLIGHT && !NETFX_CORE
+				RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+				try { }
+				finally
+				{
+					this._lock.EnterReadLock();
+					holdsReadLock = true;
+				}
 				object result;
 				if ( this._table.TryGetValue( type.TypeHandle, out result ) )
 				{
@@ -201,17 +201,17 @@ namespace MsgPack.Serialization
 #if !SILVERLIGHT && !NETFX_CORE
 				RuntimeHelpers.PrepareConstrainedRegions();
 #endif
-				try { }
-				finally
-				{
-					this._lock.EnterWriteLock();
-					holdsWriteLock = true;
-				}
-#if !SILVERLIGHT && !NETFX_CORE
-				RuntimeHelpers.PrepareConstrainedRegions();
-#endif
 				try
 				{
+#if !SILVERLIGHT && !NETFX_CORE
+					RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+					try { }
+					finally
+					{
+						this._lock.EnterWriteLock();
+						holdsWriteLock = true;
+					}
 					if ( allowOverwrite || !this._table.ContainsKey( key.TypeHandle ) )
 					{
 						this._table[ key.TypeHandle ] = value;
@@ -253,17 +253,17 @@ namespace MsgPack.Serialization
 #if !SILVERLIGHT && !NETFX_CORE
 				RuntimeHelpers.PrepareConstrainedRegions();
 #endif
-				try { }
-				finally
-				{
-					this._lock.EnterWriteLock();
-					holdsWriteLock = true;
-				}
-#if !SILVERLIGHT && !NETFX_CORE
-				RuntimeHelpers.PrepareConstrainedRegions();
-#endif
 				try
 				{
+#if !SILVERLIGHT && !NETFX_CORE
+					RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+					try { }
+					finally
+					{
+						this._lock.EnterWriteLock();
+						holdsWriteLock = true;
+					}
 					return this._table.Remove( key.TypeHandle );
 				}
 				finally
@@ -287,17 +287,17 @@ namespace MsgPack.Serialization
 #if !SILVERLIGHT && !NETFX_CORE
 			RuntimeHelpers.PrepareConstrainedRegions();
 #endif
-			try { }
-			finally
-			{
-				this._lock.EnterReadLock();
-				holdsReadLock = true;
-			}
-#if !SILVERLIGHT && !NETFX_CORE
-			RuntimeHelpers.PrepareConstrainedRegions();
-#endif
 			try
 			{
+#if !SILVERLIGHT && !NETFX_CORE
+				RuntimeHelpers.PrepareConstrainedRegions();
+#endif
+				try { }
+				finally
+				{
+					this._lock.EnterReadLock();
+					holdsReadLock = true;
+				}
 				return this._table.ContainsKey( type.TypeHandle );
 			}
 			finally
