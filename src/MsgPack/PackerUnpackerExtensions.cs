@@ -43,13 +43,14 @@ namespace MsgPack
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="value">The value to be serialized.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize <paramref name="value"/>.
 		/// </exception>
-		public static void Pack<T>( this Packer source, T value )
+		public static Packer Pack<T>( this Packer source, T value )
 		{
 			if ( source == null )
 			{
@@ -62,6 +63,7 @@ namespace MsgPack
 
 
 			PackCore( source, value, SerializationContext.Default );
+			return source;
 		}
 
 		/// <summary>
@@ -71,6 +73,7 @@ namespace MsgPack
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="value">The value to be serialized.</param>
 		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		///		Or <paramref name="context"/> is <c>null</c>.
@@ -78,7 +81,7 @@ namespace MsgPack
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize <paramref name="value"/>.
 		/// </exception>
-		public static void Pack<T>( this Packer source, T value, SerializationContext context )
+		public static Packer Pack<T>( this Packer source, T value, SerializationContext context )
 		{
 			if ( source == null )
 			{
@@ -94,8 +97,8 @@ namespace MsgPack
 			Contract.EndContractBlock();
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
 
-
 			PackCore( source, value, context );
+			return source;
 		}
 
 		private static void PackCore<T>( Packer source, T value, SerializationContext context )
@@ -124,15 +127,17 @@ namespace MsgPack
 		/// <typeparam name="T">The type of items of the collection.</typeparam>
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="collection">The collection to be serialized.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize <paramref name="collection"/>.
 		/// </exception>
-		public static void PackCollection<T>( this Packer source, IEnumerable<T> collection )
+		public static Packer PackArray<T>( this Packer source, IEnumerable<T> collection )
 		{
 			PackCollectionCore( source, collection, SerializationContext.Default );
+			return source;
 		}
 
 		/// <summary>
@@ -142,6 +147,7 @@ namespace MsgPack
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="collection">The collection to be serialized.</param>
 		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		///		Or <paramref name="context"/> is <c>null</c>.
@@ -149,9 +155,50 @@ namespace MsgPack
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize <paramref name="collection"/>.
 		/// </exception>
-		public static void PackCollection<T>( this Packer source, IEnumerable<T> collection, SerializationContext context )
+		public static Packer PackArray<T>( this Packer source, IEnumerable<T> collection, SerializationContext context )
 		{
 			PackCollectionCore( source, collection, context );
+			return source;
+		}
+
+		/// <summary>
+		///		Packs specified collection with the default context.
+		/// </summary>
+		/// <typeparam name="T">The type of items of the collection.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="collection">The collection to be serialized.</param>
+		/// <returns><paramref name="source"/>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize <paramref name="collection"/>.
+		/// </exception>
+		public static Packer PackCollection<T>( this Packer source, IEnumerable<T> collection )
+		{
+			PackCollectionCore( source, collection, SerializationContext.Default );
+			return source;
+		}
+
+		/// <summary>
+		///		Packs specified collection with the specified context.
+		/// </summary>
+		/// <typeparam name="T">The type of items of the collection.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="collection">The collection to be serialized.</param>
+		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <returns><paramref name="source"/>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		///		Or <paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize <paramref name="collection"/>.
+		/// </exception>
+		public static Packer PackCollection<T>( this Packer source, IEnumerable<T> collection, SerializationContext context )
+		{
+			PackCollectionCore( source, collection, context );
+			return source;
 		}
 
 		private static void PackCollectionCore<T>( Packer source, IEnumerable<T> collection, SerializationContext context )
@@ -208,15 +255,17 @@ namespace MsgPack
 		/// <typeparam name="TValue">The type of values of the dictionary.</typeparam>
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="dictionary">The dictionary to be serialized.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize <paramref name="dictionary"/>.
 		/// </exception>
-		public static void PackDictionary<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary )
+		public static Packer PackMap<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary )
 		{
 			PackDictionaryCore( source, dictionary, SerializationContext.Default );
+			return source;
 		}
 
 		/// <summary>
@@ -227,6 +276,7 @@ namespace MsgPack
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="dictionary">The dictionary to be serialized.</param>
 		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		///		Or <paramref name="context"/> is <c>null</c>.
@@ -234,9 +284,52 @@ namespace MsgPack
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize <paramref name="dictionary"/>.
 		/// </exception>
-		public static void PackDictionary<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary, SerializationContext context )
+		public static Packer PackMap<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary, SerializationContext context )
 		{
 			PackDictionaryCore( source, dictionary, context );
+			return source;
+		}
+
+		/// <summary>
+		///		Packs specified dictionary with the default context.
+		/// </summary>
+		/// <typeparam name="TKey">The type of keys of the dictionary.</typeparam>
+		/// <typeparam name="TValue">The type of values of the dictionary.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="dictionary">The dictionary to be serialized.</param>
+		/// <returns><paramref name="source"/>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize <paramref name="dictionary"/>.
+		/// </exception>
+		public static Packer PackDictionary<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary )
+		{
+			PackDictionaryCore( source, dictionary, SerializationContext.Default );
+			return source;
+		}
+
+		/// <summary>
+		///		Packs specified dictionary with the specified context.
+		/// </summary>
+		/// <typeparam name="TKey">The type of keys of the dictionary.</typeparam>
+		/// <typeparam name="TValue">The type of values of the dictionary.</typeparam>
+		/// <param name="source">The <see cref="Packer"/>.</param>
+		/// <param name="dictionary">The dictionary to be serialized.</param>
+		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <returns><paramref name="source"/>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		///		Or <paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Cannot serialize <paramref name="dictionary"/>.
+		/// </exception>
+		public static Packer PackDictionary<TKey, TValue>( this Packer source, IDictionary<TKey, TValue> dictionary, SerializationContext context )
+		{
+			PackDictionaryCore( source, dictionary, context );
+			return source;
 		}
 
 		private static void PackDictionaryCore<TKey, TValue>(
@@ -275,19 +368,21 @@ namespace MsgPack
 				valueSerializer.PackTo( source, entry.Value );
 			}
 		}
+
 		/// <summary>
 		///		Packs specified collection with the default context.
 		/// </summary>
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="items">The collection to be serialized.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize the item of <paramref name="items"/>.
 		/// </exception>
-		public static void Pack<T>( this Packer source, IEnumerable<T> items )
+		public static Packer Pack<T>( this Packer source, IEnumerable<T> items )
 		{
 			if ( source == null )
 			{
@@ -300,6 +395,7 @@ namespace MsgPack
 
 
 			PackCore( source, items, SerializationContext.Default );
+			return source;
 		}
 
 		/// <summary>
@@ -309,6 +405,7 @@ namespace MsgPack
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="items">The collection to be serialized.</param>
 		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		///		Or <paramref name="context"/> is <c>null</c>.
@@ -316,7 +413,7 @@ namespace MsgPack
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize the item of <paramref name="items"/>.
 		/// </exception>
-		public static void Pack<T>( this Packer source, IEnumerable<T> items, SerializationContext context )
+		public static Packer Pack<T>( this Packer source, IEnumerable<T> items, SerializationContext context )
 		{
 			if ( source == null )
 			{
@@ -334,6 +431,7 @@ namespace MsgPack
 
 
 			PackCore( source, items, context );
+			return source;
 		}
 
 		private static void PackCore<T>( this Packer source, IEnumerable<T> items, SerializationContext context )
@@ -374,13 +472,14 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="value">The value to be serialized.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize <paramref name="value"/>.
 		/// </exception>
-		public static void PackObject( this Packer source, object value )
+		public static Packer PackObject( this Packer source, object value )
 		{
 			if ( source == null )
 			{
@@ -393,6 +492,7 @@ namespace MsgPack
 
 
 			PackObjectCore( source, value, SerializationContext.Default );
+			return source;
 		}
 
 		/// <summary>
@@ -401,6 +501,7 @@ namespace MsgPack
 		/// <param name="source">The <see cref="Packer"/>.</param>
 		/// <param name="value">The value to be serialized.</param>
 		/// <param name="context">The <see cref="SerializationContext"/> holds shared serializers.</param>
+		/// <returns><paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="source"/> is <c>null</c>.
 		///		Or <paramref name="context"/> is <c>null</c>.
@@ -408,7 +509,7 @@ namespace MsgPack
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Cannot serialize <paramref name="value"/>.
 		/// </exception>
-		public static void PackObject( this Packer source, object value, SerializationContext context )
+		public static Packer PackObject( this Packer source, object value, SerializationContext context )
 		{
 			if ( source == null )
 			{
@@ -426,6 +527,7 @@ namespace MsgPack
 
 
 			PackObjectCore( source, value, context );
+			return source;
 		}
 
 		private static void PackObjectCore( Packer source, object value, SerializationContext context )
