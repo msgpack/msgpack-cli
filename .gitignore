@@ -6,12 +6,12 @@
 *.nupkg
 *.shfbproj_*
 *.vshost.exe
+*.pdb
 _Resharper.*/
 _UpgradeReport_*/
 UpgradeLog*.*
-bin/
-Bin/
 Help*/
+/bin
 lib/
 local/
 obj/
