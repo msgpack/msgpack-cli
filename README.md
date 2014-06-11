@@ -8,7 +8,7 @@ This library can be used from ALL CLS compliant languages such as C#, F#, Visual
 ## Usage
 
 ```c#
-var serializer = MessagePackSerializer<T>.Create();
+var serializer = MessagePackSerializer.Create<T>();
 serializer.Pack(stream, obj);
 var unpackedObject = serializer.Unpack(stream);
 ```
