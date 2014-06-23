@@ -90,13 +90,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 				typeof( TObject ).FindMembers(
 					MemberTypes.Field | MemberTypes.Property,
 					BindingFlags.Public | BindingFlags.Instance,
-					( member, criteria ) => true,
+					( member, criteria ) => CheckTargetEligibility( member ),
 					null
 				);
 			var filtered = members.Where( item => Attribute.IsDefined( item, typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #else
 			var members =
-				typeof( TObject ).GetRuntimeFields().Where( f => f.IsPublic && !f.IsStatic ).OfType<MemberInfo>().Concat( typeof( TObject ).GetRuntimeProperties().Where( p => p.GetMethod != null && p.GetMethod.IsPublic && !p.GetMethod.IsStatic ) );
+				typeof( TObject ).GetRuntimeFields().Where( f => f.IsPublic && !f.IsStatic ).OfType<MemberInfo>()
+					.Concat( typeof( TObject ).GetRuntimeProperties().Where( p => p.GetMethod != null && p.GetMethod.IsPublic && !p.GetMethod.IsStatic ) )
+					.Where( CheckTargetEligibility );
 			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #endif
 
@@ -152,6 +154,48 @@ namespace MsgPack.Serialization.AbstractSerializers
 				members.Where( item => !Attribute.IsDefined( item, typeof( NonSerializedAttribute ) ) )
 				.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 #endif
+		}
+
+		private static bool CheckTargetEligibility( MemberInfo member )
+		{
+			var asProperty = member as PropertyInfo;
+			var asField = member as FieldInfo;
+			Type returnType;
+						
+			if ( asProperty != null )
+			{
+#if !NETFX_CORE
+				if ( asProperty.GetSetMethod() != null )
+#else
+				if ( asProperty.SetMethod != null && asProperty.SetMethod.IsPublic )
+#endif
+				{
+					return true;
+				}
+				returnType = asProperty.PropertyType;
+			}
+			else if ( asField != null )
+			{
+				if ( !asField.IsInitOnly )
+				{
+					return true;
+				}
+				returnType = asField.FieldType;
+			}
+			else
+			{
+				return true;
+			}
+
+			var traits = returnType.GetCollectionTraits();
+			switch ( traits.CollectionType )
+			{
+				case CollectionKind.Array:
+				case CollectionKind.Map:
+					return traits.AddMethod != null;
+				default:
+					return false;
+			}
 		}
 
 		private void BuildObjectSerializer( TContext context, SerializingMember[] entries )
