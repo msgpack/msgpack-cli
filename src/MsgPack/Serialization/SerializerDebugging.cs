@@ -256,10 +256,7 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE && !SILVERLIGHT
 			EnsureDependentAssembliesListsInitialized();
 
-			File.AppendAllText(
-				GetHistoryFilePath(),
-				String.Join( Environment.NewLine, _compiledCodeDomSerializerAssemblies.ToArray() )
-			);
+			File.AppendAllLines( GetHistoryFilePath(), _compiledCodeDomSerializerAssemblies );
 			_compiledCodeDomSerializerAssemblies.Clear();
 			ResetRuntimeAssemblies();
 #endif
