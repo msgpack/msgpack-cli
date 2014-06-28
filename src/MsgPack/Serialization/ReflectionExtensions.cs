@@ -138,7 +138,7 @@ namespace MsgPack.Serialization
 				// Block to limit variable scope
 				{
 					var ienumetaorT =
-						IsIEnumeratorT(getEnumerator.ReturnType)
+						IsIEnumeratorT( getEnumerator.ReturnType )
 						? getEnumerator.ReturnType
 						: getEnumerator.ReturnType.GetInterfaces().FirstOrDefault( IsIEnumeratorT );
 					if ( ienumetaorT != null )
@@ -322,7 +322,7 @@ namespace MsgPack.Serialization
 				// ReSharper disable once HeuristicUnreachableCode
 				return null;
 			}
-			
+
 			return map.TargetMethods[ index ];
 		}
 
@@ -421,5 +421,36 @@ namespace MsgPack.Serialization
 			}
 		}
 #endif
+
+		public static bool GetIsPublic( this MemberInfo source )
+		{
+			PropertyInfo asProperty;
+			FieldInfo asField;
+			Type asType;
+			if ( ( asProperty = source as PropertyInfo ) != null )
+			{
+#if !NETFX_CORE
+				return asProperty.GetAccessors( true ).All( a => a.IsPublic );
+#else
+				return
+					( asProperty.GetMethod == null || asProperty.GetMethod.IsPublic )
+					&& ( asProperty.SetMethod == null || asProperty.SetMethod.IsPublic );
+#endif
+			}
+			else if ( ( asField = source as FieldInfo ) != null )
+			{
+				return asField.IsPublic;
+			}
+#if !NETFX_CORE
+			else if ( ( asType = source as Type ) != null )
+			{
+				return asType.IsPublic;
+			}
+#endif
+			else
+			{
+				throw new NotSupportedException( source.GetType() + " is not supported." );
+			}
+		}
 	}
 }

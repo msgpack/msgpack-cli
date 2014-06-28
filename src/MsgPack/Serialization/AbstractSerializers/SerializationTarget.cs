@@ -34,6 +34,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// </summary>
 	internal static class SerializationTarget
 	{
+		// TODO: bool includesAnnotatedNonPublicMembers
+
 		public static IEnumerable<SerializingMember> GetTargetMembers( Type type )
 		{
 			Contract.Assert( type != null );
@@ -41,15 +43,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var members =
 				type.FindMembers(
 					MemberTypes.Field | MemberTypes.Property,
-					BindingFlags.Public | BindingFlags.Instance,
+					BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
 					( member, criteria ) => CheckTargetEligibility( member ),
 					null
 				);
 			var filtered = members.Where( item => Attribute.IsDefined( item, typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #else
 			var members =
-				typeof( TObject ).GetRuntimeFields().Where( f => f.IsPublic && !f.IsStatic ).OfType<MemberInfo>()
-					.Concat( typeof( TObject ).GetRuntimeProperties().Where( p => p.GetMethod != null && p.GetMethod.IsPublic && !p.GetMethod.IsStatic ) )
+				type.GetRuntimeFields().Where( f => !f.IsStatic ).OfType<MemberInfo>()
+					.Concat( type.GetRuntimeProperties().Where( p => p.GetMethod != null && !p.GetMethod.IsStatic ) )
 					.Where( CheckTargetEligibility );
 			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #endif
@@ -100,10 +102,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 					);
 			}
 #if SILVERLIGHT || NETFX_CORE
-			return members.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
+			return members.Where( member => member.GetIsPublic() ).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 #else
 			return
-				members.Where( item => !Attribute.IsDefined( item, typeof( NonSerializedAttribute ) ) )
+				members.Where( item => item.GetIsPublic() && !Attribute.IsDefined( item, typeof( NonSerializedAttribute ) ) )
 				.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 #endif
 		}
@@ -117,9 +119,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 			if ( asProperty != null )
 			{
 #if !NETFX_CORE
-				if ( asProperty.GetSetMethod() != null )
+				if ( asProperty.GetSetMethod( true ) != null )
 #else
-				if ( asProperty.SetMethod != null && asProperty.SetMethod.IsPublic )
+				if ( asProperty.SetMethod != null )
 #endif
 				{
 					return true;
