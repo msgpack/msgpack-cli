@@ -130,13 +130,15 @@ Release 0.5 - 2014/?/?
   * Support on-the-fly IEnumerable<T> (such as the result of Enumerable.Range()) packing. Note that unpacking is still unsupported.
   * Support underlying integral based enum serialization.
   * Add new PackerUnpackerExtensinos' extension methods for collections and dictionaries to improve overloading stability (predictability).
-  * System.Runtime.Serialization assembly is not required now (pull-request #29). Thanks @takeshik!
+  * System.Runtime.Serialization assembly is not required now (pull-request #29).
+  * Non public members annotated with MessagePackMember attribute or DataMemberAttribute are supported now (issue #33).
 
   BUG FIXES
   * PackerUnpackerExtensions.Pack(Object) takes long time. (#14)
   * Fix Readme code error (issue #20. Ported from 0.4 branch.)
   * Fix MessagePack.Create<T>() might fail due to type lock synchronization does not coordinate multiple threads (issue #19. Ported from 0.4 branch.)
   * Fix deserializing as MessagePackObject fails when unpacking data is list or map (issue #13. Ported from 0.4 branch.)
+  * Readonly members now silently ignored except they are annotated with MessagePackMember attribute or DataMemberAttribute (pull-request #30, issue#28).
 
   NOTE
   * This release unifies .NET build and Mono build for main source codes (testing codes have not been unified yet.)
