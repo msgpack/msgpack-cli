@@ -482,6 +482,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MapGenerationBasedEnumSerializationTest.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\SerializationTargetTest.cs" />
     <Compile Include="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
     <Compile Include="Serialization\MessagePackMemberAttributeTest.cs" />
     <Compile Include="Serialization\MessagePackSerializerTest.cs" />
