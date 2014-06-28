@@ -184,6 +184,9 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\ISerializerBuilder.cs">
       <Link>Serialization\AbstractSerializers\ISerializerBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializationTarget.cs">
+      <Link>Serialization\AbstractSerializers\SerializationTarget.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerBuilderConstants.cs">
       <Link>Serialization\AbstractSerializers\SerializerBuilderConstants.cs</Link>
     </Compile>

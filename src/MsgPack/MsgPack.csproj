@@ -164,6 +164,7 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerBuilder.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Compile Include="Serialization\AbstractSerializers\SerializationTarget.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilderConstants.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
       <SubType>Code</SubType>

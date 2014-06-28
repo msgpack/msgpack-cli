@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
+//
+// Contributors:
+//    Takeshi KIRIYA
 //
 #endregion -- License Terms --
 
@@ -37,7 +40,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( TObject ) );
 			}
 
-			var entries = GetTargetMembers().OrderBy( item => item.Contract.Id ).ToArray();
+			var entries = SerializationTarget.GetTargetMembers( typeof( TObject ) ).OrderBy( item => item.Contract.Id ).ToArray();
 
 			if ( entries.Length == 0 )
 			{
@@ -81,121 +84,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 
 			this.BuildObjectSerializer( context, result.ToArray() );
-		}
-
-		private static IEnumerable<SerializingMember> GetTargetMembers()
-		{
-#if !NETFX_CORE
-			var members =
-				typeof( TObject ).FindMembers(
-					MemberTypes.Field | MemberTypes.Property,
-					BindingFlags.Public | BindingFlags.Instance,
-					( member, criteria ) => CheckTargetEligibility( member ),
-					null
-				);
-			var filtered = members.Where( item => Attribute.IsDefined( item, typeof( MessagePackMemberAttribute ) ) ).ToArray();
-#else
-			var members =
-				typeof( TObject ).GetRuntimeFields().Where( f => f.IsPublic && !f.IsStatic ).OfType<MemberInfo>()
-					.Concat( typeof( TObject ).GetRuntimeProperties().Where( p => p.GetMethod != null && p.GetMethod.IsPublic && !p.GetMethod.IsStatic ) )
-					.Where( CheckTargetEligibility );
-			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
-#endif
-
-			if ( filtered.Length > 0 )
-			{
-				return
-					filtered.Select( member =>
-						new SerializingMember(
-							member,
-							new DataMemberContract( member, member.GetCustomAttribute<MessagePackMemberAttribute>() )
-						)
-					);
-			}
-
-			if ( typeof( TObject ).GetCustomAttributesData().Any( attr =>
-				attr.GetAttributeType().FullName == "System.Runtime.Serialization.DataContractAttribute" ) )
-			{
-				return
-					members.Select(
-						item =>
-						new
-						{
-							member = item,
-							data = item.GetCustomAttributesData()
-								.FirstOrDefault(
-									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute" )
-						}
-					).Where( item => item.data != null )
-					.Select(
-						item =>
-						{
-							var name = item.data.GetNamedArguments()
-								.Where( arg => arg.GetMemberName() == "Name" )
-								.Select( arg => ( string )arg.GetTypedValue().Value )
-								.FirstOrDefault();
-							var id = item.data.GetNamedArguments()
-								.Where( arg => arg.GetMemberName() == "Order" )
-								.Select( arg => ( int? )arg.GetTypedValue().Value )
-								.FirstOrDefault();
-
-							return
-								new SerializingMember(
-									item.member,
-									new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
-								);
-						}
-					);
-			}
-#if SILVERLIGHT || NETFX_CORE
-			return members.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
-#else
-			return
-				members.Where( item => !Attribute.IsDefined( item, typeof( NonSerializedAttribute ) ) )
-				.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
-#endif
-		}
-
-		private static bool CheckTargetEligibility( MemberInfo member )
-		{
-			var asProperty = member as PropertyInfo;
-			var asField = member as FieldInfo;
-			Type returnType;
-						
-			if ( asProperty != null )
-			{
-#if !NETFX_CORE
-				if ( asProperty.GetSetMethod() != null )
-#else
-				if ( asProperty.SetMethod != null && asProperty.SetMethod.IsPublic )
-#endif
-				{
-					return true;
-				}
-				returnType = asProperty.PropertyType;
-			}
-			else if ( asField != null )
-			{
-				if ( !asField.IsInitOnly )
-				{
-					return true;
-				}
-				returnType = asField.FieldType;
-			}
-			else
-			{
-				return true;
-			}
-
-			var traits = returnType.GetCollectionTraits();
-			switch ( traits.CollectionType )
-			{
-				case CollectionKind.Array:
-				case CollectionKind.Map:
-					return traits.AddMethod != null;
-				default:
-					return false;
-			}
 		}
 
 		private void BuildObjectSerializer( TContext context, SerializingMember[] entries )
@@ -468,7 +356,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			finally
 			{
-				this.EmitMethodEpilogue( context,  SerializerMethod.UnpackFromCore ,construct );
+				this.EmitMethodEpilogue( context, SerializerMethod.UnpackFromCore, construct );
 			}
 		}
 
