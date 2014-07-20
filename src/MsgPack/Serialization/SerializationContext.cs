@@ -614,14 +614,23 @@ namespace MsgPack.Serialization
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
 
+#if !SILVERLIGHT && !NETFX_35
+			private readonly ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
+				new ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();
+#else
 			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>> _cache =
 				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, IMessagePackSingleObjectSerializer>>();
+#endif
 
 			private SerializerGetter() { }
 
 			public IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType, object providerParameter )
 			{
 				Func<SerializationContext, object, IMessagePackSingleObjectSerializer> func;
+#if SILVERLIGHT || NETFX_35
+				lock ( this._cache)
+				{
+#endif
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
 #if !NETFX_CORE
@@ -650,7 +659,9 @@ namespace MsgPack.Serialization
 #endif // if DEBUG
 					this._cache[ targetType.TypeHandle ] = func;
 				}
-
+#if SILVERLIGHT || NETFX_35
+				}
+#endif
 				return func( context, providerParameter );
 			}
 		}
