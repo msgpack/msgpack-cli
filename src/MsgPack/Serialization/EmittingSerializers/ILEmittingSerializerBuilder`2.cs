@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.InteropServices;
+
 using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -273,6 +275,20 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		protected override ILConstruct EmitUnboxAnyExpression( TContext context, Type targetType, ILConstruct value )
+		{
+			return
+				ILConstruct.UnaryOperator(
+					"unbox.any",
+					value,
+					( il, val ) =>
+					{
+						val.LoadValue( il, false );
+						il.EmitUnbox_Any( targetType );
+					}
+				);
+		}
+
 		protected override ILConstruct EmitNotExpression( TContext context, ILConstruct booleanExpression )
 		{
 			if ( booleanExpression.ContextType != typeof( bool ) )
@@ -450,6 +466,35 @@ namespace MsgPack.Serialization.EmittingSerializers
 					type,
 					il => il.EmitTypeOf( type )
 				);
+		}
+
+		protected override ILConstruct EmitMethodOfExpression( TContext context, MethodBase method )
+		{
+			return
+				ILConstruct.Literal(
+					typeof( MethodInfo ),
+					method,
+					il =>
+					{
+						il.EmitLdtoken( method );
+						il.EmitCall( Metadata._MethodBase.GetMethodFromHandle );
+					}
+				);
+		}
+
+		protected override ILConstruct EmitFieldOfExpression( TContext context, FieldInfo field )
+		{
+			return
+				ILConstruct.Literal(
+					typeof( MethodInfo ),
+					field,
+					il =>
+					{
+						il.EmitLdtoken( field );
+						il.EmitCall( Metadata._FieldInfo.GetFieldFromHandle );
+					}
+				);
+
 		}
 
 		protected override ILConstruct DeclareLocal( TContext context, Type type, string name )

@@ -20,6 +20,7 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Reflection;
 
 using MsgPack.Serialization.Reflection;
 
@@ -117,7 +118,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public abstract Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>();
 
 		/// <summary>
-		///		Regisgter using <see cref="MessagePackSerializer{T}"/> target type to the current emitting session.
+		///		Regisgters <see cref="MessagePackSerializer{T}"/> of target type usage to the current emitting session.
 		/// </summary>
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
@@ -131,6 +132,36 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Type targetType,
 			EnumMemberSerializationMethod enumMemberSerializationMethod
 		);
+
+		/// <summary>
+		///		Regisgters <see cref="FieldInfo"/> usage to the current emitting session.
+		/// </summary>
+		/// <param name="field">The <see cref="FieldInfo"/> to be registered.</param>
+		/// <returns>
+		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
+		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
+		///		The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public virtual Action<TracingILGenerator, int> RegisterField( FieldInfo field )
+		{
+			throw new NotSupportedException();
+		}
+
+		/// <summary>
+		///		Regisgters <see cref="MethodBase"/> usage to the current emitting session.
+		/// </summary>
+		/// <param name="method">The <see cref="MethodBase"/> to be registered.</param>
+		/// <returns>
+		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
+		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
+		///		The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
+		///		This value will not be <c>null</c>.
+		/// </returns>
+		public virtual Action<TracingILGenerator, int> RegisterMethod( MethodBase method )
+		{
+			throw new NotSupportedException();
+		}
 	}
 
 	[ContractClassFor( typeof( SerializerEmitter ) )]

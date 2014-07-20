@@ -426,7 +426,10 @@ namespace MsgPack.Serialization
 		{
 			PropertyInfo asProperty;
 			FieldInfo asField;
+			MethodBase asMethod;
+#if !NETFX_CORE
 			Type asType;
+#endif
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
 #if !NETFX_CORE
@@ -440,6 +443,10 @@ namespace MsgPack.Serialization
 			else if ( ( asField = source as FieldInfo ) != null )
 			{
 				return asField.IsPublic;
+			}
+			else if ( ( asMethod = source as MethodBase ) != null )
+			{
+				return asMethod.IsPublic;
 			}
 #if !NETFX_CORE
 			else if ( ( asType = source as Type ) != null )

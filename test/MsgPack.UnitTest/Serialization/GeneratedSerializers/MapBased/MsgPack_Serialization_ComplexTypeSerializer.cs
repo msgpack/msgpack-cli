@@ -27,6 +27,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.DateTime>> _serializer5;
         
+        private System.Reflection.MethodBase _methodBaseComplexType_get_History0;
+        
         public MsgPack_Serialization_ComplexTypeSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             this._serializer0 = context.GetSerializer<string>();
@@ -35,6 +37,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             this._serializer3 = context.GetSerializer<System.DateTime>();
             this._serializer4 = context.GetSerializer<System.Collections.Generic.Dictionary<System.DateTime, string>>();
             this._serializer5 = context.GetSerializer<System.Nullable<System.DateTime>>();
+            this._methodBaseComplexType_get_History0 = typeof(MsgPack.Serialization.ComplexType).GetMethod("get_History", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexType objectTree) {
@@ -152,7 +156,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                         ; enumerator.MoveNext(); 
                         ) {
                             current = enumerator.Current;
-                            result.History.Add(current.Key, current.Value);
+                            ((System.Collections.Generic.Dictionary<System.DateTime, string>)(this._methodBaseComplexType_get_History0.Invoke(result, null))).Add(current.Key, current.Value);
                         }
                     }
                     finally {
@@ -206,7 +210,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                 ; enumerator0.MoveNext(); 
                                 ) {
                                     current0 = enumerator0.Current;
-                                    result.History.Add(current0.Key, current0.Value);
+                                    ((System.Collections.Generic.Dictionary<System.DateTime, string>)(this._methodBaseComplexType_get_History0.Invoke(result, null))).Add(current0.Key, current0.Value);
                                 }
                             }
                             finally {

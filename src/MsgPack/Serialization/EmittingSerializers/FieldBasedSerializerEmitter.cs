@@ -41,6 +41,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private static readonly Type[] _constructorParameterTypes = { typeof( SerializationContext ) };
 
 		private readonly Dictionary<SerializerFieldKey, FieldBuilder> _serializers;
+		private readonly Dictionary<RuntimeFieldHandle, FieldBuilder> _fieldInfos;
+		private readonly Dictionary<RuntimeMethodHandle, FieldBuilder> _methodBases;
 		private readonly ConstructorBuilder _defaultConstructorBuilder;
 		private readonly ConstructorBuilder _contextConstructorBuilder;
 		private readonly TypeBuilder _typeBuilder;
@@ -116,6 +118,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._typeBuilder.DefineMethodOverride( this._packMethodBuilder, baseType.GetMethod( this._packMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
 			this._typeBuilder.DefineMethodOverride( this._unpackFromMethodBuilder, baseType.GetMethod( this._unpackFromMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
 			this._serializers = new Dictionary<SerializerFieldKey, FieldBuilder>();
+			this._fieldInfos = new Dictionary<RuntimeFieldHandle, FieldBuilder>();
+			this._methodBases = new Dictionary<RuntimeMethodHandle, FieldBuilder>();
 			this._isDebuggable = isDebuggable;
 
 #if !SILVERLIGHT && !NETFX_35
@@ -273,6 +277,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 					}
 
+					foreach ( var entry in this._fieldInfos )
+					{
+						il.EmitLdarg_0();
+						il.EmitLdtoken( FieldInfo.GetFieldFromHandle( entry.Key ) );
+						il.EmitCall( Metadata._FieldInfo.GetFieldFromHandle );
+						il.EmitStfld( entry.Value );
+					}
+
+					foreach ( var entry in this._methodBases )
+					{
+						il.EmitLdarg_0();
+						il.EmitLdtoken( MethodBase.GetMethodFromHandle( entry.Key ) );
+						il.EmitCall( Metadata._MethodBase.GetMethodFromHandle );
+						il.EmitStfld( entry.Value );
+					}
+
 					il.EmitRet();
 				}
 			}
@@ -317,6 +337,54 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				result = this._typeBuilder.DefineField( "_serializer" + this._serializers.Count, typeof( MessagePackSerializer<> ).MakeGenericType( targetType ), FieldAttributes.Private | FieldAttributes.InitOnly );
 				this._serializers.Add( key, result );
+			}
+
+			return
+				( il, thisIndex ) =>
+				{
+					il.EmitAnyLdarg( thisIndex );
+					il.EmitLdfld( result );
+				};
+		}
+
+		public override Action<TracingILGenerator, int> RegisterField( FieldInfo field )
+		{
+			if ( this._typeBuilder.IsCreated() )
+			{
+				throw new InvalidOperationException( "Type is already built." );
+			}
+
+			var key = field.FieldHandle;
+
+			FieldBuilder result;
+			if ( !this._fieldInfos.TryGetValue( key, out result ) )
+			{
+				result = this._typeBuilder.DefineField( "_field" + field.DeclaringType.Name + "_" + field.Name + this._fieldInfos.Count, typeof( FieldInfo ), FieldAttributes.Private | FieldAttributes.InitOnly );
+				this._fieldInfos.Add( key, result );
+			}
+
+			return
+				( il, thisIndex ) =>
+				{
+					il.EmitAnyLdarg( thisIndex );
+					il.EmitLdfld( result );
+				};
+		}
+
+		public override Action<TracingILGenerator, int> RegisterMethod( MethodBase method )
+		{
+			if ( this._typeBuilder.IsCreated() )
+			{
+				throw new InvalidOperationException( "Type is already built." );
+			}
+
+			var key = method.MethodHandle;
+
+			FieldBuilder result;
+			if ( !this._methodBases.TryGetValue( key, out result ) )
+			{
+				result = this._typeBuilder.DefineField( "_function" + method.DeclaringType.Name + "_" + method.Name + this._methodBases.Count, typeof( FieldInfo ), FieldAttributes.Private | FieldAttributes.InitOnly );
+				this._methodBases.Add( key, result );
 			}
 
 			return

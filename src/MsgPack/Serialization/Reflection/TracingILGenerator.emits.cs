@@ -2900,8 +2900,8 @@ namespace MsgPack.Serialization.Reflection
 		///	<summary>
 		///		Emit 'ldtoken' instruction with specified arguments.
 		///	</summary>
-		///	<param name="target"><see cref="System.Reflection.MethodInfo"/> as target.</param>
-		public void EmitLdtoken( System.Reflection.MethodInfo target )
+		///	<param name="target"><see cref="System.Reflection.MethodBase"/> as target.</param>
+		public void EmitLdtoken( System.Reflection.MethodBase target )
 		{
 			Contract.Assert( !this.IsEnded );
 			Contract.Assert( target != null );
@@ -2912,7 +2912,16 @@ namespace MsgPack.Serialization.Reflection
 			this.TraceOperandToken( target );
 			this.TraceWriteLine();
 
-			this._underlying.Emit( OpCodes.Ldtoken, target );
+			System.Reflection.MethodInfo asMethodInfo;
+			if ( ( asMethodInfo = target as System.Reflection.MethodInfo ) != null )
+			{
+				this._underlying.Emit( OpCodes.Ldtoken, asMethodInfo );
+			}
+			else
+			{
+				Contract.Assert( target is System.Reflection.ConstructorInfo );
+				this._underlying.Emit( OpCodes.Ldtoken, target as System.Reflection.ConstructorInfo );
+			}
 		}
 
 		///	<summary>

@@ -36,13 +36,13 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
-#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_CORE && !UNITY_IPHONE && !XAMIOS
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#if !NETFX_35
+#endif
+#if !NETFX_35 && !UNITY_IPHONE && !XAMIOS
 using MsgPack.Serialization.ExpressionSerializers;
-#endif // !NETFX_35
-#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#endif
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -568,6 +568,99 @@ namespace MsgPack.Serialization
 				SerializationContext.Default = new SerializationContext();
 			}
 		}
+
+#region -- ReadOnly / Private Members --
+
+		// ReSharper disable UnusedMember.Local
+		// member names
+		private const string PublicProperty = "PublicProperty";
+		private const string PublicReadOnlyProperty = "PublicReadOnlyProperty";
+		private const string NonPublicProperty = "NonPublicProperty";
+		private const string PublicPropertyPlain = "PublicPropertyPlain";
+		private const string PublicReadOnlyPropertyPlain = "PublicReadOnlyPropertyPlain";
+		private const string NonPublicPropertyPlain = "NonPublicPropertyPlain";
+		private const string CollectionReadOnlyProperty = "CollectionReadOnlyProperty";
+		private const string PublicField = "PublicField";
+		private const string PublicReadOnlyField = "PublicReadOnlyField";
+		private const string NonPublicField = "NonPublicField";
+		private const string PublicFieldPlain = "PublicFieldPlain";
+		private const string PublicReadOnlyFieldPlain = "PublicReadOnlyFieldPlain";
+		private const string NonPublicFieldPlain = "NonPublicFieldPlain";
+		private const string NonSerializedPublicField = "NonSerializedPublicField";
+		private const string NonSerializedPublicReadOnlyField = "NonSerializedPublicReadOnlyField";
+		private const string NonSerializedNonPublicField = "NonSerializedNonPublicField";
+		private const string NonSerializedPublicFieldPlain = "NonSerializedPublicFieldPlain";
+		private const string NonSerializedPublicReadOnlyFieldPlain = "NonSerializedPublicReadOnlyFieldPlain";
+		private const string NonSerializedNonPublicFieldPlain = "NonSerializedNonPublicFieldPlain";
+		// ReSharper restore UnusedMember.Local
+
+		[Test]
+		public void TestNonPublicWritableMember_PlainOldCliClass()
+		{
+			var target = new PlainClass();
+			target.CollectionReadOnlyProperty.Add( 10 );
+			TestNonPublicWritableMemberCore( target, PublicProperty, PublicField, CollectionReadOnlyProperty );
+		}
+
+		[Test]
+		public void TestNonPublicWritableMember_MessagePackMember()
+		{
+			var target = new AnnotatedClass();
+			target.CollectionReadOnlyProperty.Add( 10 );
+			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+		}
+
+		[Test]
+		public void TestNonPublicWritableMember_DataContract()
+		{
+			// includes issue33
+			var target = new DataMamberClass();
+			target.CollectionReadOnlyProperty.Add( 10 );
+			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+		}
+
+		private void TestNonPublicWritableMemberCore<T>( T original, params string[] expectedMemberNames )
+		{
+			var serializer = CreateTarget<T>( GetSerializationContext() );
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, original );
+				buffer.Position = 0;
+				var actual = serializer.Unpack( buffer );
+
+				foreach ( var memberName in expectedMemberNames )
+				{
+					Func<T, Object> getter = null;
+#if !NETFX_CORE
+					var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#else
+					var property = typeof( T ).GetProperty( memberName );
+#endif
+					if ( property != null )
+					{
+						getter = obj => property.GetValue( obj, null );
+					}
+					else
+					{
+#if !NETFX_CORE
+						var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#else
+						var field = typeof( T ).GetField( memberName );
+#endif
+						if ( field == null )
+						{
+							Assert.Fail( memberName + " is not found." );
+						}
+
+						getter = obj => field.GetValue( obj );
+					}
+
+					Assert.That( getter( actual ), Is.EqualTo( getter( original ) ), typeof(T) + "." + memberName );
+				}
+			}
+		}
+
+#endregion -- ReadOnly / Private Members --
 
 		public class HasInitOnlyField
 		{

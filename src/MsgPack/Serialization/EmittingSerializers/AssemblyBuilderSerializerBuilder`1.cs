@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Reflection;
 using System.Reflection.Emit;
 using MsgPack.Serialization.AbstractSerializers;
 
@@ -51,6 +52,40 @@ namespace MsgPack.Serialization.EmittingSerializers
 					typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
 					false,
 					// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
+					il => instructions( il, 0 )
+				);
+		}
+
+		protected override ILConstruct EmitFieldOfExpression( AssemblyBuilderEmittingContext context, FieldInfo field )
+		{
+			var instructions =
+				context.Emitter.RegisterField(
+					field
+				);
+
+			return
+				ILConstruct.Instruction(
+					"getfield",
+					typeof( FieldInfo ),
+					false,
+					// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
+					il => instructions( il, 0 )
+				);
+		}
+
+		protected override ILConstruct EmitMethodOfExpression( AssemblyBuilderEmittingContext context, MethodBase method )
+		{
+			var instructions =
+				context.Emitter.RegisterMethod(
+					method
+				);
+
+			return
+				ILConstruct.Instruction(
+					"getsetter",
+					typeof( MethodBase ),
+					false,
+				// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
 					il => instructions( il, 0 )
 				);
 		}

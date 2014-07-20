@@ -155,6 +155,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Convert( value, typeof( object ) );
 		}
 
+		protected override ExpressionConstruct EmitUnboxAnyExpression( ExpressionTreeContext context, Type targetType, ExpressionConstruct value )
+		{
+			return Expression.Convert( value, targetType );
+		}
+
 		protected override ExpressionConstruct EmitNotExpression( ExpressionTreeContext context, ExpressionConstruct booleanExpression )
 		{
 			return Expression.Not( booleanExpression );
@@ -198,13 +203,72 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			// ReSharper disable RedundantIfElseBlock
 			if ( SerializerDebugging.DumpEnabled )
 			{
-				// LambdaExpression.CompileToMethod cannot handle RuntimeTypeHandle, but handle Type constants.
+				// LambdaExpression.CompileToMethod cannot handle RuntimeTypeHandle, but can handle Type constants.
 				return Expression.Constant( type );
 			}
 			else
 			{
 				// WinRT expression tree cannot handle Type constants, but handle RuntimeTypeHandle.
 				return Expression.Call( Metadata._Type.GetTypeFromHandle, Expression.Constant( type.TypeHandle ) );
+			}
+			// ReSharper restore RedundantIfElseBlock
+		}
+
+		protected override ExpressionConstruct EmitMethodOfExpression( ExpressionTreeContext context, MethodBase method )
+		{
+			// ReSharper disable RedundantIfElseBlock
+			if ( SerializerDebugging.DumpEnabled )
+			{
+				// LambdaExpression.CompileToMethod cannot handle RuntimeTypeHandle, but can handle Type constants.
+				return Expression.Constant( method );
+			}
+			else
+			{
+#if !NETFX_CORE
+				// WinRT expression tree cannot handle Type constants, but handle RuntimeTypeHandle.
+				return Expression.Call( Metadata._MethodBase.GetMethodFromHandle, Expression.Constant( method.MethodHandle ) );
+#else
+				// WinRT expression tree cannot handle Type constants, and MethodHandle property is not exposed.
+				// Overloading is not supported.
+				// typeof( T ).GetRuntimeMethod( method.Name, null );
+				return
+					Expression.Call(
+						typeof( RuntimeReflectionExtensions ).GetRuntimeMethod( "GetRuntimeMethod", new []{typeof(Type),typeof(string),typeof(Type[])} ),
+						this.EmitTypeOfExpression( context, method.DeclaringType ).Expression,
+						Expression.Constant( method.Name ),
+						Expression.NewArrayInit(
+							typeof( Type ),
+							method.GetParameters().Select( p => this.EmitTypeOfExpression( context, p.ParameterType ).Expression )
+						)
+					);
+#endif
+			}
+			// ReSharper restore RedundantIfElseBlock
+		}
+
+		protected override ExpressionConstruct EmitFieldOfExpression( ExpressionTreeContext context, FieldInfo field )
+		{
+			// ReSharper disable RedundantIfElseBlock
+			if ( SerializerDebugging.DumpEnabled )
+			{
+				// LambdaExpression.CompileToMethod cannot handle RuntimeTypeHandle, but can handle Type constants.
+				return Expression.Constant( field );
+			}
+			else
+			{
+#if !NETFX_CORE
+				return Expression.Call( Metadata._FieldInfo.GetFieldFromHandle, Expression.Constant( field.FieldHandle ) );
+#else
+				// WinRT expression tree cannot handle Type constants, and MethodHandle property is not exposed.
+				// Overloading is not supported.
+				// typeof( T ).GetRuntimeField( field.Name, null );
+				return
+					Expression.Call(
+						typeof( RuntimeReflectionExtensions ).GetRuntimeMethod( "GetRuntimeField", new[] { typeof( Type ), typeof( string ), typeof( Type[] ) } ),
+						this.EmitTypeOfExpression( context, field.DeclaringType ).Expression,
+						Expression.Constant( field.Name )
+					);
+#endif
 			}
 			// ReSharper restore RedundantIfElseBlock
 		}
@@ -524,7 +588,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 						EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
 							context,
 							typeof( TObject ),
-							EnumMemberSerializationMethod.Default 
+							EnumMemberSerializationMethod.Default
 						),
 						packUnderyingValueTo,
 						unpackFromUnderlyingValue

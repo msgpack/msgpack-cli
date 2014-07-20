@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 using MsgPack.Serialization.AbstractSerializers;
@@ -41,6 +42,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		public const string ConditionalExpressionHelperWhenFalseParameterName = "whenFalse";
 
 		private readonly Dictionary<SerializerFieldKey, string> _dependentSerializers = new Dictionary<SerializerFieldKey, string>();
+		private readonly Dictionary<RuntimeFieldHandle, string> _cachedFieldInfos = new Dictionary<RuntimeFieldHandle, string>();
+		private readonly Dictionary<RuntimeMethodHandle, string> _cachedMethodBases = new Dictionary<RuntimeMethodHandle, string>();
 
 		private readonly Dictionary<Type, CodeTypeDeclaration> _declaringTypes = new Dictionary<Type, CodeTypeDeclaration>();
 
@@ -82,6 +85,42 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		public Dictionary<SerializerFieldKey, String> GetDependentSerializers()
 		{
 			return this._dependentSerializers;
+		}
+
+		public string GetCachedFieldInfoName( FieldInfo field )
+		{
+			var key = field.FieldHandle;
+			string fieldName;
+			if ( !this._cachedFieldInfos.TryGetValue( key, out fieldName ) )
+			{
+				fieldName = "_field" + field.DeclaringType.Name + "_" + field.Name + this._cachedFieldInfos.Count.ToString( CultureInfo.InvariantCulture );
+				this._cachedFieldInfos.Add( key, fieldName );
+			}
+
+			return fieldName;
+		}
+
+		public Dictionary<RuntimeFieldHandle, String> GetCachedFieldInfos()
+		{
+			return this._cachedFieldInfos;
+		}
+
+		public string GetCachedMethodBaseName( MethodBase method )
+		{
+			var key = method.MethodHandle;
+			string fieldName;
+			if ( !this._cachedMethodBases.TryGetValue( key, out fieldName ) )
+			{
+				fieldName = "_methodBase" + method.DeclaringType.Name + "_" + method.Name + this._cachedMethodBases.Count.ToString( CultureInfo.InvariantCulture );
+				this._cachedMethodBases.Add( key, fieldName );
+			}
+
+			return fieldName;
+		}
+
+		public Dictionary<RuntimeMethodHandle, String> GetCachedMethodBases()
+		{
+			return this._cachedMethodBases;
 		}
 
 		private readonly Dictionary<string, int> _uniqueVariableSuffixes = new Dictionary<string, int>();

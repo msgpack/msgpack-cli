@@ -133,6 +133,9 @@ namespace MsgPack.Serialization
 			result.Add( typeof( HasEnumerable ) );
 			result.Add( typeof( Outer ) );
 			result.Add( typeof( Inner ) );
+			result.Add( typeof( PlainClass ) );
+			result.Add( typeof( AnnotatedClass ) );
+			result.Add( typeof( DataMamberClass ) );
 			return result;
 		}
 	}

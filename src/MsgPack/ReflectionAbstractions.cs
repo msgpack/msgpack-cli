@@ -20,9 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-#if SILVERLIGHT
 using System.Diagnostics.Contracts;
-#endif // SILVERLIGHT
 using System.Linq;
 using System.Reflection;
 
@@ -158,6 +156,11 @@ namespace MsgPack
 			return source.GetRuntimeProperties();
 		}
 
+		public static FieldInfo GetField( this Type source, string name )
+		{
+			return source.GetRuntimeField( name );
+		}
+
 		public static ConstructorInfo GetConstructor( this Type source, Type[] parameteres )
 		{
 			return source.GetTypeInfo().DeclaredConstructors.SingleOrDefault( c => c.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameteres ) );
@@ -188,8 +191,22 @@ namespace MsgPack
 			return source.GetMethod;
 		}
 
+		public static MethodInfo GetGetMethod( this PropertyInfo source, bool containsNonPublic )
+		{
+			Contract.Assert( containsNonPublic ); // false is not supported now.
+
+			return source.GetMethod;
+		}
+
 		public static MethodInfo GetSetMethod( this PropertyInfo source )
 		{
+			return source.SetMethod;
+		}
+
+		public static MethodInfo GetSetMethod( this PropertyInfo source, bool containsNonPublic )
+		{
+			Contract.Assert( containsNonPublic ); // false is not supported now.
+
 			return source.SetMethod;
 		}
 

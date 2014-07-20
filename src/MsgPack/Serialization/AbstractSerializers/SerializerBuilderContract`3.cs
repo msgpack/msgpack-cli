@@ -163,6 +163,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
+		protected override TConstruct EmitUnboxAnyExpression( TContext context, Type targetType, TConstruct value )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( targetType != null );
+			Contract.Requires( value != null );
+			Contract.Requires( !value.ContextType.GetIsValueType() );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == targetType );
+			return default( TConstruct );
+		}
+
 		protected override TConstruct EmitNotExpression( TContext context, TConstruct booleanExpression )
 		{
 			Contract.Requires( context != null );
@@ -227,6 +238,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( type != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( Type ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct EmitFieldOfExpression( TContext context, FieldInfo field )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( field != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( Type ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct EmitMethodOfExpression( TContext context, MethodBase method )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( method != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( Type ) );
 			return default( TConstruct );

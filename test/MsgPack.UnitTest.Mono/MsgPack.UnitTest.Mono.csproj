@@ -917,6 +917,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargets.cs">
+      <Link>Serialization\SerializationTargets.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargetTest.cs">
       <Link>Serialization\SerializationTargetTest.cs</Link>
     </Compile>

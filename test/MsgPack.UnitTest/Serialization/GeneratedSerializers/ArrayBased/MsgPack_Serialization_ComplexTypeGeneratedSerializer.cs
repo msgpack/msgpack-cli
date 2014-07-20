@@ -177,6 +177,78 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Nullable<System.TimeSpan>> _serializer80;
         
+        private System.Reflection.MethodBase _methodBaseComplexType_get_History0;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_AddOnlyCollection_DateTimeField1;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_AddOnlyCollection_MessagePackObjectField2;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_AddOnlyCollection_ObjectField3;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ArrayListField4;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_Collection_MessagePackObjectField5;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_CollectionDateTimeField6;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_CollectionObjectField7;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_Dictionary_MessagePackObject_MessagePackObjectField8;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_DictionaryObjectObjectField9;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_DictionaryStringDateTimeField10;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_HashSet_MessagePackObjectField11;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_HashSetDateTimeField12;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_HashSetObjectField13;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_HashtableField14;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ICollection_MessagePackObjectField15;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ICollectionDateTimeField16;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ICollectionObjectField17;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_IDictionary_MessagePackObject_MessagePackObjectField18;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_IDictionaryObjectObjectField19;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_IDictionaryStringDateTimeField20;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_IList_MessagePackObjectField21;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_IListDateTimeField22;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_IListObjectField23;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ISet_MessagePackObjectField24;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ISetDateTimeField25;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ISetObjectField26;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_List_MessagePackObjectField27;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ListDateTimeField28;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ListObjectField29;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ObservableCollection_MessagePackObjectField30;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ObservableCollectionDateTimeField31;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_ObservableCollectionObjectField32;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_StringKeyedCollection_DateTimeField33;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_StringKeyedCollection_MessagePackObjectField34;
+        
+        private System.Reflection.MethodBase _methodBaseComplexTypeGenerated_get_StringKeyedCollection_ObjectField35;
+        
         public MsgPack_Serialization_ComplexTypeGeneratedSerializer(MsgPack.Serialization.SerializationContext context) : 
                 base(context) {
             this._serializer0 = context.GetSerializer<MsgPack.Serialization.AddOnlyCollection<System.DateTime>>();
@@ -260,6 +332,78 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             this._serializer78 = context.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.Numerics.Complex>>>();
             this._serializer79 = context.GetSerializer<System.Nullable<System.Collections.Generic.KeyValuePair<string, System.DateTimeOffset>>>();
             this._serializer80 = context.GetSerializer<System.Nullable<System.TimeSpan>>();
+            this._methodBaseComplexType_get_History0 = typeof(MsgPack.Serialization.ComplexType).GetMethod("get_History", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_AddOnlyCollection_DateTimeField1 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_AddOnlyCollection_DateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_AddOnlyCollection_MessagePackObjectField2 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_AddOnlyCollection_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_AddOnlyCollection_ObjectField3 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_AddOnlyCollection_ObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ArrayListField4 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ArrayListField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_Collection_MessagePackObjectField5 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_Collection_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_CollectionDateTimeField6 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_CollectionDateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_CollectionObjectField7 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_CollectionObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_Dictionary_MessagePackObject_MessagePackObjectField8 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_Dictionary_MessagePackObject_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_DictionaryObjectObjectField9 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_DictionaryObjectObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_DictionaryStringDateTimeField10 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_DictionaryStringDateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_HashSet_MessagePackObjectField11 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_HashSet_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_HashSetDateTimeField12 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_HashSetDateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_HashSetObjectField13 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_HashSetObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_HashtableField14 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_HashtableField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ICollection_MessagePackObjectField15 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ICollection_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ICollectionDateTimeField16 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ICollectionDateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ICollectionObjectField17 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ICollectionObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_IDictionary_MessagePackObject_MessagePackObjectField18 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_IDictionary_MessagePackObject_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_IDictionaryObjectObjectField19 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_IDictionaryObjectObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_IDictionaryStringDateTimeField20 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_IDictionaryStringDateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_IList_MessagePackObjectField21 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_IList_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_IListDateTimeField22 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_IListDateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_IListObjectField23 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_IListObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ISet_MessagePackObjectField24 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ISet_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ISetDateTimeField25 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ISetDateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ISetObjectField26 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ISetObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_List_MessagePackObjectField27 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_List_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ListDateTimeField28 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ListDateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ListObjectField29 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ListObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ObservableCollection_MessagePackObjectField30 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ObservableCollection_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ObservableCollectionDateTimeField31 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ObservableCollectionDateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_ObservableCollectionObjectField32 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_ObservableCollectionObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_StringKeyedCollection_DateTimeField33 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_StringKeyedCollection_DateTimeField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_StringKeyedCollection_MessagePackObjectField34 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_StringKeyedCollection_MessagePackObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
+            this._methodBaseComplexTypeGenerated_get_StringKeyedCollection_ObjectField35 = typeof(MsgPack.Serialization.ComplexTypeGenerated).GetMethod("get_StringKeyedCollection_ObjectField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)), null, new System.Type[0], null);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGenerated objectTree) {
@@ -380,7 +524,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator.MoveNext(); 
                         ) {
                             current = enumerator.Current;
-                            result.AddOnlyCollection_DateTimeField.Add(current);
+                            ((MsgPack.Serialization.AddOnlyCollection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_AddOnlyCollection_DateTimeField1.Invoke(result, null))).Add(current);
                         }
                     }
                     finally {
@@ -420,7 +564,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator0.MoveNext(); 
                         ) {
                             current0 = enumerator0.Current;
-                            result.AddOnlyCollection_MessagePackObjectField.Add(current0);
+                            ((MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_AddOnlyCollection_MessagePackObjectField2.Invoke(result, null))).Add(current0);
                         }
                     }
                     finally {
@@ -460,7 +604,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator1.MoveNext(); 
                         ) {
                             current1 = enumerator1.Current;
-                            result.AddOnlyCollection_ObjectField.Add(current1);
+                            ((MsgPack.Serialization.AddOnlyCollection<object>)(this._methodBaseComplexTypeGenerated_get_AddOnlyCollection_ObjectField3.Invoke(result, null))).Add(current1);
                         }
                     }
                     finally {
@@ -499,7 +643,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     ; enumerator2.MoveNext(); 
                     ) {
                         current2 = enumerator2.Current;
-                        result.ArrayListField.Add(current2);
+                        ((System.Collections.ArrayList)(this._methodBaseComplexTypeGenerated_get_ArrayListField4.Invoke(result, null))).Add(current2);
                     }
                 }
                 unpacked = (unpacked + 1);
@@ -715,7 +859,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator3.MoveNext(); 
                         ) {
                             current3 = enumerator3.Current;
-                            result.Collection_MessagePackObjectField.Add(current3);
+                            ((System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_Collection_MessagePackObjectField5.Invoke(result, null))).Add(current3);
                         }
                     }
                     finally {
@@ -755,7 +899,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator4.MoveNext(); 
                         ) {
                             current4 = enumerator4.Current;
-                            result.CollectionDateTimeField.Add(current4);
+                            ((System.Collections.ObjectModel.Collection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_CollectionDateTimeField6.Invoke(result, null))).Add(current4);
                         }
                     }
                     finally {
@@ -795,7 +939,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator5.MoveNext(); 
                         ) {
                             current5 = enumerator5.Current;
-                            result.CollectionObjectField.Add(current5);
+                            ((System.Collections.ObjectModel.Collection<object>)(this._methodBaseComplexTypeGenerated_get_CollectionObjectField7.Invoke(result, null))).Add(current5);
                         }
                     }
                     finally {
@@ -943,7 +1087,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator6.MoveNext(); 
                         ) {
                             current6 = enumerator6.Current;
-                            result.Dictionary_MessagePackObject_MessagePackObjectField.Add(current6.Key, current6.Value);
+                            ((System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_Dictionary_MessagePackObject_MessagePackObjectField8.Invoke(result, null))).Add(current6.Key, current6.Value);
                         }
                     }
                     finally {
@@ -1010,7 +1154,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator7.MoveNext(); 
                         ) {
                             current7 = enumerator7.Current;
-                            result.DictionaryObjectObjectField.Add(current7.Key, current7.Value);
+                            ((System.Collections.Generic.Dictionary<object, object>)(this._methodBaseComplexTypeGenerated_get_DictionaryObjectObjectField9.Invoke(result, null))).Add(current7.Key, current7.Value);
                         }
                     }
                     finally {
@@ -1050,7 +1194,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator8.MoveNext(); 
                         ) {
                             current8 = enumerator8.Current;
-                            result.DictionaryStringDateTimeField.Add(current8.Key, current8.Value);
+                            ((System.Collections.Generic.Dictionary<string, System.DateTime>)(this._methodBaseComplexTypeGenerated_get_DictionaryStringDateTimeField10.Invoke(result, null))).Add(current8.Key, current8.Value);
                         }
                     }
                     finally {
@@ -1152,7 +1296,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator9.MoveNext(); 
                         ) {
                             current9 = enumerator9.Current;
-                            result.HashSet_MessagePackObjectField.Add(current9);
+                            ((System.Collections.Generic.HashSet<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_HashSet_MessagePackObjectField11.Invoke(result, null))).Add(current9);
                         }
                     }
                     finally {
@@ -1192,7 +1336,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator10.MoveNext(); 
                         ) {
                             current10 = enumerator10.Current;
-                            result.HashSetDateTimeField.Add(current10);
+                            ((System.Collections.Generic.HashSet<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_HashSetDateTimeField12.Invoke(result, null))).Add(current10);
                         }
                     }
                     finally {
@@ -1232,7 +1376,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator11.MoveNext(); 
                         ) {
                             current11 = enumerator11.Current;
-                            result.HashSetObjectField.Add(current11);
+                            ((System.Collections.Generic.HashSet<object>)(this._methodBaseComplexTypeGenerated_get_HashSetObjectField13.Invoke(result, null))).Add(current11);
                         }
                     }
                     finally {
@@ -1271,7 +1415,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                     ; enumerator12.MoveNext(); 
                     ) {
                         current12 = enumerator12.Entry;
-                        result.HashtableField.Add(current12.Key, current12.Value);
+                        ((System.Collections.Hashtable)(this._methodBaseComplexTypeGenerated_get_HashtableField14.Invoke(result, null))).Add(current12.Key, current12.Value);
                     }
                 }
                 unpacked = (unpacked + 1);
@@ -1307,7 +1451,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator13.MoveNext(); 
                         ) {
                             current13 = enumerator13.Current;
-                            result.ICollection_MessagePackObjectField.Add(current13);
+                            ((System.Collections.Generic.ICollection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_ICollection_MessagePackObjectField15.Invoke(result, null))).Add(current13);
                         }
                     }
                     finally {
@@ -1347,7 +1491,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator14.MoveNext(); 
                         ) {
                             current14 = enumerator14.Current;
-                            result.ICollectionDateTimeField.Add(current14);
+                            ((System.Collections.Generic.ICollection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_ICollectionDateTimeField16.Invoke(result, null))).Add(current14);
                         }
                     }
                     finally {
@@ -1387,7 +1531,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator15.MoveNext(); 
                         ) {
                             current15 = enumerator15.Current;
-                            result.ICollectionObjectField.Add(current15);
+                            ((System.Collections.Generic.ICollection<object>)(this._methodBaseComplexTypeGenerated_get_ICollectionObjectField17.Invoke(result, null))).Add(current15);
                         }
                     }
                     finally {
@@ -1427,7 +1571,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator16.MoveNext(); 
                         ) {
                             current16 = enumerator16.Current;
-                            result.IDictionary_MessagePackObject_MessagePackObjectField.Add(current16.Key, current16.Value);
+                            ((System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_IDictionary_MessagePackObject_MessagePackObjectField18.Invoke(result, null))).Add(current16.Key, current16.Value);
                         }
                     }
                     finally {
@@ -1467,7 +1611,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator17.MoveNext(); 
                         ) {
                             current17 = enumerator17.Current;
-                            result.IDictionaryObjectObjectField.Add(current17.Key, current17.Value);
+                            ((System.Collections.Generic.IDictionary<object, object>)(this._methodBaseComplexTypeGenerated_get_IDictionaryObjectObjectField19.Invoke(result, null))).Add(current17.Key, current17.Value);
                         }
                     }
                     finally {
@@ -1507,7 +1651,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator18.MoveNext(); 
                         ) {
                             current18 = enumerator18.Current;
-                            result.IDictionaryStringDateTimeField.Add(current18.Key, current18.Value);
+                            ((System.Collections.Generic.IDictionary<string, System.DateTime>)(this._methodBaseComplexTypeGenerated_get_IDictionaryStringDateTimeField20.Invoke(result, null))).Add(current18.Key, current18.Value);
                         }
                     }
                     finally {
@@ -1547,7 +1691,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator19.MoveNext(); 
                         ) {
                             current19 = enumerator19.Current;
-                            result.IList_MessagePackObjectField.Add(current19);
+                            ((System.Collections.Generic.IList<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_IList_MessagePackObjectField21.Invoke(result, null))).Add(current19);
                         }
                     }
                     finally {
@@ -1587,7 +1731,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator20.MoveNext(); 
                         ) {
                             current20 = enumerator20.Current;
-                            result.IListDateTimeField.Add(current20);
+                            ((System.Collections.Generic.IList<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_IListDateTimeField22.Invoke(result, null))).Add(current20);
                         }
                     }
                     finally {
@@ -1627,7 +1771,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator21.MoveNext(); 
                         ) {
                             current21 = enumerator21.Current;
-                            result.IListObjectField.Add(current21);
+                            ((System.Collections.Generic.IList<object>)(this._methodBaseComplexTypeGenerated_get_IListObjectField23.Invoke(result, null))).Add(current21);
                         }
                     }
                     finally {
@@ -1695,7 +1839,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator22.MoveNext(); 
                         ) {
                             current22 = enumerator22.Current;
-                            result.ISet_MessagePackObjectField.Add(current22);
+                            ((System.Collections.Generic.ISet<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_ISet_MessagePackObjectField24.Invoke(result, null))).Add(current22);
                         }
                     }
                     finally {
@@ -1735,7 +1879,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator23.MoveNext(); 
                         ) {
                             current23 = enumerator23.Current;
-                            result.ISetDateTimeField.Add(current23);
+                            ((System.Collections.Generic.ISet<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_ISetDateTimeField25.Invoke(result, null))).Add(current23);
                         }
                     }
                     finally {
@@ -1775,7 +1919,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator24.MoveNext(); 
                         ) {
                             current24 = enumerator24.Current;
-                            result.ISetObjectField.Add(current24);
+                            ((System.Collections.Generic.ISet<object>)(this._methodBaseComplexTypeGenerated_get_ISetObjectField26.Invoke(result, null))).Add(current24);
                         }
                     }
                     finally {
@@ -1869,7 +2013,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator25.MoveNext(); 
                         ) {
                             current25 = enumerator25.Current;
-                            result.List_MessagePackObjectField.Add(current25);
+                            ((System.Collections.Generic.List<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_List_MessagePackObjectField27.Invoke(result, null))).Add(current25);
                         }
                     }
                     finally {
@@ -1909,7 +2053,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator26.MoveNext(); 
                         ) {
                             current26 = enumerator26.Current;
-                            result.ListDateTimeField.Add(current26);
+                            ((System.Collections.Generic.List<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_ListDateTimeField28.Invoke(result, null))).Add(current26);
                         }
                     }
                     finally {
@@ -1949,7 +2093,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator27.MoveNext(); 
                         ) {
                             current27 = enumerator27.Current;
-                            result.ListObjectField.Add(current27);
+                            ((System.Collections.Generic.List<object>)(this._methodBaseComplexTypeGenerated_get_ListObjectField29.Invoke(result, null))).Add(current27);
                         }
                     }
                     finally {
@@ -2166,7 +2310,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator28.MoveNext(); 
                         ) {
                             current28 = enumerator28.Current;
-                            result.ObservableCollection_MessagePackObjectField.Add(current28);
+                            ((System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_ObservableCollection_MessagePackObjectField30.Invoke(result, null))).Add(current28);
                         }
                     }
                     finally {
@@ -2206,7 +2350,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator29.MoveNext(); 
                         ) {
                             current29 = enumerator29.Current;
-                            result.ObservableCollectionDateTimeField.Add(current29);
+                            ((System.Collections.ObjectModel.ObservableCollection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_ObservableCollectionDateTimeField31.Invoke(result, null))).Add(current29);
                         }
                     }
                     finally {
@@ -2246,7 +2390,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator30.MoveNext(); 
                         ) {
                             current30 = enumerator30.Current;
-                            result.ObservableCollectionObjectField.Add(current30);
+                            ((System.Collections.ObjectModel.ObservableCollection<object>)(this._methodBaseComplexTypeGenerated_get_ObservableCollectionObjectField32.Invoke(result, null))).Add(current30);
                         }
                     }
                     finally {
@@ -2295,7 +2439,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator31.MoveNext(); 
                         ) {
                             current31 = enumerator31.Current;
-                            result.StringKeyedCollection_DateTimeField.Add(current31);
+                            ((MsgPack.Serialization.StringKeyedCollection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_StringKeyedCollection_DateTimeField33.Invoke(result, null))).Add(current31);
                         }
                     }
                     finally {
@@ -2335,7 +2479,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator32.MoveNext(); 
                         ) {
                             current32 = enumerator32.Current;
-                            result.StringKeyedCollection_MessagePackObjectField.Add(current32);
+                            ((MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_StringKeyedCollection_MessagePackObjectField34.Invoke(result, null))).Add(current32);
                         }
                     }
                     finally {
@@ -2375,7 +2519,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                         ; enumerator33.MoveNext(); 
                         ) {
                             current33 = enumerator33.Current;
-                            result.StringKeyedCollection_ObjectField.Add(current33);
+                            ((MsgPack.Serialization.StringKeyedCollection<object>)(this._methodBaseComplexTypeGenerated_get_StringKeyedCollection_ObjectField35.Invoke(result, null))).Add(current33);
                         }
                     }
                     finally {
@@ -2731,7 +2875,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                     ; enumerator68.MoveNext(); 
                                                                     ) {
                                                                         current68 = enumerator68.Current;
-                                                                        result.StringKeyedCollection_ObjectField.Add(current68);
+                                                                        ((MsgPack.Serialization.StringKeyedCollection<object>)(this._methodBaseComplexTypeGenerated_get_StringKeyedCollection_ObjectField35.Invoke(result, null))).Add(current68);
                                                                     }
                                                                 }
                                                                 finally {
@@ -2771,7 +2915,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                         ; enumerator67.MoveNext(); 
                                                                         ) {
                                                                             current67 = enumerator67.Current;
-                                                                            result.StringKeyedCollection_MessagePackObjectField.Add(current67);
+                                                                            ((MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_StringKeyedCollection_MessagePackObjectField34.Invoke(result, null))).Add(current67);
                                                                         }
                                                                     }
                                                                     finally {
@@ -2811,7 +2955,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                             ; enumerator66.MoveNext(); 
                                                                             ) {
                                                                                 current66 = enumerator66.Current;
-                                                                                result.StringKeyedCollection_DateTimeField.Add(current66);
+                                                                                ((MsgPack.Serialization.StringKeyedCollection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_StringKeyedCollection_DateTimeField33.Invoke(result, null))).Add(current66);
                                                                             }
                                                                         }
                                                                         finally {
@@ -2860,7 +3004,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                     ; enumerator65.MoveNext(); 
                                                                                     ) {
                                                                                         current65 = enumerator65.Current;
-                                                                                        result.ObservableCollectionObjectField.Add(current65);
+                                                                                        ((System.Collections.ObjectModel.ObservableCollection<object>)(this._methodBaseComplexTypeGenerated_get_ObservableCollectionObjectField32.Invoke(result, null))).Add(current65);
                                                                                     }
                                                                                 }
                                                                                 finally {
@@ -2900,7 +3044,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                         ; enumerator64.MoveNext(); 
                                                                                         ) {
                                                                                             current64 = enumerator64.Current;
-                                                                                            result.ObservableCollectionDateTimeField.Add(current64);
+                                                                                            ((System.Collections.ObjectModel.ObservableCollection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_ObservableCollectionDateTimeField31.Invoke(result, null))).Add(current64);
                                                                                         }
                                                                                     }
                                                                                     finally {
@@ -2940,7 +3084,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                             ; enumerator63.MoveNext(); 
                                                                                             ) {
                                                                                                 current63 = enumerator63.Current;
-                                                                                                result.ObservableCollection_MessagePackObjectField.Add(current63);
+                                                                                                ((System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_ObservableCollection_MessagePackObjectField30.Invoke(result, null))).Add(current63);
                                                                                             }
                                                                                         }
                                                                                         finally {
@@ -3157,7 +3301,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                             ; enumerator62.MoveNext(); 
                                                                                                                                             ) {
                                                                                                                                                 current62 = enumerator62.Current;
-                                                                                                                                                result.ListObjectField.Add(current62);
+                                                                                                                                                ((System.Collections.Generic.List<object>)(this._methodBaseComplexTypeGenerated_get_ListObjectField29.Invoke(result, null))).Add(current62);
                                                                                                                                             }
                                                                                                                                         }
                                                                                                                                         finally {
@@ -3197,7 +3341,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                 ; enumerator61.MoveNext(); 
                                                                                                                                                 ) {
                                                                                                                                                     current61 = enumerator61.Current;
-                                                                                                                                                    result.ListDateTimeField.Add(current61);
+                                                                                                                                                    ((System.Collections.Generic.List<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_ListDateTimeField28.Invoke(result, null))).Add(current61);
                                                                                                                                                 }
                                                                                                                                             }
                                                                                                                                             finally {
@@ -3237,7 +3381,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                     ; enumerator60.MoveNext(); 
                                                                                                                                                     ) {
                                                                                                                                                         current60 = enumerator60.Current;
-                                                                                                                                                        result.List_MessagePackObjectField.Add(current60);
+                                                                                                                                                        ((System.Collections.Generic.List<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_List_MessagePackObjectField27.Invoke(result, null))).Add(current60);
                                                                                                                                                     }
                                                                                                                                                 }
                                                                                                                                                 finally {
@@ -3331,7 +3475,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                 ; enumerator59.MoveNext(); 
                                                                                                                                                                 ) {
                                                                                                                                                                     current59 = enumerator59.Current;
-                                                                                                                                                                    result.ISetObjectField.Add(current59);
+                                                                                                                                                                    ((System.Collections.Generic.ISet<object>)(this._methodBaseComplexTypeGenerated_get_ISetObjectField26.Invoke(result, null))).Add(current59);
                                                                                                                                                                 }
                                                                                                                                                             }
                                                                                                                                                             finally {
@@ -3371,7 +3515,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                     ; enumerator58.MoveNext(); 
                                                                                                                                                                     ) {
                                                                                                                                                                         current58 = enumerator58.Current;
-                                                                                                                                                                        result.ISetDateTimeField.Add(current58);
+                                                                                                                                                                        ((System.Collections.Generic.ISet<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_ISetDateTimeField25.Invoke(result, null))).Add(current58);
                                                                                                                                                                     }
                                                                                                                                                                 }
                                                                                                                                                                 finally {
@@ -3411,7 +3555,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                         ; enumerator57.MoveNext(); 
                                                                                                                                                                         ) {
                                                                                                                                                                             current57 = enumerator57.Current;
-                                                                                                                                                                            result.ISet_MessagePackObjectField.Add(current57);
+                                                                                                                                                                            ((System.Collections.Generic.ISet<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_ISet_MessagePackObjectField24.Invoke(result, null))).Add(current57);
                                                                                                                                                                         }
                                                                                                                                                                     }
                                                                                                                                                                     finally {
@@ -3479,7 +3623,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                 ; enumerator56.MoveNext(); 
                                                                                                                                                                                 ) {
                                                                                                                                                                                     current56 = enumerator56.Current;
-                                                                                                                                                                                    result.IListObjectField.Add(current56);
+                                                                                                                                                                                    ((System.Collections.Generic.IList<object>)(this._methodBaseComplexTypeGenerated_get_IListObjectField23.Invoke(result, null))).Add(current56);
                                                                                                                                                                                 }
                                                                                                                                                                             }
                                                                                                                                                                             finally {
@@ -3519,7 +3663,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                     ; enumerator55.MoveNext(); 
                                                                                                                                                                                     ) {
                                                                                                                                                                                         current55 = enumerator55.Current;
-                                                                                                                                                                                        result.IListDateTimeField.Add(current55);
+                                                                                                                                                                                        ((System.Collections.Generic.IList<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_IListDateTimeField22.Invoke(result, null))).Add(current55);
                                                                                                                                                                                     }
                                                                                                                                                                                 }
                                                                                                                                                                                 finally {
@@ -3559,7 +3703,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                         ; enumerator54.MoveNext(); 
                                                                                                                                                                                         ) {
                                                                                                                                                                                             current54 = enumerator54.Current;
-                                                                                                                                                                                            result.IList_MessagePackObjectField.Add(current54);
+                                                                                                                                                                                            ((System.Collections.Generic.IList<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_IList_MessagePackObjectField21.Invoke(result, null))).Add(current54);
                                                                                                                                                                                         }
                                                                                                                                                                                     }
                                                                                                                                                                                     finally {
@@ -3599,7 +3743,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                             ; enumerator53.MoveNext(); 
                                                                                                                                                                                             ) {
                                                                                                                                                                                                 current53 = enumerator53.Current;
-                                                                                                                                                                                                result.IDictionaryStringDateTimeField.Add(current53.Key, current53.Value);
+                                                                                                                                                                                                ((System.Collections.Generic.IDictionary<string, System.DateTime>)(this._methodBaseComplexTypeGenerated_get_IDictionaryStringDateTimeField20.Invoke(result, null))).Add(current53.Key, current53.Value);
                                                                                                                                                                                             }
                                                                                                                                                                                         }
                                                                                                                                                                                         finally {
@@ -3639,7 +3783,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                 ; enumerator52.MoveNext(); 
                                                                                                                                                                                                 ) {
                                                                                                                                                                                                     current52 = enumerator52.Current;
-                                                                                                                                                                                                    result.IDictionaryObjectObjectField.Add(current52.Key, current52.Value);
+                                                                                                                                                                                                    ((System.Collections.Generic.IDictionary<object, object>)(this._methodBaseComplexTypeGenerated_get_IDictionaryObjectObjectField19.Invoke(result, null))).Add(current52.Key, current52.Value);
                                                                                                                                                                                                 }
                                                                                                                                                                                             }
                                                                                                                                                                                             finally {
@@ -3679,7 +3823,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                     ; enumerator51.MoveNext(); 
                                                                                                                                                                                                     ) {
                                                                                                                                                                                                         current51 = enumerator51.Current;
-                                                                                                                                                                                                        result.IDictionary_MessagePackObject_MessagePackObjectField.Add(current51.Key, current51.Value);
+                                                                                                                                                                                                        ((System.Collections.Generic.IDictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_IDictionary_MessagePackObject_MessagePackObjectField18.Invoke(result, null))).Add(current51.Key, current51.Value);
                                                                                                                                                                                                     }
                                                                                                                                                                                                 }
                                                                                                                                                                                                 finally {
@@ -3719,7 +3863,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                         ; enumerator50.MoveNext(); 
                                                                                                                                                                                                         ) {
                                                                                                                                                                                                             current50 = enumerator50.Current;
-                                                                                                                                                                                                            result.ICollectionObjectField.Add(current50);
+                                                                                                                                                                                                            ((System.Collections.Generic.ICollection<object>)(this._methodBaseComplexTypeGenerated_get_ICollectionObjectField17.Invoke(result, null))).Add(current50);
                                                                                                                                                                                                         }
                                                                                                                                                                                                     }
                                                                                                                                                                                                     finally {
@@ -3759,7 +3903,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                             ; enumerator49.MoveNext(); 
                                                                                                                                                                                                             ) {
                                                                                                                                                                                                                 current49 = enumerator49.Current;
-                                                                                                                                                                                                                result.ICollectionDateTimeField.Add(current49);
+                                                                                                                                                                                                                ((System.Collections.Generic.ICollection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_ICollectionDateTimeField16.Invoke(result, null))).Add(current49);
                                                                                                                                                                                                             }
                                                                                                                                                                                                         }
                                                                                                                                                                                                         finally {
@@ -3799,7 +3943,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                 ; enumerator48.MoveNext(); 
                                                                                                                                                                                                                 ) {
                                                                                                                                                                                                                     current48 = enumerator48.Current;
-                                                                                                                                                                                                                    result.ICollection_MessagePackObjectField.Add(current48);
+                                                                                                                                                                                                                    ((System.Collections.Generic.ICollection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_ICollection_MessagePackObjectField15.Invoke(result, null))).Add(current48);
                                                                                                                                                                                                                 }
                                                                                                                                                                                                             }
                                                                                                                                                                                                             finally {
@@ -3838,7 +3982,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                 ; enumerator47.MoveNext(); 
                                                                                                                                                                                                                 ) {
                                                                                                                                                                                                                     current47 = enumerator47.Entry;
-                                                                                                                                                                                                                    result.HashtableField.Add(current47.Key, current47.Value);
+                                                                                                                                                                                                                    ((System.Collections.Hashtable)(this._methodBaseComplexTypeGenerated_get_HashtableField14.Invoke(result, null))).Add(current47.Key, current47.Value);
                                                                                                                                                                                                                 }
                                                                                                                                                                                                             }
                                                                                                                                                                                                         }
@@ -3874,7 +4018,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                         ; enumerator46.MoveNext(); 
                                                                                                                                                                                                                         ) {
                                                                                                                                                                                                                             current46 = enumerator46.Current;
-                                                                                                                                                                                                                            result.HashSetObjectField.Add(current46);
+                                                                                                                                                                                                                            ((System.Collections.Generic.HashSet<object>)(this._methodBaseComplexTypeGenerated_get_HashSetObjectField13.Invoke(result, null))).Add(current46);
                                                                                                                                                                                                                         }
                                                                                                                                                                                                                     }
                                                                                                                                                                                                                     finally {
@@ -3914,7 +4058,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                             ; enumerator45.MoveNext(); 
                                                                                                                                                                                                                             ) {
                                                                                                                                                                                                                                 current45 = enumerator45.Current;
-                                                                                                                                                                                                                                result.HashSetDateTimeField.Add(current45);
+                                                                                                                                                                                                                                ((System.Collections.Generic.HashSet<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_HashSetDateTimeField12.Invoke(result, null))).Add(current45);
                                                                                                                                                                                                                             }
                                                                                                                                                                                                                         }
                                                                                                                                                                                                                         finally {
@@ -3954,7 +4098,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                 ; enumerator44.MoveNext(); 
                                                                                                                                                                                                                                 ) {
                                                                                                                                                                                                                                     current44 = enumerator44.Current;
-                                                                                                                                                                                                                                    result.HashSet_MessagePackObjectField.Add(current44);
+                                                                                                                                                                                                                                    ((System.Collections.Generic.HashSet<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_HashSet_MessagePackObjectField11.Invoke(result, null))).Add(current44);
                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                             }
                                                                                                                                                                                                                             finally {
@@ -4056,7 +4200,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                 ; enumerator43.MoveNext(); 
                                                                                                                                                                                                                                                 ) {
                                                                                                                                                                                                                                                     current43 = enumerator43.Current;
-                                                                                                                                                                                                                                                    result.DictionaryStringDateTimeField.Add(current43.Key, current43.Value);
+                                                                                                                                                                                                                                                    ((System.Collections.Generic.Dictionary<string, System.DateTime>)(this._methodBaseComplexTypeGenerated_get_DictionaryStringDateTimeField10.Invoke(result, null))).Add(current43.Key, current43.Value);
                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                             finally {
@@ -4096,7 +4240,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                     ; enumerator42.MoveNext(); 
                                                                                                                                                                                                                                                     ) {
                                                                                                                                                                                                                                                         current42 = enumerator42.Current;
-                                                                                                                                                                                                                                                        result.DictionaryObjectObjectField.Add(current42.Key, current42.Value);
+                                                                                                                                                                                                                                                        ((System.Collections.Generic.Dictionary<object, object>)(this._methodBaseComplexTypeGenerated_get_DictionaryObjectObjectField9.Invoke(result, null))).Add(current42.Key, current42.Value);
                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                 finally {
@@ -4163,7 +4307,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                             ; enumerator41.MoveNext(); 
                                                                                                                                                                                                                                                             ) {
                                                                                                                                                                                                                                                                 current41 = enumerator41.Current;
-                                                                                                                                                                                                                                                                result.Dictionary_MessagePackObject_MessagePackObjectField.Add(current41.Key, current41.Value);
+                                                                                                                                                                                                                                                                ((System.Collections.Generic.Dictionary<MsgPack.MessagePackObject, MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_Dictionary_MessagePackObject_MessagePackObjectField8.Invoke(result, null))).Add(current41.Key, current41.Value);
                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                         finally {
@@ -4311,7 +4455,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                 ; enumerator40.MoveNext(); 
                                                                                                                                                                                                                                                                                 ) {
                                                                                                                                                                                                                                                                                     current40 = enumerator40.Current;
-                                                                                                                                                                                                                                                                                    result.CollectionObjectField.Add(current40);
+                                                                                                                                                                                                                                                                                    ((System.Collections.ObjectModel.Collection<object>)(this._methodBaseComplexTypeGenerated_get_CollectionObjectField7.Invoke(result, null))).Add(current40);
                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                             finally {
@@ -4351,7 +4495,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                     ; enumerator39.MoveNext(); 
                                                                                                                                                                                                                                                                                     ) {
                                                                                                                                                                                                                                                                                         current39 = enumerator39.Current;
-                                                                                                                                                                                                                                                                                        result.CollectionDateTimeField.Add(current39);
+                                                                                                                                                                                                                                                                                        ((System.Collections.ObjectModel.Collection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_CollectionDateTimeField6.Invoke(result, null))).Add(current39);
                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                 finally {
@@ -4391,7 +4535,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                         ; enumerator38.MoveNext(); 
                                                                                                                                                                                                                                                                                         ) {
                                                                                                                                                                                                                                                                                             current38 = enumerator38.Current;
-                                                                                                                                                                                                                                                                                            result.Collection_MessagePackObjectField.Add(current38);
+                                                                                                                                                                                                                                                                                            ((System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_Collection_MessagePackObjectField5.Invoke(result, null))).Add(current38);
                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                     finally {
@@ -4610,7 +4754,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                                         ; enumerator37.MoveNext(); 
                                                                                                                                                                                                                                                                                                                         ) {
                                                                                                                                                                                                                                                                                                                             current37 = enumerator37.Current;
-                                                                                                                                                                                                                                                                                                                            result.ArrayListField.Add(current37);
+                                                                                                                                                                                                                                                                                                                            ((System.Collections.ArrayList)(this._methodBaseComplexTypeGenerated_get_ArrayListField4.Invoke(result, null))).Add(current37);
                                                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                                 }
@@ -4646,7 +4790,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                                                 ; enumerator36.MoveNext(); 
                                                                                                                                                                                                                                                                                                                                 ) {
                                                                                                                                                                                                                                                                                                                                     current36 = enumerator36.Current;
-                                                                                                                                                                                                                                                                                                                                    result.AddOnlyCollection_ObjectField.Add(current36);
+                                                                                                                                                                                                                                                                                                                                    ((MsgPack.Serialization.AddOnlyCollection<object>)(this._methodBaseComplexTypeGenerated_get_AddOnlyCollection_ObjectField3.Invoke(result, null))).Add(current36);
                                                                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                                                             finally {
@@ -4686,7 +4830,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                                                     ; enumerator35.MoveNext(); 
                                                                                                                                                                                                                                                                                                                                     ) {
                                                                                                                                                                                                                                                                                                                                         current35 = enumerator35.Current;
-                                                                                                                                                                                                                                                                                                                                        result.AddOnlyCollection_MessagePackObjectField.Add(current35);
+                                                                                                                                                                                                                                                                                                                                        ((MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>)(this._methodBaseComplexTypeGenerated_get_AddOnlyCollection_MessagePackObjectField2.Invoke(result, null))).Add(current35);
                                                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                                                                 finally {
@@ -4726,7 +4870,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                                                                                                                                                                                                                                                                                                         ; enumerator34.MoveNext(); 
                                                                                                                                                                                                                                                                                                                                         ) {
                                                                                                                                                                                                                                                                                                                                             current34 = enumerator34.Current;
-                                                                                                                                                                                                                                                                                                                                            result.AddOnlyCollection_DateTimeField.Add(current34);
+                                                                                                                                                                                                                                                                                                                                            ((MsgPack.Serialization.AddOnlyCollection<System.DateTime>)(this._methodBaseComplexTypeGenerated_get_AddOnlyCollection_DateTimeField1.Invoke(result, null))).Add(current34);
                                                                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                                                     finally {

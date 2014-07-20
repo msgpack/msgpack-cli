@@ -568,6 +568,9 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs">
       <Link>Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_FieldInfo.cs">
+      <Link>Serialization\Metadata\_FieldInfo.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_IDictionaryEnumerator.cs">
       <Link>Serialization\Metadata\_IDictionaryEnumerator.cs</Link>
     </Compile>
@@ -585,6 +588,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_MessagePackSerializer.cs">
       <Link>Serialization\Metadata\_MessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_MethodBase.cs">
+      <Link>Serialization\Metadata\_MethodBase.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_NotImplementedException.cs">
       <Link>Serialization\Metadata\_NotImplementedException.cs</Link>

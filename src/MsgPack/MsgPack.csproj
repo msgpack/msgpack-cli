@@ -225,6 +225,8 @@
     <Compile Include="Serialization\MessagePackSerializerExtensions.cs" />
     <Compile Include="Serialization\MessagePackSerializerProvider.cs" />
     <Compile Include="Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs" />
+    <Compile Include="Serialization\Metadata\_FieldInfo.cs" />
+    <Compile Include="Serialization\Metadata\_MethodBase.cs" />
     <Compile Include="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Compile Include="Serialization\EmittingSerializers\AndConditionILConstruct.cs" />

@@ -204,6 +204,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return CodeDomConstruct.Expression( typeof( object ), new CodeCastExpression( typeof( object ), value.AsExpression() ) );
 		}
 
+		protected override CodeDomConstruct EmitUnboxAnyExpression( CodeDomContext context, Type targetType, CodeDomConstruct value )
+		{
+			return CodeDomConstruct.Expression( targetType, new CodeCastExpression( targetType, value.AsExpression() ) );
+		}
+
 		protected override CodeDomConstruct EmitNotExpression( CodeDomContext context, CodeDomConstruct booleanExpression )
 		{
 			return
@@ -274,6 +279,34 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		protected override CodeDomConstruct EmitTypeOfExpression( CodeDomContext context, Type type )
 		{
 			return CodeDomConstruct.Expression( typeof( Type ), new CodeTypeOfExpression( type ) );
+		}
+
+		protected override CodeDomConstruct EmitFieldOfExpression( CodeDomContext context, FieldInfo field )
+		{
+			return
+				CodeDomConstruct.Expression(
+					typeof( FieldInfo ),
+					new CodeFieldReferenceExpression(
+						new CodeThisReferenceExpression(),
+						context.GetCachedFieldInfoName(
+							field
+						)
+					)
+				);
+		}
+
+		protected override CodeDomConstruct EmitMethodOfExpression( CodeDomContext context, MethodBase method )
+		{
+			return
+				CodeDomConstruct.Expression(
+					typeof( MethodBase ),
+					new CodeFieldReferenceExpression(
+						new CodeThisReferenceExpression(),
+						context.GetCachedMethodBaseName(
+							method
+						)
+					)
+				);
 		}
 
 		protected override CodeDomConstruct EmitSequentialStatements( CodeDomContext context, Type contextType, IEnumerable<CodeDomConstruct> statements )
@@ -915,6 +948,28 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 			}
 
+			foreach ( var cachedFieldInfo in context.GetCachedFieldInfos() )
+			{
+				context.DeclaringType.Members.Add(
+					new CodeMemberField(
+						typeof( FieldInfo ),
+						cachedFieldInfo.Value
+					)
+				);
+			}
+
+
+			foreach ( var cachedMethodBase in context.GetCachedMethodBases() )
+			{
+				context.DeclaringType.Members.Add(
+					new CodeMemberField(
+						typeof( MethodBase ),
+						cachedMethodBase.Value
+					)
+				);
+			}
+
+
 			// ctor
 			{
 				var ctor =
@@ -987,6 +1042,82 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					}
 				}
 
+				foreach ( var cachedFieldInfo in context.GetCachedFieldInfos() )
+				{
+					var fieldInfo = FieldInfo.GetFieldFromHandle( cachedFieldInfo.Key );
+					ctor.Statements.Add(
+						new CodeAssignStatement(
+							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedFieldInfo.Value ),
+							new CodeMethodInvokeExpression(
+								new CodeMethodReferenceExpression(
+									new CodeTypeOfExpression( fieldInfo.DeclaringType ),
+									"GetField"
+								),
+								new CodePrimitiveExpression( fieldInfo.Name ),
+								new CodeBinaryOperatorExpression(
+									new CodeFieldReferenceExpression(
+										new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+										"Instance"
+									),
+									CodeBinaryOperatorType.BitwiseOr,
+									new CodeBinaryOperatorExpression(
+										new CodeFieldReferenceExpression(
+											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+											"Public"
+										),
+										CodeBinaryOperatorType.BitwiseOr,
+										new CodeFieldReferenceExpression(
+											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+											"NonPublic"
+										)
+									)
+								)
+							)
+						)
+					);
+				}
+
+
+				foreach ( var cachedMethodBase in context.GetCachedMethodBases() )
+				{
+					var methodBase = MethodBase.GetMethodFromHandle( cachedMethodBase.Key );
+					ctor.Statements.Add(
+						new CodeAssignStatement(
+							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedMethodBase.Value ),
+							new CodeMethodInvokeExpression(
+								new CodeMethodReferenceExpression(
+									new CodeTypeOfExpression( methodBase.DeclaringType ),
+									"GetMethod"
+								),
+								new CodePrimitiveExpression( methodBase.Name ),
+								new CodeBinaryOperatorExpression(
+									new CodeFieldReferenceExpression(
+										new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+										"Instance"
+									),
+									CodeBinaryOperatorType.BitwiseOr,
+									new CodeBinaryOperatorExpression(
+										new CodeFieldReferenceExpression(
+											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+											"Public"
+										),
+										CodeBinaryOperatorType.BitwiseOr,
+										new CodeFieldReferenceExpression(
+											new CodeTypeReferenceExpression( typeof( BindingFlags ) ),
+											"NonPublic"
+										)
+									)
+								),
+								new CodePrimitiveExpression( null ),
+								new CodeArrayCreateExpression(
+									typeof( Type ),
+									methodBase.GetParameters().Select( pi => new CodeTypeOfExpression( pi.ParameterType ) ).ToArray()
+								),
+								new CodePrimitiveExpression( null )
+							)
+						)
+					);
+				}
 				context.DeclaringType.Members.Add( ctor );
 			}
 

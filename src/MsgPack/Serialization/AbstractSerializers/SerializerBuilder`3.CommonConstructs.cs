@@ -26,6 +26,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -61,7 +62,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">The generation context.</param>
 		/// <param name="enumSerializerMethod">The kind of implementing enum serializer method.</param>
 		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
-		protected abstract void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod,TConstruct construct );
+		protected abstract void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, TConstruct construct );
 
 		/// <summary>
 		///		Emits anonymous <c>null</c> reference literal.
@@ -120,6 +121,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="value">The value to be boxed.</param>
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitBoxExpression( TContext context, Type valueType, TConstruct value );
+
+		/// <summary>
+		///		Emits the cast or unbox expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="targetType">Type of the value to be casted or be unboxed.</param>
+		/// <param name="value">The value to be casted or be unboxed.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct EmitUnboxAnyExpression( TContext context, Type targetType, TConstruct value );
 
 		/// <summary>
 		///		Emits the not expression.
@@ -307,7 +317,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			FieldInfo asField;
 			if ( ( asField = member as FieldInfo ) != null )
 			{
-				return this.EmitGetFieldExpression( context, instance, asField );
+				return this.EmitGetField( context, instance, asField, !asField.GetIsPublic() );
 			}
 			else
 			{
@@ -315,9 +325,33 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 				Contract.Assert( asProperty != null, member.GetType().FullName );
 #endif
-				return this.EmitGetPropretyExpression( context, instance, asProperty );
+				return this.EmitGetProperty( context, instance, asProperty, !asProperty.GetIsPublic() );
 			}
 			// ReSharper restore RedundantIfElseBlock
+		}
+
+		private TConstruct EmitGetProperty( TContext context, TConstruct instance, PropertyInfo property, bool withReflection )
+		{
+			if ( !withReflection )
+			{
+				return this.EmitGetPropretyExpression( context, instance, property );
+			}
+
+			/*
+			 * return _method_of(m).Invoke( instance, null );
+			 */
+			return
+				this.EmitUnboxAnyExpression(
+					context,
+					property.PropertyType,
+					this.EmitInvokeMethodExpression(
+						context,
+						this.EmitMethodOfExpression( context, property.GetGetMethod( true ) ),
+						Metadata._MethodBase.Invoke_2,
+						instance,
+						this.MakeNullLiteral( context, typeof( object[] ) )
+					)
+				);
 		}
 
 		/// <summary>
@@ -328,6 +362,29 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="property">The property to be accessed.</param>
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitGetPropretyExpression( TContext context, TConstruct instance, PropertyInfo property );
+
+		private TConstruct EmitGetField( TContext context, TConstruct instance, FieldInfo field, bool withReflection )
+		{
+			if ( !withReflection )
+			{
+				return this.EmitGetFieldExpression( context, instance, field );
+			}
+
+			/*
+			 * _field_of(f).GetValue( instance );
+			 */
+			return
+				this.EmitUnboxAnyExpression(
+					context,					
+					field.FieldType,
+					this.EmitInvokeMethodExpression(
+						context, 
+						this.EmitFieldOfExpression( context, field ),
+						Metadata._FieldInfo.GetValue,
+						instance
+					)
+				);
+		}
 
 		/// <summary>
 		///		Emits the get field value expression.
@@ -354,32 +411,34 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct getCollection;
 			CollectionTraits traits;
 			FieldInfo asField;
-// ReSharper disable RedundantIfElseBlock
+			PropertyInfo asProperty = null;
+			// ReSharper disable RedundantIfElseBlock
 			if ( ( asField = member as FieldInfo ) != null )
 			{
-				if ( !asField.IsInitOnly )
+				if ( !asField.IsInitOnly && asField.GetIsPublic() )
 				{
-					return this.EmitSetField( context, instance, asField, value );
+					return this.EmitSetField( context, instance, asField, value, false );
 				}
 
-				getCollection = this.EmitGetFieldExpression( context, instance, asField );
+				getCollection = this.EmitGetField( context, instance, asField, !asField.GetIsPublic() );
 				traits = asField.FieldType.GetCollectionTraits();
 			}
 			else
 			{
-				var asProperty = member as PropertyInfo;
+				asProperty = member as PropertyInfo;
 #if DEBUG
 				Contract.Assert( asProperty != null, member.GetType().FullName );
 #endif
-				if ( asProperty.GetSetMethod() != null )
+				var setter = asProperty.GetSetMethod( true );
+				if ( setter != null && setter.GetIsPublic() )
 				{
-					return this.EmitSetProprety( context, instance, asProperty, value );
+					return this.EmitSetProprety( context, instance, asProperty, value, false );
 				}
 
-				getCollection = this.EmitGetPropretyExpression( context, instance, asProperty );
+				getCollection = this.EmitGetProperty( context, instance, asProperty, asProperty.GetIsPublic() );
 				traits = asProperty.PropertyType.GetCollectionTraits();
 			}
-// ReSharper restore RedundantIfElseBlock
+			// ReSharper restore RedundantIfElseBlock
 
 			// use Add(T) for appendable collection elementType read only member.
 
@@ -423,7 +482,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context,
 							traits,
 							value,
-// ReSharper disable ImplicitlyCapturedClosure
+						// ReSharper disable ImplicitlyCapturedClosure
 							current =>
 								this.EmitAppendDictionaryItem(
 									context,
@@ -434,32 +493,43 @@ namespace MsgPack.Serialization.AbstractSerializers
 										context,
 										current,
 #if !NETFX_CORE
-										traits.ElementType == typeof( DictionaryEntry )
+ traits.ElementType == typeof( DictionaryEntry )
 										? Metadata._DictionaryEntry.Key
 										: traits.ElementType.GetProperty( "Key" )
 #else
 										traits.ElementType.GetProperty( "Key" )
 #endif
-									),
+ ),
 									valueType,
 									this.EmitGetPropretyExpression(
 										context,
 										current,
 #if !NETFX_CORE
-										traits.ElementType == typeof( DictionaryEntry )
+ traits.ElementType == typeof( DictionaryEntry )
 										? Metadata._DictionaryEntry.Value
 										: traits.ElementType.GetProperty( "Value" )
 #else
 										traits.ElementType.GetProperty( "Value" )
 #endif
-									),
+ ),
 									false
 								)
-// ReSharper restore ImplicitlyCapturedClosure
+						// ReSharper restore ImplicitlyCapturedClosure
 						);
 				}
 				default:
 				{
+					// Try use reflection
+					if ( asField != null )
+					{
+						return this.EmitSetField( context, instance, asField, value, true );
+					}
+
+					if ( asProperty.GetSetMethod( true ) != null )
+					{
+						return this.EmitSetProprety( context, instance, asProperty, value, true );
+					}
+
 					throw new SerializationException(
 						String.Format(
 							CultureInfo.CurrentCulture,
@@ -473,6 +543,50 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 		/// <summary>
+		///		Emits the 'methodof' expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="method">The method to be retrieved.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct EmitMethodOfExpression( TContext context, MethodBase method );
+
+		private TConstruct EmitSetProprety(
+			TContext context,
+			TConstruct instance,
+			PropertyInfo property,
+			TConstruct value,
+			bool withReflection
+		)
+		{
+			if ( !withReflection )
+			{
+				return EmitSetProprety( context, instance, property, value );
+			}
+
+			/*
+			 * _method_of(m).Invoke( instance, new object[]{ value } );
+			 */
+			return
+				this.EmitInvokeVoidMethod(
+					context,
+					this.EmitMethodOfExpression( context, property.GetSetMethod( true ) ),
+					Metadata._MethodBase.Invoke_2,
+					instance,
+					this.EmitCreateNewArrayExpression( 
+						context,
+						typeof( object ),
+						1,
+						new []
+						{
+							value.ContextType.GetIsValueType()
+							? this.EmitBoxExpression( context, value.ContextType, value )
+							: value
+						}
+					)
+				);
+		}
+
+		/// <summary>
 		///		Emits the set property value statement.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
@@ -481,6 +595,41 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="value">The value to be stored.</param>
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitSetProprety( TContext context, TConstruct instance, PropertyInfo property, TConstruct value );
+
+		/// <summary>
+		///		Emits the 'fieldof' expression.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="field">The field to be retrieved.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct EmitFieldOfExpression( TContext context, FieldInfo field );
+
+		private TConstruct EmitSetField(
+			TContext context,
+			TConstruct instance,
+			FieldInfo field,
+			TConstruct value,
+			bool withReflection )
+		{
+			if ( !withReflection )
+			{
+				return EmitSetField( context, instance, field, value );
+			}
+
+			/*
+			 * _field_of(f).SetValue( instance, value );
+			 */
+			return
+				this.EmitInvokeVoidMethod(
+					context,
+					this.EmitFieldOfExpression( context, field ),
+					Metadata._FieldInfo.SetValue,
+					instance,
+					value.ContextType.GetIsValueType()
+					? this.EmitBoxExpression( context, value.ContextType, value )
+					: value
+				);
+		}
 
 		/// <summary>
 		///		Emits the set field value statement.
@@ -848,7 +997,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct itemIndex,
 			TConstruct memberName,
 			TConstruct itemsCount,
-			TConstruct unpacked, 
+			TConstruct unpacked,
 			SerializingMember? memberInfo,
 			Func<TConstruct, TConstruct> storeValueStatementEmitter
 		)
@@ -925,7 +1074,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 
 			// try direct unpack
-			var directRead = 
+			var directRead =
 				Metadata._UnpackHelpers.GetDirectUnpackMethod( nullableType );
 
 			var isNotInCollectionCondition =
@@ -945,10 +1094,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 			// compose read inst. and unpack inst. now.
 			var readAndUnpack =
 				directRead != null
-				? this.EmitStoreVariableStatement( 
+				? this.EmitStoreVariableStatement(
 					context,
 					nullable,
-					this.EmitInvokeMethodExpression( 
+					this.EmitInvokeMethodExpression(
 						context,
 						null,
 						directRead,
@@ -971,12 +1120,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null
 					),
 					itemType == typeof( MessagePackObject )
-					? this.EmitAndConditionalExpression( 
+					? this.EmitAndConditionalExpression(
 							context,
 							isNotInCollectionCondition,
 							this.EmitStoreVariableStatement(
 							context,
-							nullable, 
+							nullable,
 							this.EmitGetPropretyExpression(
 									context,
 									unpacker,
@@ -986,7 +1135,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitStoreVariableStatement(
 							context,
 							nullable,
-							this.EmitInvokeMethodExpression( 
+							this.EmitInvokeMethodExpression(
 								context,
 								unpacker,
 								Metadata._Unpacker.UnpackSubtreeData
@@ -1290,7 +1439,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( traits.AddMethod == null )
 			{
-// ReSharper disable RedundantIfElseBlock
+				// ReSharper disable RedundantIfElseBlock
 				if ( member != null )
 				{
 					throw new SerializationException(
@@ -1312,7 +1461,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						)
 					);
 				}
-// ReSharper restore RedundantIfElseBlock
+				// ReSharper restore RedundantIfElseBlock
 			}
 
 			return
