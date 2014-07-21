@@ -3796,6 +3796,15 @@
             <param name="value">The value to be boxed.</param>
             <returns>The generated construct.</returns>
         </member>
+        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitUnboxAnyExpression(`0,System.Type,`1)">
+            <summary>
+            	Emits the cast or unbox expression.
+            </summary>
+            <param name="context">The generation context.</param>
+            <param name="targetType">Type of the value to be casted or be unboxed.</param>
+            <param name="value">The value to be casted or be unboxed.</param>
+            <returns>The generated construct.</returns>
+        </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitNotExpression(`0,`1)">
             <summary>
             	Emits the not expression.
@@ -3991,6 +4000,14 @@
             	This method generates <c>collection.Add(value)</c> constructs for a read-only member.
             </remarks>
         </member>
+        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitMethodOfExpression(`0,System.Reflection.MethodBase)">
+            <summary>
+            	Emits the 'methodof' expression.
+            </summary>
+            <param name="context">The generation context.</param>
+            <param name="method">The method to be retrieved.</param>
+            <returns>The generated construct.</returns>
+        </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitSetProprety(`0,`1,System.Reflection.PropertyInfo,`1)">
             <summary>
             	Emits the set property value statement.
@@ -3999,6 +4016,14 @@
             <param name="instance">The instance which stores instance member value.</param>
             <param name="property">The property to be accessed.</param>
             <param name="value">The value to be stored.</param>
+            <returns>The generated construct.</returns>
+        </member>
+        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitFieldOfExpression(`0,System.Reflection.FieldInfo)">
+            <summary>
+            	Emits the 'fieldof' expression.
+            </summary>
+            <param name="context">The generation context.</param>
+            <param name="field">The field to be retrieved.</param>
             <returns>The generated construct.</returns>
         </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitSetField(`0,`1,System.Reflection.FieldInfo,`1)">
@@ -5616,10 +5641,34 @@
         </member>
         <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterSerializer(System.Type,MsgPack.Serialization.EnumMemberSerializationMethod)">
             <summary>
-            	Regisgter using <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> target type to the current emitting session.
+            	Regisgters <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> of target type usage to the current emitting session.
             </summary>
             <param name="targetType">The type of the member to be serialized/deserialized.</param>
             <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+            <returns>
+            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
+            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
+            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterField(System.Reflection.FieldInfo)">
+            <summary>
+            	Regisgters <see cref="T:System.Reflection.FieldInfo"/> usage to the current emitting session.
+            </summary>
+            <param name="field">The <see cref="T:System.Reflection.FieldInfo"/> to be registered.</param>
+            <returns>
+            	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
+            	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
+            	The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
+            	This value will not be <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.RegisterMethod(System.Reflection.MethodBase)">
+            <summary>
+            	Regisgters <see cref="T:System.Reflection.MethodBase"/> usage to the current emitting session.
+            </summary>
+            <param name="method">The <see cref="T:System.Reflection.MethodBase"/> to be registered.</param>
             <returns>
             	<see cref="T:System.Action`2"/> to emit serializer retrieval instructions.
             	The 1st argument should be <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> to emit instructions.
@@ -7861,11 +7910,11 @@
             </summary>
             <param name="target"><see cref="T:System.Type"/> as target.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdtoken(System.Reflection.MethodInfo)">
+        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdtoken(System.Reflection.MethodBase)">
             <summary>
             	Emit 'ldtoken' instruction with specified arguments.
             </summary>
-            <param name="target"><see cref="T:System.Reflection.MethodInfo"/> as target.</param>
+            <param name="target"><see cref="T:System.Reflection.MethodBase"/> as target.</param>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdtoken(System.Reflection.FieldInfo)">
             <summary>
