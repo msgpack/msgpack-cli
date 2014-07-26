@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+using System.Linq;
 
+using MsgPack.Serialization.ReflectionSerializers;
 #if SILVERLIGHT || NETFX_35 || UNITY_ANDROID || UNITY_IPHONE
 using System.Collections.Generic;
 #else
@@ -112,6 +114,12 @@ namespace MsgPack.Serialization
 #else
 			switch ( context.EmitterFlavor )
 			{
+#if !NETFX_35 && !NETFX_40 && !NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
+				case EmitterFlavor.ReflectionBased:
+				{
+					return CreateReflectionInternal<T>( context );
+				}
+#endif // !NETFX_35 && !NETFX_40 && !NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
 #if !WINDOWS_PHONE && !NETFX_35
 				case EmitterFlavor.ExpressionBased:
 				{
@@ -139,7 +147,7 @@ namespace MsgPack.Serialization
 								CultureInfo.CurrentCulture,
 								"Flavor '{0:G}'({0:D}) is not supported for serializer instance creation.",
 								context.EmitterFlavor
-							) 
+							)
 						);
 					}
 #endif // if !NETFX_35
@@ -276,6 +284,25 @@ namespace MsgPack.Serialization
 #endif // NETFX_CORE
 			return factory( context );
 #endif // XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE else
+		}
+
+		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context )
+		{
+			if ( typeof( T ).GetIsEnum() )
+			{
+				return ReflectionSerializerHelper.CreateReflectionEnuMessagePackSerializer<T>( context );
+			}
+#if !WINDOWS_PHONE && !NETFX_35
+			if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
+						typeof( T ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
+					  && typeof( T ).GetIsPublic() &&
+					  typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
+			{
+				return new ReflectionTupleMessagePackSerializer<T>( context );
+			}
+#endif // !WINDOWS_PHONE && !NETFX_35
+
+			return new ReflectionObjectMessagePackSerializer<T>( context );
 		}
 	}
 }

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,10 +20,22 @@
 
 using System;
 
-namespace MsgPack.Serialization.AbstractSerializers
+namespace MsgPack.Serialization.ReflectionSerializers
 {
-	internal static class SerializerBuilderConstants
+	internal struct ReflectionSerializerNilImplicationHandlerParameter : INilImplicationHandlerParameter
 	{
-		public static readonly Type[] CollectionConstructorWithCapacityParameterTypes = new[] { typeof( int ) };
+		private readonly Type _itemType;
+
+		public Type ItemType { get { return this._itemType; } }
+		
+		private readonly string _memberName;
+		
+		public string MemberName { get { return this._memberName; } }
+
+		public ReflectionSerializerNilImplicationHandlerParameter( Type itemType, string memberName )
+		{
+			this._itemType = itemType;
+			this._memberName = memberName;
+		}
 	}
 }

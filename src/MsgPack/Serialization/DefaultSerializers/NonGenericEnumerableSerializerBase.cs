@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
@@ -31,12 +32,40 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal abstract class NonGenericEnumerableSerializerBase<T> : MessagePackSerializer<T>
 		where T : IEnumerable
 	{
+		private readonly Type _targetType;
 		private readonly IMessagePackSerializer _collectionDeserializer;
+		private readonly Action<T, object> _addItem;
+		private readonly ConstructorInfo _collectionConstructorWithoutCapacity;
+		private readonly ConstructorInfo _collectionConstructorWithCapacity;
 
 		protected NonGenericEnumerableSerializerBase( SerializationContext ownerContext, Type targetType )
 			: base( ownerContext )
 		{
-			this._collectionDeserializer = ownerContext.GetSerializer( targetType );
+			this._targetType = targetType;
+
+			if ( ownerContext.EmitterFlavor == EmitterFlavor.ReflectionBased )
+			{
+				var traits = targetType.GetCollectionTraits();
+				if ( traits.AddMethod != null )
+				{
+					this._addItem = traits.AddMethod.CreateDelegate( typeof( Action<T, object> ) ) as Action<T, object>;
+				}
+
+				this._collectionConstructorWithCapacity =
+					targetType.GetConstructor( UnpackHelpers.CollectionConstructorWithCapacityParameterTypes );
+				if ( this._collectionConstructorWithCapacity == null )
+				{
+					this._collectionConstructorWithoutCapacity = targetType.GetConstructor( ReflectionAbstractions.EmptyTypes );
+					if ( this._collectionConstructorWithoutCapacity == null )
+					{
+						throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( targetType );
+					}
+				}
+			}
+			else
+			{
+				this._collectionDeserializer = ownerContext.GetSerializer( targetType );
+			}
 		}
 
 		protected internal override void PackToCore( Packer packer, T objectTree )
@@ -46,7 +75,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				if ( !( item is MessagePackObject ) )
 				{
-					throw new SerializationException("Non generic collection may contain only MessagePackObject type.");
+					throw new SerializationException( "Non generic collection may contain only MessagePackObject type." );
 				}
 
 				( item as IPackable ).PackToMessage( packer, null );
@@ -57,7 +86,86 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
-			return ( T ) this._collectionDeserializer.UnpackFrom( unpacker );
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			if ( this._collectionDeserializer != null )
+			{
+				// Fast path:
+				return ( T )this._collectionDeserializer.UnpackFrom( unpacker );
+			}
+
+
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			var collection =
+				( T )( this._collectionConstructorWithoutCapacity != null
+					? this._collectionConstructorWithoutCapacity.Invoke( null )
+					: this._collectionConstructorWithCapacity.Invoke( new object[] { itemsCount } ) );
+			this.UnpackToCore( unpacker, collection, itemsCount );
+			return collection;
+		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
+		{
+			if ( this._collectionDeserializer != null )
+			{
+				// Fast path:
+				this._collectionDeserializer.UnpackTo( unpacker, collection );
+			}
+			else
+			{
+				if ( this._addItem == null )
+				{
+					throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ) );
+				}
+
+				if ( !unpacker.IsArrayHeader )
+				{
+					throw SerializationExceptions.NewIsNotArrayHeader();
+				}
+
+				this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+			}
+		}
+
+		protected void UnpackToCore( Unpacker unpacker, T collection, int itemsCount )
+		{
+			for ( int i = 0; i < itemsCount; i++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+
+				MessagePackObject item;
+				try
+				{
+					item = unpacker.ReadItemData();
+				}
+				catch ( InvalidMessagePackStreamException )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+
+				this.AddItem( collection, item );
+			}
+		}
+
+		protected virtual void AddItem( T collection, MessagePackObject item )
+		{
+			if ( this._addItem == null )
+			{
+				throw SerializationExceptions.NewUnpackToIsNotSupported( this._targetType );
+			}
+
+			this._addItem( collection, item );
 		}
 	}
 }

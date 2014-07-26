@@ -164,8 +164,17 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerBuilder.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializationTarget.cs" />
-    <Compile Include="Serialization\AbstractSerializers\SerializerBuilderConstants.cs" />
+    <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
+    <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
+    <Compile Include="Serialization\NilImplicationHandler`4.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerHelper.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerOnUnpackedParameter.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerParameter.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\SerializationTarget.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -227,6 +236,7 @@
     <Compile Include="Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\Metadata\_FieldInfo.cs" />
     <Compile Include="Serialization\Metadata\_MethodBase.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionObjectMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationConfiguration.cs" />
     <Compile Include="Serialization\EmittingSerializers\AndConditionILConstruct.cs" />

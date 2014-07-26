@@ -22,11 +22,12 @@ using System;
 #if !SILVERLIGHT && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Collections.Concurrent;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#if SILVERLIGHT || NETFX_35
 using System.Collections.Generic;
+#endif // SILVERLIGHT || NETFX_35
 #if !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
-using System.Globalization;
 #if NETFX_CORE
 using System.Linq;
 using System.Linq.Expressions;
@@ -408,7 +409,9 @@ namespace MsgPack.Serialization
 					if ( this.IsRuntimeGenerationDisabled )
 					{
 #endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
-						return this.GetSerializerWithoutGeneration( typeof( T ) ) as MessagePackSerializer<T>;
+						return
+							this.GetSerializerWithoutGeneration( typeof( T ) ) as MessagePackSerializer<T> 
+							?? MessagePackSerializer.CreateReflectionInternal<T>( this );
 #if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 					}
 					// ReSharper disable once RedundantIfElseBlock
@@ -520,6 +523,7 @@ namespace MsgPack.Serialization
 			return serializer;
 		}
 
+
 		private IMessagePackSingleObjectSerializer GetSerializerWithoutGeneration( Type targetType )
 		{
 			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
@@ -538,13 +542,7 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			throw new InvalidOperationException(
-				String.Format(
-					CultureInfo.CurrentCulture,
-					"The serializer for type '{0}' is not registered yet. On-the-fly generation is not supported in this platform.",
-					targetType
-				)
-			);
+			return null;
 		}
 
 		/// <summary>

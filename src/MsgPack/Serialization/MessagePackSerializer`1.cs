@@ -351,7 +351,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		protected internal virtual void UnpackToCore( Unpacker unpacker, T collection )
 		{
-			throw new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported by '{0}'.", this.GetType() ) );
+			throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ) );
 		}
 
 		/// <summary>

@@ -36,5 +36,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			packer.PackArrayHeader( objectTree.Count );
 		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, IList<T> collection )
+		{
+			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		protected override void AddItem( IList<T> collection, T item )
+		{
+			collection.Add( item );
+		}
 	}
 }

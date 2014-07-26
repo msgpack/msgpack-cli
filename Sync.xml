@@ -8,6 +8,7 @@
     <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
     <Exclude Path="Serialization\ExpressionSerializers\*" />
+    <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
     <Preserve Path="Contract.cs" />

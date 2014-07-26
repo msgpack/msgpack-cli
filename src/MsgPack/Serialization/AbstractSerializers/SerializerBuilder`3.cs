@@ -42,6 +42,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
 	{
+		private readonly SerializerBuilderNilImplicationHandler _nilImplicationHandler =
+			new SerializerBuilderNilImplicationHandler();
+
 		/// <summary>
 		///		<see cref="PropertyInfo"/> of <see cref="MessagePackSerializer{TObject}.OwnerContext"/>.
 		/// </summary>
@@ -254,5 +257,159 @@ namespace MsgPack.Serialization.AbstractSerializers
 			throw new NotSupportedException();
 		}
 #endif
+		internal class SerializerBuilderNilImplicationHandler :
+			NilImplicationHandler<TConstruct, TConstruct, SerializerBuilderOnPackingParameter, SerializerBuilderOnUnpacedParameter>
+		{
+			protected override TConstruct OnPackingMessagePackObject(
+				SerializerBuilderOnPackingParameter parameter )
+			{
+				return parameter.Builder.EmitGetPropretyExpression(
+					parameter.Context,
+					parameter.Item,
+					Metadata._MessagePackObject.IsNil );
+			}
+
+			protected override TConstruct OnPackingReferenceTypeObject(
+				SerializerBuilderOnPackingParameter parameter )
+			{
+				return
+					parameter.Builder.EmitEqualsExpression(
+						parameter.Context,
+						parameter.Item,
+						parameter.Builder.MakeNullLiteral( parameter.Context, parameter.ItemType )
+						);
+			}
+
+			protected override TConstruct OnPackingNullableValueTypeObject(
+				SerializerBuilderOnPackingParameter parameter )
+			{
+				return
+					parameter.Builder.EmitNotExpression(
+						parameter.Context,
+						parameter.Builder.EmitGetPropretyExpression(
+							parameter.Context,
+							parameter.Item,
+							parameter.ItemType.GetProperty( "HasValue" ) )
+						);
+			}
+
+			protected override TConstruct OnPackingCore(
+				SerializerBuilderOnPackingParameter parameter,
+				TConstruct condition )
+			{
+				return
+					parameter.Builder.EmitConditionalExpression(
+						parameter.Context,
+						condition,
+						parameter.Builder.EmitThrowExpression(
+							parameter.Context,
+							parameter.ItemType,
+							SerializationExceptions.NewNullIsProhibitedMethod,
+							parameter.Builder.MakeStringLiteral( parameter.Context, parameter.MemberName )
+							),
+						null
+						);
+			}
+
+			protected override TConstruct OnNopOnUnpacked( SerializerBuilderOnUnpacedParameter parameter )
+			{
+				return null;
+			}
+
+			protected override TConstruct OnThrowNullIsProhibitedExceptionOnUnpacked( SerializerBuilderOnUnpacedParameter parameter )
+			{
+				return
+					parameter.Builder.EmitThrowExpression(
+						parameter.Context,
+						parameter.Store.ContextType,
+						SerializationExceptions.NewNullIsProhibitedMethod,
+						parameter.MemberName
+					);
+			}
+
+			protected override TConstruct OnThrowValueTypeCannotBeNull3OnUnpacked( SerializerBuilderOnUnpacedParameter parameter )
+			{
+				return
+					parameter.Builder.EmitThrowExpression(
+						parameter.Context,
+						parameter.Store.ContextType,
+						SerializationExceptions.NewValueTypeCannotBeNull3Method,
+						parameter.MemberName,
+						parameter.Builder.EmitTypeOfExpression( parameter.Context, parameter.ItemType ),
+						parameter.Builder.EmitTypeOfExpression( parameter.Context, typeof( TObject ) )
+					);
+			}
+		}
+
+		internal struct SerializerBuilderOnPackingParameter : INilImplicationHandlerParameter
+		{
+			public readonly SerializerBuilder<TContext, TConstruct, TObject> Builder;
+			
+			public readonly TContext Context;
+			
+			public readonly TConstruct Item;
+			
+			private readonly Type _itemType;
+
+			public Type ItemType
+			{
+				get { return this._itemType; }
+			}
+
+			public readonly string MemberName;
+
+			public SerializerBuilderOnPackingParameter(
+				SerializerBuilder<TContext, TConstruct, TObject> builder,
+				TContext context,
+				TConstruct item,
+				Type itemType,
+				string memberName
+				)
+			{
+				this.Builder = builder;
+				this.Context = context;
+				this.Item = item;
+				this._itemType = itemType;
+				this.MemberName = memberName;
+			}
+		}
+
+		internal struct SerializerBuilderOnUnpacedParameter : INilImplicationHandlerOnUnpackedParameter<TConstruct>
+		{
+			public readonly SerializerBuilder<TContext, TConstruct, TObject> Builder;
+
+			public readonly TContext Context;
+			
+			private readonly Type _itemType;
+			
+			public Type ItemType
+			{
+				get { return this._itemType; }
+			}
+
+			public readonly TConstruct MemberName;
+
+			private readonly TConstruct _store;
+			public TConstruct Store
+			{
+				get { return this._store; }
+			}
+
+
+			public SerializerBuilderOnUnpacedParameter(
+				SerializerBuilder<TContext, TConstruct, TObject> builder,
+				TContext context,
+				Type itemType,
+				TConstruct memberName,
+				TConstruct store
+				)
+			{
+				this.Builder = builder;
+				this.Context = context;
+				this._itemType = itemType;
+				this.MemberName = memberName;
+				this._store = store;
+			}
+		}
 	}
 }

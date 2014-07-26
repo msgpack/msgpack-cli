@@ -1,0 +1,150 @@
+﻿#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2014 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+using System.Diagnostics.Contracts;
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+using System.Linq;
+using System.Reflection;
+
+using MsgPack.Serialization.Reflection;
+
+namespace MsgPack.Serialization.ReflectionSerializers
+{
+	/// <summary>
+	///		Implements reflection-based tuple serializer for restricted platforms.
+	/// </summary>
+	internal class ReflectionTupleMessagePackSerializer<T> : MessagePackSerializer<T>
+	{
+		private readonly IList<Type> _tupleTypes;
+		private readonly IList<ConstructorInfo> _tupleConstructors;
+		private readonly IList<Func<T, Object>> _getters;
+		private readonly IList<IMessagePackSingleObjectSerializer> _itemSerializers;
+
+		public ReflectionTupleMessagePackSerializer( SerializationContext ownerContext )
+			: base( ownerContext )
+		{
+			var itemTypes = TupleItems.GetTupleItemTypes( typeof( T ) );
+			this._itemSerializers = itemTypes.Select( itemType => ownerContext.GetSerializer( itemType ) ).ToArray();
+			this._tupleTypes = TupleItems.CreateTupleTypeList( itemTypes );
+			this._tupleConstructors = this._tupleTypes.Select( tupleType => tupleType.GetConstructors().Single() ).ToArray();
+			this._getters = GetGetters( itemTypes, this._tupleTypes ).ToArray();
+		}
+
+		private static IEnumerable<Func<T, Object>> GetGetters( IList<Type> itemTypes, IList<Type> tupleTypes )
+		{
+			var depth = -1;
+			var propertyInvocationChain = new List<PropertyInfo>( itemTypes.Count % 7 + 1 );
+			for ( int i = 0; i < itemTypes.Count; i++ )
+			{
+				if ( i % 7 == 0 )
+				{
+					depth++;
+				}
+
+				for ( int j = 0; j < depth; j++ )
+				{
+					// .TRest.TRest ...
+					var restProperty = tupleTypes[ j ].GetProperty( "Rest" );
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+					Contract.Assert( restProperty != null );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+					propertyInvocationChain.Add( restProperty );
+				}
+
+				var itemNProperty = tupleTypes[ depth ].GetProperty( "Item" + ( ( i % 7 ) + 1 ) );
+				propertyInvocationChain.Add( itemNProperty );
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+				Contract.Assert(
+					itemNProperty != null,
+					tupleTypes[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+				var getters = propertyInvocationChain.Select( property => property.GetGetMethod() ).ToArray();
+				yield return
+					 tuple =>
+					 {
+						 object current = tuple;
+						 foreach ( var getter in getters )
+						 {
+							 current = getter.Invoke( getter, null );
+						 }
+
+						 return current;
+					 };
+
+				propertyInvocationChain.Clear();
+			}
+		}
+
+		protected internal override void PackToCore( Packer packer, T objectTree )
+		{
+			// Put cardinality as array length.
+			packer.PackArrayHeader( this._itemSerializers.Count );
+			for ( int i = 0; i < this._itemSerializers.Count; i++ )
+			{
+				this._itemSerializers[ i ].PackTo( packer, this._getters[ i ]( objectTree ) );
+			}
+		}
+
+		protected internal override T UnpackFromCore( Unpacker unpacker )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+
+			if ( itemsCount != this._itemSerializers.Count )
+			{
+				throw SerializationExceptions.NewTupleCardinarityIsNotMatch( this._itemSerializers.Count, itemsCount );
+			}
+
+			var unpackedItems = new List<object>( this._itemSerializers.Count );
+
+			for ( var i = 0; i < this._itemSerializers.Count; i++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+
+				unpackedItems.Add( this._itemSerializers[ i ].UnpackFrom( unpacker ) );
+			}
+
+			return this.CreateTuple( unpackedItems );
+		}
+
+		private T CreateTuple( IList<object> unpackedItems )
+		{
+			object currentTuple = null;
+			for ( int nest = this._tupleTypes.Count - 1; nest >= 0; nest-- )
+			{
+				var items = unpackedItems.Skip( nest * 7 ).Take( Math.Min( unpackedItems.Count, 7 ) );
+				currentTuple =
+					this._tupleConstructors[ nest ].Invoke( items.ToArray() );
+			}
+
+			return ( T )currentTuple;
+		}
+	}
+}

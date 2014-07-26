@@ -23,22 +23,83 @@
 
 using System;
 using System.Collections.Generic;
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 
-namespace MsgPack.Serialization.AbstractSerializers
+namespace MsgPack.Serialization
 {
 	/// <summary>
 	///		Implements serialization target member extraction logics.
 	/// </summary>
 	internal static class SerializationTarget
 	{
-		// TODO: bool includesAnnotatedNonPublicMembers
-
-		public static IEnumerable<SerializingMember> GetTargetMembers( Type type )
+		public static SerializingMember[] Prepare( SerializationContext context, Type targetType )
 		{
+			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
+			{
+				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( targetType );
+			}
+
+			var entries = GetTargetMembers( targetType ).OrderBy( item => item.Contract.Id ).ToArray();
+
+			if ( entries.Length == 0 )
+			{
+				throw SerializationExceptions.NewNoSerializableFieldsException( targetType );
+			}
+
+			if ( entries.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )
+			{
+				// Alphabetical order.
+				return entries.OrderBy( item => item.Contract.Name ).ToArray();
+			}
+
+			// ID order.
+
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			Contract.Assert( entries[ 0 ].Contract.Id >= 0 );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+
+			if ( context.CompatibilityOptions.OneBoundDataMemberOrder && entries[ 0 ].Contract.Id == 0 )
+			{
+				throw new NotSupportedException( "Cannot specify order value 0 on DataMemberAttribute when SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder is set to true." );
+			}
+
+			var maxId = entries.Max( item => item.Contract.Id );
+			var result = new List<SerializingMember>( maxId + 1 );
+			for ( int source = 0, destination = context.CompatibilityOptions.OneBoundDataMemberOrder ? 1 : 0; source < entries.Length; source++, destination++ )
+			{
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+				Contract.Assert( entries[ source ].Contract.Id >= 0 );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+
+				if ( entries[ source ].Contract.Id < destination )
+				{
+					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID '{0}' is duplicated in the '{1}' elementType.", entries[ source ].Contract.Id, targetType ) );
+				}
+
+				while ( entries[ source ].Contract.Id > destination )
+				{
+					result.Add( new SerializingMember() );
+					destination++;
+				}
+
+				result.Add( entries[ source ] );
+			}
+
+			return result.ToArray();
+		}
+
+		// internal for testing
+		internal static IEnumerable<SerializingMember> GetTargetMembers( Type type )
+		{
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Assert( type != null );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 #if !NETFX_CORE
 			var members =
 				type.FindMembers(

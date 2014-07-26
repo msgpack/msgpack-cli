@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -19,26 +19,14 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections;
 
-namespace MsgPack.Serialization.DefaultSerializers
+namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Non generic list interface serializer.
+	///		Defines common interface for parameter of <see cref="NilImplicationHandler{TCondition,TPackingParameter,TAction,TUnpackedParameter}.OnUnpacked"/> method and its template methods.
 	/// </summary>
-	internal sealed class NonGenericListSerializer : NonGenericEnumerableSerializerBase<IList>
+	internal interface INilImplicationHandlerOnUnpackedParameter<out TAction> : INilImplicationHandlerParameter
 	{
-		public NonGenericListSerializer( SerializationContext ownerContext, Type targetType )
-			: base( ownerContext, targetType ) { }
-
-		protected override void PackArrayHeader( Packer packer, IList objectTree )
-		{
-			packer.PackArrayHeader( objectTree.Count );
-		}
-
-		protected override void AddItem( IList collection, MessagePackObject item )
-		{
-			collection.Add( item );
-		}
+		TAction Store { get; }
 	}
 }

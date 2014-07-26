@@ -348,6 +348,13 @@ namespace MsgPack
 				return new KeyValuePair<Type, object>( type, value );
 			}
 		}
-#endif
+#endif // SILVERLIGHT
+
+#if NETFX_35 || NETFX_40
+		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType )
+		{
+			return Delegate.CreateDelegate( delegateType, source );
+		}
+#endif // NETFX_35 || NETFX_40
 	}
 }

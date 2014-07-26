@@ -35,59 +35,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 	{
 		private void BuildObjectSerializer( TContext context )
 		{
-			if ( typeof( TObject ).GetIsInterface() || typeof( TObject ).GetIsAbstract() )
-			{
-				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( TObject ) );
-			}
+			var entries = SerializationTarget.Prepare( context.SerializationContext, typeof( TObject ) );
 
-			var entries = SerializationTarget.GetTargetMembers( typeof( TObject ) ).OrderBy( item => item.Contract.Id ).ToArray();
-
-			if ( entries.Length == 0 )
-			{
-				throw SerializationExceptions.NewNoSerializableFieldsException( typeof( TObject ) );
-			}
-
-			if ( entries.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )
-			{
-				// Alphabetical order.
-				this.BuildObjectSerializer( context, entries.OrderBy( item => item.Contract.Name ).ToArray() );
-				return;
-			}
-
-			// ID order.
-
-			Contract.Assert( entries[ 0 ].Contract.Id >= 0 );
-
-			if ( context.SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder && entries[ 0 ].Contract.Id == 0 )
-			{
-				throw new NotSupportedException( "Cannot specify order value 0 on DataMemberAttribute when SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder is set to true." );
-			}
-
-			var maxId = entries.Max( item => item.Contract.Id );
-			var result = new List<SerializingMember>( maxId + 1 );
-			for ( int source = 0, destination = context.SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder ? 1 : 0; source < entries.Length; source++, destination++ )
-			{
-				Contract.Assert( entries[ source ].Contract.Id >= 0 );
-
-				if ( entries[ source ].Contract.Id < destination )
-				{
-					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID '{0}' is duplicated in the '{1}' elementType.", entries[ source ].Contract.Id, typeof( TObject ) ) );
-				}
-
-				while ( entries[ source ].Contract.Id > destination )
-				{
-					result.Add( new SerializingMember() );
-					destination++;
-				}
-
-				result.Add( entries[ source ] );
-			}
-
-			this.BuildObjectSerializer( context, result.ToArray() );
-		}
-
-		private void BuildObjectSerializer( TContext context, SerializingMember[] entries )
-		{
 			VerifyNilImplication( entries );
 
 			if ( typeof( IPackable ).IsAssignableFrom( typeof( TObject ) ) )

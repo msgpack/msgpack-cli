@@ -39,6 +39,8 @@ namespace MsgPack.Serialization
 		private static readonly MessagePackSerializer<MessagePackObject> _messagePackObjectSerializer =
 			new MsgPack_MessagePackObjectMessagePackSerializer( SerializationContext.Default );
 
+		internal static readonly Type[] CollectionConstructorWithCapacityParameterTypes = { typeof( int ) };
+
 		/// <summary>
 		///		Unpacks the array to the specified array.
 		/// </summary>

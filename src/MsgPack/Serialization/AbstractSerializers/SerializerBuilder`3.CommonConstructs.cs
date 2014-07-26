@@ -26,7 +26,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -375,10 +374,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 */
 			return
 				this.EmitUnboxAnyExpression(
-					context,					
+					context,
 					field.FieldType,
 					this.EmitInvokeMethodExpression(
-						context, 
+						context,
 						this.EmitFieldOfExpression( context, field ),
 						Metadata._FieldInfo.GetValue,
 						instance
@@ -572,11 +571,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitMethodOfExpression( context, property.GetSetMethod( true ) ),
 					Metadata._MethodBase.Invoke_2,
 					instance,
-					this.EmitCreateNewArrayExpression( 
+					this.EmitCreateNewArrayExpression(
 						context,
 						typeof( object ),
 						1,
-						new []
+						new[]
 						{
 							value.ContextType.GetIsValueType()
 							? this.EmitBoxExpression( context, value.ContextType, value )
@@ -785,52 +784,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated code construct.</returns>
 		private IEnumerable<TConstruct> EmitPackItemStatements( TContext context, TConstruct packer, Type itemType, NilImplication nilImplication, string memberName, TConstruct item, SerializingMember? memberInfo )
 		{
-			switch ( nilImplication )
+			var nilImplicationConstruct =
+				this._nilImplicationHandler.OnPacking(
+					new SerializerBuilderOnPackingParameter( this, context, item, itemType, memberName ),
+					nilImplication
+				);
+			if ( nilImplicationConstruct != null )
 			{
-				case NilImplication.Prohibit:
-				{
-					TConstruct condition = null;
-					if ( itemType == typeof( MessagePackObject ) )
-					{
-						condition =
-							this.EmitGetPropretyExpression( context, item, Metadata._MessagePackObject.IsNil );
-					}
-					else if ( !itemType.GetIsValueType() )
-					{
-						condition =
-							this.EmitEqualsExpression(
-								context,
-								item,
-								this.MakeNullLiteral( context, itemType )
-							);
-					}
-					else if ( Nullable.GetUnderlyingType( itemType ) != null )
-					{
-						condition =
-							this.EmitNotExpression(
-								context,
-								this.EmitGetPropretyExpression( context, item, itemType.GetProperty( "HasValue" ) )
-							);
-					}
-
-					if ( condition != null )
-					{
-						yield return
-							this.EmitConditionalExpression(
-								context,
-								condition,
-								this.EmitThrowExpression(
-									context,
-									itemType,
-									SerializationExceptions.NewNullIsProhibitedMethod,
-									this.MakeStringLiteral( context, memberName )
-								),
-								null
-							);
-					}
-
-					break;
-				}
+				yield return nilImplicationConstruct;
 			}
 
 			/*
@@ -1003,54 +964,54 @@ namespace MsgPack.Serialization.AbstractSerializers
 		)
 		{
 			/*
-				 *	T? nullable;
-				 *	if ( unpacked < itemsCount )
-				 *	{
-				 *		if ( !unpacker.Read() )
-				 *		{
-				 *			throw SerializationExceptiuons.MissingItem(...);
-				 *		}
-				 *	
-				 *		if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
-				 * 		{
-				 * 			nullable = serializer.UnpackFrom( unpacker );
-				 * 		}
-				 * 		else
-				 * 		{
-				 * 			using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
-				 * 			{
-				 * 				nullable = serializer.UnpackFrom( subtreeUnpacker );
-				 * 			}
-				 * 		}
-				 * 	}
-				 *	else
-				 *	{
-				 *		nullable = null;
-				 *	}
-				 * 
-				 *  if ( nullable == null )
-				 *  {
-				 *  #if MEMBER_DEFAULT
-				 *      // nop
-				 *  #elif PROHIBIT
-				 *		throw SerializationExceptiuons.NullIsProhibited(...);
-				 *  #elif VALUE_TYPE
-				 *		throw SerializationExceptiuons.ValueTypeCannotbeNull(...);
-				 *  #else
-				 *		SET_VALUE(item);
-				 *  #endif
-				 *  }
-				 *  else
-				 *  {
-				 *		SET_VALUE(item);
-				 *  }
-				 *  
-				 *	#if MEMBER_UNPACKING
-				 *	unpacked++;
-				 *	#endif
-				 *  
-				 *  context unpacker;
-				 */
+			 *	T? nullable;
+			 *	if ( unpacked < itemsCount )
+			 *	{
+			 *		if ( !unpacker.Read() )
+			 *		{
+			 *			throw SerializationExceptiuons.MissingItem(...);
+			 *		}
+			 *	
+			 *		if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+			 * 		{
+			 * 			nullable = serializer.UnpackFrom( unpacker );
+			 * 		}
+			 * 		else
+			 * 		{
+			 * 			using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
+			 * 			{
+			 * 				nullable = serializer.UnpackFrom( subtreeUnpacker );
+			 * 			}
+			 * 		}
+			 * 	}
+			 *	else
+			 *	{
+			 *		nullable = null;
+			 *	}
+			 * 
+			 *  if ( nullable == null )
+			 *  {
+			 *  #if MEMBER_DEFAULT
+			 *      // nop
+			 *  #elif PROHIBIT
+			 *		throw SerializationExceptiuons.NullIsProhibited(...);
+			 *  #elif VALUE_TYPE
+			 *		throw SerializationExceptiuons.ValueTypeCannotbeNull(...);
+			 *  #else
+			 *		SET_VALUE(item);
+			 *  #endif
+			 *  }
+			 *  else
+			 *  {
+			 *		SET_VALUE(item);
+			 *  }
+			 *  
+			 *	#if MEMBER_UNPACKING
+			 *	unpacked++;
+			 *	#endif
+			 *  
+			 *  context unpacker;
+			 */
 
 			// is nilable natually?
 			var isNativelyNullable =
@@ -1169,53 +1130,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				storeValueStatementEmitter( unpackedItem );
 
 			// Nil Implication
-			TConstruct expressionWhenNil;
-			switch ( nilImplication )
-			{
-				case NilImplication.MemberDefault:
-				{
-					expressionWhenNil = null;
-					break;
-				}
-				case NilImplication.Prohibit:
-				{
-					expressionWhenNil =
-						this.EmitThrowExpression(
-							context,
-							store.ContextType,
-							SerializationExceptions.NewNullIsProhibitedMethod,
-							memberName
-						);
-					break;
-				}
-				case NilImplication.Null:
-				{
-					if ( !isNativelyNullable )
-					{
-						expressionWhenNil =
-							this.EmitThrowExpression(
-								context,
-								store.ContextType,
-								SerializationExceptions.NewValueTypeCannotBeNull3Method,
-								memberName,
-								this.EmitTypeOfExpression( context, itemType ),
-								this.EmitTypeOfExpression( context, typeof( TObject ) )
-							);
-					}
-					else
-					{
-						expressionWhenNil = store;
-					}
-
-					break;
-				}
-				default:
-				{
-					throw new SerializationException(
-						String.Format( CultureInfo.CurrentCulture, "Unknown NilImplication value '{0}'.", ( int )nilImplication )
-					);
-				}
-			}
+			TConstruct expressionWhenNil =
+				this._nilImplicationHandler.OnUnpacked(
+					new SerializerBuilderOnUnpacedParameter( this, context, itemType, memberName, store ),
+					nilImplication
+				);
 
 			// actually declare local now.
 			yield return nullable;
@@ -1531,7 +1450,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private static ConstructorInfo GetCollectionConstructor( Type instanceType )
 		{
 			var ctor =
-				instanceType.GetConstructor( SerializerBuilderConstants.CollectionConstructorWithCapacityParameterTypes )
+				instanceType.GetConstructor( UnpackHelpers.CollectionConstructorWithCapacityParameterTypes )
 				?? instanceType.GetConstructor( ReflectionAbstractions.EmptyTypes );
 
 			if ( ctor == null )
