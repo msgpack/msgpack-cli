@@ -51,7 +51,23 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var count = UnpackHelpers.GetItemsCount( unpacker );
-			var result = new List<T>( count );
+			var collection = new List<T>( count );
+			this.UnpackToCore( unpacker, collection, count );
+			return collection;
+		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, List<T> collection )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		private void UnpackToCore( Unpacker unpacker, List<T> collection, int count )
+		{
 			for ( int i = 0; i < count; i++ )
 			{
 				if ( !unpacker.Read() )
@@ -62,16 +78,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						result.Add( this._itemSerializer.UnpackFromCore( subTreeUnpacker ) );
+						collection.Add( this._itemSerializer.UnpackFromCore( subTreeUnpacker ) );
 					}
 				}
 				else
 				{
-					result.Add( this._itemSerializer.UnpackFromCore( unpacker ) );
+					collection.Add( this._itemSerializer.UnpackFromCore( unpacker ) );
 				}
 			}
-
-			return result;
 		}
 	}
 }

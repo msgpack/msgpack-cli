@@ -54,7 +54,23 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var count = UnpackHelpers.GetItemsCount( unpacker );
-			var result = new Dictionary<TKey, TValue>( count );
+			var collection = new Dictionary<TKey, TValue>( count );
+			this.UnpackToCore( unpacker, collection, count );
+			return collection;
+		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, Dictionary<TKey, TValue> collection )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				throw SerializationExceptions.NewIsNotMapHeader();
+			}
+
+			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		private void UnpackToCore( Unpacker unpacker, Dictionary<TKey, TValue> collection, int count )
+		{
 			for ( int i = 0; i < count; i++ )
 			{
 				if ( !unpacker.Read() )
@@ -84,16 +100,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						result.Add( key, this._valueSerializer.UnpackFromCore( subTreeUnpacker ) );
+						collection.Add( key, this._valueSerializer.UnpackFromCore( subTreeUnpacker ) );
 					}
 				}
 				else
 				{
-					result.Add( key, this._valueSerializer.UnpackFromCore( unpacker ) );
+					collection.Add( key, this._valueSerializer.UnpackFromCore( unpacker ) );
 				}
 			}
-
-			return result;
 		}
 	}
 }

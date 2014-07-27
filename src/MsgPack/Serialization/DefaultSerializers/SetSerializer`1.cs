@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -37,6 +36,16 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected override void PackArrayHeader( Packer packer, ISet<T> objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
+		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, ISet<T> collection )
+		{
+			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		protected override void AddItem( ISet<T> collection, T item )
+		{
+			collection.Add( item );
 		}
 	}
 #endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE

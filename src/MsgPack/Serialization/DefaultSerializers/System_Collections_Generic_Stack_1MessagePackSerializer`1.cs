@@ -50,12 +50,30 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
-			var buffer = new TItem[ UnpackHelpers.GetItemsCount( unpacker ) ];
+			return new Stack<TItem>( this.UnpackItemsInReverseOrder( unpacker, UnpackHelpers.GetItemsCount( unpacker ) ) );
+		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, Stack<TItem> collection )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			foreach ( var item in this.UnpackItemsInReverseOrder( unpacker, UnpackHelpers.GetItemsCount( unpacker ) ) )
+			{
+				collection.Push( item );
+			}
+		}
+
+		private IEnumerable<TItem> UnpackItemsInReverseOrder( Unpacker unpacker, int count )
+		{
+			var buffer = new TItem[ count ];
 
 			using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 			{
 				// Reverse Order
-				for ( int i = buffer.Length - 1; i >= 0; i-- )
+				for ( var i = buffer.Length - 1; i >= 0; i-- )
 				{
 					if ( !subTreeUnpacker.Read() )
 					{
@@ -66,7 +84,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 
-			return new Stack<TItem>( buffer );
+			return buffer;
 		}
 	}
 }

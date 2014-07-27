@@ -46,7 +46,23 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var count = UnpackHelpers.GetItemsCount( unpacker );
-			var result = new List<MessagePackObject>( count );
+			var collection = new List<MessagePackObject>( count );
+			UnpackToCore( unpacker, collection, count );
+			return collection;
+		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, List<MessagePackObject> collection )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		private static void UnpackToCore( Unpacker unpacker, List<MessagePackObject> collection, int count )
+		{
 			for ( var i = 0; i < count; i++ )
 			{
 				if ( !unpacker.Read() )
@@ -54,10 +70,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
-				result.Add( unpacker.LastReadData );
+				collection.Add( unpacker.LastReadData );
 			}
-
-			return result;
 		}
 	}
 }
