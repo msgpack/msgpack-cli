@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Diagnostics.Contracts;
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 using System.Linq;
 using System.Reflection;
 
@@ -31,8 +33,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	/// </summary>
 	internal class ReflectionObjectMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
-		private readonly MemberInfo[] _getters;
-		private readonly MemberInfo[] _setters;
+		private readonly Func<object, object>[] _getters;
+		private readonly Action<object, object>[] _setters;
+		private readonly MemberInfo[] _memberInfos;
 		private readonly DataMemberContract[] _contracts;
 		private readonly Dictionary<string, int> _memberIndexes;
 		private readonly IMessagePackSerializer[] _serializers;
@@ -40,10 +43,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		public ReflectionObjectMessagePackSerializer( SerializationContext context )
 			: base( context )
 		{
-			ReflectionSerializerHelper.GetMetadata( context, typeof(T), out this._getters, out this._setters, out this._contracts, out this._serializers );
+			ReflectionSerializerHelper.GetMetadata( context, typeof( T ), out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
 			this._memberIndexes =
 				this._contracts
 					.Select( ( contract, index ) => new KeyValuePair<string, int>( contract.Name, index ) )
+					.Where( kv => kv.Key != null )
 					.ToDictionary( kv => kv.Key, kv => kv.Value );
 		}
 
@@ -69,7 +73,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				packer.PackMapHeader( this._serializers.Length );
 				for ( int i = 0; i < this._serializers.Length; i++ )
 				{
-					this._serializers[ i ].PackTo( packer, this._contracts[ i ].Name );
+					packer.PackString( this._contracts[ i ].Name );
 					this.PackMemberValue( packer, objectTree, i );
 				}
 			}
@@ -77,11 +81,16 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 		private void PackMemberValue( Packer packer, T objectTree, int index )
 		{
-			var value = GetMemberValue( objectTree, this._getters[ index ] );
+			if ( this._getters[ index ] == null )
+			{
+				return;
+			}
+
+			var value = this._getters[ index ]( objectTree );
 			var nilImplication =
 				ReflectionNilImplicationHandler.Instance.OnPacking(
 					new ReflectionSerializerNilImplicationHandlerParameter(
-						this._getters[ index ].GetMemberValueType(),
+						this._memberInfos[ index ].GetMemberValueType(),
 						this._contracts[ index ].Name ),
 					this._contracts[ index ].NilImplication
 					);
@@ -90,21 +99,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				nilImplication( value );
 			}
 			this._serializers[ index ].PackTo( packer, value );
-		}
-
-		private static object GetMemberValue( T objectTree, MemberInfo memberInfo )
-		{
-			FieldInfo field;
-			if ( ( field = memberInfo as FieldInfo ) != null )
-			{
-				return field.GetValue( objectTree );
-			}
-
-			var getter = memberInfo as MethodBase;
-#if DEBUG
-			Contract.Assert( getter != null );
-#endif
-			return getter.Invoke( objectTree, null );
 		}
 
 		protected internal override T UnpackFromCore( Unpacker unpacker )
@@ -125,14 +119,14 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 				for ( int i = 0; i < itemsCount; i++ )
 				{
-					this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, i );
+					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, i );
 				}
 			}
 			else
 			{
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 				Contract.Assert( unpacker.IsMapHeader );
-#endif
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 				var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 
 				for ( int i = 0; i < itemsCount; i++ )
@@ -143,16 +137,17 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						throw SerializationExceptions.NewUnexpectedEndOfStream();
 					}
 
-					this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, this._memberIndexes[ name ] );
+					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, this._memberIndexes[ name ] );
 				}
 			}
 
 			return result;
 		}
 
-		private void UnpackMemberValue( T objectGraph, Unpacker unpacker, int itemsCount, ref int unpacked, int index )
+		private T UnpackMemberValue( T objectGraph, Unpacker unpacker, int itemsCount, ref int unpacked, int index )
 		{
 			object nullable = null;
+			var setter = this._setters[ index ];
 			if ( unpacked < itemsCount )
 			{
 				if ( !unpacker.Read() )
@@ -160,54 +155,70 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					throw SerializationExceptions.NewMissingItem( index );
 				}
 
-				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+				if ( !unpacker.LastReadData.IsNil )
 				{
-					nullable = this._serializers[ index ].UnpackFrom( unpacker );
-				}
-				else
-				{
-					using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
+					if ( setter != null )
 					{
-						nullable = this._serializers[ index ].UnpackFrom( subtreeUnpacker );
+						if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
+						{
+							nullable = this._serializers[ index ].UnpackFrom( unpacker );
+						}
+						else
+						{
+							using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
+							{
+								nullable = this._serializers[ index ].UnpackFrom( subtreeUnpacker );
+							}
+						}
+					}
+					else
+					{
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+						Contract.Assert( this._setters[ index ] == null, this._memberInfos[ index ].ToString() );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+						var collection = this._getters[ index ]( objectGraph );
+						if ( collection == null )
+						{
+							throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._contracts[ index ].Name );
+						}
+						using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
+						{
+							this._serializers[ index ].UnpackTo( subtreeUnpacker, collection );
+						}
 					}
 				}
 			}
 
-			if ( nullable == null )
+			if ( setter != null )
 			{
-				ReflectionNilImplicationHandler.Instance.OnUnpacked(
-					new ReflectionSerializerNilImplicationHandlerOnUnpackedParameter(
-						this._getters[ index ].GetMemberValueType(),
-						value => SetMemverValue( objectGraph, this._setters[ index ], value ),
-						this._contracts[ index ].Name,
-						this._setters[ index ].DeclaringType
-					),
-					this._contracts[ index ].NilImplication
-				)( null );
-			}
-			else
-			{
-				SetMemverValue( objectGraph, this._setters[ index ], nullable );
+				if ( nullable == null )
+				{
+					ReflectionNilImplicationHandler.Instance.OnUnpacked(
+						new ReflectionSerializerNilImplicationHandlerOnUnpackedParameter(
+							this._memberInfos[ index ].GetMemberValueType(),
+							value => SetMemverValue( objectGraph, setter, value ),
+							this._contracts[ index ].Name,
+							this._memberInfos[ index ].DeclaringType
+							),
+						this._contracts[ index ].NilImplication
+						)( null );
+				}
+				else
+				{
+					objectGraph = SetMemverValue( objectGraph, setter, nullable );
+				}
 			}
 
 			unpacked++;
+
+			return objectGraph;
 		}
 
-		private static void SetMemverValue( T result, MemberInfo memberInfo, object value )
+		private static T SetMemverValue( T result, Action<object, object> setter, object value )
 		{
-			FieldInfo field;
-			if ( ( field = memberInfo as FieldInfo ) != null )
-			{
-				field.SetValue( result, value );
-			}
-			else
-			{
-				var setter = memberInfo as MethodBase;
-#if DEBUG
-				Contract.Assert( setter != null );
-#endif
-				setter.Invoke( result, new[] { value } );
-			}
+			object boxed = result;
+			setter( boxed, value );
+			return ( T )boxed;
 		}
 	}
 

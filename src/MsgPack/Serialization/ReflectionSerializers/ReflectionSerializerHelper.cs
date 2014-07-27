@@ -163,48 +163,52 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 		public static void GetMetadata(
 			SerializationContext context,
-			Type targeType,
-			out MemberInfo[] getters,
-			out MemberInfo[] setters,
+			Type targetType,
+			out Func<object, object>[] getters,
+			out Action<object, object>[] setters,
+			out MemberInfo[] memberInfos,
 			out DataMemberContract[] contracts,
 			out IMessagePackSerializer[] serializers )
 		{
-			var members = SerializationTarget.Prepare( context, targeType ).ToDictionary( member => member.Contract.Id );
-			var membersCount = members.Keys.Max();
-			if ( context.CompatibilityOptions.OneBoundDataMemberOrder )
-			{
-				membersCount--;
-			}
+			SerializationTarget.VerifyType( targetType );
+			var members = SerializationTarget.Prepare( context, targetType );
 
-			getters = new MemberInfo[ membersCount ];
-			setters = new MemberInfo[ membersCount ];
-			contracts = new DataMemberContract[ membersCount ];
-			serializers = new IMessagePackSerializer[ membersCount ];
+			getters = new Func<object, object>[ members.Count ];
+			setters = new Action<object, object>[ members.Count ];
+			memberInfos = new MemberInfo[ members.Count ];
+			contracts = new DataMemberContract[ members.Count ];
+			serializers = new IMessagePackSerializer[ members.Count ];
 
-			// TODO: CollecitonProperty, ReadOnly property
-			for ( var i = 0; i < membersCount; i++ )
+#warning TODO: CollecitonProperty, ReadOnly property
+			for ( var i = 0; i < members.Count; i++ )
 			{
-				SerializingMember member;
-				if ( !members.TryGetValue( i, out member ) )
+				var member = members[ i ];
+				if ( member.Member == null )
 				{
 					continue;
 				}
 
-				if ( member.Member is FieldInfo )
+				FieldInfo asField;
+				if ( ( asField = member.Member as FieldInfo ) != null )
 				{
-					getters[ i ] = member.Member;
-					setters[ i ] = member.Member;
+					getters[ i ] = asField.GetValue;
+					setters[ i ] = asField.SetValue;
 				}
 				else
 				{
 					var property = member.Member as PropertyInfo;
-#if DEBUG
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 					Contract.Assert( property != null );
-#endif
-					getters[ i ] = property.GetGetMethod( true );
-					setters[ i ] = property.GetSetMethod( true );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+					getters[ i ] = target => property.GetGetMethod( true ).Invoke( target, null );
+					var setter = property.GetSetMethod( true );
+					if ( setter != null )
+					{
+						setters[ i ] = ( target, value ) => setter.Invoke( target, new[] { value } );
+					}
 				}
 
+				memberInfos[ i ] = member.Member;
 				contracts[ i ] = member.Contract;
 				serializers[ i ] = context.GetSerializer( member.Member.GetMemberValueType() );
 			}
