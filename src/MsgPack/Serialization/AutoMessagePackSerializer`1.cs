@@ -44,6 +44,7 @@ namespace MsgPack.Serialization
 
 			if ( serializer != null )
 			{
+				// For MessagePack.Create compatibility.
 				this._underlying = serializer;
 				return;
 			}

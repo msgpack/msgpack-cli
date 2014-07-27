@@ -42,8 +42,8 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "source" );
 			}
 
-			PropertyInfo asProperty = source as PropertyInfo;
-			FieldInfo asField = source as FieldInfo;
+			var asProperty = source as PropertyInfo;
+			var asField = source as FieldInfo;
 
 			if ( asProperty == null && asField == null )
 			{
@@ -430,6 +430,7 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE
 			Type asType;
 #endif
+			// ReSharper disable RedundantIfElseBlock
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
 #if !NETFX_CORE
@@ -458,6 +459,7 @@ namespace MsgPack.Serialization
 			{
 				throw new NotSupportedException( source.GetType() + " is not supported." );
 			}
+			// ReSharper restore RedundantIfElseBlock
 		}
 	}
 }

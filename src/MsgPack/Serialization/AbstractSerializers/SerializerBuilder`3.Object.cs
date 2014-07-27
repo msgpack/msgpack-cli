@@ -118,7 +118,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private void BuildObjectPackTo( TContext context, SerializingMember[] entries )
+		private void BuildObjectPackTo( TContext context, IList<SerializingMember> entries )
 		{
 			this.EmitMethodPrologue( context, SerializerMethod.PackToCore );
 			TConstruct construct = null;
@@ -275,7 +275,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return this.EmitRetrunStatement( context, this.EmitLoadVariableExpression( context, result ) );
 		}
 
-		private void BuildObjectUnpackFrom( TContext context, SerializingMember[] entries )
+		private void BuildObjectUnpackFrom( TContext context, IList<SerializingMember> entries )
 		{
 			/*
 			 *	#if T is IUnpackable
