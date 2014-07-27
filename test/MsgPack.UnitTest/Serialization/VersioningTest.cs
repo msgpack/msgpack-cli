@@ -41,7 +41,7 @@ namespace MsgPack.Serialization
 #if NETFX_35 || NETFX_CORE
 			var context = new SerializationContext();
 #else
-			var context = PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array );
+			var context = PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 #endif
 #if !XAMIOS && !UNITY_IPHONE
 			context.EmitterFlavor = flavor;

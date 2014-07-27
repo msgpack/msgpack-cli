@@ -93,10 +93,11 @@ namespace MsgPack.Serialization
 		///		Creates new <see cref="SerializationContext"/> for generation based testing.
 		/// </summary>
 		/// <param name="method"><see cref="SerializationMethod"/>.</param>
+		/// <param name="compatibilityOptions"><see cref="PackerCompatibilityOptions"/> for built-in serializers.</param>
 		/// <returns>A new <see cref="SerializationContext"/> for generation based testing.</returns>
-		public static SerializationContext CreateContext( SerializationMethod method )
+		public static SerializationContext CreateContext( SerializationMethod method, PackerCompatibilityOptions compatibilityOptions )
 		{
-			var context = new SerializationContext { SerializationMethod = method };
+			var context = new SerializationContext( compatibilityOptions ) { SerializationMethod = method };
 
 			var serializers =
 				method == SerializationMethod.Array

@@ -32,7 +32,7 @@ namespace MsgPack.Serialization
 	{
 		private SerializationContext CreateSerializationContext()
 		{
-			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array );
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 		}
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )

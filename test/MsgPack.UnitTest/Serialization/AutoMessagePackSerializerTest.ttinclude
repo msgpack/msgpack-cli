@@ -11,7 +11,7 @@ void GeneateForIos( string serializationMethod )
 
 private void GenerateCore( string serializationMethod, string emitterFlavor, string builderTypeName, bool canDump, bool forIos )
 {
-	var testClassName = serializationMethod + emitterFlavor + "AutoMessagePackSerializerTest";
+	var testClassName = serializationMethod + emitterFlavor + ( String.IsNullOrWhiteSpace( builderTypeName ) ? "Reflection" : "Auto" ) + "MessagePackSerializerTest";
 #>
 #region -- License Terms --
 //
@@ -83,47 +83,33 @@ namespace MsgPack.Serialization
 	else
 	{
 #>
-			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.<#= serializationMethod #> );
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.<#= serializationMethod #>, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 <#+
 	}
 #>
 		}
 
-		private SerializationContext  NewSerializationContext()
+		private SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
 		{
 <#+
 	if ( !forIos )
 	{
 #>
-			return new SerializationContext();
+			return new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.<#= serializationMethod #>, EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #> };
 <#+
 	}
 	else
 	{
 #>
-			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array );
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, compatibilityOptions );
 <#+
 	}
 #>
 		}
-
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
-<#+
-	if ( !forIos )
-	{
-#>
-			return new AutoMessagePackSerializer<T>( context, new <#= builderTypeName #><T>() );
-<#+
-	}
-	else
-	{
-#>
 			return context.GetSerializer<T>( context );
-<#+
-	}
-#>
 		}
 		
 <#+
@@ -183,6 +169,15 @@ namespace MsgPack.Serialization
 <#+
 	} // if !forIos
 #>
+
+		private void DoKnownCollectionTest<T>( SerializationContext context )
+			where T : new()
+		{
+			using ( var buffer = new MemoryStream() )
+			{
+				CreateTarget<T>( context ).Pack( buffer, new T() );
+			}
+		}
 
 		[Test]
 		public void TestUnpackTo()
@@ -946,20 +941,8 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_DefaultContext()
 		{
-<#+
-	if ( !forIos )
-	{
-#>
-			var serializer = MessagePackSerializer.CreateInternal<byte[]>( SerializationContext.Default );
-<#+
-	}
-	else
-	{
-#>
 			var serializer = SerializationContext.Default.GetSerializer<byte[]>();
-<#+
-	}
-#>
+
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1 } );
@@ -974,9 +957,9 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = NewSerializationContext();
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.CreateInternal<byte[]>( context );
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var serializer = CreateTarget<byte[]>( context );
+
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1 } );
@@ -989,22 +972,10 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_DefaultContext()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
-<#+
-	if ( !forIos )
-	{
-#>
-			var serializer = MessagePackSerializer.CreateInternal<DateTime>( context );
-<#+
-	}
-	else
-	{
-#>
 			var serializer = CreateTarget<DateTime>( context );
-<#+
-	}
-#>
+
 			using ( var stream = new MemoryStream() )
 			{
 				var date = DateTime.UtcNow;
@@ -1018,23 +989,11 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-<#+
-	if ( !forIos )
-	{
-#>
-			var serializer = MessagePackSerializer.CreateInternal<DateTime>( context );
-<#+
-	}
-	else
-	{
-#>
 			var serializer = CreateTarget<DateTime>( context );
-<#+
-	}
-#>
+
 			using ( var stream = new MemoryStream() )
 			{
 				var date = DateTime.UtcNow;
@@ -1048,22 +1007,9 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_Default_Success()
 		{
-			var context = NewSerializationContext();
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-<#+
-	if ( !forIos )
-	{
-#>
-			var serializer = MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context );
-<#+
-	}
-	else
-	{
-#>
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var serializer = CreateTarget<WithAbstractInt32Collection>( context );
-<#+
-	}
-#>
+
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractInt32Collection() { Collection = new[] { 1, 2 } };
@@ -1079,20 +1025,19 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_WithoutRegistration_Fail()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 <#+
 	if ( !forIos )
 	{
 #>
-			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context ) );
+			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractInt32Collection>( context ) );
 <#+
 	}
 	else
 	{
 #>
-			Assert.Throws<TargetInvocationException>( () => CreateTarget<WithAbstractInt32Collection>( context ) );
+			Assert.Throws<TargetInvocationException>( () => DoKnownCollectionTest<WithAbstractInt32Collection>( context ) );
 <#+
 	}
 #>
@@ -1101,23 +1046,10 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistration_Success()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-<#+
-	if ( !forIos )
-	{
-#>
-			var serializer = MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context );
-<#+
-	}
-	else
-	{
-#>
 			var serializer = CreateTarget<WithAbstractInt32Collection>( context );
-<#+
-	}
-#>
+
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractInt32Collection() { Collection = new[] { 1, 2 } };
@@ -1133,23 +1065,10 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistrationForSpecific_Success()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-<#+
-	if ( !forIos )
-	{
-#>
-			var serializer1 = MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context );
-<#+
-	}
-	else
-	{
-#>
 			var serializer1 = CreateTarget<WithAbstractInt32Collection>( context );
-<#+
-	}
-#>
+
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractInt32Collection() { Collection = new[] { 1, 2 } };
@@ -1162,20 +1081,8 @@ namespace MsgPack.Serialization
 			}
 
 			// check other types are not affected
-<#+
-	if ( !forIos )
-	{
-#>
-			var serializer2 = MessagePackSerializer.CreateInternal<WithAbstractStringCollection>( context );
-<#+
-	}
-	else
-	{
-#>
 			var serializer2 = CreateTarget<WithAbstractStringCollection>( context );
-<#+
-	}
-#>
+
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractStringCollection() { Collection = new[] { "1", "2" } };
@@ -1191,19 +1098,18 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_NotACollection_Fail()
 		{
-			var context = NewSerializationContext();
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 <#+
 	if ( !forIos )
 	{
 #>
-			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.CreateInternal<WithAbstractNonCollection>( context ) );
+			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 <#+
 	}
 	else
 	{
 #>
-			Assert.Throws<TargetInvocationException>( () => CreateTarget<WithAbstractNonCollection>( context ) );
+			Assert.Throws<TargetInvocationException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 <#+
 	}
 #>
@@ -1245,20 +1151,8 @@ namespace MsgPack.Serialization
 		public void TestIssue25_Plain()
 		{
 			var hasEnumerable = new HasEnumerable { Numbers = new[] { 1, 2 } };
-<#+
-	if ( !forIos )
-	{
-#>
-			var target = MessagePackSerializer.CreateInternal<HasEnumerable>( this.GetSerializationContext() );
-<#+
-	}
-	else
-	{
-#>
 			var target = CreateTarget<HasEnumerable>( this.GetSerializationContext() );
-<#+
-	}
-#>
+
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, hasEnumerable );

@@ -129,7 +129,7 @@ namespace MsgPack.Serialization
 	else
 	{
 #>
-			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.<#= serializationMethod #> );
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.<#= serializationMethod #>, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 <#+
 	}
 #>

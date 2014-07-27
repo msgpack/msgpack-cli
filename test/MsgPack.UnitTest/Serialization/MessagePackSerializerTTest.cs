@@ -52,9 +52,9 @@ namespace MsgPack.Serialization
 #if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
 			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array ).GetSerializer<T>();
 #elif !NETFX_CORE
-			return new AutoMessagePackSerializer<T>( new SerializationContext(), new AssemblyBuilderSerializerBuilder<T>() );
+			return new SerializationContext { EmitterFlavor = EmitterFlavor.FieldBased }.GetSerializer<T>();
 #else
-			return new AutoMessagePackSerializer<T>( new SerializationContext(), new ExpressionTreeSerializerBuilder<T>() );
+			return new SerializationContext { EmitterFlavor = EmitterFlavor.ExpressionBased }.GetSerializer<T>();
 #endif
 		}
 

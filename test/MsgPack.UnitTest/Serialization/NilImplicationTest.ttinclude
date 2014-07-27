@@ -79,7 +79,7 @@ namespace MsgPack.Serialization
 	else
 	{
 #>
-			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array );
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 <#+
 	}
 #>

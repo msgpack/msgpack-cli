@@ -63,15 +63,14 @@ namespace MsgPack.Serialization
 			return new SerializationContext { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ContextBased };
 		}
 
-		private SerializationContext  NewSerializationContext()
+		private SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
 		{
-			return new SerializationContext();
+			return new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ContextBased };
 		}
-
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
-			return new AutoMessagePackSerializer<T>( context, new DynamicMethodSerializerBuilder<T>() );
+			return context.GetSerializer<T>( context );
 		}
 		
 		private bool CanDump
@@ -124,6 +123,15 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif
+
+		private void DoKnownCollectionTest<T>( SerializationContext context )
+			where T : new()
+		{
+			using ( var buffer = new MemoryStream() )
+			{
+				CreateTarget<T>( context ).Pack( buffer, new T() );
+			}
+		}
 
 		[Test]
 		public void TestUnpackTo()
@@ -856,7 +864,8 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_DefaultContext()
 		{
-			var serializer = MessagePackSerializer.CreateInternal<byte[]>( SerializationContext.Default );
+			var serializer = SerializationContext.Default.GetSerializer<byte[]>();
+
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1 } );
@@ -867,9 +876,9 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = NewSerializationContext();
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.CreateInternal<byte[]>( context );
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var serializer = CreateTarget<byte[]>( context );
+
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1 } );
@@ -879,9 +888,10 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_DefaultContext()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
-			var serializer = MessagePackSerializer.CreateInternal<DateTime>( context );
+			var serializer = CreateTarget<DateTime>( context );
+
 			using ( var stream = new MemoryStream() )
 			{
 				var date = DateTime.UtcNow;
@@ -895,10 +905,11 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.CreateInternal<DateTime>( context );
+			var serializer = CreateTarget<DateTime>( context );
+
 			using ( var stream = new MemoryStream() )
 			{
 				var date = DateTime.UtcNow;
@@ -912,9 +923,9 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_Default_Success()
 		{
-			var context = NewSerializationContext();
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context );
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var serializer = CreateTarget<WithAbstractInt32Collection>( context );
+
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractInt32Collection() { Collection = new[] { 1, 2 } };
@@ -930,19 +941,18 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_WithoutRegistration_Fail()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context ) );
+			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractInt32Collection>( context ) );
 		}
 
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistration_Success()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer = MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context );
+			var serializer = CreateTarget<WithAbstractInt32Collection>( context );
+
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractInt32Collection() { Collection = new[] { 1, 2 } };
@@ -958,10 +968,10 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistrationForSpecific_Success()
 		{
-			var context = NewSerializationContext();
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			var serializer1 = MessagePackSerializer.CreateInternal<WithAbstractInt32Collection>( context );
+			var serializer1 = CreateTarget<WithAbstractInt32Collection>( context );
+
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractInt32Collection() { Collection = new[] { 1, 2 } };
@@ -974,7 +984,8 @@ namespace MsgPack.Serialization
 			}
 
 			// check other types are not affected
-			var serializer2 = MessagePackSerializer.CreateInternal<WithAbstractStringCollection>( context );
+			var serializer2 = CreateTarget<WithAbstractStringCollection>( context );
+
 			using ( var stream = new MemoryStream() )
 			{
 				var value = new WithAbstractStringCollection() { Collection = new[] { "1", "2" } };
@@ -990,9 +1001,8 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_NotACollection_Fail()
 		{
-			var context = NewSerializationContext();
-			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
-			Assert.Throws<NotSupportedException>( () => MessagePackSerializer.CreateInternal<WithAbstractNonCollection>( context ) );
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
 
 		// FIXME: init-only field, get-only property, Value type which implements IList<T> and has .ctor(int), Enumerator class which explicitly implements IEnumerator
@@ -1031,7 +1041,8 @@ namespace MsgPack.Serialization
 		public void TestIssue25_Plain()
 		{
 			var hasEnumerable = new HasEnumerable { Numbers = new[] { 1, 2 } };
-			var target = MessagePackSerializer.CreateInternal<HasEnumerable>( this.GetSerializationContext() );
+			var target = CreateTarget<HasEnumerable>( this.GetSerializationContext() );
+
 			using ( var buffer = new MemoryStream() )
 			{
 				target.Pack( buffer, hasEnumerable );

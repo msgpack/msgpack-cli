@@ -1086,7 +1086,7 @@ namespace MsgPack.Serialization
 			{
 				var expecteds = ( ( IEnumerable )expected ).Cast<Object>().ToArray();
 				var actuals = ( ( IEnumerable )actual ).Cast<Object>().ToArray();
-				Assert.That( expecteds.Length, Is.EqualTo( actuals.Length ) );
+				Assert.That( actuals.Length, Is.EqualTo( expecteds.Length ) );
 				for ( int i = 0; i < expecteds.Length; i++ )
 				{
 					Verify( expecteds[ i ], actuals[ i ] );

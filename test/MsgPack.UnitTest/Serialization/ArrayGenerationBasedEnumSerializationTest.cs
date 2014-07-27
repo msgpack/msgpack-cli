@@ -42,7 +42,7 @@ namespace MsgPack.Serialization
 	{
 		private SerializationContext GetSerializationContext()
 		{
-			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array );
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 		}
 		private void TestEnumForByName<T>( SerializationContext context, T value, string property )
 		{
