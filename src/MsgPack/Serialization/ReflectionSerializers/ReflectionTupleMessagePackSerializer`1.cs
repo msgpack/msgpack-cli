@@ -85,7 +85,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						 object current = tuple;
 						 foreach ( var getter in getters )
 						 {
-							 current = getter.Invoke( getter, null );
+							 current = getter.Invoke( current, null );
 						 }
 
 						 return current;
@@ -139,7 +139,12 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			object currentTuple = null;
 			for ( int nest = this._tupleTypes.Count - 1; nest >= 0; nest-- )
 			{
-				var items = unpackedItems.Skip( nest * 7 ).Take( Math.Min( unpackedItems.Count, 7 ) );
+				var items = unpackedItems.Skip( nest * 7 ).Take( Math.Min( unpackedItems.Count, 7 ) ).ToList();
+				if ( currentTuple != null )
+				{
+					items.Add( currentTuple );
+				}
+
 				currentTuple =
 					this._tupleConstructors[ nest ].Invoke( items.ToArray() );
 			}
