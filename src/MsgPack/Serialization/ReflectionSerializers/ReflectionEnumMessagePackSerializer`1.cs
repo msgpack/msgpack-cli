@@ -19,11 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
-using System.Diagnostics.Contracts;
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
-using System.Reflection;
+using System.Globalization;
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
@@ -33,44 +29,17 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	internal class ReflectionEnumMessagePackSerializer<T> : EnumMessagePackSerializer<T>
 		where T : struct
 	{
-		private readonly IMessagePackSerializer _underlyingValueSerializer;
-		private readonly Dictionary<T, object> _underlyingValues;
-		private readonly Dictionary<object, T> _enumValues;
-		private readonly Type _underlyingType;
-
 		public ReflectionEnumMessagePackSerializer( SerializationContext context )
-			: base( context, context.EnumSerializationMethod )
-		{
-			this._underlyingType = Enum.GetUnderlyingType( typeof( T ) );
-			this._underlyingValueSerializer = context.GetSerializer( this._underlyingType );
-			var enumValues = Enum.GetValues( typeof( T ) );
-			this._underlyingValues = new Dictionary<T, object>( enumValues.Length );
-			this._enumValues = new Dictionary<object, T>( enumValues.Length );
-#if !NETFX_CORE
-			var value = typeof( T ).GetField( "value__", BindingFlags.Instance | BindingFlags.NonPublic );
-#else
-			var value = typeof( T ).GetRuntimeField( "value__" );
-#endif
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
-			Contract.Assert( value != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
-			foreach ( var enumValue in enumValues )
-			{
-				var underlyingValue = value.GetValue( enumValue );
-				this._underlyingValues[ ( T )enumValue ] = underlyingValue;
-				this._enumValues[ underlyingValue ] = ( T )enumValue;
-			}
-		}
-
+			: base( context, context.EnumSerializationMethod ) { }
 
 		protected internal override void PackUnderlyingValueTo( Packer packer, T enumValue )
 		{
-			this._underlyingValueSerializer.PackTo( packer, this._underlyingValues[ enumValue ] );
+			packer.Pack( UInt64.Parse( ( ( IFormattable ) enumValue ).ToString( "D", CultureInfo.InvariantCulture ) ) );
 		}
 
 		protected internal override T UnpackFromUnderlyingValue( MessagePackObject messagePackObject )
 		{
-			return this._enumValues[ ReflectionEnumMessagePackSerializer.ToBoxedValue( messagePackObject, this._underlyingType ) ];
+			return ( T )Enum.Parse( typeof( T ), messagePackObject.ToString(), false );
 		}
 	}
 }
