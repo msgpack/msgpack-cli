@@ -65,11 +65,38 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override NameValueCollection UnpackFromCore( Unpacker unpacker )
 		{
-			var result = new NameValueCollection( checked( ( int )unpacker.ItemsCount ) );
-
-			while ( unpacker.Read() )
+			if ( !unpacker.IsMapHeader )
 			{
+				throw SerializationExceptions.NewIsNotMapHeader();
+			}
+
+			var count = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = new NameValueCollection( count );
+			UnpackToCore( unpacker, collection, count );
+			return collection;
+		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, NameValueCollection collection )
+		{
+			if ( !unpacker.IsMapHeader )
+			{
+				throw SerializationExceptions.NewIsNotMapHeader();
+			}
+
+			UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		}
+
+		private static void UnpackToCore( Unpacker unpacker, NameValueCollection collection, int keyCount )
+		{
+			for ( var k = 0; k < keyCount; k++ )
+			{
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewUnexpectedEndOfStream();
+				}
+
 				var key = unpacker.LastReadData.DeserializeAsString();
+
 				if ( !unpacker.Read() )
 				{
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
@@ -80,16 +107,20 @@ namespace MsgPack.Serialization.DefaultSerializers
 					throw new SerializationException( "Invalid NameValueCollection value." );
 				}
 
+				var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 				using ( var valuesUnpacker = unpacker.ReadSubtree() )
 				{
-					while ( valuesUnpacker.Read() )
+					for ( var v = 0; v < itemsCount; v++ )
 					{
-						result.Add( key, unpacker.LastReadData.DeserializeAsString() );
+						if ( !valuesUnpacker.Read() )
+						{
+							throw SerializationExceptions.NewUnexpectedEndOfStream();
+						}
+
+						collection.Add( key, valuesUnpacker.LastReadData.DeserializeAsString() );
 					}
 				}
 			}
-
-			return result;
 		}
 	}
 }
