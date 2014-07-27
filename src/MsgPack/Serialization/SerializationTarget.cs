@@ -38,13 +38,25 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal static class SerializationTarget
 	{
-		public static SerializingMember[] Prepare( SerializationContext context, Type targetType )
+		public static void VerifyType( Type targetType )
 		{
 			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
 			{
 				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( targetType );
 			}
+		}
 
+		public static IList<SerializingMember> Prepare( SerializationContext context, Type targetType )
+		{
+			var result = PrepareCore( context, targetType );
+
+			VerifyNilImplication( targetType, result );
+
+			return result;
+		}
+
+		private static IList<SerializingMember> PrepareCore( SerializationContext context, Type targetType )
+		{
 			var entries = GetTargetMembers( targetType ).OrderBy( item => item.Contract.Id ).ToArray();
 
 			if ( entries.Length == 0 )
@@ -91,8 +103,8 @@ namespace MsgPack.Serialization
 				result.Add( entries[ source ] );
 			}
 
-			return result.ToArray();
-		}
+			return result;
+		} 
 
 		// internal for testing
 		internal static IEnumerable<SerializingMember> GetTargetMembers( Type type )
@@ -215,6 +227,45 @@ namespace MsgPack.Serialization
 				default:
 				{
 					return false;
+				}
+			}
+		}
+
+		private static void VerifyNilImplication( Type type, IEnumerable<SerializingMember> entries )
+		{
+			foreach ( var serializingMember in entries )
+			{
+				if ( serializingMember.Contract.NilImplication == NilImplication.Null )
+				{
+					var itemType = serializingMember.Member.GetMemberValueType();
+
+					if ( itemType != typeof( MessagePackObject )
+						&& itemType.GetIsValueType()
+						&& Nullable.GetUnderlyingType( itemType ) == null )
+					{
+						throw SerializationExceptions.NewValueTypeCannotBeNull( serializingMember.Member.ToString(), itemType, type );
+					}
+
+					bool isReadOnly;
+					FieldInfo asField;
+					PropertyInfo asProperty;
+					if ( ( asField = serializingMember.Member as FieldInfo ) != null )
+					{
+						isReadOnly = asField.IsInitOnly;
+					}
+					else
+					{
+						asProperty = serializingMember.Member as PropertyInfo;
+#if DEBUG
+						Contract.Assert( asProperty != null, serializingMember.Member.ToString() );
+#endif
+						isReadOnly = asProperty.GetSetMethod() == null;
+					}
+
+					if ( isReadOnly )
+					{
+						throw SerializationExceptions.NewNullIsProhibited( serializingMember.Member.ToString() );
+					}
 				}
 			}
 		}

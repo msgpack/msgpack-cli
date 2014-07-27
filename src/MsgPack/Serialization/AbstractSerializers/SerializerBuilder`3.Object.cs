@@ -23,11 +23,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -35,9 +31,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 	{
 		private void BuildObjectSerializer( TContext context )
 		{
+			SerializationTarget.VerifyType( typeof( TObject ) );
 			var entries = SerializationTarget.Prepare( context.SerializationContext, typeof( TObject ) );
-
-			VerifyNilImplication( entries );
 
 			if ( typeof( IPackable ).IsAssignableFrom( typeof( TObject ) ) )
 			{
@@ -55,45 +50,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			else
 			{
 				this.BuildObjectUnpackFrom( context, entries );
-			}
-		}
-
-		private void VerifyNilImplication( SerializingMember[] entries )
-		{
-			foreach ( var serializingMember in entries )
-			{
-				if ( serializingMember.Contract.NilImplication == NilImplication.Null )
-				{
-					var itemType = serializingMember.Member.GetMemberValueType();
-
-					if ( itemType != typeof( MessagePackObject )
-						&& itemType.GetIsValueType()
-						&& Nullable.GetUnderlyingType( itemType ) == null )
-					{
-						throw SerializationExceptions.NewValueTypeCannotBeNull( serializingMember.Member.ToString(), itemType, typeof( TObject ) );
-					}
-
-					bool isReadOnly;
-					FieldInfo asField;
-					PropertyInfo asProperty;
-					if ( ( asField = serializingMember.Member as FieldInfo ) != null )
-					{
-						isReadOnly = asField.IsInitOnly;
-					}
-					else
-					{
-						asProperty = serializingMember.Member as PropertyInfo;
-#if DEBUG
-						Contract.Assert( asProperty != null, serializingMember.Member.ToString() );
-#endif
-						isReadOnly = asProperty.GetSetMethod() == null;
-					}
-
-					if ( isReadOnly )
-					{
-						throw SerializationExceptions.NewNullIsProhibited( serializingMember.Member.ToString() );
-					}
-				}
 			}
 		}
 
