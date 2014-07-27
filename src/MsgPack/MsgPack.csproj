@@ -168,6 +168,7 @@
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\NilImplicationHandler`4.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs" />

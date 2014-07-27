@@ -613,6 +613,9 @@
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
       <Link>Serialization\ReflectionExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs</Link>
     </Compile>

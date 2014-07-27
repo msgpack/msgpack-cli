@@ -288,21 +288,52 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context )
 		{
-			if ( typeof( T ).GetIsEnum() )
+			var traits = typeof( T ).GetCollectionTraits();
+			switch ( traits.CollectionType )
 			{
-				return ReflectionSerializerHelper.CreateReflectionEnuMessagePackSerializer<T>( context );
-			}
+				case CollectionKind.Array:
+				{
+					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits );
+				}
+				case CollectionKind.Map:
+				{
+					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits );
+				}
+				default:
+				{
+					if ( typeof( T ).GetIsEnum() )
+					{
+						return ReflectionSerializerHelper.CreateReflectionEnuMessagePackSerializer<T>( context );
+					}
 #if !WINDOWS_PHONE && !NETFX_35
-			if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
-						typeof( T ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
-					  && typeof( T ).GetIsPublic() &&
-					  typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
-			{
-				return new ReflectionTupleMessagePackSerializer<T>( context );
-			}
+					if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
+								typeof( T ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
+							  && typeof( T ).GetIsPublic() &&
+							  typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
+					{
+						return new ReflectionTupleMessagePackSerializer<T>( context );
+					}
 #endif // !WINDOWS_PHONE && !NETFX_35
 
-			return new ReflectionObjectMessagePackSerializer<T>( context );
+					return new ReflectionObjectMessagePackSerializer<T>( context );
+				}
+			}
+		}
+
+		private static Type EnsureConcreteTypeRegistered( SerializationContext context, Type mayBeAbstractType )
+		{
+			if ( !mayBeAbstractType.GetIsAbstract() && !mayBeAbstractType.GetIsInterface() )
+			{
+				return mayBeAbstractType;
+			}
+
+			var concreteType = context.DefaultCollectionTypes.GetConcreteType( mayBeAbstractType );
+			if ( concreteType == null )
+			{
+				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( mayBeAbstractType );
+			}
+
+			return concreteType;
 		}
 	}
 }

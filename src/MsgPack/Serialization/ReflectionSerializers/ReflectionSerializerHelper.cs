@@ -20,8 +20,9 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Reflection;
+
+using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
@@ -33,8 +34,131 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		public static MessagePackSerializer<T> CreateReflectionEnuMessagePackSerializer<T>( SerializationContext context )
 		{
 			return
-				Activator.CreateInstance( typeof( ReflectionEnumMessagePackSerializer<> ).MakeGenericType( typeof( T ) ), context ) as
+				Activator.CreateInstance( typeof( ReflectionEnumMessagePackSerializer<> ).MakeGenericType( typeof( T ) ), context )
+					as
 					MessagePackSerializer<T>;
+		}
+
+		public static MessagePackSerializer<T> CreateArraySerializer<T>(
+			SerializationContext context,
+			Type targetType,
+			CollectionTraits traits )
+		{
+			switch ( traits.DetailedCollectionType )
+			{
+				case CollectionDetailedKind.Array:
+				{
+					return ArraySerializer.Create<T>( context );
+				}
+				case CollectionDetailedKind.GenericList:
+				{
+					return
+						new ReflectionCollectionSerializer<T>(
+							context,
+							Activator.CreateInstance(
+								typeof( ListSerializer<> ).MakeGenericType( traits.ElementType ),
+								context,
+								targetType
+								) as IMessagePackSerializer
+							);
+				}
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+				case CollectionDetailedKind.GenericSet:
+				{
+					return
+						new ReflectionCollectionSerializer<T>(
+							context,
+							Activator.CreateInstance(
+								typeof( SetSerializer<> ).MakeGenericType( traits.ElementType ),
+								context,
+								targetType
+								) as IMessagePackSerializer
+							);
+				}
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+				case CollectionDetailedKind.GenericCollection:
+				{
+					return
+						new ReflectionCollectionSerializer<T>(
+							context,
+							Activator.CreateInstance(
+								typeof( CollectionSerializer<> ).MakeGenericType( traits.ElementType ),
+								context,
+								targetType
+								) as IMessagePackSerializer
+							);
+				}
+				case CollectionDetailedKind.GenericEnumerable:
+				{
+					return
+						new ReflectionCollectionSerializer<T>(
+							context,
+							Activator.CreateInstance(
+								typeof( EnumerableSerializer<> ).MakeGenericType( traits.ElementType ),
+								context,
+								targetType
+								) as IMessagePackSerializer
+							);
+				}
+				case CollectionDetailedKind.NonGenericList:
+				{
+					return
+						new ReflectionCollectionSerializer<T>(
+							context,
+							new NonGenericListSerializer( context, targetType )
+							);
+				}
+				case CollectionDetailedKind.NonGenericCollection:
+				{
+					return
+						new ReflectionCollectionSerializer<T>(
+							context,
+							new NonGenericCollectionSerializer( context, targetType )
+							);
+				}
+				default:
+				{
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+					Contract.Assert( traits.DetailedCollectionType == CollectionDetailedKind.NonGenericEnumerable );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+					return
+						new ReflectionCollectionSerializer<T>(
+							context,
+							new NonGenericEnumerableSerializer( context, targetType )
+							);
+				}
+			}
+		}
+
+		public static MessagePackSerializer<T> CreateMapSerializer<T>(
+			SerializationContext context,
+			Type targetType,
+			CollectionTraits traits )
+		{
+			// ReSharper disable once RedundantIfElseBlock
+			if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary )
+			{
+				return
+					new ReflectionCollectionSerializer<T>(
+						context,
+						Activator.CreateInstance(
+							typeof( DictionarySerializer<,> ).MakeGenericType( traits.ElementType.GetGenericArguments() ),
+							context,
+							targetType
+							) as IMessagePackSerializer
+						);
+			}
+			else
+			{
+#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+				Contract.Assert( traits.DetailedCollectionType == CollectionDetailedKind.NonGenericDictionary );
+#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+				return
+					new ReflectionCollectionSerializer<T>(
+						context,
+						new NonGenericDictionarySerializer( context, targetType )
+						);
+			}
 		}
 
 		public static void GetMetadata(
