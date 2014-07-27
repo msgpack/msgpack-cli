@@ -164,6 +164,7 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerBuilder.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Compile Include="Serialization\CollectionDetailedKind.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\NilImplicationHandler`4.cs" />

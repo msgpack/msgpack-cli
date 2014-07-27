@@ -25,20 +25,60 @@ namespace MsgPack.Serialization
 {
 	internal sealed class CollectionTraits
 	{
-		public static readonly CollectionTraits NotCollection = new CollectionTraits( CollectionKind.NotCollection, null, null, null, null );
-		public static readonly CollectionTraits Unserializable = new CollectionTraits( CollectionKind.Unserializable, null, null, null, null );
+		public static readonly CollectionTraits NotCollection = new CollectionTraits( CollectionDetailedKind.NotCollection, null, null, null, null );
+		public static readonly CollectionTraits Unserializable = new CollectionTraits( CollectionDetailedKind.Unserializable, null, null, null, null );
 
 		public readonly MethodInfo GetEnumeratorMethod;
 		public readonly MethodInfo AddMethod;
 		public readonly PropertyInfo CountProperty;
 		public readonly Type ElementType;
 
-		public readonly CollectionKind CollectionType;
+		public readonly CollectionDetailedKind DetailedCollectionType;
 
-		public CollectionTraits( CollectionKind type, MethodInfo addMethod, MethodInfo getEnumeratorMethod, PropertyInfo countProperty, Type elementType )
+		public CollectionKind CollectionType
 		{
-			this.CollectionType = type;
-			this.GetEnumeratorMethod = getEnumeratorMethod; 
+			get
+			{
+				switch ( this.DetailedCollectionType )
+				{
+					case CollectionDetailedKind.Array:
+					case CollectionDetailedKind.GenericCollection:
+					case CollectionDetailedKind.GenericEnumerable:
+					case CollectionDetailedKind.GenericList:
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+					case CollectionDetailedKind.GenericSet:
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+					case CollectionDetailedKind.NonGenericCollection:
+					case CollectionDetailedKind.NonGenericEnumerable:
+					case CollectionDetailedKind.NonGenericList:
+					{
+						return CollectionKind.Array;
+					}
+					case CollectionDetailedKind.GenericDictionary:
+					case CollectionDetailedKind.NonGenericDictionary:
+					{
+						return CollectionKind.Map;
+					}
+					case CollectionDetailedKind.NotCollection:
+					{
+						return CollectionKind.NotCollection;
+					}
+					case CollectionDetailedKind.Unserializable:
+					{
+						return CollectionKind.Unserializable;
+					}
+					default:
+					{
+						throw new NotSupportedException( "Unknown detailed type:" + this.DetailedCollectionType );
+					}
+				}
+			}
+		}
+
+		public CollectionTraits( CollectionDetailedKind type, MethodInfo addMethod, MethodInfo getEnumeratorMethod, PropertyInfo countProperty, Type elementType )
+		{
+			this.DetailedCollectionType = type;
+			this.GetEnumeratorMethod = getEnumeratorMethod;
 			this.AddMethod = addMethod;
 			this.CountProperty = countProperty;
 			this.ElementType = elementType;

@@ -271,6 +271,9 @@
     <Compile Include="..\MsgPack\Serialization\CallbackMessagePackSerializer`1.cs">
       <Link>Serialization\CallbackMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
+      <Link>Serialization\CollectionDetailedKind.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionKind.cs">
       <Link>Serialization\CollectionKind.cs</Link>
     </Compile>

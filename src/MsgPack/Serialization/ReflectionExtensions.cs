@@ -94,7 +94,7 @@ namespace MsgPack.Serialization
 			{
 				return
 					new CollectionTraits(
-						CollectionKind.Array,
+						CollectionDetailedKind.Array,
 						null, // Add() : Never used for array.
 						null, // GetEnumerator() : Never used for array.
 						null, // Count : Never used for array.
@@ -114,7 +114,7 @@ namespace MsgPack.Serialization
 						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
 						return
 							new CollectionTraits(
-								CollectionKind.Map,
+								CollectionDetailedKind.GenericDictionary,
 								GetAddMethod( source, elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
 								getEnumerator,
 								GetDictionaryCountProperty( source, elementType.GetGenericArguments()[ 0 ], elementType.GetGenericArguments()[ 1 ] ),
@@ -127,7 +127,7 @@ namespace MsgPack.Serialization
 				{
 					return
 						new CollectionTraits(
-							CollectionKind.Map,
+							CollectionDetailedKind.NonGenericDictionary,
 							GetAddMethod( source, typeof( object ), typeof( object ) ),
 							getEnumerator,
 							_icollectionCount,
@@ -146,7 +146,15 @@ namespace MsgPack.Serialization
 						var elementType = ienumetaorT.GetGenericArguments()[ 0 ];
 						return
 							new CollectionTraits(
-								CollectionKind.Array,
+								source.Implements( typeof( IList<> ) )
+								? CollectionDetailedKind.GenericList
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+								: source.Implements( typeof( ISet<> ) )
+								? CollectionDetailedKind.GenericSet
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+								: source.Implements( typeof( ICollection<> ) )
+								? CollectionDetailedKind.GenericCollection
+								: CollectionDetailedKind.GenericEnumerable,
 								GetAddMethod( source, elementType ),
 								getEnumerator,
 								GetCollectionTCountProperty( source, elementType ),
@@ -181,7 +189,7 @@ namespace MsgPack.Serialization
 				{
 					return
 						new CollectionTraits(
-							CollectionKind.Map,
+							CollectionDetailedKind.GenericDictionary,
 							GetAddMethod( source, typeof( MessagePackObject ), typeof( MessagePackObject ) ),
 							FindInterfaceMethod( source, typeof( IEnumerable<KeyValuePair<MessagePackObject, MessagePackObject>> ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 							GetDictionaryCountProperty( source, typeof( MessagePackObject ), typeof( MessagePackObject ) ),
@@ -196,7 +204,15 @@ namespace MsgPack.Serialization
 					{
 						return
 							new CollectionTraits(
-								CollectionKind.Array,
+								source.Implements( typeof( IList<MessagePackObject> ) )
+								? CollectionDetailedKind.GenericList
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+								: source.Implements( typeof( ISet<MessagePackObject> ) )
+								? CollectionDetailedKind.GenericSet
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+								: source.Implements( typeof( ICollection<MessagePackObject> ) )
+								? CollectionDetailedKind.GenericCollection
+								: CollectionDetailedKind.GenericEnumerable,
 								addMethod,
 								FindInterfaceMethod( source, typeof( IEnumerable<MessagePackObject> ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 								GetCollectionTCountProperty( source, typeof( MessagePackObject ) ),
@@ -243,7 +259,7 @@ namespace MsgPack.Serialization
 				var elementType = typeof( KeyValuePair<,> ).MakeGenericType( idictionaryT.GetGenericArguments() );
 				return
 					new CollectionTraits(
-						CollectionKind.Map,
+						CollectionDetailedKind.GenericDictionary,
 						GetAddMethod( source, idictionaryT.GetGenericArguments()[ 0 ], idictionaryT.GetGenericArguments()[ 1 ] ),
 						FindInterfaceMethod( source, typeof( IEnumerable<> ).MakeGenericType( elementType ), "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 						GetDictionaryCountProperty( source, idictionaryT.GetGenericArguments()[ 0 ], idictionaryT.GetGenericArguments()[ 1 ] ),
@@ -256,7 +272,15 @@ namespace MsgPack.Serialization
 				var elementType = ienumerableT.GetGenericArguments()[ 0 ];
 				return
 					new CollectionTraits(
-						CollectionKind.Array,
+						source.Implements( typeof( IList<MessagePackObject> ) )
+						? CollectionDetailedKind.GenericList
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+						: source.Implements( typeof( ISet<MessagePackObject> ) )
+						? CollectionDetailedKind.GenericSet
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+						: source.Implements( typeof( ICollection<MessagePackObject> ) )
+						? CollectionDetailedKind.GenericCollection
+						: CollectionDetailedKind.GenericEnumerable,
 						GetAddMethod( source, elementType ),
 						FindInterfaceMethod( source, ienumerableT, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 						GetCollectionTCountProperty( source, elementType ),
@@ -268,7 +292,7 @@ namespace MsgPack.Serialization
 			{
 				return
 					new CollectionTraits(
-						CollectionKind.Map,
+						CollectionDetailedKind.NonGenericDictionary,
 						GetAddMethod( source, typeof( object ), typeof( object ) ),
 						FindInterfaceMethod( source, idictionary, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 						_icollectionCount,
@@ -283,7 +307,11 @@ namespace MsgPack.Serialization
 				{
 					return
 						new CollectionTraits(
-							CollectionKind.Array,
+							source.Implements( typeof( IList ) )
+							? CollectionDetailedKind.NonGenericList
+							: source.Implements( typeof( ICollection ) )
+							? CollectionDetailedKind.NonGenericCollection
+							: CollectionDetailedKind.NonGenericEnumerable,
 							addMethod,
 							FindInterfaceMethod( source, ienumerable, "GetEnumerator", ReflectionAbstractions.EmptyTypes ),
 							_icollectionCount,
