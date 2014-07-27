@@ -202,6 +202,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ArrayExpressionBasedEnumSerializationTest.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
+      <DependentUpon>ArrayReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
+      <DependentUpon>ArrayReflectionBasedEnumSerializationTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Serialization\ArrayFieldBasedEnumSerializationTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -241,6 +251,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EnumSerializationTest.EnumDefinitions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ReflectionBasedNilImplicationTest.cs">
+      <DependentUpon>ReflectionBasedNilImplicationTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Serialization\FieldBasedNilImplicationTest.cs">
       <AutoGen>True</AutoGen>
@@ -872,6 +887,16 @@
     <Compile Include="Serialization\GeneratedSerializers\MapBased\System_DayOfWeekSerializer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs">
+      <DependentUpon>MapReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\MapReflectionBasedEnumSerializationTest.cs">
+      <DependentUpon>MapReflectionBasedEnumSerializationTest.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Serialization\SerializationTargets.cs" />
     <Compile Include="Serialization\GenerationBasedNilImplicationTest.cs">
       <AutoGen>True</AutoGen>
@@ -1176,6 +1201,14 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayExpressionBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
+    <None Include="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayReflectionBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\ArrayReflectionBasedEnumSerializationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayReflectionBasedEnumSerializationTest.cs</LastGenOutput>
+    </None>
     <None Include="Serialization\ArrayFieldBasedEnumSerializationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayFieldBasedEnumSerializationTest.cs</LastGenOutput>
@@ -1199,6 +1232,10 @@
       <LastGenOutput>EnumSerializationTest.EnumDefinitions.cs</LastGenOutput>
     </None>
     <None Include="Serialization\EnumSerializationTest.ttinclude" />
+    <None Include="Serialization\ReflectionBasedNilImplicationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReflectionBasedNilImplicationTest.cs</LastGenOutput>
+    </None>
     <None Include="Serialization\FieldBasedNilImplicationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FieldBasedNilImplicationTest.cs</LastGenOutput>
@@ -1214,6 +1251,14 @@
     <None Include="Serialization\MapExpressionBasedEnumSerializationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MapExpressionBasedEnumSerializationTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\MapReflectionBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapReflectionBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\MapReflectionBasedEnumSerializationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapReflectionBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
     <None Include="Serialization\MapFieldBasedEnumSerializationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

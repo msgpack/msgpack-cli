@@ -178,6 +178,12 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedEnumSerializationTest.cs">
       <Link>Serialization\ArrayFieldBasedEnumSerializationTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayReflectionBasedEnumSerializationTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs">
       <Link>Serialization\ArraySegmentEqualityComparer`1.cs</Link>
     </Compile>
@@ -244,6 +250,12 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapFieldBasedEnumSerializationTest.cs">
       <Link>Serialization\MapFieldBasedEnumSerializationTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedEnumSerializationTest.cs">
+      <Link>Serialization\MapReflectionBasedEnumSerializationTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
       <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
     </Compile>
@@ -264,6 +276,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTestTarget.cs">
       <Link>Serialization\NilImplicationTestTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ReflectionBasedNilImplicationTest.cs">
+      <Link>Serialization\ReflectionBasedNilImplicationTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
