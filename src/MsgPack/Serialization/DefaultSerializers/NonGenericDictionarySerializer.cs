@@ -89,12 +89,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return this._collectionDeserializer.UnpackFrom( unpacker ) as IDictionary;
 			}
 
-
-			if ( !unpacker.IsArrayHeader )
-			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
-			}
-
 			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 			var collection =
 				( this._collectionConstructorWithoutCapacity != null
@@ -126,11 +120,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			for ( int i = 0; i < itemsCount; i++ )
 			{
-				if ( !unpacker.Read() )
-				{
-					throw SerializationExceptions.NewMissingItem( i );
-				}
-
 				MessagePackObject key;
 				try
 				{

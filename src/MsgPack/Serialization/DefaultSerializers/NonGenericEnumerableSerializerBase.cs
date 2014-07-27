@@ -34,7 +34,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		private readonly Type _targetType;
 		private readonly IMessagePackSerializer _collectionDeserializer;
-		private readonly Action<T, object> _addItem;
+		private readonly MethodInfo _addItem;
 		private readonly ConstructorInfo _collectionConstructorWithoutCapacity;
 		private readonly ConstructorInfo _collectionConstructorWithCapacity;
 
@@ -48,7 +48,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				var traits = targetType.GetCollectionTraits();
 				if ( traits.AddMethod != null )
 				{
-					this._addItem = traits.AddMethod.CreateDelegate( typeof( Action<T, object> ) ) as Action<T, object>;
+					this._addItem = traits.AddMethod;
 				}
 
 				this._collectionConstructorWithCapacity =
@@ -97,12 +97,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return ( T )this._collectionDeserializer.UnpackFrom( unpacker );
 			}
 
-
-			if ( !unpacker.IsArrayHeader )
-			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
-			}
-
 			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 			var collection =
 				( T )( this._collectionConstructorWithoutCapacity != null
@@ -139,11 +133,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			for ( int i = 0; i < itemsCount; i++ )
 			{
-				if ( !unpacker.Read() )
-				{
-					throw SerializationExceptions.NewMissingItem( i );
-				}
-
 				MessagePackObject item;
 				try
 				{
@@ -165,7 +154,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw SerializationExceptions.NewUnpackToIsNotSupported( this._targetType );
 			}
 
-			this._addItem( collection, item );
+			this._addItem.Invoke( collection, new object[] { item } );
 		}
 	}
 }

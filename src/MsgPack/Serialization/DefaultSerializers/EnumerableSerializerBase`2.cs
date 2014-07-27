@@ -32,10 +32,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal abstract class EnumerableSerializerBase<T, TItem> : MessagePackSerializer<T>
 		where T : IEnumerable<TItem>
 	{
-		private readonly Type _targetType ;
+		private readonly Type _targetType;
 		private readonly MessagePackSerializer<TItem> _itemSerializer;
 		private readonly IMessagePackSerializer _collectionDeserializer;
-		private readonly Action<T, TItem> _addItem;
+		private readonly MethodInfo _addItem;
 		private readonly ConstructorInfo _collectionConstructorWithoutCapacity;
 		private readonly ConstructorInfo _collectionConstructorWithCapacity;
 
@@ -49,7 +49,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				var traits = targetType.GetCollectionTraits();
 				if ( traits.AddMethod != null )
 				{
-					this._addItem = traits.AddMethod.CreateDelegate( typeof( Action<T, TItem> ) ) as Action<T, TItem>;
+					this._addItem = traits.AddMethod;
 				}
 
 				this._collectionConstructorWithCapacity =
@@ -91,12 +91,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				// Fast path:
 				return ( T )this._collectionDeserializer.UnpackFrom( unpacker );
-			}
-
-
-			if ( !unpacker.IsArrayHeader )
-			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
 			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
@@ -164,7 +158,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw SerializationExceptions.NewUnpackToIsNotSupported( this._targetType );
 			}
 
-			this._addItem( collection, item );
+			this._addItem.Invoke( collection, new object[] { item } );
 		}
 	}
 }

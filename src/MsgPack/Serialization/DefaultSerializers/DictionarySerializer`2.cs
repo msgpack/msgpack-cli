@@ -84,12 +84,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return this._collectionDeserializer.UnpackFrom( unpacker ) as IDictionary<TKey, TValue>;
 			}
 
-
-			if ( !unpacker.IsArrayHeader )
-			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
-			}
-
 			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 			var collection =
 				( this._collectionConstructorWithoutCapacity != null
@@ -138,6 +132,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 						key = this._keySerializer.UnpackFrom( subtreeUnpacker );
 					}
 				}
+
+				if ( !unpacker.Read() )
+				{
+					throw SerializationExceptions.NewMissingItem( i );
+				}
+	
 
 				TValue value;
 				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
