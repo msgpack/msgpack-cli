@@ -69,8 +69,6 @@ namespace MsgPack.Serialization
 				}
 			}
 
-
-
 			switch ( 
 				EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod( 
 					context, this._enumType, EnumMemberSerializationMethod.Default 
