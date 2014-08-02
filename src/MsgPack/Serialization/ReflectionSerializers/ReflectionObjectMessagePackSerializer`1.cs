@@ -174,7 +174,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					else
 					{
 #if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
-						Contract.Assert( this._setters[ index ] == null, this._memberInfos[ index ].ToString() );
+						Contract.Assert( this._getters[ index ] != null, "Index:" + index );
 #endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 						var collection = this._getters[ index ]( objectGraph );
 						if ( collection == null )
