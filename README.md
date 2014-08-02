@@ -43,7 +43,7 @@ See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
 
 ## Installation
 
-* You can get binary drops from NuGet (currently, pre-release only).
+* Binary files distributed via the NuGet package [MsgPack.Cli](http://www.nuget.org/packages/MsgPack.Cli/).
   * There are NO distribution packages other than NuGet, so you have to build your own drops for Mono.
 
 ## How to build
