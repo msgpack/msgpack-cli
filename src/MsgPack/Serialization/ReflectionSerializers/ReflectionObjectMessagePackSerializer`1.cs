@@ -83,21 +83,25 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			if ( this._getters[ index ] == null )
 			{
+				// missing member should be treated as nil.
+				packer.PackNull();
 				return;
 			}
 
 			var value = this._getters[ index ]( objectTree );
+
 			var nilImplication =
 				ReflectionNilImplicationHandler.Instance.OnPacking(
 					new ReflectionSerializerNilImplicationHandlerParameter(
 						this._memberInfos[ index ].GetMemberValueType(),
 						this._contracts[ index ].Name ),
 					this._contracts[ index ].NilImplication
-					);
+				);
 			if ( nilImplication != null )
 			{
 				nilImplication( value );
 			}
+
 			this._serializers[ index ].PackTo( packer, value );
 		}
 
@@ -137,6 +141,12 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						throw SerializationExceptions.NewUnexpectedEndOfStream();
 					}
 
+					if ( name == null )
+					{
+						// missing member, just ignore it.
+						continue;
+					}
+
 					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, this._memberIndexes[ name ] );
 				}
 			}
@@ -171,11 +181,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							}
 						}
 					}
-					else
+					else if ( this._getters[ index ]  != null ) // null getter supposes undeclared member (should be treated as nil)
 					{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
-						Contract.Assert( this._getters[ index ] != null, "Index:" + index );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
 						var collection = this._getters[ index ]( objectGraph );
 						if ( collection == null )
 						{
