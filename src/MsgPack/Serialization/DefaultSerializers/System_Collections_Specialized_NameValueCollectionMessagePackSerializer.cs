@@ -47,18 +47,20 @@ namespace MsgPack.Serialization.DefaultSerializers
 					throw new NotSupportedException( "null key is not supported." );
 				}
 
+				packer.PackString( key );
+				
 				var values = objectTree.GetValues( key );
 				if ( values == null )
 				{
-					// Ignore
-					continue;
+					packer.PackArrayHeader( 0 );
 				}
-
-				packer.PackString( key );
-				packer.PackArrayHeader( values.Length );
-				foreach ( var value in values )
+				else
 				{
-					packer.PackString( value );
+					packer.PackArrayHeader( values.Length );
+					foreach ( var value in values )
+					{
+						packer.PackString( value );
+					}
 				}
 			}
 		}
