@@ -351,7 +351,7 @@ namespace MsgPack.Serialization
 		/// </exception>
 		protected internal virtual void UnpackToCore( Unpacker unpacker, T collection )
 		{
-			throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ) );
+			throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ), null );
 		}
 
 		/// <summary>

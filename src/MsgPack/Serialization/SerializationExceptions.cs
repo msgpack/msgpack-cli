@@ -521,12 +521,12 @@ namespace MsgPack.Serialization
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot deserialize member '{0}' of type '{1}'.", memberName, targetType ), inner );
 		}
 
-		internal static Exception NewUnpackToIsNotSupported( Type type )
+		internal static Exception NewUnpackToIsNotSupported( Type type, Exception inner )
 		{
 #if !UNITY_ANDROID && !UNITY_IPHONE
 			Contract.Requires( type != null );
 #endif // !UNITY_ANDROID && !UNITY_IPHONE
-			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported for '{0}' because it does not have accesible Add(T) method.", type ) );
+			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported for '{0}' because it does not have accesible Add(T) method.", type ), inner );
 		}
 	}
 }

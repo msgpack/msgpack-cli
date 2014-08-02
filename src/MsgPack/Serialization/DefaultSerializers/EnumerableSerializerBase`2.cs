@@ -32,7 +32,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal abstract class EnumerableSerializerBase<T, TItem> : MessagePackSerializer<T>
 		where T : IEnumerable<TItem>
 	{
-		private readonly Type _targetType;
 		private readonly MessagePackSerializer<TItem> _itemSerializer;
 		private readonly IMessagePackSerializer _collectionDeserializer;
 		private readonly MethodInfo _addItem;
@@ -42,7 +41,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected EnumerableSerializerBase( SerializationContext ownerContext, Type targetType )
 			: base( ownerContext )
 		{
-			this._targetType = targetType;
 			this._itemSerializer = ownerContext.GetSerializer<TItem>();
 			if ( ownerContext.EmitterFlavor == EmitterFlavor.ReflectionBased )
 			{
@@ -113,7 +111,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				if ( this._addItem == null )
 				{
-					throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ) );
+					throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ), null );
 				}
 
 				if ( !unpacker.IsArrayHeader )
@@ -155,7 +153,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			if ( this._addItem == null )
 			{
-				throw SerializationExceptions.NewUnpackToIsNotSupported( this._targetType );
+				throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ), null );
 			}
 
 			this._addItem.Invoke( collection, new object[] { item } );
