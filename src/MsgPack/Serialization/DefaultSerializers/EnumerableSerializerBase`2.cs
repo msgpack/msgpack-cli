@@ -44,10 +44,20 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._itemSerializer = ownerContext.GetSerializer<TItem>();
 			if ( ownerContext.EmitterFlavor == EmitterFlavor.ReflectionBased )
 			{
-				var traits = targetType.GetCollectionTraits();
+				// First use abstract type instead of surrogate concrete type.
+				var traits = typeof( T ).GetCollectionTraits();
 				if ( traits.AddMethod != null )
 				{
 					this._addItem = traits.AddMethod;
+				}
+				else
+				{
+					// Try use concrete type method... it might fail.
+					traits = targetType.GetCollectionTraits();
+					if ( traits.AddMethod != null )
+					{
+						this._addItem = traits.AddMethod;
+					}
 				}
 
 				this._collectionConstructorWithCapacity =
@@ -156,7 +166,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ), null );
 			}
 
-			this._addItem.Invoke( collection, new object[] { item } );
+			try
+			{
+				this._addItem.Invoke( collection, new object[] { item } );
+			}
+			catch ( TargetException ex )
+			{
+				throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ), ex );
+			}
 		}
 	}
 }
