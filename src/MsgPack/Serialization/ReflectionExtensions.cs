@@ -165,8 +165,15 @@ namespace MsgPack.Serialization
 			}
 
 			Type ienumerableT = null;
+			Type icollectionT = null;
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+			Type isetT = null;
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+			Type ilistT = null;
 			Type idictionaryT = null;
 			Type ienumerable = null;
+			Type icollection = null;
+			Type ilist = null;
 			Type idictionary = null;
 
 			var sourceInterfaces = source.FindInterfaces( FilterCollectionType, null );
@@ -204,13 +211,13 @@ namespace MsgPack.Serialization
 					{
 						return
 							new CollectionTraits(
-								source.Implements( typeof( IList<MessagePackObject> ) )
+								( source ==typeof( IList<MessagePackObject> ) || source.Implements( typeof( IList<MessagePackObject> ) ) )
 								? CollectionDetailedKind.GenericList
 #if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
-								: source.Implements( typeof( ISet<MessagePackObject> ) )
+								: ( source ==typeof( ISet<MessagePackObject> ) || source.Implements( typeof( ISet<MessagePackObject> ) ) )
 								? CollectionDetailedKind.GenericSet
 #endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
-								: source.Implements( typeof( ICollection<MessagePackObject> ) )
+								: ( source ==typeof( ICollection<MessagePackObject> ) || source.Implements( typeof( ICollection<MessagePackObject> ) ) )
 								? CollectionDetailedKind.GenericCollection
 								: CollectionDetailedKind.GenericEnumerable,
 								addMethod,
@@ -232,6 +239,32 @@ namespace MsgPack.Serialization
 						}
 						idictionaryT = type;
 					}
+					else if ( genericTypeDefinition == typeof( IList<> ) )
+					{
+						if ( ilistT != null )
+						{
+							return CollectionTraits.Unserializable;
+						}
+						ilistT = type;
+					}
+#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+					else if ( genericTypeDefinition == typeof( ISet<> ) )
+					{
+						if ( isetT != null )
+						{
+							return CollectionTraits.Unserializable;
+						}
+						isetT = type;
+					}
+#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+					else if ( genericTypeDefinition == typeof( ICollection<> ) )
+					{
+						if ( icollectionT != null )
+						{
+							return CollectionTraits.Unserializable;
+						}
+						icollectionT = type;
+					}
 					else if ( genericTypeDefinition == typeof( IEnumerable<> ) )
 					{
 						if ( ienumerableT != null )
@@ -246,6 +279,14 @@ namespace MsgPack.Serialization
 					if ( type == typeof( IDictionary ) )
 					{
 						idictionary = type;
+					}
+					else if ( type == typeof( IList ) )
+					{
+						ilist = type;
+					}
+					else if ( type == typeof( ICollection ) )
+					{
+						icollection = type;
 					}
 					else if ( type == typeof( IEnumerable ) )
 					{
@@ -272,13 +313,13 @@ namespace MsgPack.Serialization
 				var elementType = ienumerableT.GetGenericArguments()[ 0 ];
 				return
 					new CollectionTraits(
-						source.Implements( typeof( IList<MessagePackObject> ) )
+						( ilistT != null )
 						? CollectionDetailedKind.GenericList
 #if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
-						: source.Implements( typeof( ISet<MessagePackObject> ) )
+						: ( isetT != null )
 						? CollectionDetailedKind.GenericSet
 #endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
-						: source.Implements( typeof( ICollection<MessagePackObject> ) )
+						: ( icollectionT != null )
 						? CollectionDetailedKind.GenericCollection
 						: CollectionDetailedKind.GenericEnumerable,
 						GetAddMethod( source, elementType ),
@@ -307,9 +348,9 @@ namespace MsgPack.Serialization
 				{
 					return
 						new CollectionTraits(
-							source.Implements( typeof( IList ) )
+							( ilist != null )
 							? CollectionDetailedKind.NonGenericList
-							: source.Implements( typeof( ICollection ) )
+							: ( icollection != null )
 							? CollectionDetailedKind.NonGenericCollection
 							: CollectionDetailedKind.NonGenericEnumerable,
 							addMethod,
