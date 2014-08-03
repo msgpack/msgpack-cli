@@ -136,7 +136,7 @@ Release 0.5 - 2014/7/21
   * This release unifies .NET build and Mono build for main source codes (testing codes have not been unified yet.)
   * This release contains reimplementation of serializer generation stack. It might change implementation detail dependant behavior (it usually potential issue).
 
-Release 0.6 2014/8/?
+Release 0.5.1 2014/8/?
 
   FEATURES
   * Reflection serializer. It enables on-the-fly serializer generation in Xamarin and Unity3D.
@@ -144,3 +144,6 @@ Release 0.6 2014/8/?
   BUG FIXES
   * Fixes concurrency bug in WinRT.
   * Fixes built-in NamedValueCollection serializer generates invalid stream when the values of a key are empty.
+
+  NOTE
+  * This release changes drop for Unity3D from source assets to dll assets.
