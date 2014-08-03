@@ -122,7 +122,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif
+#endif // !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 
 		private void DoKnownCollectionTest<T>( SerializationContext context )
 			where T : new()

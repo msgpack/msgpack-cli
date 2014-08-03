@@ -25,9 +25,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !NETFX_CORE
+#endif // !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 
 #if !MSTEST
 using NUnit.Framework;
@@ -53,7 +53,7 @@ namespace MsgPack.Serialization
 			get { return false; }
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		[SetUp]
 		public void SetUp()
 		{
@@ -97,7 +97,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif
+#endif // !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		private void TestEnumForByName<T>( SerializationContext context, T value, string property )
 		{
 			var serializer = context.GetSerializer<T>();
