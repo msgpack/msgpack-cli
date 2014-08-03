@@ -27,11 +27,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin-unity\</OutputPath>
+    <OutputPath>..\..\bin\unity3d\</OutputPath>
     <DefineConstants>TRACE;UNITY_IPHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin-unity\MsgPack.XML</DocumentationFile>
+    <DocumentationFile>..\..\bin\unity3d\MsgPack.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
