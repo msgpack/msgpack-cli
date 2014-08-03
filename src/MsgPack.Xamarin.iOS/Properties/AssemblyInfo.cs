@@ -23,12 +23,11 @@ using System.Runtime.CompilerServices;
 using System.Security;
 
 [assembly: AssemblyTitle( "MessagePack for CLI(.NET/Mono)" )]
-[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library." )]
-[assembly: AssemblyConfiguration( "Beta" )]
+[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for Xamarin.iOS." )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2014" )]
 
 
-[assembly: AssemblyFileVersion( "0.5.1435.1086" )]
+[assembly: AssemblyFileVersion( "0.5.1675.695" )]
 
 [assembly: SecurityRules( SecurityRuleSet.Level2, SkipVerificationInFullTrust = true )]
 [assembly: AllowPartiallyTrustedCallers]

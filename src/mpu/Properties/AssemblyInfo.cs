@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -25,6 +25,6 @@ using System.Reflection;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2014" )]
 
-[assembly: AssemblyFileVersion( "0.5.1435.1086" )]
+[assembly: AssemblyFileVersion( "0.5.1675.695" )]
 
 
