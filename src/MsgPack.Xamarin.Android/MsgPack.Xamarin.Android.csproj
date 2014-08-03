@@ -163,6 +163,9 @@
     <Compile Include="..\MsgPack\ReflectionAbstractions.cs">
       <Link>ReflectionAbstractions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
+      <Link>Serialization\CollectionDetailedKind.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionKind.cs">
       <Link>Serialization\CollectionKind.cs</Link>
     </Compile>
@@ -340,6 +343,12 @@
     <Compile Include="..\MsgPack\Serialization\IMessagePackSingleObjectSerializer.cs">
       <Link>Serialization\IMessagePackSingleObjectSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\INilImplicationHandlerOnUnpackedParameter.cs">
+      <Link>Serialization\INilImplicationHandlerOnUnpackedParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\INilImplicationHandlerParameter.cs">
+      <Link>Serialization\INilImplicationHandlerParameter.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ISerializerGeneratorConfiguration.cs">
       <Link>Serialization\ISerializerGeneratorConfiguration.cs</Link>
     </Compile>
@@ -367,8 +376,38 @@
     <Compile Include="..\MsgPack\Serialization\NilImplication.cs">
       <Link>Serialization\NilImplication.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\NilImplicationHandler`4.cs">
+      <Link>Serialization\NilImplicationHandler`4.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
       <Link>Serialization\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionObjectMessagePackSerializer`1.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionObjectMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionSerializerHelper.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionSerializerHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerOnUnpackedParameter.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerOnUnpackedParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerParameter.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs">
       <Link>Serialization\Reflection\GenericTypeExtensions.cs</Link>
@@ -391,11 +430,14 @@
     <Compile Include="..\MsgPack\Serialization\SerializationMethodGeneratorOption.cs">
       <Link>Serialization\SerializationMethodGeneratorOption.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationTarget.cs">
+      <Link>Serialization\SerializationTarget.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerAssemblyGenerationConfiguration.cs">
       <Link>Serialization\SerializerAssemblyGenerationConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationConfiguration.cs">
-      <Link>Serialization\SerializerCodeGenerationConfiguration.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\SerializerDebugging.cs">
+      <Link>Serialization\SerializerDebugging.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerRepository.cs">
       <Link>Serialization\SerializerRepository.cs</Link>
