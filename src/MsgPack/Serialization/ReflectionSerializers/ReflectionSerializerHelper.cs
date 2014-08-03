@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+#if !UNITY_IPHONE && !UNITY_ANDROID
 using System.Diagnostics.Contracts;
+#endif // !UNITY_IPHONE && !UNITY_ANDROID
 using System.Reflection;
 
 using MsgPack.Serialization.DefaultSerializers;

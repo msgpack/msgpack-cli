@@ -321,7 +321,7 @@ namespace MsgPack.Serialization
 					{
 						return ReflectionSerializerHelper.CreateReflectionEnuMessagePackSerializer<T>( context );
 					}
-#if !WINDOWS_PHONE && !NETFX_35
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID
 					if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
 								typeof( T ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
 							  && typeof( T ).GetIsPublic() &&
@@ -329,7 +329,7 @@ namespace MsgPack.Serialization
 					{
 						return new ReflectionTupleMessagePackSerializer<T>( context );
 					}
-#endif // !WINDOWS_PHONE && !NETFX_35
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID
 
 					return new ReflectionObjectMessagePackSerializer<T>( context );
 				}

@@ -256,7 +256,7 @@ namespace MsgPack.Serialization
 					else
 					{
 						asProperty = serializingMember.Member as PropertyInfo;
-#if DEBUG
+#if DEBUG && !UNITY_IPHONE && !UNITY_ANDROID
 						Contract.Assert( asProperty != null, serializingMember.Member.ToString() );
 #endif
 						isReadOnly = asProperty.GetSetMethod() == null;

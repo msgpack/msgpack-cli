@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+#if !UNITY_IPHONE && !UNITY_ANDROID
 using System.Diagnostics.Contracts;
+#endif // !UNITY_IPHONE && !UNITY_ANDROID
 using System.Linq;
 using System.Reflection;
 
@@ -275,12 +277,12 @@ namespace MsgPack
 #endif // !SILVERLIGHT
 #endif // NETFX_CORE
 
-#if NETFX_35
+#if NETFX_35 || UNITY_IPHONE || UNITY_ANDROID
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this MemberInfo source )
 		{
 			return CustomAttributeData.GetCustomAttributes( source );
 		}
-#endif // NETFX_35
+#endif // NETFX_35 || UNITY_IPHONE || UNITY_ANDROID
 
 #if SILVERLIGHT
 		public static IEnumerable<Attribute> GetCustomAttributesData( this MemberInfo source )
