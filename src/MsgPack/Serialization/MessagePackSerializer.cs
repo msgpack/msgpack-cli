@@ -298,7 +298,9 @@ namespace MsgPack.Serialization
 
 		internal static IMessagePackSingleObjectSerializer CreateReflectionInternal( SerializationContext context, Type targetType )
 		{
-			return CreateReflectionInternal_1.MakeGenericMethod( targetType ).Invoke( null, new object[]{ context } ) as IMessagePackSingleObjectSerializer;
+			return 
+				( CreateReflectionInternal_1.MakeGenericMethod( targetType ).CreateDelegate( typeof( Func<SerializationContext,object> ) ) 
+				as Func<SerializationContext, object> )( context ) as IMessagePackSingleObjectSerializer;
 		}
 #endif // XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
 
