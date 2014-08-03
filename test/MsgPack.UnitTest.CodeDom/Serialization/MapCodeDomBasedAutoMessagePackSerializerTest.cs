@@ -36,13 +36,13 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
-#if !NETFX_CORE && !UNITY_IPHONE && !XAMIOS
+#if !NETFX_CORE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#endif
-#if !NETFX_35 && !UNITY_IPHONE && !XAMIOS
+#endif // !NETFX_CORE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
+#if !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
 using MsgPack.Serialization.ExpressionSerializers;
-#endif
+#endif // !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
 #if !MSTEST
 using NUnit.Framework;
 #else
