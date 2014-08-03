@@ -123,7 +123,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 				for ( int i = 0; i < itemsCount; i++ )
 				{
-					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, i );
+					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, i, i );
 				}
 			}
 			else
@@ -147,14 +147,14 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						continue;
 					}
 
-					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, this._memberIndexes[ name ] );
+					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, this._memberIndexes[ name ], i );
 				}
 			}
 
 			return result;
 		}
 
-		private T UnpackMemberValue( T objectGraph, Unpacker unpacker, int itemsCount, ref int unpacked, int index )
+		private T UnpackMemberValue( T objectGraph, Unpacker unpacker, int itemsCount, ref int unpacked, int index, int unpackerOffset )
 		{
 			object nullable = null;
 			var setter = this._setters[ index ];
@@ -162,7 +162,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			{
 				if ( !unpacker.Read() )
 				{
-					throw SerializationExceptions.NewMissingItem( index );
+					throw SerializationExceptions.NewMissingItem( unpackerOffset );
 				}
 
 				if ( !unpacker.LastReadData.IsNil )
@@ -181,7 +181,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							}
 						}
 					}
-					else if ( this._getters[ index ]  != null ) // null getter supposes undeclared member (should be treated as nil)
+					else if ( this._getters[ index ] != null ) // null getter supposes undeclared member (should be treated as nil)
 					{
 						var collection = this._getters[ index ]( objectGraph );
 						if ( collection == null )
