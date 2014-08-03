@@ -170,7 +170,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				this._addItem.Invoke( collection, new object[] { item } );
 			}
-			catch ( TargetException ex )
+			catch ( TargetInvocationException )
+			{
+				throw;
+			}
+			catch ( Exception ex )
 			{
 				throw SerializationExceptions.NewUnpackToIsNotSupported( typeof( T ), ex );
 			}
