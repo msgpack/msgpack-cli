@@ -30,7 +30,14 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		where T : struct
 	{
 		public ReflectionEnumMessagePackSerializer( SerializationContext context )
-			: base( context, context.EnumSerializationMethod ) { }
+			: base(
+				context, 
+				EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
+					context,
+					typeof( T ),
+					EnumMemberSerializationMethod.Default
+				)
+			) { }
 
 		protected internal override void PackUnderlyingValueTo( Packer packer, T enumValue )
 		{

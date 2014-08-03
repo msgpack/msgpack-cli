@@ -179,7 +179,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			contracts = new DataMemberContract[ members.Count ];
 			serializers = new IMessagePackSerializer[ members.Count ];
 
-#warning TODO: CollecitonProperty, ReadOnly property
 			for ( var i = 0; i < members.Count; i++ )
 			{
 				var member = members[ i ];
@@ -210,7 +209,24 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 				memberInfos[ i ] = member.Member;
 				contracts[ i ] = member.Contract;
-				serializers[ i ] = context.GetSerializer( member.Member.GetMemberValueType() );
+				var memberType = member.Member.GetMemberValueType();
+				if ( !memberType.GetIsEnum() )
+				{
+					serializers[ i ] = context.GetSerializer( memberType );
+
+				}
+				else
+				{
+					serializers[ i ] =
+						context.GetSerializer(
+							memberType,
+							EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
+								context,
+								memberType,
+								member.GetEnumMemberSerializationMethod()
+								)
+							);
+				}
 			}
 		}
 	}

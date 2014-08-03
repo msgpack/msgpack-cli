@@ -513,12 +513,11 @@ namespace MsgPack.Serialization
 				}
 			}
 
-#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
-			if ( !this._serializers.Register( serializer ) )
+			if ( !this._serializers.Register( serializer ) || providerParameter != null )
 			{
+				// Re-get to avoid duplicated registration and handle provider parameter.
 				serializer = this._serializers.Get<T>( this, providerParameter );
 			}
-#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 
 			return serializer;
 		}
