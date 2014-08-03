@@ -58,7 +58,7 @@ namespace MsgPack.Serialization
 				Type type = knownType;
 
 				var serializer =
-					new LaxyMessagePackSerializerProvider(
+					new LazyMessagePackSerializerProvider(
 						knownType,
 						serializerType != null
 							? new Func<SerializationContext, IMessagePackSerializer>( new SerializerActivator( serializerType ).Activate )
@@ -115,12 +115,12 @@ namespace MsgPack.Serialization
 			return context;
 		}
 
-		private sealed class LaxyMessagePackSerializerProvider : MessagePackSerializerProvider
+		private sealed class LazyMessagePackSerializerProvider : MessagePackSerializerProvider
 		{
 			private readonly Func<SerializationContext, IMessagePackSerializer> _activator;
 			private readonly Type _targetType;
 
-			public LaxyMessagePackSerializerProvider( Type targetType, Func<SerializationContext, IMessagePackSerializer> activator )
+			public LazyMessagePackSerializerProvider( Type targetType, Func<SerializationContext, IMessagePackSerializer> activator )
 			{
 				this._targetType = targetType;
 				this._activator = activator;
