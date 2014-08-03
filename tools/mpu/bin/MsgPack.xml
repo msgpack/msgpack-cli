@@ -3695,11 +3695,6 @@
             	This class does not support code generation.
             </exception>
         </member>
-        <member name="T:MsgPack.Serialization.AbstractSerializers.SerializationTarget">
-            <summary>
-            	Implements serialization target member extraction logics.
-            </summary>
-        </member>
         <member name="T:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3">
             <summary>
             	Defines common features for serializer builder.
@@ -4422,6 +4417,25 @@
             <value>
             	The counter variable.
             </value>
+        </member>
+        <member name="T:MsgPack.Serialization.NilImplicationHandler`4">
+            <summary>
+            	Defines base features to handle nil implication.
+            </summary>
+            <typeparam name="TAction">The type of the actual action for handking.</typeparam>
+            <typeparam name="TCondition">The type of the condition for packing value nil check.</typeparam>
+            <typeparam name="TPackingParameter">The type of the implementation specific on-packing methods parameter.</typeparam>
+            <typeparam name="TUnpackedParameter">The type of the  implementation specific on-unpacked methods parameter.</typeparam>
+        </member>
+        <member name="T:MsgPack.Serialization.INilImplicationHandlerParameter">
+            <summary>
+            	Defines common interface for parameter of <see cref="M:MsgPack.Serialization.NilImplicationHandler`4.OnPacking(`2,MsgPack.Serialization.NilImplication)"/> method and its template methods.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.INilImplicationHandlerOnUnpackedParameter`1">
+            <summary>
+            	Defines common interface for parameter of <see cref="M:MsgPack.Serialization.NilImplicationHandler`4.OnUnpacked(`3,MsgPack.Serialization.NilImplication)"/> method and its template methods.
+            </summary>
         </member>
         <member name="T:MsgPack.Serialization.AbstractSerializers.SerializerFieldKey">
             <summary>
@@ -5301,6 +5315,12 @@
             <summary>
             	Uses code DOM code generation to (de)serialization.
             	It requires a long time but prevents runtime code generation at all.
+            </summary>
+        </member>
+        <member name="F:MsgPack.Serialization.EmitterFlavor.ReflectionBased">
+            <summary>
+            	Uses reflection to (de)serialization.
+            	It requires additional resources but may work on most environment.
             </summary>
         </member>
         <member name="T:MsgPack.Serialization.EmittingSerializers.ILConstruct">
@@ -6366,6 +6386,32 @@
             		it means that you BREAK backword compatibility.
             	</note>
             </remarks>
+        </member>
+        <member name="T:MsgPack.Serialization.ReflectionSerializers.ReflectionCollectionSerializer`1">
+            <summary>
+            	Wrapper to simulate type argument variance.
+            </summary>
+            <typeparam name="T">Actual collection type.</typeparam>
+        </member>
+        <member name="T:MsgPack.Serialization.ReflectionSerializers.ReflectionEnumMessagePackSerializer">
+            <summary>
+            	Non-generic portion of <see cref="T:MsgPack.Serialization.ReflectionSerializers.ReflectionEnumMessagePackSerializer`1"/>.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.ReflectionSerializers.ReflectionEnumMessagePackSerializer`1">
+            <summary>
+            	Implements reflection-based enum serializer for restricted platforms.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.ReflectionSerializers.ReflectionObjectMessagePackSerializer`1">
+            <summary>
+            	Implements reflection-based object serializer for restricted platforms.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.ReflectionSerializers.ReflectionSerializerHelper">
+            <summary>
+            	Helper static methods for reflection serializers.
+            </summary>
         </member>
         <member name="T:MsgPack.Serialization.Reflection.GenericTypeExtensions">
             <summary>
@@ -8679,6 +8725,11 @@
         <member name="F:MsgPack.Serialization.SerializationMethodGeneratorOption.Fast">
             <summary>
             	Prefer performance. This options is default.
+            </summary>
+        </member>
+        <member name="T:MsgPack.Serialization.SerializationTarget">
+            <summary>
+            	Implements serialization target member extraction logics.
             </summary>
         </member>
         <member name="T:MsgPack.Serialization.SerializerAssemblyGenerationConfiguration">
