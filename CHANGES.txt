@@ -112,15 +112,7 @@ Release 0.4.4 - 2014/4/13
   * Fix creating serializer for IDictionary<TKey, TValue> causes NullReferenceException.
   * Fix serializers' default constructor IL (it is not used in the library, but can be called via reflection).
 
-Release 0.4.5 - ???
-
-  BUF FIXES
-  * Fix creating serializer for abstract dictionary types causes exception in WinRT.
-
-  NEW FEATURES
-  * System.Runtime.Serialization assembly is not required now (pull-request #29). Thanks @takeshik!
-
-Release 0.5 - 2014/?/?
+Release 0.5 - 2014/7/21
 
   FEATURES
   * CodeDOM serializer generator, which generates source code for custom serializer. It enables debugger break points, insert your own codes, etc.
@@ -143,3 +135,12 @@ Release 0.5 - 2014/?/?
   NOTE
   * This release unifies .NET build and Mono build for main source codes (testing codes have not been unified yet.)
   * This release contains reimplementation of serializer generation stack. It might change implementation detail dependant behavior (it usually potential issue).
+
+Release 0.6 2014/8/?
+
+  FEATURES
+  * Reflection serializer. It enables on-the-fly serializer generation in Xamarin and Unity3D.
+
+  BUG FIXES
+  * Fixes concurrency bug in WinRT.
+  * Fixes built-in NamedValueCollection serializer generates invalid stream when the values of a key are empty.
