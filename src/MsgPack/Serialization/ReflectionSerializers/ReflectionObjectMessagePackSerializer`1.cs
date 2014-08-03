@@ -143,7 +143,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 					if ( name == null )
 					{
-						// missing member, just ignore it.
+						// missing member, drain the value and discard it.
+						if ( !unpacker.Read() )
+						{
+							throw SerializationExceptions.NewMissingItem( i );
+						}
 						continue;
 					}
 
