@@ -55,7 +55,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	//[Timeout( 30000 )]
+	[Timeout( 30000 )]
 	public class ArrayReflectionBasedReflectionMessagePackSerializerTest
 	{
 		private SerializationContext GetSerializationContext()
@@ -78,7 +78,7 @@ namespace MsgPack.Serialization
 			get { return false; }
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		[SetUp]
 		public void SetUp()
 		{

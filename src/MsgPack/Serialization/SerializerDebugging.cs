@@ -38,6 +38,7 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal static class SerializerDebugging
 	{
+#if !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		[ThreadStatic]
 		private static bool _traceEnabled;
 
@@ -67,6 +68,7 @@ namespace MsgPack.Serialization
 			get { return _dumpEnabled; }
 			set { _dumpEnabled = value; }
 		}
+#endif // !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 
 		[ThreadStatic]
 		private static bool _avoidsGenericSerializer;
@@ -84,6 +86,7 @@ namespace MsgPack.Serialization
 			set { _avoidsGenericSerializer = value; }
 		}
 
+#if !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 #if !NETFX_CORE
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
@@ -390,5 +393,6 @@ namespace MsgPack.Serialization
 			_traceEnabled = false;
 			ResetDependentAssemblies();
 		}
+#endif // !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 	}
 }

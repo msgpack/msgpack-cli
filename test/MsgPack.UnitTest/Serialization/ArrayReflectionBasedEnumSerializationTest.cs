@@ -25,7 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 using MsgPack.Serialization.EmittingSerializers;
 #endif // !NETFX_CORE
 
@@ -53,7 +53,7 @@ namespace MsgPack.Serialization
 			get { return false; }
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		[SetUp]
 		public void SetUp()
 		{

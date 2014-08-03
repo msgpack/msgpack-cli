@@ -78,7 +78,7 @@ namespace MsgPack.Serialization
 			get { return false; }
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		[SetUp]
 		public void SetUp()
 		{

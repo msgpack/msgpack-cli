@@ -50,7 +50,7 @@ namespace MsgPack.Serialization
 		private static MessagePackSerializer<T> CreateTarget<T>()
 		{
 #if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
-			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array ).GetSerializer<T>();
+			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions ).GetSerializer<T>();
 #elif !NETFX_CORE
 			return new SerializationContext { EmitterFlavor = EmitterFlavor.FieldBased }.GetSerializer<T>();
 #else

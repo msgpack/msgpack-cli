@@ -96,8 +96,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !XAMIOS && !UNITY_IPHONE
-#if !NETFX_CORE
+#if XAMIOS || XAMDROID || UNITY_IPHONE || UNITY_ANDROID
+		private EmitterFlavor _emitterFlavor = EmitterFlavor.ReflectionBased;
+#elif !NETFX_CORE
 		private EmitterFlavor _emitterFlavor = EmitterFlavor.FieldBased;
 #else
 		private EmitterFlavor _emitterFlavor = EmitterFlavor.ExpressionBased;
@@ -117,7 +118,6 @@ namespace MsgPack.Serialization
 			get { return this._emitterFlavor; }
 			set { this._emitterFlavor = value; }
 		}
-#endif // !XAMIOS && !UNITY_IPHONE
 
 		private readonly SerializationCompatibilityOptions _compatibilityOptions;
 
@@ -409,7 +409,7 @@ namespace MsgPack.Serialization
 					if ( this.IsRuntimeGenerationDisabled )
 					{
 #endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
-						return
+						serializer =
 							this.GetSerializerWithoutGeneration( typeof( T ) ) as MessagePackSerializer<T> 
 							?? MessagePackSerializer.CreateReflectionInternal<T>( this );
 #if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
@@ -597,12 +597,20 @@ namespace MsgPack.Serialization
 			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 #else
 			var serializer = this._serializers.Get( this, targetType, providerParameter ) ?? GenericSerializer.Create( this, targetType );
-			if ( serializer != null )
+			if ( serializer == null )
 			{
-				return serializer;
+				serializer =
+					this.GetSerializerWithoutGeneration( targetType ) as IMessagePackSingleObjectSerializer
+					?? MessagePackSerializer.CreateReflectionInternal( this, targetType );
 			}
 			
-			return this.GetSerializerWithoutGeneration( targetType );
+			if ( !this._serializers.Register( targetType, serializer ) || providerParameter != null )
+			{
+				// Re-get to avoid duplicated registration and handle provider parameter.
+				serializer = this._serializers.Get( this, targetType, providerParameter );
+			}
+
+			return serializer;
 #endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
 		}
 

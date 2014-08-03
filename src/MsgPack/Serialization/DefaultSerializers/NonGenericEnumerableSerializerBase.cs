@@ -58,7 +58,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 					}
 				}
 
-
 				this._collectionConstructorWithCapacity =
 					targetType.GetConstructor( UnpackHelpers.CollectionConstructorWithCapacityParameterTypes );
 				if ( this._collectionConstructorWithCapacity == null )

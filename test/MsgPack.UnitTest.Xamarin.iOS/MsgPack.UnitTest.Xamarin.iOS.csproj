@@ -1032,6 +1032,42 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_HasEnumerableSerializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_HasEnumerableSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_AnnotatedClassSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_AnnotatedClassSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_DataMamberClassSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_DataMamberClassSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_PlainClassSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_PlainClassSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AnnotatedClassSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AnnotatedClassSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_DataMamberClassSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_DataMamberClassSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_PlainClassSerializer.cs">
+      <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_PlainClassSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayReflectionBasedEnumSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedEnumSerializationTest.cs">
+      <Link>Serialization\MapReflectionBasedEnumSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ReflectionBasedNilImplicationTest.cs">
+      <Link>Serialization\ReflectionBasedNilImplicationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargets.cs">
+      <Link>Serialization\SerializationTargets.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

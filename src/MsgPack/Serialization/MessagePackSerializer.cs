@@ -286,6 +286,22 @@ namespace MsgPack.Serialization
 #endif // XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE else
 		}
 
+#if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
+		private static readonly System.Reflection.MethodInfo CreateReflectionInternal_1 = 
+			typeof( MessagePackSerializer ).GetMethod( 
+				"CreateReflectionInternal", 
+				System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic,
+				null,
+				new []{ typeof( SerializationContext ) },
+				null
+			);
+
+		internal static IMessagePackSingleObjectSerializer CreateReflectionInternal( SerializationContext context, Type targetType )
+		{
+			return CreateReflectionInternal_1.MakeGenericMethod( targetType ).Invoke( null, new object[]{ context } ) as IMessagePackSingleObjectSerializer;
+		}
+#endif // XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
+
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context )
 		{
 			var traits = typeof( T ).GetCollectionTraits();
