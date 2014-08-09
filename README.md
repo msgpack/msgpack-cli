@@ -44,7 +44,12 @@ See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
 ## Installation
 
 * Binary files distributed via the NuGet package [MsgPack.Cli](http://www.nuget.org/packages/MsgPack.Cli/).
-  * There are NO distribution packages other than NuGet, so you have to build your own drops for Mono.
+* You can extract binary (DLL) file from NuGet package as following:
+  1. Download *.nupack file from [NuGet site](http://www.nuget.org/packages/MsgPack.Cli/).
+  2. Append suffix `.zip` and open package file as standard zip archive.
+  3. Under the `lib` directory, binaries are there!
+    * For mono, you can use `net45` or `net35` drops.
+    * For Unity, `unity3d` drop is suitable.
 
 ## How to build
 

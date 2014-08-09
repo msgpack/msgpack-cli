@@ -136,7 +136,7 @@ Release 0.5 - 2014/7/21
   * This release unifies .NET build and Mono build for main source codes (testing codes have not been unified yet.)
   * This release contains reimplementation of serializer generation stack. It might change implementation detail dependant behavior (it usually potential issue).
 
-Release 0.5.1 2014/8/?
+Release 0.5.1 2014/8/9
 
   FEATURES
   * Reflection serializer. It enables on-the-fly serializer generation in Xamarin and Unity3D.
