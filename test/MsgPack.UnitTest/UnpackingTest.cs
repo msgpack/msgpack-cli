@@ -140,7 +140,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackString_ByteArray_Encoding_1ByteNonSpecifiedString()
 		{
-#if MONO
+#if MONO || XAMDROID
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #elif !NETFX_CORE 
 			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F }, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) );
@@ -292,7 +292,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackString_Stream_Encoding_1ByteNonSpecifiedString()
 		{
-#if MONO
+#if MONO || XAMDROID
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
 
@@ -340,7 +340,7 @@ namespace MsgPack
 			Assert.That( readCountExtra, Is.EqualTo( 0 ) );
 		}
 
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE && !SILVERLIGHT && !XAMDROID
 		[Test]
 		public void TestUnpackByteStream_Stream_LengthIsGreaterThanInt32MaxValue_CanReadToEnd()
 		{
@@ -379,7 +379,7 @@ namespace MsgPack
 				File.Delete( filePath );
 			}
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !XAMDROID
 
 		[Test]
 		public void TestUnpackByteStream_Stream_Empty_AsIsAndBounded()
@@ -584,7 +584,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackCharStream_Stream_Encoding_1ByteNonSpecifiedString_ExceptionInReaderOperation()
 		{
-#if MONO
+#if MONO || XAMDROID
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
 #if !NETFX_CORE

@@ -99,7 +99,7 @@ namespace MsgPack
 		[Test]
 		public void TestAsString1_EncodingIsNotUtf32_SpecifyUtf32_Fail()
 		{
-#if MONO
+#if MONO || XAMDROID
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
 			var target = new MessagePackObject( new byte[] { 0xFF } );
