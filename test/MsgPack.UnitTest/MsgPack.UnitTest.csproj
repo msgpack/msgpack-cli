@@ -38,7 +38,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PerformanceTest|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\PerformanceTest\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;PERFORMANCE_TEST</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -252,6 +252,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EnumSerializationTest.EnumDefinitions.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\PerformanceTest.cs" />
     <Compile Include="Serialization\ReflectionBasedNilImplicationTest.cs">
       <DependentUpon>ReflectionBasedNilImplicationTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -853,7 +853,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			var cr =
 				codeProvider.CompileAssemblyFromDom(
-					new CompilerParameters( SerializerDebugging.CodeDomSerializerDependentAssemblies.ToArray() ),
+					new CompilerParameters( SerializerDebugging.CodeDomSerializerDependentAssemblies.ToArray() )
+#if PERFORMANCE_TEST
+					{
+						IncludeDebugInformation = false,
+						CompilerOptions = "/optimize+"
+					}
+#endif
+					,
 					cu
 				);
 			var errors = cr.Errors.OfType<CompilerError>().Where( e => !e.IsWarning ).ToArray();
