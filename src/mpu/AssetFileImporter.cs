@@ -50,11 +50,11 @@ namespace mpu
 		public AssetFileImporter() { }
 
 		/// <summary>
-		///		Assembles the asset tree from MsgPack.Xamarin.iOS.csproj file.
+		///		Assembles the asset tree from MsgPack.Unity3D.csproj file.
 		/// </summary>
 		/// <param name="sourceProjectPath">
-		///		The source project file path which points to MsgPack.Xamarin.iOS.csproj.
-		///		If omitted, ./src/MsgPack.Xamarin.iOS/MsgPack.Xamarin.iOS.csproj will be used.
+		///		The source project file path which points to MsgPack.Unity3D.csproj.
+		///		If omitted, ./src/MsgPack.Unity3D/MsgPack.Unity3D.csproj will be used.
 		/// </param>
 		/// <param name="outputDirectoryPath">
 		///		The output directory path the copied source file (assets file) will be placed.
@@ -76,7 +76,7 @@ namespace mpu
 				sourceProjectPath =
 					String.Format(
 						CultureInfo.InvariantCulture,
-						".{0}src{0}MsgPack.Xamarin.iOS{0}MsgPack.Xamarin.iOS.csproj",
+						".{0}src{0}MsgPack.Unity3D{0}MsgPack.Unity3D.csproj",
 						Path.DirectorySeparatorChar
 						);
 			}

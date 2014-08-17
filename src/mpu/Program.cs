@@ -99,7 +99,7 @@ namespace mpu
 						_ => action = action != null ? Action.ShowHelp : Action.GenerateSerializers
 					},
 					{
-						"p|project=", "[library, optional] Specify MsgPack.Xamarin.iOS.csproj path. Default is './src/MsgPack.Xamarin.iOS/MsgPack.Xamarin.iOS.csproj'.",
+						"p|project=", "[library, optional] Specify MsgPack.Unity3D.csproj path. Default is './src/MsgPack.Unity3D/MsgPack.Unity3D.csproj'.",
 						value => sourceProjectPath = value
 					},
 					{
