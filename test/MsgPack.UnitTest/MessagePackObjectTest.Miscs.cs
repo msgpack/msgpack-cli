@@ -125,7 +125,6 @@ namespace MsgPack
 #if MONO || XAMDROID
 			Assert.Inconclusive( "Mono Regex causes StackOverflow... ");
 #endif
-			try{
 			TestToStringCore(
 				MessagePackObject.Nil,
 				true,
@@ -177,9 +176,6 @@ namespace MsgPack
 				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0xFFFF ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) ),
 				new MessagePackObject( new MessagePackObjectDictionary( Enumerable.Range( 1, 0x10000 ).ToDictionary( i => new MessagePackObject( i ), i => new MessagePackObject( i ) ) ) )
 			);
-			}catch(StackOverflowException){
-				Assert.Fail ("SOF!!");
-			}
 		}
 
 		private static void TestToStringCore( params MessagePackObject[] targets )
