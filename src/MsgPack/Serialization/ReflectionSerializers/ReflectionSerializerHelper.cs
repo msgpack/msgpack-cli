@@ -18,10 +18,14 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
-#if !UNITY_IPHONE && !UNITY_ANDROID
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !UNITY
 using System.Reflection;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -64,7 +68,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 								) as IMessagePackSerializer
 							);
 				}
-#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericSet:
 				{
 					return
@@ -77,7 +81,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 								) as IMessagePackSerializer
 							);
 				}
-#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericCollection:
 				{
 					return
@@ -120,9 +124,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				}
 				default:
 				{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 					Contract.Assert( traits.DetailedCollectionType == CollectionDetailedKind.NonGenericEnumerable );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 					return
 						new ReflectionCollectionSerializer<T>(
 							context,
@@ -152,9 +156,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 				Contract.Assert( traits.DetailedCollectionType == CollectionDetailedKind.NonGenericDictionary );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 				return
 					new ReflectionCollectionSerializer<T>(
 						context,
@@ -198,9 +202,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				else
 				{
 					var property = member.Member as PropertyInfo;
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 					Contract.Assert( property != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 					getters[ i ] = target => property.GetGetMethod( true ).Invoke( target, null );
 					var setter = property.GetSetMethod( true );
 					if ( setter != null )

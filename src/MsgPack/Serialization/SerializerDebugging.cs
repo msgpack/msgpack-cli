@@ -18,14 +18,18 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
-#if !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID
+#if !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
-#endif // !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !NETFX_35 && !UNITY
 using System.Collections.Generic;
-#if !UNITY_IPHONE && !UNITY_ANDROID
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !UNITY
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -40,7 +44,7 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal static class SerializerDebugging
 	{
-#if !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !XAMIOS && !XAMDROID && !UNITY
 		[ThreadStatic]
 		private static bool _traceEnabled;
 
@@ -70,7 +74,7 @@ namespace MsgPack.Serialization
 			get { return _dumpEnabled; }
 			set { _dumpEnabled = value; }
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !XAMIOS && !XAMDROID && !UNITY
 
 		[ThreadStatic]
 		private static bool _avoidsGenericSerializer;
@@ -88,11 +92,11 @@ namespace MsgPack.Serialization
 			set { _avoidsGenericSerializer = value; }
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !XAMIOS && !XAMDROID && !UNITY
 #if !NETFX_CORE
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
-#endif
+#endif // !NETFX_CORE
 
 		/// <summary>
 		///		Gets the <see cref="TextWriter"/> for IL tracing.
@@ -119,7 +123,7 @@ namespace MsgPack.Serialization
 				return _ilTraceWriter;
 #else
 				return TextWriter.Null;
-#endif
+#endif // !NETFX_CORE
 			}
 		}
 
@@ -137,7 +141,7 @@ namespace MsgPack.Serialization
 			}
 
 			_ilTraceWriter.WriteLine( format, args );
-#endif
+#endif // !NETFX_CORE
 		}
 
 		/// <summary>
@@ -154,7 +158,7 @@ namespace MsgPack.Serialization
 			}
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
-#endif
+#endif // !NETFX_CORE
 		}
 
 		/// <summary>
@@ -169,7 +173,7 @@ namespace MsgPack.Serialization
 			}
 
 			Tracer.Emit.TraceData( Tracer.EventType.DefineType, Tracer.EventId.DefineType, _ilTraceWriter.ToString() );
-#endif
+#endif // !NETFX_CORE
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT && !NETFX_35
@@ -189,7 +193,7 @@ namespace MsgPack.Serialization
 			{
 #if DEBUG
 				Contract.Assert( assemblyBuilder != null );
-#endif
+#endif // DEBUG
 				_assemblyBuilder = assemblyBuilder;
 			}
 		}
@@ -208,7 +212,7 @@ namespace MsgPack.Serialization
 			_moduleBuilder =
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 		// TODO: Cleanup %Temp% to delete temp assemblies generated for on the fly code DOM.
 
 #if !NETFX_CORE && !SILVERLIGHT
@@ -225,7 +229,7 @@ namespace MsgPack.Serialization
 				EnsureDependentAssembliesListsInitialized();
 #if DEBUG
 				Contract.Assert( _compiledCodeDomSerializerAssemblies != null );
-#endif
+#endif // DEBUG
 				// FCL dependencies and msgpack core libs
 				foreach ( var runtimeAssembly in _runtimeAssemblies )
 				{
@@ -239,13 +243,13 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
 #if !NETFX_CORE && !SILVERLIGHT
 			EnsureDependentAssembliesListsInitialized();
 			_runtimeAssemblies.Add( pathToAssembly );
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		public static void AddCompiledCodeDomAssembly( string pathToAssembly )
@@ -253,7 +257,7 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE && !SILVERLIGHT
 			EnsureDependentAssembliesListsInitialized();
 			_compiledCodeDomSerializerAssemblies.Add( pathToAssembly );
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		public static void ResetDependentAssemblies()
@@ -265,10 +269,10 @@ namespace MsgPack.Serialization
 			File.AppendAllLines( GetHistoryFilePath(), _compiledCodeDomSerializerAssemblies );
 #else
 			File.AppendAllText( GetHistoryFilePath(), String.Join( Environment.NewLine, _compiledCodeDomSerializerAssemblies.ToArray() ) + Environment.NewLine );
-#endif
+#endif // !NETFX_35
 			_compiledCodeDomSerializerAssemblies.Clear();
 			ResetRuntimeAssemblies();
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
@@ -327,10 +331,10 @@ namespace MsgPack.Serialization
 #else
 			_runtimeAssemblies.Add( "System.Core.dll" );
 			_runtimeAssemblies.Add( "System.Numerics.dll" );
-#endif
+#endif // NETFX_35
 			_runtimeAssemblies.Add( typeof( SerializerDebugging ).Assembly.Location );
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 
 		[ThreadStatic]
 		private static bool _onTheFlyCodeDomEnabled;
@@ -358,7 +362,7 @@ namespace MsgPack.Serialization
 			return
 				_moduleBuilder.DefineType( IdentifierUtility.EscapeTypeName( targetType ) + "SerializerLogics" );
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 
 #if !NETFX_CORE && !SILVERLIGHT
 		/// <summary>
@@ -371,9 +375,9 @@ namespace MsgPack.Serialization
 			{
 				_assemblyBuilder.Save( _assemblyBuilder.GetName().Name + ".dll" );
 			}
-#endif
+#endif // !NETFX_35
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 
 		/// <summary>
 		///		Resets debugging states.
@@ -389,12 +393,12 @@ namespace MsgPack.Serialization
 				_ilTraceWriter.Dispose();
 				_ilTraceWriter = null;
 			}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !NETFX_35
 
 			_dumpEnabled = false;
 			_traceEnabled = false;
 			ResetDependentAssemblies();
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !XAMIOS && !XAMDROID && !UNITY
 	}
 }

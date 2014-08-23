@@ -63,12 +63,16 @@ var __methods = new []
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 using System.IO;
 
 namespace MsgPack
@@ -193,9 +197,9 @@ foreach( var __method in __methods )
 		public static UnpackingResult<#= "<" + __method.Item2 + ">" #> Unpack<#= __method.Item1 #>( byte[] source, int offset )
 		{
 			ValidateByteArray( source, offset );
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			using( var stream = new MemoryStream( source ) )
 			{
@@ -247,9 +251,9 @@ foreach( var __method in __methods )
 		public static <#= __method.Item2 #> Unpack<#= __method.Item1 #>( Stream source )
 		{
 			ValidateStream( source );
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			return Unpack<#= __method.Item1 #>Core( source );
 		}

@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -102,7 +106,7 @@ namespace MsgPack.Serialization
 				var asString = unpacker.LastReadData.AsString();
 
 				TEnum result;
-#if NETFX_35 || UNITY_ANDROID || UNITY_IPHONE
+#if NETFX_35 || UNITY
 				try
 				{
 					result = ( TEnum ) Enum.Parse( typeof( TEnum ), asString, false );
@@ -131,7 +135,7 @@ namespace MsgPack.Serialization
 						)
 					);
 				}
-#endif // NETFX_35 || UNITY_ANDROID || UNITY_IPHONE
+#endif // NETFX_35 || UNITY
 
 				return result;
 			}

@@ -18,11 +18,15 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 namespace MsgPack
 {
@@ -82,10 +86,10 @@ namespace MsgPack
 
 		private SubtreeUnpacker( ItemsUnpacker root, SubtreeUnpacker parent )
 		{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 			Contract.Assert( root != null );
 			Contract.Assert( root.IsArrayHeader || root.IsMapHeader );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 			this._root = root;
 			this._parent = parent;
 			this._unpacked = new Stack<long>( 2 );
@@ -205,9 +209,9 @@ namespace MsgPack
 		{
 			if ( this._itemsCount.Count == 0 )
 			{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 				Contract.Assert( this._unpacked.Count == 0 );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 				return;
 			}
 
@@ -219,9 +223,9 @@ namespace MsgPack
 
 				if ( this._itemsCount.Count == 0 )
 				{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 					Contract.Assert( this._unpacked.Count == 0 );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 					break;
 				}
 

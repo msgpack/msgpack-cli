@@ -18,24 +18,28 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 namespace MsgPack
 {
 	partial class MessagePackObjectDictionary
 	{
-#if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#if !WINDOWS_PHONE && !UNITY
 		partial class KeySet
 #else
 		partial class KeyCollection
-#endif // !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !WINDOWS_PHONE && !UNITY
 		{
-#if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#if !WINDOWS_PHONE && !UNITY
 			/// <summary>
 			///		Enumerates the elements of a <see cref="MessagePackObjectDictionary.KeySet"/>.
 			/// </summary>
@@ -46,7 +50,7 @@ namespace MsgPack
 			///		Enumerates the elements of a <see cref="MessagePackObjectDictionary.KeyCollection"/>.
 			/// </summary>
 			public struct Enumerator : IEnumerator<MessagePackObject>
-#endif // !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !WINDOWS_PHONE && !UNITY
 			{
 				// This field must not be readonly because it will cause infinite loop to the user of this type 
 				// due to C# compiler emit ldfld instead of ldflda and state of this field will never change.
@@ -79,9 +83,9 @@ namespace MsgPack
 
 				internal Enumerator( MessagePackObjectDictionary dictionary )
 				{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 					Contract.Assert( dictionary != null );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 					this._underlying = dictionary.GetEnumerator();
 				}

@@ -18,11 +18,15 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Diagnostics;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 using System.Globalization;
 using System.Linq;
 using System.Security;
@@ -56,18 +60,18 @@ namespace MsgPack
 
 		public MessagePackString( string decoded )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assert( decoded != null );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 			this._decoded = decoded;
 			this._type = BinaryType.String;
 		}
 
 		public MessagePackString( byte[] encoded )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assert( encoded != null );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 			this._encoded = encoded;
 		}
 
@@ -249,7 +253,7 @@ namespace MsgPack
 				return false;
 			}
 
-#if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#if !WINDOWS_PHONE && !UNITY
 			if ( _isFastEqualsDisabled == 0 )
 			{
 				try
@@ -265,7 +269,7 @@ namespace MsgPack
 					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
 				}
 			}
-#endif // if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // if !WINDOWS_PHONE && !UNITY
 
 			return SlowEquals( left._encoded, right._encoded );
 		}
@@ -283,7 +287,7 @@ namespace MsgPack
 			return true;
 		}
 
-#if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#if !WINDOWS_PHONE && !UNITY
 #if SILVERLIGHT
 		private static int _isFastEqualsDisabled =
 			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
@@ -314,7 +318,7 @@ namespace MsgPack
 
 			return result == 0;
 		}
-#endif // if !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // if !WINDOWS_PHONE && !UNITY
 
 #if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]

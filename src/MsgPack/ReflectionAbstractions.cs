@@ -18,11 +18,15 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
-#if !UNITY_IPHONE && !UNITY_ANDROID
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !UNITY
 using System.Linq;
 using System.Reflection;
 
@@ -277,12 +281,12 @@ namespace MsgPack
 #endif // !SILVERLIGHT
 #endif // NETFX_CORE
 
-#if NETFX_35 || UNITY_IPHONE || UNITY_ANDROID
+#if NETFX_35 || UNITY
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this MemberInfo source )
 		{
 			return CustomAttributeData.GetCustomAttributes( source );
 		}
-#endif // NETFX_35 || UNITY_IPHONE || UNITY_ANDROID
+#endif // NETFX_35 || UNITY
 
 #if SILVERLIGHT
 		public static IEnumerable<Attribute> GetCustomAttributesData( this MemberInfo source )

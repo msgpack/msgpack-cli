@@ -18,7 +18,11 @@
 //
 #endregion -- License Terms --
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+#if !UNITY
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -103,4 +107,4 @@ namespace MsgPack
 		}
 	}
 }
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY

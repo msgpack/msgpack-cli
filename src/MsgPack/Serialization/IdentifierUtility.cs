@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Text;
 using MsgPack.Serialization.Reflection;
@@ -38,7 +42,7 @@ namespace MsgPack.Serialization
 		/// <returns>Name of the method.</returns>
 		public static string BuildMethodName( string operation, Type targetType, string targetMemberName )
 		{
-#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_35 && !UNITY
 			return String.Join( "_", operation, EscapeTypeName( targetType ), targetMemberName );
 #else
 			return String.Join( "_", new string[] { operation, EscapeTypeName( targetType ), targetMemberName } );

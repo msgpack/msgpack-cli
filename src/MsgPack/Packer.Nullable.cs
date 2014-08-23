@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 
 namespace MsgPack
@@ -32,9 +36,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>This packer instance.</returns>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		public Packer Pack( SByte? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
@@ -62,9 +66,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>This packer instance.</returns>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		public Packer Pack( UInt16? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
@@ -83,9 +87,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>This packer instance.</returns>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		public Packer Pack( UInt32? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();
@@ -104,9 +108,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">Value to serialize.</param>
 		/// <returns>This packer instance.</returns>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		public Packer Pack( UInt64? value )
 		{
 			return value.HasValue ? this.Pack( value.Value ) : this.PackNull();

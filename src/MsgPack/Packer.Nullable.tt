@@ -54,6 +54,10 @@ type =>
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 
 namespace MsgPack
@@ -86,9 +90,9 @@ foreach( var __type in
 	if( __IsNotCLSCompliant( __type ) )
 	{
 #>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 <#
 	}
 #>

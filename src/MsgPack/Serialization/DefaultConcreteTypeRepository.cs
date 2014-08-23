@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -55,9 +59,9 @@ namespace MsgPack.Serialization
 					{ typeof( ICollection ).TypeHandle, typeof( List<MessagePackObject> ) },
 					{ typeof( IList ).TypeHandle, typeof( List<MessagePackObject> ) },
 					{ typeof( IDictionary ).TypeHandle, typeof( MessagePackObjectDictionary ) },
-#if !NETFX_35 && !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_35 && !WINDOWS_PHONE && !UNITY
 					{ typeof( ISet<> ).TypeHandle, typeof( HashSet<> ) },
-#endif // !NETFX_35 && !WINDOWS_PHONE && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !NETFX_35 && !WINDOWS_PHONE && !UNITY
 				} );
 		}
 

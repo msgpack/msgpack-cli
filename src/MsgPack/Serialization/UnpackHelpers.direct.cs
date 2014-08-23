@@ -19,6 +19,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.ComponentModel;
 
@@ -326,9 +330,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack SByte type value from underlying stream.
 		/// </exception>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static SByte UnpackSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -358,9 +362,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack SByte type value from underlying stream.
 		/// </exception>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static SByte? UnpackNullableSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -390,9 +394,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt16 type value from underlying stream.
 		/// </exception>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt16 UnpackUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -422,9 +426,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt16 type value from underlying stream.
 		/// </exception>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt16? UnpackNullableUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -454,9 +458,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt32 type value from underlying stream.
 		/// </exception>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt32 UnpackUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -486,9 +490,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt32 type value from underlying stream.
 		/// </exception>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt32? UnpackNullableUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -518,9 +522,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt64 type value from underlying stream.
 		/// </exception>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt64 UnpackUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
@@ -550,9 +554,9 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to unpack UInt64 type value from underlying stream.
 		/// </exception>
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 		[CLSCompliant( false )]
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static UInt64? UnpackNullableUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{

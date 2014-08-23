@@ -18,11 +18,15 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 using System.Diagnostics.Contracts;
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 using System.Linq;
 using System.Reflection;
 
@@ -65,19 +69,19 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				{
 					// .TRest.TRest ...
 					var restProperty = tupleTypes[ j ].GetProperty( "Rest" );
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 					Contract.Assert( restProperty != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 					propertyInvocationChain.Add( restProperty );
 				}
 
 				var itemNProperty = tupleTypes[ depth ].GetProperty( "Item" + ( ( i % 7 ) + 1 ) );
 				propertyInvocationChain.Add( itemNProperty );
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 				Contract.Assert(
 					itemNProperty != null,
 					tupleTypes[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 				var getters = propertyInvocationChain.Select( property => property.GetGetMethod() ).ToArray();
 				yield return
 					 tuple =>

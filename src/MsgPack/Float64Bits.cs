@@ -18,10 +18,14 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 using System.Runtime.InteropServices;
 
 namespace MsgPack
@@ -105,10 +109,10 @@ namespace MsgPack
 		/// <param name="offset">Offset to read.</param>
 		public Float64Bits( byte[] bigEndianBytes, int offset )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assume( bigEndianBytes != null );
 			Contract.Assume( bigEndianBytes.Length - offset >= 8, bigEndianBytes.Length + "-" + offset + ">= 4" );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			this = default( Float64Bits );
 

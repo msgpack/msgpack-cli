@@ -20,10 +20,14 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 using System.Globalization;
 using System.Text;
 
@@ -36,17 +40,17 @@ namespace MsgPack
 	{
 		public override bool ReadBoolean( out Boolean result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -82,10 +86,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -117,17 +121,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableBoolean( out Boolean? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -169,10 +173,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -210,17 +214,17 @@ namespace MsgPack
 		
 		public override bool ReadByte( out Byte result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -282,10 +286,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -343,17 +347,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableByte( out Byte? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -421,10 +425,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -488,17 +492,17 @@ namespace MsgPack
 		
 		public override bool ReadSByte( out SByte result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -567,10 +571,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -635,17 +639,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableSByte( out SByte? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -720,10 +724,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -794,17 +798,17 @@ namespace MsgPack
 		
 		public override bool ReadInt16( out Int16 result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -903,10 +907,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1001,17 +1005,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableInt16( out Int16? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1116,10 +1120,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1220,17 +1224,17 @@ namespace MsgPack
 		
 		public override bool ReadUInt16( out UInt16 result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1322,10 +1326,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1413,17 +1417,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableUInt16( out UInt16? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1521,10 +1525,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1618,17 +1622,17 @@ namespace MsgPack
 		
 		public override bool ReadInt32( out Int32 result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1772,10 +1776,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -1915,17 +1919,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableInt32( out Int32? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2075,10 +2079,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2224,17 +2228,17 @@ namespace MsgPack
 		
 		public override bool ReadUInt32( out UInt32 result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2371,10 +2375,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2507,17 +2511,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableUInt32( out UInt32? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2660,10 +2664,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -2802,17 +2806,17 @@ namespace MsgPack
 		
 		public override bool ReadInt64( out Int64 result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3001,10 +3005,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3189,17 +3193,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableInt64( out Int64? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3394,10 +3398,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3588,17 +3592,17 @@ namespace MsgPack
 		
 		public override bool ReadUInt64( out UInt64 result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3780,10 +3784,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -3961,17 +3965,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableUInt64( out UInt64? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4159,10 +4163,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4346,17 +4350,17 @@ namespace MsgPack
 		
 		public override bool ReadSingle( out Single result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4545,10 +4549,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4733,17 +4737,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableSingle( out Single? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -4938,10 +4942,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5132,17 +5136,17 @@ namespace MsgPack
 		
 		public override bool ReadDouble( out Double result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5331,10 +5335,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5519,17 +5523,17 @@ namespace MsgPack
 		
 		public override bool ReadNullableDouble( out Double? result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5724,10 +5728,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -5918,18 +5922,18 @@ namespace MsgPack
 		
 		public override bool ReadBinary( out Byte[] result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#region UnpackRawLength
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6031,10 +6035,10 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#region UnpackRawLength
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6131,22 +6135,22 @@ namespace MsgPack
 		
 		public override bool ReadString( out String result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			var encoding = Encoding.UTF8;
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( encoding != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			#region UnpackRawLength
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6280,14 +6284,14 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			var encoding = Encoding.UTF8;
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( encoding != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			#region UnpackRawLength
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -6416,17 +6420,17 @@ namespace MsgPack
 		
 		public override bool ReadObject( out MessagePackObject result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -7156,9 +7160,9 @@ namespace MsgPack
 				}
 				default:
 				{
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 					Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 					throw new UnassignedMessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
 				}
 			}
@@ -7170,10 +7174,10 @@ namespace MsgPack
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -7903,9 +7907,9 @@ namespace MsgPack
 				}
 				default:
 				{
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 					Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 					throw new UnassignedMessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
 				}
 			}
@@ -7913,18 +7917,18 @@ namespace MsgPack
 		
 		public override bool ReadArrayLength( out Int64 result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#region UnpackArrayLength
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -7990,10 +7994,10 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#region UnpackArrayLength
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -8054,18 +8058,18 @@ namespace MsgPack
 		
 		public override bool ReadMapLength( out Int64 result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#region UnpackMapLength
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -8131,10 +8135,10 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#region UnpackMapLength
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -8195,18 +8199,18 @@ namespace MsgPack
 		
 		public override bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
 		{
-		#if !UNITY_ANDROID && !UNITY_IPHONE
+		#if !UNITY
 			this.EnsureNotInSubtreeMode();
-		#endif // !UNITY_ANDROID && !UNITY_IPHONE
+		#endif // !UNITY
 			var source = this._stream;
 		#pragma warning disable 168
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#region UnpackExt
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )
@@ -8482,10 +8486,10 @@ namespace MsgPack
 			var buffer = this._scalarBuffer;
 		#pragma warning restore 168
 			#region UnpackExt
-			#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#if DEBUG && !UNITY
 			Contract.Assert( source != null );
 			Contract.Assert( buffer != null );
-			#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+			#endif // DEBUG && !UNITY
 			
 			var header = source.ReadByte();
 			if( header < 0 )

@@ -18,25 +18,29 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Linq;
 
 using MsgPack.Serialization.ReflectionSerializers;
-#if SILVERLIGHT || NETFX_35 || UNITY_ANDROID || UNITY_IPHONE
+#if SILVERLIGHT || NETFX_35 || UNITY
 using System.Collections.Generic;
 #else
 using System.Collections.Concurrent;
-#endif // SILVERLIGHT || NETFX_35 || UNITY_ANDROID || UNITY_IPHONE
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#endif // SILVERLIGHT || NETFX_35 || UNITY
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
-#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
+#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 using System.Globalization;
-#endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 #if NETFX_CORE
 using System.Linq.Expressions;
 #endif
-#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY
 using MsgPack.Serialization.AbstractSerializers;
 #if !NETFX_CORE
 #if !SILVERLIGHT
@@ -44,10 +48,10 @@ using MsgPack.Serialization.CodeDomSerializers;
 #endif // !SILVERLIGHT
 using MsgPack.Serialization.EmittingSerializers;
 #endif // NETFX_CORE
-#endif // !!XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
-#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !!XAMIOS && !XAMDROID && !UNITY
+#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 using MsgPack.Serialization.ExpressionSerializers;
-#endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 
 namespace MsgPack.Serialization
 {
@@ -66,9 +70,9 @@ namespace MsgPack.Serialization
 		[Obsolete( "Use SerializationContext.Default.GetSerializer<T>() instead." )]
 		public static MessagePackSerializer<T> Create<T>()
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			return Create<T>( SerializationContext.Default );
 		}
@@ -99,7 +103,7 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context )
 		{
-#if XAMIOS || XAMDROID || UNITY_IPHONE || UNITY_ANDROID
+#if XAMIOS || XAMDROID || UNITY
 			return context.GetSerializer<T>();
 #else
 
@@ -158,17 +162,17 @@ namespace MsgPack.Serialization
 #endif // NETFX_CORE else
 
 			return new AutoMessagePackSerializer<T>( context, builder );
-#endif // XAMIOS || XAMDROID || UNITY_IPHONE || UNITY_ANDROID else
+#endif // XAMIOS || XAMDROID || UNITY else
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#if !XAMIOS && !XAMDROID && !UNITY
 #if !SILVERLIGHT && !NETFX_35
 		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
 #else
 		private static readonly object _syncRoot = new object();
 		private static readonly Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, IMessagePackSingleObjectSerializer>>();
 #endif // !SILVERLIGHT && !NETFX_35
-#endif // !XAMIOS && !XAMDROID && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !XAMIOS && !XAMDROID && !UNITY
 
 		/// <summary>
 		///		Creates new <see cref="IMessagePackSerializer"/> instance with <see cref="SerializationContext.Default"/>.
@@ -219,11 +223,11 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Ensures( Contract.Result<IMessagePackSerializer>() != null );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
-#if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
+#if XAMIOS || XAMDROID || UNITY
 			return context.GetSerializer( targetType );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
@@ -283,10 +287,10 @@ namespace MsgPack.Serialization
 				);
 #endif // NETFX_CORE
 			return factory( context );
-#endif // XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE else
+#endif // XAMIOS || XAMDROID || UNITY else
 		}
 
-#if XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
+#if XAMIOS || XAMDROID || UNITY
 		private static readonly System.Reflection.MethodInfo CreateReflectionInternal_1 = 
 			typeof( MessagePackSerializer ).GetMethod( 
 				"CreateReflectionInternal", 
@@ -298,7 +302,7 @@ namespace MsgPack.Serialization
 
 		internal static IMessagePackSingleObjectSerializer CreateReflectionInternal( SerializationContext context, Type targetType )
 		{
-#if UNITY_ANDROID || UNITY_IPHONE
+#if UNITY_ANDROID || UNITY
 			return
 				(
 					Delegate.CreateDelegate( 
@@ -312,7 +316,7 @@ namespace MsgPack.Serialization
 				as Func<SerializationContext, object> )( context ) as IMessagePackSingleObjectSerializer;
 #endif
 		}
-#endif // XAMIOS || XAMDROID || UNITY_ANDROID || UNITY_IPHONE
+#endif // XAMIOS || XAMDROID || UNITY
 
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context )
 		{
@@ -333,7 +337,7 @@ namespace MsgPack.Serialization
 					{
 						return ReflectionSerializerHelper.CreateReflectionEnuMessagePackSerializer<T>( context );
 					}
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
 					if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
 								typeof( T ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
 							  && typeof( T ).GetIsPublic() &&
@@ -341,7 +345,7 @@ namespace MsgPack.Serialization
 					{
 						return new ReflectionTupleMessagePackSerializer<T>( context );
 					}
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 
 					return new ReflectionObjectMessagePackSerializer<T>( context );
 				}

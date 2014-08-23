@@ -18,12 +18,16 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -58,17 +62,17 @@ namespace MsgPack.Serialization
 			var asProperty = source as PropertyInfo;
 			var asField = source as FieldInfo;
 			// GetSetMethod() on WinRT is not compabitle with CLR. CLR returns null but WinRT returns non-null for non-public setter.
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assert( asProperty != null || asField != null );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 			return asProperty != null ? ( asProperty.CanWrite && asProperty.GetSetMethod() != null && asProperty.GetSetMethod().IsPublic ) : !asField.IsInitOnly;
 		}
 
 		public static CollectionTraits GetCollectionTraits( this Type source )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assert( !source.GetContainsGenericParameters() );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 			/*
 			 * SPEC
 			 * If the object has single public method TEnumerator GetEnumerator() ( where TEnumerator implements IEnumerator<TItem>),
@@ -148,10 +152,10 @@ namespace MsgPack.Serialization
 							new CollectionTraits(
 								source.Implements( typeof( IList<> ) )
 								? CollectionDetailedKind.GenericList
-#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_35 && !UNITY
 								: source.Implements( typeof( ISet<> ) )
 								? CollectionDetailedKind.GenericSet
-#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !NETFX_35 && !UNITY
 								: source.Implements( typeof( ICollection<> ) )
 								? CollectionDetailedKind.GenericCollection
 								: CollectionDetailedKind.GenericEnumerable,
@@ -166,9 +170,9 @@ namespace MsgPack.Serialization
 
 			Type ienumerableT = null;
 			Type icollectionT = null;
-#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_35 && !UNITY
 			Type isetT = null;
-#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !NETFX_35 && !UNITY
 			Type ilistT = null;
 			Type idictionaryT = null;
 			Type ienumerable = null;
@@ -213,10 +217,10 @@ namespace MsgPack.Serialization
 							new CollectionTraits(
 								( source ==typeof( IList<MessagePackObject> ) || source.Implements( typeof( IList<MessagePackObject> ) ) )
 								? CollectionDetailedKind.GenericList
-#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_35 && !UNITY
 								: ( source ==typeof( ISet<MessagePackObject> ) || source.Implements( typeof( ISet<MessagePackObject> ) ) )
 								? CollectionDetailedKind.GenericSet
-#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !NETFX_35 && !UNITY
 								: ( source ==typeof( ICollection<MessagePackObject> ) || source.Implements( typeof( ICollection<MessagePackObject> ) ) )
 								? CollectionDetailedKind.GenericCollection
 								: CollectionDetailedKind.GenericEnumerable,
@@ -247,7 +251,7 @@ namespace MsgPack.Serialization
 						}
 						ilistT = type;
 					}
-#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_35 && !UNITY
 					else if ( genericTypeDefinition == typeof( ISet<> ) )
 					{
 						if ( isetT != null )
@@ -256,7 +260,7 @@ namespace MsgPack.Serialization
 						}
 						isetT = type;
 					}
-#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !NETFX_35 && !UNITY
 					else if ( genericTypeDefinition == typeof( ICollection<> ) )
 					{
 						if ( icollectionT != null )
@@ -315,10 +319,10 @@ namespace MsgPack.Serialization
 					new CollectionTraits(
 						( ilistT != null )
 						? CollectionDetailedKind.GenericList
-#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_35 && !UNITY
 						: ( isetT != null )
 						? CollectionDetailedKind.GenericSet
-#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !NETFX_35 && !UNITY
 						: ( icollectionT != null )
 						? CollectionDetailedKind.GenericCollection
 						: CollectionDetailedKind.GenericEnumerable,
@@ -381,13 +385,13 @@ namespace MsgPack.Serialization
 
 			if ( index < 0 )
 			{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 #if !NETFX_35
 				Contract.Assert( false, interfaceType + "::" + name + "(" + String.Join<Type>( ", ", parameterTypes ) + ") is not found in " + targetType );
 #else
 				Contract.Assert( false, interfaceType + "::" + name + "(" + String.Join( ", ", parameterTypes.Select( t => t.ToString() ).ToArray() ) + ") is not found in " + targetType );
 #endif // !NETFX_35
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 				// ReSharper disable once HeuristicUnreachableCode
 				return null;
 			}
@@ -463,9 +467,9 @@ namespace MsgPack.Serialization
 		private static bool FilterCollectionType( Type type, object filterCriteria )
 		{
 #if !NETFX_CORE
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assert( type.IsInterface );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 			return type.Assembly == typeof( Array ).Assembly && ( type.Namespace == "System.Collections" || type.Namespace == "System.Collections.Generic" );
 #else
 			var typeInfo = type.GetTypeInfo();

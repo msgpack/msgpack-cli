@@ -18,10 +18,14 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 namespace MsgPack
 {
@@ -32,9 +36,9 @@ namespace MsgPack
 	{
 		public static sbyte ToSByte( byte[] buffer, int offset )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assume( buffer.Length >= offset + sizeof( sbyte ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			unchecked
 			{
@@ -44,9 +48,9 @@ namespace MsgPack
 
 		public static short ToInt16( byte[] buffer, int offset )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assume( buffer.Length >= offset + sizeof( short ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			unchecked
 			{
@@ -56,9 +60,9 @@ namespace MsgPack
 
 		public static int ToInt32( byte[] buffer, int offset )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assume( buffer.Length >= offset + sizeof( int ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			unchecked
 			{
@@ -68,9 +72,9 @@ namespace MsgPack
 
 		public static long ToInt64( byte[] buffer, int offset )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assume( buffer.Length >= offset + sizeof( long ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			unchecked
 			{
@@ -82,18 +86,18 @@ namespace MsgPack
 
 		public static byte ToByte( byte[] buffer, int offset )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assume( buffer.Length >= offset + sizeof( byte ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			return buffer[ offset ];
 		}
 
 		public static ushort ToUInt16( byte[] buffer, int offset )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assume( buffer.Length >= offset + sizeof( ushort ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			unchecked
 			{
@@ -103,9 +107,9 @@ namespace MsgPack
 
 		public static uint ToUInt32( byte[] buffer, int offset )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assume( buffer.Length >= offset + sizeof( uint ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			unchecked
 			{
@@ -115,9 +119,9 @@ namespace MsgPack
 
 		public static ulong ToUInt64( byte[] buffer, int offset )
 		{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assume( buffer.Length >= offset + sizeof( ulong ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			unchecked
 			{

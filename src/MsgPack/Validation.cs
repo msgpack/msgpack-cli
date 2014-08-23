@@ -18,10 +18,14 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -38,10 +42,10 @@ namespace MsgPack
 	{
 		public static void ValidateBuffer<T>( T[] byteArray, int offset, long length, string nameOfByteArray, string nameOfLength, bool validateBufferSize )
 		{
-#if !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#if !NETFX_35 && !UNITY
 			Contract.Assume( !String.IsNullOrWhiteSpace( nameOfByteArray ) );
 			Contract.Assume( !String.IsNullOrWhiteSpace( nameOfLength ) );
-#endif // !NETFX_35 && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !NETFX_35 && !UNITY
 
 			if ( byteArray == null )
 			{
@@ -97,9 +101,9 @@ namespace MsgPack
 		private static readonly Regex UnicodeTr15Annex7IdentifierPattern =
 			new Regex(
 				UnicodeTr15Annex7Idneifier,
-#if !SILVERLIGHT && !NETFX_CORE && !UNITY_ANDROID && !UNITY_IPHONE
+#if !SILVERLIGHT && !NETFX_CORE && !UNITY
 				RegexOptions.Compiled |
-#endif // !SILVERLIGHT && !NETFX_CORE && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !SILVERLIGHT && !NETFX_CORE && !UNITY
 				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline
 			);
 
@@ -129,9 +133,9 @@ namespace MsgPack
 				}
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assert( position >= 0 );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			var category = CharUnicodeInfo.GetUnicodeCategory( methodName, position );
 			// ReSharper disable RedundantIfElseBlock
@@ -166,9 +170,9 @@ namespace MsgPack
 		private static readonly Regex NamespacePattern =
 			new Regex(
 				"^(" + UnicodeTr15Annex7Idneifier + @")(\." + UnicodeTr15Annex7Idneifier + ")*$",
-#if !SILVERLIGHT && !NETFX_CORE && !UNITY_ANDROID && !UNITY_IPHONE
+#if !SILVERLIGHT && !NETFX_CORE && !UNITY
 				RegexOptions.Compiled |
-#endif // !SILVERLIGHT && !NETFX_CORE && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !SILVERLIGHT && !NETFX_CORE && !UNITY
 				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline
 			);
 
@@ -198,9 +202,9 @@ namespace MsgPack
 				}
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assert( position >= 0 );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 			var category = CharUnicodeInfo.GetUnicodeCategory( @namespace, position );
 			// ReSharper disable RedundantIfElseBlock

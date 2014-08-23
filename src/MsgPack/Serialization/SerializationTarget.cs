@@ -21,11 +21,15 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 using System.Diagnostics.Contracts;
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -72,9 +76,9 @@ namespace MsgPack.Serialization
 
 			// ID order.
 
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 			Contract.Assert( entries[ 0 ].Contract.Id >= 0 );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 
 			if ( context.CompatibilityOptions.OneBoundDataMemberOrder && entries[ 0 ].Contract.Id == 0 )
 			{
@@ -85,9 +89,9 @@ namespace MsgPack.Serialization
 			var result = new List<SerializingMember>( maxId + 1 );
 			for ( int source = 0, destination = context.CompatibilityOptions.OneBoundDataMemberOrder ? 1 : 0; source < entries.Length; source++, destination++ )
 			{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 				Contract.Assert( entries[ source ].Contract.Id >= 0 );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 
 				if ( entries[ source ].Contract.Id < destination )
 				{
@@ -109,9 +113,9 @@ namespace MsgPack.Serialization
 		// internal for testing
 		internal static IEnumerable<SerializingMember> GetTargetMembers( Type type )
 		{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 			Contract.Assert( type != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 #if !NETFX_CORE
 			var members =
 				type.FindMembers(

@@ -19,10 +19,10 @@ private void WriteUnpack( Type type )
 private void WriteUnpackCore( Type type, bool isNullable )
 {
 #>
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -249,9 +249,9 @@ var resultValue = <#= allocationWriter( "size", "contentBufferOffset" ) #>;
 private void WriteUnpackString()
 {
 #>
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 Contract.Assert( encoding != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 <#+
 	WriteUnpackRawLength( typeof( String ).FullName, "result" );
 #>
@@ -319,10 +319,10 @@ private void WriteUnpackRawLength( string typeName, string resultVariable )
 {
 #>
 #region UnpackRawLength
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -424,10 +424,10 @@ if( bytesRead < <#= lengthVariable #> )
 private void WriteUnpackObject()
 {
 #>
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -716,9 +716,9 @@ foreach( var entry in
 #>
 	default:
 	{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 		Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 		throw new UnassignedMessageTypeException( String.Format( CultureInfo.CurrentCulture, "Unknown header value 0x{0:X}", header ) );
 	}
 }
@@ -763,10 +763,10 @@ private void WriteUnpackArrayLength()
 {
 #>
 #region UnpackArrayLength
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -846,10 +846,10 @@ private void WriteUnpackMapLength()
 {
 #>
 #region UnpackMapLength
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
 if( header < 0 )
@@ -928,10 +928,10 @@ private void WriteUnpackExtendedTypeObject()
 {
 	#>
 #region UnpackExt
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 Contract.Assert( source != null );
 Contract.Assert( buffer != null );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 
 var header = source.ReadByte();
 if( header < 0 )

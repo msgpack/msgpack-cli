@@ -18,13 +18,17 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 using MsgPack.Serialization.DefaultSerializers;
 
 namespace MsgPack.Serialization
@@ -71,9 +75,9 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 #endif
 
@@ -131,9 +135,9 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 #endif
 
@@ -193,9 +197,9 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 #endif
 
@@ -254,9 +258,9 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 #endif
 
@@ -317,9 +321,9 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotArrayHeader();
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 #endif
 
@@ -380,9 +384,9 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotMapHeader();
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 #endif
 
@@ -458,9 +462,9 @@ namespace MsgPack.Serialization
 				throw SerializationExceptions.NewIsNotMapHeader();
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 #endif
 

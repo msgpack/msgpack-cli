@@ -18,13 +18,17 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 using System.Diagnostics.Contracts;
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 using System.Globalization;
 using System.Linq;
 #if NETFX_CORE
@@ -437,9 +441,9 @@ namespace MsgPack
 
 		private static bool IntegerSingleEquals( MessagePackObject integer, MessagePackObject real )
 		{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 			Contract.Assert( integer._handleOrTypeCode as ValueTypeCode != null, "integer._handleOrTypeCode as ValueTypeCode != null" );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
 			{
 				return unchecked( ( long )integer._value ) == ( float )real;
@@ -453,9 +457,9 @@ namespace MsgPack
 
 		private static bool IntegerDoubleEquals( MessagePackObject integer, MessagePackObject real )
 		{
-#if DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#if DEBUG && !UNITY
 			Contract.Assert( integer._handleOrTypeCode as ValueTypeCode != null, "integer._handleOrTypeCode as ValueTypeCode != null" );
-#endif // DEBUG && !UNITY_ANDROID && !UNITY_IPHONE
+#endif // DEBUG && !UNITY
 			if ( ( integer._handleOrTypeCode as ValueTypeCode ).IsSigned )
 			{
 				return unchecked( ( long )integer._value ) == ( double )real;
@@ -522,9 +526,9 @@ namespace MsgPack
 			}
 
 			{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 				Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 				return 0;
 			}
 			// ReSharper restore NonReadonlyFieldInGetHashCode
@@ -795,9 +799,9 @@ namespace MsgPack
 			}
 
 			// may be string
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.Assert( false, String.Format( "(this._handleOrTypeCode is string) but {0}", this._handleOrTypeCode.GetType() ) );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 			// ReSharper disable HeuristicUnreachableCode
 			if ( isJson )
 			{
@@ -838,9 +842,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "type" );
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 
 			if ( this._handleOrTypeCode == null )
@@ -1027,9 +1031,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "packer" );
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 
 			if ( this._handleOrTypeCode == null )
@@ -1158,9 +1162,9 @@ namespace MsgPack
 				throw new ArgumentNullException( "encoding" );
 			}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 
 			if ( this.IsNil )
@@ -1173,9 +1177,9 @@ namespace MsgPack
 			try
 			{
 				var asMessagePackString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 				Contract.Assert( asMessagePackString != null );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 				if ( encoding is UTF8Encoding )
 				{
@@ -1209,9 +1213,9 @@ namespace MsgPack
 		public string AsStringUtf16()
 		{
 			VerifyUnderlyingType<byte[]>( this, null );
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 
 			if ( this.IsNil )
@@ -1222,9 +1226,9 @@ namespace MsgPack
 			try
 			{
 				MessagePackString asMessagePackString = this._handleOrTypeCode as MessagePackString;
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 				Contract.Assert( asMessagePackString != null );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 
 				if ( asMessagePackString.UnsafeGetString() != null )
 				{
@@ -1542,9 +1546,9 @@ namespace MsgPack
 					return MessagePackExtendedTypeObject.Unpack( unchecked( ( byte ) this._value ), asExtendedTypeObject );
 				}
 
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 				Contract.Assert( false, "Unknwon type:" + this._handleOrTypeCode );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 				return null;
 			}
 			else
@@ -1597,9 +1601,9 @@ namespace MsgPack
 					}
 					default:
 					{
-#if !UNITY_ANDROID && !UNITY_IPHONE
+#if !UNITY
 						Contract.Assert( false, "Unknwon type code:" + asType.TypeCode );
-#endif // !UNITY_ANDROID && !UNITY_IPHONE
+#endif // !UNITY
 						// ReSharper disable once HeuristicUnreachableCode
 						return null;
 					}
