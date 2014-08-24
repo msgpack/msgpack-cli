@@ -84,4 +84,8 @@
     <Preserve Path="SilverlightExtensions.cs" />
     <Include Path="TupleItems.cs" />
   </Project>
+  <Project Name="MsgPack.Silverlight.WindowsPhone" Base="MsgPack.WinRT.Portable">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="WinRTCompatibility.cs" />
+  </Project>
 </ProjectSync>

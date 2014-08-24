@@ -501,7 +501,7 @@ namespace MsgPack
 			switch ( WinRTCompatibility.GetTypeCode( value.GetType() ) )
 #else
 			switch ( Type.GetTypeCode( value.GetType() ) )
-#endif
+#endif // NETFX_CORE
 			{
 				case TypeCode.Boolean:
 				{

@@ -377,7 +377,7 @@ namespace MsgPack.Serialization
 
 			var map = targetType.GetInterfaceMap( interfaceType );
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT || WINDOWS_PHONE
 			int index = Array.FindIndex( map.InterfaceMethods, method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );
 #else
 			int index = map.InterfaceMethods.FindIndex( method => method.Name == name && method.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameterTypes ) );

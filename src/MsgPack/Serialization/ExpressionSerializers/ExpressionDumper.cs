@@ -492,7 +492,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 		protected override Expression VisitDynamic( DynamicExpression node )
 		{
 			this.ThrowUnsupportedNodeException( node );

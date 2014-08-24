@@ -23,9 +23,9 @@
 #endif
 
 using System;
-#if !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Concurrent;
-#endif // !NETFX_35 && !UNITY
+#endif // !NETFX_35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Generic;
 #if !UNITY
 using System.Diagnostics.Contracts;
@@ -151,14 +151,14 @@ namespace MsgPack.Serialization
 		/// <param name="args">The args for formatting.</param>
 		public static void TraceEvent( string format, params object[] args )
 		{
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 			if ( !_traceEnabled )
 			{
 				return;
 			}
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
-#endif // !NETFX_CORE
+#endif // !NETFX_CORE && !WINDOWS_PHONE
 		}
 
 		/// <summary>
@@ -166,14 +166,14 @@ namespace MsgPack.Serialization
 		/// </summary>
 		public static void FlushTraceData()
 		{
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 			if ( !_traceEnabled )
 			{
 				return;
 			}
 
 			Tracer.Emit.TraceData( Tracer.EventType.DefineType, Tracer.EventId.DefineType, _ilTraceWriter.ToString() );
-#endif // !NETFX_CORE
+#endif // !NETFX_CORE && !WINDOWS_PHONE
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT && !NETFX_35

@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "samples\Samples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.WinRT.Portable", "src\MsgPack.WinRT.Portable\MsgPack.WinRT.Portable.csproj", "{E2817364-F217-465F-BE3B-A5F85E2F8667}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Silverlight.WindowsPhone", "src\MsgPack.Silverlight.WindowsPhone\MsgPack.Silverlight.WindowsPhone.csproj", "{336AC996-060D-4109-B99B-854CCEEEA695}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CodeAnalysis|Any CPU = CodeAnalysis|Any CPU
@@ -321,6 +323,34 @@ Global
 		{E2817364-F217-465F-BE3B-A5F85E2F8667}.Release|ARM.ActiveCfg = Release|Any CPU
 		{E2817364-F217-465F-BE3B-A5F85E2F8667}.Release|x64.ActiveCfg = Release|Any CPU
 		{E2817364-F217-465F-BE3B-A5F85E2F8667}.Release|x86.ActiveCfg = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|Any CPU.ActiveCfg = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|Any CPU.Build.0 = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|ARM.ActiveCfg = Release|ARM
+		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|ARM.Build.0 = Release|ARM
+		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|x64.ActiveCfg = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|x86.ActiveCfg = Release|x86
+		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|x86.Build.0 = Release|x86
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Debug|ARM.ActiveCfg = Debug|ARM
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Debug|ARM.Build.0 = Debug|ARM
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Debug|x86.ActiveCfg = Debug|x86
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Debug|x86.Build.0 = Debug|x86
+		{336AC996-060D-4109-B99B-854CCEEEA695}.PerformanceTest|Any CPU.ActiveCfg = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.PerformanceTest|Any CPU.Build.0 = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.PerformanceTest|ARM.ActiveCfg = Release|ARM
+		{336AC996-060D-4109-B99B-854CCEEEA695}.PerformanceTest|ARM.Build.0 = Release|ARM
+		{336AC996-060D-4109-B99B-854CCEEEA695}.PerformanceTest|x64.ActiveCfg = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.PerformanceTest|x86.ActiveCfg = Release|x86
+		{336AC996-060D-4109-B99B-854CCEEEA695}.PerformanceTest|x86.Build.0 = Release|x86
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Release|ARM.ActiveCfg = Release|ARM
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Release|ARM.Build.0 = Release|ARM
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Release|x64.ActiveCfg = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Release|x86.ActiveCfg = Release|x86
+		{336AC996-060D-4109-B99B-854CCEEEA695}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -341,5 +371,6 @@ Global
 		{D6D0FB24-529F-4E22-9305-607F705B35B5} = {87A17015-9338-431E-B338-57BDA03984C1}
 		{7F8D9786-383D-4441-8A3A-5E305E26B965} = {7D2D3DAB-6EB6-463D-B186-E875DA48DF9F}
 		{E2817364-F217-465F-BE3B-A5F85E2F8667} = {72B56E2A-4E66-424E-A5A1-B3C282FE1A57}
+		{336AC996-060D-4109-B99B-854CCEEEA695} = {17266A11-2C3B-4DAA-B87E-CF84A502D0CD}
 	EndGlobalSection
 EndGlobal

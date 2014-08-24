@@ -22,7 +22,7 @@
 #define UNITY
 #endif
 
-#if !UNITY
+#if !UNITY && !WINDOWS_PHONE
 using System;
 using System.Numerics;
 
@@ -61,4 +61,4 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 	}
 }
-#endif // !UNITY
+#endif // !UNITY && !WINDOWS_PHONE

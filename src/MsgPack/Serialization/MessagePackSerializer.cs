@@ -37,21 +37,21 @@ using System.Diagnostics.Contracts;
 #if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 using System.Globalization;
 #endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
-#if NETFX_CORE
+#if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;
 #endif
 #if !XAMIOS && !XAMDROID && !UNITY
 using MsgPack.Serialization.AbstractSerializers;
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 #if !SILVERLIGHT
 using MsgPack.Serialization.CodeDomSerializers;
 #endif // !SILVERLIGHT
 using MsgPack.Serialization.EmittingSerializers;
-#endif // NETFX_CORE
+#endif // NETFX_CORE && !WINDOWS_PHONE
 #endif // !!XAMIOS && !XAMDROID && !UNITY
-#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
+#if !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 using MsgPack.Serialization.ExpressionSerializers;
-#endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
+#endif // !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 
 namespace MsgPack.Serialization
 {
@@ -214,7 +214,7 @@ namespace MsgPack.Serialization
 
 			//Func<SerializationContext, SerializerBuilder<T>> builderProvider;
 			ISerializerBuilder<T> builder;
-#if NETFX_CORE
+#if NETFX_CORE || WINDOWS_PHONE
 			builder = new ExpressionTreeSerializerBuilder<T>();
 #elif SILVERLIGHT
 			builder = new DynamicMethodSerializerBuilder<T>();
