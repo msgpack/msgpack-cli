@@ -67,7 +67,7 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		New <see cref="MessagePackSerializer{T}"/> instance to serialize/deserialize the object tree which the top is <typeparamref name="T"/>.
 		/// </returns>
-		[Obsolete( "Use SerializationContext.Default.GetSerializer<T>() instead." )]
+		[Obsolete( "Use Get<T>() instead." )]
 		public static MessagePackSerializer<T> Create<T>()
 		{
 #if !UNITY
@@ -90,7 +90,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
 		/// </exception>
-		[Obsolete( "Use SerializationContext.GetSerializer<T>() instead." )]
+		[Obsolete( "Use Get<T>(SerializationContext) instead." )]
 		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
 		{
 			if ( context == null )
@@ -99,6 +99,109 @@ namespace MsgPack.Serialization
 			}
 
 			return CreateInternal<T>( context );
+		}
+
+		/// <summary>
+		///		Gets existing or new <see cref="MessagePackSerializer{T}"/> instance with default context (<see cref="SerializationContext.Default"/>).
+		/// </summary>
+		/// <typeparam name="T">Target type.</typeparam>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <remarks>
+		///		This method simply invokes <see cref="Get{T}(SerializationContext)"/> with <see cref="SerializationContext.Default"/> for the <c>context</c>.
+		/// </remarks>
+		public static MessagePackSerializer<T> Get<T>()
+		{
+			return Get<T>( SerializationContext.Default );
+		}
+
+		/// <summary>
+		///		Gets existing or new <see cref="MessagePackSerializer{T}"/> instance with default context (<see cref="SerializationContext.Default"/>).
+		/// </summary>
+		/// <typeparam name="T">Target type.</typeparam>
+		/// <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <remarks>
+		///		This method simply invokes <see cref="Get{T}(SerializationContext,Object)"/> with <see cref="SerializationContext.Default"/> for the <c>context</c>.
+		/// </remarks>
+		public static MessagePackSerializer<T> Get<T>( object providerParameter )
+		{
+			return Get<T>( SerializationContext.Default, providerParameter );
+		}
+
+		/// <summary>
+		///		Gets existing or new <see cref="MessagePackSerializer{T}"/> instance with specified <see cref="SerializationContext"/>.
+		/// </summary>
+		/// <typeparam name="T">Target type.</typeparam>
+		/// <param name="context">
+		///		<see cref="SerializationContext"/> to store known/created serializers.
+		/// </param>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		This method simply invokes <see cref="Get{T}(SerializationContext,Object)"/> with <c>null</c> for the <c>providerParameter</c>.
+		/// </remarks>
+		public static MessagePackSerializer<T> Get<T>( SerializationContext context )
+		{
+			return Get<T>( context, null );
+		}
+
+		/// <summary>
+		///		Gets existing or new <see cref="MessagePackSerializer{T}"/> instance with specified <see cref="SerializationContext"/>.
+		/// </summary>
+		/// <typeparam name="T">Target type.</typeparam>
+		/// <param name="context">
+		///		<see cref="SerializationContext"/> to store known/created serializers.
+		/// </param>
+		/// <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+		/// <returns>
+		///		<see cref="MessagePackSerializer{T}"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		<para>
+		///			This method simply invokes <see cref="SerializationContext.GetSerializer{T}(Object)"/>, so see the method description for details.
+		///		</para>
+		///		<para>
+		///			Currently, only following provider parameters are supported.
+		///			<list type="table">
+		///				<listheader>
+		///					<term>Target type</term>
+		///					<description>Provider parameter</description>
+		///				</listheader>
+		///				<item>
+		///					<term><see cref="EnumMessagePackSerializer{TEnum}"/> or its descendants.</term>
+		///					<description><see cref="EnumSerializationMethod"/>. The returning instance corresponds to this value for serialization.</description>
+		///				</item>
+		///			</list>
+		///			<note><c>null</c> is valid value for <paramref name="providerParameter"/> and it indeicates default behavior of parameter.</note>
+		///		</para>
+		/// </remarks>
+		public static MessagePackSerializer<T> Get<T>( SerializationContext context, object providerParameter )
+		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			return context.GetSerializer<T>( providerParameter );
 		}
 
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context )
@@ -187,7 +290,7 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		To avoid boxing and strongly typed API is prefered, use <see cref="Create{T}()"/> instead when possible.
 		/// </remarks>
-		[Obsolete( "Use SerializationContext.Default.GetSerializer(Type) instead." )]
+		[Obsolete( "Use Get(Type) instead." )]
 		public static IMessagePackSingleObjectSerializer Create( Type targetType )
 		{
 			return Create( targetType, SerializationContext.Default );
@@ -210,7 +313,7 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		To avoid boxing and strongly typed API is prefered, use <see cref="Create{T}(SerializationContext)"/> instead when possible.
 		/// </remarks>
-		[Obsolete( "Use SerializationContext.GetSerializer(Type) instead." )]
+		[Obsolete( "Use Get(Type,SerializationContext) instead." )]
 		public static IMessagePackSingleObjectSerializer Create( Type targetType, SerializationContext context )
 		{
 			if ( targetType == null )
@@ -288,6 +391,136 @@ namespace MsgPack.Serialization
 #endif // NETFX_CORE
 			return factory( context );
 #endif // XAMIOS || XAMDROID || UNITY else
+		}
+
+		/// <summary>
+		///		Gets existing or new <see cref="IMessagePackSerializer"/> instance with default context (<see cref="SerializationContext.Default"/>).
+		/// </summary>
+		/// <param name="targetType">Target type.</param>
+		/// <returns>
+		///		<see cref="IMessagePackSingleObjectSerializer"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="targetType"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		<para>
+		///			This method simply invokes <see cref="SerializationContext.GetSerializer(Type)"/>, so see the method description for details.
+		///		</para>
+		///		<para>
+		///		Although <see cref="Get{T}()"/> is preferred,
+		///		this method can be used from non-generic type or methods.
+		///		</para>
+		/// </remarks>
+		public static IMessagePackSingleObjectSerializer Get(
+			Type targetType )
+		{
+			return Get( targetType, SerializationContext.Default, null );
+		}
+
+		/// <summary>
+		///		Gets existing or new <see cref="IMessagePackSerializer"/> instance with default context (<see cref="SerializationContext.Default"/>).
+		/// </summary>
+		/// <param name="targetType">Target type.</param>
+		/// <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+		/// <returns>
+		///		<see cref="IMessagePackSingleObjectSerializer"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="targetType"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		<para>
+		///			This method simply invokes <see cref="SerializationContext.GetSerializer(Type,Object)"/>, so see the method description for details.
+		///		</para>
+		///		<para>
+		///		Although <see cref="Get{T}(Object)"/> is preferred,
+		///		this method can be used from non-generic type or methods.
+		///		</para>
+		/// </remarks>
+		public static IMessagePackSingleObjectSerializer Get(
+			Type targetType,
+			object providerParameter )
+		{
+			return Get( targetType, SerializationContext.Default, providerParameter );
+		}
+
+		/// <summary>
+		///		Gets existing or new <see cref="IMessagePackSerializer"/> instance with specified <see cref="SerializationContext"/>.
+		/// </summary>
+		/// <param name="targetType">Target type.</param>
+		/// <param name="context">
+		///		<see cref="SerializationContext"/> to store known/created serializers.
+		/// </param>
+		/// <returns>
+		///		<see cref="IMessagePackSingleObjectSerializer"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="targetType"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		<para>
+		///			This method simply invokes <see cref="SerializationContext.GetSerializer(Type)"/>, so see the method description for details.
+		///		</para>
+		///		<para>
+		///		Although <see cref="Get{T}(SerializationContext)"/> is preferred,
+		///		this method can be used from non-generic type or methods.
+		///		</para>
+		/// </remarks>
+		public static IMessagePackSingleObjectSerializer Get(
+			Type targetType,
+			SerializationContext context )
+		{
+			return Get( targetType, context, null );
+		}
+
+		/// <summary>
+		///		Gets existing or new <see cref="IMessagePackSerializer"/> instance with specified <see cref="SerializationContext"/>.
+		/// </summary>
+		/// <param name="targetType">Target type.</param>
+		/// <param name="context">
+		///		<see cref="SerializationContext"/> to store known/created serializers.
+		/// </param>
+		/// <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+		/// <returns>
+		///		<see cref="IMessagePackSingleObjectSerializer"/>.
+		///		If there is exiting one, returns it.
+		///		Else the new instance will be created.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="targetType"/> is <c>null</c>.
+		///		Or, <paramref name="context"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		<para>
+		///			This method simply invokes <see cref="SerializationContext.GetSerializer(Type,Object)"/>, so see the method description for details.
+		///		</para>
+		///		<para>
+		///		Although <see cref="Get{T}(SerializationContext,Object)"/> is preferred,
+		///		this method can be used from non-generic type or methods.
+		///		</para>
+		/// </remarks>
+		public static IMessagePackSingleObjectSerializer Get(
+			Type targetType, SerializationContext context, object providerParameter )
+		{
+			if ( targetType == null )
+			{
+				throw new ArgumentNullException( "targetType" );
+			}
+
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			return context.GetSerializer( targetType, providerParameter );
 		}
 
 #if XAMIOS || XAMDROID || UNITY

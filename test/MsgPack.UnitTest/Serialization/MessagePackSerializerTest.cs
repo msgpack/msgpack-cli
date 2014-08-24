@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -43,7 +43,6 @@ namespace MsgPack.Serialization
 		}
 
 #pragma warning disable 618
-#if !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		[Test]
 		public void TestCreate1_WithoutContext_NewInstance()
 		{
@@ -64,8 +63,6 @@ namespace MsgPack.Serialization
 			Assert.That( second, Is.Not.Null );
 			Assert.That( first, Is.Not.SameAs( second ) );
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
-
 
 		[Test]
 		public void TestCreate1_WithContext_Null_Fail()
@@ -73,7 +70,6 @@ namespace MsgPack.Serialization
 			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Create<int>( null ) );
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		[Test]
 		public void TestCreate_WithoutContext_NewInstance()
 		{
@@ -83,7 +79,6 @@ namespace MsgPack.Serialization
 			Assert.That( second, Is.Not.Null );
 			Assert.That( first, Is.Not.SameAs( second ) );
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 
 		[Test]
 		public void TestCreate_WithoutContext_SameTypeAsCreate1()
@@ -95,7 +90,6 @@ namespace MsgPack.Serialization
 			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
 		}
 
-#if !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		[Test]
 		public void TestCreate_WithContext_NewInstance()
 		{
@@ -106,7 +100,6 @@ namespace MsgPack.Serialization
 			Assert.That( second, Is.Not.Null );
 			Assert.That( first, Is.Not.SameAs( second ) );
 		}
-#endif // !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 
 		[Test]
 		public void TestCreate_WithContext_SameTypeAsCreate1()
@@ -137,5 +130,80 @@ namespace MsgPack.Serialization
 			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Create( typeof( int ), null ) );
 		}
 #pragma warning restore 618
+
+		[Test]
+		public void TestGet1_WithoutContext_Ok()
+		{
+			var instance = MessagePackSerializer.Get<int>();
+			Assert.That( instance, Is.Not.Null );
+		}
+
+		[Test]
+		public void TestGet1_WithContext_Ok()
+		{
+			var context = new SerializationContext();
+			var instance = MessagePackSerializer.Get<int>( context );
+			Assert.That( instance, Is.Not.Null );
+		}
+
+		[Test]
+		public void TestGet1_WithContext_Null_Fail()
+		{
+			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get<int>( null ) );
+		}
+
+		[Test]
+		public void TestGet_WithoutContext_Ok()
+		{
+			var instance = MessagePackSerializer.Get( typeof( int ) );
+			Assert.That( instance, Is.Not.Null );
+		}
+
+		[Test]
+		public void TestGet_WithoutContext_SameTypeAsGet1()
+		{
+			var first = MessagePackSerializer.Get( typeof( int ) );
+			Assert.That( first, Is.Not.Null );
+			var second = MessagePackSerializer.Get<int>();
+			Assert.That( second, Is.Not.Null );
+			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
+		}
+
+		[Test]
+		public void TestGet_WithContext_Ok()
+		{
+			var context = new SerializationContext();
+			var instance = MessagePackSerializer.Get( typeof( int ), context );
+			Assert.That( instance, Is.Not.Null );
+		}
+
+		[Test]
+		public void TestGet_WithContext_SameTypeAsGet1()
+		{
+			var context = new SerializationContext();
+			var first = MessagePackSerializer.Get( typeof( int ), context );
+			Assert.That( first, Is.Not.Null );
+			var second = MessagePackSerializer.Get<int>( context );
+			Assert.That( second, Is.Not.Null );
+			Assert.That( first.GetType(), Is.EqualTo( second.GetType() ) );
+		}
+
+		[Test]
+		public void TestGet_WithoutContext_TypeIsNull_Fail()
+		{
+			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get( null ) );
+		}
+
+		[Test]
+		public void TestGet_WithContext_TypeIsNull_Fail()
+		{
+			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get( null, new SerializationContext() ) );
+		}
+
+		[Test]
+		public void TestGet_WithContext_ContextIsNull_Fail()
+		{
+			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get( typeof( int ), null ) );
+		}
 	}
 }
