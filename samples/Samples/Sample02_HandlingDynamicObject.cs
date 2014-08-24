@@ -52,10 +52,13 @@ namespace Samples
 			var stream = new MemoryStream();
 
 			// Set using Map instead of Array to serialize complex object. See Sample03 for details.
-			SerializationContext.Default.SerializationMethod = SerializationMethod.Map;
+			var context = new SerializationContext();
+			context.SerializationMethod = SerializationMethod.Map;
+			// You can use default context if you want to use map in all serializations which use default context.
+			// SerializationContext.Default.SerializationMethod = SerializationMethod.Map;
 
 			// 1. Create serializer instance.
-			var serializer = SerializationContext.Default.GetSerializer<PhotoEntry>();
+			var serializer = MessagePackSerializer.Get<PhotoEntry>( context );
 
 			// 2. Serialize object to the specified stream.
 			serializer.Pack( stream, targetObject );

@@ -53,7 +53,7 @@ namespace Samples
 			var stream = new MemoryStream();
 
 			// 1. Create serializer instance.
-			var serializer = SerializationContext.Default.GetSerializer<PhotoEntry>();
+			var serializer = MessagePackSerializer.Get<PhotoEntry>();
 
 			// 2. Serialize object to the specified stream.
 			serializer.Pack( stream, targetObject );

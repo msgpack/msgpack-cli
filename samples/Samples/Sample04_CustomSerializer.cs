@@ -48,7 +48,7 @@ namespace Samples
 			context.Serializers.RegisterOverride( new NetUtcDateTimeSerializer( context ) );
 
 			// 3. Get a serializer instance with customized settings.
-			var serializer = context.GetSerializer<DateTime>( context );
+			var serializer = MessagePackSerializer.Get<DateTime>( context );
 
 			// Test it.
 			var dateTime = DateTime.Now;

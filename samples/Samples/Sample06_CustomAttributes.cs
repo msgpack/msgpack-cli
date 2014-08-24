@@ -24,21 +24,8 @@ using System.Runtime.Serialization;
 
 using MsgPack.Serialization;
 
-using NUnit.Framework;
-
 namespace Samples
 {
-	[TestFixture]
-	public class CustomAttributesSample
-	{
-		[Test]
-		public void Test()
-		{
-			var s1 = SerializationContext.Default.GetSerializer<DataContractSample>();
-			var s2 = SerializationContext.Default.GetSerializer<MessagePackMemberSample>();
-		}
-	}
-
 	// You can tweak serialization behavior via custom attributes.
 	public class MessagePackMemberSample
 	{

@@ -68,7 +68,7 @@ namespace Samples
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
 
 			// 3. Get a serializer instance with customized settings.
-			var serializer = context.GetSerializer<PhotoEntry>( context );
+			var serializer = MessagePackSerializer.Get<PhotoEntry>( context );
 
 			// Following instructions are omitted... see sample 01.
 		}

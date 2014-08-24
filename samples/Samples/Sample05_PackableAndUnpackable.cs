@@ -42,7 +42,7 @@ namespace Samples
 
 			// You can serialize/deserialize objects which implement IPackable and/or IUnpackable as usual.
 
-			var serializer = SerializationContext.Default.GetSerializer<PackableUnpackableObject>();
+			var serializer = MessagePackSerializer.Get<PackableUnpackableObject>();
 			serializer.Pack( stream, targetObject );
 			stream.Position = 0;
 			var deserializedObject = serializer.Unpack( stream );
