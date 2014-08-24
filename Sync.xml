@@ -37,7 +37,7 @@
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
   </Project>
-  <Project Name="MsgPack.WinRT" Base="MsgPack">
+  <Project Name="MsgPack.WinRT.Portable" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />

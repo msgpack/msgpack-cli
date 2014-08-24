@@ -147,9 +147,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.WinRT\MsgPack.WinRT.csproj">
-      <Project>{725997ad-f083-485e-bd88-f2a5bf34bee7}</Project>
-      <Name>MsgPack.WinRT</Name>
+    <ProjectReference Include="..\..\src\MsgPack.WinRT.Portable\MsgPack.WinRT.Portable.csproj">
+      <Project>{e2817364-f217-465f-be3b-a5f85e2f8667}</Project>
+      <Name>MsgPack.WinRT.Portable</Name>
     </ProjectReference>
     <ProjectReference Include="..\MsgPack.NUnitPortable\MsgPack.NUnitPortable.csproj">
       <Project>{fc521316-ebcd-4ef1-8235-c976b2a31eb0}</Project>
