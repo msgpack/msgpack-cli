@@ -32,6 +32,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override void PackToCore( Packer packer, FILETIME value )
 		{
 			packer.Pack( 
@@ -42,6 +43,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override FILETIME UnpackFromCore( Unpacker unpacker )
 		{
 			var value = MessagePackConvert.ToDateTime( unpacker.LastReadData.AsInt64() ).ToFileTimeUtc();

@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Security;
 using System.Text;
 
 using MsgPack.Serialization.AbstractSerializers;
@@ -206,52 +207,57 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		///		Generates codes for this context.
 		/// </summary>
 		/// <returns>The path of generated files.</returns>
+#if !NETFX_35
+		[SecuritySafeCritical]
+#endif // !NETFX_35
 		public IEnumerable<string> Generate()
 		{
-			var provider = CodeDomProvider.CreateProvider( this._configuration.Language );
-			var options =
-				new CodeGeneratorOptions
-				{
-					BlankLinesBetweenMembers = true,
-					ElseOnClosing = false,
-					IndentString = this._configuration.CodeIndentString,
-					VerbatimOrder = false
-				};
-
-			var directory =
-				Path.Combine(
-					this._configuration.OutputDirectory,
-					this._configuration.Namespace.Replace( Type.Delimiter, Path.DirectorySeparatorChar )
-				);
-			Directory.CreateDirectory( directory );
-
-			var result = new List<string>( _declaringTypes.Count );
-
-			foreach ( var declaringType in _declaringTypes )
+			using ( var provider = CodeDomProvider.CreateProvider( this._configuration.Language ) )
 			{
-				var typeFileName = declaringType.Value.Name;
-				if ( declaringType.Value.TypeParameters.Count > 0 )
+				var options =
+					new CodeGeneratorOptions
+					{
+						BlankLinesBetweenMembers = true,
+						ElseOnClosing = false,
+						IndentString = this._configuration.CodeIndentString,
+						VerbatimOrder = false
+					};
+
+				var directory =
+					Path.Combine(
+						this._configuration.OutputDirectory,
+						this._configuration.Namespace.Replace( Type.Delimiter, Path.DirectorySeparatorChar )
+						);
+				Directory.CreateDirectory( directory );
+
+				var result = new List<string>( _declaringTypes.Count );
+
+				foreach ( var declaringType in _declaringTypes )
 				{
-					typeFileName += "`" + declaringType.Value.TypeParameters.Count.ToString( CultureInfo.InvariantCulture );
+					var typeFileName = declaringType.Value.Name;
+					if ( declaringType.Value.TypeParameters.Count > 0 )
+					{
+						typeFileName += "`" + declaringType.Value.TypeParameters.Count.ToString( CultureInfo.InvariantCulture );
+					}
+
+					typeFileName += "." + provider.FileExtension;
+
+					var cn = new CodeNamespace( this._configuration.Namespace );
+					cn.Types.Add( declaringType.Value );
+					var cu = new CodeCompileUnit();
+					cu.Namespaces.Add( cn );
+
+					var filePath = Path.Combine( directory, typeFileName );
+					result.Add( filePath );
+
+					using ( var writer = new StreamWriter( filePath, false, Encoding.UTF8 ) )
+					{
+						provider.GenerateCodeFromCompileUnit( cu, writer, options );
+					}
 				}
 
-				typeFileName += "." + provider.FileExtension;
-
-				var cn = new CodeNamespace( this._configuration.Namespace );
-				cn.Types.Add( declaringType.Value );
-				var cu = new CodeCompileUnit();
-				cu.Namespaces.Add( cn );
-
-				var filePath = Path.Combine( directory, typeFileName );
-				result.Add( filePath );
-
-				using ( var writer = new StreamWriter( filePath, false, Encoding.UTF8 ) )
-				{
-					provider.GenerateCodeFromCompileUnit( cu, writer, options );
-				}
+				return result;
 			}
-
-			return result;
 		}
 
 		/// <summary>

@@ -30,6 +30,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._itemSerializer = ownerContext.GetSerializer<T>();
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, T[] objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Length );
@@ -39,6 +41,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T[] UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )
@@ -52,6 +55,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return result;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void UnpackToCore( Unpacker unpacker, T[] collection )
 		{
 			if ( !unpacker.IsArrayHeader )

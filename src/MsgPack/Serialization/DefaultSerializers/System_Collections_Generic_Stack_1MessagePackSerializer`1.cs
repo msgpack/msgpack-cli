@@ -34,6 +34,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._itemSerializer = ownerContext.GetSerializer<TItem>();
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected internal override void PackToCore( Packer packer, Stack<TItem> objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
@@ -43,6 +45,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override Stack<TItem> UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )
@@ -53,6 +56,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return new Stack<TItem>( this.UnpackItemsInReverseOrder( unpacker, UnpackHelpers.GetItemsCount( unpacker ) ) );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected internal override void UnpackToCore( Unpacker unpacker, Stack<TItem> collection )
 		{
 			if ( !unpacker.IsArrayHeader )

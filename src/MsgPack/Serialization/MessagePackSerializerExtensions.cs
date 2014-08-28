@@ -41,6 +41,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to serialize <paramref name="objectTree"/>.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
 		public static void Pack( this IMessagePackSerializer source, Stream stream, object objectTree )
 		{
 			Pack(source, stream, objectTree, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions  );
@@ -60,6 +61,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to serialize <paramref name="objectTree"/>.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "'objectTree' does not mean System.Object." )]
 		public static void Pack( this IMessagePackSerializer source, Stream stream, object objectTree, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
 			if ( source == null )

@@ -39,11 +39,13 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				)
 			) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void PackUnderlyingValueTo( Packer packer, T enumValue )
 		{
-			packer.Pack( UInt64.Parse( ( ( IFormattable ) enumValue ).ToString( "D", CultureInfo.InvariantCulture ) ) );
+			packer.Pack( UInt64.Parse( ( ( IFormattable ) enumValue ).ToString( "D", CultureInfo.InvariantCulture ), CultureInfo.InvariantCulture ) );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T UnpackFromUnderlyingValue( MessagePackObject messagePackObject )
 		{
 			return ( T )Enum.Parse( typeof( T ), messagePackObject.ToString(), false );

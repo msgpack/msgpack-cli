@@ -206,7 +206,8 @@ Global
 		{D45D4CBE-AFE7-4E2A-945D-47AED564C39D}.Release|ARM.ActiveCfg = Release|Any CPU
 		{D45D4CBE-AFE7-4E2A-945D-47AED564C39D}.Release|x64.ActiveCfg = Release|Any CPU
 		{D45D4CBE-AFE7-4E2A-945D-47AED564C39D}.Release|x86.ActiveCfg = Release|Any CPU
-		{F9477829-6A6D-4540-9F0D-68F8C6D8E18B}.CodeAnalysis|Any CPU.ActiveCfg = Release|Any CPU
+		{F9477829-6A6D-4540-9F0D-68F8C6D8E18B}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
+		{F9477829-6A6D-4540-9F0D-68F8C6D8E18B}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
 		{F9477829-6A6D-4540-9F0D-68F8C6D8E18B}.CodeAnalysis|ARM.ActiveCfg = Release|Any CPU
 		{F9477829-6A6D-4540-9F0D-68F8C6D8E18B}.CodeAnalysis|x64.ActiveCfg = Release|Any CPU
 		{F9477829-6A6D-4540-9F0D-68F8C6D8E18B}.CodeAnalysis|x86.ActiveCfg = Release|Any CPU
@@ -303,8 +304,8 @@ Global
 		{7F8D9786-383D-4441-8A3A-5E305E26B965}.Release|ARM.ActiveCfg = Release|Any CPU
 		{7F8D9786-383D-4441-8A3A-5E305E26B965}.Release|x64.ActiveCfg = Release|Any CPU
 		{7F8D9786-383D-4441-8A3A-5E305E26B965}.Release|x86.ActiveCfg = Release|Any CPU
-		{E2817364-F217-465F-BE3B-A5F85E2F8667}.CodeAnalysis|Any CPU.ActiveCfg = Release|Any CPU
-		{E2817364-F217-465F-BE3B-A5F85E2F8667}.CodeAnalysis|Any CPU.Build.0 = Release|Any CPU
+		{E2817364-F217-465F-BE3B-A5F85E2F8667}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
+		{E2817364-F217-465F-BE3B-A5F85E2F8667}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
 		{E2817364-F217-465F-BE3B-A5F85E2F8667}.CodeAnalysis|ARM.ActiveCfg = Release|Any CPU
 		{E2817364-F217-465F-BE3B-A5F85E2F8667}.CodeAnalysis|x64.ActiveCfg = Release|Any CPU
 		{E2817364-F217-465F-BE3B-A5F85E2F8667}.CodeAnalysis|x86.ActiveCfg = Release|Any CPU
@@ -323,8 +324,8 @@ Global
 		{E2817364-F217-465F-BE3B-A5F85E2F8667}.Release|ARM.ActiveCfg = Release|Any CPU
 		{E2817364-F217-465F-BE3B-A5F85E2F8667}.Release|x64.ActiveCfg = Release|Any CPU
 		{E2817364-F217-465F-BE3B-A5F85E2F8667}.Release|x86.ActiveCfg = Release|Any CPU
-		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|Any CPU.ActiveCfg = Release|Any CPU
-		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|Any CPU.Build.0 = Release|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
+		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
 		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|ARM.ActiveCfg = Release|ARM
 		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|ARM.Build.0 = Release|ARM
 		{336AC996-060D-4109-B99B-854CCEEEA695}.CodeAnalysis|x64.ActiveCfg = Release|Any CPU

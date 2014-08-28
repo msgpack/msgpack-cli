@@ -76,38 +76,6 @@ namespace MsgPack.Serialization
 			return methodCallExpression.Method;
 		}
 
-		private static ConstructorInfo ToConstructorCore<T>( Expression<T> source )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException( "source" );
-			}
-
-			var newObjectExpression = source.Body as NewExpression;
-			if ( newObjectExpression == null )
-			{
-				ThrowNotValidExpressionTypeException( source );
-			}
-
-			return newObjectExpression.Constructor;
-		}
-
-		public static MethodInfo ToOperator<T, TResult>( Expression<Func<T, TResult>> source )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException( "source" );
-			}
-
-			var unaryExpression = source.Body as UnaryExpression;
-			if ( unaryExpression == null )
-			{
-				ThrowNotValidExpressionTypeException( source );
-			}
-
-			return unaryExpression.Method;
-		}
-
 		public static MethodInfo ToOperator<T1, T2, TResult>( Expression<Func<T1, T2, TResult>> source )
 		{
 			if ( source == null )

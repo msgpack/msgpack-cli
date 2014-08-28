@@ -239,6 +239,7 @@ foreach( Type __type in __types )
 		public <#= __typeName #>( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal sealed override void PackToCore( Packer packer, <#= __type.FullName #> value )
 		{
 <#
@@ -285,6 +286,7 @@ foreach( var ctor in ctors )
 #>
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal sealed override  <#= __type.FullName #> UnpackFromCore( Unpacker unpacker )
 		{
 <#

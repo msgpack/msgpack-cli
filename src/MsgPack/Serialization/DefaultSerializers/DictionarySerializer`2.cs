@@ -61,6 +61,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, IDictionary<TKey, TValue> objectTree )
 		{
 			packer.PackMapHeader( objectTree.Count );
@@ -71,6 +73,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override IDictionary<TKey, TValue> UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -93,6 +96,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return collection;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
 		protected internal override void UnpackToCore( Unpacker unpacker, IDictionary<TKey, TValue> collection )
 		{
 			if ( this._collectionDeserializer != null )

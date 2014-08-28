@@ -46,61 +46,57 @@ namespace MsgPack
 		///		Most significant byte of current endian.
 		/// </summary>
 		[FieldOffset( 0 )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Union" )]
 		public readonly Byte Byte0;
 
 		/// <summary>
 		///		2nd bit from most significant byte of current endian.
 		/// </summary>
 		[FieldOffset( 1 )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Union" )]
 		public readonly Byte Byte1;
-
 
 		/// <summary>
 		///		3rd byte from most significant byte of current endian.
 		/// </summary>
 		[FieldOffset( 2 )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Union" )]
 		public readonly Byte Byte2;
-
 
 		/// <summary>
 		///		4th byte from most significant byte of current endian.
 		/// </summary>
 		[FieldOffset( 3 )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Union" )]
 		public readonly Byte Byte3;
 
 		/// <summary>
 		///		5th byte from most significant byte of current endian.
 		/// </summary>
 		[FieldOffset( 4 )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Union" )]
 		public readonly Byte Byte4;
 
 		/// <summary>
 		///		6th byte from most significant byte of current endian.
 		/// </summary>
 		[FieldOffset( 5 )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Union" )]
 		public readonly Byte Byte5;
 
 		/// <summary>
 		///		7th byte from most significant byte of current endian.
 		/// </summary>
 		[FieldOffset( 6 )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Union" )]
 		public readonly Byte Byte6;
 
 		/// <summary>
 		///		Least significant byte of current endian.
 		/// </summary>
 		[FieldOffset( 7 )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Union" )]
 		public readonly Byte Byte7;
-
-		/// <summary>
-		///		Initializes a new instance of the <see cref="Float64Bits"/> type from specified <see cref="Double"/>.
-		/// </summary>
-		/// <param name="value">Value of <see cref="Double"/>.</param>
-		public Float64Bits( double value )
-		{
-			this = default( Float64Bits );
-			this.Value = value;
-		}
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="Float64Bits"/> type from specified <see cref="Byte"/>[] which is big endian.

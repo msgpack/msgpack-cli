@@ -43,6 +43,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._indentLevel = indentLevel;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Switch for many enum members" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitBinary( BinaryExpression node )
 		{
 			bool isChecked = false;
@@ -262,6 +264,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitBlock( BlockExpression node )
 		{
 			this.WriteIndent();
@@ -341,6 +344,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return base.VisitCatchBlock( node );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitConditional( ConditionalExpression node )
 		{
 			if ( node.Type != typeof( void ) )
@@ -362,7 +366,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		private void VisitIfThenStatement( ConditionalExpression node )
 		{
 			this._writer.Write( "if (" );
-				this.Visit( node.Test );
+			this.Visit( node.Test );
 			this._writer.WriteLine( ") {" );
 
 			this._indentLevel++;
@@ -473,6 +477,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			this._writer.Write( node.Type );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitConstant( ConstantExpression node )
 		{
 			this._writer.Write( node.ToString() );
@@ -486,6 +491,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return base.VisitDebugInfo( node );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitDefault( DefaultExpression node )
 		{
 			this._writer.Write( node.ToString() );
@@ -512,12 +518,14 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return base.VisitExtension( node );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitGoto( GotoExpression node )
 		{
 			this._writer.Write( node.ToString() );
 			return node;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitIndex( IndexExpression node )
 		{
 			this.Visit( node.Object );
@@ -546,6 +554,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitInvocation( InvocationExpression node )
 		{
 			this.Visit( node.Expression );
@@ -605,6 +614,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return base.VisitListInit( node );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitLambda<T>( Expression<T> node )
 		{
 			this._writer.Write( '(' );
@@ -657,6 +667,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitLoop( LoopExpression node )
 		{
 			this._writer.WriteLine();
@@ -681,6 +692,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitMember( MemberExpression node )
 		{
 			this.Visit( node.Expression );
@@ -720,6 +732,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return base.VisitMemberMemberBinding( node );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitMethodCall( MethodCallExpression node )
 		{
 			if ( node.Object == null )
@@ -771,18 +784,19 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitNew( NewExpression node )
 		{
 			this._writer.Write( "new " );
 			this._writer.Write( node.Type );
 			this._writer.Write( "( " );
-			if( node.Arguments.Count > 0 )
+			if ( node.Arguments.Count > 0 )
 			{
 				this._writer.WriteLine();
 				this._indentLevel++;
-				for( int i = 0; i < node.Arguments.Count; i++ )
+				for ( int i = 0; i < node.Arguments.Count; i++ )
 				{
-					if( i > 0 )
+					if ( i > 0 )
 					{
 						this._writer.WriteLine( ',' );
 					}
@@ -804,6 +818,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitParameter( ParameterExpression node )
 		{
 			this._writer.Write( node.ToString() );
@@ -816,6 +831,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return base.VisitRuntimeVariables( node );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitSwitch( SwitchExpression node )
 		{
 			this._writer.Write( "switch ( " );
@@ -826,7 +842,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				this.VisitSwitchCase( @case );
 			}
 
-			if( node.DefaultBody != null )
+			if ( node.DefaultBody != null )
 			{
 				this._writer.WriteLine( "default: " );
 				this._writer.WriteLine( " ):" );
@@ -839,6 +855,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return base.VisitSwitch( node );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override SwitchCase VisitSwitchCase( SwitchCase node )
 		{
 			this._writer.Write( "case ( " );
@@ -851,6 +868,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return node;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitTry( TryExpression node )
 		{
 			this._writer.WriteLine( "try (" );
@@ -966,6 +984,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return base.VisitTypeBinary( node );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Switch for many enum members" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override Expression VisitUnary( UnaryExpression node )
 		{
 			switch ( node.NodeType )

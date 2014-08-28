@@ -28,11 +28,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public System_ByteArrayMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override void PackToCore( Packer packer, byte[] value )
 		{
 			packer.PackBinary( value );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override byte[] UnpackFromCore( Unpacker unpacker )
 		{
 			var result = unpacker.LastReadData;

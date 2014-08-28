@@ -51,6 +51,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadBoolean( out Boolean result )
 		{
 			if( !this.Read() )
@@ -78,6 +79,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableBoolean( out Boolean? result )
 		{
 			if( !this.Read() )
@@ -109,6 +111,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadByte( out Byte result )
 		{
 			if( !this.Read() )
@@ -136,6 +139,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableByte( out Byte? result )
 		{
 			if( !this.Read() )
@@ -167,6 +171,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadSByte( out SByte result )
 		{
 			if( !this.Read() )
@@ -194,6 +199,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableSByte( out SByte? result )
 		{
 			if( !this.Read() )
@@ -225,6 +231,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadInt16( out Int16 result )
 		{
 			if( !this.Read() )
@@ -252,6 +259,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableInt16( out Int16? result )
 		{
 			if( !this.Read() )
@@ -283,6 +291,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadUInt16( out UInt16 result )
 		{
 			if( !this.Read() )
@@ -310,6 +319,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableUInt16( out UInt16? result )
 		{
 			if( !this.Read() )
@@ -341,6 +351,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadInt32( out Int32 result )
 		{
 			if( !this.Read() )
@@ -368,6 +379,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableInt32( out Int32? result )
 		{
 			if( !this.Read() )
@@ -399,6 +411,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadUInt32( out UInt32 result )
 		{
 			if( !this.Read() )
@@ -426,6 +439,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableUInt32( out UInt32? result )
 		{
 			if( !this.Read() )
@@ -457,6 +471,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadInt64( out Int64 result )
 		{
 			if( !this.Read() )
@@ -484,6 +499,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableInt64( out Int64? result )
 		{
 			if( !this.Read() )
@@ -515,6 +531,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadUInt64( out UInt64 result )
 		{
 			if( !this.Read() )
@@ -542,6 +559,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableUInt64( out UInt64? result )
 		{
 			if( !this.Read() )
@@ -573,6 +591,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadSingle( out Single result )
 		{
 			if( !this.Read() )
@@ -600,6 +619,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableSingle( out Single? result )
 		{
 			if( !this.Read() )
@@ -631,6 +651,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadDouble( out Double result )
 		{
 			if( !this.Read() )
@@ -658,6 +679,7 @@ namespace MsgPack
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableDouble( out Double? result )
 		{
 			if( !this.Read() )
@@ -686,6 +708,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the <see cref="MessagePackExtendedTypeObject" /> type.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject result )
 		{
 			if( !this.Read() )
@@ -710,6 +733,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not compatible for the nullable <see cref="MessagePackExtendedTypeObject" /> type.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullableMessagePackExtendedTypeObject( out MessagePackExtendedTypeObject? result )
 		{
 			if( !this.Read() )
@@ -739,6 +763,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not an array.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadArrayLength( out long result )
 		{
 			if( !this.Read() )
@@ -772,6 +797,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a map.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadMapLength( out long result )
 		{
 			if( !this.Read())
@@ -805,6 +831,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a raw.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadBinary( out byte[] result )
 		{
 			if( !this.Read() )
@@ -833,6 +860,7 @@ namespace MsgPack
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a raw.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadString( out string result )
 		{
 			if( !this.Read() )
@@ -858,6 +886,7 @@ namespace MsgPack
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Cannot read a value because the underlying stream unexpectedly ends.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadObject( out MessagePackObject result )
 		{
 			if( !this.Read() )

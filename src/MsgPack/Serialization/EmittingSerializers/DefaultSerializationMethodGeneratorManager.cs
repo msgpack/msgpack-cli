@@ -22,6 +22,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Security;
 using System.Threading;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -94,6 +95,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 		}
 #else
+#if SILVERLIGHT || NETFX_35
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "isCollectable", Justification = "Used in other platforms" )]
+#endif // SILVERLIGHT
+#if !NETFX_35
+		[SecuritySafeCritical]
+#endif // !NETFX_35
 		private DefaultSerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable, AssemblyBuilder assemblyBuilder )
 		{
 			this._isDebuggable = isDebuggable;
@@ -172,9 +179,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
 					// ReSharper disable once AssignNullToNotNullAttribute
-					typeof( System.Security.SecurityRulesAttribute ).GetConstructor( new[] { typeof( System.Security.SecurityRuleSet ) } ),
-					new object[] { System.Security.SecurityRuleSet.Level2 },
-					new[] { typeof( System.Security.SecurityRulesAttribute ).GetProperty( "SkipVerificationInFullTrust" ) },
+					typeof( SecurityRulesAttribute ).GetConstructor( new[] { typeof( SecurityRuleSet ) } ),
+					new object[] { SecurityRuleSet.Level2 },
+					new[] { typeof( SecurityRulesAttribute ).GetProperty( "SkipVerificationInFullTrust" ) },
 					new object[] { true }
 				)
 			);

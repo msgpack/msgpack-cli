@@ -34,11 +34,13 @@ namespace MsgPack.Serialization
 
 		private readonly SourceSwitch _switch = new SourceSwitch() { Level = SourceLevels.All };
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For API compatibility" )]
 		public SourceSwitch Switch
 		{
 			get { return this._switch; }
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Debugging code only" )]
 		private readonly string _name;
 
 		public TraceSource( string name )
@@ -46,11 +48,20 @@ namespace MsgPack.Serialization
 			this._name = name;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "For API compatibility" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "eventType", Justification = "Debugging code only" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "eventId", Justification = "Debugging code only" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "data", Justification = "Debugging code only" )]
 		public void TraceData( TraceEventType eventType, int eventId, object data )
 		{
 			Debug.WriteLine( _template, this._name, eventType, eventId, data );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "For API compatibility" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "eventType", Justification = "Debugging code only" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "eventId", Justification = "Debugging code only" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "format", Justification = "Debugging code only" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "args", Justification = "Debugging code only" )]
 		public void TraceEvent( TraceEventType eventType, int eventId, string format, params object[] args )
 		{
 			Debug.WriteLine( _template, this._name, eventType, eventId, String.Format( CultureInfo.CurrentCulture, format, args ) );

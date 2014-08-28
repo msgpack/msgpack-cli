@@ -104,6 +104,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._valueSerializer = ownerContext.GetSerializer<TValue>();
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
 			packer.PackMapHeader( objectTree.Count() );
@@ -115,6 +116,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )

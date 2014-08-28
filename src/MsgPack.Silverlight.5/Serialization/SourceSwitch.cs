@@ -28,6 +28,7 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal sealed class SourceSwitch
 	{
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For API compatibility" )]
 		public SourceLevels Level
 		{
 			get;

@@ -33,6 +33,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public NonGenericEnumerableSerializer( SerializationContext ownerContext, Type targetType )
 			: base( ownerContext, targetType ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected override void PackArrayHeader( Packer packer, IEnumerable objectTree )
 		{
 			ICollection asICollection;

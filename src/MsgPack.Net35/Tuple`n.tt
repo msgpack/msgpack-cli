@@ -60,6 +60,7 @@ namespace System
 	// This file generated from <#= __typeName #>.tt T4Template.
 	// Do not modify this file. Edit <#= __typeName #>.tt instead.
 
+#if !NETFX_35
 	internal static class Tuple
 	{
 <#
@@ -144,4 +145,5 @@ foreach( int __arity in __arities )
 <#
 }
 #>
+#endif // !NETFX_35
 }

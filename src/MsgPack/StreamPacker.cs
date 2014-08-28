@@ -73,6 +73,7 @@ namespace MsgPack
 			this._stream.WriteByte( value );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected sealed override void WriteBytes( byte[] asArray, bool isImmutable )
 		{
 			this._stream.Write( asArray, 0, asArray.Length );

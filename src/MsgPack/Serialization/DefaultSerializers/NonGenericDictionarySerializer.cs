@@ -56,6 +56,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, IDictionary objectTree )
 		{
 			packer.PackMapHeader( objectTree.Count );
@@ -76,6 +78,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				( item.Value as IPackable ).PackToMessage( packer, null );			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override IDictionary UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -94,10 +97,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 				( this._collectionConstructorWithoutCapacity != null
 					? this._collectionConstructorWithoutCapacity.Invoke( null )
 					: this._collectionConstructorWithCapacity.Invoke( new object[] { itemsCount } ) ) as IDictionary;
-			this.UnpackToCore( unpacker, collection, itemsCount );
+			UnpackToCore( unpacker, collection, itemsCount );
 			return collection;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void UnpackToCore( Unpacker unpacker, IDictionary collection )
 		{
 			if ( this._collectionDeserializer != null )
@@ -112,11 +116,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 					throw SerializationExceptions.NewIsNotArrayHeader();
 				}
 
-				this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+				UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
 			}
 		}
 
-		private void UnpackToCore( Unpacker unpacker, IDictionary collection, int itemsCount )
+		private static void UnpackToCore( Unpacker unpacker, IDictionary collection, int itemsCount )
 		{
 			for ( int i = 0; i < itemsCount; i++ )
 			{

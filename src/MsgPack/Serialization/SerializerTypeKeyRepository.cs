@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security;
 #if !UNITY
 using System.Diagnostics.Contracts;
 #endif // !UNITY
@@ -33,6 +34,9 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Specialized <see cref="TypeKeyRepository"/> for serializers.
 	/// </summary>
+#if !NETFX_35 && !UNITY
+	[SecuritySafeCritical]
+#endif // !NETFX_35
 	internal sealed class SerializerTypeKeyRepository : TypeKeyRepository
 	{
 		public SerializerTypeKeyRepository()

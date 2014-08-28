@@ -50,6 +50,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private static readonly Dictionary<Type, Func<SerializationContext,object>> _arraySerializerFactories =
 			InitializeArraySerializerFactories();
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "False positive:Lambda expression" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "False positive:Lambda expression" )]
 		private static Dictionary<Type, Func<SerializationContext,object>> InitializeArraySerializerFactories()
 		{
 			return
@@ -112,6 +114,8 @@ internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#
 	public <#= simpleName #>ArraySerializer( SerializationContext ownerContext )
 		: base ( ownerContext ) { }
 
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
 	protected internal override void PackToCore( Packer packer, <#= itemTypeName #>[] objectTree )
 	{
 		packer.PackArrayHeader( objectTree.Length );
@@ -153,6 +157,7 @@ internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#
 		}
 	}
 
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 	protected internal override <#= itemTypeName #>[] UnpackFromCore( Unpacker unpacker )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -175,10 +180,11 @@ internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#
 <#+
 	}
 #>
-		this.UnpackToCore( unpacker, result, count );
+		UnpackToCore( unpacker, result, count );
 		return result;
 	}
 
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 	protected internal override void UnpackToCore( Unpacker unpacker, <#= itemTypeName #>[] collection )
 	{
 		if ( !unpacker.IsArrayHeader )
@@ -186,10 +192,10 @@ internal sealed class <#= simpleName #>ArraySerializer : MessagePackSerializer<#
 			throw SerializationExceptions.NewIsNotArrayHeader();
 		}
 
-		this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+		UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
 	}
 
-	private void UnpackToCore( Unpacker unpacker, <#= itemTypeName #>[] collection, int count )
+	private static void UnpackToCore( Unpacker unpacker, <#= itemTypeName #>[] collection, int count )
 	{
 		for ( int i = 0; i < count; i++ )
 		{

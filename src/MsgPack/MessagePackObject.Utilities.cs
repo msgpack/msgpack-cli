@@ -258,67 +258,7 @@ namespace MsgPack
 					return false;
 				}
 
-				if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Boolean )
-				{
-					if ( otherValuetypeCode.TypeCode != MessagePackValueTypeCode.Boolean )
-					{
-						return false;
-					}
-
-					return ( bool )this == ( bool )other;
-				}
-				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Boolean )
-				{
-					return false;
-				}
-
-				if ( valueTypeCode.IsInteger )
-				{
-					if ( otherValuetypeCode.IsInteger )
-					{
-						return IntegerIntegerEquals( this._value, valueTypeCode, other._value, otherValuetypeCode );
-					}
-					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
-					{
-						return IntegerSingleEquals( this, other );
-					}
-					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
-					{
-						return IntegerDoubleEquals( this, other );
-					}
-				}
-				else if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Double )
-				{
-					if ( otherValuetypeCode.IsInteger )
-					{
-						return IntegerDoubleEquals( other, this );
-					}
-					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
-					{
-						return ( double )this == ( float )other;
-					}
-					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
-					{
-						// Cannot compare _value because there might be not normalized.
-						return ( double )this == ( double )other;
-					}
-				}
-				else if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Single )
-				{
-					if ( otherValuetypeCode.IsInteger )
-					{
-						return IntegerSingleEquals( other, this );
-					}
-					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
-					{
-						// Cannot compare _value because there might be not normalized.
-						return ( float )this == ( float )other;
-					}
-					else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
-					{
-						return ( float )this == ( double )other;
-					}
-				}
+				return this.EqualsWhenValueType( other, valueTypeCode, otherValuetypeCode );
 			}
 
 			{
@@ -397,6 +337,76 @@ namespace MsgPack
 
 			Debug.Assert( false, String.Format( "Unknown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
+		}
+
+		private bool EqualsWhenValueType(
+			MessagePackObject other,
+			ValueTypeCode valueTypeCode,
+			ValueTypeCode otherValuetypeCode )
+		{
+			if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Boolean )
+			{
+				if ( otherValuetypeCode.TypeCode != MessagePackValueTypeCode.Boolean )
+				{
+					return false;
+				}
+
+				return ( bool ) this == ( bool ) other;
+			}
+			else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Boolean )
+			{
+				return false;
+			}
+
+			if ( valueTypeCode.IsInteger )
+			{
+				if ( otherValuetypeCode.IsInteger )
+				{
+					return IntegerIntegerEquals( this._value, valueTypeCode, other._value, otherValuetypeCode );
+				}
+				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
+				{
+					return IntegerSingleEquals( this, other );
+				}
+				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
+				{
+					return IntegerDoubleEquals( this, other );
+				}
+			}
+			else if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Double )
+			{
+				if ( otherValuetypeCode.IsInteger )
+				{
+					return IntegerDoubleEquals( other, this );
+				}
+				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
+				{
+					return ( double ) this == ( float ) other;
+				}
+				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
+				{
+					// Cannot compare _value because there might be not normalized.
+					return ( double ) this == ( double ) other;
+				}
+			}
+			else if ( valueTypeCode.TypeCode == MessagePackValueTypeCode.Single )
+			{
+				if ( otherValuetypeCode.IsInteger )
+				{
+					return IntegerSingleEquals( other, this );
+				}
+				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Single )
+				{
+					// Cannot compare _value because there might be not normalized.
+					return ( float ) this == ( float ) other;
+				}
+				else if ( otherValuetypeCode.TypeCode == MessagePackValueTypeCode.Double )
+				{
+					return ( float ) this == ( double ) other;
+				}
+			}
+
+			return false;
 		}
 
 		private static bool IntegerIntegerEquals( ulong left, ValueTypeCode leftTypeCode, ulong right, ValueTypeCode rightTypeCode )
@@ -676,116 +686,8 @@ namespace MsgPack
 				var asBinary = this._handleOrTypeCode as MessagePackString;
 				if ( asBinary != null )
 				{
-					// TODO: big array support...
-					var asString = asBinary.TryGetString();
-					if ( asString != null )
-					{
-						if ( isJson )
-						{
-							buffer.Append( '"' );
-							foreach ( var c in asString )
-							{
-								switch ( c )
-								{
-									case '"':
-									{
-										buffer.Append( '\\' ).Append( '"' );
-										break;
-									}
-									case '\\':
-									{
-										buffer.Append( '\\' ).Append( '\\' );
-										break;
-									}
-									case '/':
-									{
-										buffer.Append( '\\' ).Append( '/' );
-										break;
-									}
-									case '\b':
-									{
-										buffer.Append( '\\' ).Append( 'b' );
-										break;
-									}
-									case '\f':
-									{
-										buffer.Append( '\\' ).Append( 'f' );
-										break;
-									}
-									case '\n':
-									{
-										buffer.Append( '\\' ).Append( 'n' );
-										break;
-									}
-									case '\r':
-									{
-										buffer.Append( '\\' ).Append( 'r' );
-										break;
-									}
-									case '\t':
-									{
-										buffer.Append( '\\' ).Append( 't' );
-										break;
-									}
-									case ' ':
-									{
-										buffer.Append( ' ' );
-										break;
-									}
-									default:
-									{
-										switch ( CharUnicodeInfo.GetUnicodeCategory( c ) )
-										{
-											case UnicodeCategory.Control:
-											case UnicodeCategory.OtherNotAssigned:
-											case UnicodeCategory.Format:
-											case UnicodeCategory.LineSeparator:
-											case UnicodeCategory.ParagraphSeparator:
-											case UnicodeCategory.SpaceSeparator:
-											case UnicodeCategory.PrivateUse:
-											case UnicodeCategory.Surrogate:
-											{
-												buffer.Append( '\\' ).Append( 'u' ).Append( ( ( ushort )c ).ToString( "X", CultureInfo.InvariantCulture ) );
-												break;
-											}
-											default:
-											{
-												buffer.Append( c );
-												break;
-											}
-										}
-
-										break;
-									}
-								}
-							}
-
-							buffer.Append( '"' );
-						}
-						else
-						{
-							buffer.Append( asString );
-						}
-
-						return;
-					}
-
-					var asBlob = asBinary.UnsafeGetBuffer();
-					if ( asBlob != null )
-					{
-						if ( isJson )
-						{
-							buffer.Append( '"' );
-							Binary.ToHexString( asBlob, buffer );
-							buffer.Append( '"' );
-						}
-						else
-						{
-							Binary.ToHexString( asBlob, buffer );
-						}
-
-						return;
-					}
+					ToStringBinary( buffer, isJson, asBinary );
+					return;
 				}
 			}
 
@@ -814,6 +716,118 @@ namespace MsgPack
 			// ReSharper restore HeuristicUnreachableCode
 		}
 
+		private static void ToStringBinary( StringBuilder buffer, bool isJson, MessagePackString asBinary )
+		{
+			// TODO: big array support...
+			var asString = asBinary.TryGetString();
+			if ( asString != null )
+			{
+				if ( isJson )
+				{
+					buffer.Append( '"' );
+					foreach ( var c in asString )
+					{
+						switch ( c )
+						{
+							case '"':
+							{
+								buffer.Append( '\\' ).Append( '"' );
+								break;
+							}
+							case '\\':
+							{
+								buffer.Append( '\\' ).Append( '\\' );
+								break;
+							}
+							case '/':
+							{
+								buffer.Append( '\\' ).Append( '/' );
+								break;
+							}
+							case '\b':
+							{
+								buffer.Append( '\\' ).Append( 'b' );
+								break;
+							}
+							case '\f':
+							{
+								buffer.Append( '\\' ).Append( 'f' );
+								break;
+							}
+							case '\n':
+							{
+								buffer.Append( '\\' ).Append( 'n' );
+								break;
+							}
+							case '\r':
+							{
+								buffer.Append( '\\' ).Append( 'r' );
+								break;
+							}
+							case '\t':
+							{
+								buffer.Append( '\\' ).Append( 't' );
+								break;
+							}
+							case ' ':
+							{
+								buffer.Append( ' ' );
+								break;
+							}
+							default:
+							{
+								switch ( CharUnicodeInfo.GetUnicodeCategory( c ) )
+								{
+									case UnicodeCategory.Control:
+									case UnicodeCategory.OtherNotAssigned:
+									case UnicodeCategory.Format:
+									case UnicodeCategory.LineSeparator:
+									case UnicodeCategory.ParagraphSeparator:
+									case UnicodeCategory.SpaceSeparator:
+									case UnicodeCategory.PrivateUse:
+									case UnicodeCategory.Surrogate:
+									{
+										buffer.Append( '\\' ).Append( 'u' ).Append( ( ( ushort ) c ).ToString( "X", CultureInfo.InvariantCulture ) );
+										break;
+									}
+									default:
+									{
+										buffer.Append( c );
+										break;
+									}
+								}
+
+								break;
+							}
+						}
+					}
+
+					buffer.Append( '"' );
+				}
+				else
+				{
+					buffer.Append( asString );
+				}
+
+				return;
+			}
+
+			var asBlob = asBinary.UnsafeGetBuffer();
+			if ( asBlob != null )
+			{
+				if ( isJson )
+				{
+					buffer.Append( '"' );
+					Binary.ToHexString( asBlob, buffer );
+					buffer.Append( '"' );
+				}
+				else
+				{
+					Binary.ToHexString( asBlob, buffer );
+				}
+			}
+		}
+
 		#endregion -- Structure Methods --
 
 		#region -- Type Of Methods --
@@ -835,6 +849,7 @@ namespace MsgPack
 		/// <param name="type">Target type.</param>
 		/// <returns>If the underlying value of this instance is <paramref name="type"/> then true, otherwise false.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Switch" )]
 		public bool? IsTypeOf( Type type )
 		{
 			if ( type == null )

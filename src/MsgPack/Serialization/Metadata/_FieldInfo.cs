@@ -25,7 +25,9 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _FieldInfo
 	{
+#if !NETFX_CORE
 		public static readonly MethodInfo GetFieldFromHandle = FromExpression.ToMethod( ( RuntimeFieldHandle handle ) => FieldInfo.GetFieldFromHandle( handle ) );
+#endif // !NETFX_CORE
 
 		public static readonly MethodInfo GetValue =
 			FromExpression.ToMethod( ( FieldInfo @this, object obj ) => @this.GetValue( obj ) );

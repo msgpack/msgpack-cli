@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -44,6 +45,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Generates codes for this context.
 		/// </summary>
 		/// <returns>The path of generated files.</returns>
+#if !NETFX_35
+		[SecuritySafeCritical]
+#endif // !NETFX_35
 		IEnumerable<string> Generate();
 	}
 }

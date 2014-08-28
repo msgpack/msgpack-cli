@@ -28,6 +28,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public System_CharArrayMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override void PackToCore( Packer packer, char[] value )
 		{
 			if ( value == null )
@@ -40,6 +41,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override char[] UnpackFromCore( Unpacker unpacker )
 		{
 			var result = unpacker.LastReadData;

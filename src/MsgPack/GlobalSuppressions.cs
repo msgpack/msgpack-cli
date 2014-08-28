@@ -21,3 +21,6 @@
 using System.Diagnostics.CodeAnalysis;
 
 [module: SuppressMessage( "Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "MsgPack.Collections", Justification = "Under construction." )]
+#if SILVERLIGHT && WINDOWS_PHONE
+[assembly: SuppressMessage( "Microsoft.Design", "CA2210:AssembliesShouldHaveValidStrongNames" )]
+#endif // SILVERLIGHT && WINDOWS_PHONE

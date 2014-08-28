@@ -64,6 +64,7 @@ namespace MsgPack.Serialization.Reflection
 		}
 
 		// TODO: NLiblet
+#if DEBUG
 		public void EmitSetProperty( PropertyInfo property )
 		{
 			Contract.Assert( property != null );
@@ -71,6 +72,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this.EmitAnyCall( property.GetSetMethod( true ) );
 		}
+#endif // DEBUG
 
 		// TODO: NLiblet
 		public void EmitCallConstructor( ConstructorInfo constructor )
@@ -87,6 +89,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Call, constructor );
 		}
 
+#if DEBUG
 		private static readonly PropertyInfo _cultureInfo_CurrentCulture = typeof( CultureInfo ).GetProperty( "CurrentCulture" );
 		private static readonly PropertyInfo _cultureInfo_InvariantCulture = typeof( CultureInfo ).GetProperty( "InvariantCulture" );
 
@@ -259,6 +262,7 @@ namespace MsgPack.Serialization.Reflection
 		{
 			this.EmitLdarg_0();
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Emit apprpriate 'ldarg.*' instruction.
@@ -540,6 +544,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitNewarrCore( elementType, length );
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Emit array initialization code with initializer.
 		///		Post condition is evaluation stack will no be modified as previous state. 
@@ -615,6 +620,7 @@ namespace MsgPack.Serialization.Reflection
 				this.EmitAnyStelem( elementType, null, i, elementLoadingEmitters[ i ] );
 			}
 		}
+#endif // DEBUG
 
 		private void EmitNewarrCore( Type elementType, long length )
 		{
@@ -622,6 +628,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitNewarr( elementType );
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Emit array element loading instructions. 
 		///		Post condition is that exactly one loaded element will be placed on the top of stack and its element type is <paramref name="elementType"/>.
@@ -807,6 +814,7 @@ namespace MsgPack.Serialization.Reflection
 				}
 			}
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Emit efficient integer constant loading.
@@ -906,6 +914,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitCall( _type_GetTypeFromHandle );
 		}
 
+#if DEBUG
 		private static readonly ConstructorInfo _ArgumentException_ctor_String_String_Exception =
 			typeof( ArgumentException ).GetConstructor( new[] { typeof( String ), typeof( String ), typeof( Exception ) } );
 
@@ -946,5 +955,6 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitNewobj( ctor );
 			this.EmitThrow();
 		}
+#endif // DEBUG
 	}
 }

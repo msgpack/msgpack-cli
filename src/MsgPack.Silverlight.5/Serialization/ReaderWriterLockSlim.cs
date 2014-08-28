@@ -36,6 +36,7 @@ namespace MsgPack.Serialization
 		private int _lockCount = 0;
 		private int _disposed = 0;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "recursionPolocy", Justification = "For API compatibility" )]
 		public ReaderWriterLockSlim( LockRecursionPolicy recursionPolocy ) { }
 
 		~ReaderWriterLockSlim()
@@ -49,6 +50,7 @@ namespace MsgPack.Serialization
 			GC.SuppressFinalize( this );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "disposing", Justification = "For standard" )]
 		private void Dispose( bool disposing )
 		{
 			if ( Interlocked.Exchange( ref this._disposed, 1 ) == 1 )

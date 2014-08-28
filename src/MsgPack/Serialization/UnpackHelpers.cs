@@ -56,15 +56,19 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete]
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future.")]
 		public static void UnpackArrayTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, T[] array )
 		{
-#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
 			}
 
+			if ( serializer == null )
+			{
+				throw new ArgumentNullException( "serializer" );
+			}
+			
 			if ( array == null )
 			{
 				throw new ArgumentNullException( "array" );
@@ -78,8 +82,6 @@ namespace MsgPack.Serialization
 #if !UNITY
 			Contract.EndContractBlock();
 #endif // !UNITY
-
-#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -116,10 +118,9 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete]
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo( Unpacker unpacker, IEnumerable collection, Action<object> addition )
 		{
-#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -130,6 +131,11 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "collection" );
 			}
 
+			if ( addition == null )
+			{
+				throw new ArgumentNullException( "addition" );
+			}
+
 			if ( !unpacker.IsArrayHeader )
 			{
 				throw SerializationExceptions.NewIsNotArrayHeader();
@@ -138,8 +144,6 @@ namespace MsgPack.Serialization
 #if !UNITY
 			Contract.EndContractBlock();
 #endif // !UNITY
-
-#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -178,18 +182,29 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete]
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo<T>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Action<T> addition )
 		{
-#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
 			}
 
+			if ( serializer == null )
+			{
+				throw new ArgumentNullException( "serializer" );
+			}
+
+
 			if ( collection == null )
 			{
 				throw new ArgumentNullException( "collection" );
+			}
+
+
+			if ( addition == null )
+			{
+				throw new ArgumentNullException( "addition" );
 			}
 
 			if ( !unpacker.IsArrayHeader )
@@ -200,8 +215,6 @@ namespace MsgPack.Serialization
 #if !UNITY
 			Contract.EndContractBlock();
 #endif // !UNITY
-
-#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -239,10 +252,9 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete]
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo<TDiscarded>( Unpacker unpacker, IEnumerable collection, Func<object, TDiscarded> addition )
 		{
-#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -253,6 +265,11 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "collection" );
 			}
 
+			if ( addition == null )
+			{
+				throw new ArgumentNullException( "addition" );
+			}
+
 			if ( !unpacker.IsArrayHeader )
 			{
 				throw SerializationExceptions.NewIsNotArrayHeader();
@@ -261,8 +278,6 @@ namespace MsgPack.Serialization
 #if !UNITY
 			Contract.EndContractBlock();
 #endif // !UNITY
-
-#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -302,18 +317,27 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete]
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackCollectionTo<T, TDiscarded>( Unpacker unpacker, MessagePackSerializer<T> serializer, IEnumerable<T> collection, Func<T, TDiscarded> addition )
 		{
-#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
 			}
 
+			if ( serializer == null )
+			{
+				throw new ArgumentNullException( "serializer" );
+			}
+
 			if ( collection == null )
 			{
 				throw new ArgumentNullException( "collection" );
+			}
+
+			if ( addition == null )
+			{
+				throw new ArgumentNullException( "addition" );
 			}
 
 			if ( !unpacker.IsArrayHeader )
@@ -324,8 +348,6 @@ namespace MsgPack.Serialization
 #if !UNITY
 			Contract.EndContractBlock();
 #endif // !UNITY
-
-#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -365,13 +387,22 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete]
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackMapTo<TKey, TValue>( Unpacker unpacker, MessagePackSerializer<TKey> keySerializer, MessagePackSerializer<TValue> valueSerializer, IDictionary<TKey, TValue> dictionary )
 		{
-#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
+			}
+
+			if ( keySerializer == null )
+			{
+				throw new ArgumentNullException( "keySerializer" );
+			}
+
+			if ( valueSerializer == null )
+			{
+				throw new ArgumentNullException( "valueSerializer" );
 			}
 
 			if ( dictionary == null )
@@ -387,8 +418,6 @@ namespace MsgPack.Serialization
 #if !UNITY
 			Contract.EndContractBlock();
 #endif // !UNITY
-
-#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -443,10 +472,9 @@ namespace MsgPack.Serialization
 		///		Failed to deserialization.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete]
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static void UnpackMapTo( Unpacker unpacker, IDictionary dictionary )
 		{
-#if DEBUG
 			if ( unpacker == null )
 			{
 				throw new ArgumentNullException( "unpacker" );
@@ -465,8 +493,6 @@ namespace MsgPack.Serialization
 #if !UNITY
 			Contract.EndContractBlock();
 #endif // !UNITY
-
-#endif
 
 			int count = GetItemsCount( unpacker );
 			for ( int i = 0; i < count; i++ )
@@ -559,7 +585,7 @@ namespace MsgPack.Serialization
 		/// <param name="targetType">The type of the target.</param>
 		/// <returns>The unboxed value.</returns>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete]
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static T ConvertWithEnsuringNotNull<T>( object boxed, string name, Type targetType )
 		{
 			if ( typeof( T ).GetIsValueType() && boxed == null && Nullable.GetUnderlyingType( typeof( T ) ) == null )
@@ -578,9 +604,14 @@ namespace MsgPack.Serialization
 		/// <param name="unpacker">The unpacker to be passed to the method.</param>
 		/// <returns>A deserialized value.</returns>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		[Obsolete]
+		[Obsolete( "This API is not used at generated serializers in current release, so this API will be removed future." )]
 		public static T InvokeUnpackFrom<T>( MessagePackSerializer<T> serializer, Unpacker unpacker )
 		{
+			if ( serializer == null )
+			{
+				throw new ArgumentNullException( "serializer" );
+			}
+
 			return serializer.UnpackFromCore( unpacker );
 		}
 	}

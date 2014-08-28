@@ -41,6 +41,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Boolean type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Boolean UnpackBooleanValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -70,6 +71,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Boolean type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Boolean? UnpackNullableBooleanValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -99,6 +101,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Byte type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Byte UnpackByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -128,6 +131,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Byte type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Byte? UnpackNullableByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -157,6 +161,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Int16 type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int16 UnpackInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -186,6 +191,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Int16 type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int16? UnpackNullableInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -215,6 +221,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Int32 type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int32 UnpackInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -244,6 +251,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Int32 type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int32? UnpackNullableInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -273,6 +281,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Int64 type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int64 UnpackInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -302,6 +311,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Int64 type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Int64? UnpackNullableInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -334,6 +344,7 @@ namespace MsgPack.Serialization
 		[CLSCompliant( false )]
 #endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static SByte UnpackSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -366,6 +377,7 @@ namespace MsgPack.Serialization
 		[CLSCompliant( false )]
 #endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static SByte? UnpackNullableSByteValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -398,6 +410,7 @@ namespace MsgPack.Serialization
 		[CLSCompliant( false )]
 #endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt16 UnpackUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -430,6 +443,7 @@ namespace MsgPack.Serialization
 		[CLSCompliant( false )]
 #endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt16? UnpackNullableUInt16Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -462,6 +476,7 @@ namespace MsgPack.Serialization
 		[CLSCompliant( false )]
 #endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt32 UnpackUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -494,6 +509,7 @@ namespace MsgPack.Serialization
 		[CLSCompliant( false )]
 #endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt32? UnpackNullableUInt32Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -526,6 +542,7 @@ namespace MsgPack.Serialization
 		[CLSCompliant( false )]
 #endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt64 UnpackUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -558,6 +575,7 @@ namespace MsgPack.Serialization
 		[CLSCompliant( false )]
 #endif // !UNITY
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static UInt64? UnpackNullableUInt64Value( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -587,6 +605,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Single type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Single UnpackSingleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -616,6 +635,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Single type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Single? UnpackNullableSingleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -645,6 +665,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Double type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Double UnpackDoubleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -674,6 +695,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack Double type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static Double? UnpackNullableDoubleValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -704,6 +726,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack string type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static string UnpackStringValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try
@@ -733,6 +756,7 @@ namespace MsgPack.Serialization
 		///		Failed to unpack byte array type value from underlying stream.
 		/// </exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public static byte[] UnpackBinaryValue( Unpacker unpacker, Type objectType, String memberName )
 		{
 			try

@@ -49,6 +49,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			throw new NotSupportedException();
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitInvokeUnpackTo( DynamicMethodEmittingContext context, ILConstruct unpacker, ILConstruct collection )
 		{
 			return
@@ -65,6 +66,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGetSerializerExpression( DynamicMethodEmittingContext context, Type targetType, SerializingMember? memberInfo )
 		{
 			return

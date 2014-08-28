@@ -82,6 +82,7 @@ foreach( var type in
 <#
 	}
 #>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool Read<#= GetTypeName( type ) #>( out <#= GetTypeName( type ) #> result )
 		{
 			if( !this.Read() )
@@ -116,6 +117,7 @@ foreach( var type in
 <#
 	}
 #>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
 		public virtual bool ReadNullable<#= GetTypeName( type ) #>( out <#= GetTypeName( type ) #>? result )
 		{
 			if( !this.Read() )
@@ -148,6 +150,7 @@ foreach( var type in
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not an array.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadArrayLength( out long result )
 		{
 			if( !this.Read() )
@@ -181,6 +184,7 @@ foreach( var type in
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a map.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadMapLength( out long result )
 		{
 			if( !this.Read())
@@ -214,6 +218,7 @@ foreach( var type in
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a raw.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadBinary( out byte[] result )
 		{
 			if( !this.Read() )
@@ -242,6 +247,7 @@ foreach( var type in
 		/// <exception cref="MessageTypeException">
 		///		A value read from data source is not a raw.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadString( out string result )
 		{
 			if( !this.Read() )
@@ -267,6 +273,7 @@ foreach( var type in
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Cannot read a value because the underlying stream unexpectedly ends.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
 		public virtual bool ReadObject( out MessagePackObject result )
 		{
 			if( !this.Read() )

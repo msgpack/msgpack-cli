@@ -57,20 +57,9 @@ namespace MsgPack.Serialization
 			return asProperty != null ? asProperty.PropertyType : asField.FieldType;
 		}
 
-		public static bool CanSetValue( this MemberInfo source )
-		{
-			var asProperty = source as PropertyInfo;
-			var asField = source as FieldInfo;
-			// GetSetMethod() on WinRT is not compabitle with CLR. CLR returns null but WinRT returns non-null for non-public setter.
-#if !UNITY
-			Contract.Assert( asProperty != null || asField != null );
-#endif // !UNITY
-			return asProperty != null ? ( asProperty.CanWrite && asProperty.GetSetMethod() != null && asProperty.GetSetMethod().IsPublic ) : !asField.IsInitOnly;
-		}
-
 		public static CollectionTraits GetCollectionTraits( this Type source )
 		{
-#if !UNITY
+#if !UNITY && DEBUG
 			Contract.Assert( !source.GetContainsGenericParameters() );
 #endif // !UNITY
 			/*

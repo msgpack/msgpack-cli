@@ -26,6 +26,7 @@ using System.Reflection;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Contract class" )]
 	[ContractClassFor( typeof( SerializerBuilder<,,> ) )]
 	internal class SerializerBuilderContract<TContext, TConstruct, TObject> : SerializerBuilder<TContext, TConstruct, TObject>
 		where TContext : SerializerGenerationContext<TConstruct>

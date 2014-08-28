@@ -46,14 +46,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			new SerializerBuilderNilImplicationHandler();
 
 		/// <summary>
-		///		<see cref="PropertyInfo"/> of <see cref="MessagePackSerializer{TObject}.OwnerContext"/>.
-		/// </summary>
-		protected static readonly PropertyInfo OwnerContextProperty =
-			FromExpression.ToProperty(
-				( MessagePackSerializer<TObject> serializer ) => serializer.OwnerContext
-			);
-
-		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializerBuilder{TContext, TConstruct, TObject}"/> class.
 		/// </summary>
 		protected SerializerBuilder() { }
@@ -66,6 +58,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context )
 		{
 			var genericSerializer = GenericSerializer.Create<TObject>( context );

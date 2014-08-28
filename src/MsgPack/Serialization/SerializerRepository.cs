@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 
@@ -62,11 +66,13 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		///		This method does not perform any operation.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "_repository" )]
+		[Obsolete( "This class should not be disposable, so IDisposable will be removed in future." )]
 		public void Dispose()
 		{
-			this._repository.Dispose();
+			// nop
 		}
 
 		/// <summary>
@@ -104,6 +110,7 @@ namespace MsgPack.Serialization
 			return ( asProvider != null ? asProvider.Get( context, providerParameter ) : result ) as MessagePackSerializer<T>;
 		}
 
+#if UNITY || XAMIOS || XAMDROID
 		internal IMessagePackSingleObjectSerializer Get( SerializationContext context, Type targetType, object providerParameter )
 		{
 			if ( context == null )
@@ -120,6 +127,7 @@ namespace MsgPack.Serialization
 			var asProvider = result as MessagePackSerializerProvider;
 			return ( asProvider != null ? asProvider.Get( context, providerParameter ) : result ) as IMessagePackSingleObjectSerializer;
 		}
+#endif // UNITY || XAMIOS || XAMDROID
 
 		/// <summary>
 		///		Registers a <see cref="MessagePackSerializer{T}"/>.
@@ -183,6 +191,7 @@ namespace MsgPack.Serialization
 		///		This value will not be <c>null</c>.
 		///		Note that the repository is frozen.
 		/// </value>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "Historical reason" )]
 		public static SerializerRepository Default
 		{
 			get { return GetDefault( PackerCompatibilityOptions.Classic ); }

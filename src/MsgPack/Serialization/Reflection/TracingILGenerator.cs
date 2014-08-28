@@ -51,6 +51,7 @@ namespace MsgPack.Serialization.Reflection
 		/// <value>
 		///		<see cref="Label"/> for end of method.
 		/// </value>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For assertion" )]
 		public Label EndOfMethod
 		{
 			get { return this._endOfMethod; }
@@ -58,6 +59,7 @@ namespace MsgPack.Serialization.Reflection
 
 		private readonly Stack<Label> _endOfExceptionBlocks = new Stack<Label>();
 
+#if DEBUG
 		/// <summary>
 		///		Get <see cref="Label"/> for end of current exception blocks.
 		/// </summary>
@@ -80,19 +82,21 @@ namespace MsgPack.Serialization.Reflection
 			}
 		}
 
+#endif // DEBUG
 		/// <summary>
 		///		Get whether there are any exception blocks in current positon.
 		/// </summary>
 		/// <value>
 		///		If there are any exception blocks in current positon then <c>true</c>; otherwise, <c>false</c>.
 		/// </value>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For assertion" )]
 		public bool IsInExceptionBlock
 		{
 			get { return 0 < this._endOfExceptionBlocks.Count; }
 		}
 
 		private bool _isInDynamicMethod;
-
+#if DEBUG
 		/// <summary>
 		///		Get the value whether this instance used for dynamic method.
 		/// </summary>
@@ -104,9 +108,11 @@ namespace MsgPack.Serialization.Reflection
 		{
 			get { return this._isInDynamicMethod; }
 		}
+#endif // DEBUG
 
 		private int _indentLevel;
 
+#if DEBUG
 		/// <summary>
 		///		Get level of indentation.
 		/// </summary>
@@ -119,9 +125,11 @@ namespace MsgPack.Serialization.Reflection
 				return this._indentLevel;
 			}
 		}
+#endif // DEBUG
 
 		private string _indentChars = "  ";
 
+#if DEBUG
 		/// <summary>
 		///		Get or set indent characters.
 		/// </summary>
@@ -139,9 +147,11 @@ namespace MsgPack.Serialization.Reflection
 			}
 			set { this._indentChars = value ?? "  "; }
 		}
+#endif // DEBUG
 
 		private int _lineNumber;
 
+#if DEBUG
 		/// <summary>
 		///		Get current line number.
 		/// </summary>
@@ -155,6 +165,7 @@ namespace MsgPack.Serialization.Reflection
 				return this._lineNumber;
 			}
 		}
+#endif // DEBUG
 
 		private bool _isEnded = false;
 
@@ -164,6 +175,7 @@ namespace MsgPack.Serialization.Reflection
 		/// <returns>
 		///		When this IL stream is ended with 'ret' then <c>true</c>; otherwise, <c>false</c>.
 		/// </returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For assertion" )]
 		public bool IsEnded
 		{
 			get { return this._isEnded; }
@@ -172,6 +184,7 @@ namespace MsgPack.Serialization.Reflection
 		// TODO: NLiblet
 		private readonly bool _isDebuggable;
 
+#if DEBUG
 #if !WINDOWS_PHONE
 		/// <summary>
 		///		Initializes a new instance of the <see cref="TracingILGenerator"/> class.
@@ -184,6 +197,7 @@ namespace MsgPack.Serialization.Reflection
 			Contract.Assert( methodBuilder != null );
 		}
 #endif
+#endif // DEBUG
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TracingILGenerator"/> class.
@@ -271,6 +285,7 @@ namespace MsgPack.Serialization.Reflection
 
 		#region -- Locals --
 
+#if DEBUG
 		/// <summary>
 		///		Declare local without pinning and name for debugging.
 		/// </summary>
@@ -299,6 +314,7 @@ namespace MsgPack.Serialization.Reflection
 
 			return this.DeclareLocalCore( localType, null, pinned );
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Declare local with name for debugging and without pinning.
@@ -317,6 +333,7 @@ namespace MsgPack.Serialization.Reflection
 			return this.DeclareLocalCore( localType, name );
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Declare local with name for debugging.
 		///		Note that this method is not enabled for dynamic method.
@@ -334,6 +351,7 @@ namespace MsgPack.Serialization.Reflection
 
 			return this.DeclareLocalCore( localType, name, pinned );
 		}
+#endif // DEBUG
 
 		private LocalBuilder DeclareLocalCore( Type localType, string name )
 		{
@@ -354,6 +372,7 @@ namespace MsgPack.Serialization.Reflection
 			return result;
 		}
 
+#if DEBUG
 		private LocalBuilder DeclareLocalCore( Type localType, string name, bool pinned )
 		{
 			var result = this._underlying.DeclareLocal( localType, pinned );
@@ -372,6 +391,7 @@ namespace MsgPack.Serialization.Reflection
 			}
 			return result;
 		}
+#endif // DEBUG
 
 		private void TraceLocals()
 		{
@@ -413,6 +433,7 @@ namespace MsgPack.Serialization.Reflection
 		// Note: Leave always leave not leave.s.
 		// FIXME: Integration check.
 
+#if DEBUG
 		/// <summary>
 		///		Emit exception block with catch blocks.
 		/// </summary>
@@ -520,6 +541,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this.EndExceptionBlock();
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Begin exception block (try in C#) here.
@@ -540,6 +562,7 @@ namespace MsgPack.Serialization.Reflection
 			return result;
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Begin catch block with specified exception.
 		///		Note that you do not have to emit leave or laeve.s instrauction at tail of the body.
@@ -591,6 +614,7 @@ namespace MsgPack.Serialization.Reflection
 			this.Indent();
 			this._underlying.BeginFaultBlock();
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Begin finally block.
@@ -625,6 +649,7 @@ namespace MsgPack.Serialization.Reflection
 
 		#region -- Labels --
 
+#if DEBUG
 		/// <summary>
 		///		Define new <see cref="Label"/> without name for tracing.
 		/// </summary>
@@ -635,6 +660,7 @@ namespace MsgPack.Serialization.Reflection
 
 			return this.DefineLabel( "LABEL_" + this._labels.Count.ToString( CultureInfo.InvariantCulture ) );
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Define new <see cref="Label"/> with name for tracing.
@@ -667,6 +693,7 @@ namespace MsgPack.Serialization.Reflection
 #if !SILVERLIGHT
 		#region -- Calli --
 
+#if DEBUG
 		/// <summary>
 		///		Emit 'calli' instruction for indirect unmanaged function call.
 		/// </summary>
@@ -713,11 +740,13 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.EmitCalli( OpCodes.Calli, managedCallingConventions, returnType, requiredParameterTypes, optionalParameterTypes );
 		}
 
+#endif // DEBUG
 		#endregion
-#endif
+#endif // !SILVERLIGHT
 
 		#region -- Constrained. --
 
+#if DEBUG
 		/// <summary>
 		///		Emit constrained 'callvirt' instruction.
 		/// </summary>
@@ -737,11 +766,13 @@ namespace MsgPack.Serialization.Reflection
 
 			this.EmitCallvirt( target );
 		}
+#endif // DEBUG
 
 		#endregion
 
 		#region -- Readonly. --
 
+#if DEBUG
 		/// <summary>
 		///		Emit readonly 'ldelema' instruction.
 		/// </summary>
@@ -757,11 +788,13 @@ namespace MsgPack.Serialization.Reflection
 
 			this.EmitLdelema( elementType );
 		}
+#endif // DEBUG
 
 		#endregion
 
 		#region -- Tail. --
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'call' instruction with specified arguments as tail call.
 		///	</summary>
@@ -862,12 +895,14 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitCalli( managedCallingConventions, returnType, requiredParameterTypes, optionalParameterTypes );
 			this.EmitRet();
 		}
-#endif
+#endif // SILVERLIGHT
+#endif // DEBUG
 
 		#endregion
 
 		#region -- Unaligned. --
 
+#if DEBUG
 		/// <summary>
 		///		Emit 'unaligned.' prefix.
 		/// </summary>
@@ -883,6 +918,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Unaligned, alignment );
 		}
+#endif // DEBUG
 
 		#endregion
 
@@ -900,6 +936,7 @@ namespace MsgPack.Serialization.Reflection
 			this._trace.Write( value );
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Write trace message.
 		/// </summary>
@@ -925,6 +962,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._trace.Write( format, args );
 		}
+#endif // DEBUG
 
 		/// <summary>
 		///		Write trace line break.
@@ -962,6 +1000,7 @@ namespace MsgPack.Serialization.Reflection
 			this._trace.WriteLine( format, arg0 );
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Write trace message followed by line break.
 		/// </summary>
@@ -974,6 +1013,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._trace.WriteLine( format, args );
 		}
+#endif // DEBUG
 
 		private void TraceType( Type type )
 		{
@@ -1054,6 +1094,7 @@ namespace MsgPack.Serialization.Reflection
 			this._trace.Write( field.Name );
 		}
 
+#if DEBUG
 		private void TraceSignature( CallingConventions? managedCallingConventions, CallingConvention? unmanagedCallingConvention, Type returnType, Type[] requiredParameterTypes, Type[] optionalParameterTypes )
 		{
 			//  <instr_sig> <callConv> <type> ( <parameters> )  
@@ -1107,6 +1148,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._trace.WriteLine( ")" );
 		}
+#endif // DEBUG
 
 		private void TraceMethod( MethodBase method )
 		{
@@ -1282,10 +1324,12 @@ namespace MsgPack.Serialization.Reflection
 			this._trace.Write( value );
 		}
 
+#if DEBUG
 		private void TraceOperand( double value )
 		{
 			this._trace.Write( value );
 		}
+#endif // DEBUG
 
 		private void TraceOperand( string value )
 		{
@@ -1298,6 +1342,7 @@ namespace MsgPack.Serialization.Reflection
 			this._trace.Write( this._labels[ value ] );
 		}
 
+#if DEBUG
 		private void TraceOperand( Label[] values )
 		{
 			for ( int i = 0; i < values.Length; i++ )
@@ -1310,6 +1355,7 @@ namespace MsgPack.Serialization.Reflection
 				this.TraceOperand( values[ i ] );
 			}
 		}
+#endif // DEBUG
 
 		private void TraceOperand( Type value )
 		{

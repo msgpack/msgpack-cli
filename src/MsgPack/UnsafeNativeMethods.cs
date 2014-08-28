@@ -30,7 +30,9 @@ namespace MsgPack
 	[SuppressUnmanagedCodeSecurity]
 #endif
 #if !WINDOWS_PHONE
+#if !NETFX_35
 	[SecurityCritical]
+#endif // !NETFX_35
 	internal static class UnsafeNativeMethods
 	{
 		private static int _libCAvailability = 0;
@@ -39,9 +41,15 @@ namespace MsgPack
 		private const int _libCAvailability_LibC = 2;
 		private const int _libCAvailability_None = -1;
 
+#if NETFX_35
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule", Justification = "OK, this is SecurityCritical" )]
+#endif // NETFX_35
 		[DllImport( "msvcrt", CallingConvention = CallingConvention.Cdecl, EntryPoint = "memcmp", ExactSpelling = true, SetLastError = false )]
 		private static extern int memcmpVC( byte[] s1, byte[] s2, /*SIZE_T*/UIntPtr size );
 
+#if NETFX_35
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule", Justification = "OK, this is SecurityCritical" )]
+#endif // NETFX_35
 		[DllImport( "libc", CallingConvention = CallingConvention.Cdecl, EntryPoint = "memcmp", ExactSpelling = true, SetLastError = false )]
 		private static extern int memcmpLibC( byte[] s1, byte[] s2, /*SIZE_T*/UIntPtr size );
 

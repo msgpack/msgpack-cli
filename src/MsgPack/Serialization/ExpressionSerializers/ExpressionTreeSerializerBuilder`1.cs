@@ -53,12 +53,14 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #endif
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, SerializerMethod method )
 		{
 			context.Reset( typeof( TObject ) );
 			context.SetCurrentMethod( typeof( TObject ), method );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override void EmitMethodPrologue( ExpressionTreeContext context, EnumSerializerMethod method )
 		{
 			context.Reset( typeof( TObject ) );
@@ -86,6 +88,9 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			context.SetDelegate( method, EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
 		}
 
+#if NETFX_CORE || SILVERLIGHT
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Must be instance method in other platforms" )]
+#endif // NETFX_CORE || SILVERLIGHT
 		private Delegate EmitMethodEpilogue<T>( ExpressionTreeContext context, Type delegateType, T method, ExpressionConstruct construct )
 		{
 			if ( SerializerDebugging.TraceEnabled )
@@ -145,6 +150,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Constant( constant, type );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitThisReferenceExpression( ExpressionTreeContext context )
 		{
 			return context.This;
@@ -198,6 +204,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Assign( int32Value, Expression.Increment( int32Value ) );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitTypeOfExpression( ExpressionTreeContext context, Type type )
 		{
 			// ReSharper disable RedundantIfElseBlock
@@ -214,6 +221,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			// ReSharper restore RedundantIfElseBlock
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitMethodOfExpression( ExpressionTreeContext context, MethodBase method )
 		{
 			// ReSharper disable RedundantIfElseBlock
@@ -246,6 +254,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			// ReSharper restore RedundantIfElseBlock
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitFieldOfExpression( ExpressionTreeContext context, FieldInfo field )
 		{
 			// ReSharper disable RedundantIfElseBlock
@@ -292,6 +301,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Variable( type, name );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct ReferArgument( ExpressionTreeContext context, Type type, string name, int index )
 		{
 			return context.GetCurrentParameters()[ index ];
@@ -393,6 +403,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.NewArrayInit( elementType, initialElements.Select( c => c.Expression ) );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitGetSerializerExpression( ExpressionTreeContext context, Type targetType, SerializingMember? memberInfo )
 		{
 			return
@@ -424,6 +435,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitConditionalExpression(
 			ExpressionTreeContext context,
 			ExpressionConstruct conditionExpression,
@@ -475,6 +487,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitForLoop( ExpressionTreeContext context, ExpressionConstruct count, Func<ForLoopContext, ExpressionConstruct> loopBodyEmitter )
 		{
 			var counter = Expression.Variable( typeof( int ), "i" );
@@ -497,6 +510,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitForEachLoop(
 			ExpressionTreeContext context, CollectionTraits collectionTraits, ExpressionConstruct collection, Func<ExpressionConstruct, ExpressionConstruct> loopBodyEmitter
 		)
@@ -542,6 +557,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Convert( enumValue, underlyingType );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( ExpressionTreeContext codeGenerationContext )
 		{
 #if !NETFX_CORE && !SILVERLIGHT
@@ -565,6 +581,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( ExpressionTreeContext codeGenerationContext )
 		{
 #if !NETFX_CORE && !SILVERLIGHT

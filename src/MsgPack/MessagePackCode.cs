@@ -62,6 +62,7 @@ namespace MsgPack
 		public const int FixExt8 = 0xd7;
 		public const int FixExt16 = 0xd8;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Switch for many cases" )]
 		public static string ToString( int code )
 		{
 			if( code < 0x80)

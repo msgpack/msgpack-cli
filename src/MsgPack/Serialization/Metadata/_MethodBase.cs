@@ -19,14 +19,15 @@
 #endregion -- License Terms --
 
 using System;
-using System.Globalization;
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
 {
 	internal static class _MethodBase
 	{
+#if !NETFX_CORE
 		public static readonly MethodInfo GetMethodFromHandle = FromExpression.ToMethod( ( RuntimeMethodHandle handle ) => MethodBase.GetMethodFromHandle( handle ) );
+#endif // !NETFX_CORE
 
 		public static readonly MethodInfo Invoke_2 =
 			FromExpression.ToMethod(

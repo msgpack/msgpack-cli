@@ -105,15 +105,15 @@ namespace MsgPack.Serialization
 			}
 			catch ( ArgumentException ex )
 			{
-				throw this.CreateValidationError( ex );
+				throw CreateValidationError( ex );
 			}
 			catch ( NotSupportedException ex )
 			{
-				throw this.CreateValidationError( ex );
+				throw CreateValidationError( ex );
 			}
 		}
 
-		private Exception CreateValidationError( Exception innerException )
+		private static Exception CreateValidationError( Exception innerException )
 		{
 			return
 				new InvalidOperationException(

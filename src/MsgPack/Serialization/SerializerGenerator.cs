@@ -365,6 +365,7 @@ namespace MsgPack.Serialization
 
 			public SerializerAssemblyGenerationLogic() { }
 
+			[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 			protected override ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, SerializerAssemblyGenerationConfiguration configuration )
 			{
 				return

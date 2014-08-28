@@ -30,7 +30,5 @@ namespace MsgPack.Serialization.Metadata
 		public static readonly MethodInfo GetSerializer1_Method = typeof( SerializationContext ).GetMethod( "GetSerializer", ReflectionAbstractions.EmptyTypes );
 		public static readonly MethodInfo GetSerializer1_Parameter_Method = typeof( SerializationContext ).GetMethod( "GetSerializer", new[] { typeof( object ) } );
 		// ReSharper restore InconsistentNaming
-		public static readonly PropertyInfo DefaultProperty = FromExpression.ToProperty( () => SerializationContext.Default );
-		public static readonly PropertyInfo CompatibilityOptionsProperty = FromExpression.ToProperty( ( SerializationContext context ) => context.CompatibilityOptions );
 	}
 }

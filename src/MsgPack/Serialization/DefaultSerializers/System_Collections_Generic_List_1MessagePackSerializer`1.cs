@@ -43,6 +43,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			PackerUnpackerExtensions.PackCollectionCore( packer, objectTree, this._itemSerializer );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override List<T> UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )
@@ -56,6 +57,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return collection;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override void UnpackToCore( Unpacker unpacker, List<T> collection )
 		{
 			if ( !unpacker.IsArrayHeader )

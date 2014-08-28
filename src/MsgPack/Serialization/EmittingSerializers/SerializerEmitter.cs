@@ -35,15 +35,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected static readonly Type[] UnpackFromCoreParameterTypes = { typeof( Unpacker ) };
 
 		/// <summary>
-		///		Flushes the trace.
-		/// </summary>
-		[Obsolete]
-		public void FlushTrace()
-		{
-			// nop
-		}
-
-		/// <summary>
 		/// Initializes a new instance of the <see cref="SerializerEmitter"/> class.
 		/// </summary>
 		protected SerializerEmitter() { }

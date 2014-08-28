@@ -205,6 +205,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		Newly built <see cref="MessagePackSerializer{T}"/> type constructor.
 		///		This value will not be <c>null</c>.
 		///	</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Reflection objects" )]
 		public override Func<SerializationContext, MessagePackSerializer<T>> CreateConstructor<T>()
 		{
 			if ( !this._typeBuilder.IsCreated() )

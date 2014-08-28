@@ -209,7 +209,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			// ReSharper restore CompareNonConstrainedGenericWithNull
 		}
 
-		public static ILConstruct Variable( ILEmittingContext context, Type type, string name )
+		public static ILConstruct Variable( Type type, string name )
 		{
 			return new VariableILConstruct( name, type );
 		}

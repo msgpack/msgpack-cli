@@ -28,7 +28,6 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _CultureInfo
 	{
 		public static readonly PropertyInfo InvariantCulture = FromExpression.ToProperty( () => CultureInfo.InvariantCulture );
-		public static readonly PropertyInfo CurrentCulture = FromExpression.ToProperty( () => CultureInfo.CurrentCulture );
 	}
 // ReSharper restore InconsistentNaming
 }

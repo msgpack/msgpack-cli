@@ -33,16 +33,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 	internal abstract class EnumSerializerEmitter : IDisposable
 	{
 		protected static readonly Type[] UnpackFromUnderlyingValueParameterTypes = { typeof( MessagePackObject ) };
-		protected static readonly Type[] ParseParameterTypes = { typeof( String ) };
-
-		/// <summary>
-		///		Flushes the trace.
-		/// </summary>
-		[Obsolete]
-		public void FlushTrace()
-		{
-			// nop
-		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SerializerEmitter"/> class.
@@ -108,6 +98,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public abstract Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer<T>> CreateConstructor<T>();
 	}
 
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Contract class" )]
 	[ContractClassFor( typeof( EnumSerializerEmitter ) )]
 	internal sealed class EnumSerializerEmitterContract : EnumSerializerEmitter
 	{

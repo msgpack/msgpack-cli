@@ -54,6 +54,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		<c>true</c> if instruction/expression tracing is enabled; otherwise, <c>false</c>.
 		/// </value>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static bool TraceEnabled
 		{
 			get { return _traceEnabled; }
@@ -69,6 +70,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///   <c>true</c> if IL dump is enabled; otherwise, <c>false</c>.
 		/// </value>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static bool DumpEnabled
 		{
 			get { return _dumpEnabled; }
@@ -86,6 +88,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///   <c>true</c> if generic serializer is not used; otherwise, <c>false</c>.
 		/// </value>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static bool AvoidsGenericSerializer
 		{
 			get { return _avoidsGenericSerializer; }
@@ -128,27 +131,14 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Traces the instruction.
-		/// </summary>
-		/// <param name="format">The format string.</param>
-		/// <param name="args">The args for formatting.</param>
-		public static void TraceInstruction( string format, params object[] args )
-		{
-#if !NETFX_CORE
-			if ( !_traceEnabled )
-			{
-				return;
-			}
-
-			_ilTraceWriter.WriteLine( format, args );
-#endif // !NETFX_CORE
-		}
-
-		/// <summary>
 		///		Traces the specific event.
 		/// </summary>
 		/// <param name="format">The format string.</param>
 		/// <param name="args">The args for formatting.</param>
+#if NETFX_CORE || WINDOWS_PHONE
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "format", Justification = "Used in other platforms" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "args", Justification = "Used in other platforms" )]
+#endif // NETFX_CORE || WINDOWS_PHONE
 		public static void TraceEvent( string format, params object[] args )
 		{
 #if !NETFX_CORE && !WINDOWS_PHONE
@@ -244,6 +234,10 @@ namespace MsgPack.Serialization
 			}
 		}
 #endif // !NETFX_CORE && !SILVERLIGHT
+#if NETFX_CORE || SILVERLIGHT
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
+#endif // NETFX_CORE || SILVERLIGHT
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
 #if !NETFX_CORE && !SILVERLIGHT
@@ -252,6 +246,10 @@ namespace MsgPack.Serialization
 #endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
+#if NETFX_CORE || SILVERLIGHT
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
+#endif // NETFX_CORE || SILVERLIGHT
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddCompiledCodeDomAssembly( string pathToAssembly )
 		{
 #if !NETFX_CORE && !SILVERLIGHT
@@ -260,6 +258,7 @@ namespace MsgPack.Serialization
 #endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void ResetDependentAssemblies()
 		{
 #if !NETFX_CORE && !SILVERLIGHT
@@ -279,6 +278,7 @@ namespace MsgPack.Serialization
 		private static int _wasDeleted;
 		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" , Justification = "For unit testing")]
 		public static void DeletePastTemporaries()
 		{
 			if ( Interlocked.CompareExchange( ref _wasDeleted, 1, 0 ) != 0 )
@@ -304,6 +304,7 @@ namespace MsgPack.Serialization
 			catch ( IOException ) { }
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" , Justification = "For unit testing")]
 		private static string GetHistoryFilePath()
 		{
 			return Path.Combine( Path.GetTempPath(), HistoryFile );
@@ -339,6 +340,7 @@ namespace MsgPack.Serialization
 		[ThreadStatic]
 		private static bool _onTheFlyCodeDomEnabled;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static bool OnTheFlyCodeDomEnabled
 		{
 			get { return _onTheFlyCodeDomEnabled; }
@@ -368,6 +370,7 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Takes dump of instructions.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" , Justification = "For unit testing")]
 		public static void Dump()
 		{
 #if !NETFX_35
@@ -382,6 +385,7 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Resets debugging states.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void Reset()
 		{
 #if !NETFX_CORE && !SILVERLIGHT && !NETFX_35

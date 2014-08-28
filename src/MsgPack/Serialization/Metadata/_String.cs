@@ -27,7 +27,6 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _String
 	{
 		public static readonly MethodInfo op_Equality = FromExpression.ToOperator( ( String left, String right ) => left == right );
-		public static readonly MethodInfo op_Inequality = FromExpression.ToOperator( ( String left, String right ) => left != right );
 
 		public static readonly MethodInfo Format_P =
 			FromExpression.ToMethod(

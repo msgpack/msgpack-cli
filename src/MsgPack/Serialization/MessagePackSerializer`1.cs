@@ -475,8 +475,9 @@ namespace MsgPack.Serialization
 
 		byte[] IMessagePackSingleObjectSerializer.PackSingleObject( object objectTree )
 		{
-			if ( ( typeof( T ).GetIsValueType() && !( objectTree is T ) )
-				|| ( ( objectTree != null && !( objectTree is T ) ) ) )
+			var isT = objectTree is T;
+			if ( ( typeof( T ).GetIsValueType() && !isT )
+				|| ( ( objectTree != null && !isT ) ) )
 			{
 				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "'{0}' is not compatible for '{1}'.", objectTree == null ? "(null)" : objectTree.GetType().FullName, typeof( T ) ), "objectTree" );
 			}

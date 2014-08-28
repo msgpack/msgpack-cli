@@ -29,7 +29,9 @@ namespace MsgPack.Serialization.Metadata
 		public static readonly MethodInfo ReadSubtree = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.ReadSubtree() );
 		public static readonly MethodInfo UnpackSubtreeData = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.UnpackSubtreeData() );
 		public static readonly PropertyInfo LastReadData = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.LastReadData );
+#if !NETFX_35
 		public static readonly PropertyInfo ItemsCount = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.ItemsCount );
+#endif // !NETFX_35
 		public static readonly PropertyInfo IsArrayHeader = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsArrayHeader );
 		public static readonly PropertyInfo IsMapHeader = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsMapHeader );
 	}

@@ -36,6 +36,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._valueSerializer = ownerContext.GetSerializer<TValue>();
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override void PackToCore( Packer packer, KeyValuePair<TKey, TValue> objectTree )
 		{
 			packer.PackArrayHeader( 2 );
@@ -43,6 +44,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this._valueSerializer.PackTo( packer, objectTree.Value );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override KeyValuePair<TKey, TValue> UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.Read() )

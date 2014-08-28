@@ -25,8 +25,6 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _MessagePackObject
 	{
-		public static readonly MethodInfo AsString = FromExpression.ToMethod( ( MessagePackObject mpo ) => mpo.AsString() );
-
 		public static readonly PropertyInfo IsNil = FromExpression.ToProperty( ( MessagePackObject mpo ) => mpo.IsNil );
 	}
 }

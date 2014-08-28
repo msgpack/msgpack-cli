@@ -32,7 +32,7 @@ namespace MsgPack.Serialization.Reflection
 {
 	partial class TracingILGenerator
 	{
-
+#if DEBUG
 		///	<summary>
 		///		Emit 'nop' instruction with specified arguments.
 		///	</summary>
@@ -60,6 +60,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Break );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldarg.0' instruction with specified arguments.
@@ -277,6 +278,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldarga_S, value );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'starg.s' instruction with specified arguments.
 		///	</summary>
@@ -294,6 +296,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Starg_S, value );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldloc.s' instruction with specified arguments.
@@ -567,6 +570,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldc_I8, value );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'ldc.r4' instruction with specified arguments.
 		///	</summary>
@@ -616,6 +620,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Dup );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'pop' instruction with specified arguments.
@@ -631,6 +636,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Pop );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'jmp' instruction with specified arguments.
 		///	</summary>
@@ -648,6 +654,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Jmp, target );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'call' instruction with specified arguments.
@@ -667,6 +674,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Call, target );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'br.s' instruction with specified arguments.
 		///	</summary>
@@ -906,6 +914,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Blt_Un_S, target );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'br' instruction with specified arguments.
@@ -959,6 +968,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Brtrue, target );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'beq' instruction with specified arguments.
 		///	</summary>
@@ -992,7 +1002,6 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Bge, target );
 		}
-
 		///	<summary>
 		///		Emit 'bgt' instruction with specified arguments.
 		///	</summary>
@@ -1026,6 +1035,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Ble, target );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'blt' instruction with specified arguments.
@@ -1044,6 +1054,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Blt, target );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'bne.un' instruction with specified arguments.
 		///	</summary>
@@ -1426,6 +1437,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Stind_R8 );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'add' instruction with specified arguments.
@@ -1441,6 +1453,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Add );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'sub' instruction with specified arguments.
 		///	</summary>
@@ -1528,6 +1541,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Rem_Un );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'and' instruction with specified arguments.
@@ -1543,6 +1557,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.And );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'or' instruction with specified arguments.
 		///	</summary>
@@ -1762,6 +1777,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Conv_U8 );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'callvirt' instruction with specified arguments.
@@ -1781,6 +1797,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Callvirt, target );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'cpobj' instruction with specified arguments.
 		///	</summary>
@@ -1816,6 +1833,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Ldobj, type );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldstr' instruction with specified arguments.
@@ -1853,6 +1871,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Newobj, constructor );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'castclass' instruction with specified arguments.
 		///	</summary>
@@ -1922,6 +1941,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Unbox, type );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'throw' instruction with specified arguments.
@@ -2030,6 +2050,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Stfld, field );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'ldsfld' instruction with specified arguments.
 		///	</summary>
@@ -2300,6 +2321,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Conv_Ovf_U_Un );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'box' instruction with specified arguments.
@@ -2337,6 +2359,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Newarr, type );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'ldlen' instruction with specified arguments.
 		///	</summary>
@@ -2671,6 +2694,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Ldelem, type );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'stelem' instruction with specified arguments.
@@ -2709,6 +2733,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Unbox_Any, type );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'conv.ovf.i1' instruction with specified arguments.
 		///	</summary>
@@ -2878,6 +2903,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Mkrefany, type );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldtoken' instruction with specified arguments.
@@ -2955,6 +2981,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldtoken, target );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'conv.u2' instruction with specified arguments.
 		///	</summary>
@@ -3215,6 +3242,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Arglist );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ceq' instruction with specified arguments.
@@ -3244,6 +3272,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Cgt );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'cgt.un' instruction with specified arguments.
 		///	</summary>
@@ -3259,6 +3288,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Cgt_Un );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'clt' instruction with specified arguments.
@@ -3274,6 +3304,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Clt );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'clt.un' instruction with specified arguments.
 		///	</summary>
@@ -3325,6 +3356,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Ldvirtftn, method );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldarg' instruction with specified arguments.
@@ -3362,6 +3394,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldarga, index );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'starg' instruction with specified arguments.
 		///	</summary>
@@ -3379,6 +3412,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Starg, index );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldloc' instruction with specified arguments.
@@ -3434,6 +3468,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Stloc, index );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'localloc' instruction with specified arguments.
 		///	</summary>
@@ -3553,5 +3588,6 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Refanytype );
 		}
+#endif // DEBUG
 	}
 }

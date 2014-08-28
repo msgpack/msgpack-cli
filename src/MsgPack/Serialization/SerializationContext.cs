@@ -368,6 +368,7 @@ namespace MsgPack.Serialization
 		{
 			return GetSerializer<T>( null );
 		}
+
 		/// <summary>
 		///		Gets the <see cref="MessagePackSerializer{T}"/> with this instance.
 		/// </summary>

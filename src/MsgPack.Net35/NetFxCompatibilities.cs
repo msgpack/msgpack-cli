@@ -34,11 +34,13 @@ namespace MsgPack
 			source.Length = 0;
 		}
 
+#if DEBUG
 		public static void Restart( this Stopwatch source )
 		{
 			source.Stop();
 			source.Reset();
 			source.Start();
 		}
+#endif // DEBUG
 	}
 }

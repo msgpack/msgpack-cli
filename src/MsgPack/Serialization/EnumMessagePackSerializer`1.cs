@@ -66,6 +66,7 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="packer"><see cref="Packer"/> which packs values in <paramref name="objectTree"/>. This value will not be <c>null</c>.</param>
 		/// <param name="objectTree">Object to be serialized.</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal sealed override void PackToCore( Packer packer, TEnum objectTree )
 		{
 			if ( this._serializationMethod == EnumSerializationMethod.ByUnderlyingValue )
@@ -99,6 +100,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Failed to deserialize object due to invalid unpacker state, stream content, or so.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal sealed override TEnum UnpackFromCore( Unpacker unpacker )
 		{
 			if ( unpacker.LastReadData.IsRaw )

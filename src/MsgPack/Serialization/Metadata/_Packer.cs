@@ -28,6 +28,5 @@ namespace MsgPack.Serialization.Metadata
 		public static readonly MethodInfo PackArrayHeader = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackArrayHeader( count ) );
 		public static readonly MethodInfo PackMapHeader = FromExpression.ToMethod( ( Packer packer, int count ) => packer.PackMapHeader( count ) );
 		public static readonly MethodInfo PackNull = FromExpression.ToMethod( ( Packer packer ) => packer.PackNull() );
-		public static readonly MethodInfo PackString = FromExpression.ToMethod( ( Packer packer, string value ) => packer.PackString( value ) );
 	}
 }

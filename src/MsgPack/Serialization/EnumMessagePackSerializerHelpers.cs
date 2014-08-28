@@ -40,11 +40,26 @@ namespace MsgPack.Serialization
 		/// <param name="enumType">The target enum type.</param>
 		/// <param name="enumMemberSerializationMethod">The method argued by the member.</param>
 		/// <returns>Determined <see cref="EnumSerializationMethod"/> for the target.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="context"/> is <c>null</c>.
+		///		Or <paramref name="enumType"/> is <c>null</c>.
+		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "enumType should be Type of Enum" )]
 		public static EnumSerializationMethod DetermineEnumSerializationMethod(
 			SerializationContext context,
 			Type enumType,
 			EnumMemberSerializationMethod enumMemberSerializationMethod )
 		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			if ( enumType == null )
+			{
+				throw new ArgumentNullException( "enumType" );
+			}
+
 			EnumSerializationMethod method = context.EnumSerializationMethod;
 			switch ( enumMemberSerializationMethod )
 			{

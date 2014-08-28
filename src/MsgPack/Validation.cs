@@ -40,45 +40,6 @@ namespace MsgPack
 	// [ArgumentValidator]
 	internal static class Validation
 	{
-		public static void ValidateBuffer<T>( T[] byteArray, int offset, long length, string nameOfByteArray, string nameOfLength, bool validateBufferSize )
-		{
-#if !NETFX_35 && !UNITY
-			Contract.Assume( !String.IsNullOrWhiteSpace( nameOfByteArray ) );
-			Contract.Assume( !String.IsNullOrWhiteSpace( nameOfLength ) );
-#endif // !NETFX_35 && !UNITY
-
-			if ( byteArray == null )
-			{
-				throw new ArgumentNullException( nameOfByteArray );
-			}
-
-			if ( offset < 0 )
-			{
-				throw new ArgumentOutOfRangeException( "offset", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", "offset" ) );
-			}
-
-			if ( length < 0 )
-			{
-				throw new ArgumentOutOfRangeException( "nameOfLength", String.Format( CultureInfo.CurrentCulture, "'{0}' is negative.", nameOfLength ) );
-			}
-
-			if ( validateBufferSize && byteArray.Length < offset + length )
-			{
-				throw new ArgumentException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"'{0}' is too small for specified '{1}' and '{2}'. Length of '{0}' is {3}, '{1}' is {4}, '{2}' is {5}.",
-						nameOfByteArray,
-						"offset",
-						nameOfLength,
-						byteArray.Length,
-						offset,
-						length
-					)
-				);
-			}
-		}
-
 		public static void ValidateIsNotNullNorEmpty( string value, string parameterName )
 		{
 			if ( value == null )
@@ -97,75 +58,6 @@ namespace MsgPack
 
 		private const string UnicodeTr15Annex7Idneifier =
 			@"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*";
-
-		private static readonly Regex UnicodeTr15Annex7IdentifierPattern =
-			new Regex(
-				UnicodeTr15Annex7Idneifier,
-#if !SILVERLIGHT && !NETFX_CORE && !UNITY
-				RegexOptions.Compiled |
-#endif // !SILVERLIGHT && !NETFX_CORE && !UNITY
-				RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Singleline
-			);
-
-		public static void ValidateMethodName( string methodName, string parameterName )
-		{
-			ValidateIsNotNullNorEmpty( methodName, parameterName );
-
-			var matches = UnicodeTr15Annex7IdentifierPattern.Matches( methodName );
-			if ( matches.Count == 1 && matches[ 0 ].Success && matches[ 0 ].Index == 0 && matches[ 0 ].Length == methodName.Length )
-			{
-				return;
-			}
-
-			// Get invalid value.
-			int position = 0;
-			int validLength = 0;
-			for ( int i = 0; i < matches.Count; i++ )
-			{
-				if ( matches[ i ].Index == validLength )
-				{
-					validLength += matches[ i ].Length;
-				}
-				else
-				{
-					position = validLength;
-					break;
-				}
-			}
-
-#if !UNITY
-			Contract.Assert( position >= 0 );
-#endif // !UNITY
-
-			var category = CharUnicodeInfo.GetUnicodeCategory( methodName, position );
-			// ReSharper disable RedundantIfElseBlock
-			if ( IsPrintable( category ) )
-			{
-				throw new ArgumentException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"Char at {0}('{1}'\\u{2}[{3}] is not used for method name.",
-						position,
-						methodName[ position ],
-						( ushort )methodName[ position ],
-						category
-					)
-				);
-			}
-			else
-			{
-				throw new ArgumentException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"Char at {0}(\\u{1}[{2}] is not used for method name.",
-						position,
-						( ushort )methodName[ position ],
-						category
-					)
-				);
-			}
-			// ReSharper restore RedundantIfElseBlock
-		}
 
 		private static readonly Regex NamespacePattern =
 			new Regex(

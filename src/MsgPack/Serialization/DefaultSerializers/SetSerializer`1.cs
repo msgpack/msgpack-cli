@@ -37,6 +37,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public SetSerializer( SerializationContext ownerContext, Type targetType )
 			: base( ownerContext, targetType ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override void PackArrayHeader( Packer packer, ISet<T> objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
@@ -47,6 +49,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override void AddItem( ISet<T> collection, T item )
 		{
 			collection.Add( item );

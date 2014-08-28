@@ -28,11 +28,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, MessagePackExtendedTypeObject value )
 		{
 			packer.PackExtendedTypeValue( value );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override MessagePackExtendedTypeObject UnpackFromCore( Unpacker unpacker )
 		{
 			return unpacker.LastReadData.AsMessagePackExtendedTypeObject();

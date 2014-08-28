@@ -26,12 +26,6 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _Enumerable
 	{
-		public static readonly MethodInfo Count1Method =
-			typeof( Enumerable ).GetMethods().Single( m => m.Name == "Count" && m.GetParameters().Length == 1 );
-
 		public static readonly MethodInfo ToArray1Method = typeof( Enumerable ).GetMethod( "ToArray" );
-
-		public static readonly MethodInfo Single2 =
-			typeof( Enumerable ).GetMethods().Single( m => m.Name == "Single" && m.GetParameters().Length == 2 );
 	}
 }

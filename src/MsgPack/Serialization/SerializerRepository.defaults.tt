@@ -179,6 +179,11 @@ var __notInSLs =
 		typeof( System.Collections.Specialized.NameValueCollection ),
 		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
 	};
+var __inWinRTs =
+	new HashSet<Type>()
+	{
+		typeof( System.Runtime.InteropServices.ComTypes.FILETIME ),
+	};
 var __notInWPs =
 	new HashSet<Type>()
 	{
@@ -230,6 +235,7 @@ namespace MsgPack.Serialization
 
 	partial class <#= __typeName #> 
 	{
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This API is naturally coupled with many types" )]
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( SerializationContext ownerContext )
 		{
 			var dictionary = new Dictionary<RuntimeTypeHandle, object>( <#= __structTypes.Length + __classTypes.Length + __tuples.Length + 9 #> );
@@ -259,9 +265,18 @@ foreach( Type __type in __structTypes )
 
 	if( __notInSLs.Contains( __type ) )
 	{
+		if(__inWinRTs.Contains( __type ) )
+		{
+#>
+#if !SILVERLIGHT
+<#
+		}
+		else
+		{
 #>
 #if !SILVERLIGHT && !NETFX_CORE
 <#
+		}
 	}
 
 	if( __notInNet35s.Contains( __type ) )
@@ -283,9 +298,18 @@ foreach( Type __type in __structTypes )
 
 	if( __notInSLs.Contains( __type ) )
 	{
+		if(__inWinRTs.Contains( __type ) )
+		{
+#>
+#endif // !SILVERLIGHT
+<#
+		}
+		else
+		{
 #>
 #endif // !SILVERLIGHT && !NETFX_CORE
 <#
+		}
 	}
 
 	if( __notInWPs.Contains( __type ) )
@@ -307,16 +331,18 @@ foreach( Type __type in __classTypes )
 
 	if( __notInSLs.Contains( __type ) )
 	{
-#>
-#if !SILVERLIGHT && !NETFX_CORE
-<#
-	}
-
-	if( __notInSLs.Contains( __type ) )
-	{
+		if(__inWinRTs.Contains( __type ) )
+		{
 #>
 #if !SILVERLIGHT
 <#
+		}
+		else
+		{
+#>
+#if !SILVERLIGHT && !NETFX_CORE
+<#
+		}
 	}
 
 	if( __notInNet35s.Contains( __type ) )
@@ -348,16 +374,18 @@ foreach( Type __type in __classTypes )
 
 	if( __notInSLs.Contains( __type ) )
 	{
+		if(__inWinRTs.Contains( __type ) )
+		{
 #>
 #endif // !SILVERLIGHT
 <#
-	}
-
-	if( __notInSLs.Contains( __type ) )
-	{
+		}
+		else
+		{
 #>
 #endif // !SILVERLIGHT && !NETFX_CORE
 <#
+		}
 	}
 
 	if( __notInWPs.Contains( __type ) )

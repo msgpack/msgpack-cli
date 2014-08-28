@@ -31,21 +31,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal static class ArraySegmentMessageSerializer
 	{
-#if !XAMIOS && !XAMDROID && !UNITY
-		public static readonly MethodInfo PackByteArraySegmentToMethod =
-			FromExpression.ToMethod( ( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer ) => PackByteArraySegmentTo( packer, objectTree, itemSerializer ) );
-		public static readonly MethodInfo PackCharArraySegmentToMethod =
-			FromExpression.ToMethod( ( Packer packer, ArraySegment<char> objectTree, MessagePackSerializer<char> itemSerializer ) => PackCharArraySegmentTo( packer, objectTree, itemSerializer ) );
-		public static readonly MethodInfo PackGenericArraySegmentTo1Method =
-			typeof( ArraySegmentMessageSerializer ).GetMethod( "PackGenericArraySegmentTo" );
-		public static readonly MethodInfo UnpackByteArraySegmentFromMethod =
-			FromExpression.ToMethod( ( Unpacker unpacker, MessagePackSerializer<byte> itemSerializer ) => UnpackByteArraySegmentFrom( unpacker, itemSerializer ) );
-		public static readonly MethodInfo UnpackCharArraySegmentFromMethod =
-			FromExpression.ToMethod( ( Unpacker unpacker, MessagePackSerializer<char> itemSerializer ) => UnpackCharArraySegmentFrom( unpacker, itemSerializer ) );
-		public static readonly MethodInfo UnpackGenericArraySegmentFrom1Method =
-			typeof( ArraySegmentMessageSerializer ).GetMethod( "UnpackGenericArraySegmentFrom" );
-#endif // !XAMIOS && !XAMDROID && !UNITY
-
 		[SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemSerializer", Justification = "For Delegate signature compatibility" )]
 		public static void PackByteArraySegmentTo( Packer packer, ArraySegment<byte> objectTree, MessagePackSerializer<byte> itemSerializer )
 		{

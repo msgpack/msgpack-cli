@@ -53,6 +53,18 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\MsgPack.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
+    <OutputPath>bin\CodeAnalysis\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;CODE_ANALYSIS</DefineConstants>
+    <DocumentationFile>..\..\bin\sl5\MsgPack.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoConfig>true</NoConfig>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System.Numerics, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -81,9 +93,6 @@
     </Compile>
     <Compile Include="..\MsgPack\DictionaryDebuggerProxy`2.cs">
       <Link>DictionaryDebuggerProxy`2.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\EnumerableStream.cs">
-      <Link>EnumerableStream.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Float32Bits.cs">
       <Link>Float32Bits.cs</Link>
@@ -301,9 +310,6 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NonGenericListSerializer.cs">
       <Link>Serialization\DefaultSerializers\NonGenericListSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs</Link>
     </Compile>
@@ -424,9 +430,6 @@
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\LoadFieldILConstruct.cs">
       <Link>Serialization\EmittingSerializers\LoadFieldILConstruct.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\EmittingSerializers\LocalVariableHolder.cs">
-      <Link>Serialization\EmittingSerializers\LocalVariableHolder.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\EmittingSerializers\SequenceILConstruct.cs">
       <Link>Serialization\EmittingSerializers\SequenceILConstruct.cs</Link>
     </Compile>
@@ -489,9 +492,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\FromExpression.cs">
       <Link>Serialization\FromExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\FromExpression.ToConstructor.cs">
-      <Link>Serialization\FromExpression.ToConstructor.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\FromExpression.ToMethod.cs">
       <Link>Serialization\FromExpression.ToMethod.cs</Link>
@@ -562,9 +562,6 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_IEnumreator.cs">
       <Link>Serialization\Metadata\_IEnumreator.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_KeyValuePair`2.cs">
-      <Link>Serialization\Metadata\_KeyValuePair`2.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_MessagePackObject.cs">
       <Link>Serialization\Metadata\_MessagePackObject.cs</Link>
     </Compile>
@@ -574,17 +571,8 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_MethodBase.cs">
       <Link>Serialization\Metadata\_MethodBase.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_NotImplementedException.cs">
-      <Link>Serialization\Metadata\_NotImplementedException.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_Nullable`1.cs">
-      <Link>Serialization\Metadata\_Nullable`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Packer.cs">
       <Link>Serialization\Metadata\_Packer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Metadata\_SerializationCompatibilityOptions.cs">
-      <Link>Serialization\Metadata\_SerializationCompatibilityOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_SerializationContext.cs">
       <Link>Serialization\Metadata\_SerializationContext.cs</Link>
@@ -615,9 +603,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs">
-      <Link>Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs</Link>
@@ -756,9 +741,6 @@
     </Compile>
     <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
       <Link>UnsafeNativeMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Validation.cs">
-      <Link>Validation.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\LockRecursionPolicy.cs" />

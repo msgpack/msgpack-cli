@@ -26,6 +26,7 @@ namespace System
 	// This file generated from Tuple.tt T4Template.
 	// Do not modify this file. Edit Tuple.tt instead.
 
+#if !NETFX_35
 	internal static class Tuple
 	{
 
@@ -202,4 +203,5 @@ namespace System
 			return buffer.ToString();
 		}
 	}
+#endif // !NETFX_35
 }

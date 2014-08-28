@@ -87,6 +87,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="targetType">Type of the serialization target.</param>
 		/// <returns>Type of the serializer.</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "By design" )]
 		public Type GetSerializerType( Type targetType )
 		{
 			return typeof( MessagePackSerializer<> ).MakeGenericType( targetType );

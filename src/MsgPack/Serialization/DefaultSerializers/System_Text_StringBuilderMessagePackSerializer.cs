@@ -29,12 +29,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public System_Text_StringBuilderMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext ) { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected internal override void PackToCore( Packer packer, StringBuilder value )
 		{
 			// NOTE: More efficient?
 			packer.PackString( value.ToString() );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override StringBuilder UnpackFromCore( Unpacker unpacker )
 		{
 			// NOTE: More efficient?

@@ -55,6 +55,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					.ToDictionary( kv => kv.Key, kv => kv.Value );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
 			var asPackable = objectTree as IPackable;
@@ -109,6 +110,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			this._serializers[ index ].PackTo( packer, value );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
 			var result = Activator.CreateInstance<T>();

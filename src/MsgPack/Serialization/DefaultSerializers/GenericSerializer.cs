@@ -119,6 +119,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return instanceFactory.Create( context ) as IMessagePackSingleObjectSerializer;
 		}
 
+#if SILVERLIGHT || NETFX_35 || NETFX_40
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "context", Justification = "Used in other platform" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "targetType", Justification = "Used in other platform" )]
+#endif // SILVERLIGHT
 		private static IMessagePackSingleObjectSerializer TryCreateImmutableCollectionSerializer( SerializationContext context, Type targetType )
 		{
 #if NETFX_35 || NETFX_40 || SILVERLIGHT

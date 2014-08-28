@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 using MsgPack.Serialization.AbstractSerializers;
 
@@ -91,15 +90,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override void EmitMethodEpilogue( TContext context, SerializerMethod method, ILConstruct construct )
 		{
-			this.EmitMethodEpilogue( context, construct );
+			EmitMethodEpilogue( context, construct );
 		}
 
 		protected override void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, ILConstruct construct )
 		{
-			this.EmitMethodEpilogue( context, construct );
+			EmitMethodEpilogue( context, construct );
 		}
 
-		private void EmitMethodEpilogue( TContext context, ILConstruct construct )
+		private static void EmitMethodEpilogue( TContext context, ILConstruct construct )
 		{
 			try
 			{
@@ -126,6 +125,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Literal( contextType, default( object ), il => il.EmitLdnull() );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Many case switch" )]
 		protected override ILConstruct MakeInt32Literal( TContext context, int constant )
 		{
 			switch ( constant )
@@ -289,6 +289,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitNotExpression( TContext context, ILConstruct booleanExpression )
 		{
 			if ( booleanExpression.ContextType != typeof( bool ) )
@@ -317,6 +318,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitEqualsExpression( TContext context, ILConstruct left, ILConstruct right )
 		{
 			var equality = left.ContextType.GetMethod( "op_Equality" );
@@ -357,6 +359,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGreaterThanExpression( TContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG
@@ -399,6 +402,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitLessThanExpression( TContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG
@@ -501,7 +505,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			return
 				ILConstruct.Variable(
-					context,
 					type,
 					name
 				);
@@ -512,6 +515,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Argument( index, type, name );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitInvokeVoidMethod( TContext context, ILConstruct instance, MethodInfo method, params ILConstruct[] arguments )
 		{
 			return
@@ -532,11 +536,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.NewObject( variable, constructor, arguments );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length, IEnumerable<ILConstruct> initialElements )
 		{
 			var array =
 				ILConstruct.Variable(
-					context,
 					elementType.MakeArrayType(),
 					"array"
 				);
@@ -578,6 +583,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, method, arguments );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGetPropretyExpression( TContext context, ILConstruct instance, PropertyInfo property )
 		{
 			return ILConstruct.Invoke( instance, property.GetGetMethod( true ), ILConstruct.NoArguments );
@@ -588,6 +594,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.LoadField( instance, field );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitSetProprety( TContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
 		{
 #if DEBUG
@@ -606,6 +613,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.StoreField( instance, field, value );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitLoadVariableExpression( TContext context, ILConstruct variable )
 		{
 			return ILConstruct.Instruction( "load", variable.ContextType, false, il => variable.LoadValue( il, false ) );
@@ -631,6 +639,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitTryFinally( TContext context, ILConstruct tryStatement, ILConstruct finallyStatement )
 		{
 			return
@@ -669,6 +678,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitStringSwitchStatement( TContext context, ILConstruct target, IDictionary<string, ILConstruct> cases )
 		{
 			// Simple if statements

@@ -53,6 +53,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///		The appropriate <see cref="SerializationMethodGeneratorManager"/> for specified options. 
 		///		This value will not be <c>null</c>.
 		///	</returns>
+#if SILVERLIGHT
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "option", Justification = "Used in other platform" )]
+#endif // SILVERLIGHT
 		public static SerializationMethodGeneratorManager Get( SerializationMethodGeneratorOption option )
 		{
 #if SILVERLIGHT

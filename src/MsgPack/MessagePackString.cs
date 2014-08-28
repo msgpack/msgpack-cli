@@ -42,6 +42,9 @@ namespace MsgPack
 #if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif // if !SILVERLIGHT && !NETFX_CORE
+#if !NETFX_35 && !UNITY
+	[SecuritySafeCritical]
+#endif // !NETFX_35 && !UNITY
 	[DebuggerDisplay( "{DebuggerDisplayString}" )]
 	[DebuggerTypeProxy( typeof( MessagePackStringDebuggerProxy ) )]
 	internal sealed class MessagePackString
@@ -53,6 +56,7 @@ namespace MsgPack
 		private BinaryType _type;
 
 		// ReSharper disable once UnusedMember.Local
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For debugger" )]
 		private string DebuggerDisplayString
 		{
 			get { return new MessagePackStringDebuggerProxy( this ).Value; }
@@ -295,12 +299,17 @@ namespace MsgPack
 		private static int _isFastEqualsDisabled;
 #endif // if SILVERLIGHT
 
+#if DEBUG
+		// for testing
 		internal static bool IsFastEqualsDisabled
 		{
 			get { return _isFastEqualsDisabled != 0; }
 		}
+#endif
 
+#if !NETFX_35 && !UNITY
 		[SecuritySafeCritical]
+#endif // !NETFX_35 && !UNITY
 		private static bool UnsafeFastEquals( byte[] x, byte[] y )
 		{
 #if DEBUG

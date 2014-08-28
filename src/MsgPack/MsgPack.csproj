@@ -83,6 +83,7 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CoreProfile|AnyCPU'">
     <OutputPath>bin\CoreProfile\</OutputPath>
@@ -112,7 +113,6 @@
     <Compile Include="CollectionDebuggerProxy`1.cs" />
     <Compile Include="CollectionOperation.cs" />
     <Compile Include="DictionaryDebuggerProxy`2.cs" />
-    <Compile Include="EnumerableStream.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Float32Bits.cs" />
     <Compile Include="Float64Bits.cs" />
@@ -170,7 +170,6 @@
     <Compile Include="Serialization\NilImplicationHandler`4.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs" />
-    <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerHelper.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerOnUnpackedParameter.cs" />
@@ -267,7 +266,6 @@
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Tuple.cs" />
     <Compile Include="Serialization\EmittingSerializers\InvocationILConsruct.cs" />
     <Compile Include="Serialization\EmittingSerializers\LoadFieldILConstruct.cs" />
-    <Compile Include="Serialization\EmittingSerializers\LocalVariableHolder.cs" />
     <Compile Include="Serialization\CallbackMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\EmittingSerializers\ContextBasedSerializerEmitter.cs" />
     <Compile Include="Serialization\DefaultSerializers\DefaultSerializers.cs">
@@ -301,29 +299,20 @@
     <Compile Include="Serialization\Metadata\_IDictionaryEnumerator.cs" />
     <Compile Include="Serialization\Metadata\_IEnumreator.cs" />
     <Compile Include="Serialization\Metadata\_MessagePackSerializer.cs" />
-    <Compile Include="Serialization\Metadata\_SerializationCompatibilityOptions.cs" />
     <Compile Include="Serialization\Metadata\_SerializationContext.cs" />
     <Compile Include="Serialization\Metadata\_String.cs" />
     <Compile Include="Serialization\Metadata\_MessagePackObject.cs" />
     <Compile Include="Serialization\Metadata\_IDisposable.cs" />
-    <Compile Include="Serialization\Metadata\_Nullable`1.cs" />
-    <Compile Include="Serialization\Metadata\_KeyValuePair`2.cs" />
     <Compile Include="Serialization\Metadata\_DictionaryEntry.cs" />
     <Compile Include="Serialization\Metadata\_Type.cs" />
     <Compile Include="Serialization\Metadata\_Unpacker.cs" />
     <Compile Include="Serialization\Metadata\_Packer.cs" />
-    <Compile Include="Serialization\FromExpression.ToConstructor.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FromExpression.ToConstructor.tt</DependentUpon>
-    </Compile>
     <Compile Include="Serialization\IdentifierUtility.cs" />
     <Compile Include="Serialization\AutoMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectionTraits.cs" />
     <Compile Include="Serialization\CollectionKind.cs" />
     <Compile Include="Serialization\DataMemberContract.cs" />
     <Compile Include="Serialization\DefaultSerializers\MsgPack_MessagePackObjectMessagePackSerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializers\NullableMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\NullableMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_ObjectMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_StringMessagePackSerializer.cs" />
@@ -350,7 +339,6 @@
       <DependentUpon>_UnpackHelpers.direct.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\Metadata\_UnpackHelpers.cs" />
-    <Compile Include="Serialization\Metadata\_NotImplementedException.cs" />
     <Compile Include="Serialization\NilImplication.cs" />
     <Compile Include="Serialization\Reflection\GenericTypeExtensions.cs" />
     <Compile Include="Serialization\Reflection\ReflectionExtensions.cs">
@@ -449,10 +437,6 @@
     <None Include="Serialization\DefaultSerializers\ArraySerializer.Primitives.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArraySerializer.Primitives.cs</LastGenOutput>
-    </None>
-    <None Include="Serialization\FromExpression.ToConstructor.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>FromExpression.ToConstructor.cs</LastGenOutput>
     </None>
     <None Include="Serialization\FromExpression.ToMethod.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

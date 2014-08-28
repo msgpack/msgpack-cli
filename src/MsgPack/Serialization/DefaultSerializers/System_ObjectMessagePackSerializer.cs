@@ -33,6 +33,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.PackObject( value );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
 			// ReSharper disable RedundantIfElseBlock
