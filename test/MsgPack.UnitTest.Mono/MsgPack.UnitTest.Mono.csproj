@@ -935,6 +935,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTestTarget.cs">
       <Link>Serialization\NilImplicationTestTarget.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\PerformanceTest.cs">
+      <Link>Serialization\PerformanceTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\PreGeneratedSerializerActivator.cs">
       <Link>Serialization\PreGeneratedSerializerActivator.cs</Link>
     </Compile>

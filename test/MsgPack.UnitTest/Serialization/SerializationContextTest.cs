@@ -153,14 +153,14 @@ namespace MsgPack.Serialization
 			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( IDictionary<,> ), typeof( StringKeyDictionary<> ) ) );
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestDefaultCollectionTypes_Register_Incompatible_Fail()
 		{
 			var context = new SerializationContext();
 			Assert.Throws<ArgumentException>( () => context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( ArrayList ) ) );
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 
 		[Test]
 		public void TestDefaultCollectionTypes_Register_NonGenericGenericMpoOk()

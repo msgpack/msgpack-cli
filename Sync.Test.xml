@@ -108,6 +108,17 @@
     <Exclude Path="Serialization\MapGenerationBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
   </Project>
+  <Project Name="MsgPack.UnitTest.Silverlight.WindowsPhone" Base="MsgPack.UnitTest.WinRT">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Preserve File="*.pfx" />
+    <Preserve File="*.png" />
+    <Preserve File="*.xaml" />
+    <Preserve File="*Manifest.xml" />
+    <Preserve Path="LocalizedStrings.cs" />
+  </Project>
   <Project Name="MsgPack.UnitTest.BclExtensions.WinRT" Base="MsgPack.UnitTest.BclExtensions">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.ps1" />

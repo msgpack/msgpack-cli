@@ -22,7 +22,7 @@
 #define UNITY
 #endif
 
-#if !WINDOWS_PHONE && !UNITY
+#if !UNITY
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -319,4 +319,4 @@ namespace MsgPack
 		}
 	}
 }
-#endif // !WINDOWS_PHONE && !UNITY
+#endif // !UNITY

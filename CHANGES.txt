@@ -136,14 +136,23 @@ Release 0.5 - 2014/7/21
   * This release unifies .NET build and Mono build for main source codes (testing codes have not been unified yet.)
   * This release contains reimplementation of serializer generation stack. It might change implementation detail dependant behavior (it usually potential issue).
 
-Release 0.5.1 2014/8/9
+Release 0.5.1 - 2014/8/9
 
   FEATURES
   * Reflection serializer. It enables on-the-fly serializer generation in Xamarin and Unity3D.
 
   BUG FIXES
-  * Fixes concurrency bug in WinRT.
-  * Fixes built-in NamedValueCollection serializer generates invalid stream when the values of a key are empty.
+  * Fix concurrency bug in WinRT.
+  * Fix built-in NamedValueCollection serializer generates invalid stream when the values of a key are empty.
 
   NOTE
-  * This release changes drop for Unity3D from source assets to dll assets.
+  * This release changes drop for Unity3D from source assets to dll assets (source assets are still available).
+
+Release 0.5.2 - 2014/9/?
+
+  FEATURES
+  * Support Windows Phone 8.1 (Both of WinRT & Silverlight) issue #36
+  * Add MessagePackSerializer.Get() for usability.
+
+  BUG FIXES
+  * Fix FILETIME is not available in WinRT

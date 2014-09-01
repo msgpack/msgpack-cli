@@ -114,11 +114,11 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackString_ByteArray_Encoding_Empty_AsIsAndBounded()
 		{
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 			var result = Unpacking.UnpackString( new byte[] { 0xA0, 0xFF }, Encoding.UTF32 );
 #else
 			var result = Unpacking.UnpackString( new byte[] { 0xA0, 0xFF }, Encoding.UTF8 );
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 			Assert.That( result.ReadCount, Is.EqualTo( 1 ) );
 			Assert.That( result.Value, Is.EqualTo( String.Empty ) );
 		}
@@ -126,7 +126,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackString_ByteArray_Encoding_1Byte_AsIsAndBounded()
 		{
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 			var result = Unpacking.UnpackString( new byte[] { 0xA4, 0x00, 0x00, 0x00, ( byte )'A', 0xFF }, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) );
 			Assert.That( result.ReadCount, Is.EqualTo( 5 ) );
 			Assert.That( result.Value, Is.EqualTo( "A" ) );
@@ -134,7 +134,7 @@ namespace MsgPack
 			var result = Unpacking.UnpackString( new byte[] { 0xA2, 0x00, ( byte )'A', 0xFF }, new UnicodeEncoding( bigEndian: true, byteOrderMark: false, throwOnInvalidBytes: true ) );
 			Assert.That( result.ReadCount, Is.EqualTo( 3 ) );
 			Assert.That( result.Value, Is.EqualTo( "A" ) );
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		[Test]
@@ -142,7 +142,7 @@ namespace MsgPack
 		{
 #if MONO || XAMDROID
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
-#elif !NETFX_CORE 
+#elif !NETFX_CORE && !SILVERLIGHT
 			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F }, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) );
 #else
 			Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( new byte[] { 0xA5, 0xF8, 0x88, 0x80, 0x80, 0x80 }, new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) ) );
@@ -259,11 +259,11 @@ namespace MsgPack
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xA0, 0xFF } ) )
 			{
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 				var result = Unpacking.UnpackString( stream, Encoding.UTF32 );
 #else
 				var result = Unpacking.UnpackString( stream, Encoding.UTF8 );
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 				Assert.That( stream.Position, Is.EqualTo( 1 ) );
 				Assert.That( result, Is.EqualTo( String.Empty ) );
 			}
@@ -272,7 +272,7 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackString_Stream_Encoding_1Byte_AsIsAndBounded()
 		{
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x00, 0x00, 0x00, ( byte )'A', 0xFF } ) )
 			{
 				var result = Unpacking.UnpackString( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) );
@@ -286,7 +286,7 @@ namespace MsgPack
 				Assert.That( stream.Position, Is.EqualTo( 3 ) );
 				Assert.That( result, Is.EqualTo( "A" ) );
 			}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		[Test]
@@ -296,7 +296,7 @@ namespace MsgPack
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F } ) )
 			{
 				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) );
@@ -306,7 +306,7 @@ namespace MsgPack
 			{
 				Assert.Throws<MessageTypeException>( () => Unpacking.UnpackString( stream, new UTF8Encoding( encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true ) ) );
 			}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		[Test]
@@ -542,11 +542,11 @@ namespace MsgPack
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xA0, 0xFF } ) )
 			{
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 				using ( var result = Unpacking.UnpackCharStream( stream, Encoding.UTF32 ) )
 #else
 				using ( var result = Unpacking.UnpackCharStream( stream, Encoding.UTF8 ) )
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 				{
 					AssertStringReader( result, 0, String.Empty );
 				}
@@ -559,13 +559,13 @@ namespace MsgPack
 		[Test]
 		public void TestUnpackCharStream_Stream_Encoding_1Byte_AsIsAndBounded()
 		{
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x00, 0x00, 0x00, ( byte )'A', 0xFF } ) )
 #else
 			using ( var stream = new MemoryStream( new byte[] { 0xA2, 0x00, ( byte )'A', 0xFF } ) )
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 			{
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 				using ( var result = Unpacking.UnpackCharStream( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) )
 				{
 					AssertStringReader( result, 4, "A" );
@@ -575,7 +575,7 @@ namespace MsgPack
 				{
 					AssertStringReader( result, 2, "A" );
 				}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 				// Assert is valid position on unerlying stream.
 				Assert.That( Unpacking.UnpackInt32( stream ), Is.EqualTo( -1 ) );
 			}
@@ -587,7 +587,7 @@ namespace MsgPack
 #if MONO || XAMDROID
 			Assert.Inconclusive( "UTF32Encoding does not throw exception on Mono FCL." );
 #endif
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 			using ( var stream = new MemoryStream( new byte[] { 0xA4, 0x7F, 0x7F, 0x7F, 0x7F } ) )
 			{
 				using ( var result = Unpacking.UnpackCharStream( stream, new UTF32Encoding( bigEndian: true, byteOrderMark: false, throwOnInvalidCharacters: true ) ) )
@@ -603,7 +603,7 @@ namespace MsgPack
 					Assert.Throws<DecoderFallbackException>( () => result.Read() );
 				}
 			}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		[Test]

@@ -29,17 +29,17 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 using System.Numerics;
-#endif
+#endif // !NETFX_35 && !WINDOWS_PHONE
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
-#if !NETFX_CORE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
+#if !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !NETFX_CORE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
 #if !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
 using MsgPack.Serialization.ExpressionSerializers;
 #endif // !NETFX_35 && !UNITY_IPHONE && !UNITY_ANDROID && !XAMIOS && !XAMDROID
@@ -78,7 +78,7 @@ namespace MsgPack.Serialization
 			get { return false; }
 		}
 
-#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 		[SetUp]
 		public void SetUp()
 		{
@@ -122,7 +122,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
-#endif // !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 
 		private void DoKnownCollectionTest<T>( SerializationContext context )
 			where T : new()
@@ -324,11 +324,11 @@ namespace MsgPack.Serialization
 		{
 			var target = new ComplexTypeWithDataContract() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 			target.NonSerialized = new DefaultTraceListener();
 #else
 			target.NonSerialized = new Stopwatch();
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 			TestCoreWithVerify( target, context );
 		}
 
@@ -364,7 +364,7 @@ namespace MsgPack.Serialization
 		{
 			var target = new ComplexTypeWithDataContractWithOrder() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 			target.NonSerialized = new DefaultTraceListener();
 #else
 			target.NonSerialized = new Stopwatch();
@@ -520,7 +520,7 @@ namespace MsgPack.Serialization
 			TestCore( DayOfWeek.Sunday, stream => ( DayOfWeek )Enum.Parse( typeof( DayOfWeek ), Unpacking.UnpackString( stream ) ), ( x, y ) => x == y );
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestNameValueCollection()
 		{
@@ -1147,7 +1147,7 @@ namespace MsgPack.Serialization
 				foreach ( var memberName in expectedMemberNames )
 				{
 					Func<T, Object> getter = null;
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 					var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
 #else
 					var property = typeof( T ).GetProperty( memberName );
@@ -1158,7 +1158,7 @@ namespace MsgPack.Serialization
 					}
 					else
 					{
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 						var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
 #else
 						var field = typeof( T ).GetField( memberName );
@@ -1712,7 +1712,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( 123456789.0987654321m, 2 ).ToArray(), this.GetSerializationContext() );
 		}
 		
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 		[Test]
 		public void TestBigIntegerField()
 		{
@@ -1725,8 +1725,8 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, 2 ).ToArray(), this.GetSerializationContext() );
 		}
 		
-#endif // !NETFX_35
-#if !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
+#if !NETFX_35 && !WINDOWS_PHONE
 		[Test]
 		public void TestComplexField()
 		{
@@ -1739,7 +1739,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Complex( 1.3, 2.4 ), 2 ).ToArray(), this.GetSerializationContext() );
 		}
 		
-#endif // !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
 		[Test]
 		public void TestDictionaryEntryField()
 		{
@@ -1764,7 +1764,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, DateTimeOffset>( "Key", DateTimeOffset.UtcNow ), 2 ).ToArray(), this.GetSerializationContext() );
 		}
 		
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 		[Test]
 		public void TestKeyValuePairStringComplexField()
 		{
@@ -1777,7 +1777,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), 2 ).ToArray(), this.GetSerializationContext() );
 		}
 		
-#endif // !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
 		[Test]
 		public void TestStringField()
 		{

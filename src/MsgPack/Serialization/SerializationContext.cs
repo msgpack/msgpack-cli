@@ -49,6 +49,9 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationContext
 	{
+#if UNITY
+		private static readonly object DefaultContextSyncRoot = new object();
+#endif // UNITY
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
 		private static SerializationContext _default = new SerializationContext( default( SerializerRepository ) );
 
@@ -61,7 +64,17 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentNullException">The setting value is <c>null</c>.</exception>
 		public static SerializationContext Default
 		{
-			get { return Interlocked.CompareExchange( ref  _default, null, null ); }
+			get
+			{
+#if !UNITY
+				return Interlocked.CompareExchange( ref _default, null, null );
+#else
+				lock( DefaultContextSyncRoot )
+				{
+					return _default;
+				}
+#endif // !UNITY
+			}
 			set
 			{
 				if ( value == null )
@@ -69,7 +82,14 @@ namespace MsgPack.Serialization
 					throw new ArgumentNullException( "value" );
 				}
 
+#if !UNITY
 				Interlocked.Exchange( ref _default, value );
+#else
+				lock( DefaultContextSyncRoot )
+				{
+					_default = value;
+				}
+#endif // !UNITY
 			}
 		}
 

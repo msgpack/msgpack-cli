@@ -21,7 +21,7 @@
 using System;
 using System.Diagnostics;
 using System.Security;
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 using System.Security.Permissions;
 using System.Security.Policy;
 #endif
@@ -153,7 +153,7 @@ namespace MsgPack
 			Console.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
 		}
 
-#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();

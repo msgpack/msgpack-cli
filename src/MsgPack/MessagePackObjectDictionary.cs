@@ -159,7 +159,7 @@ namespace MsgPack
 			}
 		}
 
-#if !WINDOWS_PHONE && !UNITY
+#if !UNITY
 		/// <summary>
 		///		Gets an <see cref="KeySet"/> containing the keys of the <see cref="MessagePackObjectDictionary"/>.
 		/// </summary>
@@ -197,7 +197,7 @@ namespace MsgPack
 				return new KeyCollection( this );
 			}
 		}
-#endif // !WINDOWS_PHONE && !UNITY
+#endif // !UNITY
 
 		/// <summary>
 		///		Gets an <see cref="ValueCollection"/> containing the values of the <see cref="MessagePackObjectDictionary"/>.

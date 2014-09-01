@@ -29,7 +29,6 @@ namespace MsgPack
 #if !SILVERLIGHT && !NETFX_CORE
 	[SuppressUnmanagedCodeSecurity]
 #endif
-#if !WINDOWS_PHONE
 #if !NETFX_35
 	[SecurityCritical]
 #endif // !NETFX_35
@@ -91,5 +90,4 @@ namespace MsgPack
 			return false;
 		}
 	}
-#endif
 }

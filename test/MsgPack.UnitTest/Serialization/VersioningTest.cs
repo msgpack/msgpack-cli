@@ -38,7 +38,7 @@ namespace MsgPack.Serialization
 	{
 		private static MessagePackSerializer<T> CreateSerializer<T>( EmitterFlavor flavor )
 		{
-#if NETFX_35 || NETFX_CORE
+#if NETFX_35 || NETFX_CORE || SILVERLIGHT
 			var context = new SerializationContext();
 #else
 			var context = PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );

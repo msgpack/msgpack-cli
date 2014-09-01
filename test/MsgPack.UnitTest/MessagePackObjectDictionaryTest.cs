@@ -33,9 +33,9 @@ using Is = NUnit.Framework.Is;
 #endif
 using System.Text;
 using System.IO;
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 using System.Runtime.Serialization.Formatters.Binary;
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 
 namespace MsgPack
 {
@@ -1323,7 +1323,7 @@ namespace MsgPack
 			Assert.That( array[ 4 ], Is.EqualTo( MessagePackObject.Nil ) );
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 		[Test]
 		public void TestRuntimeSerialization_NotEmpty_RoundTripped()
 		{

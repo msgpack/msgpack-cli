@@ -33,13 +33,13 @@ namespace MsgPack
 {
 	partial class MessagePackObjectDictionary
 	{
-#if !WINDOWS_PHONE && !UNITY
+#if !UNITY
 		partial class KeySet
 #else
 		partial class KeyCollection
-#endif // !WINDOWS_PHONE && !UNITY
+#endif // UNITY
 		{
-#if !WINDOWS_PHONE && !UNITY
+#if !UNITY
 			/// <summary>
 			///		Enumerates the elements of a <see cref="MessagePackObjectDictionary.KeySet"/>.
 			/// </summary>
@@ -50,7 +50,7 @@ namespace MsgPack
 			///		Enumerates the elements of a <see cref="MessagePackObjectDictionary.KeyCollection"/>.
 			/// </summary>
 			public struct Enumerator : IEnumerator<MessagePackObject>
-#endif // !WINDOWS_PHONE && !UNITY
+#endif // !UNITY
 			{
 				// This field must not be readonly because it will cause infinite loop to the user of this type 
 				// due to C# compiler emit ldfld instead of ldflda and state of this field will never change.

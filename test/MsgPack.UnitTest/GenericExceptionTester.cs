@@ -27,16 +27,16 @@ using System.Linq.Expressions;
 #if NETFX_CORE
 using System.Reflection;
 #endif
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT
 using System.Runtime.Serialization.Formatters.Binary;
 #else
 using System.Runtime.Serialization;
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 using System.Security;
-#if !NETFX_CORE
+#if  !NETFX_CORE && !SILVERLIGHT
 using System.Security.Permissions;
 using System.Security.Policy;
-#endif
+#endif //  !NETFX_CORE && !SILVERLIGHT
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -53,10 +53,10 @@ namespace MsgPack
 	///		Test suite for standard exception constructors, properties, and serialization.
 	/// </summary>
 	/// <typeparam name="T">Target exception type.</typeparam>
-	public sealed class GenericExceptionTester<T> 
-#if !NETFX_CORE
+	public sealed class GenericExceptionTester<T>
+#if  !NETFX_CORE && !SILVERLIGHT
 		: MarshalByRefObject
-#endif
+#endif //  !NETFX_CORE && !SILVERLIGHT
 		where T : Exception
 	{
 		private static readonly Type[] _emptyTypes = new Type[ 0 ];
@@ -128,9 +128,9 @@ namespace MsgPack
 			this.TestMessageConstructor_WithNull_SetToDefaultMessage();
 			this.TestInnerExceptionConstructor_WithMessageAndInnerException_SetToMessageAndInnerException();
 			this.TestInnerExceptionConstructor_Null_SetToDefaultMessageAndNullInnerException();
-#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
 			this.TestSerialization();
-#endif // if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY
+#endif // if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
 		}
 
 		private void TestDefaultConstructor()
@@ -201,7 +201,7 @@ namespace MsgPack
 			}
 		}
 
-#if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY
+#if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
 		private void TestSerialization()
 		{
 			Assert.That( typeof( T ), Is.BinarySerializable );
@@ -308,6 +308,6 @@ namespace MsgPack
 			var assemblyName = type.Assembly.GetName();
 			return new StrongName( new StrongNamePublicKeyBlob( assemblyName.GetPublicKey() ), assemblyName.Name, assemblyName.Version );
 		}
-#endif // if !NETFX_CORE && !XAMIOS && !XAMDROID && !UNITY
+#endif // if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
 	}
 }

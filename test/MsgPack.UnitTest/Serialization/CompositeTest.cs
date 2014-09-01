@@ -23,10 +23,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using MsgPack.Serialization.AbstractSerializers;
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#endif // if !NETFX_CORE
+#endif // if !NETFX_CORE && !WINDOWS_PHONE
 #if !NETFX_35
 using MsgPack.Serialization.ExpressionSerializers;
 #endif // if !NETFX_35
@@ -45,7 +45,7 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class CompositeTest
 	{
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 
 		[SetUp]
 		public void SetUp()
@@ -106,7 +106,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Array, new CodeDomSerializerBuilder<DirectoryItem>() );
 		}
-#endif
+#endif // !NETFX_CORE && !WINDOWS_PHONE
 
 #if !NETFX_35
 		[Test]
@@ -121,7 +121,7 @@ namespace MsgPack.Serialization
 			TestCore( EmitterFlavor.ExpressionBased, SerializationMethod.Map, new ExpressionTreeSerializerBuilder<DirectoryItem>() );
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 		[Test]
 		public void TestMapContextBased()
 		{
@@ -133,8 +133,8 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder<DirectoryItem>() );
 		}
-#endif
-#endif
+#endif // !NETFX_CORE && !WINDOWS_PHONE
+#endif // !NETFX_35
 
 		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder<DirectoryItem> generator )
 		{
@@ -152,7 +152,20 @@ namespace MsgPack.Serialization
 				};
 			root.Files = new FileItem[ 0 ];
 
-			var serializer = new AutoMessagePackSerializer<DirectoryItem>( new SerializationContext() { EmitterFlavor = emittingFlavor, SerializationMethod = serializationMethod, GeneratorOption = SerializationMethodGeneratorOption.CanDump }, generator );
+			var serializer = 
+				new AutoMessagePackSerializer<DirectoryItem>( 
+					new SerializationContext
+					{
+						EmitterFlavor = emittingFlavor, 
+						SerializationMethod = serializationMethod, 
+#if SILVERLIGHT
+						GeneratorOption = SerializationMethodGeneratorOption.Fast
+#else
+						GeneratorOption = SerializationMethodGeneratorOption.CanDump
+#endif
+					}, 
+					generator 
+				);
 			using ( var memoryStream = new MemoryStream() )
 			{
 				serializer.Pack( memoryStream, root );

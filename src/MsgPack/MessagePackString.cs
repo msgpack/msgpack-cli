@@ -257,7 +257,7 @@ namespace MsgPack
 				return false;
 			}
 
-#if !WINDOWS_PHONE && !UNITY
+#if !UNITY
 			if ( _isFastEqualsDisabled == 0 )
 			{
 				try
@@ -273,7 +273,7 @@ namespace MsgPack
 					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
 				}
 			}
-#endif // if !WINDOWS_PHONE && !UNITY
+#endif // if !UNITY
 
 			return SlowEquals( left._encoded, right._encoded );
 		}
@@ -291,13 +291,13 @@ namespace MsgPack
 			return true;
 		}
 
-#if !WINDOWS_PHONE && !UNITY
-#if SILVERLIGHT
+#if !UNITY
+#if SILVERLIGHT && !WINDOWS_PHONE
 		private static int _isFastEqualsDisabled =
 			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
 #else
 		private static int _isFastEqualsDisabled;
-#endif // if SILVERLIGHT
+#endif // if SILVERLIGHT && !WINDOWS_PHONE
 
 #if DEBUG
 		// for testing
@@ -327,7 +327,7 @@ namespace MsgPack
 
 			return result == 0;
 		}
-#endif // if !WINDOWS_PHONE && !UNITY
+#endif // if !UNITY
 
 #if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]

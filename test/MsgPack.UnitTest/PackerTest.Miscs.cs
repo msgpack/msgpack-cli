@@ -36,7 +36,7 @@ namespace MsgPack
 	[TestFixture]
 	public class PackerTest
 	{
-#if !NETFX_CORE && !XAMIOS && !UNITY_IPHONE
+#if !NETFX_CORE && !SILVERLIGHT && !XAMIOS && !UNITY_IPHONE
 		[Test]
 		public void DefaultCompatibilityOptions_Classic()
 		{
@@ -56,7 +56,7 @@ namespace MsgPack
 		{
 			Assert.That( Packer.DefaultCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.Classic ) );
 		}
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT && !XAMIOS && !UNITY_IPHONE
 
 		[Test]
 		public void TestCreate_DefaultOptions()

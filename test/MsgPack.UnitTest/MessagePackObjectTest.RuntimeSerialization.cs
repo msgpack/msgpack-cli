@@ -18,7 +18,7 @@
 //
 #endregion -- License Terms --
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -171,4 +171,4 @@ namespace MsgPack
 		}
 	}
 }
-#endif // #if !NETFX_CORE
+#endif // #if !NETFX_CORE && !WINDOWS_PHONE

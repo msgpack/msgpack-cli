@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 using System.Numerics;
 #endif
 using System.Reflection;
@@ -226,7 +226,7 @@ namespace MsgPack.Serialization
 			get { return this._DecimalField; }
 			set { this._DecimalField = value; }
 		}
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 		private BigInteger _BigIntegerField;
 		
 		public BigInteger BigIntegerField
@@ -234,8 +234,8 @@ namespace MsgPack.Serialization
 			get { return this._BigIntegerField; }
 			set { this._BigIntegerField = value; }
 		}
-#endif // !NETFX_35
-#if !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
+#if !NETFX_35 && !WINDOWS_PHONE
 		private Complex _ComplexField;
 		
 		public Complex ComplexField
@@ -243,7 +243,7 @@ namespace MsgPack.Serialization
 			get { return this._ComplexField; }
 			set { this._ComplexField = value; }
 		}
-#endif // !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
 		private DictionaryEntry _DictionaryEntryField;
 		
 		public DictionaryEntry DictionaryEntryField
@@ -258,7 +258,7 @@ namespace MsgPack.Serialization
 			get { return this._KeyValuePairStringDateTimeOffsetField; }
 			set { this._KeyValuePairStringDateTimeOffsetField = value; }
 		}
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 		private KeyValuePair<String, Complex> _KeyValuePairStringComplexField;
 		
 		public KeyValuePair<String, Complex> KeyValuePairStringComplexField
@@ -266,7 +266,7 @@ namespace MsgPack.Serialization
 			get { return this._KeyValuePairStringComplexField; }
 			set { this._KeyValuePairStringComplexField = value; }
 		}
-#endif // !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
 		private String _StringField;
 		
 		public String StringField
@@ -605,17 +605,17 @@ namespace MsgPack.Serialization
 			this._GuidField = Guid.NewGuid();
 			this._CharField = '　';
 			this._DecimalField = 123456789.0987654321m;
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 			this._BigIntegerField = new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue;
-#endif // !NETFX_35
-#if !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
+#if !NETFX_35 && !WINDOWS_PHONE
 			this._ComplexField = new Complex( 1.3, 2.4 );
-#endif // !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
 			this._DictionaryEntryField = new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) );
 			this._KeyValuePairStringDateTimeOffsetField = new KeyValuePair<String, DateTimeOffset>( "Key", DateTimeOffset.UtcNow );
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 			this._KeyValuePairStringComplexField = new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) );
-#endif // !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
 			this._StringField = "StringValue";
 			this._ByteArrayField = new Byte[]{ 1, 2, 3, 4 };
 			this._CharArrayField = "ABCD".ToCharArray();
@@ -715,17 +715,17 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._GuidField, this._GuidField );
 			AutoMessagePackSerializerTest.Verify( expected._CharField, this._CharField );
 			AutoMessagePackSerializerTest.Verify( expected._DecimalField, this._DecimalField );
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._BigIntegerField, this._BigIntegerField );
-#endif // !NETFX_35
-#if !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
+#if !NETFX_35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._ComplexField, this._ComplexField );
-#endif // !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._DictionaryEntryField, this._DictionaryEntryField );
 			AutoMessagePackSerializerTest.Verify( expected._KeyValuePairStringDateTimeOffsetField, this._KeyValuePairStringDateTimeOffsetField );
-#if !NETFX_35
+#if !NETFX_35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._KeyValuePairStringComplexField, this._KeyValuePairStringComplexField );
-#endif // !NETFX_35
+#endif // !NETFX_35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._StringField, this._StringField );
 			AutoMessagePackSerializerTest.Verify( expected._ByteArrayField, this._ByteArrayField );
 			AutoMessagePackSerializerTest.Verify( expected._CharArrayField, this._CharArrayField );
@@ -755,10 +755,10 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._ObjectArrayField, this._ObjectArrayField );
 #if !NETFX_CORE && !SILVERLIGHT
 			AutoMessagePackSerializerTest.Verify( expected._ArrayListField, this._ArrayListField );
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 #if !NETFX_CORE && !SILVERLIGHT
 			AutoMessagePackSerializerTest.Verify( expected._HashtableField, this._HashtableField );
-#endif
+#endif // !NETFX_CORE && !SILVERLIGHT
 			AutoMessagePackSerializerTest.Verify( expected._ListObjectField, this._ListObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._DictionaryObjectObjectField, this._DictionaryObjectObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._CollectionObjectField, this._CollectionObjectField );
@@ -1086,7 +1086,7 @@ namespace MsgPack.Serialization
 			{
 				var expecteds = ( ( IEnumerable )expected ).Cast<Object>().ToArray();
 				var actuals = ( ( IEnumerable )actual ).Cast<Object>().ToArray();
-				Assert.That( actuals.Length, Is.EqualTo( expecteds.Length ) );
+				Assert.That( expecteds.Length, Is.EqualTo( actuals.Length ) );
 				for ( int i = 0; i < expecteds.Length; i++ )
 				{
 					Verify( expecteds[ i ], actuals[ i ] );
@@ -1127,12 +1127,12 @@ namespace MsgPack.Serialization
 			if ( expected.GetType().GetTypeInfo().IsGenericType && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 #endif
 			{
-#if !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
+#if !NETFX_35 && !XAMIOS && !UNITY_IPHONE
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
 				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
 #else
 				Assert.Inconclusive( ".NET 3.5 does not support dynamic." );
-#endif // !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
+#endif // !NETFX_35 && !XAMIOS && !UNITY_IPHONE
 				return;
 			}
 

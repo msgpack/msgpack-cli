@@ -107,6 +107,14 @@ private void GenerateTypesCore( bool forIos )
 			typeof( Hashtable )
 		};
 
+	var __notInSLWP =
+		new HashSet<String>()
+		{
+			ToTypeName( typeof( KeyValuePair<string, Complex> ) ),
+			ToTypeName( typeof( BigInteger ) ),
+			ToTypeName( typeof( Complex ) ),
+		};
+
 	var __notInNet35 =
 		new HashSet<String>()
 		{
@@ -156,9 +164,18 @@ private void GenerateTypesCore( bool forIos )
 		}
 		else if( __notInNet35.Contains( __typeName ) )
 		{
+			if(__notInSLWP.Contains( __typeName ) )
+			{
+#>
+#if !NETFX_35 && !WINDOWS_PHONE
+<#+
+			}
+			else
+			{
 #>
 #if !NETFX_35
 <#+
+			}
 		}
 #>
 		[Test]
@@ -200,9 +217,18 @@ private void GenerateTypesCore( bool forIos )
 		}
 		else if( __notInNet35.Contains( __typeName ) )
 		{
+			if(__notInSLWP.Contains( __typeName ) )
+			{
+#>
+#endif // !NETFX_35 && !WINDOWS_PHONE
+<#+
+			}
+			else
+			{
 #>
 #endif // !NETFX_35
 <#+
+			}
 		}
 	}
 	// In object
