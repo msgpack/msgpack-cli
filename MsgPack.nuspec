@@ -11,8 +11,8 @@
     <iconUrl>http://cli.msgpack.org/images/msgpack.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MessagePack is fast, compact, and interoperable binary serialization format.
-This library provides MessagePack serialization/deserialization APIs. This library supports Xamarin and Unity3D.</description>
-    <releaseNotes>This release now supports Xamarin and Unity3D by adding serializer code generation which enables setting break-point and avoiding runtime code generation. In addition, runtime code generation in iOS/Android is also supported.</releaseNotes>
+This package provides MessagePack serialization/deserialization APIs. This pacakge also supports Mono, Xamarin and Unity3D.</description>
+    <releaseNotes>This release fixes Unity3D iOS related critical issues, and now supports Windows Phone 8 (including Windows Phone Silverlight).</releaseNotes>
     <copyright>Copyright 2010-2014 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>Serialization MessagePack MsgPack Formatter Binary Serializer Fast Xamarin Unity3D</tags>
     <dependencies />
