@@ -167,8 +167,15 @@ namespace MsgPack.Serialization
 								.FirstOrDefault();
 							var id = item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Order" )
-								.Select( arg => ( int? )arg.GetTypedValue().Value )
+								.Select( arg => ( int? ) arg.GetTypedValue().Value )
 								.FirstOrDefault();
+#if SILVERLIGHT
+							if ( id == -1 )
+							{
+								// Shim for Silverlight returns -1 because GetNamedArguments() extension method cannot recognize whether the argument was actually specified or not.
+								id = null;
+							}
+#endif // SILVERLIGHT
 
 							return
 								new SerializingMember(
