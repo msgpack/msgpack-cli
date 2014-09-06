@@ -220,12 +220,10 @@ namespace MsgPack.Serialization
 #else
 			switch ( context.EmitterFlavor )
 			{
-#if !NETFX_35 && !NETFX_40 && !NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
 				case EmitterFlavor.ReflectionBased:
 				{
 					return CreateReflectionInternal<T>( context );
 				}
-#endif // !NETFX_35 && !NETFX_40 && !NETFX_CORE && !WINDOWS_PHONE && !SILVERLIGHT
 #if !WINDOWS_PHONE && !NETFX_35
 				case EmitterFlavor.ExpressionBased:
 				{
