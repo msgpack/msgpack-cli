@@ -59,9 +59,9 @@ namespace MsgPack.Serialization
 					{ typeof( ICollection ).TypeHandle, typeof( List<MessagePackObject> ) },
 					{ typeof( IList ).TypeHandle, typeof( List<MessagePackObject> ) },
 					{ typeof( IDictionary ).TypeHandle, typeof( MessagePackObjectDictionary ) },
-#if !NETFX_35 && !WINDOWS_PHONE && !UNITY
+#if !NETFX_35 && !UNITY
 					{ typeof( ISet<> ).TypeHandle, typeof( HashSet<> ) },
-#endif // !NETFX_35 && !WINDOWS_PHONE && !UNITY
+#endif // !NETFX_35 && !UNITY
 				} );
 		}
 
