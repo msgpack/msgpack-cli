@@ -7,6 +7,7 @@
 *.shfbproj_*
 *.vshost.exe
 *.pdb
+MsgPack.*.zip
 _Resharper.*/
 _UpgradeReport_*/
 UpgradeLog*.*
