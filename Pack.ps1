@@ -19,7 +19,7 @@ $buildOptions += '/p:Configuration=Release'
 &$builder $sln $buildOptions
 &$builder $slnCompat $buildOptions
 
-$winFile = New-Object IO.FileInfo( ".\bin\netcore45\MsgPack.dll" )
+$winFile = New-Object IO.FileInfo( ".\bin\portable-windows8+wpa\MsgPack.dll" )
 $xamarinFile = New-Object IO.FileInfo( ".\bin\monotouch\MsgPack.dll" )
 if( ( $winFile.LastWriteTime - $xamarinFile.LastWriteTime ).Days -ne 0 )
 {
