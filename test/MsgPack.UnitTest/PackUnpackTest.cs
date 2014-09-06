@@ -99,6 +99,7 @@ namespace MsgPack
 			Assert.IsTrue( obj.IsTypeOf<bool>().GetValueOrDefault() );
 		}
 
+#if !WINDOWS_PHONE
 		[Test]
 		public void TestStringShort()
 		{
@@ -129,6 +130,7 @@ namespace MsgPack
 			sw.Stop();
 			Console.WriteLine( "Small String ({1:#,###.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 		}
+#endif // !WINDOWS_PHONE
 
 		[Test]
 		[Timeout( 3000000 )]

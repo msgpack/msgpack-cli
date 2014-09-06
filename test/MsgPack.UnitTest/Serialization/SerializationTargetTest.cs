@@ -54,7 +54,7 @@ namespace MsgPack.Serialization
 		private const string PublicFieldPlain = "PublicFieldPlain";
 		private const string PublicReadOnlyFieldPlain = "PublicReadOnlyFieldPlain";
 		private const string NonPublicFieldPlain = "NonPublicFieldPlain";
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 		private const string NonSerializedPublicField = "NonSerializedPublicField";
 		private const string NonSerializedPublicReadOnlyField = "NonSerializedPublicReadOnlyField";
 		private const string NonSerializedNonPublicField = "NonSerializedNonPublicField";
@@ -76,7 +76,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore<AnnotatedClass>( 
 				PublicProperty, NonPublicProperty, PublicField, NonPublicField, 
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
 				NonSerializedPublicField, NonSerializedNonPublicField, 
 #endif
 				CollectionReadOnlyProperty );
@@ -87,8 +87,8 @@ namespace MsgPack.Serialization
 		{
 			// includes issue33
 			TestCore<DataMamberClass>(
-				PublicProperty, NonPublicProperty, PublicField, NonPublicField, 
-#if !NETFX_CORE
+				PublicProperty, NonPublicProperty, PublicField, NonPublicField,
+#if !NETFX_CORE && !WINDOWS_PHONE
 				NonSerializedPublicField, NonSerializedNonPublicField, 
 #endif
 				CollectionReadOnlyProperty );
