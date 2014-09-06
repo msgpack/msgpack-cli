@@ -125,12 +125,6 @@
             	Least significant byte of current endian.
             </summary>
         </member>
-        <member name="M:MsgPack.Float64Bits.#ctor(System.Double)">
-            <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.Float64Bits"/> type from specified <see cref="T:System.Double"/>.
-            </summary>
-            <param name="value">Value of <see cref="T:System.Double"/>.</param>
-        </member>
         <member name="M:MsgPack.Float64Bits.#ctor(System.Byte[],System.Int32)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Float64Bits"/> type from specified <see cref="T:System.Byte"/>[] which is big endian.
@@ -4316,11 +4310,6 @@
             <param name="instanceType">The target elementType.</param>
             <returns>A constructor of the <paramref name="instanceType"/>.</returns>
         </member>
-        <member name="F:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.OwnerContextProperty">
-            <summary>
-            	<see cref="T:System.Reflection.PropertyInfo"/> of <see cref="P:MsgPack.Serialization.MessagePackSerializer`1.OwnerContext"/>.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.#ctor">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3"/> class.
@@ -5522,11 +5511,6 @@
             	Genereates enum serialization methods which can be save to file.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.FlushTrace">
-            <summary>
-            	Flushes the trace.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.EmittingSerializers.EnumSerializerEmitter.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter"/> class.
@@ -5588,11 +5572,6 @@
         <member name="T:MsgPack.Serialization.EmittingSerializers.SerializerEmitter">
             <summary>
             	Genereates serialization methods which can be save to file.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.FlushTrace">
-            <summary>
-            	Flushes the trace.
             </summary>
         </member>
         <member name="M:MsgPack.Serialization.EmittingSerializers.SerializerEmitter.#ctor">
@@ -5973,11 +5952,6 @@
             	This value will not be <c>null</c>.
             </returns>
         </member>
-        <member name="T:MsgPack.Serialization.EmittingSerializers.LocalVariableHolder">
-            <summary>
-            	Holds reusable(temporal) local variable info.
-            </summary>
-        </member>
         <member name="T:MsgPack.Serialization.EnumMemberSerializationMethod">
             <summary>
             	Represents individual enum typed member serialization method.
@@ -6012,6 +5986,10 @@
             <param name="enumType">The target enum type.</param>
             <param name="enumMemberSerializationMethod">The method argued by the member.</param>
             <returns>Determined <see cref="T:MsgPack.Serialization.EnumSerializationMethod"/> for the target.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="context"/> is <c>null</c>.
+            	Or <paramref name="enumType"/> is <c>null</c>.
+            </exception>
         </member>
         <member name="T:MsgPack.Serialization.EnumMessagePackSerializerProvider">
             <summary>
@@ -6073,15 +6051,6 @@
             <summary>
             	Utilities related to member/type ID.
             </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.IdentifierUtility.BuildMethodName(System.String,System.Type,System.String)">
-            <summary>
-            	Builds the name of the generating method.
-            </summary>
-            <param name="operation">The operation.</param>
-            <param name="targetType">Type of the target.</param>
-            <param name="targetMemberName">Name of the target member.</param>
-            <returns>Name of the method.</returns>
         </member>
         <member name="T:MsgPack.Serialization.ISerializerGeneratorConfiguration">
             <summary>
@@ -6236,6 +6205,92 @@
             	<paramref name="context"/> is <c>null</c>.
             </exception>
         </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.Get``1">
+            <summary>
+            	Gets existing or new <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> instance with default context (<see cref="P:MsgPack.Serialization.SerializationContext.Default"/>).
+            </summary>
+            <typeparam name="T">Target type.</typeparam>
+            <returns>
+            	<see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/>.
+            	If there is exiting one, returns it.
+            	Else the new instance will be created.
+            </returns>
+            <remarks>
+            	This method simply invokes <see cref="M:MsgPack.Serialization.MessagePackSerializer.Get``1(MsgPack.Serialization.SerializationContext)"/> with <see cref="P:MsgPack.Serialization.SerializationContext.Default"/> for the <c>context</c>.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.Get``1(System.Object)">
+            <summary>
+            	Gets existing or new <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> instance with default context (<see cref="P:MsgPack.Serialization.SerializationContext.Default"/>).
+            </summary>
+            <typeparam name="T">Target type.</typeparam>
+            <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+            <returns>
+            	<see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/>.
+            	If there is exiting one, returns it.
+            	Else the new instance will be created.
+            </returns>
+            <remarks>
+            	This method simply invokes <see cref="M:MsgPack.Serialization.MessagePackSerializer.Get``1(MsgPack.Serialization.SerializationContext,System.Object)"/> with <see cref="P:MsgPack.Serialization.SerializationContext.Default"/> for the <c>context</c>.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.Get``1(MsgPack.Serialization.SerializationContext)">
+            <summary>
+            	Gets existing or new <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> instance with specified <see cref="T:MsgPack.Serialization.SerializationContext"/>.
+            </summary>
+            <typeparam name="T">Target type.</typeparam>
+            <param name="context">
+            	<see cref="T:MsgPack.Serialization.SerializationContext"/> to store known/created serializers.
+            </param>
+            <returns>
+            	<see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/>.
+            	If there is exiting one, returns it.
+            	Else the new instance will be created.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="context"/> is <c>null</c>.
+            </exception>
+            <remarks>
+            	This method simply invokes <see cref="M:MsgPack.Serialization.MessagePackSerializer.Get``1(MsgPack.Serialization.SerializationContext,System.Object)"/> with <c>null</c> for the <c>providerParameter</c>.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.Get``1(MsgPack.Serialization.SerializationContext,System.Object)">
+            <summary>
+            	Gets existing or new <see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/> instance with specified <see cref="T:MsgPack.Serialization.SerializationContext"/>.
+            </summary>
+            <typeparam name="T">Target type.</typeparam>
+            <param name="context">
+            	<see cref="T:MsgPack.Serialization.SerializationContext"/> to store known/created serializers.
+            </param>
+            <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+            <returns>
+            	<see cref="T:MsgPack.Serialization.MessagePackSerializer`1"/>.
+            	If there is exiting one, returns it.
+            	Else the new instance will be created.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="context"/> is <c>null</c>.
+            </exception>
+            <remarks>
+            	<para>
+            		This method simply invokes <see cref="M:MsgPack.Serialization.SerializationContext.GetSerializer``1(System.Object)"/>, so see the method description for details.
+            	</para>
+            	<para>
+            		Currently, only following provider parameters are supported.
+            		<list type="table">
+            			<listheader>
+            				<term>Target type</term>
+            				<description>Provider parameter</description>
+            			</listheader>
+            			<item>
+            				<term><see cref="T:MsgPack.Serialization.EnumMessagePackSerializer`1"/> or its descendants.</term>
+            				<description><see cref="T:MsgPack.Serialization.EnumSerializationMethod"/>. The returning instance corresponds to this value for serialization.</description>
+            			</item>
+            		</list>
+            		<note><c>null</c> is valid value for <paramref name="providerParameter"/> and it indeicates default behavior of parameter.</note>
+            	</para>
+            </remarks>
+        </member>
         <member name="M:MsgPack.Serialization.MessagePackSerializer.Create(System.Type)">
             <summary>
             	Creates new <see cref="T:MsgPack.Serialization.IMessagePackSerializer"/> instance with <see cref="P:MsgPack.Serialization.SerializationContext.Default"/>.
@@ -6268,6 +6323,108 @@
             </exception>
             <remarks>
             	To avoid boxing and strongly typed API is prefered, use <see cref="M:MsgPack.Serialization.MessagePackSerializer.Create``1(MsgPack.Serialization.SerializationContext)"/> instead when possible.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.Get(System.Type)">
+            <summary>
+            	Gets existing or new <see cref="T:MsgPack.Serialization.IMessagePackSerializer"/> instance with default context (<see cref="P:MsgPack.Serialization.SerializationContext.Default"/>).
+            </summary>
+            <param name="targetType">Target type.</param>
+            <returns>
+            	<see cref="T:MsgPack.Serialization.IMessagePackSingleObjectSerializer"/>.
+            	If there is exiting one, returns it.
+            	Else the new instance will be created.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="targetType"/> is <c>null</c>.
+            </exception>
+            <remarks>
+            	<para>
+            		This method simply invokes <see cref="M:MsgPack.Serialization.SerializationContext.GetSerializer(System.Type)"/>, so see the method description for details.
+            	</para>
+            	<para>
+            	Although <see cref="M:MsgPack.Serialization.MessagePackSerializer.Get``1"/> is preferred,
+            	this method can be used from non-generic type or methods.
+            	</para>
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.Get(System.Type,System.Object)">
+            <summary>
+            	Gets existing or new <see cref="T:MsgPack.Serialization.IMessagePackSerializer"/> instance with default context (<see cref="P:MsgPack.Serialization.SerializationContext.Default"/>).
+            </summary>
+            <param name="targetType">Target type.</param>
+            <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+            <returns>
+            	<see cref="T:MsgPack.Serialization.IMessagePackSingleObjectSerializer"/>.
+            	If there is exiting one, returns it.
+            	Else the new instance will be created.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="targetType"/> is <c>null</c>.
+            </exception>
+            <remarks>
+            	<para>
+            		This method simply invokes <see cref="M:MsgPack.Serialization.SerializationContext.GetSerializer(System.Type,System.Object)"/>, so see the method description for details.
+            	</para>
+            	<para>
+            	Although <see cref="M:MsgPack.Serialization.MessagePackSerializer.Get``1(System.Object)"/> is preferred,
+            	this method can be used from non-generic type or methods.
+            	</para>
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.Get(System.Type,MsgPack.Serialization.SerializationContext)">
+            <summary>
+            	Gets existing or new <see cref="T:MsgPack.Serialization.IMessagePackSerializer"/> instance with specified <see cref="T:MsgPack.Serialization.SerializationContext"/>.
+            </summary>
+            <param name="targetType">Target type.</param>
+            <param name="context">
+            	<see cref="T:MsgPack.Serialization.SerializationContext"/> to store known/created serializers.
+            </param>
+            <returns>
+            	<see cref="T:MsgPack.Serialization.IMessagePackSingleObjectSerializer"/>.
+            	If there is exiting one, returns it.
+            	Else the new instance will be created.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="targetType"/> is <c>null</c>.
+            	Or, <paramref name="context"/> is <c>null</c>.
+            </exception>
+            <remarks>
+            	<para>
+            		This method simply invokes <see cref="M:MsgPack.Serialization.SerializationContext.GetSerializer(System.Type)"/>, so see the method description for details.
+            	</para>
+            	<para>
+            	Although <see cref="M:MsgPack.Serialization.MessagePackSerializer.Get``1(MsgPack.Serialization.SerializationContext)"/> is preferred,
+            	this method can be used from non-generic type or methods.
+            	</para>
+            </remarks>
+        </member>
+        <member name="M:MsgPack.Serialization.MessagePackSerializer.Get(System.Type,MsgPack.Serialization.SerializationContext,System.Object)">
+            <summary>
+            	Gets existing or new <see cref="T:MsgPack.Serialization.IMessagePackSerializer"/> instance with specified <see cref="T:MsgPack.Serialization.SerializationContext"/>.
+            </summary>
+            <param name="targetType">Target type.</param>
+            <param name="context">
+            	<see cref="T:MsgPack.Serialization.SerializationContext"/> to store known/created serializers.
+            </param>
+            <param name="providerParameter">A provider specific parameter. See remarks section for details.</param>
+            <returns>
+            	<see cref="T:MsgPack.Serialization.IMessagePackSingleObjectSerializer"/>.
+            	If there is exiting one, returns it.
+            	Else the new instance will be created.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="targetType"/> is <c>null</c>.
+            	Or, <paramref name="context"/> is <c>null</c>.
+            </exception>
+            <remarks>
+            	<para>
+            		This method simply invokes <see cref="M:MsgPack.Serialization.SerializationContext.GetSerializer(System.Type,System.Object)"/>, so see the method description for details.
+            	</para>
+            	<para>
+            	Although <see cref="M:MsgPack.Serialization.MessagePackSerializer.Get``1(MsgPack.Serialization.SerializationContext,System.Object)"/> is preferred,
+            	this method can be used from non-generic type or methods.
+            	</para>
             </remarks>
         </member>
         <member name="T:MsgPack.Serialization.MessagePackSerializerExtensions">
@@ -6393,11 +6550,6 @@
             </summary>
             <typeparam name="T">Actual collection type.</typeparam>
         </member>
-        <member name="T:MsgPack.Serialization.ReflectionSerializers.ReflectionEnumMessagePackSerializer">
-            <summary>
-            	Non-generic portion of <see cref="T:MsgPack.Serialization.ReflectionSerializers.ReflectionEnumMessagePackSerializer`1"/>.
-            </summary>
-        </member>
         <member name="T:MsgPack.Serialization.ReflectionSerializers.ReflectionEnumMessagePackSerializer`1">
             <summary>
             	Implements reflection-based enum serializer for restricted platforms.
@@ -6482,103 +6634,6 @@
             </summary>
             <param name="property"><see cref="T:System.Reflection.PropertyInfo"/> for target property.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCurrentCulture">
-            <summary>
-            	Emit <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/> invocation.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitInvariantCulture">
-            <summary>
-            	Emit <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/> invocation.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitGetType">
-            <summary>
-            	Emit <see cref="M:System.Object.GetType"/> invocation.
-            	Pre condition is that target instance is placed on the top of evaluation stack.
-            	Post condition is that target instance will be replaced with <see cref="T:System.Type"/> of it.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStringFormat(System.Int32,System.String,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator}[])">
-            <summary>
-            	Emit <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/> invocation with <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
-            </summary>
-            <param name="temporaryLocalArrayIndex">
-            	Index of temporary local variable index to store param array for <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/>.
-            	Note that the type of local variable must be Object[].
-            </param>
-            <param name="formatLiteral">Forat string literal.</param>
-            <param name="argumentLoadingEmitters">
-            	List of delegates to emittion of loading formatting parameter loading instruction. 
-            	Index of this array corresponds to index of formatting parameter.
-            	1st argument is this instance.
-            	Post condition is that exactly one storing element will be added on the top of evaluation stack.
-            </param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStringFormat(System.Int32,System.Type,System.String,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator}[])">
-            <summary>
-            	Emit <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/> invocation with <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>.
-            </summary>
-            <param name="temporaryLocalArrayIndex">
-            	Index of temporary local variable index to store param array for <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/>.
-            	Note that the type of local variable must be Object[].
-            </param>
-            <param name="resource">
-            	Type of resource accessor.
-            </param>
-            <param name="resourceKey">
-            	Key of rethis. Note that this method assumes that key equals to accessor property name.
-            </param>
-            <param name="argumentLoadingEmitters">
-            	List of delegates to emittion of loading formatting parameter loading instruction. 
-            	Index of this array corresponds to index of formatting parameter.
-            	1st argument is this instance.
-            	Post condition is that exactly one storing element will be added on the top of evaluation stack.
-            </param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStringFormatInvariant(System.Int32,System.String,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator}[])">
-            <summary>
-            	Emit <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/> invocation with <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
-            </summary>
-            <param name="temporaryLocalArrayIndex">
-            	Index of temporary local variable index to store param array for <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/>.
-            	Note that the type of local variable must be Object[].
-            </param>
-            <param name="formatLiteral">Forat string literal.</param>
-            <param name="argumentLoadingEmitters">
-            	List of delegates to emittion of loading formatting parameter loading instruction. 
-            	Index of this array corresponds to index of formatting parameter.
-            	1st argument is this instance.
-            	Post condition is that exactly one storing element will be added on the top of evaluation stack.
-            </param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStringFormatInvariant(System.Int32,System.Type,System.String,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator}[])">
-            <summary>
-            	Emit <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/> invocation with <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
-            </summary>
-            <param name="temporaryLocalArrayIndex">
-            	Index of temporary local variable index to store param array for <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/>.
-            	Note that the type of local variable must be Object[].
-            </param>
-            <param name="resource">
-            	Type of resource accessor.
-            </param>
-            <param name="resourceKey">
-            	Key of rethis. Note that this method assumes that key equals to accessor property name.
-            </param>
-            <param name="argumentLoadingEmitters">
-            	List of delegates to emittion of loading formatting parameter loading instruction. 
-            	Index of this array corresponds to index of formatting parameter.
-            	1st argument is this instance.
-            	Post condition is that exactly one storing element will be added on the top of evaluation stack.
-            </param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdargThis">
-            <summary>
-            	Emit load 'this' pointer instruction (namely 'ldarg.0').
-            	Post condition is that the loaded value will be added on the evaluation stack.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitAnyLdarg(System.Int32)">
             <summary>
             	Emit apprpriate 'ldarg.*' instruction.
@@ -6616,79 +6671,6 @@
             <param name="elementType"><see cref="T:System.Type"/> of array element. This can be generaic parameter.</param>
             <param name="length">Size of array.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitNewarr(System.Int32,System.Type,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator}[])">
-            <summary>
-            	Emit array initialization code with initializer.
-            	Post condition is evaluation stack will no be modified as previous state. 
-            	Note that initialized array is not placed on the top of evaluation stack.
-            </summary>
-            <param name="arrayLocalIndex">
-            	Index of local variable which stores the array.
-            </param>
-            <param name="elementType"><see cref="T:System.Type"/> of array element. This can be generaic parameter.</param>
-            <param name="elementLoadingEmitters">
-            	List of delegates to emittion of storing element loading instruction. 
-            	Index of this array corresponds to index of initializing array.
-            	1st argument is this instance.
-            	Post condition is that exactly one storing element will be added on the top of stack and its type is <paramref name="elementType"/> compatible.
-            </param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitNewarr(System.Action{MsgPack.Serialization.Reflection.TracingILGenerator},System.Action{MsgPack.Serialization.Reflection.TracingILGenerator},System.Type,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator}[])">
-            <summary>
-            	Emit array initialization code with initializer.
-            	Post condition is evaluation stack will no be modified as previous state. 
-            	Note that initialized array is not placed on the top of evaluation stack.
-            </summary>
-            <param name="arrayLoadingEmitter">
-            	Delegate to emittion of array loading instruction. 
-            	1st argument is this instance.
-            	Post condition is that exactly one target array will be added on the top of stack and element type is <paramref name="elementType"/>.
-            </param>
-            <param name="arrayStoringEmitter">
-            	Delegate to emittion of array storing instruction. 
-            	1st argument is this instance.
-            	Pre condition is that the top of evaluation stack is array type and its element type is <paramref name="elementType"/>.
-            	Post condition is that exactly one target array will be removed from the top of stack.
-            </param>
-            <param name="elementType"><see cref="T:System.Type"/> of array element. This can be generaic parameter.</param>
-            <param name="elementLoadingEmitters">
-            	List of delegates to emittion of storing element loading instruction. 
-            	Index of this array corresponds to index of initializing array.
-            	1st argument is this instance.
-            	Post condition is that exactly one storing element will be added on the top of stack and its type is <paramref name="elementType"/> compatible.
-            </param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitAnyLdelem(System.Type,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator},System.Int64)">
-            <summary>
-            	Emit array element loading instructions. 
-            	Post condition is that exactly one loaded element will be placed on the top of stack and its element type is <paramref name="elementType"/>.
-            </summary>
-            <param name="elementType"><see cref="T:System.Type"/> of array element. This can be generaic parameter.</param>
-            <param name="arrayLoadingEmitter">
-            	Delegate to emittion of array loading instruction. 
-            	1st argument is this instance.
-            	Post condition is that exactly one target array will be added on the top of stack and its element type is <paramref name="elementType"/>.
-            </param>
-            <param name="index">Index of array element.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitAnyStelem(System.Type,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator},System.Int64,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator})">
-            <summary>
-            	Emit array element storing instructions.
-            	Post condition is evaluation stack will no be modified as previous state.
-            </summary>
-            <param name="elementType"><see cref="T:System.Type"/> of array element. This can be generaic parameter.</param>
-            <param name="arrayLoadingEmitter">
-            	Delegate to emittion of array loading instruction. 
-            	1st argument is this instance.
-            	Post condition is that exactly one target array will be added on the top of stack and its element type is <paramref name="elementType"/>.
-            </param>
-            <param name="index">Index of array element.</param>
-            <param name="elementLoadingEmitter">
-            	Delegate to emittion of storing element loading instruction. 
-            	1st argument is this instance.
-            	Post condition is that exactly one storing element will be added on the top of stack and its type is <paramref name="elementType"/> compatible.
-            </param>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLiteralInteger(System.Int64)">
             <summary>
             	Emit efficient integer constant loading.
@@ -6702,30 +6684,6 @@
             	Post condition is <see cref="T:System.Type"/> instance for <paramref name="type"/> will be placed on the top of evaluation stack.
             </summary>
             <param name="type">Target <see cref="T:System.Type"/>.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitThrowNewArgumentExceptionWithInnerException">
-            <summary>
-            	Emit 'throw new ArgumentException(String,String,Exception)' statement.
-            	Pre condition is that there are exactly three entries in the evaluation stack,
-            	which are string, string, and Exception instance.
-            	Post condition is that the evaluation statck will be empty.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitThrowNewExceptionWithInnerException(System.Type)">
-            <summary>
-            	Emit 'throw new TException(String,String,Exception)' statement.
-            	Pre condition is that there are exactly two entries in the evaluation stack,
-            	which are string and Exception instance.
-            	Post condition is that the evaluation statck will be empty.
-            </summary>
-            <param name="exceptionType"><see cref="T:System.Type"/> of initializing and throwing <see cref="T:System.Exception"/>.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.#ctor(System.Reflection.Emit.MethodBuilder,System.IO.TextWriter)">
-            <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/> class.
-            </summary>
-            <param name="methodBuilder">The method builder.</param>
-            <param name="traceWriter">The trace writer.</param>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.#ctor(System.Reflection.Emit.DynamicMethod,System.IO.TextWriter)">
             <summary>
@@ -6760,21 +6718,6 @@
             	Emit 'ret' instruction with specified arguments.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.DeclareLocal(System.Type)">
-            <summary>
-            	Declare local without pinning and name for debugging.
-            </summary>
-            <param name="localType"><see cref="T:System.Type"/> of local variable.</param>
-            <returns><see cref="T:System.Reflection.Emit.LocalBuilder"/> to refer declared local variable.</returns>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.DeclareLocal(System.Type,System.Boolean)">
-            <summary>
-            	Declare local without name for debugging.
-            </summary>
-            <param name="localType"><see cref="T:System.Type"/> of local variable.</param>
-            <param name="pinned">If <c>true</c>, the local variable will be pinned.</param>
-            <returns><see cref="T:System.Reflection.Emit.LocalBuilder"/> to refer declared local variable.</returns>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.DeclareLocal(System.Type,System.String)">
             <summary>
             	Declare local with name for debugging and without pinning.
@@ -6784,96 +6727,12 @@
             <param name="name">Name of the local variable.</param>
             <returns><see cref="T:System.Reflection.Emit.LocalBuilder"/> to refer declared local variable.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.DeclareLocal(System.Type,System.String,System.Boolean)">
-            <summary>
-            	Declare local with name for debugging.
-            	Note that this method is not enabled for dynamic method.
-            </summary>
-            <param name="localType"><see cref="T:System.Type"/> of local variable.</param>
-            <param name="name">Name of the local variable.</param>
-            <param name="pinned">If <c>true</c>, the local variable will be pinned.</param>
-            <returns><see cref="T:System.Reflection.Emit.LocalBuilder"/> to refer declared local variable.</returns>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitExceptionBlock(System.Action{MsgPack.Serialization.Reflection.TracingILGenerator,System.Reflection.Emit.Label},System.Tuple{System.Type,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator,System.Reflection.Emit.Label,System.Type}},System.Tuple{System.Type,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator,System.Reflection.Emit.Label,System.Type}}[])">
-            <summary>
-            	Emit exception block with catch blocks.
-            </summary>
-            <param name="tryBlockEmitter">
-            	<see cref="T:System.Action`2"/> which emits exception block (try in C#) body.
-            	A 1st argument is this <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/>,
-            	and a 2nd argument is <see cref="T:System.Reflection.Emit.Label"/> will to be end of emitting exception block.
-            	The delegate do not have to emit leave or leave.s instrauction at tail of the body.
-            </param>
-            <param name="firstCatchBlock">
-            	<see cref="T:System.Tuple`2"/> for catch block body emittion.
-            	A 1st item of the tuple is <see cref="T:System.Type"/> which indicates catching exception type.
-            	A 2nd item of the tuple is <see cref="T:System.Action`2"/> which emits catch block body.
-            	A 1st argument of the delegate is this <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/>,
-            	a 2nd argument of the delegate is <see cref="T:System.Reflection.Emit.Label"/> will to be end of emitting exception block,
-            	and 3rd argument of the delegate is the 1st item of the tuple.
-            	The delegate do not have to emit leave or leave.s instrauction at tail of the body.
-            </param>
-            <param name="remainingCatchBlockEmitters">
-            	<see cref="T:System.Tuple`2"/> for catch block body emittion.
-            	A 1st item of the tuple is <see cref="T:System.Type"/> which indicates catching exception type.
-            	A 2nd item of the tuple is <see cref="T:System.Action`2"/> which emits catch block body.
-            	A 1st argument of the delegate is this <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/>,
-            	a 2nd argument of the delegate is <see cref="T:System.Reflection.Emit.Label"/> will to be end of emitting exception block,
-            	and 3rd argument of the delegate is the 1st item of the tuple.
-            	The delegate do not have to emit leave or leave.s instrauction at tail of the body.
-            </param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitExceptionBlock(System.Action{MsgPack.Serialization.Reflection.TracingILGenerator,System.Reflection.Emit.Label},System.Action{MsgPack.Serialization.Reflection.TracingILGenerator,System.Reflection.Emit.Label},System.Tuple{System.Type,System.Action{MsgPack.Serialization.Reflection.TracingILGenerator,System.Reflection.Emit.Label,System.Type}}[])">
-            <summary>
-            	Emit exception block with catch blocks and a finally block.
-            </summary>
-            <param name="tryBlockEmitter">
-            	<see cref="T:System.Action`2"/> which emits exception block (try in C#) body.
-            	A 1st argument is this <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/>,
-            	and a 2nd argument is <see cref="T:System.Reflection.Emit.Label"/> will to be end of emitting exception block.
-            	The delegate do not have to emit leave or leave.s instrauction at tail of the body.
-            </param>
-            <param name="finallyBlockEmitter">
-            	<see cref="T:System.Action`2"/> which emits finally block  body.
-            	A 1st argument is this <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/>,
-            	and a 2nd argument is <see cref="T:System.Reflection.Emit.Label"/> will to be end of emitting exception block.
-            	The delegate do not have to emit endfinally instrauction at tail of the body.
-            </param>
-            <param name="catchBlockEmitters">
-            	<see cref="T:System.Tuple`2"/> for catch block body emittion.
-            	A 1st item of the tuple is <see cref="T:System.Type"/> which indicates catching exception type.
-            	A 2nd item of the tuple is <see cref="T:System.Action`2"/> which emits catch block body.
-            	A 1st argument of the delegate is this <see cref="T:MsgPack.Serialization.Reflection.TracingILGenerator"/>,
-            	a 2nd argument of the delegate is <see cref="T:System.Reflection.Emit.Label"/> will to be end of emitting exception block,
-            	and 3rd argument of the delegate is the 1st item of the tuple.
-            	The delegate do not have to emit leave or leave.s instrauction at tail of the body.
-            </param>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.BeginExceptionBlock">
             <summary>
             	Begin exception block (try in C#) here.
             	Note that you do not have to emit leave or laeve.s instrauction at tail of the body.
             </summary>
             <returns><see cref="T:System.Reflection.Emit.Label"/> will to be end of begun exception block.</returns>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.BeginCatchBlock(System.Type)">
-            <summary>
-            	Begin catch block with specified exception.
-            	Note that you do not have to emit leave or laeve.s instrauction at tail of the body.
-            </summary>
-            <param name="exceptionType"><see cref="T:System.Type"/> for catch.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.BeginExceptFilterBlock">
-            <summary>
-            	Begin filter block.
-            	Note that you do not have to emit leave or laeve.s instrauction at tail of the body.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.BeginFaultBlock">
-            <summary>
-            	Begin fault block.
-            	Note that you do not have to emit endfinally instrauction at tail of the body.
-            </summary>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.BeginFinallyBlock">
             <summary>
@@ -6885,12 +6744,6 @@
             <summary>
             	End current exception block and its last clause.
             </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.DefineLabel">
-            <summary>
-            	Define new <see cref="T:System.Reflection.Emit.Label"/> without name for tracing.
-            </summary>
-            <returns><see cref="T:System.Reflection.Emit.Label"/> which will be target of branch instructions.</returns>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.DefineLabel(System.String)">
             <summary>
@@ -6905,102 +6758,11 @@
             </summary>
             <param name="label"><see cref="T:System.Reflection.Emit.Label"/>.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCalli(System.Runtime.InteropServices.CallingConvention,System.Type,System.Type[])">
-            <summary>
-            	Emit 'calli' instruction for indirect unmanaged function call.
-            </summary>
-            <param name="unmanagedCallingConvention"><see cref="T:System.Runtime.InteropServices.CallingConvention"/> of unmanaged function.</param>
-            <param name="returnType">Return <see cref="T:System.Type"/> of the function.</param>
-            <param name="parameterTypes">Parameter <see cref="T:System.Type"/>s of the function.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCalli(System.Reflection.CallingConventions,System.Type,System.Type[],System.Type[])">
-            <summary>
-            	Emit 'calli' instruction for indirect managed method call.
-            </summary>
-            <param name="managedCallingConventions"><see cref="T:System.Reflection.CallingConventions"/> of managed method.</param>
-            <param name="returnType">Return <see cref="T:System.Type"/> of the method.</param>
-            <param name="requiredParameterTypes">Required parameter <see cref="T:System.Type"/>s of the method.</param>
-            <param name="optionalParameterTypes">Optional varargs parameter <see cref="T:System.Type"/>s of the method.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConstrainedCallvirt(System.Type,System.Reflection.MethodInfo)">
-            <summary>
-            	Emit constrained 'callvirt' instruction.
-            </summary>
-            <param name="constrainedTo"><see cref="T:System.Type"/> to be constrained to.</param>
-            <param name="target">Target <see cref="T:System.Reflection.MethodInfo"/> which must be virtual method.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitReadOnlyLdelema(System.Type)">
-            <summary>
-            	Emit readonly 'ldelema' instruction.
-            </summary>
-            <param name="elementType"><see cref="T:System.Type"/> of array element.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitTailCall(System.Reflection.MethodInfo)">
-            <summary>
-            	Emit 'call' instruction with specified arguments as tail call.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.MethodInfo"/> as target.</param>
-            <remarks>
-            	Subsequent 'ret' instruction will be emitted together.
-            </remarks>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitTailCallVirt(System.Reflection.MethodInfo)">
-            <summary>
-            	Emit 'callvirt' instruction with specified arguments as tail call.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.MethodInfo"/> as target.</param>
-            <remarks>
-            	Subsequent 'ret' instruction will be emitted together.
-            </remarks>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitTailCalli(System.Runtime.InteropServices.CallingConvention,System.Type,System.Type[])">
-            <summary>
-            	Emit 'calli' instruction for indirect unmanaged function call as tail call.
-            </summary>
-            <param name="unmanagedCallingConvention"><see cref="T:System.Runtime.InteropServices.CallingConvention"/> of unmanaged function.</param>
-            <param name="returnType">Return <see cref="T:System.Type"/> of the function.</param>
-            <param name="parameterTypes">Parameter <see cref="T:System.Type"/>s of the function.</param>
-            <remarks>
-            	Subsequent 'ret' instruction will be emitted together.
-            </remarks>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitTailCalli(System.Reflection.CallingConventions,System.Type,System.Type[],System.Type[])">
-            <summary>
-            	Emit 'calli' instruction for indirect managed method call as tail call.
-            </summary>
-            <param name="managedCallingConventions"><see cref="T:System.Reflection.CallingConventions"/> of managed method.</param>
-            <param name="returnType">Return <see cref="T:System.Type"/> of the method.</param>
-            <param name="requiredParameterTypes">Required parameter <see cref="T:System.Type"/>s of the method.</param>
-            <param name="optionalParameterTypes">Optional varargs parameter <see cref="T:System.Type"/>s of the method.</param>
-            <remarks>
-            	Subsequent 'ret' instruction will be emitted together.
-            </remarks>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitUnaligned(System.Byte)">
-            <summary>
-            	Emit 'unaligned.' prefix.
-            </summary>
-            <param name="alignment">Alignment.</param>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.TraceWrite(System.String)">
             <summary>
             	Write trace message.
             </summary>
             <param name="value">The string.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.TraceWrite(System.String,System.Object)">
-            <summary>
-            	Write trace message.
-            </summary>
-            <param name="format">The format string.</param>
-            <param name="arg0">Format argument.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.TraceWrite(System.String,System.Object[])">
-            <summary>
-            	Write trace message.
-            </summary>
-            <param name="format">The format string.</param>
-            <param name="args">Format arguments.</param>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.TraceWriteLine">
             <summary>
@@ -7019,23 +6781,6 @@
             </summary>
             <param name="format">The format string.</param>
             <param name="arg0">Format argument.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.TraceWriteLine(System.String,System.Object[])">
-            <summary>
-            	Write trace message followed by line break.
-            </summary>
-            <param name="format">The format string.</param>
-            <param name="args">Format arguments.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitNop">
-            <summary>
-            	Emit 'nop' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBreak">
-            <summary>
-            	Emit 'break' instruction with specified arguments.
-            </summary>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdarg_0">
             <summary>
@@ -7106,12 +6851,6 @@
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdarga_S(System.Byte)">
             <summary>
             	Emit 'ldarga.s' instruction with specified arguments.
-            </summary>
-            <param name="value"><see cref="T:System.Byte"/> as value.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStarg_S(System.Byte)">
-            <summary>
-            	Emit 'starg.s' instruction with specified arguments.
             </summary>
             <param name="value"><see cref="T:System.Byte"/> as value.</param>
         </member>
@@ -7206,117 +6945,16 @@
             </summary>
             <param name="value"><see cref="T:System.Int64"/> as value.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdc_R4(System.Single)">
-            <summary>
-            	Emit 'ldc.r4' instruction with specified arguments.
-            </summary>
-            <param name="value"><see cref="T:System.Byte"/> as value.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdc_R8(System.Double)">
-            <summary>
-            	Emit 'ldc.r8' instruction with specified arguments.
-            </summary>
-            <param name="value"><see cref="T:System.Double"/> as value.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitDup">
-            <summary>
-            	Emit 'dup' instruction with specified arguments.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitPop">
             <summary>
             	Emit 'pop' instruction with specified arguments.
             </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitJmp(System.Reflection.MethodInfo)">
-            <summary>
-            	Emit 'jmp' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.MethodInfo"/> as target.</param>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCall(System.Reflection.MethodInfo)">
             <summary>
             	Emit 'call' instruction with specified arguments.
             </summary>
             <param name="target"><see cref="T:System.Reflection.MethodInfo"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBr_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'br.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBrfalse_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'brfalse.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBrtrue_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'brtrue.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBeq_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'beq.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBge_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bge.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBgt_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bgt.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBle_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'ble.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBlt_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'blt.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBne_Un_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bne.un.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBge_Un_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bge.un.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBgt_Un_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bgt.un.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBle_Un_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'ble.un.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBlt_Un_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'blt.un.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBr(System.Reflection.Emit.Label)">
             <summary>
@@ -7336,195 +6974,15 @@
             </summary>
             <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBeq(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'beq' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBge(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bge' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBgt(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bgt' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBle(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'ble' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBlt(System.Reflection.Emit.Label)">
             <summary>
             	Emit 'blt' instruction with specified arguments.
             </summary>
             <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBne_Un(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bne.un' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBge_Un(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bge.un' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBgt_Un(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'bgt.un' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBle_Un(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'ble.un' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBlt_Un(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'blt.un' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitSwitch(System.Reflection.Emit.Label[])">
-            <summary>
-            	Emit 'switch' instruction with specified arguments.
-            </summary>
-            <param name="targets"><see cref="T:System.Reflection.Emit.Label"/>[] as targets.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_I1">
-            <summary>
-            	Emit 'ldind.i1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_U1">
-            <summary>
-            	Emit 'ldind.u1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_I2">
-            <summary>
-            	Emit 'ldind.i2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_U2">
-            <summary>
-            	Emit 'ldind.u2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_I4">
-            <summary>
-            	Emit 'ldind.i4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_U4">
-            <summary>
-            	Emit 'ldind.u4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_I8">
-            <summary>
-            	Emit 'ldind.i8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_I">
-            <summary>
-            	Emit 'ldind.i' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_R4">
-            <summary>
-            	Emit 'ldind.r4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_R8">
-            <summary>
-            	Emit 'ldind.r8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdind_Ref">
-            <summary>
-            	Emit 'ldind.ref' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStind_Ref">
-            <summary>
-            	Emit 'stind.ref' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStind_I1">
-            <summary>
-            	Emit 'stind.i1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStind_I2">
-            <summary>
-            	Emit 'stind.i2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStind_I4">
-            <summary>
-            	Emit 'stind.i4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStind_I8">
-            <summary>
-            	Emit 'stind.i8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStind_R4">
-            <summary>
-            	Emit 'stind.r4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStind_R8">
-            <summary>
-            	Emit 'stind.r8' instruction with specified arguments.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitAdd">
             <summary>
             	Emit 'add' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitSub">
-            <summary>
-            	Emit 'sub' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitMul">
-            <summary>
-            	Emit 'mul' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitDiv">
-            <summary>
-            	Emit 'div' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitDiv_Un">
-            <summary>
-            	Emit 'div.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitRem">
-            <summary>
-            	Emit 'rem' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitRem_Un">
-            <summary>
-            	Emit 'rem.un' instruction with specified arguments.
             </summary>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitAnd">
@@ -7532,98 +6990,11 @@
             	Emit 'and' instruction with specified arguments.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitOr">
-            <summary>
-            	Emit 'or' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitXor">
-            <summary>
-            	Emit 'xor' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitShl">
-            <summary>
-            	Emit 'shl' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitShr">
-            <summary>
-            	Emit 'shr' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitShr_Un">
-            <summary>
-            	Emit 'shr.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitNeg">
-            <summary>
-            	Emit 'neg' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitNot">
-            <summary>
-            	Emit 'not' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_I1">
-            <summary>
-            	Emit 'conv.i1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_I2">
-            <summary>
-            	Emit 'conv.i2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_I4">
-            <summary>
-            	Emit 'conv.i4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_I8">
-            <summary>
-            	Emit 'conv.i8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_R4">
-            <summary>
-            	Emit 'conv.r4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_R8">
-            <summary>
-            	Emit 'conv.r8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_U4">
-            <summary>
-            	Emit 'conv.u4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_U8">
-            <summary>
-            	Emit 'conv.u8' instruction with specified arguments.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCallvirt(System.Reflection.MethodInfo)">
             <summary>
             	Emit 'callvirt' instruction with specified arguments.
             </summary>
             <param name="target"><see cref="T:System.Reflection.MethodInfo"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCpobj(System.Type)">
-            <summary>
-            	Emit 'cpobj' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdobj(System.Type)">
-            <summary>
-            	Emit 'ldobj' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdstr(System.String)">
             <summary>
@@ -7636,29 +7007,6 @@
             	Emit 'newobj' instruction with specified arguments.
             </summary>
             <param name="constructor"><see cref="T:System.Reflection.ConstructorInfo"/> as constructor.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCastclass(System.Type)">
-            <summary>
-            	Emit 'castclass' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitIsinst(System.Type)">
-            <summary>
-            	Emit 'isinst' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_R_Un">
-            <summary>
-            	Emit 'conv.r.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitUnbox(System.Type)">
-            <summary>
-            	Emit 'unbox' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitThrow">
             <summary>
@@ -7683,80 +7031,6 @@
             </summary>
             <param name="field"><see cref="T:System.Reflection.FieldInfo"/> as field.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdsfld(System.Reflection.FieldInfo)">
-            <summary>
-            	Emit 'ldsfld' instruction with specified arguments.
-            </summary>
-            <param name="field"><see cref="T:System.Reflection.FieldInfo"/> as field.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdsflda(System.Reflection.FieldInfo)">
-            <summary>
-            	Emit 'ldsflda' instruction with specified arguments.
-            </summary>
-            <param name="field"><see cref="T:System.Reflection.FieldInfo"/> as field.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStsfld(System.Reflection.FieldInfo)">
-            <summary>
-            	Emit 'stsfld' instruction with specified arguments.
-            </summary>
-            <param name="field"><see cref="T:System.Reflection.FieldInfo"/> as field.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStobj(System.Type)">
-            <summary>
-            	Emit 'stobj' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I1_Un">
-            <summary>
-            	Emit 'conv.ovf.i1.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I2_Un">
-            <summary>
-            	Emit 'conv.ovf.i2.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I4_Un">
-            <summary>
-            	Emit 'conv.ovf.i4.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I8_Un">
-            <summary>
-            	Emit 'conv.ovf.i8.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U1_Un">
-            <summary>
-            	Emit 'conv.ovf.u1.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U2_Un">
-            <summary>
-            	Emit 'conv.ovf.u2.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U4_Un">
-            <summary>
-            	Emit 'conv.ovf.u4.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U8_Un">
-            <summary>
-            	Emit 'conv.ovf.u8.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I_Un">
-            <summary>
-            	Emit 'conv.ovf.i.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U_Un">
-            <summary>
-            	Emit 'conv.ovf.u.un' instruction with specified arguments.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitBox(System.Type)">
             <summary>
             	Emit 'box' instruction with specified arguments.
@@ -7769,118 +7043,6 @@
             </summary>
             <param name="type"><see cref="T:System.Type"/> as type.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdlen">
-            <summary>
-            	Emit 'ldlen' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelema(System.Type)">
-            <summary>
-            	Emit 'ldelema' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_I1">
-            <summary>
-            	Emit 'ldelem.i1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_U1">
-            <summary>
-            	Emit 'ldelem.u1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_I2">
-            <summary>
-            	Emit 'ldelem.i2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_U2">
-            <summary>
-            	Emit 'ldelem.u2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_I4">
-            <summary>
-            	Emit 'ldelem.i4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_U4">
-            <summary>
-            	Emit 'ldelem.u4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_I8">
-            <summary>
-            	Emit 'ldelem.i8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_I">
-            <summary>
-            	Emit 'ldelem.i' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_R4">
-            <summary>
-            	Emit 'ldelem.r4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_R8">
-            <summary>
-            	Emit 'ldelem.r8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem_Ref">
-            <summary>
-            	Emit 'ldelem.ref' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStelem_I">
-            <summary>
-            	Emit 'stelem.i' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStelem_I1">
-            <summary>
-            	Emit 'stelem.i1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStelem_I2">
-            <summary>
-            	Emit 'stelem.i2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStelem_I4">
-            <summary>
-            	Emit 'stelem.i4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStelem_I8">
-            <summary>
-            	Emit 'stelem.i8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStelem_R4">
-            <summary>
-            	Emit 'stelem.r4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStelem_R8">
-            <summary>
-            	Emit 'stelem.r8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStelem_Ref">
-            <summary>
-            	Emit 'stelem.ref' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdelem(System.Type)">
-            <summary>
-            	Emit 'ldelem' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStelem(System.Type)">
             <summary>
             	Emit 'stelem' instruction with specified arguments.
@@ -7890,63 +7052,6 @@
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitUnbox_Any(System.Type)">
             <summary>
             	Emit 'unbox.any' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I1">
-            <summary>
-            	Emit 'conv.ovf.i1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U1">
-            <summary>
-            	Emit 'conv.ovf.u1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I2">
-            <summary>
-            	Emit 'conv.ovf.i2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U2">
-            <summary>
-            	Emit 'conv.ovf.u2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I4">
-            <summary>
-            	Emit 'conv.ovf.i4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U4">
-            <summary>
-            	Emit 'conv.ovf.u4' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I8">
-            <summary>
-            	Emit 'conv.ovf.i8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U8">
-            <summary>
-            	Emit 'conv.ovf.u8' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitRefanyval(System.Type)">
-            <summary>
-            	Emit 'refanyval' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCkfinite">
-            <summary>
-            	Emit 'ckfinite' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitMkrefany(System.Type)">
-            <summary>
-            	Emit 'mkrefany' instruction with specified arguments.
             </summary>
             <param name="type"><see cref="T:System.Type"/> as type.</param>
         </member>
@@ -7968,93 +7073,6 @@
             </summary>
             <param name="target"><see cref="T:System.Reflection.FieldInfo"/> as target.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_U2">
-            <summary>
-            	Emit 'conv.u2' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_U1">
-            <summary>
-            	Emit 'conv.u1' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_I">
-            <summary>
-            	Emit 'conv.i' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_I">
-            <summary>
-            	Emit 'conv.ovf.i' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_Ovf_U">
-            <summary>
-            	Emit 'conv.ovf.u' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitAdd_Ovf">
-            <summary>
-            	Emit 'add.ovf' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitAdd_Ovf_Un">
-            <summary>
-            	Emit 'add.ovf.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitMul_Ovf">
-            <summary>
-            	Emit 'mul.ovf' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitMul_Ovf_Un">
-            <summary>
-            	Emit 'mul.ovf.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitSub_Ovf">
-            <summary>
-            	Emit 'sub.ovf' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitSub_Ovf_Un">
-            <summary>
-            	Emit 'sub.ovf.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitEndfinally">
-            <summary>
-            	Emit 'endfinally' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLeave(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'leave' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLeave_S(System.Reflection.Emit.Label)">
-            <summary>
-            	Emit 'leave.s' instruction with specified arguments.
-            </summary>
-            <param name="target"><see cref="T:System.Reflection.Emit.Label"/> as target.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStind_I">
-            <summary>
-            	Emit 'stind.i' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitConv_U">
-            <summary>
-            	Emit 'conv.u' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitArglist">
-            <summary>
-            	Emit 'arglist' instruction with specified arguments.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCeq">
             <summary>
             	Emit 'ceq' instruction with specified arguments.
@@ -8065,32 +7083,10 @@
             	Emit 'cgt' instruction with specified arguments.
             </summary>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCgt_Un">
-            <summary>
-            	Emit 'cgt.un' instruction with specified arguments.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitClt">
             <summary>
             	Emit 'clt' instruction with specified arguments.
             </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitClt_Un">
-            <summary>
-            	Emit 'clt.un' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdftn(System.Reflection.MethodInfo)">
-            <summary>
-            	Emit 'ldftn' instruction with specified arguments.
-            </summary>
-            <param name="method"><see cref="T:System.Reflection.MethodInfo"/> as method.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdvirtftn(System.Reflection.MethodInfo)">
-            <summary>
-            	Emit 'ldvirtftn' instruction with specified arguments.
-            </summary>
-            <param name="method"><see cref="T:System.Reflection.MethodInfo"/> as method.</param>
         </member>
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdarg(System.Int32)">
             <summary>
@@ -8101,12 +7097,6 @@
         <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLdarga(System.Int32)">
             <summary>
             	Emit 'ldarga' instruction with specified arguments.
-            </summary>
-            <param name="index"><see cref="T:System.Int32"/> as index.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitStarg(System.Int32)">
-            <summary>
-            	Emit 'starg' instruction with specified arguments.
             </summary>
             <param name="index"><see cref="T:System.Int32"/> as index.</param>
         </member>
@@ -8128,63 +7118,12 @@
             </summary>
             <param name="index"><see cref="T:System.Int32"/> as index.</param>
         </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitLocalloc">
-            <summary>
-            	Emit 'localloc' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitEndfilter">
-            <summary>
-            	Emit 'endfilter' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitInitobj(System.Type)">
-            <summary>
-            	Emit 'initobj' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitCpblk">
-            <summary>
-            	Emit 'cpblk' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitInitblk">
-            <summary>
-            	Emit 'initblk' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitRethrow">
-            <summary>
-            	Emit 'rethrow' instruction with specified arguments.
-            </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitSizeof(System.Type)">
-            <summary>
-            	Emit 'sizeof' instruction with specified arguments.
-            </summary>
-            <param name="type"><see cref="T:System.Type"/> as type.</param>
-        </member>
-        <member name="M:MsgPack.Serialization.Reflection.TracingILGenerator.EmitRefanytype">
-            <summary>
-            	Emit 'refanytype' instruction with specified arguments.
-            </summary>
-        </member>
         <member name="P:MsgPack.Serialization.Reflection.TracingILGenerator.EndOfMethod">
             <summary>
             	Get <see cref="T:System.Reflection.Emit.Label"/> for end of method.
             </summary>
             <value>
             	<see cref="T:System.Reflection.Emit.Label"/> for end of method.
-            </value>
-        </member>
-        <member name="P:MsgPack.Serialization.Reflection.TracingILGenerator.EndOfCurrentExceptionBlock">
-            <summary>
-            	Get <see cref="T:System.Reflection.Emit.Label"/> for end of current exception blocks.
-            </summary>
-            <value>
-            	<see cref="T:System.Reflection.Emit.Label"/> for end of current exception blocks.
-            	When there are no exception blocks, then null.
             </value>
         </member>
         <member name="P:MsgPack.Serialization.Reflection.TracingILGenerator.IsInExceptionBlock">
@@ -8194,35 +7133,6 @@
             <value>
             	If there are any exception blocks in current positon then <c>true</c>; otherwise, <c>false</c>.
             </value>
-        </member>
-        <member name="P:MsgPack.Serialization.Reflection.TracingILGenerator.IsInDynamicMethod">
-            <summary>
-            	Get the value whether this instance used for dynamic method.
-            </summary>
-            <value>If  this instance used for dynamic method then <c>true</c>; otherwise <c>false</c>.</value>
-            <remarks>
-            	Dynamic method does not support debugging information like local variable name.
-            </remarks>
-        </member>
-        <member name="P:MsgPack.Serialization.Reflection.TracingILGenerator.IndentLevel">
-            <summary>
-            	Get level of indentation.
-            </summary>
-        </member>
-        <member name="P:MsgPack.Serialization.Reflection.TracingILGenerator.IndentCharacters">
-            <summary>
-            	Get or set indent characters.
-            </summary>
-            <value>
-            	<see cref="T:System.String"/> to be used to indent.
-            	To reset default, specify null.
-            </value>
-        </member>
-        <member name="P:MsgPack.Serialization.Reflection.TracingILGenerator.LineNumber">
-            <summary>
-            	Get current line number.
-            </summary>
-            <value>Current line number.</value>
         </member>
         <member name="P:MsgPack.Serialization.Reflection.TracingILGenerator.IsEnded">
             <summary>
@@ -8472,11 +7382,6 @@
             <param name="type">The target type.</param>
             <returns><see cref="T:System.Exception"/> instance. It will not be <c>null</c>.</returns>
         </member>
-        <member name="F:MsgPack.Serialization.SerializationExceptions.NewTypeCannotSerializeMethod">
-            <summary>
-            	<see cref="T:System.Reflection.MethodInfo"/> of <see cref="M:MsgPack.Serialization.SerializationExceptions.NewTypeCannotSerialize(System.Type)"/> method.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.SerializationExceptions.NewTypeCannotSerialize(System.Type)">
             <summary>
             	<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -8485,11 +7390,6 @@
             <param name="type">The target type.</param>
             <returns><see cref="T:System.Exception"/> instance. It will not be <c>null</c>.</returns>
         </member>
-        <member name="F:MsgPack.Serialization.SerializationExceptions.NewTypeCannotDeserializeMethod">
-            <summary>
-            	<see cref="T:System.Reflection.MethodInfo"/> of <see cref="M:MsgPack.Serialization.SerializationExceptions.NewTypeCannotDeserialize(System.Type)"/> method.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.SerializationExceptions.NewTypeCannotDeserialize(System.Type)">
             <summary>
             	<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -8497,11 +7397,6 @@
             </summary>
             <param name="type">The target type.</param>
             <returns><see cref="T:System.Exception"/> instance. It will not be <c>null</c>.</returns>
-        </member>
-        <member name="F:MsgPack.Serialization.SerializationExceptions.NewTypeCannotDeserialize3Method">
-            <summary>
-            	<see cref="T:System.Reflection.MethodInfo"/> of <see cref="M:MsgPack.Serialization.SerializationExceptions.NewTypeCannotDeserialize(System.Type,System.String,System.Exception)"/> method.
-            </summary>
         </member>
         <member name="M:MsgPack.Serialization.SerializationExceptions.NewTypeCannotDeserialize(System.Type,System.String,System.Exception)">
             <summary>
@@ -8550,11 +7445,6 @@
             <param name="type">The target type.</param>
             <returns><see cref="T:System.Exception"/> instance. It will not be <c>null</c>.</returns>
         </member>
-        <member name="F:MsgPack.Serialization.SerializationExceptions.NewMissingPropertyMethod">
-            <summary>
-            	<see cref="T:System.Reflection.MethodInfo"/> of <see cref="M:MsgPack.Serialization.SerializationExceptions.NewMissingProperty(System.String)"/> method.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.SerializationExceptions.NewMissingProperty(System.String)">
             <summary>
             	<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -8563,22 +7453,12 @@
             <param name="name">The name of the property.</param>
             <returns><see cref="T:System.Exception"/> instance. It will not be <c>null</c>.</returns>
         </member>
-        <member name="F:MsgPack.Serialization.SerializationExceptions.NewUnexpectedEndOfStreamMethod">
-            <summary>
-            	<see cref="T:System.Reflection.MethodInfo"/> of <see cref="M:MsgPack.Serialization.SerializationExceptions.NewUnexpectedEndOfStream"/> method.
-            </summary>
-        </member>
         <member name="M:MsgPack.Serialization.SerializationExceptions.NewUnexpectedEndOfStream">
             <summary>
             	<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
             	Returns new exception to notify that unpacking stream ends on unexpectedly position.
             </summary>
             <returns><see cref="T:System.Exception"/> instance. It will not be <c>null</c>.</returns>
-        </member>
-        <member name="F:MsgPack.Serialization.SerializationExceptions.NewMissingAddMethodMethod">
-            <summary>
-            	<see cref="T:System.Reflection.MethodInfo"/> of <see cref="M:MsgPack.Serialization.SerializationExceptions.NewMissingAddMethod(System.Type)"/> method.
-            </summary>
         </member>
         <member name="M:MsgPack.Serialization.SerializationExceptions.NewMissingAddMethod(System.Type)">
             <summary>
@@ -8634,13 +7514,6 @@
             </summary>
             <returns><see cref="T:System.Exception"/> instance. It will not be <c>null</c>.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.SerializationExceptions.NewEmptyOrUnstartedUnpacker">
-            <summary>
-            	<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
-            	Returns new exception to notify that the the unpacker does not contain any data because the underlying stream is empty or unpacker has not been started.
-            </summary>
-            <returns><see cref="T:System.Exception"/> instance. It will not be <c>null</c>.</returns>
-        </member>
         <member name="M:MsgPack.Serialization.SerializationExceptions.NewNullIsProhibited(System.String)">
             <summary>
             	<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -8673,11 +7546,6 @@
             <param name="expectedLength">Expected, required for deserialization array length.</param>
             <param name="actualLength">Actual array length.</param>
             <returns><see cref="T:System.Exception"/> instance. It will not be <c>null</c>.</returns>
-        </member>
-        <member name="F:MsgPack.Serialization.SerializationExceptions.NewFailedToDeserializeMemberMethod">
-            <summary>
-            	<see cref="T:System.Reflection.MethodInfo"/> of <see cref="M:MsgPack.Serialization.SerializationExceptions.NewFailedToDeserializeMember(System.Type,System.String,System.Exception)"/> method.
-            </summary>
         </member>
         <member name="M:MsgPack.Serialization.SerializationExceptions.NewFailedToDeserializeMember(System.Type,System.String,System.Exception)">
             <summary>
@@ -8844,13 +7712,6 @@
             <summary>
             	Holds debugging support information.
             </summary>
-        </member>
-        <member name="M:MsgPack.Serialization.SerializerDebugging.TraceInstruction(System.String,System.Object[])">
-            <summary>
-            	Traces the instruction.
-            </summary>
-            <param name="format">The format string.</param>
-            <param name="args">The args for formatting.</param>
         </member>
         <member name="M:MsgPack.Serialization.SerializerDebugging.TraceEvent(System.String,System.Object[])">
             <summary>
@@ -9106,7 +7967,7 @@
         </member>
         <member name="M:MsgPack.Serialization.SerializerRepository.Dispose">
             <summary>
-            	Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            	This method does not perform any operation.
             </summary>
         </member>
         <member name="M:MsgPack.Serialization.SerializerRepository.Get``1(MsgPack.Serialization.SerializationContext)">
