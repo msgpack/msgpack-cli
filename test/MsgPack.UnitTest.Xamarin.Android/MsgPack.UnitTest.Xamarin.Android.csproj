@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
     <ConsolePause>false</ConsolePause>
+    <JavaMaximumHeapSize>256M</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -49,10 +50,10 @@
     <Reference Include="Xamarin.Android.NUnitLite" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_HasEnumerableSerializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_HasEnumerableSerializer.cs</Link>
@@ -81,6 +82,7 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_PlainClassSerializer.cs">
       <Link>Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_PlainClassSerializer.cs</Link>
     </Compile>
+    <Compile Include="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

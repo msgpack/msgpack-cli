@@ -1070,6 +1070,7 @@
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\..\src\MsgPack.Xamarin.iOS\MsgPack.Xamarin.iOS.csproj">
       <Project>{346B55F0-94FA-4B90-9C11-06031043B685}</Project>

@@ -70,9 +70,6 @@
     <Compile Include="..\MsgPack\DictionaryDebuggerProxy`2.cs">
       <Link>DictionaryDebuggerProxy`2.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\EnumerableStream.cs">
-      <Link>EnumerableStream.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Float32Bits.cs">
       <Link>Float32Bits.cs</Link>
     </Compile>
@@ -384,9 +381,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs">
-      <Link>Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs</Link>
