@@ -1,17 +1,15 @@
 ﻿<Application
-    x:Class="MsgPack.UnitTest.Silverlight.WindowsPhone.App"
+    x:Class="MsgPack.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone">
 
-    <!--アプリケーション リソース-->
     <Application.Resources>
-        <local:LocalizedStrings xmlns:local="clr-namespace:MsgPack.UnitTest.Silverlight.WindowsPhone" x:Key="LocalizedStrings"/>
+        <local:LocalizedStrings xmlns:local="clr-namespace:MsgPack" x:Key="LocalizedStrings"/>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
-        <!--アプリケーションのライフタイム イベントを処理する必須オブジェクト-->
         <shell:PhoneApplicationService
             Launching="Application_Launching" Closing="Application_Closing"
             Activated="Application_Activated" Deactivated="Application_Deactivated"/>
