@@ -60,7 +60,7 @@ namespace System
 	// This file generated from <#= __typeName #>.tt T4Template.
 	// Do not modify this file. Edit <#= __typeName #>.tt instead.
 
-#if !NETFX_35
+#if DEBUG
 	internal static class Tuple
 	{
 <#
@@ -82,9 +82,7 @@ foreach( int __arity in __arities )
 {
 	var __tupleTypeName = __typeName + "<" + String.Join( ", ", Enumerable.Range( 1, __arity ).Select( num => "T" + num ) ) + ">";
 #>
-#if !WINDOWS_PHONE
 	[Serializable]
-#endif
 	internal class <#= __tupleTypeName #>
 	{
 <#
@@ -145,5 +143,5 @@ foreach( int __arity in __arities )
 <#
 }
 #>
-#endif // !NETFX_35
+#endif // DEBUG
 }

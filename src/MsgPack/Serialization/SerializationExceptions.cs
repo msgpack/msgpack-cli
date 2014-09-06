@@ -155,6 +155,7 @@ namespace MsgPack.Serialization
 			return new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Items at index '{0}' is missing.", index ) );
 		}
 
+#if !UNITY
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that target type is not serializable because it does not have public default constructor.
@@ -170,6 +171,7 @@ namespace MsgPack.Serialization
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have default (parameterless) public constructor.", type ) );
 		}
+#endif // !UNITY
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>

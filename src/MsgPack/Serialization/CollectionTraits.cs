@@ -32,8 +32,14 @@ namespace MsgPack.Serialization
 		public static readonly CollectionTraits NotCollection = new CollectionTraits( CollectionDetailedKind.NotCollection, null, null, null, null );
 		public static readonly CollectionTraits Unserializable = new CollectionTraits( CollectionDetailedKind.Unserializable, null, null, null, null );
 
+#if UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields" )]
+#endif // UNITY
 		public readonly MethodInfo GetEnumeratorMethod;
 		public readonly MethodInfo AddMethod;
+#if UNITY
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields" )]
+#endif // UNITY
 		public readonly PropertyInfo CountProperty;
 		public readonly Type ElementType;
 

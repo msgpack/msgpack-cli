@@ -26,7 +26,7 @@ namespace System
 	// This file generated from Tuple.tt T4Template.
 	// Do not modify this file. Edit Tuple.tt instead.
 
-#if !NETFX_35
+#if DEBUG
 	internal static class Tuple
 	{
 
@@ -45,9 +45,7 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5>( item1, item2, item3, item4, item5 );
 		}
 	}
-#if !WINDOWS_PHONE
 	[Serializable]
-#endif
 	internal class Tuple<T1, T2>
 	{
 		private readonly T1 _item1;
@@ -81,9 +79,7 @@ namespace System
 			return buffer.ToString();
 		}
 	}
-#if !WINDOWS_PHONE
 	[Serializable]
-#endif
 	internal class Tuple<T1, T2, T3, T4>
 	{
 		private readonly T1 _item1;
@@ -137,9 +133,7 @@ namespace System
 			return buffer.ToString();
 		}
 	}
-#if !WINDOWS_PHONE
 	[Serializable]
-#endif
 	internal class Tuple<T1, T2, T3, T4, T5>
 	{
 		private readonly T1 _item1;
@@ -203,5 +197,5 @@ namespace System
 			return buffer.ToString();
 		}
 	}
-#endif // !NETFX_35
+#endif // DEBUG
 }

@@ -88,7 +88,9 @@ namespace MsgPack
 		{
 			get
 			{
+#if !UNITY
 				this.AssertInvariant();
+#endif // !UNITY
 				return this._dictionary == null ? this._keys.Count : this._dictionary.Count;
 			}
 		}
@@ -151,10 +153,9 @@ namespace MsgPack
 
 #if !UNITY
 				Contract.EndContractBlock();
-#endif // !UNITY
-
 
 				this.AssertInvariant();
+#endif // !UNITY
 				this.AddCore( key, value, true );
 			}
 		}
@@ -193,7 +194,9 @@ namespace MsgPack
 		{
 			get
 			{
+#if !UNITY
 				this.AssertInvariant();
+#endif // !UNITY
 				return new KeyCollection( this );
 			}
 		}
@@ -213,7 +216,9 @@ namespace MsgPack
 		{
 			get
 			{
+#if !UNITY
 				this.AssertInvariant();
+#endif // !UNITY
 				return new ValueCollection( this );
 			}
 		}
@@ -437,10 +442,10 @@ namespace MsgPack
 			}
 		}
 
+#if !UNITY
 		[Conditional( "DEBUG" )]
 		private void AssertInvariant()
 		{
-#if !UNITY
 			if ( this._dictionary == null )
 			{
 				Contract.Assert( this._keys != null );
@@ -453,8 +458,8 @@ namespace MsgPack
 				Contract.Assert( this._keys == null );
 				Contract.Assert( this._values == null );
 			}
-#endif // !UNITY
 		}
+#endif // !UNITY
 
 		private static MessagePackObject ValidateObjectArgument( object obj, string parameterName )
 		{
@@ -597,7 +602,9 @@ namespace MsgPack
 #endif // !UNITY
 
 
-			this.AssertInvariant();
+#if !UNITY
+				this.AssertInvariant();
+#endif // !UNITY
 			return
 				this._dictionary == null
 				? this._keys.Contains( key, MessagePackObjectEqualityComparer.Instance )
@@ -616,7 +623,9 @@ namespace MsgPack
 		/// </remarks>
 		public bool ContainsValue( MessagePackObject value )
 		{
-			this.AssertInvariant();
+#if !UNITY
+				this.AssertInvariant();
+#endif // !UNITY
 			return
 				this._dictionary == null 
 				? this._values.Contains( value, MessagePackObjectEqualityComparer.Instance ) 
@@ -692,10 +701,9 @@ namespace MsgPack
 
 #if !UNITY
 			Contract.EndContractBlock();
-#endif // !UNITY
-
 
 			this.AssertInvariant();
+#endif // !UNITY
 
 			if ( this._dictionary == null )
 			{
@@ -918,8 +926,9 @@ namespace MsgPack
 		{
 #if !UNITY
 			Contract.Assert( !key.IsNil );
-#endif // !UNITY
 			this.AssertInvariant();
+#endif // !UNITY
+
 			if ( this._dictionary == null )
 			{
 				int index = this._keys.FindIndex( item => item == key );
@@ -1013,7 +1022,9 @@ namespace MsgPack
 		{
 			this.VerifyIsNotFrozen();
 
+#if !UNITY
 			this.AssertInvariant();
+#endif // !UNITY
 
 			if ( this._dictionary == null )
 			{

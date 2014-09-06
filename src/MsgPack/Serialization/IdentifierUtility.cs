@@ -18,12 +18,17 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Text;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {
+#if !UNITY
 	/// <summary>
 	///		Utilities related to member/type ID.
 	/// </summary>
@@ -118,4 +123,5 @@ namespace MsgPack.Serialization
 			return result.ToString();
 		}
 	}
+#endif // !UNITY
 }
