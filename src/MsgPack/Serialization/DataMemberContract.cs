@@ -35,7 +35,11 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Represents member's data contract.
 	/// </summary>
+#if !UNITY
 	internal struct DataMemberContract
+#else
+	internal sealed class DataMemberContract
+#endif // !UNITY
 	{
 		internal const int UnspecifiedId = -1;
 
@@ -91,6 +95,15 @@ namespace MsgPack.Serialization
 		{
 			get { return this._nilImplication; }
 		}
+
+#if UNITY
+		public DataMemberContract()
+		{
+			this._name = null;
+			this._nilImplication = NilImplication.MemberDefault;
+			this._id = UnspecifiedId;
+		}
+#endif // UNITY
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="DataMemberContract"/> struct.

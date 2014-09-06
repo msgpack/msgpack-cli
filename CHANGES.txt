@@ -148,7 +148,10 @@ Release 0.5.1 - 2014/8/9
   NOTE
   * This release changes drop for Unity3D from source assets to dll assets (source assets are still available).
 
-Release 0.5.2 - 2014/9/?
+Release 0.5.2 - 2014/9/6
+
+  BREAKING CHANGES
+  * MessagePackObjectEqualityComparer does not inherit EqualityComparer<T> now to avoid ExecutionEngineException on iOS.
 
   FEATURES
   * Support Windows Phone 8.1 (Both of WinRT & Silverlight) issue #36
@@ -156,3 +159,10 @@ Release 0.5.2 - 2014/9/?
 
   BUG FIXES
   * Fix FILETIME is not available in WinRT
+  * Fix does not work in Unity3D. issue #37
+
+Relese 1.0 - ???
+
+  BREAKING CHANGES [planed]
+  * APIs marked with [Obsolete] are removed.
+

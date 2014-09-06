@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Reflection;
 
@@ -26,10 +30,22 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Represents serializing member information.
 	/// </summary>
+#if !UNITY
 	internal struct SerializingMember
+#else
+	internal sealed class SerializingMember
+#endif // !UNITY
 	{
 		public readonly MemberInfo Member;
 		public readonly DataMemberContract Contract;
+
+#if UNITY
+		public SerializingMember()
+		{
+			this.Member = null;
+			this.Contract = new DataMemberContract ();
+		}
+#endif // UNITY
 
 		public SerializingMember( MemberInfo member, DataMemberContract contract )
 		{

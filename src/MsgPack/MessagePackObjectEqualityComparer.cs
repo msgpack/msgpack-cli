@@ -29,7 +29,7 @@ namespace MsgPack
 #if !SILVERLIGHT && !NETFX_CORE
 	[Serializable]
 #endif
-	public sealed class MessagePackObjectEqualityComparer : EqualityComparer<MessagePackObject>
+	public sealed class MessagePackObjectEqualityComparer : IEqualityComparer<MessagePackObject>
 	{
 		private static readonly MessagePackObjectEqualityComparer _instance = new MessagePackObjectEqualityComparer();
 
@@ -51,7 +51,7 @@ namespace MsgPack
 		/// <returns>
 		///		<c>true</c> if the specified objects are equal; otherwise, <c>false</c>.
 		/// </returns>
-		public override bool Equals( MessagePackObject x, MessagePackObject y )
+		public bool Equals( MessagePackObject x, MessagePackObject y )
 		{
 			return x.Equals( y );
 		}
@@ -63,7 +63,7 @@ namespace MsgPack
 		/// <returns>
 		///		A hash code for <paramref name="obj"/>, suitable for use in hashing algorithms and data structures like a hash table. 
 		/// </returns>
-		public override int GetHashCode( MessagePackObject obj )
+		public int GetHashCode( MessagePackObject obj )
 		{
 			return obj.GetHashCode();
 		}
