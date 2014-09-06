@@ -206,13 +206,12 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context )
 		{
-#if XAMIOS || XAMDROID || UNITY
-			return context.GetSerializer<T>();
-#else
-
+#if !XAMIOS && !XAMDROID && !UNITY
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-
-			//Func<SerializationContext, SerializerBuilder<T>> builderProvider;
+#endif // !XAMIOS && !XAMDROID && !UNITY
+#if XAMIOS || XAMDROID || UNITY
+			return CreateReflectionInternal<T>( context );
+#else
 			ISerializerBuilder<T> builder;
 #if NETFX_CORE || WINDOWS_PHONE
 			builder = new ExpressionTreeSerializerBuilder<T>();
@@ -331,7 +330,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 #if XAMIOS || XAMDROID || UNITY
-			return context.GetSerializer( targetType );
+			return CreateReflectionInternal( context, targetType );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
 #if NETFX_CORE
@@ -553,6 +552,15 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context )
 		{
+			var serializer = context.Serializers.Get<T>( context );
+
+			if ( serializer != null )
+			{
+				// For MessagePack.Create compatibility. 
+				// Required for built-in types.
+				return serializer;
+			}
+
 			var traits = typeof( T ).GetCollectionTraits();
 			switch ( traits.CollectionType )
 			{

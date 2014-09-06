@@ -44,7 +44,8 @@ namespace MsgPack.Serialization
 
 			if ( serializer != null )
 			{
-				// For MessagePack.Create compatibility.
+				// For MessagePack.Create compatibility. 
+				// Required for built-in types.
 				this._underlying = serializer;
 				return;
 			}
