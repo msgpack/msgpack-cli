@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Resources;
+using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
@@ -20,6 +21,13 @@ namespace MsgPack
 			InitializeComponent();
 			InitializePhoneApplication();
 			InitializeLanguage();
+
+			if ( Thread.CurrentThread.CurrentUICulture.Name != "en-US" )
+			{
+				// It's cool.
+				throw new NotSupportedException( "MSTest cannot run under non-en-US cultures. You must change display locale from Settings page and restart the Emulator. Current locale is :" + Thread.CurrentThread.CurrentUICulture.Name );
+			}
+
 			if ( Debugger.IsAttached )
 			{
 				Application.Current.Host.Settings.EnableFrameRateCounter = true;
@@ -50,6 +58,7 @@ namespace MsgPack
 		{
 			if ( Debugger.IsAttached )
 			{
+				Debug.WriteLine( e.ExceptionObject );
 				Debugger.Break();
 			}
 		}
