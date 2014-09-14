@@ -6508,7 +6508,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
 					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
@@ -6718,6 +6718,36 @@ namespace MsgPack
 					return true;
 				}
 				case MessagePackCode.Bin8:
+				{
+					byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var resultValue = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( resultValue, 0, length );
+					if( bytesRead < length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+				}
 				case MessagePackCode.Str8:
 				{
 					byte length;
@@ -6744,12 +6774,42 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
 					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
 				case MessagePackCode.Bin16:
+				{
+					ushort length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var resultValue = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( resultValue, 0, length );
+					if( bytesRead < length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+				}
 				case MessagePackCode.Raw16:
 				{
 					ushort length;
@@ -6776,12 +6836,48 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
 					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
 				case MessagePackCode.Bin32:
+				{
+					uint length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var size = unchecked( ( int )length );
+					var resultValue = new byte[ size ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( resultValue, 0, size );
+					if( bytesRead < size )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+				}
 				case MessagePackCode.Raw32:
 				{
 					uint length;
@@ -6814,7 +6910,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
 					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
@@ -7255,7 +7351,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
 					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
@@ -7465,6 +7561,36 @@ namespace MsgPack
 					return true;
 				}
 				case MessagePackCode.Bin8:
+				{
+					byte length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 1 );
+					if( read == 1 )
+					{
+						length = BigEndianBinary.ToByte( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var resultValue = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( resultValue, 0, length );
+					if( bytesRead < length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+				}
 				case MessagePackCode.Str8:
 				{
 					byte length;
@@ -7491,12 +7617,42 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
 					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
 				case MessagePackCode.Bin16:
+				{
+					ushort length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 2 );
+					if( read == 2 )
+					{
+						length = BigEndianBinary.ToUInt16( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					var resultValue = new byte[ length ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( resultValue, 0, length );
+					if( bytesRead < length )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+				}
 				case MessagePackCode.Raw16:
 				{
 					ushort length;
@@ -7523,12 +7679,48 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
 					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;
 				}
 				case MessagePackCode.Bin32:
+				{
+					uint length;
+					#region UnpackScalar
+					
+					var read = source.Read( buffer, 0, 4 );
+					if( read == 4 )
+					{
+						length = BigEndianBinary.ToUInt32( buffer, 0 );
+					}
+					else
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackScalar
+					if( length > Int32.MaxValue )
+					{
+						throw new MessageNotSupportedException( "MessagePack for CLI cannot handle large binary which has more than Int32.MaxValue bytes." );
+					}
+			
+					var size = unchecked( ( int )length );
+					var resultValue = new byte[ size ];
+					#region UnpackRawContent
+					
+					var bytesRead = source.Read( resultValue, 0, size );
+					if( bytesRead < size )
+					{
+						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+					}
+					
+					#endregion UnpackRawContent
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
+					this.InternalCollectionType = CollectionType.None;
+					result = resultMpoValue;
+					return true;
+				}
 				case MessagePackCode.Raw32:
 				{
 					uint length;
@@ -7561,7 +7753,7 @@ namespace MsgPack
 					}
 					
 					#endregion UnpackRawContent
-					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue ) );
+					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
 					this.InternalCollectionType = CollectionType.None;
 					result = resultMpoValue;
 					return true;

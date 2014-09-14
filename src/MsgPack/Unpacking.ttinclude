@@ -521,7 +521,7 @@ switch( header & 0xF0 )
 	this.WriteUnpackRawContent( "resultValue", "0", "size" );
 	this.PopIndent();
 #>
-		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue" ) #>;
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue", false ) #>;
 <#+
 	this.PushIndent( 2 );
 	this.OnReturnScalarObject( "resultMpoValue" );
@@ -567,6 +567,27 @@ foreach( var entry in
 }
 #>
 	case MessagePackCode.Bin8:
+	{
+		byte length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( byte ), "length" );
+	this.PopIndent();
+#>
+		var resultValue = new byte[ length ];
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackRawContent( "resultValue", "0", "length" );
+	this.PopIndent();
+#>
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue", true ) #>;
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "resultMpoValue" );
+	this.WriteReturn( "resultMpoValue" );
+	this.PopIndent();
+#>
+	}
 	case MessagePackCode.Str8:
 	{
 		byte length;
@@ -581,7 +602,7 @@ foreach( var entry in
 	this.WriteUnpackRawContent( "resultValue", "0", "length" );
 	this.PopIndent();
 #>
-		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue" ) #>;
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue", false ) #>;
 <#+
 	this.PushIndent( 2 );
 	this.OnReturnScalarObject( "resultMpoValue" );
@@ -590,6 +611,27 @@ foreach( var entry in
 #>
 	}
 	case MessagePackCode.Bin16:
+	{
+		ushort length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( ushort ), "length" );
+	this.PopIndent();
+#>
+		var resultValue = new byte[ length ];
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackRawContent( "resultValue", "0", "length" );
+	this.PopIndent();
+#>
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue", true ) #>;
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "resultMpoValue" );
+	this.WriteReturn( "resultMpoValue" );
+	this.PopIndent();
+#>
+	}
 	case MessagePackCode.Raw16:
 	{
 		ushort length;
@@ -604,7 +646,7 @@ foreach( var entry in
 	this.WriteUnpackRawContent( "resultValue", "0", "length" );
 	this.PopIndent();
 #>
-		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue" ) #>;
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue", false ) #>;
 <#+
 	this.PushIndent( 2 );
 	this.OnReturnScalarObject( "resultMpoValue" );
@@ -613,6 +655,37 @@ foreach( var entry in
 #>
 	}
 	case MessagePackCode.Bin32:
+	{
+		uint length;
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackScalar( typeof( uint ), "length" );
+	this.PopIndent();
+#>
+		if( length > Int32.MaxValue )
+		{
+<#+
+	this.PushIndent( 3 );
+	this.WriteTooLargeException();
+	this.PopIndent();
+#>
+		}
+
+		var size = unchecked( ( int )length );
+		var resultValue = new byte[ size ];
+<#+
+	this.PushIndent( 2 );
+	this.WriteUnpackRawContent( "resultValue", "0", "size" );
+	this.PopIndent();
+#>
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue", true ) #>;
+<#+
+	this.PushIndent( 2 );
+	this.OnReturnScalarObject( "resultMpoValue" );
+	this.WriteReturn( "resultMpoValue" );
+	this.PopIndent();
+#>
+	}
 	case MessagePackCode.Raw32:
 	{
 		uint length;
@@ -637,7 +710,7 @@ foreach( var entry in
 	this.WriteUnpackRawContent( "resultValue", "0", "size" );
 	this.PopIndent();
 #>
-		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue" ) #>;
+		var resultMpoValue = <#= CreateNewMessagePackString( "resultValue", false ) #>;
 <#+
 	this.PushIndent( 2 );
 	this.OnReturnScalarObject( "resultMpoValue" );
@@ -725,9 +798,9 @@ foreach( var entry in
 <#+
 }
 
-private string CreateNewMessagePackString( string resultVariable )
+private string CreateNewMessagePackString( string resultVariable, bool isBin )
 {
-	return "new MessagePackObject( new MessagePackString( " + resultVariable + " ) )";
+	return "new MessagePackObject( new MessagePackString( " + resultVariable + ", " + isBin.ToString().ToLowerInvariant() + " ) )";
 }
 
 private void WriteUnpackScalar( Type type, string resultVariable )

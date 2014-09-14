@@ -100,24 +100,78 @@ namespace MsgPack
 foreach(var t in __types.Keys )
 {
 #>
+<#
+	if( t.ToString() == typeof( byte[] ).ToString() )
+	{
+#>
+		/// <summary>
+		///		Initializes a new instance of the <see cref="Byte"/>[] type which wraps <see cref="Byte" />[] instance with specified manner.
+		/// </summary>
+		/// <param name="value">A bytes array to be wrapped.</param>
+		/// <remarks>
+		///		This constructor invokes <see cref="<#= __typeName #>(Byte[],Boolean)" /> with <c>false</c>, that means if you pass tha bytes array which is valid utf-8, resulting object can be <see cref="String" />,
+		///		and its <see cref="UnderlyingType" /> should be <see cref="String" />.
+		/// </remarks>
+		public <#= __typeName #>( <#= GetTypeName( t ) #> value )
+			: this( value, false ) { }
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <#= t.ToString() == typeof( byte[] ).ToString() ? "<see cref=\"Byte\" />[]" : "<see cref=\"" + GetTypeName( t ) + "\" />" #> instance.
+		///		Initializes a new instance of the <see cref="Byte"/>[] type which wraps <see cref="Byte" />[] instance with specified manner.
 		/// </summary>
+		/// <param name="value">A bytes array to be wrapped.</param>
+		/// <param name="isBinary"><c>true</c> if <paramref name="value"/> always should be binary; <c>false</c>, otherwise.</param>
+		/// <remarks>
+		///		When the <paramref name="isBinary" /> is <c>true</c>, then resulting object represents binary even if the <paramref name="value"/> is valid utf-8 sequence,
+		///		that is, its <see cref="UnderlyingType" /> should be <see cref="Byte" />[].
+		///		On the other hand, when  contrast, the <paramref name="isBinary" /> is <c>false</c>, and if the <paramref name="value"/> is valid utf-8, 
+		///		then the resulting object can be <see cref="String" />,
+		///		and its <see cref="UnderlyingType" /> should be <see cref="String" />.
+		/// </remarks>
+		public <#= __typeName #>( <#= GetTypeName( t ) #> value, bool isBinary )
 <#
-if( __IsNotCLSCompliant( t ) )
-{
+	}
+	else
+	{
+#>
+		/// <summary>
+		///		Initializes a new instance of the <see cref="<#= __typeName #>"/> type which wraps <see cref="<#= GetTypeName( t ) #>"/> instance.
+		/// </summary>
+		/// <param name="value">A <see cref="<#= __typeName #>"/> value to be wrapped.</param>
+<#
+		if( __IsNotCLSCompliant( t ) )
+		{
 #>
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
 <#
-}
+		}
 #>
 		public <#= __typeName #>( <#= GetTypeName( t ) #> value )
+<#
+	}
+#>
 		{
 <#
-	this.GenerateConstructor( __typeName, "this", t );
+	if( t.ToString() == typeof( byte[] ).ToString() )
+	{
+#>
+			// trick: Avoid long boilerplate initialization.
+			this = new MessagePackObject();
+			if ( value == null )
+			{
+				this._handleOrTypeCode = null;
+			}
+			else
+			{
+				this._handleOrTypeCode = new MessagePackString( value, isBinary );
+			}
+<#
+	}
+	else
+	{
+		this.GenerateConstructor( __typeName, "this", t );
+	}
 #>
 		}
 <#
@@ -239,7 +293,7 @@ private void GenerateConstructor( string typeName, string val, object typeOrType
 {
 	var t = typeOrTypeName as Type;
 #>
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			<#= val #> = new <#= typeName #>();
 <#+ 
 	if( t == null )
@@ -252,6 +306,7 @@ private void GenerateConstructor( string typeName, string val, object typeOrType
 	}
 	else if( t == typeof( byte[] ) )
 	{
+		// Only implicit conversion operator
 #>
 			if ( value == null )
 			{
@@ -259,7 +314,7 @@ private void GenerateConstructor( string typeName, string val, object typeOrType
 			}
 			else
 			{
-				<#= val #>._handleOrTypeCode = new MessagePackString( value );
+				<#= val #>._handleOrTypeCode = new MessagePackString( value, false );
 			}
 <#+
 		return;

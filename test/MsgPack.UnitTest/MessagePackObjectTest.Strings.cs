@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 #if !MSTEST

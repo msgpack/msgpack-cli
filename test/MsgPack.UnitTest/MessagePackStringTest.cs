@@ -64,7 +64,7 @@ namespace MsgPack
 		[Test]
 		public void TestGetHashCode_Binary()
 		{
-			var target = new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB } );
+			var target = new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB }, false );
 			// OK, returned value is implementation detail.
 			target.GetHashCode();
 		}
@@ -79,14 +79,14 @@ namespace MsgPack
 		[Test]
 		public void TestGetHashCode_StringifiableBinary()
 		{
-			var target = new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } );
+			var target = new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' }, false );
 			Assert.AreEqual( "ABC".GetHashCode(), target.GetHashCode() );
 		}
 
 		[Test]
 		public void TestGetHashCode_EmptyBinary()
 		{
-			var target = new MessagePackString( new byte[ 0 ] );
+			var target = new MessagePackString( new byte[ 0 ], false );
 			// OK, returned value is implementation detail.
 			target.GetHashCode();
 		}
@@ -101,7 +101,7 @@ namespace MsgPack
 		[Test]
 		public void TestToString_Binary()
 		{
-			var target = new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB } );
+			var target = new MessagePackString( new byte[] { 0xFF, 0xED, 0xCB }, false );
 			Assert.AreEqual( "0xFFEDCB", target.ToString() );
 		}
 
@@ -115,7 +115,7 @@ namespace MsgPack
 		[Test]
 		public void TestToString_StringifiableBinary()
 		{
-			var target = new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } );
+			var target = new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' }, false );
 			Assert.AreEqual( String.Format( CultureInfo.InvariantCulture, "0x{0:x}{1:x}{2:x}", ( byte )'A', ( byte )'B', ( byte )'C' ), target.ToString() );
 			// Encode
 			target.GetString();
@@ -125,7 +125,7 @@ namespace MsgPack
 		[Test]
 		public void TestToString_EmptyBinary()
 		{
-			var target = new MessagePackString( new byte[ 0 ] );
+			var target = new MessagePackString( new byte[ 0 ], false );
 			Assert.AreEqual( String.Empty, target.ToString() );
 		}
 
@@ -243,14 +243,14 @@ namespace MsgPack
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{
 			Assert.IsTrue(
-				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
-					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } )
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' }, false ).Equals(
+					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' }, false )
 				),
 				"Binary-Binary-True"
 			);
 
 			Assert.IsTrue(
-				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' }, false ).Equals(
 					new MessagePackString( "ABC" )
 				),
 				"Binary-String-True"
@@ -258,7 +258,7 @@ namespace MsgPack
 
 			Assert.IsTrue(
 				new MessagePackString( "ABC" ).Equals(
-					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } )
+					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' }, false )
 				),
 				"String-Binary-True"
 			);
@@ -271,14 +271,14 @@ namespace MsgPack
 			);
 
 			Assert.IsFalse(
-				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
-					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'D' } )
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' }, false ).Equals(
+					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'D' }, false )
 				),
 				"Binary-Binary-False"
 			);
 
 			Assert.IsFalse(
-				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } ).Equals(
+				new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' }, false ).Equals(
 					new MessagePackString( "ABD" )
 				),
 				"Binary-String-False"
@@ -286,7 +286,7 @@ namespace MsgPack
 
 			Assert.IsFalse(
 				new MessagePackString( "ABD" ).Equals(
-					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' } )
+					new MessagePackString( new byte[] { ( byte )'A', ( byte )'B', ( byte )'C' }, false )
 				),
 				"String-Binary-False"
 			);
@@ -301,11 +301,11 @@ namespace MsgPack
 			var values =
 				new[] 
 				{ 
-					new MessagePackString( new byte[ 0 ] ), 
-					new MessagePackString( new byte[] { 0x20 } ), 
-					new MessagePackString( new byte[] { 0xff } ),
-					new MessagePackString( new byte[] { 1, 2, 3 } ), 
-					new MessagePackString( new byte[] { 3, 2, 1 } ) 
+					new MessagePackString( new byte[ 0 ], false ), 
+					new MessagePackString( new byte[] { 0x20 }, false ), 
+					new MessagePackString( new byte[] { 0xff }, false ),
+					new MessagePackString( new byte[] { 1, 2, 3 }, false ), 
+					new MessagePackString( new byte[] { 3, 2, 1 }, false ) 
 			};
 
 			const int iteration = 10;
@@ -332,7 +332,7 @@ namespace MsgPack
 			}
 
 			var smallX = new MessagePackString( new String( 'A', 16 ) );
-			var smallY = new MessagePackString( MessagePackConvert.EncodeString( new String( 'A', 16 ) ) );
+			var smallY = new MessagePackString( MessagePackConvert.EncodeString( new String( 'A', 16 ) ), false );
 
 			for ( int i = 0; i < iteration; i++ )
 			{
@@ -343,7 +343,7 @@ namespace MsgPack
 			}
 
 			var mediumX = new MessagePackString( new String( 'A', 1000 ) );
-			var mediumY = new MessagePackString( MessagePackConvert.EncodeString( new String( 'A', 1000 ) ) );
+			var mediumY = new MessagePackString( MessagePackConvert.EncodeString( new String( 'A', 1000 ) ), false );
 
 			for ( int i = 0; i < iteration; i++ )
 			{
@@ -354,7 +354,7 @@ namespace MsgPack
 			}
 
 			var largeX = new MessagePackString( new String( 'A', 100000 ) );
-			var largeY = new MessagePackString( MessagePackConvert.EncodeString( new String( 'A', 100000 ) ) );
+			var largeY = new MessagePackString( MessagePackConvert.EncodeString( new String( 'A', 100000 ) ), false );
 
 			for ( int i = 0; i < iteration; i++ )
 			{

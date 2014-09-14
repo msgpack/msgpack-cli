@@ -28,63 +28,63 @@
 var testSituations =
 	new []
 	{
-		// Suffix, Type, Unit Value Expression, Expected Value Expression Format, Can be Str
+		// Suffix, Value Type, Unit Value Expression, Expected Value Expression Format, is str
 		Tuple.Create( "String", "String", "'A'", "new String( {0}, {1} )", true ),
 		Tuple.Create( "Binary", "Byte[]", "0xFF", "Enumerable.Repeat( {0}, {1} ).ToArray()", false )
 	};
 var strVariations =
 	new []
 	{
-		// Label, Length, Header Bytes,
-		Tuple.Create( "FixStr", 0, "0xA0" ),
-		Tuple.Create( "FixStr", 1, "0xA1" ),
-		Tuple.Create( "FixStr", 0x1F, "0xBF" ),
-		Tuple.Create( "Str8", 0, "0xD9, 0" ),
-		Tuple.Create( "Str8", 1, "0xD9, 1" ),
-		Tuple.Create( "Str8", 0x1F, "0xD9, 0x1F" ),
-		Tuple.Create( "Str8", 0x20, "0xD9, 0x20" ),
-		Tuple.Create( "Str8", 0xFF, "0xD9, 0xFF" ),
-		Tuple.Create( "Str16", 0, "0xDA, 0, 0" ),
-		Tuple.Create( "Str16", 1, "0xDA, 0, 1" ),
-		Tuple.Create( "Str16", 0x1F, "0xDA, 0, 0x1F" ),
-		Tuple.Create( "Str16", 0x20, "0xDA, 0, 0x20" ),
-		Tuple.Create( "Str16", 0xFF, "0xDA, 0, 0xFF" ),
-		Tuple.Create( "Str16", 0x100, "0xDA, 1, 0" ),
-		Tuple.Create( "Str16", 0xFFFF, "0xDA, 0xFF, 0xFF" ),
-		Tuple.Create( "Str32", 0, "0xDB, 0, 0, 0, 0" ),
-		Tuple.Create( "Str32", 1, "0xDB, 0, 0, 0, 1" ),
-		Tuple.Create( "Str32", 0x1F, "0xDB, 0, 0, 0, 0x1F" ),
-		Tuple.Create( "Str32", 0x20, "0xDB, 0, 0, 0, 0x20" ),
-		Tuple.Create( "Str32", 0xFF, "0xDB, 0, 0, 0, 0xFF" ),
-		Tuple.Create( "Str32", 0x100, "0xDB, 0, 0, 1, 0" ),
-		Tuple.Create( "Str32", 0xFFFF, "0xDB, 0, 0, 0xFF, 0xFF" ),
-		Tuple.Create( "Str32", 0x10000, "0xDB, 0, 1, 0, 0" ),
+		// Label, Length, Header Bytes, Header Type
+		Tuple.Create( "FixStr", 0, "0xA0", "String" ),
+		Tuple.Create( "FixStr", 1, "0xA1", "String" ),
+		Tuple.Create( "FixStr", 0x1F, "0xBF", "String" ),
+		Tuple.Create( "Str8", 0, "0xD9, 0", "String" ),
+		Tuple.Create( "Str8", 1, "0xD9, 1", "String" ),
+		Tuple.Create( "Str8", 0x1F, "0xD9, 0x1F", "String" ),
+		Tuple.Create( "Str8", 0x20, "0xD9, 0x20", "String" ),
+		Tuple.Create( "Str8", 0xFF, "0xD9, 0xFF", "String" ),
+		Tuple.Create( "Str16", 0, "0xDA, 0, 0", "String" ),
+		Tuple.Create( "Str16", 1, "0xDA, 0, 1", "String" ),
+		Tuple.Create( "Str16", 0x1F, "0xDA, 0, 0x1F", "String" ),
+		Tuple.Create( "Str16", 0x20, "0xDA, 0, 0x20", "String" ),
+		Tuple.Create( "Str16", 0xFF, "0xDA, 0, 0xFF", "String" ),
+		Tuple.Create( "Str16", 0x100, "0xDA, 1, 0", "String" ),
+		Tuple.Create( "Str16", 0xFFFF, "0xDA, 0xFF, 0xFF", "String" ),
+		Tuple.Create( "Str32", 0, "0xDB, 0, 0, 0, 0", "String" ),
+		Tuple.Create( "Str32", 1, "0xDB, 0, 0, 0, 1", "String" ),
+		Tuple.Create( "Str32", 0x1F, "0xDB, 0, 0, 0, 0x1F", "String" ),
+		Tuple.Create( "Str32", 0x20, "0xDB, 0, 0, 0, 0x20", "String" ),
+		Tuple.Create( "Str32", 0xFF, "0xDB, 0, 0, 0, 0xFF", "String" ),
+		Tuple.Create( "Str32", 0x100, "0xDB, 0, 0, 1, 0", "String" ),
+		Tuple.Create( "Str32", 0xFFFF, "0xDB, 0, 0, 0xFF, 0xFF", "String" ),
+		Tuple.Create( "Str32", 0x10000, "0xDB, 0, 1, 0, 0", "String" ),
 	};
 
 var binVariations =
 	new []
 	{
-		// Label, Length, Header Bytes,
-		Tuple.Create( "Bin8", 0, "0xC4, 0" ),
-		Tuple.Create( "Bin8", 1, "0xC4, 1" ),
-		Tuple.Create( "Bin8", 0x1F, "0xC4, 0x1F" ),
-		Tuple.Create( "Bin8", 0x20, "0xC4, 0x20" ),
-		Tuple.Create( "Bin8", 0xFF, "0xC4, 0xFF" ),
-		Tuple.Create( "Bin16", 0, "0xC5, 0, 0" ),
-		Tuple.Create( "Bin16", 1, "0xC5, 0, 1" ),
-		Tuple.Create( "Bin16", 0x1F, "0xC5, 0, 0x1F" ),
-		Tuple.Create( "Bin16", 0x20, "0xC5, 0, 0x20" ),
-		Tuple.Create( "Bin16", 0xFF, "0xC5, 0, 0xFF" ),
-		Tuple.Create( "Bin16", 0x100, "0xC5, 1, 0" ),
-		Tuple.Create( "Bin16", 0xFFFF, "0xC5, 0xFF, 0xFF" ),
-		Tuple.Create( "Bin32", 0, "0xC6, 0, 0, 0, 0" ),
-		Tuple.Create( "Bin32", 1, "0xC6, 0, 0, 0, 1" ),
-		Tuple.Create( "Bin32", 0x1F, "0xC6, 0, 0, 0, 0x1F" ),
-		Tuple.Create( "Bin32", 0x20, "0xC6, 0, 0, 0, 0x20" ),
-		Tuple.Create( "Bin32", 0xFF, "0xC6, 0, 0, 0, 0xFF" ),
-		Tuple.Create( "Bin32", 0x100, "0xC6, 0, 0, 1, 0" ),
-		Tuple.Create( "Bin32", 0xFFFF, "0xC6, 0, 0, 0xFF, 0xFF" ),
-		Tuple.Create( "Bin32", 0x10000, "0xC6, 0, 1, 0, 0" ),
+		// Label, Length, Header Bytes, Header Type
+		Tuple.Create( "Bin8", 0, "0xC4, 0", "Byte[]" ),
+		Tuple.Create( "Bin8", 1, "0xC4, 1", "Byte[]" ),
+		Tuple.Create( "Bin8", 0x1F, "0xC4, 0x1F", "Byte[]" ),
+		Tuple.Create( "Bin8", 0x20, "0xC4, 0x20", "Byte[]" ),
+		Tuple.Create( "Bin8", 0xFF, "0xC4, 0xFF", "Byte[]" ),
+		Tuple.Create( "Bin16", 0, "0xC5, 0, 0", "Byte[]" ),
+		Tuple.Create( "Bin16", 1, "0xC5, 0, 1", "Byte[]" ),
+		Tuple.Create( "Bin16", 0x1F, "0xC5, 0, 0x1F", "Byte[]" ),
+		Tuple.Create( "Bin16", 0x20, "0xC5, 0, 0x20", "Byte[]" ),
+		Tuple.Create( "Bin16", 0xFF, "0xC5, 0, 0xFF", "Byte[]" ),
+		Tuple.Create( "Bin16", 0x100, "0xC5, 1, 0", "Byte[]" ),
+		Tuple.Create( "Bin16", 0xFFFF, "0xC5, 0xFF, 0xFF", "Byte[]" ),
+		Tuple.Create( "Bin32", 0, "0xC6, 0, 0, 0, 0", "Byte[]" ),
+		Tuple.Create( "Bin32", 1, "0xC6, 0, 0, 0, 1", "Byte[]" ),
+		Tuple.Create( "Bin32", 0x1F, "0xC6, 0, 0, 0, 0x1F", "Byte[]" ),
+		Tuple.Create( "Bin32", 0x20, "0xC6, 0, 0, 0, 0x20", "Byte[]" ),
+		Tuple.Create( "Bin32", 0xFF, "0xC6, 0, 0, 0, 0xFF", "Byte[]" ),
+		Tuple.Create( "Bin32", 0x100, "0xC6, 0, 0, 1, 0", "Byte[]" ),
+		Tuple.Create( "Bin32", 0xFFFF, "0xC6, 0, 0, 0xFF, 0xFF", "Byte[]" ),
+		Tuple.Create( "Bin32", 0x10000, "0xC6, 0, 1, 0, 0", "Byte[]" ),
 	};
 
 #>
@@ -134,37 +134,34 @@ foreach( var testSituation in testSituations )
 {
 	foreach( var testCase in strVariations )
 	{
-		PutTest( testSituation, testCase );
+		PutTest( testSituation, testCase, testSituation.Item5 || testCase.Item2 == 0 );
 	}
 
-	if ( testSituation.Item5 )
+	// can be bin stream.
+	foreach( var testCase in binVariations )
 	{
-		// can be bin stream.
-		foreach( var testCase in binVariations )
-		{
-			PutTest( testSituation, testCase );
-		}
+		PutTest( testSituation, testCase, false );
 	}
 }
 #>
 	}
 }
 <#+
-private void PutTest( Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string> testCase )
+private void PutTest( Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string> testCase, bool canConvertToString )
 {
 	// FIXME: too short data, too long data
 	var readDataMethodPrefix = "TestUnpack" + testCase.Item1 + "_" +testCase.Item2 + "_As" + testSituation.Item1 + "_Read_";
-	PutTestMethod( readDataMethodPrefix + "JustLength_Success", testSituation, testCase, 0, PutTestUnpackDataBody );
-	PutTestMethod( readDataMethodPrefix + "TooShort_Fail", testSituation, testCase, -1, PutTestUnpackDataBody );
-	PutTestMethod( readDataMethodPrefix + "HasExtra_NoProblem", testSituation, testCase, 1, PutTestUnpackDataBody );
+	PutTestMethod( readDataMethodPrefix + "JustLength", testSituation, testCase, 0, canConvertToString, PutTestUnpackDataBody );
+	PutTestMethod( readDataMethodPrefix + "TooShort", testSituation, testCase, -1, canConvertToString, PutTestUnpackDataBody );
+	PutTestMethod( readDataMethodPrefix + "HasExtra", testSituation, testCase, 1,  canConvertToString, PutTestUnpackDataBody );
 
 	var readDirectMethodPrefix = "TestUnpack" + testCase.Item1 + "_" + testCase.Item2 + "_Read" + testSituation.Item1 + "_";
-	PutTestMethod( readDirectMethodPrefix + "JustLength_Success", testSituation, testCase, 0, PutTestUnpackDirectBody );
-	PutTestMethod( readDirectMethodPrefix + "TooShort_Fail", testSituation, testCase, -1, PutTestUnpackDirectBody );
-	PutTestMethod( readDirectMethodPrefix + "HasExtra_NoProblem", testSituation, testCase, 1, PutTestUnpackDirectBody );
+	PutTestMethod( readDirectMethodPrefix + "JustLength", testSituation, testCase, 0, canConvertToString, PutTestUnpackDirectBody );
+	PutTestMethod( readDirectMethodPrefix + "TooShort", testSituation, testCase, -1, canConvertToString, PutTestUnpackDirectBody );
+	PutTestMethod( readDirectMethodPrefix + "HasExtra", testSituation, testCase, 1, canConvertToString, PutTestUnpackDirectBody );
 }
 
-private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string expectedValue, bool success )
+private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool success )
 {
 	if ( success )
 	{
@@ -174,7 +171,46 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 				var result = unpacker.Data;
 #pragma warning restore 612,618
 				Assert.IsTrue( result.HasValue );
-				Assert.That( ( <#= testSituation.Item2 #> )result.Value, Is.EqualTo( <#= expectedValue #> ) );
+<#+
+		if ( testSituation.Item2 == sourceType )
+		{
+#>
+				Assert.That( ( <#= sourceType #> )result.Value, Is.EqualTo( <#= expectedValue #> ) );
+				Assert.That( result.Value.UnderlyingType, Is.EqualTo( typeof( <#= sourceType #> ) ) );
+<#+
+		}
+#>
+
+				// raw/str always can be byte[]
+				var asBinary = ( byte[] )result.Value;
+<#+
+		if ( canConvertToString )
+		{
+#>
+				var asString = ( String )result.Value;
+<#+
+		}
+		else
+		{
+#>
+				Assert.Throws<InvalidOperationException>( () => { var asString = ( String )result.Value; } );
+<#+
+		}
+
+		if ( canConvertToString )
+		{
+#>
+				Assert.That( result.Value.IsTypeOf( typeof( string ) ).GetValueOrDefault() );
+<#+
+		}
+		else
+		{
+#>
+				Assert.That( result.Value.IsTypeOf( typeof( string ) ).GetValueOrDefault(), Is.False );
+<#+
+		}
+#>
+				Assert.That( result.Value.IsTypeOf( typeof( byte[] ) ).GetValueOrDefault() );
 <#+
 	}
 	else
@@ -185,7 +221,7 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 	}
 }
 
-private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string expectedValue, bool success )
+private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool success )
 {
 #>
 				<#= testSituation.Item2 #> result;
@@ -205,7 +241,7 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 	}
 }
 
-private void PutTestMethod( string methodName, Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string> testCase, int valueLengthAjustument, Action<Tuple<string, string, string, string, bool>, string, bool> putTestBody )
+private void PutTestMethod( string methodName, Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string> testCase, int valueLengthAjustument, bool canConvertToString, Action<Tuple<string, string, string, string, bool>, string, string, bool, bool> putTestBody )
 {
 	var adjustedValueLength = testCase.Item2 + valueLengthAjustument;
 	if ( adjustedValueLength < 0 )
@@ -229,7 +265,7 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 			using( var unpacker = Unpacker.Create( buffer ) )
 			{
 <#+
-				putTestBody( testSituation, expectedValue, valueLengthAjustument >= 0 );
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, valueLengthAjustument >= 0 );
 #>
 			}
 		}

@@ -40,124 +40,124 @@ namespace MsgPack
 	public partial struct MessagePackObject : IEquatable<MessagePackObject>, IPackable
 	{
 		#region -- Constructors --
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Boolean" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Boolean"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 		public MessagePackObject( Boolean value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = value ? ( ulong )1 : 0;
 			this._handleOrTypeCode = _booleanTypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Byte" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Byte"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 		public MessagePackObject( Byte value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = value;
 			this._handleOrTypeCode = _byteTypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="SByte" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="SByte"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
 		public MessagePackObject( SByte value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = unchecked( ( ulong )value );
 			this._handleOrTypeCode = _sbyteTypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Int16" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Int16"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 		public MessagePackObject( Int16 value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = unchecked( ( ulong )value );
 			this._handleOrTypeCode = _int16TypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt16" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt16"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
 		public MessagePackObject( UInt16 value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = value;
 			this._handleOrTypeCode = _uint16TypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Int32" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Int32"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 		public MessagePackObject( Int32 value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = unchecked( ( ulong )value );
 			this._handleOrTypeCode = _int32TypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt32" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt32"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
 		public MessagePackObject( UInt32 value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = value;
 			this._handleOrTypeCode = _uint32TypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Int64" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Int64"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 		public MessagePackObject( Int64 value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = unchecked( ( ulong )value );
 			this._handleOrTypeCode = _int64TypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt64" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="UInt64"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 #if !UNITY
 		[CLSCompliant( false )]
 #endif // !UNITY
 		public MessagePackObject( UInt64 value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = value;
 			this._handleOrTypeCode = _uint64TypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Single" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Single"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 		public MessagePackObject( Single value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			var bytes = BitConverter.GetBytes( value );
 			unchecked
@@ -181,24 +181,24 @@ namespace MsgPack
 			}
 			this._handleOrTypeCode = _singleTypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Double" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Double"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 		public MessagePackObject( Double value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = unchecked( ( ulong )BitConverter.DoubleToInt64Bits( value ) );
 			this._handleOrTypeCode = _doubleTypeCode;
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="String" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="String"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 		public MessagePackObject( String value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			if ( value == null )
 			{
@@ -209,13 +209,32 @@ namespace MsgPack
 				this._handleOrTypeCode = new MessagePackString( value );
 			}
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="Byte" />[] instance.
+		///		Initializes a new instance of the <see cref="Byte"/>[] type which wraps <see cref="Byte" />[] instance with specified manner.
 		/// </summary>
+		/// <param name="value">A bytes array to be wrapped.</param>
+		/// <remarks>
+		///		This constructor invokes <see cref="MessagePackObject(Byte[],Boolean)" /> with <c>false</c>, that means if you pass tha bytes array which is valid utf-8, resulting object can be <see cref="String" />,
+		///		and its <see cref="UnderlyingType" /> should be <see cref="String" />.
+		/// </remarks>
 		public MessagePackObject( Byte[] value )
+			: this( value, false ) { }
+
+		/// <summary>
+		///		Initializes a new instance of the <see cref="Byte"/>[] type which wraps <see cref="Byte" />[] instance with specified manner.
+		/// </summary>
+		/// <param name="value">A bytes array to be wrapped.</param>
+		/// <param name="isBinary"><c>true</c> if <paramref name="value"/> always should be binary; <c>false</c>, otherwise.</param>
+		/// <remarks>
+		///		When the <paramref name="isBinary" /> is <c>true</c>, then resulting object represents binary even if the <paramref name="value"/> is valid utf-8 sequence,
+		///		that is, its <see cref="UnderlyingType" /> should be <see cref="Byte" />[].
+		///		On the other hand, when  contrast, the <paramref name="isBinary" /> is <c>false</c>, and if the <paramref name="value"/> is valid utf-8, 
+		///		then the resulting object can be <see cref="String" />,
+		///		and its <see cref="UnderlyingType" /> should be <see cref="String" />.
+		/// </remarks>
+		public MessagePackObject( Byte[] value, bool isBinary )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			if ( value == null )
 			{
@@ -223,16 +242,16 @@ namespace MsgPack
 			}
 			else
 			{
-				this._handleOrTypeCode = new MessagePackString( value );
+				this._handleOrTypeCode = new MessagePackString( value, isBinary );
 			}
 		}
-
 		/// <summary>
-		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="MessagePackExtendedTypeObject" /> instance.
+		///		Initializes a new instance of the <see cref="MessagePackObject"/> type which wraps <see cref="MessagePackExtendedTypeObject"/> instance.
 		/// </summary>
+		/// <param name="value">A <see cref="MessagePackObject"/> value to be wrapped.</param>
 		public MessagePackObject( MessagePackExtendedTypeObject value )
 		{
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			this = new MessagePackObject();
 			this._value = value.TypeCode;
 			this._handleOrTypeCode = value.Body;
@@ -833,7 +852,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( Boolean value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = value ? ( ulong )1 : 0;
 			result._handleOrTypeCode = _booleanTypeCode;
@@ -848,7 +867,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( Byte value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = value;
 			result._handleOrTypeCode = _byteTypeCode;
@@ -866,7 +885,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( SByte value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = unchecked( ( ulong )value );
 			result._handleOrTypeCode = _sbyteTypeCode;
@@ -881,7 +900,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( Int16 value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = unchecked( ( ulong )value );
 			result._handleOrTypeCode = _int16TypeCode;
@@ -899,7 +918,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( UInt16 value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = value;
 			result._handleOrTypeCode = _uint16TypeCode;
@@ -914,7 +933,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( Int32 value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = unchecked( ( ulong )value );
 			result._handleOrTypeCode = _int32TypeCode;
@@ -932,7 +951,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( UInt32 value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = value;
 			result._handleOrTypeCode = _uint32TypeCode;
@@ -947,7 +966,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( Int64 value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = unchecked( ( ulong )value );
 			result._handleOrTypeCode = _int64TypeCode;
@@ -965,7 +984,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( UInt64 value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = value;
 			result._handleOrTypeCode = _uint64TypeCode;
@@ -980,7 +999,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( Single value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			var bytes = BitConverter.GetBytes( value );
 			unchecked
@@ -1014,7 +1033,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( Double value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = unchecked( ( ulong )BitConverter.DoubleToInt64Bits( value ) );
 			result._handleOrTypeCode = _doubleTypeCode;
@@ -1029,7 +1048,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( String value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			if ( value == null )
 			{
@@ -1050,7 +1069,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( Byte[] value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			if ( value == null )
 			{
@@ -1058,7 +1077,7 @@ namespace MsgPack
 			}
 			else
 			{
-				result._handleOrTypeCode = new MessagePackString( value );
+				result._handleOrTypeCode = new MessagePackString( value, false );
 			}
 			return result;
 		}
@@ -1071,7 +1090,7 @@ namespace MsgPack
 		public static implicit operator MessagePackObject( MessagePackExtendedTypeObject value )
 		{
 			MessagePackObject result;
-			// trick: Avoid long boilerplate initialization. See "CLR via C#".
+			// trick: Avoid long boilerplate initialization.
 			result = new MessagePackObject();
 			result._value = value.TypeCode;
 			result._handleOrTypeCode = value.Body;

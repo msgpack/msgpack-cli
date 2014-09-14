@@ -50,6 +50,7 @@ namespace MsgPack
 	internal sealed class MessagePackString
 	{
 		// TODO: CLOB support?
+		private static readonly DecoderFallbackException IsBinary = new DecoderFallbackException();
 		private byte[] _encoded;
 		private string _decoded;
 		private DecoderFallbackException _decodingError;
@@ -71,12 +72,17 @@ namespace MsgPack
 			this._type = BinaryType.String;
 		}
 
-		public MessagePackString( byte[] encoded )
+		public MessagePackString( byte[] encoded, bool isBinary )
 		{
 #if !UNITY
 			Contract.Assert( encoded != null );
 #endif // !UNITY
 			this._encoded = encoded;
+			this._type = isBinary ? BinaryType.Blob : BinaryType.Unknwon;
+			if ( isBinary )
+			{
+				this._decodingError = IsBinary;
+			}
 		}
 
 		// Copy constructor for debugger proxy
@@ -143,7 +149,7 @@ namespace MsgPack
 			this.DecodeIfNeeded();
 			if ( this._decodingError != null )
 			{
-				throw new InvalidOperationException( "This bytes is not UTF-8 string.", this._decodingError );
+				throw new InvalidOperationException( "This bytes is not UTF-8 string.", this._decodingError == IsBinary ? default( Exception ) : this._decodingError );
 			}
 
 			return this._decoded;
