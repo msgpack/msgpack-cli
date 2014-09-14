@@ -1257,71 +1257,103 @@
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.Boolean"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.Byte)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.Byte"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.SByte)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.SByte"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.Int16)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.Int16"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.UInt16)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.UInt16"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.Int32)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.Int32"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.UInt32)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.UInt32"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.Int64)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.Int64"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.UInt64)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.UInt64"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.Single)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.Single"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.Double)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.Double"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.String)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.String"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(System.Byte[])">
             <summary>
-            	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:System.Byte"/>[] instance.
+            	Initializes a new instance of the <see cref="T:System.Byte"/>[] type which wraps <see cref="T:System.Byte"/>[] instance with specified manner.
             </summary>
+            <param name="value">A bytes array to be wrapped.</param>
+            <remarks>
+            	This constructor invokes <see cref="M:MsgPack.MessagePackObject.#ctor(System.Byte[],System.Boolean)"/> with <c>false</c>, that means if you pass tha bytes array which is valid utf-8, resulting object can be <see cref="T:System.String"/>,
+            	and its <see cref="P:MsgPack.MessagePackObject.UnderlyingType"/> should be <see cref="T:System.String"/>.
+            </remarks>
+        </member>
+        <member name="M:MsgPack.MessagePackObject.#ctor(System.Byte[],System.Boolean)">
+            <summary>
+            	Initializes a new instance of the <see cref="T:System.Byte"/>[] type which wraps <see cref="T:System.Byte"/>[] instance with specified manner.
+            </summary>
+            <param name="value">A bytes array to be wrapped.</param>
+            <param name="isBinary"><c>true</c> if <paramref name="value"/> always should be binary; <c>false</c>, otherwise.</param>
+            <remarks>
+            	When the <paramref name="isBinary"/> is <c>true</c>, then resulting object represents binary even if the <paramref name="value"/> is valid utf-8 sequence,
+            	that is, its <see cref="P:MsgPack.MessagePackObject.UnderlyingType"/> should be <see cref="T:System.Byte"/>[].
+            	On the other hand, when  contrast, the <paramref name="isBinary"/> is <c>false</c>, and if the <paramref name="value"/> is valid utf-8, 
+            	then the resulting object can be <see cref="T:System.String"/>,
+            	and its <see cref="P:MsgPack.MessagePackObject.UnderlyingType"/> should be <see cref="T:System.String"/>.
+            </remarks>
         </member>
         <member name="M:MsgPack.MessagePackObject.#ctor(MsgPack.MessagePackExtendedTypeObject)">
             <summary>
             	Initializes a new instance of the <see cref="T:MsgPack.MessagePackObject"/> type which wraps <see cref="T:MsgPack.MessagePackExtendedTypeObject"/> instance.
             </summary>
+            <param name="value">A <see cref="T:MsgPack.MessagePackObject"/> value to be wrapped.</param>
         </member>
         <member name="M:MsgPack.MessagePackObject.AsBoolean">
             <summary>

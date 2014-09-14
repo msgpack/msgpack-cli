@@ -95,7 +95,7 @@ namespace mpu
 
 			foreach ( var sourceFileRelativePath in this.ParseProjectFile( sourceProjectPath ) )
 			{
-				var destinationFilePath = Path.Combine( outputDirectoryPath, sourceFileRelativePath );
+				var destinationFilePath = Path.Combine( outputDirectoryPath, sourceFileRelativePath.StartsWith( "..\\" ) ? sourceFileRelativePath.Substring( 3 ) : sourceFileRelativePath );
 				// ReSharper disable once AssignNullToNotNullAttribute
 				Directory.CreateDirectory( Path.GetDirectoryName( destinationFilePath ) );
 
@@ -130,7 +130,7 @@ namespace mpu
 				projectXml.Root.Elements( "{http://schemas.microsoft.com/developer/msbuild/2003}ItemGroup" )
 					.Elements( "{http://schemas.microsoft.com/developer/msbuild/2003}Compile" )
 					.Attributes( "Include" )
-					.Where( include => 
+					.Where( include =>
 						include.Value.EndsWith( ".cs", StringComparison.OrdinalIgnoreCase )
 						&& !include.Value.EndsWith( "AssemblyInfo.cs", StringComparison.OrdinalIgnoreCase )
 						&& !include.Value.EndsWith( "CommonAssemblyInfo.cs", StringComparison.OrdinalIgnoreCase )
