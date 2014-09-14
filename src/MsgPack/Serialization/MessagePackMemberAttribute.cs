@@ -48,6 +48,20 @@ namespace MsgPack.Serialization
 			get { return this._id; }
 		}
 
+		private string _name;
+
+		/// <summary>
+		///		Gets or sets the name of this member.
+		/// </summary>
+		/// <value>
+		///		The name which will be used in map key on serialized MessagePack stream.
+		/// </value>
+		public string Name
+		{
+			get { return this._name; }
+			set { this._name = value; }
+		}
+
 		private NilImplication _nilImplication;
 
 		/// <summary>

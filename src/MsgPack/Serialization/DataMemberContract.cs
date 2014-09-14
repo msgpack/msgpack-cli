@@ -160,7 +160,7 @@ namespace MsgPack.Serialization
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID cannot be negative. The member is '{0}' in the '{1}' type.", member.Name, member.DeclaringType ) );
 			}
 
-			this._name = member.Name;
+			this._name = String.IsNullOrEmpty( attribute.Name ) ? member.Name : attribute.Name;
 			this._nilImplication = attribute.NilImplication;
 			this._id = attribute.Id;
 		}

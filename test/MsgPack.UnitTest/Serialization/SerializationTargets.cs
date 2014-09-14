@@ -79,7 +79,7 @@ namespace MsgPack.Serialization
 	{
 		public static int StaticProperty { get; set; }
 
-		[MessagePackMember( 0 )]
+		[MessagePackMember( 0, Name = "Alias" )]
 		public int PublicProperty { get; set; }
 		[MessagePackMember( 1 )]
 		public int PublicField;
@@ -166,7 +166,7 @@ namespace MsgPack.Serialization
 	{
 		public static int StaticProperty { get; set; }
 
-		[DataMember( Order = 0 )]
+		[DataMember( Order = 0, Name = "Alias" )]
 		public int PublicProperty { get; set; }
 		[DataMember( Order = 1 )]
 		public int PublicField;
