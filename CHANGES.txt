@@ -161,6 +161,14 @@ Release 0.5.2 - 2014/9/6
   * Fix FILETIME is not available in WinRT
   * Fix does not work in Unity3D. issue #37
 
+Relase 0.5.3 - 2014/09/15
+
+  BREAKING CHANGES
+  * MessagePackObject from byte[] now always act as binary, not string. It affects only low level API and unpacked from bin8, bin16, bin32 types. Issue #39
+
+  FEATURES
+  * Using new MessagePackMemberAttribute.Name property, you can customize map keys of serialized objects when you use SerializationMethod.Map. Related to issue #38
+
 Relese 1.0 - ???
 
   BREAKING CHANGES [planed]
