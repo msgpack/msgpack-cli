@@ -16,7 +16,10 @@
   <HelpKINode Title="AsList method" Url="html/M_MsgPack_MessagePackObject_AsList.htm" />
   <HelpKINode Title="AsMessagePackExtendedTypeObject method" Url="html/M_MsgPack_MessagePackObject_AsMessagePackExtendedTypeObject.htm" />
   <HelpKINode Title="AsSByte method" Url="html/M_MsgPack_MessagePackObject_AsSByte.htm" />
-  <HelpKINode Title="AssemblyName property" Url="html/P_MsgPack_Serialization_SerializerGenerator_AssemblyName.htm" />
+  <HelpKINode Title="AssemblyName property">
+    <HelpKINode Title="SerializerAssemblyGenerationConfiguration.AssemblyName Property " Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_AssemblyName.htm" />
+    <HelpKINode Title="SerializerGenerator.AssemblyName Property " Url="html/P_MsgPack_Serialization_SerializerGenerator_AssemblyName.htm" />
+  </HelpKINode>
   <HelpKINode Title="AsSingle method" Url="html/M_MsgPack_MessagePackObject_AsSingle.htm" />
   <HelpKINode Title="AsString method" Url="html/Overload_MsgPack_MessagePackObject_AsString.htm" />
   <HelpKINode Title="AsStringUtf16 method" Url="html/M_MsgPack_MessagePackObject_AsStringUtf16.htm" />
@@ -25,10 +28,18 @@
   <HelpKINode Title="AsUInt32 method" Url="html/M_MsgPack_MessagePackObject_AsUInt32.htm" />
   <HelpKINode Title="AsUInt64 method" Url="html/M_MsgPack_MessagePackObject_AsUInt64.htm" />
   <HelpKINode Title="Boolean to MessagePackObject conversion" Url="html/M_MsgPack_MessagePackObject_op_Implicit_2.htm" />
+  <HelpKINode Title="ByName enumeration member">
+    <HelpKINode Title="EnumMemberSerializationMethod Enumeration" Url="html/T_MsgPack_Serialization_EnumMemberSerializationMethod.htm" />
+    <HelpKINode Title="EnumSerializationMethod Enumeration" Url="html/T_MsgPack_Serialization_EnumSerializationMethod.htm" />
+  </HelpKINode>
   <HelpKINode Title="Byte to MessagePackObject conversion" Url="html/M_MsgPack_MessagePackObject_op_Implicit_3.htm" />
   <HelpKINode Title="Byte() to MessagePackObject conversion" Url="html/M_MsgPack_MessagePackObject_op_Implicit_4.htm" />
   <HelpKINode Title="ByteLength property" Url="html/P_MsgPack_UnpackingStreamReader_ByteLength.htm" />
   <HelpKINode Title="Byte[] to MessagePackObject conversion" Url="html/M_MsgPack_MessagePackObject_op_Implicit_4.htm" />
+  <HelpKINode Title="ByUnderlyingValue enumeration member">
+    <HelpKINode Title="EnumMemberSerializationMethod Enumeration" Url="html/T_MsgPack_Serialization_EnumMemberSerializationMethod.htm" />
+    <HelpKINode Title="EnumSerializationMethod Enumeration" Url="html/T_MsgPack_Serialization_EnumSerializationMethod.htm" />
+  </HelpKINode>
   <HelpKINode Title="CanCollect enumeration member" Url="html/T_MsgPack_Serialization_SerializationMethodGeneratorOption.htm" />
   <HelpKINode Title="CanDump enumeration member" Url="html/T_MsgPack_Serialization_SerializationMethodGeneratorOption.htm" />
   <HelpKINode Title="CanRead property" Url="html/P_MsgPack_UnpackingStream_CanRead.htm" />
@@ -37,6 +48,7 @@
   <HelpKINode Title="CanWrite property" Url="html/P_MsgPack_UnpackingStream_CanWrite.htm" />
   <HelpKINode Title="Classic enumeration member" Url="html/T_MsgPack_PackerCompatibilityOptions.htm" />
   <HelpKINode Title="Clear method" Url="html/M_MsgPack_MessagePackObjectDictionary_Clear.htm" />
+  <HelpKINode Title="CodeIndentString property" Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_CodeIndentString.htm" />
   <HelpKINode Title="CompatibilityOptions property">
     <HelpKINode Title="Packer.CompatibilityOptions Property " Url="html/P_MsgPack_Packer_CompatibilityOptions.htm" />
     <HelpKINode Title="SerializationContext.CompatibilityOptions Property " Url="html/P_MsgPack_Serialization_SerializationContext_CompatibilityOptions.htm" />
@@ -66,6 +78,7 @@
   </HelpKINode>
   <HelpKINode Title="Data property" Url="html/P_MsgPack_Unpacker_Data.htm" />
   <HelpKINode Title="DecodeStringStrict method" Url="html/M_MsgPack_MessagePackConvert_DecodeStringStrict.htm" />
+  <HelpKINode Title="Default enumeration member" Url="html/T_MsgPack_Serialization_EnumMemberSerializationMethod.htm" />
   <HelpKINode Title="Default property">
     <HelpKINode Title="SerializationContext.Default Property " Url="html/P_MsgPack_Serialization_SerializationContext_Default.htm" />
     <HelpKINode Title="SerializerRepository.Default Property " Url="html/P_MsgPack_Serialization_SerializerRepository_Default.htm" />
@@ -82,6 +95,7 @@
   <HelpKINode Title="DefaultConcreteTypeRepository.Get method" Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Get.htm" />
   <HelpKINode Title="DefaultConcreteTypeRepository.Register method" Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Register.htm" />
   <HelpKINode Title="DefaultConcreteTypeRepository.Unregister method" Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Unregister.htm" />
+  <HelpKINode Title="DetermineEnumSerializationMethod method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializerHelpers_DetermineEnumSerializationMethod.htm" />
   <HelpKINode Title="Dispose method">
     <HelpKINode Title="MessagePackObjectDictionary.Enumerator.Dispose Method " Url="html/M_MsgPack_MessagePackObjectDictionary_Enumerator_Dispose.htm" />
     <HelpKINode Title="MessagePackObjectDictionary.KeySet.Enumerator.Dispose Method " Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_Enumerator_Dispose.htm" />
@@ -93,6 +107,45 @@
   <HelpKINode Title="Double to MessagePackObject conversion" Url="html/M_MsgPack_MessagePackObject_op_Implicit_5.htm" />
   <HelpKINode Title="EncodeString method" Url="html/M_MsgPack_MessagePackConvert_EncodeString.htm" />
   <HelpKINode Title="EndReadSubtree method" Url="html/M_MsgPack_Unpacker_EndReadSubtree.htm" />
+  <HelpKINode Title="EnumMemberSerializationMethod enumeration" Url="html/T_MsgPack_Serialization_EnumMemberSerializationMethod.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer(Of TEnum) class">
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum) Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum) Members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="about EnumMessagePackSerializer(Of TEnum) class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="constructor" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EnumMessagePackSerializer(Of TEnum).EnumMessagePackSerializer constructor" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1__ctor.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer(Of TEnum).PackToCore method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_PackToCore.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer(Of TEnum).PackUnderlyingValueTo method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_PackUnderlyingValueTo.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer(Of TEnum).UnpackFromCore method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_UnpackFromCore.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer(Of TEnum).UnpackFromUnderlyingValue method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_UnpackFromUnderlyingValue.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer&lt;TEnum&gt; class">
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum) Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum) Members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="about EnumMessagePackSerializer&lt;TEnum&gt; class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="constructor" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EnumMessagePackSerializer&lt;TEnum&gt;.EnumMessagePackSerializer constructor" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1__ctor.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer&lt;TEnum&gt;.PackToCore method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_PackToCore.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer&lt;TEnum&gt;.PackUnderlyingValueTo method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_PackUnderlyingValueTo.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer&lt;TEnum&gt;.UnpackFromCore method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_UnpackFromCore.htm" />
+  <HelpKINode Title="EnumMessagePackSerializer&lt;TEnum&gt;.UnpackFromUnderlyingValue method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_UnpackFromUnderlyingValue.htm" />
+  <HelpKINode Title="EnumMessagePackSerializerHelpers class">
+    <HelpKINode Title="EnumMessagePackSerializerHelpers Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm" />
+    <HelpKINode Title="EnumMessagePackSerializerHelpers Members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm" />
+    <HelpKINode Title="about EnumMessagePackSerializerHelpers class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm" />
+    <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializerHelpers_DetermineEnumSerializationMethod.htm" />
+  <HelpKINode Title="EnumSerializationMethod enumeration" Url="html/T_MsgPack_Serialization_EnumSerializationMethod.htm" />
+  <HelpKINode Title="EnumSerializationMethod property" Url="html/P_MsgPack_Serialization_SerializationContext_EnumSerializationMethod.htm" />
   <HelpKINode Title="Equality operator">
     <HelpKINode Title="MessagePackExtendedTypeObject.Equality Operator " Url="html/M_MsgPack_MessagePackExtendedTypeObject_op_Equality.htm" />
     <HelpKINode Title="MessagePackObject.Equality Operator " Url="html/M_MsgPack_MessagePackObject_op_Equality.htm" />
@@ -110,13 +163,17 @@
   <HelpKINode Title="FromDateTime method" Url="html/M_MsgPack_MessagePackConvert_FromDateTime.htm" />
   <HelpKINode Title="FromDateTimeOffset method" Url="html/M_MsgPack_MessagePackConvert_FromDateTimeOffset.htm" />
   <HelpKINode Title="FromObject method" Url="html/M_MsgPack_MessagePackObject_FromObject.htm" />
+  <HelpKINode Title="GenerateAssembly method" Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateAssembly.htm" />
   <HelpKINode Title="GenerateAssemblyFile method" Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateAssemblyFile.htm" />
+  <HelpKINode Title="GenerateCode method" Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateCode.htm" />
   <HelpKINode Title="GeneratorOption property" Url="html/P_MsgPack_Serialization_SerializationContext_GeneratorOption.htm" />
-  <HelpKINode Title="Get method" Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Get.htm" />
-  <HelpKINode Title="Get(Of T) method" Url="html/M_MsgPack_Serialization_SerializerRepository_Get__1.htm" />
-  <HelpKINode Title="Get&lt;T&gt; method" Url="html/M_MsgPack_Serialization_SerializerRepository_Get__1.htm" />
+  <HelpKINode Title="Get method">
+    <HelpKINode Title="DefaultConcreteTypeRepository.Get Method " Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Get.htm" />
+    <HelpKINode Title="MessagePackSerializer.Get Method " Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_Get.htm" />
+    <HelpKINode Title="SerializerRepository.Get Method " Url="html/Overload_MsgPack_Serialization_SerializerRepository_Get.htm" />
+  </HelpKINode>
   <HelpKINode Title="GetBody method" Url="html/M_MsgPack_MessagePackExtendedTypeObject_GetBody.htm" />
-  <HelpKINode Title="GetDefault method" Url="html/M_MsgPack_Serialization_SerializerRepository_GetDefault.htm" />
+  <HelpKINode Title="GetDefault method" Url="html/Overload_MsgPack_Serialization_SerializerRepository_GetDefault.htm" />
   <HelpKINode Title="GetEnumerator method">
     <HelpKINode Title="MessagePackObjectDictionary.GetEnumerator Method " Url="html/M_MsgPack_MessagePackObjectDictionary_GetEnumerator.htm" />
     <HelpKINode Title="MessagePackObjectDictionary.KeySet.GetEnumerator Method " Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_GetEnumerator.htm" />
@@ -129,6 +186,7 @@
     <HelpKINode Title="MessagePackObjectEqualityComparer.GetHashCode Method " Url="html/M_MsgPack_MessagePackObjectEqualityComparer_GetHashCode.htm" />
     <HelpKINode Title="UnpackingResult(T).GetHashCode Method " Url="html/M_MsgPack_UnpackingResult_1_GetHashCode.htm" />
   </HelpKINode>
+  <HelpKINode Title="GetItemsCount method" Url="html/M_MsgPack_Serialization_UnpackHelpers_GetItemsCount.htm" />
   <HelpKINode Title="GetSerializer method" Url="html/Overload_MsgPack_Serialization_SerializationContext_GetSerializer.htm" />
   <HelpKINode Title="Id property" Url="html/P_MsgPack_Serialization_MessagePackMemberAttribute_Id.htm" />
   <HelpKINode Title="IMessagePackSerializer interface">
@@ -203,6 +261,7 @@
   </HelpKINode>
   <HelpKINode Title="IUnpackable.UnpackFromMessage method" Url="html/M_MsgPack_IUnpackable_UnpackFromMessage.htm" />
   <HelpKINode Title="Keys property" Url="html/P_MsgPack_MessagePackObjectDictionary_Keys.htm" />
+  <HelpKINode Title="Language property" Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_Language.htm" />
   <HelpKINode Title="LastReadData property" Url="html/P_MsgPack_Unpacker_LastReadData.htm" />
   <HelpKINode Title="Length property" Url="html/P_MsgPack_UnpackingStream_Length.htm" />
   <HelpKINode Title="Map enumeration member" Url="html/T_MsgPack_Serialization_SerializationMethod.htm" />
@@ -228,6 +287,26 @@
   <HelpKINode Title="MessagePackConvert.FromDateTimeOffset method" Url="html/M_MsgPack_MessagePackConvert_FromDateTimeOffset.htm" />
   <HelpKINode Title="MessagePackConvert.ToDateTime method" Url="html/M_MsgPack_MessagePackConvert_ToDateTime.htm" />
   <HelpKINode Title="MessagePackConvert.ToDateTimeOffset method" Url="html/M_MsgPack_MessagePackConvert_ToDateTimeOffset.htm" />
+  <HelpKINode Title="MessagePackEnumAttribute class">
+    <HelpKINode Title="MessagePackEnumAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackEnumAttribute.htm" />
+    <HelpKINode Title="MessagePackEnumAttribute Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackEnumAttribute.htm" />
+    <HelpKINode Title="about MessagePackEnumAttribute class" Url="html/T_MsgPack_Serialization_MessagePackEnumAttribute.htm" />
+    <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackEnumAttribute.htm" />
+    <HelpKINode Title="constructor" Url="html/M_MsgPack_Serialization_MessagePackEnumAttribute__ctor.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackEnumAttribute.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MessagePackEnumAttribute.MessagePackEnumAttribute constructor" Url="html/M_MsgPack_Serialization_MessagePackEnumAttribute__ctor.htm" />
+  <HelpKINode Title="MessagePackEnumAttribute.SerializationMethod property" Url="html/P_MsgPack_Serialization_MessagePackEnumAttribute_SerializationMethod.htm" />
+  <HelpKINode Title="MessagePackEnumMemberAttribute class">
+    <HelpKINode Title="MessagePackEnumMemberAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm" />
+    <HelpKINode Title="MessagePackEnumMemberAttribute Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm" />
+    <HelpKINode Title="about MessagePackEnumMemberAttribute class" Url="html/T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm" />
+    <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm" />
+    <HelpKINode Title="constructor" Url="html/M_MsgPack_Serialization_MessagePackEnumMemberAttribute__ctor.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MessagePackEnumMemberAttribute.MessagePackEnumMemberAttribute constructor" Url="html/M_MsgPack_Serialization_MessagePackEnumMemberAttribute__ctor.htm" />
+  <HelpKINode Title="MessagePackEnumMemberAttribute.SerializationMethod property" Url="html/P_MsgPack_Serialization_MessagePackEnumMemberAttribute_SerializationMethod.htm" />
   <HelpKINode Title="MessagePackExtendedTypeObject structure">
     <HelpKINode Title="MessagePackExtendedTypeObject Members" Url="html/AllMembers_T_MsgPack_MessagePackExtendedTypeObject.htm" />
     <HelpKINode Title="MessagePackExtendedTypeObject Structure" Url="html/T_MsgPack_MessagePackExtendedTypeObject.htm" />
@@ -259,6 +338,7 @@
   </HelpKINode>
   <HelpKINode Title="MessagePackMemberAttribute.Id property" Url="html/P_MsgPack_Serialization_MessagePackMemberAttribute_Id.htm" />
   <HelpKINode Title="MessagePackMemberAttribute.MessagePackMemberAttribute constructor" Url="html/M_MsgPack_Serialization_MessagePackMemberAttribute__ctor.htm" />
+  <HelpKINode Title="MessagePackMemberAttribute.Name property" Url="html/P_MsgPack_Serialization_MessagePackMemberAttribute_Name.htm" />
   <HelpKINode Title="MessagePackMemberAttribute.NilImplication property" Url="html/P_MsgPack_Serialization_MessagePackMemberAttribute_NilImplication.htm" />
   <HelpKINode Title="MessagePackObject structure">
     <HelpKINode Title="MessagePackObject Members" Url="html/AllMembers_T_MsgPack_MessagePackObject.htm" />
@@ -271,21 +351,21 @@
     <HelpKINode Title="operators and type conversions" Url="html/Operators_T_MsgPack_MessagePackObject.htm" />
     <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_MessagePackObject.htm" />
   </HelpKINode>
-  <HelpKINode Title="MessagePackObject to Boolean conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_5.htm" />
-  <HelpKINode Title="MessagePackObject to Byte conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_4.htm" />
-  <HelpKINode Title="MessagePackObject to Byte() conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_8.htm" />
-  <HelpKINode Title="MessagePackObject to Byte[] conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_8.htm" />
-  <HelpKINode Title="MessagePackObject to Double conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_10.htm" />
-  <HelpKINode Title="MessagePackObject to Int16 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_3.htm" />
-  <HelpKINode Title="MessagePackObject to Int32 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_2.htm" />
-  <HelpKINode Title="MessagePackObject to Int64 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_11.htm" />
-  <HelpKINode Title="MessagePackObject to MessagePackExtendedTypeObject conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_9.htm" />
-  <HelpKINode Title="MessagePackObject to SByte conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_6.htm" />
-  <HelpKINode Title="MessagePackObject to Single conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_13.htm" />
-  <HelpKINode Title="MessagePackObject to String conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_7.htm" />
-  <HelpKINode Title="MessagePackObject to UInt16 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit.htm" />
-  <HelpKINode Title="MessagePackObject to UInt32 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_1.htm" />
-  <HelpKINode Title="MessagePackObject to UInt64 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_12.htm" />
+  <HelpKINode Title="MessagePackObject to Boolean conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_12.htm" />
+  <HelpKINode Title="MessagePackObject to Byte conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_13.htm" />
+  <HelpKINode Title="MessagePackObject to Byte() conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_9.htm" />
+  <HelpKINode Title="MessagePackObject to Byte[] conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_9.htm" />
+  <HelpKINode Title="MessagePackObject to Double conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_11.htm" />
+  <HelpKINode Title="MessagePackObject to Int16 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_5.htm" />
+  <HelpKINode Title="MessagePackObject to Int32 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_3.htm" />
+  <HelpKINode Title="MessagePackObject to Int64 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_1.htm" />
+  <HelpKINode Title="MessagePackObject to MessagePackExtendedTypeObject conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_10.htm" />
+  <HelpKINode Title="MessagePackObject to SByte conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_4.htm" />
+  <HelpKINode Title="MessagePackObject to Single conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_7.htm" />
+  <HelpKINode Title="MessagePackObject to String conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_8.htm" />
+  <HelpKINode Title="MessagePackObject to UInt16 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_6.htm" />
+  <HelpKINode Title="MessagePackObject to UInt32 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit.htm" />
+  <HelpKINode Title="MessagePackObject to UInt64 conversion" Url="html/M_MsgPack_MessagePackObject_op_Explicit_2.htm" />
   <HelpKINode Title="MessagePackObject() to MessagePackObject conversion" Url="html/M_MsgPack_MessagePackObject_op_Implicit_1.htm" />
   <HelpKINode Title="MessagePackObject.AsBinary method" Url="html/M_MsgPack_MessagePackObject_AsBinary.htm" />
   <HelpKINode Title="MessagePackObject.AsBoolean method" Url="html/M_MsgPack_MessagePackObject_AsBoolean.htm" />
@@ -436,9 +516,12 @@
     <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
     <HelpKINode Title="constructor" Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_1__ctor.htm" />
     <HelpKINode Title="methods" Url="html/Methods_T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
   </HelpKINode>
   <HelpKINode Title="MessagePackSerializer(Of T).MessagePackSerializer constructor" Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_1__ctor.htm" />
+  <HelpKINode Title="MessagePackSerializer(Of T).OwnerContext property" Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_OwnerContext.htm" />
   <HelpKINode Title="MessagePackSerializer(Of T).Pack method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_Pack.htm" />
+  <HelpKINode Title="MessagePackSerializer(Of T).PackerCompatibilityOptions property" Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_PackerCompatibilityOptions.htm" />
   <HelpKINode Title="MessagePackSerializer(Of T).PackSingleObject method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackSingleObject.htm" />
   <HelpKINode Title="MessagePackSerializer(Of T).PackTo method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackTo.htm" />
   <HelpKINode Title="MessagePackSerializer(Of T).PackToCore method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackToCore.htm" />
@@ -449,6 +532,7 @@
   <HelpKINode Title="MessagePackSerializer(Of T).UnpackTo method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackTo.htm" />
   <HelpKINode Title="MessagePackSerializer(Of T).UnpackToCore method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackToCore.htm" />
   <HelpKINode Title="MessagePackSerializer.Create method" Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_Create.htm" />
+  <HelpKINode Title="MessagePackSerializer.Get method" Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_Get.htm" />
   <HelpKINode Title="MessagePackSerializer&lt;T&gt; class">
     <HelpKINode Title="MessagePackSerializer(T) Class" Url="html/T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
     <HelpKINode Title="MessagePackSerializer(T) Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
@@ -456,9 +540,12 @@
     <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
     <HelpKINode Title="constructor" Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_1__ctor.htm" />
     <HelpKINode Title="methods" Url="html/Methods_T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
   </HelpKINode>
   <HelpKINode Title="MessagePackSerializer&lt;T&gt;.MessagePackSerializer constructor" Url="html/Overload_MsgPack_Serialization_MessagePackSerializer_1__ctor.htm" />
+  <HelpKINode Title="MessagePackSerializer&lt;T&gt;.OwnerContext property" Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_OwnerContext.htm" />
   <HelpKINode Title="MessagePackSerializer&lt;T&gt;.Pack method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_Pack.htm" />
+  <HelpKINode Title="MessagePackSerializer&lt;T&gt;.PackerCompatibilityOptions property" Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_PackerCompatibilityOptions.htm" />
   <HelpKINode Title="MessagePackSerializer&lt;T&gt;.PackSingleObject method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackSingleObject.htm" />
   <HelpKINode Title="MessagePackSerializer&lt;T&gt;.PackTo method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackTo.htm" />
   <HelpKINode Title="MessagePackSerializer&lt;T&gt;.PackToCore method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackToCore.htm" />
@@ -468,6 +555,15 @@
   <HelpKINode Title="MessagePackSerializer&lt;T&gt;.UnpackSingleObject method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackSingleObject.htm" />
   <HelpKINode Title="MessagePackSerializer&lt;T&gt;.UnpackTo method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackTo.htm" />
   <HelpKINode Title="MessagePackSerializer&lt;T&gt;.UnpackToCore method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackToCore.htm" />
+  <HelpKINode Title="MessagePackSerializerExtensions class">
+    <HelpKINode Title="MessagePackSerializerExtensions Class" Url="html/T_MsgPack_Serialization_MessagePackSerializerExtensions.htm" />
+    <HelpKINode Title="MessagePackSerializerExtensions Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializerExtensions.htm" />
+    <HelpKINode Title="about MessagePackSerializerExtensions class" Url="html/T_MsgPack_Serialization_MessagePackSerializerExtensions.htm" />
+    <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializerExtensions.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_MsgPack_Serialization_MessagePackSerializerExtensions.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MessagePackSerializerExtensions.Pack method" Url="html/Overload_MsgPack_Serialization_MessagePackSerializerExtensions_Pack.htm" />
+  <HelpKINode Title="MessagePackSerializerExtensions.Unpack method" Url="html/M_MsgPack_Serialization_MessagePackSerializerExtensions_Unpack.htm" />
   <HelpKINode Title="MessageTypeException class">
     <HelpKINode Title="MessageTypeException Class" Url="html/T_MsgPack_MessageTypeException.htm" />
     <HelpKINode Title="MessageTypeException Members" Url="html/AllMembers_T_MsgPack_MessageTypeException.htm" />
@@ -561,6 +657,20 @@
     <HelpKINode Title="DefaultConcreteTypeRepository Class" Url="html/T_MsgPack_Serialization_DefaultConcreteTypeRepository.htm" />
     <HelpKINode Title="DefaultConcreteTypeRepository Members" Url="html/AllMembers_T_MsgPack_Serialization_DefaultConcreteTypeRepository.htm" />
   </HelpKINode>
+  <HelpKINode Title="MsgPack.Serialization.EnumMemberSerializationMethod enumeration" Url="html/T_MsgPack_Serialization_EnumMemberSerializationMethod.htm" />
+  <HelpKINode Title="MsgPack.Serialization.EnumMessagePackSerializer(Of TEnum) class">
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum) Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum) Members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MsgPack.Serialization.EnumMessagePackSerializer&lt;TEnum&gt; class">
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum) Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum) Members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializer_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MsgPack.Serialization.EnumMessagePackSerializerHelpers class">
+    <HelpKINode Title="EnumMessagePackSerializerHelpers Class" Url="html/T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm" />
+    <HelpKINode Title="EnumMessagePackSerializerHelpers Members" Url="html/AllMembers_T_MsgPack_Serialization_EnumMessagePackSerializerHelpers.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MsgPack.Serialization.EnumSerializationMethod enumeration" Url="html/T_MsgPack_Serialization_EnumSerializationMethod.htm" />
   <HelpKINode Title="MsgPack.Serialization.IMessagePackSerializer interface">
     <HelpKINode Title="IMessagePackSerializer Interface" Url="html/T_MsgPack_Serialization_IMessagePackSerializer.htm" />
     <HelpKINode Title="IMessagePackSerializer Members" Url="html/AllMembers_T_MsgPack_Serialization_IMessagePackSerializer.htm" />
@@ -568,6 +678,14 @@
   <HelpKINode Title="MsgPack.Serialization.IMessagePackSingleObjectSerializer interface">
     <HelpKINode Title="IMessagePackSingleObjectSerializer Interface" Url="html/T_MsgPack_Serialization_IMessagePackSingleObjectSerializer.htm" />
     <HelpKINode Title="IMessagePackSingleObjectSerializer Members" Url="html/AllMembers_T_MsgPack_Serialization_IMessagePackSingleObjectSerializer.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MsgPack.Serialization.MessagePackEnumAttribute class">
+    <HelpKINode Title="MessagePackEnumAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackEnumAttribute.htm" />
+    <HelpKINode Title="MessagePackEnumAttribute Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackEnumAttribute.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MsgPack.Serialization.MessagePackEnumMemberAttribute class">
+    <HelpKINode Title="MessagePackEnumMemberAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm" />
+    <HelpKINode Title="MessagePackEnumMemberAttribute Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackEnumMemberAttribute.htm" />
   </HelpKINode>
   <HelpKINode Title="MsgPack.Serialization.MessagePackMemberAttribute class">
     <HelpKINode Title="MessagePackMemberAttribute Class" Url="html/T_MsgPack_Serialization_MessagePackMemberAttribute.htm" />
@@ -585,6 +703,10 @@
     <HelpKINode Title="MessagePackSerializer(T) Class" Url="html/T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
     <HelpKINode Title="MessagePackSerializer(T) Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializer_1.htm" />
   </HelpKINode>
+  <HelpKINode Title="MsgPack.Serialization.MessagePackSerializerExtensions class">
+    <HelpKINode Title="MessagePackSerializerExtensions Class" Url="html/T_MsgPack_Serialization_MessagePackSerializerExtensions.htm" />
+    <HelpKINode Title="MessagePackSerializerExtensions Members" Url="html/AllMembers_T_MsgPack_Serialization_MessagePackSerializerExtensions.htm" />
+  </HelpKINode>
   <HelpKINode Title="MsgPack.Serialization.NilImplication enumeration" Url="html/T_MsgPack_Serialization_NilImplication.htm" />
   <HelpKINode Title="MsgPack.Serialization.SerializationCompatibilityOptions class">
     <HelpKINode Title="SerializationCompatibilityOptions Class" Url="html/T_MsgPack_Serialization_SerializationCompatibilityOptions.htm" />
@@ -600,6 +722,14 @@
   </HelpKINode>
   <HelpKINode Title="MsgPack.Serialization.SerializationMethod enumeration" Url="html/T_MsgPack_Serialization_SerializationMethod.htm" />
   <HelpKINode Title="MsgPack.Serialization.SerializationMethodGeneratorOption enumeration" Url="html/T_MsgPack_Serialization_SerializationMethodGeneratorOption.htm" />
+  <HelpKINode Title="MsgPack.Serialization.SerializerAssemblyGenerationConfiguration class">
+    <HelpKINode Title="SerializerAssemblyGenerationConfiguration Class" Url="html/T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm" />
+    <HelpKINode Title="SerializerAssemblyGenerationConfiguration Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MsgPack.Serialization.SerializerCodeGenerationConfiguration class">
+    <HelpKINode Title="SerializerCodeGenerationConfiguration Class" Url="html/T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm" />
+    <HelpKINode Title="SerializerCodeGenerationConfiguration Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm" />
+  </HelpKINode>
   <HelpKINode Title="MsgPack.Serialization.SerializerGenerator class">
     <HelpKINode Title="SerializerGenerator Class" Url="html/T_MsgPack_Serialization_SerializerGenerator.htm" />
     <HelpKINode Title="SerializerGenerator Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerGenerator.htm" />
@@ -644,11 +774,14 @@
     <HelpKINode Title="UnpackingStreamReader Class" Url="html/T_MsgPack_UnpackingStreamReader.htm" />
     <HelpKINode Title="UnpackingStreamReader Members" Url="html/AllMembers_T_MsgPack_UnpackingStreamReader.htm" />
   </HelpKINode>
+  <HelpKINode Title="Name property" Url="html/P_MsgPack_Serialization_MessagePackMemberAttribute_Name.htm" />
+  <HelpKINode Title="Namespace property" Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_Namespace.htm" />
   <HelpKINode Title="NewFailedToDeserializeMember method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewFailedToDeserializeMember.htm" />
   <HelpKINode Title="NewIsIncorrectStream method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewIsIncorrectStream.htm" />
   <HelpKINode Title="NewIsNotArrayHeader method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewIsNotArrayHeader.htm" />
   <HelpKINode Title="NewIsNotMapHeader method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewIsNotMapHeader.htm" />
   <HelpKINode Title="NewIsTooLargeCollection method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewIsTooLargeCollection.htm" />
+  <HelpKINode Title="NewMissingAddMethod method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewMissingAddMethod.htm" />
   <HelpKINode Title="NewMissingItem method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewMissingItem.htm" />
   <HelpKINode Title="NewMissingProperty method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewMissingProperty.htm" />
   <HelpKINode Title="NewNotSupportedBecauseCannotInstanciateAbstractType method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewNotSupportedBecauseCannotInstanciateAbstractType.htm" />
@@ -667,18 +800,27 @@
   <HelpKINode Title="None enumeration member" Url="html/T_MsgPack_PackerCompatibilityOptions.htm" />
   <HelpKINode Title="Null enumeration member" Url="html/T_MsgPack_Serialization_NilImplication.htm" />
   <HelpKINode Title="OneBoundDataMemberOrder property" Url="html/P_MsgPack_Serialization_SerializationCompatibilityOptions_OneBoundDataMemberOrder.htm" />
+  <HelpKINode Title="OutputDirectory property">
+    <HelpKINode Title="SerializerAssemblyGenerationConfiguration.OutputDirectory Property " Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_OutputDirectory.htm" />
+    <HelpKINode Title="SerializerCodeGenerationConfiguration.OutputDirectory Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_OutputDirectory.htm" />
+  </HelpKINode>
   <HelpKINode Title="Overlaps method" Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_Overlaps.htm" />
+  <HelpKINode Title="OwnerContext property" Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_OwnerContext.htm" />
   <HelpKINode Title="Pack method">
     <HelpKINode Title="MessagePackSerializer(T).Pack Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_Pack.htm" />
+    <HelpKINode Title="MessagePackSerializerExtensions.Pack Method " Url="html/Overload_MsgPack_Serialization_MessagePackSerializerExtensions_Pack.htm" />
     <HelpKINode Title="Packer.Pack Method " Url="html/Overload_MsgPack_Packer_Pack.htm" />
     <HelpKINode Title="PackerUnpackerExtensions.Pack Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_Pack.htm" />
   </HelpKINode>
+  <HelpKINode Title="PackArray method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackArray.htm" />
   <HelpKINode Title="PackArrayHeader method" Url="html/Overload_MsgPack_Packer_PackArrayHeader.htm" />
   <HelpKINode Title="PackArrayHeaderCore method" Url="html/M_MsgPack_Packer_PackArrayHeaderCore.htm" />
   <HelpKINode Title="PackBinary method" Url="html/Overload_MsgPack_Packer_PackBinary.htm" />
   <HelpKINode Title="PackBinaryAsRaw enumeration member" Url="html/T_MsgPack_PackerCompatibilityOptions.htm" />
   <HelpKINode Title="PackBinaryHeader method" Url="html/M_MsgPack_Packer_PackBinaryHeader.htm" />
   <HelpKINode Title="PackBinaryHeaderCore method" Url="html/M_MsgPack_Packer_PackBinaryHeaderCore.htm" />
+  <HelpKINode Title="PackCollection method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackCollection.htm" />
+  <HelpKINode Title="PackDictionary method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackDictionary.htm" />
   <HelpKINode Title="Packer class">
     <HelpKINode Title="Packer Class" Url="html/T_MsgPack_Packer.htm" />
     <HelpKINode Title="Packer Members" Url="html/AllMembers_T_MsgPack_Packer.htm" />
@@ -726,7 +868,10 @@
   <HelpKINode Title="Packer.WriteByte method" Url="html/M_MsgPack_Packer_WriteByte.htm" />
   <HelpKINode Title="Packer.WriteBytes method" Url="html/Overload_MsgPack_Packer_WriteBytes.htm" />
   <HelpKINode Title="PackerCompatibilityOptions enumeration" Url="html/T_MsgPack_PackerCompatibilityOptions.htm" />
-  <HelpKINode Title="PackerCompatibilityOptions property" Url="html/P_MsgPack_Serialization_SerializationCompatibilityOptions_PackerCompatibilityOptions.htm" />
+  <HelpKINode Title="PackerCompatibilityOptions property">
+    <HelpKINode Title="MessagePackSerializer(T).PackerCompatibilityOptions Property " Url="html/P_MsgPack_Serialization_MessagePackSerializer_1_PackerCompatibilityOptions.htm" />
+    <HelpKINode Title="SerializationCompatibilityOptions.PackerCompatibilityOptions Property " Url="html/P_MsgPack_Serialization_SerializationCompatibilityOptions_PackerCompatibilityOptions.htm" />
+  </HelpKINode>
   <HelpKINode Title="PackerUnpackerExtensions class">
     <HelpKINode Title="PackerUnpackerExtensions Class" Url="html/T_MsgPack_PackerUnpackerExtensions.htm" />
     <HelpKINode Title="PackerUnpackerExtensions Members" Url="html/AllMembers_T_MsgPack_PackerUnpackerExtensions.htm" />
@@ -735,6 +880,10 @@
     <HelpKINode Title="methods" Url="html/Methods_T_MsgPack_PackerUnpackerExtensions.htm" />
   </HelpKINode>
   <HelpKINode Title="PackerUnpackerExtensions.Pack method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_Pack.htm" />
+  <HelpKINode Title="PackerUnpackerExtensions.PackArray method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackArray.htm" />
+  <HelpKINode Title="PackerUnpackerExtensions.PackCollection method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackCollection.htm" />
+  <HelpKINode Title="PackerUnpackerExtensions.PackDictionary method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackDictionary.htm" />
+  <HelpKINode Title="PackerUnpackerExtensions.PackMap method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackMap.htm" />
   <HelpKINode Title="PackerUnpackerExtensions.PackObject method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackObject.htm" />
   <HelpKINode Title="PackerUnpackerExtensions.Unpack method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_Unpack.htm" />
   <HelpKINode Title="PackExtendedTypeValue method" Url="html/Overload_MsgPack_Packer_PackExtendedTypeValue.htm" />
@@ -748,6 +897,7 @@
   </HelpKINode>
   <HelpKINode Title="PackingOptions.PackingOptions constructor" Url="html/M_MsgPack_PackingOptions__ctor.htm" />
   <HelpKINode Title="PackingOptions.StringEncoding property" Url="html/P_MsgPack_PackingOptions_StringEncoding.htm" />
+  <HelpKINode Title="PackMap method" Url="html/Overload_MsgPack_PackerUnpackerExtensions_PackMap.htm" />
   <HelpKINode Title="PackMapHeader method" Url="html/Overload_MsgPack_Packer_PackMapHeader.htm" />
   <HelpKINode Title="PackMapHeaderCore method" Url="html/M_MsgPack_Packer_PackMapHeaderCore.htm" />
   <HelpKINode Title="PackNull method" Url="html/M_MsgPack_Packer_PackNull.htm" />
@@ -768,11 +918,15 @@
     <HelpKINode Title="IMessagePackSerializer.PackTo Method " Url="html/M_MsgPack_Serialization_IMessagePackSerializer_PackTo.htm" />
     <HelpKINode Title="MessagePackSerializer(T).PackTo Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackTo.htm" />
   </HelpKINode>
-  <HelpKINode Title="PackToCore method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackToCore.htm" />
+  <HelpKINode Title="PackToCore method">
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum).PackToCore Method " Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_PackToCore.htm" />
+    <HelpKINode Title="MessagePackSerializer(T).PackToCore Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_PackToCore.htm" />
+  </HelpKINode>
   <HelpKINode Title="PackToMessage method">
     <HelpKINode Title="IPackable.PackToMessage Method " Url="html/M_MsgPack_IPackable_PackToMessage.htm" />
     <HelpKINode Title="MessagePackObject.PackToMessage Method " Url="html/M_MsgPack_MessagePackObject_PackToMessage.htm" />
   </HelpKINode>
+  <HelpKINode Title="PackUnderlyingValueTo method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_PackUnderlyingValueTo.htm" />
   <HelpKINode Title="Position property" Url="html/P_MsgPack_Packer_Position.htm" />
   <HelpKINode Title="Prohibit enumeration member" Url="html/T_MsgPack_Serialization_NilImplication.htm" />
   <HelpKINode Title="ProhibitExtendedTypeObjects enumeration member" Url="html/T_MsgPack_PackerCompatibilityOptions.htm" />
@@ -818,6 +972,8 @@
   <HelpKINode Title="Register method" Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Register.htm" />
   <HelpKINode Title="Register(Of T) method" Url="html/M_MsgPack_Serialization_SerializerRepository_Register__1.htm" />
   <HelpKINode Title="Register&lt;T&gt; method" Url="html/M_MsgPack_Serialization_SerializerRepository_Register__1.htm" />
+  <HelpKINode Title="RegisterOverride(Of T) method" Url="html/M_MsgPack_Serialization_SerializerRepository_RegisterOverride__1.htm" />
+  <HelpKINode Title="RegisterOverride&lt;T&gt; method" Url="html/M_MsgPack_Serialization_SerializerRepository_RegisterOverride__1.htm" />
   <HelpKINode Title="Remove method" Url="html/M_MsgPack_MessagePackObjectDictionary_Remove.htm" />
   <HelpKINode Title="RootType property" Url="html/P_MsgPack_Serialization_SerializerGenerator_RootType.htm" />
   <HelpKINode Title="SByte to MessagePackObject conversion" Url="html/M_MsgPack_MessagePackObject_op_Implicit_9.htm" />
@@ -843,6 +999,7 @@
   <HelpKINode Title="SerializationContext.CompatibilityOptions property" Url="html/P_MsgPack_Serialization_SerializationContext_CompatibilityOptions.htm" />
   <HelpKINode Title="SerializationContext.Default property" Url="html/P_MsgPack_Serialization_SerializationContext_Default.htm" />
   <HelpKINode Title="SerializationContext.DefaultCollectionTypes property" Url="html/P_MsgPack_Serialization_SerializationContext_DefaultCollectionTypes.htm" />
+  <HelpKINode Title="SerializationContext.EnumSerializationMethod property" Url="html/P_MsgPack_Serialization_SerializationContext_EnumSerializationMethod.htm" />
   <HelpKINode Title="SerializationContext.GeneratorOption property" Url="html/P_MsgPack_Serialization_SerializationContext_GeneratorOption.htm" />
   <HelpKINode Title="SerializationContext.GetSerializer method" Url="html/Overload_MsgPack_Serialization_SerializationContext_GetSerializer.htm" />
   <HelpKINode Title="SerializationContext.SerializationContext constructor" Url="html/Overload_MsgPack_Serialization_SerializationContext__ctor.htm" />
@@ -860,6 +1017,7 @@
   <HelpKINode Title="SerializationExceptions.NewIsNotArrayHeader method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewIsNotArrayHeader.htm" />
   <HelpKINode Title="SerializationExceptions.NewIsNotMapHeader method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewIsNotMapHeader.htm" />
   <HelpKINode Title="SerializationExceptions.NewIsTooLargeCollection method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewIsTooLargeCollection.htm" />
+  <HelpKINode Title="SerializationExceptions.NewMissingAddMethod method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewMissingAddMethod.htm" />
   <HelpKINode Title="SerializationExceptions.NewMissingItem method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewMissingItem.htm" />
   <HelpKINode Title="SerializationExceptions.NewMissingProperty method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewMissingProperty.htm" />
   <HelpKINode Title="SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewNotSupportedBecauseCannotInstanciateAbstractType.htm" />
@@ -873,8 +1031,40 @@
   <HelpKINode Title="SerializationExceptions.NewUnexpectedEndOfStream method" Url="html/M_MsgPack_Serialization_SerializationExceptions_NewUnexpectedEndOfStream.htm" />
   <HelpKINode Title="SerializationExceptions.NewValueTypeCannotBeNull method" Url="html/Overload_MsgPack_Serialization_SerializationExceptions_NewValueTypeCannotBeNull.htm" />
   <HelpKINode Title="SerializationMethod enumeration" Url="html/T_MsgPack_Serialization_SerializationMethod.htm" />
-  <HelpKINode Title="SerializationMethod property" Url="html/P_MsgPack_Serialization_SerializationContext_SerializationMethod.htm" />
+  <HelpKINode Title="SerializationMethod property">
+    <HelpKINode Title="MessagePackEnumAttribute.SerializationMethod Property " Url="html/P_MsgPack_Serialization_MessagePackEnumAttribute_SerializationMethod.htm" />
+    <HelpKINode Title="MessagePackEnumMemberAttribute.SerializationMethod Property " Url="html/P_MsgPack_Serialization_MessagePackEnumMemberAttribute_SerializationMethod.htm" />
+    <HelpKINode Title="SerializationContext.SerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializationContext_SerializationMethod.htm" />
+    <HelpKINode Title="SerializerAssemblyGenerationConfiguration.SerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_SerializationMethod.htm" />
+    <HelpKINode Title="SerializerCodeGenerationConfiguration.SerializationMethod Property " Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_SerializationMethod.htm" />
+  </HelpKINode>
   <HelpKINode Title="SerializationMethodGeneratorOption enumeration" Url="html/T_MsgPack_Serialization_SerializationMethodGeneratorOption.htm" />
+  <HelpKINode Title="SerializerAssemblyGenerationConfiguration class">
+    <HelpKINode Title="SerializerAssemblyGenerationConfiguration Class" Url="html/T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm" />
+    <HelpKINode Title="SerializerAssemblyGenerationConfiguration Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm" />
+    <HelpKINode Title="about SerializerAssemblyGenerationConfiguration class" Url="html/T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm" />
+    <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm" />
+    <HelpKINode Title="constructor" Url="html/M_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration__ctor.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SerializerAssemblyGenerationConfiguration.AssemblyName property" Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_AssemblyName.htm" />
+  <HelpKINode Title="SerializerAssemblyGenerationConfiguration.OutputDirectory property" Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_OutputDirectory.htm" />
+  <HelpKINode Title="SerializerAssemblyGenerationConfiguration.SerializationMethod property" Url="html/P_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration_SerializationMethod.htm" />
+  <HelpKINode Title="SerializerAssemblyGenerationConfiguration.SerializerAssemblyGenerationConfiguration constructor" Url="html/M_MsgPack_Serialization_SerializerAssemblyGenerationConfiguration__ctor.htm" />
+  <HelpKINode Title="SerializerCodeGenerationConfiguration class">
+    <HelpKINode Title="SerializerCodeGenerationConfiguration Class" Url="html/T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm" />
+    <HelpKINode Title="SerializerCodeGenerationConfiguration Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm" />
+    <HelpKINode Title="about SerializerCodeGenerationConfiguration class" Url="html/T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm" />
+    <HelpKINode Title="all members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm" />
+    <HelpKINode Title="constructor" Url="html/M_MsgPack_Serialization_SerializerCodeGenerationConfiguration__ctor.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_Serialization_SerializerCodeGenerationConfiguration.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SerializerCodeGenerationConfiguration.CodeIndentString property" Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_CodeIndentString.htm" />
+  <HelpKINode Title="SerializerCodeGenerationConfiguration.Language property" Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_Language.htm" />
+  <HelpKINode Title="SerializerCodeGenerationConfiguration.Namespace property" Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_Namespace.htm" />
+  <HelpKINode Title="SerializerCodeGenerationConfiguration.OutputDirectory property" Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_OutputDirectory.htm" />
+  <HelpKINode Title="SerializerCodeGenerationConfiguration.SerializationMethod property" Url="html/P_MsgPack_Serialization_SerializerCodeGenerationConfiguration_SerializationMethod.htm" />
+  <HelpKINode Title="SerializerCodeGenerationConfiguration.SerializerCodeGenerationConfiguration constructor" Url="html/M_MsgPack_Serialization_SerializerCodeGenerationConfiguration__ctor.htm" />
   <HelpKINode Title="SerializerGenerator class">
     <HelpKINode Title="SerializerGenerator Class" Url="html/T_MsgPack_Serialization_SerializerGenerator.htm" />
     <HelpKINode Title="SerializerGenerator Members" Url="html/AllMembers_T_MsgPack_Serialization_SerializerGenerator.htm" />
@@ -885,7 +1075,9 @@
     <HelpKINode Title="properties" Url="html/Properties_T_MsgPack_Serialization_SerializerGenerator.htm" />
   </HelpKINode>
   <HelpKINode Title="SerializerGenerator.AssemblyName property" Url="html/P_MsgPack_Serialization_SerializerGenerator_AssemblyName.htm" />
+  <HelpKINode Title="SerializerGenerator.GenerateAssembly method" Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateAssembly.htm" />
   <HelpKINode Title="SerializerGenerator.GenerateAssemblyFile method" Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateAssemblyFile.htm" />
+  <HelpKINode Title="SerializerGenerator.GenerateCode method" Url="html/Overload_MsgPack_Serialization_SerializerGenerator_GenerateCode.htm" />
   <HelpKINode Title="SerializerGenerator.Method property" Url="html/P_MsgPack_Serialization_SerializerGenerator_Method.htm" />
   <HelpKINode Title="SerializerGenerator.RootType property" Url="html/P_MsgPack_Serialization_SerializerGenerator_RootType.htm" />
   <HelpKINode Title="SerializerGenerator.SerializerGenerator constructor" Url="html/Overload_MsgPack_Serialization_SerializerGenerator__ctor.htm" />
@@ -901,11 +1093,12 @@
   </HelpKINode>
   <HelpKINode Title="SerializerRepository.Default property" Url="html/P_MsgPack_Serialization_SerializerRepository_Default.htm" />
   <HelpKINode Title="SerializerRepository.Dispose method" Url="html/M_MsgPack_Serialization_SerializerRepository_Dispose.htm" />
-  <HelpKINode Title="SerializerRepository.Get(Of T) method" Url="html/M_MsgPack_Serialization_SerializerRepository_Get__1.htm" />
-  <HelpKINode Title="SerializerRepository.Get&lt;T&gt; method" Url="html/M_MsgPack_Serialization_SerializerRepository_Get__1.htm" />
-  <HelpKINode Title="SerializerRepository.GetDefault method" Url="html/M_MsgPack_Serialization_SerializerRepository_GetDefault.htm" />
+  <HelpKINode Title="SerializerRepository.Get method" Url="html/Overload_MsgPack_Serialization_SerializerRepository_Get.htm" />
+  <HelpKINode Title="SerializerRepository.GetDefault method" Url="html/Overload_MsgPack_Serialization_SerializerRepository_GetDefault.htm" />
   <HelpKINode Title="SerializerRepository.Register(Of T) method" Url="html/M_MsgPack_Serialization_SerializerRepository_Register__1.htm" />
   <HelpKINode Title="SerializerRepository.Register&lt;T&gt; method" Url="html/M_MsgPack_Serialization_SerializerRepository_Register__1.htm" />
+  <HelpKINode Title="SerializerRepository.RegisterOverride(Of T) method" Url="html/M_MsgPack_Serialization_SerializerRepository_RegisterOverride__1.htm" />
+  <HelpKINode Title="SerializerRepository.RegisterOverride&lt;T&gt; method" Url="html/M_MsgPack_Serialization_SerializerRepository_RegisterOverride__1.htm" />
   <HelpKINode Title="SerializerRepository.SerializerRepository constructor" Url="html/Overload_MsgPack_Serialization_SerializerRepository__ctor.htm" />
   <HelpKINode Title="Serializers property" Url="html/P_MsgPack_Serialization_SerializationContext_Serializers.htm" />
   <HelpKINode Title="SetEquals method" Url="html/M_MsgPack_MessagePackObjectDictionary_KeySet_SetEquals.htm" />
@@ -951,6 +1144,7 @@
   <HelpKINode Title="Unpack method">
     <HelpKINode Title="MessagePackExtendedTypeObject.Unpack Method " Url="html/M_MsgPack_MessagePackExtendedTypeObject_Unpack.htm" />
     <HelpKINode Title="MessagePackSerializer(T).Unpack Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_Unpack.htm" />
+    <HelpKINode Title="MessagePackSerializerExtensions.Unpack Method " Url="html/M_MsgPack_Serialization_MessagePackSerializerExtensions_Unpack.htm" />
     <HelpKINode Title="PackerUnpackerExtensions.Unpack Method " Url="html/Overload_MsgPack_PackerUnpackerExtensions_Unpack.htm" />
   </HelpKINode>
   <HelpKINode Title="UnpackArray method" Url="html/Overload_MsgPack_Unpacking_UnpackArray.htm" />
@@ -958,14 +1152,18 @@
   <HelpKINode Title="UnpackArrayTo(Of T) method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackArrayTo__1.htm" />
   <HelpKINode Title="UnpackArrayTo&lt;T&gt; method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackArrayTo__1.htm" />
   <HelpKINode Title="UnpackBinary method" Url="html/Overload_MsgPack_Unpacking_UnpackBinary.htm" />
+  <HelpKINode Title="UnpackBinaryValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackBinaryValue.htm" />
   <HelpKINode Title="UnpackBoolean method" Url="html/Overload_MsgPack_Unpacking_UnpackBoolean.htm" />
+  <HelpKINode Title="UnpackBooleanValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackBooleanValue.htm" />
   <HelpKINode Title="UnpackByte method" Url="html/Overload_MsgPack_Unpacking_UnpackByte.htm" />
   <HelpKINode Title="UnpackByteStream method" Url="html/M_MsgPack_Unpacking_UnpackByteStream.htm" />
+  <HelpKINode Title="UnpackByteValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackByteValue.htm" />
   <HelpKINode Title="UnpackCharStream method" Url="html/Overload_MsgPack_Unpacking_UnpackCharStream.htm" />
   <HelpKINode Title="UnpackCollectionTo method" Url="html/Overload_MsgPack_Serialization_UnpackHelpers_UnpackCollectionTo.htm" />
   <HelpKINode Title="UnpackDictionary method" Url="html/Overload_MsgPack_Unpacking_UnpackDictionary.htm" />
   <HelpKINode Title="UnpackDictionaryCount method" Url="html/Overload_MsgPack_Unpacking_UnpackDictionaryCount.htm" />
   <HelpKINode Title="UnpackDouble method" Url="html/Overload_MsgPack_Unpacking_UnpackDouble.htm" />
+  <HelpKINode Title="UnpackDoubleValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackDoubleValue.htm" />
   <HelpKINode Title="Unpacker class">
     <HelpKINode Title="Unpacker Class" Url="html/T_MsgPack_Unpacker.htm" />
     <HelpKINode Title="Unpacker Members" Url="html/AllMembers_T_MsgPack_Unpacker.htm" />
@@ -1039,8 +1237,12 @@
     <HelpKINode Title="IMessagePackSerializer.UnpackFrom Method " Url="html/M_MsgPack_Serialization_IMessagePackSerializer_UnpackFrom.htm" />
     <HelpKINode Title="MessagePackSerializer(T).UnpackFrom Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackFrom.htm" />
   </HelpKINode>
-  <HelpKINode Title="UnpackFromCore method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackFromCore.htm" />
+  <HelpKINode Title="UnpackFromCore method">
+    <HelpKINode Title="EnumMessagePackSerializer(TEnum).UnpackFromCore Method " Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_UnpackFromCore.htm" />
+    <HelpKINode Title="MessagePackSerializer(T).UnpackFromCore Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackFromCore.htm" />
+  </HelpKINode>
   <HelpKINode Title="UnpackFromMessage method" Url="html/M_MsgPack_IUnpackable_UnpackFromMessage.htm" />
+  <HelpKINode Title="UnpackFromUnderlyingValue method" Url="html/M_MsgPack_Serialization_EnumMessagePackSerializer_1_UnpackFromUnderlyingValue.htm" />
   <HelpKINode Title="UnpackHelpers class">
     <HelpKINode Title="UnpackHelpers Class" Url="html/T_MsgPack_Serialization_UnpackHelpers.htm" />
     <HelpKINode Title="UnpackHelpers Members" Url="html/AllMembers_T_MsgPack_Serialization_UnpackHelpers.htm" />
@@ -1050,12 +1252,37 @@
   </HelpKINode>
   <HelpKINode Title="UnpackHelpers.ConvertWithEnsuringNotNull(Of T) method" Url="html/M_MsgPack_Serialization_UnpackHelpers_ConvertWithEnsuringNotNull__1.htm" />
   <HelpKINode Title="UnpackHelpers.ConvertWithEnsuringNotNull&lt;T&gt; method" Url="html/M_MsgPack_Serialization_UnpackHelpers_ConvertWithEnsuringNotNull__1.htm" />
+  <HelpKINode Title="UnpackHelpers.GetItemsCount method" Url="html/M_MsgPack_Serialization_UnpackHelpers_GetItemsCount.htm" />
   <HelpKINode Title="UnpackHelpers.InvokeUnpackFrom(Of T) method" Url="html/M_MsgPack_Serialization_UnpackHelpers_InvokeUnpackFrom__1.htm" />
   <HelpKINode Title="UnpackHelpers.InvokeUnpackFrom&lt;T&gt; method" Url="html/M_MsgPack_Serialization_UnpackHelpers_InvokeUnpackFrom__1.htm" />
   <HelpKINode Title="UnpackHelpers.UnpackArrayTo(Of T) method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackArrayTo__1.htm" />
   <HelpKINode Title="UnpackHelpers.UnpackArrayTo&lt;T&gt; method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackArrayTo__1.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackBinaryValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackBinaryValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackBooleanValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackBooleanValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackByteValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackByteValue.htm" />
   <HelpKINode Title="UnpackHelpers.UnpackCollectionTo method" Url="html/Overload_MsgPack_Serialization_UnpackHelpers_UnpackCollectionTo.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackDoubleValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackDoubleValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackInt16Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackInt16Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackInt32Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackInt32Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackInt64Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackInt64Value.htm" />
   <HelpKINode Title="UnpackHelpers.UnpackMapTo method" Url="html/Overload_MsgPack_Serialization_UnpackHelpers_UnpackMapTo.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableBooleanValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableBooleanValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableByteValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableByteValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableDoubleValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableDoubleValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableInt16Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableInt16Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableInt32Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableInt32Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableInt64Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableInt64Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableSByteValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableSByteValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableSingleValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableSingleValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableUInt16Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableUInt16Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableUInt32Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableUInt32Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackNullableUInt64Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableUInt64Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackSByteValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackSByteValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackSingleValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackSingleValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackStringValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackStringValue.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackUInt16Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackUInt16Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackUInt32Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackUInt32Value.htm" />
+  <HelpKINode Title="UnpackHelpers.UnpackUInt64Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackUInt64Value.htm" />
   <HelpKINode Title="Unpacking class">
     <HelpKINode Title="Unpacking Class" Url="html/T_MsgPack_Unpacking.htm" />
     <HelpKINode Title="Unpacking Members" Url="html/AllMembers_T_MsgPack_Unpacking.htm" />
@@ -1142,18 +1369,35 @@
   </HelpKINode>
   <HelpKINode Title="UnpackingStreamReader.ByteLength property" Url="html/P_MsgPack_UnpackingStreamReader_ByteLength.htm" />
   <HelpKINode Title="UnpackInt16 method" Url="html/Overload_MsgPack_Unpacking_UnpackInt16.htm" />
+  <HelpKINode Title="UnpackInt16Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackInt16Value.htm" />
   <HelpKINode Title="UnpackInt32 method" Url="html/Overload_MsgPack_Unpacking_UnpackInt32.htm" />
+  <HelpKINode Title="UnpackInt32Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackInt32Value.htm" />
   <HelpKINode Title="UnpackInt64 method" Url="html/Overload_MsgPack_Unpacking_UnpackInt64.htm" />
+  <HelpKINode Title="UnpackInt64Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackInt64Value.htm" />
   <HelpKINode Title="UnpackMapTo method" Url="html/Overload_MsgPack_Serialization_UnpackHelpers_UnpackMapTo.htm" />
   <HelpKINode Title="UnpackNull method" Url="html/Overload_MsgPack_Unpacking_UnpackNull.htm" />
+  <HelpKINode Title="UnpackNullableBooleanValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableBooleanValue.htm" />
+  <HelpKINode Title="UnpackNullableByteValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableByteValue.htm" />
+  <HelpKINode Title="UnpackNullableDoubleValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableDoubleValue.htm" />
+  <HelpKINode Title="UnpackNullableInt16Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableInt16Value.htm" />
+  <HelpKINode Title="UnpackNullableInt32Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableInt32Value.htm" />
+  <HelpKINode Title="UnpackNullableInt64Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableInt64Value.htm" />
+  <HelpKINode Title="UnpackNullableSByteValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableSByteValue.htm" />
+  <HelpKINode Title="UnpackNullableSingleValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableSingleValue.htm" />
+  <HelpKINode Title="UnpackNullableUInt16Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableUInt16Value.htm" />
+  <HelpKINode Title="UnpackNullableUInt32Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableUInt32Value.htm" />
+  <HelpKINode Title="UnpackNullableUInt64Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackNullableUInt64Value.htm" />
   <HelpKINode Title="UnpackObject method" Url="html/Overload_MsgPack_Unpacking_UnpackObject.htm" />
   <HelpKINode Title="UnpackSByte method" Url="html/Overload_MsgPack_Unpacking_UnpackSByte.htm" />
+  <HelpKINode Title="UnpackSByteValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackSByteValue.htm" />
   <HelpKINode Title="UnpackSingle method" Url="html/Overload_MsgPack_Unpacking_UnpackSingle.htm" />
   <HelpKINode Title="UnpackSingleObject method">
     <HelpKINode Title="IMessagePackSingleObjectSerializer.UnpackSingleObject Method " Url="html/M_MsgPack_Serialization_IMessagePackSingleObjectSerializer_UnpackSingleObject.htm" />
     <HelpKINode Title="MessagePackSerializer(T).UnpackSingleObject Method " Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackSingleObject.htm" />
   </HelpKINode>
+  <HelpKINode Title="UnpackSingleValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackSingleValue.htm" />
   <HelpKINode Title="UnpackString method" Url="html/Overload_MsgPack_Unpacking_UnpackString.htm" />
+  <HelpKINode Title="UnpackStringValue method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackStringValue.htm" />
   <HelpKINode Title="UnpackSubtree method" Url="html/M_MsgPack_Unpacker_UnpackSubtree.htm" />
   <HelpKINode Title="UnpackSubtreeData method" Url="html/M_MsgPack_Unpacker_UnpackSubtreeData.htm" />
   <HelpKINode Title="UnpackTo method">
@@ -1162,8 +1406,11 @@
   </HelpKINode>
   <HelpKINode Title="UnpackToCore method" Url="html/M_MsgPack_Serialization_MessagePackSerializer_1_UnpackToCore.htm" />
   <HelpKINode Title="UnpackUInt16 method" Url="html/Overload_MsgPack_Unpacking_UnpackUInt16.htm" />
+  <HelpKINode Title="UnpackUInt16Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackUInt16Value.htm" />
   <HelpKINode Title="UnpackUInt32 method" Url="html/Overload_MsgPack_Unpacking_UnpackUInt32.htm" />
+  <HelpKINode Title="UnpackUInt32Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackUInt32Value.htm" />
   <HelpKINode Title="UnpackUInt64 method" Url="html/Overload_MsgPack_Unpacking_UnpackUInt64.htm" />
+  <HelpKINode Title="UnpackUInt64Value method" Url="html/M_MsgPack_Serialization_UnpackHelpers_UnpackUInt64Value.htm" />
   <HelpKINode Title="Unregister method" Url="html/M_MsgPack_Serialization_DefaultConcreteTypeRepository_Unregister.htm" />
   <HelpKINode Title="Value property" Url="html/P_MsgPack_UnpackingResult_1_Value.htm" />
   <HelpKINode Title="Values property" Url="html/P_MsgPack_MessagePackObjectDictionary_Values.htm" />
