@@ -60,10 +60,17 @@ which manages context information including serializer repository and configurat
     </NamespaceSummaries>
     <HelpTitle>MessagePack for CLI API documentation</HelpTitle>
     <FooterText>&amp;lt%3ba href=&amp;quot%3bhttps://github.com/msgpack/msgpack-cli/issues/&amp;quot%3b&amp;gt%3bFeedback %28github issues%29&amp;lt%3b/a&amp;gt%3b</FooterText>
-    <CopyrightText>Copyright %28c%29 FUJIWARA,Yusuke 2010-2013</CopyrightText>
+    <CopyrightText>Copyright %28c%29 FUJIWARA,Yusuke 2010-2014</CopyrightText>
     <FeedbackEMailLinkText>
     </FeedbackEMailLinkText>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <IndentHtml>False</IndentHtml>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <CleanIntermediates>True</CleanIntermediates>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
