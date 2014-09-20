@@ -91,7 +91,7 @@ namespace mpu
 						_ => action = Action.ShowHelp
 					},
 					{
-						"l|library:", "[required] Copy MsgPack source as assets library tree.",
+						"l|library", "[required] Copy MsgPack source as assets library tree.",
 						_ => action = action != null ? Action.ShowHelp : Action.BuildAssetLibrary
 					},
 					{
