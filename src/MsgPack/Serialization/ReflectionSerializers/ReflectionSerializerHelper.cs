@@ -39,10 +39,14 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	{
 		public static MessagePackSerializer<T> CreateReflectionEnuMessagePackSerializer<T>( SerializationContext context )
 		{
+#if UNITY_IPHONE
+			throw new PlatformNotSupportedException( "On-the-fly enum serializer generation is not supported in Unity iOS. Use pre-generated serializer instead." );
+#else
 			return
 				Activator.CreateInstance( typeof( ReflectionEnumMessagePackSerializer<> ).MakeGenericType( typeof( T ) ), context )
 					as
 					MessagePackSerializer<T>;
+#endif
 		}
 
 		public static MessagePackSerializer<T> CreateArraySerializer<T>(
