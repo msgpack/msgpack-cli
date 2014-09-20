@@ -419,7 +419,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                             }
                                         }
                                         else {
-                                            if ((key == "PublicProperty")) {
+                                            if ((key == "Alias")) {
                                                 System.Nullable<int> nullable7 = default(System.Nullable<int>);
                                                 nullable7 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.AnnotatedClass), "Int32 PublicProperty");
                                                 if (nullable7.HasValue) {

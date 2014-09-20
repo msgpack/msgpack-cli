@@ -252,6 +252,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EnumSerializationTest.EnumDefinitions.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Serialization\PerformanceTest.cs" />
     <Compile Include="Serialization\ReflectionBasedNilImplicationTest.cs">
       <DependentUpon>ReflectionBasedNilImplicationTest.tt</DependentUpon>
@@ -466,9 +472,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_Generic_Dictionary_2_System_Object_System_Object_Serializer.cs">
@@ -778,9 +781,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_Dictionary_2_MsgPack_MessagePackObject_MsgPack_MessagePackObject_Serializer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\GeneratedSerializers\MapBased\System_Collections_Generic_Dictionary_2_System_Object_System_Object_Serializer.cs">

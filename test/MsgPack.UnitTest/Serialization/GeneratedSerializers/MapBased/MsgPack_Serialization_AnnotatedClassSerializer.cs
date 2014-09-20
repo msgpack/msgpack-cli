@@ -215,7 +215,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.AnnotatedClass objectTree) {
             packer.PackMapHeader(7);
-            this._serializer0.PackTo(packer, "PublicProperty");
+            this._serializer0.PackTo(packer, "Alias");
             this._serializer1.PackTo(packer, objectTree.PublicProperty);
             this._serializer0.PackTo(packer, "PublicField");
             this._serializer1.PackTo(packer, objectTree.PublicField);
@@ -426,7 +426,7 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                             }
                                         }
                                         else {
-                                            if ((key == "PublicProperty")) {
+                                            if ((key == "Alias")) {
                                                 System.Nullable<int> nullable7 = default(System.Nullable<int>);
                                                 nullable7 = MsgPack.Serialization.UnpackHelpers.UnpackNullableInt32Value(unpacker, typeof(MsgPack.Serialization.AnnotatedClass), "Int32 PublicProperty");
                                                 if (nullable7.HasValue) {

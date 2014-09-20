@@ -88,6 +88,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( ObservableCollection<System.Int32[]> ) ); 
 			result.Add( typeof( StringKeyedCollection<System.Int32> ) ); 
 			result.Add( typeof( StringKeyedCollection<System.Int32[]> ) ); 
+			result.Add( typeof( Dictionary<MessagePackObject, MessagePackObject> ) );
 			result.Add( typeof( Dictionary<object, object> ) );
 			result.Add( typeof( Dictionary<String, DateTime> ) );
 			result.Add( typeof( Dictionary<String, int> ) );
