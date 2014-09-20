@@ -31,14 +31,14 @@ namespace MsgPack.Serialization
 
 		public sealed override bool Equals( DateTime x, DateTime y )
 		{
-			var xms = new DateTime( x.Ticks / 10000, x.Kind );
-			var yms = new DateTime( y.Ticks / 10000, y.Kind );
+			var xms = new DateTime( x.Year, x.Month, x.Day, x.Hour, x.Minute, x.Second, x.Millisecond, x.Kind );
+			var yms = new DateTime( y.Year, y.Month, y.Day, y.Hour, y.Minute, y.Second, y.Millisecond, y.Kind );
 			return xms.Equals( yms );
 		}
 
 		public sealed override int GetHashCode( DateTime obj )
 		{
-			return new DateTime( obj.Ticks / 10000, obj.Kind ).GetHashCode();
+			return new DateTime( obj.Year, obj.Month, obj.Day, obj.Hour, obj.Minute, obj.Second, obj.Millisecond, obj.Kind ).GetHashCode();
 		}
 	}
 }
