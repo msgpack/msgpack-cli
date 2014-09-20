@@ -159,6 +159,8 @@ namespace mpu
 				}
 				case Action.GenerateSerializers:
 				{
+					configuration.OutputDirectory = outputDirectoryPath;
+
 					GenerateSerializers(
 						sourceFilePathes,
 						referenceAssemblies.Distinct().ToArray(),
