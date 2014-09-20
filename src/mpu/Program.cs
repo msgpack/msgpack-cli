@@ -119,6 +119,10 @@ namespace mpu
 						value => configuration.Namespace = value
 					},
 					{
+						"internal", "[serializer, optional] Specify generated source code will be internal to MsgPack library itself. This option is required if you import MsgPack sources instead of an assembly to your Assets.",
+						_ => configuration.IsInternalToMsgPackLibrary = true
+					},
+					{
 						"method=", "[serializer, optional] Specify serialization method for generated serializers. Valid value is Array or Map. Default is 'Array'.",
 						(SerializationMethod value) => configuration.SerializationMethod = value
 					},

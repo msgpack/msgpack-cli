@@ -5073,6 +5073,20 @@
             	The current <see cref="T:System.CodeDom.CodeTypeDeclaration"/>.
             </value>
         </member>
+        <member name="P:MsgPack.Serialization.CodeDomSerializers.CodeDomContext.IsInternalToMsgPackLibrary">
+            <summary>
+            	Gets a value indicating whether the generated serializers will be internal to MsgPack library itself.
+            </summary>
+            <value>
+            <c>true</c> if the generated serializers are internal to MsgPack library itself; otherwise, <c>false</c>.
+            </value>
+            <remarks>
+            	When you use MsgPack in Unity3D, you can import the library in source code form to your assets.
+            	And, you may also import generated serializers together, then the generated serializers and MsgPack library will be same assembly ultimately.
+            	It causes compilation error because some of overriding members have accessbility <c>FamilyOrAssembly</c>(<c>protected internal</c> in C#),
+            	so the generated source code must have the accessibility when and only when they will be same assembly as MsgPack library itself.
+            </remarks>
+        </member>
         <member name="T:MsgPack.Serialization.DataMemberContract">
             <summary>
             	Represents member's data contract.
@@ -6197,6 +6211,14 @@
             </summary>
             <value>
             	The ID of the member.
+            </value>
+        </member>
+        <member name="P:MsgPack.Serialization.MessagePackMemberAttribute.Name">
+            <summary>
+            	Gets or sets the name of this member.
+            </summary>
+            <value>
+            	The name which will be used in map key on serialized MessagePack stream.
             </value>
         </member>
         <member name="P:MsgPack.Serialization.MessagePackMemberAttribute.NilImplication">
@@ -7674,7 +7696,7 @@
         </member>
         <member name="T:MsgPack.Serialization.SerializerCodeGenerationConfiguration">
             <summary>
-            	Represents configuration for serializer code generation.
+            Represents configuration for serializer code generation.
             </summary>
         </member>
         <member name="M:MsgPack.Serialization.SerializerCodeGenerationConfiguration.#ctor">
@@ -7739,6 +7761,20 @@
             A value of <see cref="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.SerializationMethod"/>.
             </value>
             <exception cref="T:System.ArgumentOutOfRangeException">Specified value is not valid  <see cref="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.SerializationMethod"/>.</exception>
+        </member>
+        <member name="P:MsgPack.Serialization.SerializerCodeGenerationConfiguration.IsInternalToMsgPackLibrary">
+            <summary>
+            	Gets or sets a value indicating whether the generated serializers will be internal to MsgPack library itself.
+            </summary>
+            <value>
+            <c>true</c> if the generated serializers are internal to MsgPack library itself; otherwise, <c>false</c>.
+            </value>
+            <remarks>
+            	When you use MsgPack in Unity3D, you can import the library in source code form to your assets.
+            	And, you may also import generated serializers together, then the generated serializers and MsgPack library will be same assembly ultimately.
+            	It causes compilation error because some of overriding members have accessbility <c>FamilyOrAssembly</c>(<c>protected internal</c> in C#),
+            	so the generated source code must have the accessibility when and only when they will be same assembly as MsgPack library itself.
+            </remarks>
         </member>
         <member name="T:MsgPack.Serialization.SerializerDebugging">
             <summary>

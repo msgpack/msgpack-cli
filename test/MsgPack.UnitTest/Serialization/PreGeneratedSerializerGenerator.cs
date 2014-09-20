@@ -35,7 +35,8 @@ namespace MsgPack.Serialization
 				new SerializerCodeGenerationConfiguration
 				{
 					Namespace = "MsgPack.Serialization.GeneratedSerializers.ArrayBased",
-					SerializationMethod = SerializationMethod.Array
+					SerializationMethod = SerializationMethod.Array,
+					IsInternalToMsgPackLibrary = true // because of InternalsVisibleTo
 				},
 				PreGeneratedSerializerActivator.KnownTypes
 			);
@@ -43,7 +44,8 @@ namespace MsgPack.Serialization
 				new SerializerCodeGenerationConfiguration
 				{
 					Namespace = "MsgPack.Serialization.GeneratedSerializers.MapBased",
-					SerializationMethod = SerializationMethod.Map
+					SerializationMethod = SerializationMethod.Map,
+					IsInternalToMsgPackLibrary = true // because of InternalsVisibleTo
 				},
 				PreGeneratedSerializerActivator.KnownTypes
 			);

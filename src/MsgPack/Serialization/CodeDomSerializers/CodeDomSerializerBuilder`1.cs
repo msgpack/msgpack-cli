@@ -58,7 +58,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			{
 				return;
 			}
-
 			CodeMemberMethod codeMethod;
 			switch ( method )
 			{
@@ -68,9 +67,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						new CodeMemberMethod
 						{
 							Name = "PackToCore",
-							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-							Attributes = MemberAttributes.Family | MemberAttributes.Override
-							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 						};
 					codeMethod.Parameters.Add( context.Packer.AsParameter() );
 					codeMethod.Parameters.Add( context.PackToTarget.AsParameter() );
@@ -83,9 +79,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						new CodeMemberMethod
 						{
 							Name = "UnpackFromCore",
-							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-							Attributes = MemberAttributes.Family | MemberAttributes.Override,
-							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 							ReturnType = new CodeTypeReference( typeof( TObject ) )
 						};
 					codeMethod.Parameters.Add( context.Unpacker.AsParameter() );
@@ -98,9 +91,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						new CodeMemberMethod
 						{
 							Name = "UnpackToCore",
-							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-							Attributes = MemberAttributes.Family | MemberAttributes.Override
-							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 						};
 					codeMethod.Parameters.Add( context.Unpacker.AsParameter() );
 					codeMethod.Parameters.Add( context.UnpackToTarget.AsParameter() );
@@ -114,7 +104,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			}
 
 			// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-			codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
+			codeMethod.Attributes = ( context.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
 			// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 			codeMethod.Statements.AddRange( construct.AsStatements().ToArray() );
 
@@ -138,9 +128,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						new CodeMemberMethod
 						{
 							Name = "PackUnderlyingValueTo",
-							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-							Attributes = MemberAttributes.Family | MemberAttributes.Override
-							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 						};
 					codeMethod.Parameters.Add( context.Packer.AsParameter() );
 					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( TObject ), "enumValue" ) );
@@ -153,9 +140,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						new CodeMemberMethod
 						{
 							Name = "UnpackFromUnderlyingValue",
-							// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-							Attributes = MemberAttributes.Family | MemberAttributes.Override,
-							// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 							ReturnType = new CodeTypeReference( typeof( TObject ) )
 						};
 					codeMethod.Parameters.Add( new CodeParameterDeclarationExpression( typeof( MessagePackObject ), "messagePackObject" ) );
@@ -169,7 +153,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			}
 
 			// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-			codeMethod.Attributes = MemberAttributes.Family | MemberAttributes.Override;
+			codeMethod.Attributes = ( context.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
 			// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 			codeMethod.Statements.AddRange( construct.AsStatements().ToArray() );
 

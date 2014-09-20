@@ -164,6 +164,20 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		/// <summary>
+		///		Gets a value indicating whether the generated serializers will be internal to MsgPack library itself.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if the generated serializers are internal to MsgPack library itself; otherwise, <c>false</c>.
+		/// </value>
+		/// <remarks>
+		///		When you use MsgPack in Unity3D, you can import the library in source code form to your assets.
+		///		And, you may also import generated serializers together, then the generated serializers and MsgPack library will be same assembly ultimately.
+		///		It causes compilation error because some of overriding members have accessbility <c>FamilyOrAssembly</c>(<c>protected internal</c> in C#),
+		///		so the generated source code must have the accessibility when and only when they will be same assembly as MsgPack library itself.
+		/// </remarks>
+		public bool IsInternalToMsgPackLibrary { get { return this._configuration.IsInternalToMsgPackLibrary; } }
+
+		/// <summary>
 		///		Resets internal states for new type.
 		/// </summary>
 		/// <param name="targetType">Type of the target.</param>
