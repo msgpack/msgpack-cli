@@ -169,6 +169,14 @@ Relase 0.5.3 - 2014/09/15
   FEATURES
   * Using new MessagePackMemberAttribute.Name property, you can customize map keys of serialized objects when you use SerializationMethod.Map. Related to issue #38
 
+Release 0.5.4 - 2014/09/22
+
+  FEATURES
+  * Add mpu --internal option for source code form assets in Unity3D.
+
+  BUG FIXES
+  * An -o option of mpu.exe -s does not work.
+
 Relese 1.0 - ???
 
   BREAKING CHANGES [planed]
