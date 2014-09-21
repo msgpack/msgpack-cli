@@ -28,11 +28,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\portable-windows8+wpa\</OutputPath>
+    <OutputPath>..\..\bin\portable-net45+win+wpa81\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\portable-windows8+wpa\MsgPack.XML</DocumentationFile>
+    <DocumentationFile>..\..\bin\portable-net45+win+wpa81\MsgPack.XML</DocumentationFile>
     <GenerateLibraryLayout>false</GenerateLibraryLayout>
   </PropertyGroup>
   <PropertyGroup>
