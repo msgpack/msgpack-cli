@@ -31,11 +31,24 @@ if( ( $winFile.LastWriteTime - $xamarinFile.LastWriteTime ).Days -ne 0 )
 .\.nuget\nuget.exe pack $nuspec
 
 # Unity
-Remove-Item .\MsgPack-CLI -Recurse
-Copy-Item .\bin\ .\MsgPack-CLI\ -Recurse
+if ( ![IO.Directory]::Exists( ".\MsgPack-CLI" ) )
+{
+	New-Item .\MsgPack-CLI -Type Directory | Out-Null
+}
+
+if ( ![IO.Directory]::Exists( ".\MsgPack-CLI\mpu" ) )
+{
+	New-Item .\MsgPack-CLI\mpu -Type Directory | Out-Null
+}
+
+Copy-Item .\bin\* .\MsgPack-CLI\ -Recurse
+Copy-Item .\tools\mpu\bin\* .\MsgPack-CLI\mpu\ -Recurse -Exclude @("*.vshost.*", "*.pdb")
 [Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.FileSystem" ) | Out-Null
 # 'latest' should be rewritten with semver manually.
-Remove-Item .\MsgPack.Cli.latest.zip
+if ( [IO.File]::Exists( ".\MsgPack.Cli.latest.zip" ) )
+{
+	Remove-Item .\MsgPack.Cli.latest.zip
+}
 [IO.Compression.ZipFile]::CreateFromDirectory( ".\MsgPack-CLI", ".\MsgPack.Cli.latest.zip" )
 Remove-Item .\MsgPack-CLI -Recurse
 
