@@ -176,6 +176,10 @@ Release 0.5.4 - 2014/09/22
 
   BUG FIXES
   * An -o option of mpu.exe -s does not work.
+  * Same (.NET4.5 + WinRT8 + WP8.1) configured portable project cannot refer MsgPack NuGet package.
+
+  MISCS
+  * Unity drop is now only included in zip file at github release page.
 
 Relese 1.0 - ???
 
