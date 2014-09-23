@@ -20,6 +20,7 @@
     <Preserve Path="Tuple`n.cs" />
     <Exclude Path="TupleItems.cs" />
   </Project>
+
   <Project Name="MsgPack.Net40" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
@@ -28,18 +29,40 @@
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
-  <!--
-    Note: MsgPack.Xamarin.iOS is created manually now.
-  -->
+
+  <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Exclude Path="Serialization\AbstractSerializers\*" />
+    <Exclude Path="Serialization\CodeDomSerializers\*" />
+    <Exclude Path="Serialization\EmittingSerializers\*" />
+    <Exclude Path="Serialization\ExpressionSerializers\*" />
+    <Exclude Path="Serialization\Metadata\*" />
+    <Exclude Path="Serialization\Reflection\TracingILGenerator.*" />
+    <Exclude Path="Serialization\AutoMessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\CallbackEnumMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\CallbackMessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\FromExpression.cs" />
+    <Exclude Path="Serialization\FromExpression.*.cs" />
+    <Exclude Path="Serialization\LazyDelegatingMessagePackSerializer`1.cs" />
+    <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
+    <Exclude Path="Serialization\SerializerGenerator.cs" />
+    <Exclude Path="Serialization\Tracer.cs" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+    <Exclude File="*.snk" />
+  </Project>
+
   <Project Name="MsgPack.Xamarin.Android" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
   </Project>
+
   <Project Name="MsgPack.Unity3D" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="Validation.cs" />
   </Project>
+
   <Project Name="MsgPack.WinRT.Portable" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Exclude File="*.tt" />
@@ -93,6 +116,7 @@
     <Include Path="TupleItems.cs" />
     <Exclude Path="Validation.cs" />
   </Project>
+
   <Project Name="MsgPack.Silverlight.WindowsPhone" Base="MsgPack.WinRT.Portable">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Serialization\Metadata\_DictionaryEntry.cs" />

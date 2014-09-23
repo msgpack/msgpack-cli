@@ -201,24 +201,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs">
       <Link>Serialization\AddOnlyCollection`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayContextBasedEnumSerializationTest.cs">
-      <Link>Serialization\ArrayContextBasedEnumSerializationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayExpressionBasedEnumSerializationTest.cs">
-      <Link>Serialization\ArrayExpressionBasedEnumSerializationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayFieldBasedEnumSerializationTest.cs">
-      <Link>Serialization\ArrayFieldBasedEnumSerializationTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
@@ -261,9 +243,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\CompositeTest.cs">
       <Link>Serialization\CompositeTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ContextBasedNilImplicationTest.cs">
-      <Link>Serialization\ContextBasedNilImplicationTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataContractAndNonSerializedMixedTarget.cs">
       <Link>Serialization\DataContractAndNonSerializedMixedTarget.cs</Link>
     </Compile>
@@ -272,15 +251,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
       <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\ExpressionBasedNilImplicationTest.cs">
-      <Link>Serialization\ExpressionBasedNilImplicationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\FieldBasedNilImplicationTest.cs">
-      <Link>Serialization\FieldBasedNilImplicationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\FromExpressionTest.cs">
-      <Link>Serialization\FromExpressionTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GeneratedSerializers\ArrayBased\MsgPack_ImageSerializer.cs">
       <Link>Serialization\GeneratedSerializers\ArrayBased\MsgPack_ImageSerializer.cs</Link>
@@ -915,24 +885,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
       <Link>Serialization\IVerifiable`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapContextBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\MapContextBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapContextBasedEnumSerializationTest.cs">
-      <Link>Serialization\MapContextBasedEnumSerializationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapExpressionBasedEnumSerializationTest.cs">
-      <Link>Serialization\MapExpressionBasedEnumSerializationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs">
-      <Link>Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MapFieldBasedEnumSerializationTest.cs">
-      <Link>Serialization\MapFieldBasedEnumSerializationTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs</Link>
     </Compile>
@@ -944,12 +896,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedEnumSerializationTest.cs">
       <Link>Serialization\MapReflectionBasedEnumSerializationTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
-      <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAttributeTest.cs">
-      <Link>Serialization\MessagePackMemberAttributeTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackSerializerTest.cs">
       <Link>Serialization\MessagePackSerializerTest.cs</Link>
@@ -975,9 +921,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\PreGeneratedSerializerActivator.Types.cs">
       <Link>Serialization\PreGeneratedSerializerActivator.Types.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\PreGeneratedSerializerGenerator.cs">
-      <Link>Serialization\PreGeneratedSerializerGenerator.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ReflectionBasedNilImplicationTest.cs">
       <Link>Serialization\ReflectionBasedNilImplicationTest.cs</Link>
     </Compile>
@@ -989,9 +932,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargetTest.cs">
       <Link>Serialization\SerializationTargetTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializerGeneratorTest.cs">
-      <Link>Serialization\SerializerGeneratorTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SimpleCollection`1.cs">
       <Link>Serialization\SimpleCollection`1.cs</Link>

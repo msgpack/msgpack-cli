@@ -527,4 +527,9 @@
       <Link>remarks.xml</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\MsgPack\remarks.xml">
+      <Link>remarks.xml</Link>
+    </Content>
+  </ItemGroup>
 </Project>

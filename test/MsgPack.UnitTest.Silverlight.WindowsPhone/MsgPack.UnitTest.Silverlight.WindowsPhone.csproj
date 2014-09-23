@@ -16,8 +16,7 @@
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>true</SilverlightApplication>
     <WPTestProject>true</WPTestProject>
-    <SupportedCultures>
-    </SupportedCultures>
+    <SupportedCultures></SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>MsgPack.UnitTest.Silverlight.WindowsPhone_$(Configuration)_$(Platform).xap</XapFilename>
