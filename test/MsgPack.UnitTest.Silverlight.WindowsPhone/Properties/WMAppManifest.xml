@@ -4,7 +4,7 @@
   <Languages xmlns="">
     <Language code="en-US" />
   </Languages>
-  <App xmlns="" ProductID="{288171d8-50e5-4da2-9802-55d23d5a2307}" Title="MsgPack.UnitTest.Silverlight.WindowsPhone" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="MsgPack.UnitTest.Silverlight.WindowsPhone author" Description="Sample description" Publisher="MsgPack.UnitTest.Silverlight.WindowsPhone" PublisherID="{13eb83bd-0143-4b44-a516-862a74213cc2}">
+  <App xmlns="" ProductID="{288171d8-50e5-4da2-9802-55d23d5a2307}" Title="MsgPack.UnitTest.Silverlight.WindowsPhone" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="FUJIWARA Yusuke" Description="Unit test" Publisher="FUJIWARA Yusuke" PublisherID="{13eb83bd-0143-4b44-a516-862a74213cc2}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
