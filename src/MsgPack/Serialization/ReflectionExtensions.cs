@@ -492,7 +492,6 @@ namespace MsgPack.Serialization
 #if !NETFX_CORE
 			Type asType;
 #endif
-			// ReSharper disable RedundantIfElseBlock
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
 #if !NETFX_CORE
@@ -521,7 +520,6 @@ namespace MsgPack.Serialization
 			{
 				throw new NotSupportedException( source.GetType() + " is not supported." );
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 	}
 }

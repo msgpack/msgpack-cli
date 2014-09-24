@@ -99,7 +99,6 @@ namespace MsgPack
 #endif // !UNITY
 
 			var category = CharUnicodeInfo.GetUnicodeCategory( @namespace, position );
-			// ReSharper disable RedundantIfElseBlock
 			if ( IsPrintable( category ) )
 			{
 				throw new ArgumentException(
@@ -125,7 +124,6 @@ namespace MsgPack
 					)
 				);
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 
 		/// <summary>

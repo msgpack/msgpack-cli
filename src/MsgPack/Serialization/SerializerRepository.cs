@@ -153,7 +153,6 @@ namespace MsgPack.Serialization
 			}
 
 			var asEnumSerializer = serializer as ICustomizableEnumSerializer;
-			// ReSharper disable RedundantIfElseBlock
 			if ( asEnumSerializer != null )
 			{
 				return this._repository.Register( targetType, new EnumMessagePackSerializerProvider( targetType, asEnumSerializer ), /*allowOverwrite:*/ false );
@@ -162,7 +161,6 @@ namespace MsgPack.Serialization
 			{
 				return this._repository.Register( targetType, serializer, /*allowOverwrite:*/ false );
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 
 		/// <summary>

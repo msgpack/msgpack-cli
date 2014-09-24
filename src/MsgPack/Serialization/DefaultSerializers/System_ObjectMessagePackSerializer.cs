@@ -36,7 +36,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
-			// ReSharper disable RedundantIfElseBlock
 			if ( unpacker.IsArrayHeader )
 			{
 				var result = new MessagePackObject[ UnpackHelpers.GetItemsCount( unpacker ) ];
@@ -78,7 +77,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 				var result = unpacker.LastReadData;
 				return result.IsNil ? MessagePackObject.Nil : result;
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 	}
 }

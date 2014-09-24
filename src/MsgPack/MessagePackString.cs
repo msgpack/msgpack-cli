@@ -413,7 +413,6 @@ namespace MsgPack
 					{
 						return false;
 					}
-					// ReSharper disable once RedundantIfElseBlock
 					else if ( 0x7E < c && c < 0xA0 )
 					{
 						return false;

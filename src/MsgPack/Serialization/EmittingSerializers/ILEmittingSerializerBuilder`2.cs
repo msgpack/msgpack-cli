@@ -172,7 +172,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				default:
 				{
-					// ReSharper disable RedundantIfElseBlock
 					if ( 0 <= constant && constant <= 255 )
 					{
 						return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_S( unchecked( ( byte )constant ) ) );
@@ -181,7 +180,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 					{
 						return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4( constant ) );
 					}
-					// ReSharper restore RedundantIfElseBlock
 				}
 			}
 		}

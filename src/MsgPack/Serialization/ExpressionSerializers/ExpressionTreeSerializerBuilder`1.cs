@@ -207,7 +207,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitTypeOfExpression( ExpressionTreeContext context, Type type )
 		{
-			// ReSharper disable RedundantIfElseBlock
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				// LambdaExpression.CompileToMethod cannot handle RuntimeTypeHandle, but can handle Type constants.
@@ -218,13 +217,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				// WinRT expression tree cannot handle Type constants, but handle RuntimeTypeHandle.
 				return Expression.Call( Metadata._Type.GetTypeFromHandle, Expression.Constant( type.TypeHandle ) );
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitMethodOfExpression( ExpressionTreeContext context, MethodBase method )
 		{
-			// ReSharper disable RedundantIfElseBlock
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				// LambdaExpression.CompileToMethod cannot handle RuntimeTypeHandle, but can handle Type constants.
@@ -251,13 +248,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					);
 #endif
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitFieldOfExpression( ExpressionTreeContext context, FieldInfo field )
 		{
-			// ReSharper disable RedundantIfElseBlock
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				// LambdaExpression.CompileToMethod cannot handle RuntimeTypeHandle, but can handle Type constants.
@@ -279,7 +274,6 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					);
 #endif
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 
 		protected override ExpressionConstruct EmitSequentialStatements( ExpressionTreeContext context, Type contextType, IEnumerable<ExpressionConstruct> statements )

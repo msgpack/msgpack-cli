@@ -312,7 +312,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated construct.</returns>
 		private TConstruct EmitGetMemberValueExpression( TContext context, TConstruct instance, MemberInfo member )
 		{
-			// ReSharper disable RedundantIfElseBlock
 			FieldInfo asField;
 			if ( ( asField = member as FieldInfo ) != null )
 			{
@@ -326,7 +325,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif
 				return this.EmitGetProperty( context, instance, asProperty, !asProperty.GetIsPublic() );
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 
 		private TConstruct EmitGetProperty( TContext context, TConstruct instance, PropertyInfo property, bool withReflection )
@@ -411,7 +409,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			CollectionTraits traits;
 			FieldInfo asField;
 			PropertyInfo asProperty = null;
-			// ReSharper disable RedundantIfElseBlock
 			if ( ( asField = member as FieldInfo ) != null )
 			{
 				if ( !asField.IsInitOnly && asField.GetIsPublic() )
@@ -437,7 +434,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 				getCollection = this.EmitGetProperty( context, instance, asProperty, asProperty.GetIsPublic() );
 				traits = asProperty.PropertyType.GetCollectionTraits();
 			}
-			// ReSharper restore RedundantIfElseBlock
 
 			// use Add(T) for appendable collection elementType read only member.
 
@@ -1358,7 +1354,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( traits.AddMethod == null )
 			{
-				// ReSharper disable RedundantIfElseBlock
 				if ( member != null )
 				{
 					throw new SerializationException(
@@ -1380,7 +1375,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 						)
 					);
 				}
-				// ReSharper restore RedundantIfElseBlock
 			}
 
 			return

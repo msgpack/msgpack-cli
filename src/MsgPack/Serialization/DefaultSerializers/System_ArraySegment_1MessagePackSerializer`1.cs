@@ -30,7 +30,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static Action<Packer, ArraySegment<T>, MessagePackSerializer<T>> InitializePacking()
 		{
-			// ReSharper disable RedundantIfElseBlock
 			if ( typeof( T ) == typeof( byte ) )
 			{
 				return
@@ -49,12 +48,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				return ArraySegmentMessageSerializer.PackGenericArraySegmentTo;
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 
 		private static Func<Unpacker, MessagePackSerializer<T>, ArraySegment<T>> InitializeUnacking()
 		{
-			// ReSharper disable RedundantIfElseBlock
 			if ( typeof( T ) == typeof( byte ) )
 			{
 				return
@@ -73,7 +70,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				return ArraySegmentMessageSerializer.UnpackGenericArraySegmentFrom;
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 
 		private readonly MessagePackSerializer<T> _itemSerializer;

@@ -81,7 +81,6 @@ namespace MsgPack
 			{
 				return new SeekableUnpackingStream( source, length );
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return new UnseekableUnpackingStream( source, length );

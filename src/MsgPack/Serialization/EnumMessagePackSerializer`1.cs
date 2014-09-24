@@ -141,12 +141,10 @@ namespace MsgPack.Serialization
 
 				return result;
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else if ( unpacker.LastReadData.IsTypeOf( this._underlyingType ).GetValueOrDefault() )
 			{
 				return this.UnpackFromUnderlyingValue( unpacker.LastReadData );
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				throw new SerializationException(

@@ -145,7 +145,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			Type targetType,
 			CollectionTraits traits )
 		{
-			// ReSharper disable once RedundantIfElseBlock
 			if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary )
 			{
 				return

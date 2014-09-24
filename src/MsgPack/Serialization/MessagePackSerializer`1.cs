@@ -270,7 +270,6 @@ namespace MsgPack.Serialization
 					// null
 					return default( T );
 				}
-				// ReSharper disable once RedundantIfElseBlock
 				else
 				{
 					throw SerializationExceptions.NewValueTypeCannotBeNull( typeof( T ) );
@@ -435,7 +434,6 @@ namespace MsgPack.Serialization
 				packer.PackNull();
 				return;
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				if ( !( objectTree is T ) )

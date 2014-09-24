@@ -713,14 +713,12 @@ namespace MsgPack
 					value = MessagePackObject.Nil;
 					return false;
 				}
-				// ReSharper disable once RedundantIfElseBlock
 				else
 				{
 					value = this._values[ index ];
 					return true;
 				}
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return this._dictionary.TryGetValue( key, out value );

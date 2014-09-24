@@ -110,7 +110,6 @@ namespace MsgPack
 				this.InternalData = value;
 				return true;
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return false;

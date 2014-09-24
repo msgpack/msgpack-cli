@@ -439,7 +439,6 @@ namespace MsgPack.Serialization
 							?? MessagePackSerializer.CreateReflectionInternal<T>( this );
 #if !XAMIOS && !XAMDROID && !UNITY
 					}
-					// ReSharper disable once RedundantIfElseBlock
 					else
 					{
 						object aquiredLock = null;

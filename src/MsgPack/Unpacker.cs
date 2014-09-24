@@ -472,7 +472,6 @@ namespace MsgPack
 				this.LastReadData = result;
 				return result;
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return null;
@@ -494,7 +493,6 @@ namespace MsgPack
 				this.LastReadData = result;
 				return result;
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 				return this.LastReadData;
@@ -503,7 +501,6 @@ namespace MsgPack
 
 		internal bool UnpackSubtreeDataCore( out MessagePackObject result )
 		{
-			// ReSharper disable RedundantIfElseBlock
 			if ( this.IsArrayHeader )
 			{
 				var array = new MessagePackObject[ checked( ( int )this.LastReadData.AsUInt32() ) ];
@@ -541,7 +538,6 @@ namespace MsgPack
 				result = default( MessagePackObject );
 				return false;
 			}
-			// ReSharper restore RedundantIfElseBlock
 		}
 
 		private enum UnpackerMode

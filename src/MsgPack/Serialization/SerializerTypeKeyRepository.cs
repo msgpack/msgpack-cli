@@ -68,7 +68,6 @@ namespace MsgPack.Serialization
 			{
 				return matched;
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else
 			{
 #if !UNITY

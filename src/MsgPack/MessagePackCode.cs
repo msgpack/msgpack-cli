@@ -69,7 +69,6 @@ namespace MsgPack
 			{
 				return "PositiveFixNum";
 			}
-			// ReSharper disable once RedundantIfElseBlock
 			else if( code >= 0xE0)
 			{
 				return "NegativeFixNum";
