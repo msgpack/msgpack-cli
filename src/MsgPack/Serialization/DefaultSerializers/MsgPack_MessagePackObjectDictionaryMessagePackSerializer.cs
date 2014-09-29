@@ -75,7 +75,20 @@ namespace MsgPack.Serialization.DefaultSerializers
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
-				collection.Add( key, unpacker.LastReadData );
+				if ( unpacker.IsCollectionHeader )
+				{
+					MessagePackObject value;
+					if ( !unpacker.UnpackSubtreeDataCore( out value ) )
+					{
+						throw SerializationExceptions.NewUnexpectedEndOfStream();
+					}
+
+					collection.Add( key, value );
+				}
+				else
+				{
+					collection.Add( key, unpacker.LastReadData );
+				}
 			}
 		}
 	}

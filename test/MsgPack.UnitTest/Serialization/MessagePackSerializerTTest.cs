@@ -541,6 +541,29 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		[Test]
+		public void TestIssue41()
+		{
+			using ( var buffer = new MemoryStream( new byte[] { 0x84, 0x01, 0x81, 0x0a, 0x14, 0x02, 0x93, 0x14, 0x1e, 0x28, 0x03, MessagePackCode.NilValue, 0x04, 0x0 } ) )
+			//using ( var unpacker = Unpacker.Create( buffer ) )
+			{
+				//unpacker.Read();
+				var serializer = MessagePackSerializer.Get<MessagePackObjectDictionary>();
+				//var result = serializer.UnpackFrom( unpacker );
+				var result = serializer.Unpack( buffer );
+				Assert.That( result.Count, Is.EqualTo( 4 ) );
+				Assert.That( result[ 1 ].AsDictionary().Count, Is.EqualTo( 1 ) );
+				Assert.That( result[ 1 ].AsDictionary()[ 10 ], Is.EqualTo( ( MessagePackObject )0x14 ) );
+				Assert.That( result[ 2 ].AsList().Count, Is.EqualTo( 3 ) );
+				Assert.That( result[ 2 ].AsList()[ 0 ], Is.EqualTo( ( MessagePackObject )0x14 ) );
+				Assert.That( result[ 2 ].AsList()[ 1 ], Is.EqualTo( ( MessagePackObject )0x1E ) );
+				Assert.That( result[ 2 ].AsList()[ 2 ], Is.EqualTo( ( MessagePackObject )0x28 ) );
+				Assert.That( result[ 3 ].IsNil );
+				Assert.That( result[ 4 ], Is.EqualTo( ( MessagePackObject )0x0 ) );
+			}
+
+		}
+
 		private void TestIssue10_Reader( Inner inner )
 		{
 			var serializer = CreateTarget<Outer>();
@@ -593,6 +616,6 @@ namespace MsgPack.Serialization
 	public class WithReadOnlyProperty
 	{
 		public int Number { get; set; }
-		public string AsString{get { return this.Number.ToString(); }}
+		public string AsString { get { return this.Number.ToString(); } }
 	}
 }
