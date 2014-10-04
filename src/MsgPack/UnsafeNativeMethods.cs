@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -46,11 +46,15 @@ namespace MsgPack
 		[DllImport( "msvcrt", CallingConvention = CallingConvention.Cdecl, EntryPoint = "memcmp", ExactSpelling = true, SetLastError = false )]
 		private static extern int memcmpVC( byte[] s1, byte[] s2, /*SIZE_T*/UIntPtr size );
 
+#if !NETFX_CORE
+		// libc is for non Windows environment.
+		// Note that libc caused compilation error on .NET Native, so the DllImport itself should not be included in the first time.
 #if NETFX_35
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule", Justification = "OK, this is SecurityCritical" )]
 #endif // NETFX_35
 		[DllImport( "libc", CallingConvention = CallingConvention.Cdecl, EntryPoint = "memcmp", ExactSpelling = true, SetLastError = false )]
 		private static extern int memcmpLibC( byte[] s1, byte[] s2, /*SIZE_T*/UIntPtr size );
+#endif // !NETFX_CORE
 
 		public static bool TryMemCmp( byte[] s1, byte[] s2, /*SIZE_T*/UIntPtr size, out int result )
 		{
@@ -69,10 +73,15 @@ namespace MsgPack
 				}
 				catch ( DllNotFoundException )
 				{
+#if !NETFX_CORE
 					Interlocked.Exchange( ref _libCAvailability, _libCAvailability_LibC );
+#else
+					Interlocked.Exchange( ref _libCAvailability, _libCAvailability_None );
+#endif // !NETFX_CORE
 				}
 			}
 
+#if !NETFX_CORE
 			if ( _libCAvailability <= _libCAvailability_LibC )
 			{
 				try
@@ -85,6 +94,7 @@ namespace MsgPack
 					Interlocked.Exchange( ref _libCAvailability, _libCAvailability_None );
 				}
 			}
+#endif // !NETFX_CORE
 
 			result = 0;
 			return false;
