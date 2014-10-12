@@ -37,6 +37,7 @@ namespace MsgPack
 	{
 		private static readonly Encoding _utf8NonBomStrict = new UTF8Encoding( false, true );
 		private static readonly Encoding _utf8NonBom = new UTF8Encoding( false, false );
+		private const long _ticksToMilliseconds = 10000;
 
 		internal static Encoding Utf8NonBom
 		{
@@ -136,7 +137,8 @@ namespace MsgPack
 		/// </returns>
 		public static long FromDateTimeOffset( DateTimeOffset value )
 		{
-			return ( long )value.ToUniversalTime().Subtract( _unixEpocUtc ).TotalMilliseconds;
+			// Note: microseconds and nanoseconds should always truncated, so deviding by integral is suitable.
+			return value.ToUniversalTime().Subtract( _unixEpocUtc ).Ticks / _ticksToMilliseconds;
 		}
 
 		/// <summary>
@@ -148,7 +150,8 @@ namespace MsgPack
 		/// </returns>
 		public static long FromDateTime( DateTime value )
 		{
-			return ( long )value.ToUniversalTime().Subtract( _unixEpocUtc ).TotalMilliseconds;
+			// Note: microseconds and nanoseconds should always truncated, so deviding by integral is suitable.
+			return value.ToUniversalTime().Subtract( _unixEpocUtc ).Ticks / _ticksToMilliseconds;
 		}
 	}
 }

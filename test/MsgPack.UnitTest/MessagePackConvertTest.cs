@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2014 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -41,7 +41,13 @@ namespace MsgPack
 		// 1byte, 3bytes, 2bytes chars.
 		private const string _testValue = "A\u3000\u00C0";
 
-		private static readonly DateTime _utcEpoc = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
+		private const long TicksToMilliseconds = 10000;
+
+		private static readonly DateTime UtcEpoc = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
+
+		private static readonly DateTime UtcMaxValue = new DateTime( DateTime.MaxValue.Ticks, DateTimeKind.Utc );
+
+		private static readonly DateTime UtcMinValue = new DateTime( DateTime.MinValue.Ticks, DateTimeKind.Utc );
 
 		[Test]
 		public void TestEncodeString_Normal_EncodedAsUtf8NonBom()
@@ -106,6 +112,26 @@ namespace MsgPack
 			Assert.That( actual, Is.EqualTo( epoc.AddMilliseconds( millisecondsOffset ) ) );
 		}
 
+
+		private static void AssertIsUnixEpocDateTimeOffset( DateTimeOffset expected, DateTimeOffset actual )
+		{
+			var expectedInMilliseconds =
+				new DateTimeOffset(
+					expected.Year,
+					expected.Month,
+					expected.Day,
+					expected.Hour,
+					expected.Minute,
+					expected.Second,
+					expected.Millisecond,
+					expected.Offset
+				);
+
+			Assert.That( actual.Offset, Is.EqualTo( TimeSpan.Zero ) );
+			Assert.That( actual, Is.EqualTo( expectedInMilliseconds ) );
+		}
+
+
 		[Test]
 		public void TestToDateTimeOffset_Zero_IsUtcEpoc()
 		{
@@ -127,28 +153,59 @@ namespace MsgPack
 		[Test]
 		public void TestToDateTimeOffset_Maximum_IsUtcEpoc()
 		{
-			var offset = checked( ( long )DateTime.MaxValue.Subtract( _utcEpoc ).TotalMilliseconds ) - 1L;
+			var offset = checked( UtcMaxValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds );
 			AssertIsUnixEpocDateTimeOffset( MessagePackConvert.ToDateTimeOffset( offset ), offset );
 		}
 
 		[Test]
 		public void TestToDateTimeOffset_Minimum_IsUtcEpoc()
 		{
-			var offset = checked( ( long )DateTime.MinValue.Subtract( _utcEpoc ).TotalMilliseconds );
+			var offset = checked( UtcMinValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds );
 			AssertIsUnixEpocDateTimeOffset( MessagePackConvert.ToDateTimeOffset( offset ), offset );
 		}
 
 		[Test]
+		public void TestToDateTimeOffsetRoundTrip_Zero_IsUtcEpoc()
+		{
+			AssertIsUnixEpocDateTimeOffset( new DateTimeOffset( UtcEpoc ), MessagePackConvert.ToDateTimeOffset( 0 ) );
+		}
+
+		[Test]
+		public void TestToDateTimeOffsetRoundTrip_One_IsUtcEpoc()
+		{
+			AssertIsUnixEpocDateTimeOffset( new DateTimeOffset( UtcEpoc ).AddMilliseconds( 1 ), MessagePackConvert.ToDateTimeOffset( 1 ) );
+		}
+
+		[Test]
+		public void TestToDateTimeOffsetRoundTrip_MinuOne_IsUtcEpoc()
+		{
+			AssertIsUnixEpocDateTimeOffset( new DateTimeOffset( UtcEpoc ).AddMilliseconds( -1 ), MessagePackConvert.ToDateTimeOffset( -1 ) );
+		}
+
+		[Test]
+		public void TestToDateTimeOffsetRoundTrip_Maximum_IsUtcEpoc()
+		{
+			var offset = checked( UtcMaxValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds );
+			AssertIsUnixEpocDateTimeOffset( DateTimeOffset.MaxValue, MessagePackConvert.ToDateTimeOffset( offset ) );
+		}
+
+		[Test]
+		public void TestToDateTimeOffsetRoundTrip_Minimum_IsUtcEpoc()
+		{
+			var offset = checked( UtcMinValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds );
+			AssertIsUnixEpocDateTimeOffset( DateTimeOffset.MinValue, MessagePackConvert.ToDateTimeOffset( offset ) );
+		}
+		[Test]
 		public void TestToDateTimeOffset_MaximumPlusOne_IsUtcEpoc()
 		{
-			var offset = checked( ( long )DateTime.MaxValue.Subtract( _utcEpoc ).TotalMilliseconds + 1L );
+			var offset = checked( UtcMaxValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds + 1L );
 			Assert.Throws<ArgumentOutOfRangeException>( () => MessagePackConvert.ToDateTimeOffset( offset ) );
 		}
 
 		[Test]
 		public void TestToDateTimeOffset_MinimumMinusOne_IsUtcEpoc()
 		{
-			var offset = checked( ( long )DateTime.MinValue.Subtract( _utcEpoc ).TotalMilliseconds - 1L );
+			var offset = checked( UtcMinValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds - 1L );
 			Assert.Throws<ArgumentOutOfRangeException>( () => MessagePackConvert.ToDateTimeOffset( offset ) );
 		}
 
@@ -158,6 +215,24 @@ namespace MsgPack
 			Assert.That( actual.Kind, Is.EqualTo( DateTimeKind.Utc ) );
 			var epoc = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 			Assert.That( actual, Is.EqualTo( epoc.AddMilliseconds( millisecondsOffset ) ) );
+		}
+
+		private static void AssertIsUnixEpocDateTime( DateTime expected, DateTime actual )
+		{
+			var expectedInMilliseconds =
+				new DateTime(
+					expected.Year,
+					expected.Month,
+					expected.Day,
+					expected.Hour,
+					expected.Minute,
+					expected.Second,
+					expected.Millisecond,
+					expected.Kind
+				);
+
+			Assert.That( actual.Kind, Is.EqualTo( DateTimeKind.Utc ) );
+			Assert.That( actual, Is.EqualTo( expectedInMilliseconds ) );
 		}
 
 		[Test]
@@ -173,7 +248,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestToDateTime_MinuOne_IsUtcEpoc()
+		public void TestToDateTime_MinusOne_IsUtcEpoc()
 		{
 			AssertIsUnixEpocDateTime( MessagePackConvert.ToDateTime( -1 ), -1 );
 		}
@@ -181,28 +256,60 @@ namespace MsgPack
 		[Test]
 		public void TestToDateTime_Maximum_IsUtcEpoc()
 		{
-			var offset = checked( ( long )DateTime.MaxValue.Subtract( _utcEpoc ).TotalMilliseconds ) - 1L;
+			var offset = checked( UtcMaxValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds );
 			AssertIsUnixEpocDateTime( MessagePackConvert.ToDateTime( offset ), offset );
 		}
 
 		[Test]
 		public void TestToDateTime_Minimum_IsUtcEpoc()
 		{
-			var offset = checked( ( long )DateTime.MinValue.Subtract( _utcEpoc ).TotalMilliseconds );
+			var offset = checked( UtcMinValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds );
 			AssertIsUnixEpocDateTime( MessagePackConvert.ToDateTime( offset ), offset );
+		}
+
+		[Test]
+		public void TestToDateTimeRoundTrip_Zero_IsUtcEpoc()
+		{
+			AssertIsUnixEpocDateTime( UtcEpoc, MessagePackConvert.ToDateTime( 0 ) );
+		}
+
+		[Test]
+		public void TestToDateTimeRoundTrip_One_IsUtcEpoc()
+		{
+			AssertIsUnixEpocDateTime( UtcEpoc.AddMilliseconds( 1 ), MessagePackConvert.ToDateTime( 1 ) );
+		}
+
+		[Test]
+		public void TestToDateTimeRoundTrip_MinusOne_IsUtcEpoc()
+		{
+			AssertIsUnixEpocDateTime( UtcEpoc.AddMilliseconds( -1 ), MessagePackConvert.ToDateTime( -1 ) );
+		}
+
+		[Test]
+		public void TestToDateTimeRoundTrip_Maximum_IsUtcEpoc()
+		{
+			var offset = checked( UtcMaxValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds );
+			AssertIsUnixEpocDateTime( DateTime.MaxValue, MessagePackConvert.ToDateTime( offset ) );
+		}
+
+		[Test]
+		public void TestToDateTimeRoundTrip_Minimum_IsUtcEpoc()
+		{
+			var offset = checked( UtcMinValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds );
+			AssertIsUnixEpocDateTime( DateTime.MinValue, MessagePackConvert.ToDateTime( offset ) );
 		}
 
 		[Test]
 		public void TestToDateTime_MaximumPlusOne_IsUtcEpoc()
 		{
-			var offset = checked( ( long )DateTime.MaxValue.Subtract( _utcEpoc ).TotalMilliseconds + 1L );
+			var offset = checked( UtcMaxValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds + 1L );
 			Assert.Throws<ArgumentOutOfRangeException>( () => MessagePackConvert.ToDateTime( offset ) );
 		}
 
 		[Test]
 		public void TestToDateTime_MinimumMinusOne_IsUtcEpoc()
 		{
-			var offset = checked( ( long )DateTime.MinValue.Subtract( _utcEpoc ).TotalMilliseconds - 1L );
+			var offset = checked( UtcMinValue.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds - 1L );
 			Assert.Throws<ArgumentOutOfRangeException>( () => MessagePackConvert.ToDateTime( offset ) );
 		}
 
@@ -211,7 +318,7 @@ namespace MsgPack
 		public void TestFromDateTimeOffset_UtcNow_AsUnixEpoc()
 		{
 			Assert.AreEqual(
-				checked( ( long )DateTime.UtcNow.Subtract( _utcEpoc ).TotalMilliseconds ),
+				checked( DateTime.UtcNow.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ),
 				MessagePackConvert.FromDateTimeOffset( DateTimeOffset.UtcNow )
 			);
 		}
@@ -221,7 +328,7 @@ namespace MsgPack
 		{
 			// LocalTime will be converted to UtcTime
 			Assert.AreEqual(
-				checked( ( long )DateTime.UtcNow.Subtract( _utcEpoc ).TotalMilliseconds ),
+				checked( DateTime.UtcNow.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ),
 				MessagePackConvert.FromDateTimeOffset( DateTimeOffset.Now )
 			);
 		}
@@ -239,7 +346,7 @@ namespace MsgPack
 		public void TestFromDateTimeOffset_MinValue_AsUnixEpoc()
 		{
 			Assert.AreEqual(
-				checked( ( long )( DateTimeOffset.MinValue.ToUniversalTime().Subtract( _utcEpoc ).TotalMilliseconds ) ),
+				checked( ( DateTimeOffset.MinValue.ToUniversalTime().Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ) ),
 				MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue.ToUniversalTime() )
 			);
 		}
@@ -248,7 +355,7 @@ namespace MsgPack
 		public void TestFromDateTimeOffset_MaxValue_AsUnixEpoc()
 		{
 			Assert.AreEqual(
-				checked( ( long )( DateTimeOffset.MaxValue.ToUniversalTime().Subtract( _utcEpoc ).TotalMilliseconds ) ),
+				checked( ( DateTimeOffset.MaxValue.ToUniversalTime().Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ) ),
 				MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue.ToUniversalTime() )
 			);
 		}
@@ -258,7 +365,7 @@ namespace MsgPack
 		public void TestFromDateTime_UtcNow_AsUnixEpoc()
 		{
 			Assert.AreEqual(
-				checked( ( long )DateTime.UtcNow.Subtract( _utcEpoc ).TotalMilliseconds ),
+				checked( DateTime.UtcNow.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ),
 				MessagePackConvert.FromDateTime( DateTime.UtcNow )
 			);
 		}
@@ -269,7 +376,7 @@ namespace MsgPack
 			// LocalTime will be converted to UtcTime
 			var now = DateTime.Now;
 			Assert.AreEqual(
-				checked( ( long )now.ToUniversalTime().Subtract( _utcEpoc ).TotalMilliseconds ),
+				checked( now.ToUniversalTime().Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ),
 				MessagePackConvert.FromDateTime( now )
 			);
 		}
@@ -287,8 +394,8 @@ namespace MsgPack
 		public void TestFromDateTime_MinValue_AsUnixEpoc()
 		{
 			Assert.AreEqual(
-				checked( ( long )( DateTime.MinValue.ToUniversalTime().Subtract( _utcEpoc ).TotalMilliseconds ) ),
-				MessagePackConvert.FromDateTime( DateTime.MinValue.ToUniversalTime() )
+				checked( ( UtcMinValue.ToUniversalTime().Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ) ),
+				MessagePackConvert.FromDateTime( UtcMinValue.ToUniversalTime() )
 			);
 		}
 
@@ -296,8 +403,19 @@ namespace MsgPack
 		public void TestFromDateTime_MaxValue_AsUnixEpoc()
 		{
 			Assert.AreEqual(
-				checked( ( long )( DateTime.MaxValue.ToUniversalTime().Subtract( _utcEpoc ).TotalMilliseconds ) ),
-				MessagePackConvert.FromDateTime( DateTime.MaxValue.ToUniversalTime() )
+				checked( ( UtcMaxValue.ToUniversalTime().Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ) ),
+				MessagePackConvert.FromDateTime( UtcMaxValue.ToUniversalTime() )
+			);
+		}
+
+		[Test]
+		public void TestIssue43()
+		{
+			var expected = new DateTime( 9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Utc );
+			var actual = new DateTime( 3155378975999999999L, DateTimeKind.Utc );
+			Assert.AreEqual(
+				MessagePackConvert.ToDateTime( MessagePackConvert.FromDateTime( expected ) ),
+				MessagePackConvert.ToDateTime( MessagePackConvert.FromDateTime( actual ) )
 			);
 		}
 	}
