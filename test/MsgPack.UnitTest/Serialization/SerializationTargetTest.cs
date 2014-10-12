@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
-using MsgPack.Serialization.AbstractSerializers;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -77,9 +76,9 @@ namespace MsgPack.Serialization
 			TestCore<AnnotatedClass>(
 				PublicProperty, NonPublicProperty, PublicField, NonPublicField,
 #if !NETFX_CORE && !WINDOWS_PHONE
- NonSerializedPublicField, NonSerializedNonPublicField,
+				NonSerializedPublicField, NonSerializedNonPublicField,
 #endif
- CollectionReadOnlyProperty );
+				CollectionReadOnlyProperty );
 		}
 
 		[Test]
@@ -89,9 +88,9 @@ namespace MsgPack.Serialization
 			TestCore<DataMamberClass>(
 				PublicProperty, NonPublicProperty, PublicField, NonPublicField,
 #if !NETFX_CORE && !WINDOWS_PHONE
- NonSerializedPublicField, NonSerializedNonPublicField,
+				NonSerializedPublicField, NonSerializedNonPublicField,
 #endif
- CollectionReadOnlyProperty );
+				CollectionReadOnlyProperty );
 		}
 
 		[Test]

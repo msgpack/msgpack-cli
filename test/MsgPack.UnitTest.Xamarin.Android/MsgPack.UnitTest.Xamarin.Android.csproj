@@ -79,6 +79,7 @@
     <None Include="..\MsgPack.UnitTest\cases_compact.mpac">
       <Link>cases_compact.mpac</Link>
     </None>
+    <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
@@ -239,9 +240,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithTwoMember.cs">
       <Link>Serialization\ComplexTypeWithTwoMember.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\CompositeTest.cs">
-      <Link>Serialization\CompositeTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataContractAndNonSerializedMixedTarget.cs">
       <Link>Serialization\DataContractAndNonSerializedMixedTarget.cs</Link>
@@ -957,17 +955,11 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.cs">
       <Link>Serialization\VersioningTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\_SetUpFixture.cs">
-      <Link>Serialization\_SetUpFixture.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\SubtreeUnpackerTest.cs">
       <Link>SubtreeUnpackerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
       <Link>TestRandom.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\TestSuite.cs">
-      <Link>TestSuite.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.cs">
       <Link>UnpackerTest.cs</Link>
@@ -1041,10 +1033,9 @@
     <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Scalar.cs">
       <Link>UnpackingTest.Scalar.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\_SetUpFixture.cs">
-      <Link>_SetUpFixture.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MainActivity.cs" />
+    <Compile Include="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="..\MsgPack.UnitTest\cases.json">
