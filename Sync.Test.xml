@@ -32,7 +32,6 @@
     <Exclude File="ReadMe.txt" />
     <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
-    <!-- iOS Runtime Limit -->
     <Exclude Path="TestSuite.cs" />
     <Exclude Path="Serialization\CompositeTest.cs" />
     <!-- Generator related -->
@@ -45,7 +44,10 @@
   </Project>
 
   <Project Name="MsgPack.UnitTest.Xamarin.Android" Base="MsgPack.UnitTest">
+    <Preserve Path="Properties\AndroidManifest.xml" />
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve Path="Resources\*" />
+    <Preserve Path="MainActivity.cs" />
     <Preserve File="*.config" />
     <Preserve File="*.json" />
     <Preserve File="*.mpac" />
@@ -53,9 +55,12 @@
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
+    <Exclude File="_SetUpFixture.cs" />
     <Exclude File="ReadMe.txt" />
     <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+    <Exclude Path="TestSuite.cs" />
+    <Exclude Path="Serialization\CompositeTest.cs" />
     <!-- Generator related -->
     <Exclude File="*ContextBased*.cs" />
     <Exclude File="*ExpressionBased*.cs" />
