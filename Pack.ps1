@@ -35,6 +35,10 @@ if ( ![IO.Directory]::Exists( ".\MsgPack-CLI" ) )
 {
 	New-Item .\MsgPack-CLI -Type Directory | Out-Null
 }
+else
+{
+	Remove-Item .\MsgPack-CLI\* -Recurse
+}
 
 if ( ![IO.Directory]::Exists( ".\MsgPack-CLI\mpu" ) )
 {
