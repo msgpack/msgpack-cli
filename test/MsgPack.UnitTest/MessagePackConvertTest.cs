@@ -109,7 +109,7 @@ namespace MsgPack
 		{
 			Assert.That( actual.Offset, Is.EqualTo( TimeSpan.Zero ) );
 			var epoc = new DateTimeOffset( 1970, 1, 1, 0, 0, 0, TimeSpan.Zero );
-			Assert.That( actual, Is.EqualTo( epoc.AddMilliseconds( millisecondsOffset ) ) );
+			Assert.That( actual, Is.EqualTo( new DateTimeOffset( epoc.Ticks + millisecondsOffset * TicksToMilliseconds, TimeSpan.Zero ) ) );
 		}
 
 
@@ -214,7 +214,7 @@ namespace MsgPack
 		{
 			Assert.That( actual.Kind, Is.EqualTo( DateTimeKind.Utc ) );
 			var epoc = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
-			Assert.That( actual, Is.EqualTo( epoc.AddMilliseconds( millisecondsOffset ) ) );
+			Assert.That( actual, Is.EqualTo( new DateTime( epoc.Ticks + millisecondsOffset * TicksToMilliseconds, DateTimeKind.Utc ) ) );
 		}
 
 		private static void AssertIsUnixEpocDateTime( DateTime expected, DateTime actual )

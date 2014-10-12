@@ -111,7 +111,7 @@ namespace MsgPack
 		/// </returns>
 		public static DateTimeOffset ToDateTimeOffset( long value )
 		{
-			return _unixEpocUtc.AddMilliseconds( value );
+			return _unixEpocUtc.AddTicks( value * _ticksToMilliseconds );
 		}
 
 		/// <summary>
@@ -125,7 +125,7 @@ namespace MsgPack
 		/// </returns>
 		public static DateTime ToDateTime( long value )
 		{
-			return _unixEpocUtc.AddMilliseconds( value );
+			return _unixEpocUtc.AddTicks( value * _ticksToMilliseconds );
 		}
 
 		/// <summary>
