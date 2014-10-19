@@ -76,6 +76,7 @@ namespace Samples
 		}
 	}
 
+	// Note: If you want to interop with other platform using SerializationMethod.Array (default), you should use [MessagePackMember]. See Sample06 for details.
 	public class PhotoEntry
 	{
 		public long Id { get; set; }

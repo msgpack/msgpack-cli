@@ -30,7 +30,7 @@ namespace Samples
 	public class MessagePackMemberSample
 	{
 		[MessagePackMember(
-			0, // Specify 0 based index for serialized array.
+			0, // Specify 0 based index for serialized array. You should specify this value to ensure interoperability with other platform bindings.
 			NilImplication = NilImplication.MemberDefault // Specify the behavior when unpacked value is nil -- default is Null for reference types (set null), Prohibit for value types (throw exception).
 		)]
 		public long FileId { get; set; }
@@ -49,7 +49,7 @@ namespace Samples
 	// ... Or you can use DataMemberAttribute for compabitility among other libraries.
 	public class DataContractSample
 	{
-		[DataMember( Name = "Id", Order = 1 )]
+		[DataMember( Name = "Id", Order = 1 )] // Order can be used to interop too.
 		public long Id { get; set; }
 
 		[DataMember( Name = "Title", Order = 2 )]
@@ -62,7 +62,7 @@ namespace Samples
 
 namespace System.Runtime.Serialization
 {
-	// Tips: You don't have to refer System.Runtime.Serialization assembly
+	// Tips: You don't have to refer System.Runtime.Serialization assembly. MessagePack for CLI just see Type.FullName.
 	public sealed class DataMemberAttribute : Attribute
 	{
 		public string Name { get; set; }
