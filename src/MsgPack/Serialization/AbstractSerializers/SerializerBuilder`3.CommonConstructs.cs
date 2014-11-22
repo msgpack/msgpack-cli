@@ -1299,6 +1299,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 		);
 
 		/// <summary>
+		///		Emits string switch statement.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="target">Target string expression.</param>
+		/// <param name="defaultCase">Default case expression.</param>
+		/// <param name="cases">The case statements. The keys are case condition, and values are actual statement.</param>
+		/// <returns>The switch statement.</returns>
+		protected abstract TConstruct EmitStringSwitchStatement (
+			TContext context, TConstruct target, TConstruct defaultCase, IDictionary<string, TConstruct> cases
+		);
+
+		/// <summary>
 		/// 	Emits the return statement
 		/// </summary>
 		/// <param name="context">The generation context.</param>
