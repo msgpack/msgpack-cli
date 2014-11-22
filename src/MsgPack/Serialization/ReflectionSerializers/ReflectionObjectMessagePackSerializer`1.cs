@@ -157,7 +157,18 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						continue;
 					}
 
-					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, this._memberIndexes[ name ], i );
+					int index;
+					if ( !this._memberIndexes.TryGetValue(name, out index) )
+					{
+						// key does not exist in the object, skip the associated value
+						if ( unpacker.Skip() == null )
+						{
+							throw SerializationExceptions.NewMissingItem( i );
+						}
+						continue;
+					}
+
+					result = this.UnpackMemberValue(result, unpacker, itemsCount, ref unpacked, index, i);
 				}
 			}
 
