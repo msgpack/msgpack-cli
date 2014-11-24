@@ -701,6 +701,29 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return @else;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally")]
+		protected override ILConstruct EmitStringSwitchStatement (TContext context, ILConstruct target, ILConstruct defaultCase, IDictionary<string, ILConstruct> cases) {
+			// Simple if statements
+			ILConstruct @else = defaultCase;
+			foreach (var @case in cases) {
+				@else =
+					this.EmitConditionalExpression(
+						context,
+						this.EmitInvokeMethodExpression(
+							context,
+							null,
+							Metadata._String.op_Equality,
+							target,
+							this.MakeStringLiteral(context, @case.Key)
+						),
+						@case.Value,
+						@else
+					);
+			}
+
+			return @else;
+		}
+
 		protected override ILConstruct EmitForLoop( TContext context, ILConstruct count, Func<ForLoopContext, ILConstruct> loopBodyEmitter )
 		{
 			var i =

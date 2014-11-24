@@ -64,9 +64,11 @@ namespace MsgPack.Serialization
 				else
 				{
 					var packer = Packer.Create( stream, false );
-					packer.PackMapHeader( 4 );
+					packer.PackMapHeader( 5 );
 					packer.Pack( "Field1" );
 					packer.Pack( 1 );
+					packer.Pack( "Extra" );
+					packer.PackNull();
 					packer.Pack( "Field2" );
 					packer.Pack( -1 );
 					packer.Pack( "Field3" );
