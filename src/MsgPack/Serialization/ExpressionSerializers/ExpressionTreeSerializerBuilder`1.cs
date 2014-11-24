@@ -486,11 +486,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		) {
 			return
 				Expression.Switch(
-					typeof(void),
+					typeof( void ),
 					target,
 					defaultCase,
 					Metadata._String.op_Equality,
-					cases.Select(kv => Expression.SwitchCase(kv.Value, Expression.Constant(kv.Key))).ToArray()
+					cases.Select( kv => Expression.SwitchCase( kv.Value, Expression.Constant( kv.Key ) ) ).ToArray()
 				);
 		}
 

@@ -436,7 +436,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 								unpackedKey =>
 									this.EmitStoreVariableStatement( context, key, unpackedKey )
 							);
-
 						var assigns =
 							this.EmitStringSwitchStatement(
 								context,
