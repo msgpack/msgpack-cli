@@ -247,6 +247,15 @@ namespace MsgPack.Serialization
 #endif // !NETFX_CORE && !SILVERLIGHT
 		}
 	}
+	public class WithKeyDuplicate
+	{
+		[MessagePackMember( 0, Name = "Boo" )]
+		public string Foo { get; set; }
+
+		[MessagePackMember( 1, Name = "Boo" )]
+		public int Bar { get; set; }
+	}
+
 	// ReSharper restore MemberHidesStaticFromOuterClass
 	// ReSharper restore NotAccessedField.Local
 	// ReSharper restore UnusedMember.Local

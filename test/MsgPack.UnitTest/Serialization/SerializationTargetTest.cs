@@ -107,6 +107,12 @@ namespace MsgPack.Serialization
 			Assert.That( target.Any( m => m.Contract.Name == "Alias" && m.Contract.Name != m.Member.Name ) );
 		}
 
+		[Test]
+		public void TestDuplicatedKey()
+		{
+			Assert.Throws<InvalidOperationException>( () => SerializationTarget.Prepare( new SerializationContext(), typeof( WithKeyDuplicate ) ) );
+		}
+
 		private static void TestCore<T>( params string[] expectedMemberNames )
 		{
 			var expected = expectedMemberNames.OrderBy( n => n ).ToArray();

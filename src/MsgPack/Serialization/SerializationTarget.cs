@@ -55,6 +55,7 @@ namespace MsgPack.Serialization
 			var result = PrepareCore( context, targetType );
 
 			VerifyNilImplication( targetType, result );
+			VerifyKeyUniqueness( result );
 
 			return result;
 		}
@@ -108,7 +109,7 @@ namespace MsgPack.Serialization
 			}
 
 			return result;
-		} 
+		}
 
 		// internal for testing
 		internal static IEnumerable<SerializingMember> GetTargetMembers( Type type )
@@ -167,7 +168,7 @@ namespace MsgPack.Serialization
 								.FirstOrDefault();
 							var id = item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Order" )
-								.Select( arg => ( int? ) arg.GetTypedValue().Value )
+								.Select( arg => ( int? )arg.GetTypedValue().Value )
 								.FirstOrDefault();
 #if SILVERLIGHT
 							if ( id == -1 )
@@ -278,6 +279,57 @@ namespace MsgPack.Serialization
 						throw SerializationExceptions.NewNullIsProhibited( serializingMember.Member.ToString() );
 					}
 				}
+			}
+		}
+
+		private static void VerifyKeyUniqueness( IList<SerializingMember> result )
+		{
+			var duplicated = new Dictionary<string, List<MemberInfo>>();
+			var existents = new Dictionary<string, SerializingMember>();
+			foreach ( var member in result )
+			{
+				if ( member.Contract.Name == null )
+				{
+					continue;
+				}
+
+				try
+				{
+					existents.Add( member.Contract.Name, member );
+				}
+				catch ( ArgumentException )
+				{
+					List<MemberInfo> list;
+					if ( duplicated.TryGetValue( member.Contract.Name, out list ) )
+					{
+						list.Add( member.Member );
+					}
+					else
+					{
+						duplicated.Add( member.Contract.Name, new List<MemberInfo> { existents[ member.Contract.Name ].Member, member.Member } );
+					}
+				}
+			}
+
+			if ( duplicated.Count > 0 )
+			{
+				throw new InvalidOperationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Some member keys specified with custom attributes are duplicated. Details: {{{0}}}",
+						String.Join(
+							",",
+							duplicated.Select(
+								kv => String.Format(
+									CultureInfo.CurrentCulture,
+									"\"{0}\":[{1}]",
+									kv.Key,
+									String.Join( ",", kv.Value.Select( m => String.Format( "{0}.{1}({2})", m.DeclaringType, m.Name, ( m is FieldInfo ) ? "Field" : "Property" ) ).ToArray() )
+								)
+							).ToArray()
+						)
+					)
+				);
 			}
 		}
 	}
