@@ -71,7 +71,7 @@ namespace MsgPack.Serialization
 			this.NonSerializedPublicReadOnlyField = 8;
 			this.NonSerializedNonPublicField = 9;
 #endif // !NETFX_CORE && !SILVERLIGHT
-			this._collectionReadOnlyProperty = new List<int> ();
+			this._collectionReadOnlyProperty = new List<int>();
 		}
 	}
 
@@ -146,7 +146,7 @@ namespace MsgPack.Serialization
 			this.NonSerializedPublicReadOnlyField = 8;
 			this.NonSerializedNonPublicField = 9;
 #endif // !NETFX_CORE && !SILVERLIGHT
-			this._collectionReadOnlyProperty = new List<int> ();
+			this._collectionReadOnlyProperty = new List<int>();
 			this.PublicPropertyPlain = 11;
 			this.PublicFieldPlain = 12;
 			this._publicReadOnlyPropertyPlain = 13;
@@ -233,7 +233,7 @@ namespace MsgPack.Serialization
 			this.NonSerializedPublicReadOnlyField = 8;
 			this.NonSerializedNonPublicField = 9;
 #endif // !NETFX_CORE && !SILVERLIGHT
-			this._collectionReadOnlyProperty = new List<int> ();
+			this._collectionReadOnlyProperty = new List<int>();
 			this.PublicPropertyPlain = 11;
 			this.PublicFieldPlain = 12;
 			this._publicReadOnlyPropertyPlain = 13;
