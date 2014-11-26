@@ -263,6 +263,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                     result.Field1 = nullable3.Value;
                                 }
                             }
+                            else {
+                                unpacker.Skip();
+                            }
                         }
                     }
                 }

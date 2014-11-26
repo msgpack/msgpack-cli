@@ -266,6 +266,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                     result.Field1 = nullable3.Value;
                                 }
                             }
+                            else {
+                                unpacker.Skip();
+                            }
                         }
                     }
                 }

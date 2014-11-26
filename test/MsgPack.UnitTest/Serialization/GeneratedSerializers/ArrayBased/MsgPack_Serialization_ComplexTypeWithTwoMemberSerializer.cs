@@ -241,6 +241,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                 result.Value1 = nullable2;
                             }
                         }
+                        else {
+                            unpacker.Skip();
+                        }
                     }
                 }
             }

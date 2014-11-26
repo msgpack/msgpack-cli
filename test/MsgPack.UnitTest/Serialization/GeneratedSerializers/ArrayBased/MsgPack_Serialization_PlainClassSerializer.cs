@@ -329,6 +329,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                     }
                                 }
                             }
+                            else {
+                                unpacker.Skip();
+                            }
                         }
                     }
                 }

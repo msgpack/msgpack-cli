@@ -345,6 +345,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                     result.DictionaryField = nullable3;
                                 }
                             }
+                            else {
+                                unpacker.Skip();
+                            }
                         }
                     }
                 }

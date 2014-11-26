@@ -426,6 +426,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                                     result.PublicProperty = nullable7.Value;
                                                 }
                                             }
+                                            else {
+                                                unpacker.Skip();
+                                            }
                                         }
                                     }
                                 }

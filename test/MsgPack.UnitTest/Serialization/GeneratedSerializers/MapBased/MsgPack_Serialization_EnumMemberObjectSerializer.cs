@@ -771,6 +771,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                                             result.ByNameByNameProperty = nullable9.Value;
                                                         }
                                                     }
+                                                    else {
+                                                        unpacker.Skip();
+                                                    }
                                                 }
                                             }
                                         }

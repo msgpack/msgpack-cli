@@ -308,6 +308,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                     result.A = nullable3;
                                 }
                             }
+                            else {
+                                unpacker.Skip();
+                            }
                         }
                     }
                 }

@@ -431,6 +431,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                         result.Data = nullable4;
                                     }
                                 }
+                                else {
+                                    unpacker.Skip();
+                                }
                             }
                         }
                     }

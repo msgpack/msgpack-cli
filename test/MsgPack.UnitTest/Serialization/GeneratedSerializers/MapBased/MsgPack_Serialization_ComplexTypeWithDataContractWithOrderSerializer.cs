@@ -430,6 +430,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                         result.Source = nullable4;
                                     }
                                 }
+                                else {
+                                    unpacker.Skip();
+                                }
                             }
                         }
                     }

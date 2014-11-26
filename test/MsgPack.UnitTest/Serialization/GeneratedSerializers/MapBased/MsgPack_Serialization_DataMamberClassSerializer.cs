@@ -454,6 +454,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                                     result.PublicProperty = nullable7.Value;
                                                 }
                                             }
+                                            else {
+                                                unpacker.Skip();
+                                            }
                                         }
                                     }
                                 }

@@ -270,6 +270,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                                 result.Name = nullable2;
                             }
                         }
+                        else {
+                            unpacker.Skip();
+                        }
                     }
                 }
             }

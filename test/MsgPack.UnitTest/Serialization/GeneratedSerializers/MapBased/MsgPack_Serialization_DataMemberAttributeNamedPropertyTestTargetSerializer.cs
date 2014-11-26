@@ -227,6 +227,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                             result.Member = nullable1;
                         }
                     }
+                    else {
+                        unpacker.Skip();
+                    }
                 }
             }
             return result;

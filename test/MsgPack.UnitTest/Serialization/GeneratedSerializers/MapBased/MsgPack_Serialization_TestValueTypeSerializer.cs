@@ -348,6 +348,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                     result.DictionaryField = nullable3;
                                 }
                             }
+                            else {
+                                unpacker.Skip();
+                            }
                         }
                     }
                 }

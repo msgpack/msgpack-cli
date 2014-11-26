@@ -272,6 +272,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                 result.Name = nullable2;
                             }
                         }
+                        else {
+                            unpacker.Skip();
+                        }
                     }
                 }
             }

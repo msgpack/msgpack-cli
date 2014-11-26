@@ -264,6 +264,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
                             result.NonCollection = nullable1;
                         }
                     }
+                    else {
+                        unpacker.Skip();
+                    }
                 }
             }
             return result;

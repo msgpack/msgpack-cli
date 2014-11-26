@@ -335,6 +335,9 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
                                     }
                                 }
                             }
+                            else {
+                                unpacker.Skip();
+                            }
                         }
                     }
                 }
