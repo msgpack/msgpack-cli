@@ -676,31 +676,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitStringSwitchStatement( TContext context, ILConstruct target, IDictionary<string, ILConstruct> cases )
-		{
-			// Simple if statements
-			ILConstruct @else = null;
-			foreach ( var @case in cases )
-			{
-				@else =
-					this.EmitConditionalExpression(
-						context,
-						this.EmitInvokeMethodExpression(
-							context,
-							null,
-							Metadata._String.op_Equality,
-							target,
-							this.MakeStringLiteral( context, @case.Key )
-						),
-						@case.Value,
-						@else
-					);
-			}
-
-			return @else;
-		}
-
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally")]
 		protected override ILConstruct EmitStringSwitchStatement (TContext context, ILConstruct target, ILConstruct defaultCase, IDictionary<string, ILConstruct> cases) {
 			// Simple if statements

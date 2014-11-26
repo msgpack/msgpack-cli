@@ -646,30 +646,6 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
-		protected override CodeDomConstruct EmitStringSwitchStatement( CodeDomContext context, CodeDomConstruct target, IDictionary<string, CodeDomConstruct> cases )
-		{
-#if DEBUG
-			Contract.Assert( target.IsExpression );
-			Contract.Assert( cases.Values.All( c => c.IsStatement ) );
-#endif
-			return
-				CodeDomConstruct.Statement(
-					cases.Aggregate<KeyValuePair<string, CodeDomConstruct>, CodeConditionStatement>(
-						null,
-						( current, caseStatement ) =>
-						new CodeConditionStatement(
-							new CodeBinaryOperatorExpression(
-								target.AsExpression(),
-								CodeBinaryOperatorType.ValueEquality,
-								new CodePrimitiveExpression( caseStatement.Key )
-							),
-							caseStatement.Value.AsStatements().ToArray(),
-							current == null ? new CodeStatement[ 0 ] : new CodeStatement[] { current }
-						)
-					)
-				);
-		}
-
 		protected override CodeDomConstruct EmitStringSwitchStatement (CodeDomContext context, CodeDomConstruct target, CodeDomConstruct defaultCase, IDictionary<string, CodeDomConstruct> cases) {
 #if DEBUG
 			Contract.Assert(target.IsExpression);
