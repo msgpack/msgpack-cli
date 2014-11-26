@@ -130,7 +130,8 @@ namespace MsgPack.Serialization
 			var members =
 				type.GetRuntimeFields().Where( f => !f.IsStatic ).OfType<MemberInfo>()
 					.Concat( type.GetRuntimeProperties().Where( p => p.GetMethod != null && !p.GetMethod.IsStatic ) )
-					.Where( CheckTargetEligibility );
+					.Where( CheckTargetEligibility )
+					.ToArray();
 			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
 #endif
 
