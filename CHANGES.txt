@@ -190,8 +190,8 @@ Release 0.5.5 - 2014/10/12
   IMPROVEMENTS
   * Portable library drop for Universal App does not refer `libc` now. Issue #41
 
-Relese 1.0 - ???
+Release 0.5.6 - 2014/11/?
 
-  BREAKING CHANGES [planed]
-  * APIs marked with [Obsolete] are removed.
-
+  BUG FIXES
+  * The type which has indexer(s) and does not implement IDictionary nor IDictionary<TKey,TValue> is failed to create serializer. Issue #49
+  * Fix Unpacking a map with extra fields. Issue #50
