@@ -467,9 +467,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				);
 		}
 
-		protected override ExpressionConstruct EmitStringSwitchStatement (
-			ExpressionTreeContext context, ExpressionConstruct target, ExpressionConstruct defaultCase, IDictionary<string, ExpressionConstruct> cases
-		) {
+		protected override ExpressionConstruct EmitStringSwitchStatement ( ExpressionTreeContext context, ExpressionConstruct target, IDictionary<string, ExpressionConstruct> cases, ExpressionConstruct defaultCase ) {
 			return
 				Expression.Switch(
 					typeof( void ),

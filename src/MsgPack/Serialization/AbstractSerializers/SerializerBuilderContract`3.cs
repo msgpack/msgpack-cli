@@ -451,7 +451,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitStringSwitchStatement (TContext context, TConstruct target, TConstruct defaultCase, IDictionary<string, TConstruct> cases) {
+		protected override TConstruct EmitStringSwitchStatement ( TContext context, TConstruct target, IDictionary<string, TConstruct> cases, TConstruct defaultCase ) {
 			Contract.Requires(context != null);
 			Contract.Requires(target != null);
 			Contract.Requires(defaultCase != null);

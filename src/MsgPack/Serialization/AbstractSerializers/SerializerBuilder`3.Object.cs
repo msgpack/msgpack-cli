@@ -440,11 +440,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitStringSwitchStatement(
 								context,
 								key,
-								this.EmitInvokeVoidMethod(
-									context,
-									context.Unpacker,
-									typeof( Unpacker ).GetMethod( "Skip" )
-								),
 								entries.Where( e => e.Member != null ).ToDictionary(
 									entry => entry.Contract.Name,
 									entry =>
@@ -461,8 +456,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 											unpackedValue =>
 												this.EmitSetMemberValueStatement( context, result, entry.Member, unpackedValue )
 										)
-								)
-							);
+									), 
+									this.EmitInvokeVoidMethod(
+										context,
+										context.Unpacker,
+										typeof( Unpacker ).GetMethod( "Skip" )
+									)
+								);
 
 						return this.EmitSequentialStatements( context, typeof( void ), key, unpackKey, assigns );
 					}

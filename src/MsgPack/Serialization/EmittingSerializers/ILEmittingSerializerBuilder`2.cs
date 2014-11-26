@@ -677,7 +677,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally")]
-		protected override ILConstruct EmitStringSwitchStatement (TContext context, ILConstruct target, ILConstruct defaultCase, IDictionary<string, ILConstruct> cases) {
+		protected override ILConstruct EmitStringSwitchStatement ( TContext context, ILConstruct target, IDictionary<string, ILConstruct> cases, ILConstruct defaultCase ) {
 			// Simple if statements
 			ILConstruct @else = defaultCase;
 			foreach (var @case in cases) {

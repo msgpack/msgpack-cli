@@ -646,7 +646,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
-		protected override CodeDomConstruct EmitStringSwitchStatement (CodeDomContext context, CodeDomConstruct target, CodeDomConstruct defaultCase, IDictionary<string, CodeDomConstruct> cases) {
+		protected override CodeDomConstruct EmitStringSwitchStatement ( CodeDomContext context, CodeDomConstruct target, IDictionary<string, CodeDomConstruct> cases, CodeDomConstruct defaultCase ) {
 #if DEBUG
 			Contract.Assert(target.IsExpression);
 			Contract.Assert(defaultCase.IsStatement);
