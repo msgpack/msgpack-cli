@@ -203,6 +203,12 @@ namespace MsgPack.Serialization
 
 			if ( asProperty != null )
 			{
+				if ( asProperty.GetIndexParameters().Length > 0 )
+				{
+					// Indexer cannot be target except the type itself implements IDictionary or IDictionary<TKey,TValue>
+					return false;
+				}
+
 #if !NETFX_CORE
 				if ( asProperty.GetSetMethod( true ) != null )
 #else

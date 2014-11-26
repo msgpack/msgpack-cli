@@ -108,6 +108,12 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestIndexerOverload()
+		{
+			Assert.That( SerializationTarget.GetTargetMembers( typeof( WithIndexerOverload ) ).Any(), Is.False );
+		}
+
+		[Test]
 		public void TestDuplicatedKey()
 		{
 			Assert.Throws<InvalidOperationException>( () => SerializationTarget.Prepare( new SerializationContext(), typeof( WithKeyDuplicate ) ) );

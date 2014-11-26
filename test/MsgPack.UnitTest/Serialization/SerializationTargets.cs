@@ -247,6 +247,22 @@ namespace MsgPack.Serialization
 #endif // !NETFX_CORE && !SILVERLIGHT
 		}
 	}
+
+	public class WithIndexerOverload
+	{
+		public string this[ int index ]
+		{
+			get { return null; }
+			set { }
+		}
+
+		public string this[ string key ]
+		{
+			get { return null; }
+			set { }
+		}
+	}
+
 	public class WithKeyDuplicate
 	{
 		[MessagePackMember( 0, Name = "Boo" )]
