@@ -462,6 +462,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
+		protected override TConstruct EmitStringSwitchStatement (TContext context, TConstruct target, TConstruct defaultCase, IDictionary<string, TConstruct> cases) {
+			Contract.Requires(context != null);
+			Contract.Requires(target != null);
+			Contract.Requires(defaultCase != null);
+			Contract.Requires(cases != null);
+			Contract.Requires(cases.Count > 0);
+			Contract.Ensures(Contract.Result<TConstruct>() != null);
+			Contract.Ensures(Contract.Result<TConstruct>().ContextType == typeof(void));
+			return default(TConstruct);
+		}
+
 		protected override TConstruct EmitForLoop( TContext context, TConstruct count, Func<ForLoopContext, TConstruct> loopBodyEmitter )
 		{
 			Contract.Requires( context != null );

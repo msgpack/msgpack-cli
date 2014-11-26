@@ -670,6 +670,30 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
+		protected override CodeDomConstruct EmitStringSwitchStatement (CodeDomContext context, CodeDomConstruct target, CodeDomConstruct defaultCase, IDictionary<string, CodeDomConstruct> cases) {
+#if DEBUG
+			Contract.Assert(target.IsExpression);
+			Contract.Assert(defaultCase.IsStatement);
+			Contract.Assert(cases.Values.All(c => c.IsStatement));
+#endif
+
+			var statements = cases.Aggregate<KeyValuePair<string, CodeDomConstruct>, CodeConditionStatement>(
+				null,
+				(current, caseStatement) =>
+				new CodeConditionStatement(
+					new CodeBinaryOperatorExpression(
+						target.AsExpression(),
+						CodeBinaryOperatorType.ValueEquality,
+						new CodePrimitiveExpression(caseStatement.Key)
+					),
+					caseStatement.Value.AsStatements().ToArray(),
+					current == null ? defaultCase.AsStatements().ToArray() : new CodeStatement[] { current }
+				)
+			);
+
+			return CodeDomConstruct.Statement(statements);
+		}
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override CodeDomConstruct EmitRetrunStatement( CodeDomContext context, CodeDomConstruct expression )
 		{

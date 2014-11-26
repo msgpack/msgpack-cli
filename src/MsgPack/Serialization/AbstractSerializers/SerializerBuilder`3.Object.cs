@@ -440,6 +440,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitStringSwitchStatement(
 								context,
 								key,
+								this.EmitInvokeVoidMethod(
+									context,
+									context.Unpacker,
+									typeof( Unpacker ).GetMethod( "Skip" )
+								),
 								entries.Where( e => e.Member != null ).ToDictionary(
 									entry => entry.Contract.Name,
 									entry =>
