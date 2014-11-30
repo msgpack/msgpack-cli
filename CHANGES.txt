@@ -190,7 +190,7 @@ Release 0.5.5 - 2014/10/12
   IMPROVEMENTS
   * Portable library drop for Universal App does not refer `libc` now. Issue #41
 
-Release 0.5.6 - 2014/11/?
+Release 0.5.6 - 2014/11/30
 
   BUG FIXES
   * The type which has indexer(s) and does not implement IDictionary nor IDictionary<TKey,TValue> is failed to create serializer. Issue #49

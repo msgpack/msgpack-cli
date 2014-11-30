@@ -4279,13 +4279,14 @@
             <param name="elseExpression">The expression which is used when condition is false.</param>
             <returns>The conditional expression.</returns>
         </member>
-        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitStringSwitchStatement(`0,`1,System.Collections.Generic.IDictionary{System.String,`1})">
-            <summary>
-            	Emits string switch statement.
-            </summary>
+        <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitStringSwitchStatement(`0,`1,System.Collections.Generic.IDictionary{System.String,`1},`1)">
+             <summary>
+            		Emits string switch statement.
+             </summary>
             <param name="context">The generation context.</param>
             <param name="target">Target string expression.</param>
             <param name="cases">The case statements. The keys are case condition, and values are actual statement.</param>
+            <param name="defaultCase">Default case expression.</param>
             <returns>The switch statement.</returns>
         </member>
         <member name="M:MsgPack.Serialization.AbstractSerializers.SerializerBuilder`3.EmitRetrunStatement(`0,`1)">
