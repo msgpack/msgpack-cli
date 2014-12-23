@@ -172,7 +172,7 @@ namespace mpu
 
 					GenerateSerializers(
 						sourceFilePathes,
-						referenceAssemblies.Distinct().ToArray(),
+						referenceAssemblies.Distinct( PathEqualityComparer.Instance ).ToArray(),
 						sourceFileIsAssembly,
 						includingPattern,
 						excludingPattern,
