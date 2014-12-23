@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -131,7 +132,7 @@ namespace mpu
 						value => configuration.CodeIndentString = value
 					},
 					{
-						"references=", "[serializer, optional] Specify reference assemblies' file pathes (delimited by comma) to compile serialization target type source codes.",
+						"r|references=", "[serializer, optional] Specify reference assemblies' file pathes (delimited by comma) to compile serialization target type source codes. './MsgPack.dll' will be added automatically when it exists.",
 						value => referenceAssemblies.AddRange( value.Split( new []{','}, StringSplitOptions.RemoveEmptyEntries).Select( token => token.Trim() ))
 					},
 					{
@@ -164,6 +165,10 @@ namespace mpu
 				case Action.GenerateSerializers:
 				{
 					configuration.OutputDirectory = outputDirectoryPath;
+					if ( File.Exists( "./MsgPack.dll" ) )
+					{
+						referenceAssemblies.Add( "./MsgPack.dll" );
+					}
 
 					GenerateSerializers(
 						sourceFilePathes,
