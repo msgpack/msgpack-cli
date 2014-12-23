@@ -201,6 +201,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			this._declaringTypes.Add( targetType, declaringType );
 			this._dependentSerializers.Clear();
+			this._cachedFieldInfos.Clear();
+			this._cachedMethodBases.Clear();
 			this._buildingType = declaringType;
 
 			this.Packer = CodeDomConstruct.Parameter( typeof( Packer ), "packer" );
