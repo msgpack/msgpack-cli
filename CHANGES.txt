@@ -195,3 +195,15 @@ Release 0.5.6 - 2014/11/30
   BUG FIXES
   * The type which has indexer(s) and does not implement IDictionary nor IDictionary<TKey,TValue> is failed to create serializer. Issue #49
   * Fix Unpacking a map with extra fields. Issue #50
+
+Release 0.5.7 - 2014/12/23
+
+  BUG FIXES
+  * Fix serializer uses unnecessary reflection to get collection typed property.
+  * Fix generated serializers in source code style may have extra fields when multiple serializers are generated at a time.
+  * Mpu.exe's --refernce option distinction now respects platform rules and uses absolute paths instead of relative paths.
+  * Fix lambda expressions in source code causes failure of mpu.exe in Mono.
+
+  IMPROVEMENTS
+  * Add mpu.exe -r option which is shorthand of --reference.
+  * Add default and implicit --reference=./MsgPack.dll option in mpu.exe
