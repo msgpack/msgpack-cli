@@ -431,7 +431,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					return this.EmitSetProprety( context, instance, asProperty, value, false );
 				}
 
-				getCollection = this.EmitGetProperty( context, instance, asProperty, asProperty.GetIsPublic() );
+				getCollection = this.EmitGetProperty( context, instance, asProperty, !asProperty.GetIsPublic() );
 				traits = asProperty.PropertyType.GetCollectionTraits();
 			}
 
