@@ -137,6 +137,15 @@ namespace mpu
 				compilerParameters.ReferencedAssemblies.Add( referenceAssembly );
 			}
 
+			if (
+				!typeof( CodeDomProvider ).Assembly.CodeBase.StartsWith(
+					Environment.ExpandEnvironmentVariables( "file:///%SystemDrive%/Windows/" ),
+					StringComparison.OrdinalIgnoreCase ) )
+			{
+				// may be mcs, so add C# 3.5 option.
+				compilerParameters.CompilerOptions = "-langversion=3 -sdk=2";
+			}
+
 			var results =
 				CodeDomProvider.CreateProvider( "C#" ).CompileAssemblyFromFile(
 					compilerParameters,
