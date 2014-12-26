@@ -1190,6 +1190,122 @@ namespace MsgPack.Serialization
 
 #endregion -- ReadOnly / Private Members --
 
+#region -- Exclusion --
+
+		private void TestIgnoreCore<T>( Action<T> setter, Action<T, T> assertion )
+			where T : new()
+		{
+			var target = GetSerializationContext().GetSerializer<T>();
+			var obj = new T();
+			setter( obj );
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, obj );
+				buffer.Position = 0;
+				var actual = target.Unpack( buffer );
+				assertion( obj, actual );
+			}
+		}
+
+		private void TestIgnoreCore<T, TException>()
+			where TException : Exception
+		{
+			Assert.Throws<TException>( () => GetSerializationContext().GetSerializer<T>() );
+		}
+
+		[Test]
+		public void TestIgnore_Normal()
+		{
+			TestIgnoreCore<Excluded>( 
+				target => { 
+					target.IgnoredField = "ABC";
+					target.IgnoredProperty = "ABC";
+					target.NotIgnored = "ABC";
+				},
+				( expected, actual ) =>
+				{
+					Assert.That( actual.IgnoredField, Is.Null );
+					Assert.That( actual.IgnoredProperty, Is.Null );
+					Assert.That( actual.NotIgnored, Is.EqualTo( expected.NotIgnored ) );
+				}
+			);
+		}
+
+		[Test]
+		public void TestIgnore_ExcludedOnly()
+		{
+			TestIgnoreCore<OnlyExcluded, SerializationException>();
+		}
+
+		[Test]
+		public void TestIgnore_ExclusionAndInclusionMixed()
+		{
+			TestIgnoreCore<ExclusionAndInclusionMixed>( 
+				target => { 
+					target.IgnoredField = "ABC";
+					target.IgnoredProperty = "ABC";
+					target.NotMarked = "ABC";
+					target.Marked = "ABC";
+				},
+				( expected, actual ) =>
+				{
+					Assert.That( actual.IgnoredField, Is.Null );
+					Assert.That( actual.IgnoredProperty, Is.Null );
+					Assert.That( actual.NotMarked, Is.Null );
+					Assert.That( actual.Marked, Is.EqualTo( expected.Marked ) );
+				}
+			);
+		}
+
+		[Test]
+		public void TestIgnore_ExclusionAndInclusionSimulatously()
+		{
+			TestIgnoreCore<ExclusionAndInclusionSimulatously, SerializationException>();
+		}
+
+
+		public class OnlyExcluded
+		{
+			[MessagePackIgnore]
+			public string Ignored { get; set; }
+		}
+
+		public class Excluded
+		{
+			[MessagePackIgnore]
+			public string IgnoredField;
+
+			[MessagePackIgnore]
+			public string IgnoredProperty { get; set; }
+
+			public string NotIgnored { get; set; }
+		}
+
+		public class ExclusionAndInclusionMixed
+		{
+			[MessagePackIgnore]
+			public string IgnoredField;
+
+			[MessagePackIgnore]
+			public string IgnoredProperty { get; set; }
+
+			public string NotMarked { get; set; }
+
+			[MessagePackMember( 0 )]
+			public string Marked { get; set; }
+		}
+
+		public class ExclusionAndInclusionSimulatously
+		{
+			[MessagePackMember( 0 )]
+			public string Marked { get; set; }
+
+			[MessagePackIgnore]
+			[MessagePackMember( 1 )]
+			public string DoubleMarked { get; set; }
+		}
+
+#endregion -- Exclusion --
 		public class HasInitOnlyField
 		{
 			public readonly string Field = "ABC";

@@ -424,6 +424,9 @@
     <Compile Include="..\MsgPack\Serialization\MessagePackEnumMemberAttribute.cs">
       <Link>Serialization\MessagePackEnumMemberAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackIgnoreAttribute.cs">
+      <Link>Serialization\MessagePackIgnoreAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackMemberAttribute.cs">
       <Link>Serialization\MessagePackMemberAttribute.cs</Link>
     </Compile>

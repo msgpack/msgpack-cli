@@ -137,6 +137,28 @@ namespace MsgPack.Serialization
 
 			if ( filtered.Length > 0 )
 			{
+				var duplicated =
+					filtered.FirstOrDefault(
+						member =>
+#if !NETFX_CORE
+							Attribute.IsDefined( member, typeof( MessagePackIgnoreAttribute ) )
+#else
+							member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 
+#endif // !NETFX_CORE
+					);
+
+				if ( duplicated != null )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"A member '{0}' of type '{1}' is marked with both MessagePackMemberAttribute and MessagePackIgnoreAttribute.",
+							duplicated.Name,
+							type 
+						)
+					);
+				}
+
 				return
 					filtered.Select( member =>
 						new SerializingMember(
@@ -187,13 +209,18 @@ namespace MsgPack.Serialization
 						}
 					);
 			}
-#if SILVERLIGHT || NETFX_CORE
-			return members.Where( member => member.GetHasPublicGetter() ).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
-#else
 			return
-				members.Where( item => item.GetHasPublicGetter() && !Attribute.IsDefined( item, typeof( NonSerializedAttribute ) ) )
-				.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
-#endif
+				members.Where(
+					member => member.GetIsPublic()
+#if !SILVERLIGHT && !NETFX_CORE
+					&& !Attribute.IsDefined( member, typeof( NonSerializedAttribute ) )
+#endif // !SILVERLIGHT && !NETFX_CORE
+#if !NETFX_CORE
+					&& !Attribute.IsDefined( member, typeof( MessagePackIgnoreAttribute ) )
+#else
+					&& !member.IsDefined( typeof( MessagePackIgnoreAttribute ) ) 
+#endif // !NETFX_CORE
+				).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 		}
 
 		private static bool CheckTargetEligibility( MemberInfo member )
