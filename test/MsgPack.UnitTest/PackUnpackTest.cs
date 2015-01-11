@@ -298,6 +298,7 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 10000 )]
 		public void TestArray_Splitted()
 		{
 			foreach (
@@ -509,6 +510,7 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 60000 )]
 		public void TestDictionary_Splitted()
 		{
 			foreach (
@@ -573,6 +575,7 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 3000 )]
 		public void TestBytes_Splitted()
 		{
 			foreach (
@@ -639,6 +642,7 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 3000 )]
 		public void TestChars_Splitted()
 		{
 			foreach (
@@ -711,6 +715,7 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 3000 )]
 		public void TestExts_Splitted()
 		{
 			foreach (
