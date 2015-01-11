@@ -37,6 +37,7 @@ using System;
 using System.Diagnostics.Contracts;
 #endif // !UNITY
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace MsgPack
@@ -115,6 +116,8 @@ this.WriteReadBody( "MapLength", "Int64", true, this.WriteUnpackMapLength );
 
 this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", false, this.WriteUnpackExtendedTypeObject );
 this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", true, this.WriteUnpackExtendedTypeObject );
+
+this.WriteHelperMethods();
 
 this.PopIndent();
 #>
