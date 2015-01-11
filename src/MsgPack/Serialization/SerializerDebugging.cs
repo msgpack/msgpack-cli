@@ -296,7 +296,10 @@ namespace MsgPack.Serialization
 
 				foreach ( var pastAssembly in File.ReadAllLines( historyFilePath ) )
 				{
-					File.Delete( pastAssembly );
+					if ( !String.IsNullOrEmpty( pastAssembly ) )
+					{
+						File.Delete( pastAssembly );
+					}
 				}
 
 				new FileStream( historyFilePath, FileMode.Truncate ).Close();
