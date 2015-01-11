@@ -269,6 +269,24 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 #>
 			}
 		}
+
+		[Test]
+		public void <#= methodName #>_Splitted()
+		{
+			using( var buffer =
+				new MemoryStream( 
+					new byte[] { <#= testCase.Item3 #> }
+					.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+<#+
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, valueLengthAjustument >= 0 );
+#>
+			}
+		}
 <#+
 }
 #>

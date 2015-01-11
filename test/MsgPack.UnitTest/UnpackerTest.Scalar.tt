@@ -154,6 +154,22 @@ foreach( var __testCase in __integers )
 				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
 		}
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read_Splitted()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
+			}
+		}
 <#
 	foreach( var __variation in
 		new []
@@ -176,6 +192,19 @@ foreach( var __testCase in __integers )
 				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
 			}
 		}
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>_Splitted()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				<#= __testCase.Item4.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
+				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>( out result ) );
+				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
+			}
+		}
 <#
 	}
 }
@@ -188,6 +217,22 @@ foreach( var __testCase in __booleans )
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read_Splitted()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -219,6 +264,19 @@ foreach( var __testCase in __booleans )
 				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
 			}
 		}
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>_Splitted()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				<#= __testCase.Item4.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
+				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item4.Name #>( out result ) );
+				Assert.That( result<#= __variation.IsNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
+			}
+		}
 <#
 	}
 }
@@ -232,6 +290,22 @@ foreach( var __testCase in __reals )
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
+			}
+		}
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read_Splitted()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -263,6 +337,19 @@ foreach( var __testCase in __reals )
 				Assert.That( <#= __testCase.Item4 #> result<#= __variation.IsNullable ? ".Value" : String.Empty #> ) );
 			}
 		}
+
+		[Test]
+		public void TestUnpack<#= __testCase.Item1 #>_Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>_Splitted()
+		{
+			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+				<#= __testCase.Item3.Name #><#= __variation.IsNullable ? "?" : String.Empty #> result;
+				Assert.IsTrue( unpacker.Read<#= __variation.IsNullable ? "Nullable" : String.Empty #><#= __testCase.Item3.Name #>( out result ) );
+				Assert.That( <#= __testCase.Item4 #> result<#= __variation.IsNullable ? ".Value" : String.Empty #> ) );
+			}
+		}
 <#
 	}
 }
@@ -283,6 +370,19 @@ foreach ( var __scalarType in
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
 			using( var unpacker = Unpacker.Create( buffer ) )
+			{
+				<#= __scalarType.Name #>? result;
+				Assert.IsTrue( unpacker.ReadNullable<#= __scalarType.Name #>( out result ) );
+				Assert.That( result, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestUnpackNil_ReadNullable<#= __scalarType.Name #>_Splitted()
+		{
+			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
 			{
 				<#= __scalarType.Name #>? result;
 				Assert.IsTrue( unpacker.ReadNullable<#= __scalarType.Name #>( out result ) );

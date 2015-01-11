@@ -63,6 +63,23 @@ namespace MsgPack
 			Assert.AreEqual( value, ( Byte )mpo );
 			Assert.AreEqual( value, mpo.AsByte() );
 		}
+		
+		[Test]
+		public void TestByte_Splitted()
+		{
+			var value = Byte.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( Byte )mpo );
+					Assert.AreEqual( value, mpo.AsByte() );
+				}
+			}
+		}
 
 		[Test]
 		public void TestSByte()
@@ -89,6 +106,23 @@ namespace MsgPack
 			var mpo = UnpackOne( output );
 			Assert.AreEqual( value, ( SByte )mpo );
 			Assert.AreEqual( value, mpo.AsSByte() );
+		}
+		
+		[Test]
+		public void TestSByte_Splitted()
+		{
+			var value = SByte.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( SByte )mpo );
+					Assert.AreEqual( value, mpo.AsSByte() );
+				}
+			}
 		}
 
 		[Test]
@@ -117,6 +151,23 @@ namespace MsgPack
 			Assert.AreEqual( value, ( Int16 )mpo );
 			Assert.AreEqual( value, mpo.AsInt16() );
 		}
+		
+		[Test]
+		public void TestInt16_Splitted()
+		{
+			var value = Int16.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( Int16 )mpo );
+					Assert.AreEqual( value, mpo.AsInt16() );
+				}
+			}
+		}
 
 		[Test]
 		public void TestUInt16()
@@ -142,6 +193,23 @@ namespace MsgPack
 			var mpo = UnpackOne( output );
 			Assert.AreEqual( value, ( UInt16 )mpo );
 			Assert.AreEqual( value, mpo.AsUInt16() );
+		}
+		
+		[Test]
+		public void TestUInt16_Splitted()
+		{
+			var value = UInt16.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( UInt16 )mpo );
+					Assert.AreEqual( value, mpo.AsUInt16() );
+				}
+			}
 		}
 
 		[Test]
@@ -170,6 +238,23 @@ namespace MsgPack
 			Assert.AreEqual( value, ( Int32 )mpo );
 			Assert.AreEqual( value, mpo.AsInt32() );
 		}
+		
+		[Test]
+		public void TestInt32_Splitted()
+		{
+			var value = Int32.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( Int32 )mpo );
+					Assert.AreEqual( value, mpo.AsInt32() );
+				}
+			}
+		}
 
 		[Test]
 		public void TestUInt32()
@@ -195,6 +280,23 @@ namespace MsgPack
 			var mpo = UnpackOne( output );
 			Assert.AreEqual( value, ( UInt32 )mpo );
 			Assert.AreEqual( value, mpo.AsUInt32() );
+		}
+		
+		[Test]
+		public void TestUInt32_Splitted()
+		{
+			var value = UInt32.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( UInt32 )mpo );
+					Assert.AreEqual( value, mpo.AsUInt32() );
+				}
+			}
 		}
 
 		[Test]
@@ -223,6 +325,23 @@ namespace MsgPack
 			Assert.AreEqual( value, ( Int64 )mpo );
 			Assert.AreEqual( value, mpo.AsInt64() );
 		}
+		
+		[Test]
+		public void TestInt64_Splitted()
+		{
+			var value = Int64.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( Int64 )mpo );
+					Assert.AreEqual( value, mpo.AsInt64() );
+				}
+			}
+		}
 
 		[Test]
 		public void TestUInt64()
@@ -248,6 +367,23 @@ namespace MsgPack
 			var mpo = UnpackOne( output );
 			Assert.AreEqual( value, ( UInt64 )mpo );
 			Assert.AreEqual( value, mpo.AsUInt64() );
+		}
+		
+		[Test]
+		public void TestUInt64_Splitted()
+		{
+			var value = UInt64.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( UInt64 )mpo );
+					Assert.AreEqual( value, mpo.AsUInt64() );
+				}
+			}
 		}
 
 		[Test]
@@ -280,6 +416,23 @@ namespace MsgPack
 			Assert.AreEqual( value, ( Single )mpo, 10e-10 );
 			Assert.AreEqual( value, mpo.AsSingle(), 10e-10 );
 		}
+		
+		[Test]
+		public void TestSingle_Splitted()
+		{
+			var value = Single.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( Single )mpo );
+					Assert.AreEqual( value, mpo.AsSingle() );
+				}
+			}
+		}
 
 		[Test]
 		public void TestDouble()
@@ -310,6 +463,23 @@ namespace MsgPack
 			var mpo = UnpackOne( output );
 			Assert.AreEqual( value, ( Double )mpo, 10e-10 );
 			Assert.AreEqual( value, mpo.AsDouble(), 10e-10 );
+		}
+		
+		[Test]
+		public void TestDouble_Splitted()
+		{
+			var value = Double.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( Double )mpo );
+					Assert.AreEqual( value, mpo.AsDouble() );
+				}
+			}
 		}
 	}
 }

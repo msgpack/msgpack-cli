@@ -125,6 +125,23 @@ foreach( var __type in __integerTypes )
 			Assert.AreEqual( value, ( <#= __type.Name #> )mpo );
 			Assert.AreEqual( value, mpo.As<#= __type.Name #>() );
 		}
+		
+		[Test]
+		public void Test<#= __type.Name #>_Splitted()
+		{
+			var value = <#= __type.Name #>.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( <#= __type.Name #> )mpo );
+					Assert.AreEqual( value, mpo.As<#= __type.Name #>() );
+				}
+			}
+		}
 <#
 }
 
@@ -161,6 +178,23 @@ foreach( var __type in __floatingTypes )
 			var mpo = UnpackOne( output );
 			Assert.AreEqual( value, ( <#= __type.Name #> )mpo, 10e-10 );
 			Assert.AreEqual( value, mpo.As<#= __type.Name #>(), 10e-10 );
+		}
+		
+		[Test]
+		public void Test<#= __type.Name #>_Splitted()
+		{
+			var value = <#= __type.Name #>.MaxValue;
+			using( var output = new MemoryStream() )
+			{
+				Packer.Create( output ).Pack( value );
+				output.Position = 0;
+				using( var splitted = new SplittingStream( output ) )
+				{
+					var mpo = Unpacking.UnpackObject( splitted );
+					Assert.AreEqual( value, ( <#= __type.Name #> )mpo );
+					Assert.AreEqual( value, mpo.As<#= __type.Name #>() );
+				}
+			}
 		}
 <#
 }

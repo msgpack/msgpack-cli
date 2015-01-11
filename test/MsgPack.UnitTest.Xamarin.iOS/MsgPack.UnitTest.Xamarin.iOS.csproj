@@ -992,6 +992,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.cs">
       <Link>Serialization\VersioningTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
+      <Link>SplittingStream.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\SubtreeUnpackerTest.cs">
       <Link>SubtreeUnpackerTest.cs</Link>
     </Compile>

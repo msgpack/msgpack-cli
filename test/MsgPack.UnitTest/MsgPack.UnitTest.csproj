@@ -1010,6 +1010,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="SplittingStream.cs" />
     <Compile Include="SubtreeUnpackerTest.cs" />
     <Compile Include="UnpackerTest.Ext.cs">
       <AutoGen>True</AutoGen>
