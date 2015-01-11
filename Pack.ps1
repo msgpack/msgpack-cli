@@ -44,11 +44,10 @@ if( ( $winFile.LastWriteTime - $xamarinFile.LastWriteTime ).Days -ne 0 )
 	return
 }
 
-.\.nuget\nuget.exe pack $nuspec
+.\.nuget\nuget.exe pack $nuspec -Symbols
 
-Copy-Item .\bin\* .\MsgPack-CLI\ -Recurse -Exclude @("*.vshost.*", "*.pdb")
-Copy-Item .\tools\mpu\bin\* .\MsgPack-CLI\mpu\ -Recurse -Exclude @("*.vshost.*", "*.pdb")
-Remove-Item .\MsgPack-CLI\ -Include *.pdb -Recurse
+Copy-Item .\bin\* .\MsgPack-CLI\ -Recurse -Exclude @("*.vshost.*")
+Copy-Item .\tools\mpu\bin\* .\MsgPack-CLI\mpu\ -Recurse -Exclude @("*.vshost.*")
 [Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.FileSystem" ) | Out-Null
 # 'latest' should be rewritten with semver manually.
 if ( [IO.File]::Exists( ".\MsgPack.Cli.latest.zip" ) )
