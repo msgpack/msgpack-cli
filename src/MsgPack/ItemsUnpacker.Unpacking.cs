@@ -6487,7 +6487,7 @@ namespace MsgPack
 		{
 			var currentOffset = offset;
 			var reading = expectedSize;
-			while( true )
+			while ( true )
 			{
 				var read = source.Read( buffer, currentOffset, reading );
 				if ( read == reading )

@@ -23,7 +23,7 @@ private static void ReadBytes( Stream source, byte[] buffer, int offset, int exp
 {
 	var currentOffset = offset;
 	var reading = expectedSize;
-	while( true )
+	while ( true )
 	{
 		var read = source.Read( buffer, currentOffset, reading );
 		if ( read == reading )
