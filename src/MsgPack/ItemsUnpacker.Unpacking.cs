@@ -6485,6 +6485,12 @@ namespace MsgPack
 		
 		private static void ReadBytes( Stream source, byte[] buffer, int offset, int expectedSize )
 		{
+			if ( expectedSize == 0 )
+			{
+				// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+				return; 
+			}
+		
 			var currentOffset = offset;
 			var reading = expectedSize;
 			while ( true )
