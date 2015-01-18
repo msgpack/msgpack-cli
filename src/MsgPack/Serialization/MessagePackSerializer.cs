@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 #endif
 
 using System;
+using System.IO;
 using System.Linq;
 
 using MsgPack.Serialization.ReflectionSerializers;
@@ -605,6 +606,29 @@ namespace MsgPack.Serialization
 			}
 
 			return concreteType;
+		}
+
+		// For stable behavior, use singleton concrete deserializer and private context.
+		private static readonly MessagePackSerializer<MessagePackObject> _singleTonMpoDeserializer =
+			new DefaultSerializers.MsgPack_MessagePackObjectMessagePackSerializer( new SerializationContext() );
+
+		/// <summary>
+		///		Directly deserialize specified MessagePack <see cref="Stream"/> as <see cref="MessagePackObject"/> tree.
+		/// </summary>
+		/// <param name="stream">The stream which contains deserializing data.</param>
+		/// <returns>A <see cref="MessagePackObject"/> which is root of the deserialized MessagePack object tree.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="stream"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		This method is convinient wrapper for <see cref="MessagePackSerializer.Get{T}(SerializationContext)"/> for <see cref="MessagePackObject"/>.
+		///		<note>
+		///			You cannot override this method behavior because this method uses private <see cref="SerializationContext"/> instead of default context which is able to be accessed via <see cref="SerializationContext.Default"/>.
+		///		</note>
+		/// </remarks>
+		public static MessagePackObject UnpackMessagePackObject( Stream stream )
+		{
+			return _singleTonMpoDeserializer.Unpack( stream );
 		}
 	}
 }

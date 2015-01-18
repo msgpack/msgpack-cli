@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
 #endregion -- License Terms --
 
 using System;
+using System.IO;
+using System.Linq;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -204,6 +206,36 @@ namespace MsgPack.Serialization
 		public void TestGet_WithContext_ContextIsNull_Fail()
 		{
 			Assert.Throws<ArgumentNullException>( () => MessagePackSerializer.Get( typeof( Image ), null ) );
+		}
+
+		[Test]
+		public void TestUnpackObject()
+		{
+			// Just verify it is OK ... the method always should behave as MessagePackSerializer.Get<MessagePackObject>( new SerializationContext() ).Unpack(stream)
+			var result =
+				MessagePackSerializer.UnpackMessagePackObject(
+					new MemoryStream(
+						new byte[]
+						{
+							MessagePackCode.MinimumFixedArray | 5, // Root (array)
+							MessagePackCode.NilValue, MessagePackCode.FalseValue, 0, // Scalars
+							MessagePackCode.MinimumFixedRaw | 1, ( byte ) 'a',  // Raw
+							MessagePackCode.MinimumFixedMap | 1, // Map
+							MessagePackCode.MinimumFixedRaw | 1, ( byte ) 'k', // Key
+							1 //  Value of map
+						}
+					)
+				);
+
+			Assert.That( result.IsArray );
+			Assert.That( result.AsList().Count, Is.EqualTo( 5 ) );
+			Assert.That( result.AsList()[ 0 ].IsNil );
+			Assert.That( result.AsList()[ 1 ], Is.EqualTo( new MessagePackObject( false ) ) );
+			Assert.That( result.AsList()[ 2 ], Is.EqualTo( new MessagePackObject( 0 ) ) );
+			Assert.That( result.AsList()[ 3 ], Is.EqualTo( new MessagePackObject( "a" ) ) );
+			Assert.That( result.AsList()[ 4 ].AsDictionary().Count, Is.EqualTo( 1 ) );
+			Assert.That( result.AsList()[ 4 ].AsDictionary().Single().Key, Is.EqualTo( new MessagePackObject( "k" ) ) );
+			Assert.That( result.AsList()[ 4 ].AsDictionary().Single().Value, Is.EqualTo( new MessagePackObject( 1 ) ) );
 		}
 	}
 }
