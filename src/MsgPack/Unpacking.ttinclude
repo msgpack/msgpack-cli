@@ -16,6 +16,40 @@ private void WriteUnpack( Type type )
 	WriteUnpackCore( nullableUnderlying ?? type, nullableUnderlying != null );
 }
 
+private void WriteHelperMethods()
+{
+#>
+private static void ReadBytes( Stream source, byte[] buffer, int offset, int expectedSize )
+{
+	if ( expectedSize == 0 )
+	{
+		// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+		return; 
+	}
+
+	var currentOffset = offset;
+	var reading = expectedSize;
+	while ( true )
+	{
+		var read = source.Read( buffer, currentOffset, reading );
+		if ( read == reading )
+		{
+			return;
+		}
+		else if ( read == 0 )
+		{
+			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
+		}
+		else
+		{
+			currentOffset += read;
+			reading = expectedSize -= read;
+		}
+	}
+}
+<#+
+}
+
 private void WriteUnpackCore( Type type, bool isNullable )
 {
 #>
@@ -172,21 +206,19 @@ foreach( var entry in
 #>
 	case MessagePackCode.<#= entry.Code #>:
 	{
-		var read = source.Read( buffer, 0, <#= Marshal.SizeOf( entry.CodeType ).ToString( CultureInfo.InvariantCulture ) #> );
-		if( read == <#= Marshal.SizeOf( entry.CodeType ).ToString( CultureInfo.InvariantCulture ) #> )
-		{
+		ReadBytes( source, buffer, 0, <#= Marshal.SizeOf( entry.CodeType ).ToString( CultureInfo.InvariantCulture ) #> );
 <#+
 		if( entry.CodeType != type )
 		{
 			// Overflow checking
 #>
-			var resultValue = checked( ( <#= type.Name #> )BigEndianBinary.To<#= entry.CodeType.Name #>( buffer, 0 ) );
+		var resultValue = checked( ( <#= type.Name #> )BigEndianBinary.To<#= entry.CodeType.Name #>( buffer, 0 ) );
 <#+
 		}
 		else
 		{
 #>
-			var resultValue = BigEndianBinary.To<#= entry.CodeType.Name #>( buffer, 0 );
+		var resultValue = BigEndianBinary.To<#= entry.CodeType.Name #>( buffer, 0 );
 <#+
 		}
 
@@ -195,11 +227,6 @@ foreach( var entry in
 		this.WriteReturn( "resultValue" );
 		this.PopIndent();
 #>
-		}
-		else
-		{
-			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-		}
 	}
 <#+
 	}
@@ -356,22 +383,14 @@ switch( header )
 	case MessagePackCode.Bin16: 
 	case MessagePackCode.Raw16: 
 	{
-		if( source.Read( buffer, 0, 2 ) < 2 )
-		{
-			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-		}
-
+		ReadBytes( source, buffer, 0, 2 );
 		size = BigEndianBinary.ToUInt16( buffer, 0 );
 		break;
 	}
 	case MessagePackCode.Bin32:
 	case MessagePackCode.Raw32:
 	{
-		if( source.Read( buffer, 0, 4 ) < 4 )
-		{
-			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-		}
-
+		ReadBytes( source, buffer, 0, 4 );
 <#+
 // TODO: Net45_LongArray
 #>
@@ -408,11 +427,7 @@ private void WriteUnpackRawContent( string bufferVariable, string bufferOffsetVa
 #>
 #region UnpackRawContent
 
-var bytesRead = source.Read( <#= bufferVariable #>, <#= bufferOffsetVariable #>, <#= lengthVariable #> );
-if( bytesRead < <#= lengthVariable #> )
-{
-	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-}
+ReadBytes( source, <#= bufferVariable #>, <#= bufferOffsetVariable #>, <#= lengthVariable #> );
 
 #endregion UnpackRawContent
 <#+
@@ -808,15 +823,8 @@ private void WriteUnpackScalar( Type type, string resultVariable )
 #>
 #region UnpackScalar
 
-var read = source.Read( buffer, 0, <#= Marshal.SizeOf( type ).ToString( CultureInfo.InvariantCulture ) #> );
-if( read == <#= Marshal.SizeOf( type ).ToString( CultureInfo.InvariantCulture ) #> )
-{
-	<#= resultVariable #> = BigEndianBinary.To<#= type.Name #>( buffer, 0 );
-}
-else
-{
-	throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-}
+ReadBytes( source, buffer, 0, <#= Marshal.SizeOf( type ).ToString( CultureInfo.InvariantCulture ) #> );
+<#= resultVariable #> = BigEndianBinary.To<#= type.Name #>( buffer, 0 );
 
 #endregion UnpackScalar
 <#+
@@ -851,11 +859,7 @@ switch( header )
 {
 	case MessagePackCode.Array16: 
 	{
-		if( source.Read( buffer, 0, 2 ) < 2 )
-		{
-			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-		}
-
+		ReadBytes( source, buffer, 0, 2 );
 		result = BigEndianBinary.ToUInt16( buffer, 0 );
 <#+
 	this.PushIndent( 2 );
@@ -866,11 +870,7 @@ switch( header )
 	}
 	case MessagePackCode.Array32:
 	{
-		if( source.Read( buffer, 0, 4 ) < 4 )
-		{
-			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-		}
-
+		ReadBytes( source, buffer, 0, 4 );
 <#+
 // TODO: Net45_LongArray
 #>
@@ -934,11 +934,7 @@ switch( header )
 {
 	case MessagePackCode.Map16: 
 	{
-		if( source.Read( buffer, 0, 2 ) < 2 )
-		{
-			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-		}
-
+		ReadBytes( source, buffer, 0, 2 );
 		result = BigEndianBinary.ToUInt16( buffer, 0 );
 <#+
 	this.PushIndent( 2 );
@@ -949,11 +945,7 @@ switch( header )
 	}
 	case MessagePackCode.Map32:
 	{
-		if( source.Read( buffer, 0, 4 ) < 4 )
-		{
-			throw new InvalidMessagePackStreamException( <#= StreamEndMessage #> );
-		}
-
+		ReadBytes( source, buffer, 0, 4 );
 <#+
 // TODO: Net45_LongArray
 #>

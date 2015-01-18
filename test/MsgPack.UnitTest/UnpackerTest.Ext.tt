@@ -207,6 +207,25 @@ private void PutTestMethod( string methodName, string headerFormat, int? lengthO
 #>
 			}
 		}
+
+		[Test]
+		public void <#= methodName #>_Splitted()
+		{
+			var <#= typeCode #> = ( byte )( Environment.TickCount % 128 );
+			using( var buffer =
+				new MemoryStream( 
+					new byte[] { <#= headerValue #> }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = Unpacker.Create( splitted ) )
+			{
+<#+
+				putTestBody( typeCode, actualValueLength, valueLengthAjustument >= 0 );
+#>
+			}
+		}
 <#+
 }
 #>

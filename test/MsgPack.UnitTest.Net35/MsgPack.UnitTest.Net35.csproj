@@ -38,8 +38,9 @@
     <AssemblyOriginatorKeyFile>..\..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -321,6 +322,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\_SetUpFixture.cs">
       <Link>Serialization\_SetUpFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
+      <Link>SplittingStream.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\SubtreeUnpackerTest.cs">
       <Link>SubtreeUnpackerTest.cs</Link>

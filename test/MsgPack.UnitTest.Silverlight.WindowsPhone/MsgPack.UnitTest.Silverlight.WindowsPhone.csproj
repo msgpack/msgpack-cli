@@ -327,6 +327,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\_SetUpFixture.cs">
       <Link>Serialization\_SetUpFixture.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
+      <Link>SplittingStream.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\SubtreeUnpackerTest.cs">
       <Link>SubtreeUnpackerTest.cs</Link>
     </Compile>

@@ -29,6 +29,7 @@ using System;
 using System.Diagnostics.Contracts;
 #endif // !UNITY
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace MsgPack
@@ -245,33 +246,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = BigEndianBinary.ToByte( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -310,33 +297,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = BigEndianBinary.ToByte( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -384,33 +357,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = BigEndianBinary.ToByte( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -455,33 +414,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Byte )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = BigEndianBinary.ToByte( buffer, 0 );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = BigEndianBinary.ToByte( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -530,33 +475,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -602,33 +533,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -683,33 +600,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -761,33 +664,19 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = BigEndianBinary.ToSByte( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( SByte )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -836,63 +725,35 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -938,63 +799,35 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -1049,63 +882,35 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -1157,63 +962,35 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = BigEndianBinary.ToInt16( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int16 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -1255,63 +1032,35 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -1350,63 +1099,35 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -1454,63 +1175,35 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -1555,63 +1248,35 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt16 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -1660,108 +1325,59 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -1807,108 +1423,59 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -1963,108 +1530,59 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -2116,108 +1634,59 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToInt32( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int32 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -2259,108 +1728,59 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -2399,108 +1819,59 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -2548,108 +1919,59 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -2694,108 +2016,59 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt32 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -2844,153 +2117,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -3036,153 +2239,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -3237,153 +2370,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -3435,153 +2498,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToInt64( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Int64 )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -3623,153 +2616,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -3808,153 +2731,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -4002,153 +2855,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -4193,153 +2976,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( UInt64 )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -4388,153 +3101,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -4580,153 +3223,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -4781,153 +3354,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -4979,153 +3482,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = BigEndianBinary.ToSingle( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Single )BigEndianBinary.ToDouble( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -5174,153 +3607,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -5366,153 +3729,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -5567,153 +3860,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -5765,153 +3988,83 @@ namespace MsgPack
 			{
 				case MessagePackCode.SignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToSByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 1 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToByte( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 2 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt16( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt32( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToUInt64( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real32:
 				{
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
+					ReadBytes( source, buffer, 0, 4 );
+					var resultValue = checked( ( Double )BigEndianBinary.ToSingle( buffer, 0 ) );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				case MessagePackCode.Real64:
 				{
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
+					ReadBytes( source, buffer, 0, 8 );
+					var resultValue = BigEndianBinary.ToDouble( buffer, 0 );
 						this.InternalCollectionType = CollectionType.None;
 						result = resultValue;
 						return true;
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
 				}
 				default:
 				{
@@ -5965,22 +4118,14 @@ namespace MsgPack
 				case MessagePackCode.Bin16: 
 				case MessagePackCode.Raw16: 
 				{
-					if( source.Read( buffer, 0, 2 ) < 2 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 2 );
 					size = BigEndianBinary.ToUInt16( buffer, 0 );
 					break;
 				}
 				case MessagePackCode.Bin32:
 				case MessagePackCode.Raw32:
 				{
-					if( source.Read( buffer, 0, 4 ) < 4 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 4 );
 					var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 					if( unsignedSize > Int32.MaxValue )
 					{
@@ -6015,11 +4160,7 @@ namespace MsgPack
 			var resultValue = new byte[ size ];
 			#region UnpackRawContent
 			
-			var bytesRead = source.Read( resultValue, contentBufferOffset, size );
-			if( bytesRead < size )
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-			}
+			ReadBytes( source, resultValue, contentBufferOffset, size );
 			
 			#endregion UnpackRawContent
 			#endregion UnpackByteArray
@@ -6070,22 +4211,14 @@ namespace MsgPack
 				case MessagePackCode.Bin16: 
 				case MessagePackCode.Raw16: 
 				{
-					if( source.Read( buffer, 0, 2 ) < 2 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 2 );
 					size = BigEndianBinary.ToUInt16( buffer, 0 );
 					break;
 				}
 				case MessagePackCode.Bin32:
 				case MessagePackCode.Raw32:
 				{
-					if( source.Read( buffer, 0, 4 ) < 4 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 4 );
 					var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 					if( unsignedSize > Int32.MaxValue )
 					{
@@ -6120,11 +4253,7 @@ namespace MsgPack
 			var resultValue = new byte[ size ];
 			#region UnpackRawContent
 			
-			var bytesRead = source.Read( resultValue, contentBufferOffset, size );
-			if( bytesRead < size )
-			{
-				throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-			}
+			ReadBytes( source, resultValue, contentBufferOffset, size );
 			
 			#endregion UnpackRawContent
 			#endregion UnpackByteArray
@@ -6182,22 +4311,14 @@ namespace MsgPack
 				case MessagePackCode.Bin16: 
 				case MessagePackCode.Raw16: 
 				{
-					if( source.Read( buffer, 0, 2 ) < 2 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 2 );
 					size = BigEndianBinary.ToUInt16( buffer, 0 );
 					break;
 				}
 				case MessagePackCode.Bin32:
 				case MessagePackCode.Raw32:
 				{
-					if( source.Read( buffer, 0, 4 ) < 4 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 4 );
 					var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 					if( unsignedSize > Int32.MaxValue )
 					{
@@ -6323,22 +4444,14 @@ namespace MsgPack
 				case MessagePackCode.Bin16: 
 				case MessagePackCode.Raw16: 
 				{
-					if( source.Read( buffer, 0, 2 ) < 2 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 2 );
 					size = BigEndianBinary.ToUInt16( buffer, 0 );
 					break;
 				}
 				case MessagePackCode.Bin32:
 				case MessagePackCode.Raw32:
 				{
-					if( source.Read( buffer, 0, 4 ) < 4 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 4 );
 					var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 					if( unsignedSize > Int32.MaxValue )
 					{
@@ -6501,11 +4614,7 @@ namespace MsgPack
 					var resultValue = new byte[ size ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, size );
-					if( bytesRead < size )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, size );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
@@ -6522,15 +4631,8 @@ namespace MsgPack
 					SByte resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						resultValue = BigEndianBinary.ToSByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					resultValue = BigEndianBinary.ToSByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6542,15 +4644,8 @@ namespace MsgPack
 					Int16 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						resultValue = BigEndianBinary.ToInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					resultValue = BigEndianBinary.ToInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6562,15 +4657,8 @@ namespace MsgPack
 					Int32 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						resultValue = BigEndianBinary.ToInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					resultValue = BigEndianBinary.ToInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6582,15 +4670,8 @@ namespace MsgPack
 					Int64 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						resultValue = BigEndianBinary.ToInt64( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 8 );
+					resultValue = BigEndianBinary.ToInt64( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6602,15 +4683,8 @@ namespace MsgPack
 					Byte resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						resultValue = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					resultValue = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6622,15 +4696,8 @@ namespace MsgPack
 					UInt16 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6642,15 +4709,8 @@ namespace MsgPack
 					UInt32 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6662,15 +4722,8 @@ namespace MsgPack
 					UInt64 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 8 );
+					resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6682,15 +4735,8 @@ namespace MsgPack
 					Single resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						resultValue = BigEndianBinary.ToSingle( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					resultValue = BigEndianBinary.ToSingle( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6702,15 +4748,8 @@ namespace MsgPack
 					Double resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						resultValue = BigEndianBinary.ToDouble( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 8 );
+					resultValue = BigEndianBinary.ToDouble( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -6722,25 +4761,14 @@ namespace MsgPack
 					byte length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						length = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					length = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var resultValue = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, length );
-					if( bytesRead < length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
@@ -6753,25 +4781,14 @@ namespace MsgPack
 					byte length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						length = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					length = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var resultValue = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, length );
-					if( bytesRead < length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
@@ -6784,25 +4801,14 @@ namespace MsgPack
 					ushort length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var resultValue = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, length );
-					if( bytesRead < length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
@@ -6815,25 +4821,14 @@ namespace MsgPack
 					ushort length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var resultValue = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, length );
-					if( bytesRead < length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
@@ -6846,15 +4841,8 @@ namespace MsgPack
 					uint length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					if( length > Int32.MaxValue )
@@ -6866,11 +4854,7 @@ namespace MsgPack
 					var resultValue = new byte[ size ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, size );
-					if( bytesRead < size )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, size );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
@@ -6883,15 +4867,8 @@ namespace MsgPack
 					uint length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					if( length > Int32.MaxValue )
@@ -6903,11 +4880,7 @@ namespace MsgPack
 					var resultValue = new byte[ size ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, size );
-					if( bytesRead < size )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, size );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
@@ -6920,15 +4893,8 @@ namespace MsgPack
 					ushort length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Array;
@@ -6942,15 +4908,8 @@ namespace MsgPack
 					uint length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Array;
@@ -6964,15 +4923,8 @@ namespace MsgPack
 					ushort length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Map;
@@ -6986,15 +4938,8 @@ namespace MsgPack
 					uint length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Map;
@@ -7015,11 +4960,7 @@ namespace MsgPack
 					var data = new byte[ 1 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7040,11 +4981,7 @@ namespace MsgPack
 					var data = new byte[ 2 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7065,11 +5002,7 @@ namespace MsgPack
 					var data = new byte[ 4 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7090,11 +5023,7 @@ namespace MsgPack
 					var data = new byte[ 8 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7115,11 +5044,7 @@ namespace MsgPack
 					var data = new byte[ 16 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7135,15 +5060,8 @@ namespace MsgPack
 					Byte length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						length = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					length = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var typeCode = source.ReadByte();
@@ -7155,11 +5073,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7175,15 +5089,8 @@ namespace MsgPack
 					UInt16 length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var typeCode = source.ReadByte();
@@ -7195,11 +5102,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7215,15 +5118,8 @@ namespace MsgPack
 					UInt32 length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 			
@@ -7241,11 +5137,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7344,11 +5236,7 @@ namespace MsgPack
 					var resultValue = new byte[ size ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, size );
-					if( bytesRead < size )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, size );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
@@ -7365,15 +5253,8 @@ namespace MsgPack
 					SByte resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						resultValue = BigEndianBinary.ToSByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					resultValue = BigEndianBinary.ToSByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7385,15 +5266,8 @@ namespace MsgPack
 					Int16 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						resultValue = BigEndianBinary.ToInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					resultValue = BigEndianBinary.ToInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7405,15 +5279,8 @@ namespace MsgPack
 					Int32 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						resultValue = BigEndianBinary.ToInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					resultValue = BigEndianBinary.ToInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7425,15 +5292,8 @@ namespace MsgPack
 					Int64 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						resultValue = BigEndianBinary.ToInt64( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 8 );
+					resultValue = BigEndianBinary.ToInt64( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7445,15 +5305,8 @@ namespace MsgPack
 					Byte resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						resultValue = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					resultValue = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7465,15 +5318,8 @@ namespace MsgPack
 					UInt16 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					resultValue = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7485,15 +5331,8 @@ namespace MsgPack
 					UInt32 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					resultValue = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7505,15 +5344,8 @@ namespace MsgPack
 					UInt64 resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 8 );
+					resultValue = BigEndianBinary.ToUInt64( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7525,15 +5357,8 @@ namespace MsgPack
 					Single resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						resultValue = BigEndianBinary.ToSingle( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					resultValue = BigEndianBinary.ToSingle( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7545,15 +5370,8 @@ namespace MsgPack
 					Double resultValue;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 8 );
-					if( read == 8 )
-					{
-						resultValue = BigEndianBinary.ToDouble( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 8 );
+					resultValue = BigEndianBinary.ToDouble( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.None;
@@ -7565,25 +5383,14 @@ namespace MsgPack
 					byte length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						length = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					length = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var resultValue = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, length );
-					if( bytesRead < length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
@@ -7596,25 +5403,14 @@ namespace MsgPack
 					byte length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						length = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					length = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var resultValue = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, length );
-					if( bytesRead < length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
@@ -7627,25 +5423,14 @@ namespace MsgPack
 					ushort length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var resultValue = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, length );
-					if( bytesRead < length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
@@ -7658,25 +5443,14 @@ namespace MsgPack
 					ushort length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var resultValue = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, length );
-					if( bytesRead < length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
@@ -7689,15 +5463,8 @@ namespace MsgPack
 					uint length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					if( length > Int32.MaxValue )
@@ -7709,11 +5476,7 @@ namespace MsgPack
 					var resultValue = new byte[ size ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, size );
-					if( bytesRead < size )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, size );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, true ) );
@@ -7726,15 +5489,8 @@ namespace MsgPack
 					uint length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					if( length > Int32.MaxValue )
@@ -7746,11 +5502,7 @@ namespace MsgPack
 					var resultValue = new byte[ size ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( resultValue, 0, size );
-					if( bytesRead < size )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, resultValue, 0, size );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = new MessagePackObject( new MessagePackString( resultValue, false ) );
@@ -7763,15 +5515,8 @@ namespace MsgPack
 					ushort length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Array;
@@ -7785,15 +5530,8 @@ namespace MsgPack
 					uint length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Array;
@@ -7807,15 +5545,8 @@ namespace MsgPack
 					ushort length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Map;
@@ -7829,15 +5560,8 @@ namespace MsgPack
 					uint length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 					this.InternalCollectionType = CollectionType.Map;
@@ -7858,11 +5582,7 @@ namespace MsgPack
 					var data = new byte[ 1 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7883,11 +5603,7 @@ namespace MsgPack
 					var data = new byte[ 2 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7908,11 +5624,7 @@ namespace MsgPack
 					var data = new byte[ 4 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7933,11 +5645,7 @@ namespace MsgPack
 					var data = new byte[ 8 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7958,11 +5666,7 @@ namespace MsgPack
 					var data = new byte[ 16 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -7978,15 +5682,8 @@ namespace MsgPack
 					Byte length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						length = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					length = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var typeCode = source.ReadByte();
@@ -7998,11 +5695,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8018,15 +5711,8 @@ namespace MsgPack
 					UInt16 length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var typeCode = source.ReadByte();
@@ -8038,11 +5724,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8058,15 +5740,8 @@ namespace MsgPack
 					UInt32 length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 			
@@ -8084,11 +5759,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8132,11 +5803,7 @@ namespace MsgPack
 			{
 				case MessagePackCode.Array16: 
 				{
-					if( source.Read( buffer, 0, 2 ) < 2 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 2 );
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = result;
@@ -8145,11 +5812,7 @@ namespace MsgPack
 				}
 				case MessagePackCode.Array32:
 				{
-					if( source.Read( buffer, 0, 4 ) < 4 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 4 );
 					var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 					if( unsignedSize > Int32.MaxValue )
 					{
@@ -8201,11 +5864,7 @@ namespace MsgPack
 			{
 				case MessagePackCode.Array16: 
 				{
-					if( source.Read( buffer, 0, 2 ) < 2 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 2 );
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this.InternalCollectionType = CollectionType.Array;
 					this.InternalItemsCount = result;
@@ -8214,11 +5873,7 @@ namespace MsgPack
 				}
 				case MessagePackCode.Array32:
 				{
-					if( source.Read( buffer, 0, 4 ) < 4 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 4 );
 					var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 					if( unsignedSize > Int32.MaxValue )
 					{
@@ -8273,11 +5928,7 @@ namespace MsgPack
 			{
 				case MessagePackCode.Map16: 
 				{
-					if( source.Read( buffer, 0, 2 ) < 2 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 2 );
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = result;
@@ -8286,11 +5937,7 @@ namespace MsgPack
 				}
 				case MessagePackCode.Map32:
 				{
-					if( source.Read( buffer, 0, 4 ) < 4 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 4 );
 					var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 					if( unsignedSize > Int32.MaxValue )
 					{
@@ -8342,11 +5989,7 @@ namespace MsgPack
 			{
 				case MessagePackCode.Map16: 
 				{
-					if( source.Read( buffer, 0, 2 ) < 2 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 2 );
 					result = BigEndianBinary.ToUInt16( buffer, 0 );
 					this.InternalCollectionType = CollectionType.Map;
 					this.InternalItemsCount = result;
@@ -8355,11 +5998,7 @@ namespace MsgPack
 				}
 				case MessagePackCode.Map32:
 				{
-					if( source.Read( buffer, 0, 4 ) < 4 )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
-			
+					ReadBytes( source, buffer, 0, 4 );
 					var unsignedSize = BigEndianBinary.ToUInt32( buffer, 0 );
 					if( unsignedSize > Int32.MaxValue )
 					{
@@ -8424,11 +6063,7 @@ namespace MsgPack
 					var data = new byte[ 1 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8449,11 +6084,7 @@ namespace MsgPack
 					var data = new byte[ 2 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8474,11 +6105,7 @@ namespace MsgPack
 					var data = new byte[ 4 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8499,11 +6126,7 @@ namespace MsgPack
 					var data = new byte[ 8 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8524,11 +6147,7 @@ namespace MsgPack
 					var data = new byte[ 16 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8544,15 +6163,8 @@ namespace MsgPack
 					Byte length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						length = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					length = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var typeCode = source.ReadByte();
@@ -8564,11 +6176,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8584,15 +6192,8 @@ namespace MsgPack
 					UInt16 length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var typeCode = source.ReadByte();
@@ -8604,11 +6205,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8624,15 +6221,8 @@ namespace MsgPack
 					UInt32 length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 			
@@ -8650,11 +6240,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8703,11 +6289,7 @@ namespace MsgPack
 					var data = new byte[ 1 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8728,11 +6310,7 @@ namespace MsgPack
 					var data = new byte[ 2 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8753,11 +6331,7 @@ namespace MsgPack
 					var data = new byte[ 4 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8778,11 +6352,7 @@ namespace MsgPack
 					var data = new byte[ 8 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8803,11 +6373,7 @@ namespace MsgPack
 					var data = new byte[ 16 ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8823,15 +6389,8 @@ namespace MsgPack
 					Byte length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 1 );
-					if( read == 1 )
-					{
-						length = BigEndianBinary.ToByte( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 1 );
+					length = BigEndianBinary.ToByte( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var typeCode = source.ReadByte();
@@ -8843,11 +6402,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8863,15 +6418,8 @@ namespace MsgPack
 					UInt16 length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 2 );
-					if( read == 2 )
-					{
-						length = BigEndianBinary.ToUInt16( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 2 );
+					length = BigEndianBinary.ToUInt16( buffer, 0 );
 					
 					#endregion UnpackScalar
 					var typeCode = source.ReadByte();
@@ -8883,11 +6431,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8903,15 +6447,8 @@ namespace MsgPack
 					UInt32 length;
 					#region UnpackScalar
 					
-					var read = source.Read( buffer, 0, 4 );
-					if( read == 4 )
-					{
-						length = BigEndianBinary.ToUInt32( buffer, 0 );
-					}
-					else
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, buffer, 0, 4 );
+					length = BigEndianBinary.ToUInt32( buffer, 0 );
 					
 					#endregion UnpackScalar
 			
@@ -8929,11 +6466,7 @@ namespace MsgPack
 					var data = new byte[ length ];
 					#region UnpackRawContent
 					
-					var bytesRead = source.Read( data, 0, data.Length );
-					if( bytesRead < data.Length )
-					{
-						throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
-					}
+					ReadBytes( source, data, 0, data.Length );
 					
 					#endregion UnpackRawContent
 					var resultMpoValue = MessagePackExtendedTypeObject.Unpack( unchecked( ( byte )typeCode ), data );
@@ -8950,5 +6483,33 @@ namespace MsgPack
 			#endregion UnpackExt
 		}
 		
+		private static void ReadBytes( Stream source, byte[] buffer, int offset, int expectedSize )
+		{
+			if ( expectedSize == 0 )
+			{
+				// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+				return; 
+			}
+		
+			var currentOffset = offset;
+			var reading = expectedSize;
+			while ( true )
+			{
+				var read = source.Read( buffer, currentOffset, reading );
+				if ( read == reading )
+				{
+					return;
+				}
+				else if ( read == 0 )
+				{
+					throw new InvalidMessagePackStreamException( "Stream unexpectedly ends." );
+				}
+				else
+				{
+					currentOffset += read;
+					reading = expectedSize -= read;
+				}
+			}
+		}
 	}
 }

@@ -99,7 +99,6 @@ namespace MsgPack
 			Assert.IsTrue( obj.IsTypeOf<bool>().GetValueOrDefault() );
 		}
 
-#if !WINDOWS_PHONE
 		[Test]
 		public void TestStringShort()
 		{
@@ -130,7 +129,6 @@ namespace MsgPack
 			sw.Stop();
 			Console.WriteLine( "Small String ({1:#,###.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 		}
-#endif // !WINDOWS_PHONE
 
 		[Test]
 		[Timeout( 3000000 )]
@@ -297,6 +295,39 @@ namespace MsgPack
 			}
 
 			Console.WriteLine( "Array: {0:0.###} msec/item", sw.Elapsed.TotalMilliseconds / 0x10000 );
+		}
+
+		[Test]
+		[Timeout( 10000 )]
+		public void TestArray_Splitted()
+		{
+			foreach (
+				var count in
+					new[]
+					{
+						0, // empty
+						1, // only one
+						2, // minimum multiple
+						0xf, // max fix array size
+						0x10, // min array16 size
+						0xffff, // max array16 size
+						0x10000, // min array32 size
+					}
+			)
+			{
+				using ( var output = new MemoryStream() )
+				{
+					Packer.Create( output ).PackCollection( Enumerable.Range( 0, count ).ToArray() );
+					output.Position = 0;
+					using ( var splitted = new SplittingStream( output ) )
+					{
+						Assert.That(
+							Enumerable.Range( 0, count ).ToArray(),
+							Is.EqualTo( Unpacking.UnpackObject( splitted ).AsEnumerable().Select( item => item.AsInt32() ).ToArray() )
+						);
+					}
+				}
+			}
 		}
 
 		[Test]
@@ -479,6 +510,39 @@ namespace MsgPack
 		}
 
 		[Test]
+		[Timeout( 60000 )]
+		public void TestDictionary_Splitted()
+		{
+			foreach (
+				var count in
+					new[]
+					{
+						0, // empty
+						1, // only one
+						2, // minimum multiple
+						0xf, // max fix map size
+						0x10, // min map16 size
+						0xffff, // max map16 size
+						0x10000, // min map32 size
+					}
+			)
+			{
+				using ( var output = new MemoryStream() )
+				{
+					Packer.Create( output ).Pack( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ) );
+					output.Position = 0;
+					using ( var splitted = new SplittingStream( output ) )
+					{
+						Assert.That(
+							Enumerable.Range( 0, count ).ToDictionary( item => item.ToString() ),
+							Is.EqualTo( Unpacking.UnpackObject( splitted ).AsDictionary().ToDictionary( kv => kv.Key.AsString(), kv => kv.Value.AsInt32() ) )
+						);
+					}
+				}
+			}
+		}
+
+		[Test]
 		[Timeout( 3000 )]
 		public void TestBytes()
 		{
@@ -512,23 +576,56 @@ namespace MsgPack
 
 		[Test]
 		[Timeout( 3000 )]
+		public void TestBytes_Splitted()
+		{
+			foreach (
+				var count in
+					new[]
+					{
+						0, // empty
+						1, // only one
+						2, // minimum multiple
+						0xFF, // max bin8 size
+						0x100, // min bin16 size
+						0xffff, // max bin16 size
+						0x10000, // min bin32 size
+					}
+			)
+			{
+				using ( var output = new MemoryStream() )
+				{
+					Packer.Create( output ).Pack( Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray() );
+					output.Position = 0;
+					using ( var splitted = new SplittingStream( output ) )
+					{
+						Assert.That(
+							Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray(),
+							Is.EqualTo( Unpacking.UnpackObject( splitted ).AsBinary() )
+						);
+					}
+				}
+			}
+		}
+
+		[Test]
+		[Timeout( 3000 )]
 		public void TestChars()
 		{
 			var sw = new Stopwatch();
 			foreach (
 				var count in
-				new[]
-				{
-					0, // empty
-					1, // only one
-					2, // minimum multiple
-					0x1f, // max fix raw size
-					0x20, // min str8 size
-					0xFF, // max str8 size
-					0x100, // min str16 size
-					0xffff, // max str16 size
-					0x10000, // min str32 size
-				}
+					new[]
+					{
+						0, // empty
+						1, // only one
+						2, // minimum multiple
+						0x1f, // max fix raw size
+						0x20, // min str8 size
+						0xFF, // max str8 size
+						0x100, // min str16 size
+						0xffff, // max str16 size
+						0x10000, // min str32 size
+					}
 			)
 			{
 				sw.Restart();
@@ -546,25 +643,60 @@ namespace MsgPack
 
 		[Test]
 		[Timeout( 3000 )]
+		public void TestChars_Splitted()
+		{
+			foreach (
+				var count in
+					new[]
+					{
+						0, // empty
+						1, // only one
+						2, // minimum multiple
+						0x1f, // max fix raw size
+						0x20, // min str8 size
+						0xFF, // max str8 size
+						0x100, // min str16 size
+						0xffff, // max str16 size
+						0x10000, // min str32 size
+					}
+			)
+			{
+				using ( var output = new MemoryStream() )
+				{
+					Packer.Create( output ).Pack( String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ) );
+					output.Position = 0;
+					using ( var splitted = new SplittingStream( output ) )
+					{
+						Assert.AreEqual(
+							String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ),
+							Unpacking.UnpackObject( splitted ).AsString()
+						);
+					}
+				}
+			}
+		}
+
+		[Test]
+		[Timeout( 3000 )]
 		public void TestExts()
 		{
 			var sw = new Stopwatch();
 			foreach (
 				var count in
-				new[]
-				{
-					0, // empty
-					1, // fixext1
-					2, // fixext2
-					4, // fixext4
-					8, // fixext8
-					16, // fixext16
-					17, // min ext8 size
-					0xff, // max ext8 size
-					0x100, // min ext16 size
-					0xffff, // max ext16 size
-					0x10000, // min ext32 size
-				}
+					new[]
+					{
+						0, // empty
+						1, // fixext1
+						2, // fixext2
+						4, // fixext4
+						8, // fixext8
+						16, // fixext16
+						17, // min ext8 size
+						0xff, // max ext8 size
+						0x100, // min ext16 size
+						0xffff, // max ext16 size
+						0x10000, // min ext32 size
+					}
 			)
 			{
 				sw.Restart();
@@ -580,6 +712,45 @@ namespace MsgPack
 			}
 
 			Console.WriteLine( "Ext: {0:0.###} msec/byte", sw.Elapsed.TotalMilliseconds / 0x10000 );
+		}
+
+		[Test]
+		[Timeout( 3000 )]
+		public void TestExts_Splitted()
+		{
+			foreach (
+				var count in
+					new[]
+					{
+						0, // empty
+						1, // fixext1
+						2, // fixext2
+						4, // fixext4
+						8, // fixext8
+						16, // fixext16
+						17, // min ext8 size
+						0xff, // max ext8 size
+						0x100, // min ext16 size
+						0xffff, // max ext16 size
+						0x10000, // min ext32 size
+					}
+			)
+			{
+				using ( var output = new MemoryStream() )
+				{
+					var value = new MessagePackExtendedTypeObject(
+						1, Enumerable.Range( 0, count ).Select( i => ( byte )( i % 0x100 ) ).ToArray() );
+					Packer.Create( output, PackerCompatibilityOptions.None ).Pack( value );
+					output.Position = 0;
+					using ( var splitted = new SplittingStream( output ) )
+					{
+						Assert.AreEqual(
+							value,
+							Unpacking.UnpackObject( splitted ).AsMessagePackExtendedTypeObject()
+						);
+					}
+				}
+			}
 		}
 
 		[Test]
