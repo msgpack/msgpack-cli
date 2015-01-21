@@ -249,6 +249,4 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			return ( T )boxed;
 		}
 	}
-
-
 }

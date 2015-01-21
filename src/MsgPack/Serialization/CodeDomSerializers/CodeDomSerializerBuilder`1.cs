@@ -802,7 +802,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			}
 
 			return
-				EmitSequentialStatements(
+				this.EmitSequentialStatements(
 					context,
 					typeof( void ),
 					statements.ToArray()
@@ -1099,6 +1099,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedFieldInfo.Value ),
 							new CodeMethodInvokeExpression(
 								new CodeMethodReferenceExpression(
+									// ReSharper disable once AssignNullToNotNullAttribute
 									new CodeTypeOfExpression( fieldInfo.DeclaringType ),
 									"GetField"
 								),
@@ -1135,6 +1136,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), cachedMethodBase.Value ),
 							new CodeMethodInvokeExpression(
 								new CodeMethodReferenceExpression(
+									// ReSharper disable once AssignNullToNotNullAttribute
 									new CodeTypeOfExpression( methodBase.DeclaringType ),
 									"GetMethod"
 								),
@@ -1160,6 +1162,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 								new CodePrimitiveExpression( null ),
 								new CodeArrayCreateExpression(
 									typeof( Type ),
+									// ReSharper disable once CoVariantArrayConversion
 									methodBase.GetParameters().Select( pi => new CodeTypeOfExpression( pi.ParameterType ) ).ToArray()
 								),
 								new CodePrimitiveExpression( null )

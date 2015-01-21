@@ -555,7 +555,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( !withReflection )
 			{
-				return EmitSetProprety( context, instance, property, value );
+				return this.EmitSetProprety( context, instance, property, value );
 			}
 
 			/*
@@ -608,7 +608,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( !withReflection )
 			{
-				return EmitSetField( context, instance, field, value );
+				return this.EmitSetField( context, instance, field, value );
 			}
 
 			/*
@@ -1295,7 +1295,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="cases">The case statements. The keys are case condition, and values are actual statement.</param>
 		/// <param name="defaultCase">Default case expression.</param>
 		/// <returns>The switch statement.</returns>
-		protected abstract TConstruct EmitStringSwitchStatement ( TContext context, TConstruct target, IDictionary<string, TConstruct> cases, TConstruct defaultCase );
+		protected abstract TConstruct EmitStringSwitchStatement( TContext context, TConstruct target, IDictionary<string, TConstruct> cases, TConstruct defaultCase );
 
 		/// <summary>
 		/// 	Emits the return statement

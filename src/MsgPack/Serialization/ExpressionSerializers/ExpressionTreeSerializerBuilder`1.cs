@@ -74,7 +74,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return;
 			}
 
-			context.SetDelegate( method, EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
 
 		}
 
@@ -85,7 +85,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return;
 			}
 
-			context.SetDelegate( method, EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
 		}
 
 #if NETFX_CORE || SILVERLIGHT

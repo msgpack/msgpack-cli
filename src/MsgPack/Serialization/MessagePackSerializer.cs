@@ -575,7 +575,7 @@ namespace MsgPack.Serialization
 				{
 					if ( typeof( T ).GetIsEnum() )
 					{
-						return ReflectionSerializerHelper.CreateReflectionEnuMessagePackSerializer<T>( context );
+						return ReflectionSerializerHelper.CreateReflectionEnumMessagePackSerializer<T>( context );
 					}
 #if !WINDOWS_PHONE && !NETFX_35 && !UNITY
 					if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||

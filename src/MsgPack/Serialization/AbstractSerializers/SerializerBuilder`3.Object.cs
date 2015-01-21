@@ -456,7 +456,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 											unpackedValue =>
 												this.EmitSetMemberValueStatement( context, result, entry.Member, unpackedValue )
 										)
-									), 
+									),
 									this.EmitInvokeVoidMethod(
 										context,
 										context.Unpacker,

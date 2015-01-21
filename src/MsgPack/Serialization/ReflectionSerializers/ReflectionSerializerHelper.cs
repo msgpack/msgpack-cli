@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	/// </summary>
 	internal static class ReflectionSerializerHelper
 	{
-		public static MessagePackSerializer<T> CreateReflectionEnuMessagePackSerializer<T>( SerializationContext context )
+		public static MessagePackSerializer<T> CreateReflectionEnumMessagePackSerializer<T>( SerializationContext context )
 		{
 #if UNITY_IPHONE
 			throw new PlatformNotSupportedException( "On-the-fly enum serializer generation is not supported in Unity iOS. Use pre-generated serializer instead." );
