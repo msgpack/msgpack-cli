@@ -11,6 +11,7 @@
   </Project>
   <Project Name="MsgPack.UnitTest.BclExtensions.Mono" Base="MsgPack.UnitTest.BclExtensions">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
@@ -104,6 +105,7 @@
   </Project>
   <Project Name="MsgPack.UnitTest.CodeDom.Net35" Base="MsgPack.UnitTest.CodeDom">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
@@ -144,6 +146,7 @@
 
   <Project Name="MsgPack.UnitTest.BclExtensions.WinRT" Base="MsgPack.UnitTest.BclExtensions">
     <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
