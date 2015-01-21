@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -32,7 +34,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private void BuildObjectSerializer( TContext context )
 		{
 			SerializationTarget.VerifyType( typeof( TObject ) );
-			var entries = SerializationTarget.Prepare( context.SerializationContext, typeof( TObject ) );
+			var target = SerializationTarget.Prepare( context.SerializationContext, typeof( TObject ) );
 
 			if ( typeof( IPackable ).IsAssignableFrom( typeof( TObject ) ) )
 			{
@@ -40,7 +42,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				this.BuildObjectPackTo( context, entries );
+				this.BuildObjectPackTo( context, target );
 			}
 
 			if ( typeof( IUnpackable ).IsAssignableFrom( typeof( TObject ) ) )
@@ -49,7 +51,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				this.BuildObjectUnpackFrom( context, entries );
+				this.BuildObjectUnpackFrom( context, target );
 			}
 		}
 
@@ -74,7 +76,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private void BuildObjectPackTo( TContext context, IList<SerializingMember> entries )
+		private void BuildObjectPackTo( TContext context, SerializationTarget target )
 		{
 			this.EmitMethodPrologue( context, SerializerMethod.PackToCore );
 			TConstruct construct = null;
@@ -85,8 +87,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						typeof( void ),
 						context.SerializationContext.SerializationMethod == SerializationMethod.Array
-						? this.BuildObjectPackToWithArray( context, entries )
-						: this.BuildObjectPackToWithMap( context, entries )
+						? this.BuildObjectPackToWithArray( context, target.Members )
+						: this.BuildObjectPackToWithMap( context, target.Members )
 					);
 			}
 			finally
@@ -231,7 +233,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return this.EmitRetrunStatement( context, this.EmitLoadVariableExpression( context, result ) );
 		}
 
-		private void BuildObjectUnpackFrom( TContext context, IList<SerializingMember> entries )
+		private void BuildObjectUnpackFrom( TContext context, SerializationTarget target )
 		{
 			/*
 			 *	#if T is IUnpackable
@@ -256,7 +258,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitSequentialStatements(
 						context,
 						typeof( TObject ),
-						this.BuildObjectUnpackFromCore( context, entries )
+						this.BuildObjectUnpackFromCore( context, target )
 					);
 			}
 			finally
@@ -265,7 +267,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private IEnumerable<TConstruct> BuildObjectUnpackFromCore( TContext context, IList<SerializingMember> entries )
+		private IEnumerable<TConstruct> BuildObjectUnpackFromCore( TContext context, SerializationTarget target )
 		{
 			var result =
 				this.DeclareLocal(
@@ -274,7 +276,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					"result"
 				);
 			yield return result;
-			if ( !typeof( TObject ).GetIsValueType() )
+			if ( !typeof( TObject ).GetIsValueType() && !target.IsConstructorDeserialization )
 			{
 				yield return
 					this.EmitStoreVariableStatement(
@@ -292,25 +294,25 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitConditionalExpression(
 					context,
 					this.EmitGetPropretyExpression( context, context.Unpacker, Metadata._Unpacker.IsArrayHeader ),
-					this.EmitObjectUnpackFromArray( context, result, entries ),
-					this.EmitObjectUnpackFromMap( context, result, entries )
+					this.EmitObjectUnpackFromArray( context, result, target ),
+					this.EmitObjectUnpackFromMap( context, result, target )
 				);
 
 			yield return this.EmitRetrunStatement( context, this.EmitLoadVariableExpression( context, result ) );
 		}
 
-		private TConstruct EmitObjectUnpackFromArray( TContext context, TConstruct result, IList<SerializingMember> entries )
+		private TConstruct EmitObjectUnpackFromArray( TContext context, TConstruct result, SerializationTarget target )
 		{
 			// TODO: Supports ExtensionObject like round-tripping.
 			return
 				this.EmitSequentialStatements(
 					context,
 					typeof( void ),
-					this.EmitObjectUnpackFromArrayCore( context, result, entries )
+					this.EmitObjectUnpackFromArrayCore( context, result, target )
 				);
 		}
 
-		private IEnumerable<TConstruct> EmitObjectUnpackFromArrayCore( TContext context, TConstruct result, IList<SerializingMember> entries )
+		private IEnumerable<TConstruct> EmitObjectUnpackFromArrayCore( TContext context, TConstruct result, SerializationTarget target )
 		{
 			/*
 			 *	int unpacked = 0;
@@ -347,11 +349,40 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitGetItemsCountExpression( context, context.Unpacker )
 				);
 
-			for ( int i = 0; i < entries.Count; i++ )
+			var constructorParameters =
+				target.IsConstructorDeserialization
+					? target.DeserializationConstructor.GetParameters()
+					: null;
+			var constructorArguments =
+				target.IsConstructorDeserialization
+				// ReSharper disable once PossibleNullReferenceException
+					? new List<TConstruct>( constructorParameters.Length )
+					: null;
+			var constructorArgumentsIndex =
+				target.IsConstructorDeserialization
+				// ReSharper disable once PossibleNullReferenceException
+					? new Dictionary<string, TConstruct>( constructorParameters.Length )
+					: null;
+			foreach (
+				var construct in
+					this.InitializeConstructorArgumentInitializationStatements(
+						context,
+						target,
+						constructorParameters,
+						constructorArguments,
+						constructorArgumentsIndex ) )
+			{
+				yield return construct;
+			}
+
+
+			for ( int i = 0; i < target.Members.Count; i++ )
 			{
 				var count = i;
 
-				if ( entries[ i ].Member == null )
+				if ( target.Members[ i ].Member == null
+					// ReSharper disable once PossibleNullReferenceException
+					|| ( target.IsConstructorDeserialization && !constructorArgumentsIndex.ContainsKey( target.Members[ i ].Contract.Name ) ) )
 				{
 					// just pop
 					yield return
@@ -363,25 +394,49 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				else
 				{
+					Func<TConstruct, TConstruct> storeValueStatementEmitter;
+					if ( target.IsConstructorDeserialization )
+					{
+#if DEBUG && !UNITY
+						Contract.Assert( constructorArgumentsIndex != null );
+#endif // DEBUG && !UNITY
+						var member = target.Members[ i ];
+						storeValueStatementEmitter =
+							unpackedItem =>
+								this.EmitStoreVariableStatement( context, constructorArgumentsIndex[ member.Contract.Name ], unpackedItem );
+					}
+					else
+					{
+						storeValueStatementEmitter =
+							unpackedItem =>
+								this.EmitSetMemberValueStatement( context, result, target.Members[ count ].Member, unpackedItem );
+
+					}
+
 					yield return
 						this.EmitUnpackItemValueExpression(
 							context,
-							entries[ count ].Member.GetMemberValueType(),
-							entries[ count ].Contract.NilImplication,
+							target.Members[ count ].Member.GetMemberValueType(),
+							target.Members[ count ].Contract.NilImplication,
 							context.Unpacker,
 							this.MakeInt32Literal( context, count ),
-							this.MakeStringLiteral( context, entries[ count ].Member.ToString() ),
+							this.MakeStringLiteral( context, target.Members[ count ].Member.ToString() ),
 							itemsCount,
 							unpacked,
-							entries[ i ],
-							unpackedItem =>
-								this.EmitSetMemberValueStatement( context, result, entries[ count ].Member, unpackedItem )
+							target.Members[ i ],
+							storeValueStatementEmitter
 						);
 				}
 			}
+
+			if ( target.IsConstructorDeserialization )
+			{
+				yield return
+					this.EmitInvokeDeserializationConstructorStatement( context, target.DeserializationConstructor, constructorArguments, result );
+			}
 		}
 
-		private TConstruct EmitObjectUnpackFromMap( TContext context, TConstruct result, IList<SerializingMember> entries )
+		private TConstruct EmitObjectUnpackFromMap( TContext context, TConstruct result, SerializationTarget target )
 		{
 			// TODO: Supports ExtensionObject like round-tripping.
 
@@ -389,11 +444,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitSequentialStatements(
 					context,
 					typeof( void ),
-					this.EmitObjectUnpackFromMapCore( context, result, entries )
+					this.EmitObjectUnpackFromMapCore( context, result, target )
 				);
 		}
 
-		private IEnumerable<TConstruct> EmitObjectUnpackFromMapCore( TContext context, TConstruct result, IList<SerializingMember> entries )
+		private IEnumerable<TConstruct> EmitObjectUnpackFromMapCore( TContext context, TConstruct result, SerializationTarget target )
 		{
 			var itemsCount =
 				this.DeclareLocal(
@@ -409,6 +464,50 @@ namespace MsgPack.Serialization.AbstractSerializers
 					itemsCount,
 					this.EmitGetItemsCountExpression( context, context.Unpacker )
 				);
+
+			var constructorParameters =
+				target.IsConstructorDeserialization
+					? target.DeserializationConstructor.GetParameters()
+					: null;
+			var constructorArguments =
+				target.IsConstructorDeserialization
+				// ReSharper disable once PossibleNullReferenceException
+					? new List<TConstruct>( constructorParameters.Length )
+					: null;
+			var constructorArgumentsIndex =
+				target.IsConstructorDeserialization
+				// ReSharper disable once PossibleNullReferenceException
+					? new Dictionary<string, TConstruct>( constructorParameters.Length )
+					: null;
+
+			foreach (
+				var construct in
+					this.InitializeConstructorArgumentInitializationStatements(
+						context,
+						target,
+						constructorParameters,
+						constructorArguments,
+						constructorArgumentsIndex ) )
+			{
+				yield return construct;
+			}
+
+			Func<TConstruct, SerializingMember, TConstruct> storeValueStatementEmitter;
+			if ( target.IsConstructorDeserialization )
+			{
+#if DEBUG && !UNITY
+				Contract.Assert( constructorArgumentsIndex != null );
+#endif // DEBUG && !UNITY
+				storeValueStatementEmitter =
+					( unpackedValue, entry ) =>
+						this.EmitStoreVariableStatement( context, constructorArgumentsIndex[ entry.Contract.Name ], unpackedValue );
+			}
+			else
+			{
+				storeValueStatementEmitter =
+					( unpackedValue, entry ) =>
+						this.EmitSetMemberValueStatement( context, result, entry.Member, unpackedValue );
+			}
 
 			yield return
 				this.EmitForLoop(
@@ -440,7 +539,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitStringSwitchStatement(
 								context,
 								key,
-								entries.Where( e => e.Member != null ).ToDictionary(
+								target.Members.Where( e => 
+									e.Member != null
+									// ReSharper disable once PossibleNullReferenceException
+									&& ( !target.IsConstructorDeserialization || constructorArgumentsIndex.ContainsKey( e.Contract.Name ) )
+								).ToDictionary(
 									entry => entry.Contract.Name,
 									entry =>
 										this.EmitUnpackItemValueExpression(
@@ -453,8 +556,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 											null,
 											null,
 											entry,
-											unpackedValue =>
-												this.EmitSetMemberValueStatement( context, result, entry.Member, unpackedValue )
+											unpackedValue => storeValueStatementEmitter( unpackedValue, entry )
 										)
 									),
 									this.EmitInvokeVoidMethod(
@@ -466,6 +568,57 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 						return this.EmitSequentialStatements( context, typeof( void ), key, unpackKey, assigns );
 					}
+				);
+
+			if ( target.IsConstructorDeserialization )
+			{
+				yield return
+					this.EmitInvokeDeserializationConstructorStatement( context, target.DeserializationConstructor, constructorArguments, result );
+			}
+		}
+
+		private IEnumerable<TConstruct> InitializeConstructorArgumentInitializationStatements( TContext context, SerializationTarget target, ParameterInfo[] constructorParameters, List<TConstruct> constructorArguments, Dictionary<string, TConstruct> constructorArgumentsIndex )
+		{
+			if ( !target.IsConstructorDeserialization )
+			{
+				// not constructor deserialization
+				yield break;
+			}
+
+			for ( var i = 0; i < constructorParameters.Length; i++ )
+			{
+				var argument =
+					this.DeclareLocal(
+						context,
+						constructorParameters[ i ].ParameterType,
+						"ctorArg" + i
+						);
+
+				yield return argument;
+
+				constructorArguments.Add( argument );
+				var correspondingMemberName = target.FindCorrespondingMemberName( constructorParameters[ i ] );
+				if ( correspondingMemberName != null )
+				{
+					constructorArgumentsIndex.Add( correspondingMemberName, argument );
+				}
+
+				yield return this.EmitStoreVariableStatement( context, argument, this.MakeLiteral( context, argument, constructorParameters[ i ].ParameterType, constructorParameters[ i ].DefaultValue ) );
+			}
+		}
+
+		private TConstruct EmitInvokeDeserializationConstructorStatement( TContext context, ConstructorInfo constructor, IList<TConstruct> constructorArguments, TConstruct resultVariable )
+		{
+			return
+				this.EmitStoreVariableStatement(
+					context,
+					resultVariable,
+					this.EmitCreateNewObjectExpression(
+						context,
+						resultVariable,
+						constructor,
+						constructorArguments.ToArray()
+					)
 				);
 		}
 	}

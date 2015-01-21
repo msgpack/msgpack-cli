@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -155,7 +155,6 @@ namespace MsgPack.Serialization
 			return new InvalidMessagePackStreamException( String.Format( CultureInfo.CurrentCulture, "Items at index '{0}' is missing.", index ) );
 		}
 
-#if !UNITY
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 		///		Returns new exception to notify that target type is not serializable because it does not have public default constructor.
@@ -171,7 +170,6 @@ namespace MsgPack.Serialization
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have default (parameterless) public constructor.", type ) );
 		}
-#endif // !UNITY
 
 		/// <summary>
 		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
@@ -187,22 +185,6 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Type '{0}' does not have both of default (parameterless) public constructor and  public constructor with an Int32 parameter.", type ) );
-		}
-
-		/// <summary>
-		///		<strong>This is intended to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
-		///		Returns new exception to notify that there are no serializable fields and properties on the target type.
-		/// </summary>
-		/// <param name="type">The target type.</param>
-		/// <returns><see cref="Exception"/> instance. It will not be <c>null</c>.</returns>
-		internal static Exception NewNoSerializableFieldsException( Type type )
-		{
-#if !UNITY
-			Contract.Requires( type != null );
-			Contract.Ensures( Contract.Result<Exception>() != null );
-#endif // !UNITY
-
-			return new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize type '{0}' because it does not have any serializable fields nor properties.", type ) );
 		}
 
 		/// <summary>

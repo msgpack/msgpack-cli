@@ -218,4 +218,5 @@ Release 0.6.0 Alpha1 -
 
   NEW FEATURE
   * `MessagePackIgnoreAttribute` to exclude properties. Issue #55
+  * Deserializer now uses 'best match' constructor when all members are read-only. Issue #52.
   * `MessagePackSerializer.UnpackMessagePackObject` API. This is convinient shortcut to deserialize stream as `MessagePackObject` tree.

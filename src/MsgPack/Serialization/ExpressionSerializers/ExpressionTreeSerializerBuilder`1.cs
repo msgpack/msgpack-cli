@@ -130,7 +130,32 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Constant( null, contextType );
 		}
 
+		protected override ExpressionConstruct MakeByteLiteral( ExpressionTreeContext context, byte constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeSByteLiteral( ExpressionTreeContext context, sbyte constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeInt16Literal( ExpressionTreeContext context, short constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeUInt16Literal( ExpressionTreeContext context, ushort constant )
+		{
+			return Expression.Constant( constant );
+		}
+
 		protected override ExpressionConstruct MakeInt32Literal( ExpressionTreeContext context, int constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeUInt32Literal( ExpressionTreeContext context, uint constant )
 		{
 			return Expression.Constant( constant );
 		}
@@ -139,6 +164,32 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			return Expression.Constant( constant );
 		}
+
+		protected override ExpressionConstruct MakeUInt64Literal( ExpressionTreeContext context, ulong constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeReal32Literal( ExpressionTreeContext context, float constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeReal64Literal( ExpressionTreeContext context, double constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeBooleanLiteral( ExpressionTreeContext context, bool constant )
+		{
+			return Expression.Constant( constant );
+		}
+
+		protected override ExpressionConstruct MakeCharLiteral( ExpressionTreeContext context, char constant )
+		{
+			return Expression.Constant( constant );
+		}
+
 
 		protected override ExpressionConstruct MakeStringLiteral( ExpressionTreeContext context, string constant )
 		{

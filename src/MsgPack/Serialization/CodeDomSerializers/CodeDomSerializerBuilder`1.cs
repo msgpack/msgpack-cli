@@ -165,14 +165,64 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return CodeDomConstruct.Expression( contextType, new CodePrimitiveExpression( null ) );
 		}
 
+		protected override CodeDomConstruct MakeByteLiteral( CodeDomContext context, byte constant )
+		{
+			return CodeDomConstruct.Expression( typeof( byte ), new CodePrimitiveExpression( constant ) );
+		}
+
+		protected override CodeDomConstruct MakeSByteLiteral( CodeDomContext context, sbyte constant )
+		{
+			return CodeDomConstruct.Expression( typeof( sbyte ), new CodePrimitiveExpression( constant ) );
+		}
+
+		protected override CodeDomConstruct MakeInt16Literal( CodeDomContext context, short constant )
+		{
+			return CodeDomConstruct.Expression( typeof( short ), new CodePrimitiveExpression( constant ) );
+		}
+
+		protected override CodeDomConstruct MakeUInt16Literal( CodeDomContext context, ushort constant )
+		{
+			return CodeDomConstruct.Expression( typeof( ushort ), new CodePrimitiveExpression( constant ) );
+		}
+
 		protected override CodeDomConstruct MakeInt32Literal( CodeDomContext context, int constant )
 		{
 			return CodeDomConstruct.Expression( typeof( int ), new CodePrimitiveExpression( constant ) );
 		}
 
+		protected override CodeDomConstruct MakeUInt32Literal( CodeDomContext context, uint constant )
+		{
+			return CodeDomConstruct.Expression( typeof( uint ), new CodePrimitiveExpression( constant ) );
+		}
+
 		protected override CodeDomConstruct MakeInt64Literal( CodeDomContext context, long constant )
 		{
 			return CodeDomConstruct.Expression( typeof( long ), new CodePrimitiveExpression( constant ) );
+		}
+
+		protected override CodeDomConstruct MakeUInt64Literal( CodeDomContext context, ulong constant )
+		{
+			return CodeDomConstruct.Expression( typeof( ulong ), new CodePrimitiveExpression( constant ) );
+		}
+
+		protected override CodeDomConstruct MakeReal32Literal( CodeDomContext context, float constant )
+		{
+			return CodeDomConstruct.Expression( typeof( float ), new CodePrimitiveExpression( constant ) );
+		}
+
+		protected override CodeDomConstruct MakeReal64Literal( CodeDomContext context, double constant )
+		{
+			return CodeDomConstruct.Expression( typeof( double ), new CodePrimitiveExpression( constant ) );
+		}
+
+		protected override CodeDomConstruct MakeBooleanLiteral( CodeDomContext context, bool constant )
+		{
+			return CodeDomConstruct.Expression( typeof( bool ), new CodePrimitiveExpression( constant ) );
+		}
+
+		protected override CodeDomConstruct MakeCharLiteral( CodeDomContext context, char constant )
+		{
+			return CodeDomConstruct.Expression( typeof( char ), new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeEnumLiteral( CodeDomContext context, Type type, object constant )

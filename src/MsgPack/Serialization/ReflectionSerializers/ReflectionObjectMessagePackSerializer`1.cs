@@ -43,16 +43,43 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly DataMemberContract[] _contracts;
 		private readonly Dictionary<string, int> _memberIndexes;
 		private readonly IMessagePackSerializer[] _serializers;
+		private readonly ParameterInfo[] _constructorParameters;
+		private readonly Dictionary<int, int> _constructorArgumentIndexes;
 
 		public ReflectionObjectMessagePackSerializer( SerializationContext context )
 			: base( context )
 		{
-			ReflectionSerializerHelper.GetMetadata( context, typeof( T ), out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
+			SerializationTarget.VerifyType( typeof( T ) );
+			var target = SerializationTarget.Prepare( context, typeof( T ) );
+			ReflectionSerializerHelper.GetMetadata( target.Members, context, typeof( T ), out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
 			this._memberIndexes =
 				this._contracts
 					.Select( ( contract, index ) => new KeyValuePair<string, int>( contract.Name, index ) )
 					.Where( kv => kv.Key != null )
 					.ToDictionary( kv => kv.Key, kv => kv.Value );
+			this._constructorParameters =
+				( !typeof( IUnpackable ).IsAssignableFrom( typeof( T ) ) && target.IsConstructorDeserialization )
+					? target.DeserializationConstructor.GetParameters()
+					: null;
+			if ( this._constructorParameters != null )
+			{
+				this._constructorArgumentIndexes = new Dictionary<int, int>( this._memberIndexes.Count );
+				foreach ( var member in target.Members )
+				{
+					int index = 
+#if SILVERLIGHT && !WINDOWS_PHONE
+						this._constructorParameters.FindIndex( 
+#else
+						Array.FindIndex( this._constructorParameters,
+#endif // SILVERLIGHT && !WINDOWS_PHONE
+							item => item.Name.Equals( member.Contract.Name, StringComparison.OrdinalIgnoreCase ) && item.ParameterType == member.Member.GetMemberValueType()
+						);
+					if ( index >= 0 )
+					{
+						this._constructorArgumentIndexes.Add( index, this._memberIndexes[ member.Contract.Name ] );
+					}
+				}
+			}
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
@@ -113,14 +140,24 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
 		{
-			var result = Activator.CreateInstance<T>();
+			object result =
+				this._constructorParameters == null
+					? Activator.CreateInstance( typeof( T ) )
+					: this._constructorParameters.Select( p => 
+						p.GetHasDefaultValue()
+						? p.DefaultValue 
+						: p.ParameterType.GetIsValueType()
+						? Activator.CreateInstance( p.ParameterType )
+						: null
+					).ToArray();
+
 			var unpacked = 0;
 
 			var asUnpackable = result as IUnpackable;
 			if ( asUnpackable != null )
 			{
 				asUnpackable.UnpackFromMessage( unpacker );
-				return result;
+				return ( T )result;
 			}
 
 			if ( unpacker.IsArrayHeader )
@@ -158,7 +195,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					}
 
 					int index;
-					if ( !this._memberIndexes.TryGetValue(name, out index) )
+					if ( !this._memberIndexes.TryGetValue( name, out index ) )
 					{
 						// key does not exist in the object, skip the associated value
 						if ( unpacker.Skip() == null )
@@ -168,17 +205,25 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						continue;
 					}
 
-					result = this.UnpackMemberValue(result, unpacker, itemsCount, ref unpacked, index, i);
+					result = this.UnpackMemberValue( result, unpacker, itemsCount, ref unpacked, index, i );
 				}
 			}
 
-			return result;
+			if ( this._constructorParameters == null )
+			{
+				return ( T )result;
+			}
+			else
+			{
+				return ( T )Activator.CreateInstance( typeof( T ), result as object[] );
+			}
 		}
 
-		private T UnpackMemberValue( T objectGraph, Unpacker unpacker, int itemsCount, ref int unpacked, int index, int unpackerOffset )
+		private object UnpackMemberValue( object objectGraph, Unpacker unpacker, int itemsCount, ref int unpacked, int index, int unpackerOffset )
 		{
 			object nullable = null;
-			var setter = this._setters[ index ];
+
+			var setter = index < this._setters.Length ? this._setters[ index ] : null;
 			if ( unpacked < itemsCount )
 			{
 				if ( !unpacker.Read() )
@@ -188,7 +233,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 				if ( !unpacker.LastReadData.IsNil )
 				{
-					if ( setter != null )
+					if ( setter != null || this._constructorParameters != null )
 					{
 						if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
 						{
@@ -217,36 +262,56 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				}
 			}
 
-			if ( setter != null )
+			if ( this._constructorParameters != null )
+			{
+#if !UNITY
+				Contract.Assert( objectGraph is object[] );
+#endif // !UNITY
+
+				int argumentIndex;
+				if ( this._constructorArgumentIndexes.TryGetValue( index, out argumentIndex ) )
+				{
+					if ( nullable == null )
+					{
+						ReflectionNilImplicationHandler.Instance.OnUnpacked(
+							new ReflectionSerializerNilImplicationHandlerOnUnpackedParameter(
+								this._memberInfos[ index ].GetMemberValueType(),
+								value => ( objectGraph as object[] )[ argumentIndex ] = nullable,
+								this._contracts[ index ].Name,
+								this._memberInfos[ index ].DeclaringType
+							),
+							this._contracts[ index ].NilImplication
+						)( null );
+					}
+					else
+					{
+						( objectGraph as object[] )[ argumentIndex ] = nullable;
+					}
+				}
+			}
+			else if ( setter != null )
 			{
 				if ( nullable == null )
 				{
 					ReflectionNilImplicationHandler.Instance.OnUnpacked(
 						new ReflectionSerializerNilImplicationHandlerOnUnpackedParameter(
 							this._memberInfos[ index ].GetMemberValueType(),
-							value => SetMemverValue( objectGraph, setter, value ),
+							value => setter( objectGraph, nullable ),
 							this._contracts[ index ].Name,
 							this._memberInfos[ index ].DeclaringType
-							),
+						),
 						this._contracts[ index ].NilImplication
-						)( null );
+					)( null );
 				}
 				else
 				{
-					objectGraph = SetMemverValue( objectGraph, setter, nullable );
+					setter( objectGraph, nullable );
 				}
 			}
 
 			unpacked++;
 
 			return objectGraph;
-		}
-
-		private static T SetMemverValue( T result, Action<object, object> setter, object value )
-		{
-			object boxed = result;
-			setter( boxed, value );
-			return ( T )boxed;
 		}
 	}
 }

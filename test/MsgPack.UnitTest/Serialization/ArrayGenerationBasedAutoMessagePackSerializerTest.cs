@@ -4,7 +4,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	[Timeout( 30000 )]
+	[Timeout( 60000 )]
 	public class ArrayGenerationBasedReflectionMessagePackSerializerTest
 	{
 		private SerializationContext GetSerializationContext()
@@ -678,10 +678,225 @@ namespace MsgPack.Serialization
 			public readonly string Field = "ABC";
 		}
 
+		public class HasInitOnlyFieldWithConstructor
+		{
+			public readonly string Field;
+
+			public HasInitOnlyFieldWithConstructor( string field )
+			{
+				this.Field = field;
+			}
+		}
+
 		public class HasGetOnlyProperty
 		{
 			public string Property { get { return "ABC"; } }
 		}
+
+		public class HasGetOnlyPropertyWithConstructor
+		{
+			private readonly string _property;
+			public string Property { get { return this._property; } }
+
+			public HasGetOnlyPropertyWithConstructor( string property )
+			{
+				this._property = property;
+			}
+		}
+
+		public class OnlyCollection
+		{
+			public readonly List<int> Collection = new List<int>();
+		}
+
+		public class OnlyCollectionWithConstructor
+		{
+			public readonly List<int> Collection;
+
+			public OnlyCollectionWithConstructor( List<int> collection )
+			{
+				this.Collection = collection;
+			}
+		}
+
+		public class WithAnotherNameConstructor
+		{
+			public readonly int ReadOnlySame;
+			public readonly int ReadOnlyDiffer;
+
+			public WithAnotherNameConstructor( int readonlysame, int the2 )
+			{
+				this.ReadOnlySame = readonlysame;
+				this.ReadOnlyDiffer = the2;
+			}
+		}
+
+		public class WithAnotherTypeConstructor
+		{
+			public readonly int ReadOnlySame;
+			public readonly string ReadOnlyDiffer;
+
+			public WithAnotherTypeConstructor( int readonlysame, int the2 )
+			{
+				this.ReadOnlySame = readonlysame;
+				this.ReadOnlyDiffer = the2.ToString();
+			}
+		}
+
+		public class WithConstructorAttribute
+		{
+			public readonly int Value;
+			public readonly bool IsAttributePreferred;
+
+			public WithConstructorAttribute( int value, bool isAttributePreferred )
+			{
+				this.Value = value;
+				this.IsAttributePreferred = isAttributePreferred;
+			}
+
+			[MessagePackDeserializationConstructor]
+			public WithConstructorAttribute( int value ) : this( value, true ) {}
+		}
+
+		public class WithMultipleConstructorAttributes
+		{
+			public readonly int Value;
+
+			[MessagePackDeserializationConstructor]
+			public WithMultipleConstructorAttributes( int value, string arg ) { }
+
+			[MessagePackDeserializationConstructor]
+			public WithMultipleConstructorAttributes( int value, bool arg ) { }
+		}
+
+#pragma warning disable 3001
+		public class WithOptionalConstructorParameterByte
+		{
+			public readonly Byte Value;
+
+			public WithOptionalConstructorParameterByte( Byte value = ( byte )2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterSByte
+		{
+			public readonly SByte Value;
+
+			public WithOptionalConstructorParameterSByte( SByte value = ( sbyte )-2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterInt16
+		{
+			public readonly Int16 Value;
+
+			public WithOptionalConstructorParameterInt16( Int16 value = ( short )-2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterUInt16
+		{
+			public readonly UInt16 Value;
+
+			public WithOptionalConstructorParameterUInt16( UInt16 value = ( ushort )2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterInt32
+		{
+			public readonly Int32 Value;
+
+			public WithOptionalConstructorParameterInt32( Int32 value = -2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterUInt32
+		{
+			public readonly UInt32 Value;
+
+			public WithOptionalConstructorParameterUInt32( UInt32 value = ( uint )2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterInt64
+		{
+			public readonly Int64 Value;
+
+			public WithOptionalConstructorParameterInt64( Int64 value = -2L )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterUInt64
+		{
+			public readonly UInt64 Value;
+
+			public WithOptionalConstructorParameterUInt64( UInt64 value = ( ulong )2L )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterSingle
+		{
+			public readonly Single Value;
+
+			public WithOptionalConstructorParameterSingle( Single value = 1.2f )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterDouble
+		{
+			public readonly Double Value;
+
+			public WithOptionalConstructorParameterDouble( Double value = 1.2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterDecimal
+		{
+			public readonly Decimal Value;
+
+			public WithOptionalConstructorParameterDecimal( Decimal value = 1.2m )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterBoolean
+		{
+			public readonly Boolean Value;
+
+			public WithOptionalConstructorParameterBoolean( Boolean value = true )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterChar
+		{
+			public readonly Char Value;
+
+			public WithOptionalConstructorParameterChar( Char value = 'A' )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterString
+		{
+			public readonly String Value;
+
+			public WithOptionalConstructorParameterString( String value = "ABC" )
+			{
+				this.Value = value;
+			}
+		}
+#pragma warning restore 3001
 
 		public class JustPackable : IPackable
 		{

@@ -23,6 +23,7 @@
 #endif
 
 using System;
+using System.Collections.Generic;
 #if !UNITY
 using System.Diagnostics.Contracts;
 #endif // !UNITY
@@ -171,6 +172,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		}
 
 		public static void GetMetadata(
+			IList<SerializingMember> members,
 			SerializationContext context,
 			Type targetType,
 			out Func<object, object>[] getters,
@@ -179,9 +181,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			out DataMemberContract[] contracts,
 			out IMessagePackSerializer[] serializers )
 		{
-			SerializationTarget.VerifyType( targetType );
-			var members = SerializationTarget.Prepare( context, targetType );
-
 			getters = new Func<object, object>[ members.Count ];
 			setters = new Action<object, object>[ members.Count ];
 			memberInfos = new MemberInfo[ members.Count ];

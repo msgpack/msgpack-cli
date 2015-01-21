@@ -495,11 +495,10 @@ namespace MsgPack.Serialization
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
 #if !NETFX_CORE
-				return asProperty.GetAccessors( true ).All( a => a.IsPublic );
+				return asProperty.GetAccessors( true ).Where( a => a.ReturnType != typeof( void ) ).All( a => a.IsPublic );
 #else
 				return
-					( asProperty.GetMethod == null || asProperty.GetMethod.IsPublic )
-					&& ( asProperty.SetMethod == null || asProperty.SetMethod.IsPublic );
+					( asProperty.GetMethod == null || asProperty.GetMethod.IsPublic );
 #endif
 			}
 			else if ( ( asField = source as FieldInfo ) != null )

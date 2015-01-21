@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -107,6 +107,38 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
+		protected override TConstruct MakeByteLiteral( TContext context, byte constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( byte ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeSByteLiteral( TContext context, sbyte constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( sbyte ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeInt16Literal( TContext context, short constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( short ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeUInt16Literal( TContext context, ushort constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( ushort ) );
+			return default( TConstruct );
+		}
+
 		protected override TConstruct MakeInt32Literal( TContext context, int constant )
 		{
 			Contract.Requires( context != null );
@@ -115,11 +147,59 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
+		protected override TConstruct MakeUInt32Literal( TContext context, uint constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( uint ) );
+			return default( TConstruct );
+		}
+
 		protected override TConstruct MakeInt64Literal( TContext context, long constant )
 		{
 			Contract.Requires( context != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( long ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeUInt64Literal( TContext context, ulong constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( ulong ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeReal32Literal( TContext context, float constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( float ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeReal64Literal( TContext context, double constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( double ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeBooleanLiteral( TContext context, bool constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( bool ) );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeCharLiteral( TContext context, char constant )
+		{
+			Contract.Requires( context != null );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( char ) );
 			return default( TConstruct );
 		}
 

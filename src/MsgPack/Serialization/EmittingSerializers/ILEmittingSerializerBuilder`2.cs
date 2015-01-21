@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -125,60 +125,90 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Literal( contextType, default( object ), il => il.EmitLdnull() );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Many case switch" )]
+		protected override ILConstruct MakeByteLiteral( TContext context, byte constant )
+		{
+			return this.MakeIntegerLiteral( typeof( byte ), constant );
+		}
+
+		protected override ILConstruct MakeSByteLiteral( TContext context, sbyte constant )
+		{
+			return this.MakeIntegerLiteral( typeof( sbyte ), constant );
+		}
+
+		protected override ILConstruct MakeInt16Literal( TContext context, short constant )
+		{
+			return this.MakeIntegerLiteral( typeof( short ), constant );
+		}
+
+		protected override ILConstruct MakeUInt16Literal( TContext context, ushort constant )
+		{
+			return this.MakeIntegerLiteral( typeof( ushort ), constant );
+		}
+
 		protected override ILConstruct MakeInt32Literal( TContext context, int constant )
+		{
+			return this.MakeIntegerLiteral( typeof( int ), constant );
+		}
+
+		protected override ILConstruct MakeUInt32Literal( TContext context, uint constant )
+		{
+			return this.MakeIntegerLiteral( typeof( uint ), unchecked( ( int ) constant ) );
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Many case switch" )]
+		private ILConstruct MakeIntegerLiteral( Type contextType, int constant )
 		{
 			switch ( constant )
 			{
 				case 0:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_0() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_0() );
 				}
 				case 1:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_1() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_1() );
 				}
 				case 2:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_2() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_2() );
 				}
 				case 3:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_3() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_3() );
 				}
 				case 4:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_4() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_4() );
 				}
 				case 5:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_5() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_5() );
 				}
 				case 6:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_6() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_6() );
 				}
 				case 7:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_7() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_7() );
 				}
 				case 8:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_8() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_8() );
 				}
 				case -1:
 				{
-					return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_M1() );
+					return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_M1() );
 				}
 				default:
 				{
 					if ( 0 <= constant && constant <= 255 )
 					{
-						return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_S( unchecked( ( byte )constant ) ) );
+						return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4_S( unchecked( ( byte )constant ) ) );
 					}
 					else
 					{
-						return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4( constant ) );
+						return ILConstruct.Literal( contextType, constant, il => il.EmitLdc_I4( constant ) );
 					}
 				}
 			}
@@ -187,6 +217,31 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override ILConstruct MakeInt64Literal( TContext context, long constant )
 		{
 			return ILConstruct.Literal( typeof( long ), constant, il => il.EmitLdc_I8( constant ) );
+		}
+
+		protected override ILConstruct MakeUInt64Literal( TContext context, ulong constant )
+		{
+			return ILConstruct.Literal( typeof( ulong ), constant, il => il.EmitLdc_I8( unchecked ( ( long ) constant ) ) );
+		}
+
+		protected override ILConstruct MakeReal32Literal( TContext context, float constant )
+		{
+			return ILConstruct.Literal( typeof( float ), constant, il => il.EmitLdc_R4( constant ) );
+		}
+
+		protected override ILConstruct MakeReal64Literal( TContext context, double constant )
+		{
+			return ILConstruct.Literal( typeof( double ), constant, il => il.EmitLdc_R8( constant ) );
+		}
+
+		protected override ILConstruct MakeBooleanLiteral( TContext context, bool constant )
+		{
+			return this.MakeIntegerLiteral( typeof( bool ), constant ? 1 : 0 );
+		}
+
+		protected override ILConstruct MakeCharLiteral( TContext context, char constant )
+		{
+			return this.MakeIntegerLiteral( typeof( char ), constant );
 		}
 
 		protected override ILConstruct MakeStringLiteral( TContext context, string constant )

@@ -526,6 +526,9 @@
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackDeserializationConstructorAttribute.cs">
+      <Link>Serialization\MessagePackDeserializationConstructorAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackEnumAttribute.cs">
       <Link>Serialization\MessagePackEnumAttribute.cs</Link>
     </Compile>
@@ -552,6 +555,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_CultureInfo.cs">
       <Link>Serialization\Metadata\_CultureInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_Decimal.cs">
+      <Link>Serialization\Metadata\_Decimal.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_DictionaryEntry.cs">
       <Link>Serialization\Metadata\_DictionaryEntry.cs</Link>

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -63,6 +63,136 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
 		protected abstract void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, TConstruct construct );
 
+
+		private TConstruct MakeLiteral( TContext context, TConstruct targetVariable, Type literalType, object literal )
+		{
+			var isDefault =
+#if !NETFX_CORE
+				( literal is DBNull );
+#else
+				false;
+			System.Diagnostics.Debug.Assert( literal == null || literalType == literal.GetType(), literalType + "!=" + ( literal == null ? "null" : literal.GetType().FullName ) );
+#endif
+
+			// Supports only C# literals
+			if ( literalType == typeof( byte ) )
+			{
+				return this.MakeByteLiteral( context, isDefault ? default( byte ) : ( byte )literal );
+			}
+
+			if ( literalType == typeof( sbyte ) )
+			{
+				return this.MakeSByteLiteral( context, isDefault ? default( sbyte ) : ( sbyte )literal );
+			}
+
+			if ( literalType == typeof( short ) )
+			{
+				return this.MakeInt16Literal( context, isDefault ? default( short ) : ( short )literal );
+			}
+
+			if ( literalType == typeof( ushort ) )
+			{
+				return this.MakeUInt16Literal( context, isDefault ? default( ushort ) : ( ushort )literal );
+			}
+
+			if ( literalType == typeof( int ) )
+			{
+				return this.MakeInt32Literal( context, isDefault ? default( int ) : ( int )literal );
+			}
+
+			if ( literalType == typeof( uint ) )
+			{
+				return this.MakeUInt32Literal( context, isDefault ? default( uint ) : ( uint )literal );
+			}
+
+			if ( literalType == typeof( long ) )
+			{
+				return this.MakeInt64Literal( context, isDefault ? default( long ) : ( long )literal );
+			}
+
+			if ( literalType == typeof( ulong ) )
+			{
+				return this.MakeUInt64Literal( context, isDefault ? default( ulong ) : ( ulong )literal );
+			}
+
+			if ( literalType == typeof( float ) )
+			{
+				return this.MakeReal32Literal( context, isDefault ? default( float ) : ( float )literal );
+			}
+
+			if ( literalType == typeof( double ) )
+			{
+				return this.MakeReal64Literal( context, isDefault ? default( double ) : ( double )literal );
+			}
+
+			if ( literalType == typeof( decimal ) )
+			{
+				return this.MakeDecimalLiteral( context, targetVariable, isDefault ? default( decimal ) : ( decimal )literal );
+			}
+
+			if ( literalType == typeof( bool ) )
+			{
+				return this.MakeBooleanLiteral( context, isDefault ? default( bool ) : ( bool )literal );
+			}
+
+			if ( literalType == typeof( char ) )
+			{
+				return this.MakeCharLiteral( context, isDefault ? default( char ) : ( char )literal );
+			}
+
+			if ( literalType.GetIsEnum() )
+			{
+				return this.MakeEnumLiteral( context, literalType, isDefault ? Enum.ToObject( literalType, 0 ) : literal );
+			}
+
+			if ( literal != null && !isDefault )
+			{
+				if ( literalType == typeof( string ) )
+				{
+					return this.MakeStringLiteral( context, literal as string );
+				}
+
+				// Unknown literal.
+				if ( literalType.GetIsValueType() )
+				{
+					throw new NotSupportedException(
+						String.Format( CultureInfo.CurrentCulture, "Literal for value type '{0}' is not supported.", literalType )
+					);
+				}
+				else
+				{
+					throw new NotSupportedException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Literal for reference type '{0}' is not supported except null reference.",
+							literalType 
+						)
+					);
+				}
+			}
+			else
+			{
+				return this.MakeNullLiteral( context, literalType );
+			}
+		}
+
+		// for C# decimal opt parameter ... [DecimalConstant(...)]
+		private TConstruct MakeDecimalLiteral( TContext context, TConstruct targetVariable, decimal constant )
+		{
+			var bits = Decimal.GetBits( constant );
+			return
+				this.EmitCreateNewObjectExpression(
+					context,
+					targetVariable,
+					Metadata._Decimal.Constructor,
+					this.MakeInt32Literal( context, bits[ 0 ] ), // lo
+					this.MakeInt32Literal( context, bits[ 1 ] ), // mid
+					this.MakeInt32Literal( context, bits[ 2 ] ), // high
+					this.MakeBooleanLiteral( context, ( bits[ 3 ] & 0x80000000 ) != 0 ), // sign
+					this.MakeByteLiteral( context, unchecked( ( byte )( bits[ 3 ] >> 16 & 0xFF ) ) ) // scale
+				);
+		}
+
 		/// <summary>
 		///		Emits anonymous <c>null</c> reference literal.
 		/// </summary>
@@ -70,6 +200,38 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="contextType">The type of null reference.</param>
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct MakeNullLiteral( TContext context, Type contextType );
+
+		/// <summary>
+		///		Emits the constant <see cref="Byte"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeByteLiteral( TContext context, byte constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="SByte"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeSByteLiteral( TContext context, sbyte constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Int16"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeInt16Literal( TContext context, short constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="UInt16"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeUInt16Literal( TContext context, ushort constant );
 
 		/// <summary>
 		///		Emits the constant <see cref="Int32"/> value reference.
@@ -80,12 +242,60 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeInt32Literal( TContext context, int constant );
 
 		/// <summary>
+		///		Emits the constant <see cref="UInt32"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeUInt32Literal( TContext context, uint constant );
+
+		/// <summary>
 		///		Emits the constant <see cref="Int64"/> value reference.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct MakeInt64Literal( TContext context, long constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="UInt64"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeUInt64Literal( TContext context, ulong constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Single"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeReal32Literal( TContext context, float constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Double"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeReal64Literal( TContext context, double constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Boolean"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeBooleanLiteral( TContext context, bool constant );
+
+		/// <summary>
+		///		Emits the constant <see cref="Char"/> value reference.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="constant">The constant value.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeCharLiteral( TContext context, char constant );
 
 		/// <summary>
 		///		Emits the constant <see cref="String"/> value reference.

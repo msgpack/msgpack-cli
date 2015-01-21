@@ -4,7 +4,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	[Timeout( 30000 )]
+	[Timeout( 60000 )]
 	public class MapReflectionBasedReflectionMessagePackSerializerTest
 	{
 		private SerializationContext GetSerializationContext()
@@ -246,7 +246,8 @@ namespace MsgPack.Serialization
 			finally
 			{
 				SerializerDebugging.AvoidsGenericSerializer = false;
-			}		}
+			}
+		}
 
 		[Test]
 		public void TestComplexTypeWithoutAnyAttribute_WithoutShortcut()
@@ -259,7 +260,8 @@ namespace MsgPack.Serialization
 			finally
 			{
 				SerializerDebugging.AvoidsGenericSerializer = false;
-			}		}
+			}
+		}
 
 		private void TestComplexTypeWithoutAnyAttribute( SerializationContext context )
 		{
@@ -770,9 +772,362 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestHasInitOnlyFieldWithConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasInitOnlyFieldWithConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Field, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyFieldWithConstructorMissing_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Field, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyFieldWithConstructorWithExtra_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.Pack( "Field" );
+					packer.Pack( "ABC" );
+					packer.Pack( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Field, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
 		public void TestHasGetOnlyProperty_Fail()
 		{
 			Assert.Throws<SerializationException>( () => this.CreateTarget<HasGetOnlyProperty>( GetSerializationContext() ) );
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasGetOnlyPropertyWithConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithConstructorMissing_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithConstructorWithExtra_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.Pack( "Property" );
+					packer.Pack( "ABC" );
+					packer.Pack( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestOnlyCollection_Success()
+		{
+			var serializer = this.CreateTarget<OnlyCollection>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new OnlyCollection();
+				value.Collection.Add( 1 );
+				value.Collection.Add( 2 );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Collection.ToArray(), Is.EqualTo( new [] { 1, 2 } ) );
+			}
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationOnlyCollection_Fail()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<OnlyCollectionWithConstructor>( GetSerializationContext() ) );
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationWithAnotherNameConstrtor_DifferIsSetDefault()
+		{
+			var serializer = this.CreateTarget<WithAnotherNameConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithAnotherNameConstructor( 1, 2 );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.ReadOnlySame, Is.EqualTo( 1 ) );
+				Assert.That( result.ReadOnlyDiffer, Is.EqualTo( 0 ) );
+			}
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationWithAnotherTypeConstrtor_DifferIsSetDefault()
+		{
+			var serializer = this.CreateTarget<WithAnotherTypeConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithAnotherTypeConstructor( 1, 2 );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.ReadOnlySame, Is.EqualTo( 1 ) );
+				Assert.That( result.ReadOnlyDiffer, Is.EqualTo( "0" ) );
+			}
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationWithAttribute_Preferred()
+		{
+			var serializer = this.CreateTarget<WithConstructorAttribute>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new WithConstructorAttribute( 1, false );
+				Assert.That( value.IsAttributePreferred, Is.False );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 1 ) );
+				Assert.That( result.IsAttributePreferred, Is.True );
+			}
+		}
+
+		[Test]
+		public void TestConstrutorDeserializationWithMultipleAttributes_Fail()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<WithMultipleConstructorAttributes>( GetSerializationContext() ) );
+		}
+
+
+		[Test]
+		public void TestOptionalConstructorByte_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterByte>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( byte )2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorSByte_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterSByte>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( sbyte )-2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorInt16_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterInt16>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( short )-2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorUInt16_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterUInt16>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( ushort )2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorInt32_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterInt32>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( -2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorUInt32_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterUInt32>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( uint )2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorInt64_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterInt64>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( -2L ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorUInt64_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterUInt64>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( ( ulong )2L ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorSingle_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterSingle>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 1.2f ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorDouble_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterDouble>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 1.2 ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorDecimal_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterDecimal>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 1.2m ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorBoolean_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterBoolean>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( true ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorChar_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterChar>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( 'A' ) );
+			}
+		}
+
+		[Test]
+		public void TestOptionalConstructorString_Success()
+		{
+			var serializer = this.CreateTarget<WithOptionalConstructorParameterString>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 }, 0, 1 );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Value, Is.EqualTo( "ABC" ) );
+			}
 		}
 
 		[Test]
@@ -1299,10 +1654,225 @@ namespace MsgPack.Serialization
 			public readonly string Field = "ABC";
 		}
 
+		public class HasInitOnlyFieldWithConstructor
+		{
+			public readonly string Field;
+
+			public HasInitOnlyFieldWithConstructor( string field )
+			{
+				this.Field = field;
+			}
+		}
+
 		public class HasGetOnlyProperty
 		{
 			public string Property { get { return "ABC"; } }
 		}
+
+		public class HasGetOnlyPropertyWithConstructor
+		{
+			private readonly string _property;
+			public string Property { get { return this._property; } }
+
+			public HasGetOnlyPropertyWithConstructor( string property )
+			{
+				this._property = property;
+			}
+		}
+
+		public class OnlyCollection
+		{
+			public readonly List<int> Collection = new List<int>();
+		}
+
+		public class OnlyCollectionWithConstructor
+		{
+			public readonly List<int> Collection;
+
+			public OnlyCollectionWithConstructor( List<int> collection )
+			{
+				this.Collection = collection;
+			}
+		}
+
+		public class WithAnotherNameConstructor
+		{
+			public readonly int ReadOnlySame;
+			public readonly int ReadOnlyDiffer;
+
+			public WithAnotherNameConstructor( int readonlysame, int the2 )
+			{
+				this.ReadOnlySame = readonlysame;
+				this.ReadOnlyDiffer = the2;
+			}
+		}
+
+		public class WithAnotherTypeConstructor
+		{
+			public readonly int ReadOnlySame;
+			public readonly string ReadOnlyDiffer;
+
+			public WithAnotherTypeConstructor( int readonlysame, int the2 )
+			{
+				this.ReadOnlySame = readonlysame;
+				this.ReadOnlyDiffer = the2.ToString();
+			}
+		}
+
+		public class WithConstructorAttribute
+		{
+			public readonly int Value;
+			public readonly bool IsAttributePreferred;
+
+			public WithConstructorAttribute( int value, bool isAttributePreferred )
+			{
+				this.Value = value;
+				this.IsAttributePreferred = isAttributePreferred;
+			}
+
+			[MessagePackDeserializationConstructor]
+			public WithConstructorAttribute( int value ) : this( value, true ) {}
+		}
+
+		public class WithMultipleConstructorAttributes
+		{
+			public readonly int Value;
+
+			[MessagePackDeserializationConstructor]
+			public WithMultipleConstructorAttributes( int value, string arg ) { }
+
+			[MessagePackDeserializationConstructor]
+			public WithMultipleConstructorAttributes( int value, bool arg ) { }
+		}
+
+#pragma warning disable 3001
+		public class WithOptionalConstructorParameterByte
+		{
+			public readonly Byte Value;
+
+			public WithOptionalConstructorParameterByte( Byte value = ( byte )2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterSByte
+		{
+			public readonly SByte Value;
+
+			public WithOptionalConstructorParameterSByte( SByte value = ( sbyte )-2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterInt16
+		{
+			public readonly Int16 Value;
+
+			public WithOptionalConstructorParameterInt16( Int16 value = ( short )-2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterUInt16
+		{
+			public readonly UInt16 Value;
+
+			public WithOptionalConstructorParameterUInt16( UInt16 value = ( ushort )2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterInt32
+		{
+			public readonly Int32 Value;
+
+			public WithOptionalConstructorParameterInt32( Int32 value = -2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterUInt32
+		{
+			public readonly UInt32 Value;
+
+			public WithOptionalConstructorParameterUInt32( UInt32 value = ( uint )2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterInt64
+		{
+			public readonly Int64 Value;
+
+			public WithOptionalConstructorParameterInt64( Int64 value = -2L )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterUInt64
+		{
+			public readonly UInt64 Value;
+
+			public WithOptionalConstructorParameterUInt64( UInt64 value = ( ulong )2L )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterSingle
+		{
+			public readonly Single Value;
+
+			public WithOptionalConstructorParameterSingle( Single value = 1.2f )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterDouble
+		{
+			public readonly Double Value;
+
+			public WithOptionalConstructorParameterDouble( Double value = 1.2 )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterDecimal
+		{
+			public readonly Decimal Value;
+
+			public WithOptionalConstructorParameterDecimal( Decimal value = 1.2m )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterBoolean
+		{
+			public readonly Boolean Value;
+
+			public WithOptionalConstructorParameterBoolean( Boolean value = true )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterChar
+		{
+			public readonly Char Value;
+
+			public WithOptionalConstructorParameterChar( Char value = 'A' )
+			{
+				this.Value = value;
+			}
+		}
+		public class WithOptionalConstructorParameterString
+		{
+			public readonly String Value;
+
+			public WithOptionalConstructorParameterString( String value = "ABC" )
+			{
+				this.Value = value;
+			}
+		}
+#pragma warning restore 3001
 
 		public class JustPackable : IPackable
 		{

@@ -263,6 +263,13 @@ namespace MsgPack
 			return Attribute.GetCustomAttribute( source, typeof( T ) ) as T;
 		}
 
+#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+		public static bool IsDefined( this MemberInfo source, Type attributeType )
+		{
+			return Attribute.IsDefined( source, attributeType );
+		}
+#endif // NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+
 #if !SILVERLIGHT
 		public static Type GetAttributeType( this CustomAttributeData source )
 		{
@@ -287,7 +294,19 @@ namespace MsgPack
 		{
 			return CustomAttributeData.GetCustomAttributes( source );
 		}
+
+		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this ParameterInfo source )
+		{
+			return CustomAttributeData.GetCustomAttributes( source );
+		}
 #endif // NETFX_35 || UNITY
+
+#if NETFX_CORE
+		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this ParameterInfo source )
+		{
+			return source.CustomAttributes;
+		}
+#endif // NETFX_CORE
 
 #if SILVERLIGHT
 		public static IEnumerable<Attribute> GetCustomAttributesData( this MemberInfo source )
@@ -363,5 +382,14 @@ namespace MsgPack
 			return Delegate.CreateDelegate( delegateType, source );
 		}
 #endif // NETFX_40
+
+		public static bool GetHasDefaultValue( this ParameterInfo source )
+		{
+#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+			return source.DefaultValue != DBNull.Value;
+#else
+			return source.HasDefaultValue;
+#endif
+		}
 	}
 }
