@@ -65,7 +65,8 @@ using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {
-	public abstract class <#= emitterFlavor #>NilImplicationTest
+	[TestFixture]
+	public class <#= emitterFlavor #>NilImplicationTest
 	{
 		private SerializationContext CreateSerializationContext()
 		{

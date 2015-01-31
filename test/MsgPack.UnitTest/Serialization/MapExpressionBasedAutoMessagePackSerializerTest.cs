@@ -55,6 +55,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
+	[TestFixture]
 	[Timeout( 30000 )]
 	public class MapExpressionBasedAutoMessagePackSerializerTest
 	{

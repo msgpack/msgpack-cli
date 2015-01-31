@@ -39,7 +39,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	public abstract class ReflectionBasedNilImplicationTest
+	[TestFixture]
+	public class ReflectionBasedNilImplicationTest
 	{
 		private SerializationContext CreateSerializationContext()
 		{
