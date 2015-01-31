@@ -76,6 +76,10 @@ namespace MsgPack.Serialization
 
 			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
+			if ( this.GetType().Assembly != typeof( NilImplicationTestTargetForValueTypeMemberDefault ).Assembly )
+			{
+				SerializerDebugging.AddRuntimeAssembly( typeof( NilImplicationTestTargetForValueTypeMemberDefault ).Assembly.Location );
+			}
 		}
 
 		[TearDown]
