@@ -4,7 +4,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -598,12 +598,14 @@ namespace MsgPack.Serialization
 		private const string PublicFieldPlain = "PublicFieldPlain";
 		private const string PublicReadOnlyFieldPlain = "PublicReadOnlyFieldPlain";
 		private const string NonPublicFieldPlain = "NonPublicFieldPlain";
+#if !NETFX_CORE && !SILVERLIGHT
 		private const string NonSerializedPublicField = "NonSerializedPublicField";
 		private const string NonSerializedPublicReadOnlyField = "NonSerializedPublicReadOnlyField";
 		private const string NonSerializedNonPublicField = "NonSerializedNonPublicField";
 		private const string NonSerializedPublicFieldPlain = "NonSerializedPublicFieldPlain";
 		private const string NonSerializedPublicReadOnlyFieldPlain = "NonSerializedPublicReadOnlyFieldPlain";
 		private const string NonSerializedNonPublicFieldPlain = "NonSerializedNonPublicFieldPlain";
+#endif // !NETFX_CORE && !SILVERLIGHT
 		// ReSharper restore UnusedMember.Local
 
 		[Test]
@@ -619,7 +621,11 @@ namespace MsgPack.Serialization
 		{
 			var target = new AnnotatedClass();
 			target.CollectionReadOnlyProperty.Add( 10 );
+#if !NETFX_CORE && !SILVERLIGHT
 			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+#else
+			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty );
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		[Test]
@@ -628,7 +634,11 @@ namespace MsgPack.Serialization
 			// includes issue33
 			var target = new DataMamberClass();
 			target.CollectionReadOnlyProperty.Add( 10 );
+#if !NETFX_CORE && !SILVERLIGHT
 			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+#else
+			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty );
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		private void TestNonPublicWritableMemberCore<T>( T original, params string[] expectedMemberNames )
@@ -645,6 +655,8 @@ namespace MsgPack.Serialization
 					Func<T, Object> getter = null;
 #if !NETFX_CORE && !SILVERLIGHT
 					var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#elif NETFX_CORE
+					var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
 #else
 					var property = typeof( T ).GetProperty( memberName );
 #endif
@@ -656,6 +668,8 @@ namespace MsgPack.Serialization
 					{
 #if !NETFX_CORE && !SILVERLIGHT
 						var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#elif NETFX_CORE
+						var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
 #else
 						var field = typeof( T ).GetField( memberName );
 #endif
