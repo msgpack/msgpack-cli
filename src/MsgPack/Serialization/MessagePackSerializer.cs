@@ -24,7 +24,9 @@
 
 using System;
 using System.IO;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 
 using MsgPack.Serialization.ReflectionSerializers;
 #if SILVERLIGHT || NETFX_35 || UNITY
@@ -35,9 +37,6 @@ using System.Collections.Concurrent;
 #if !UNITY
 using System.Diagnostics.Contracts;
 #endif // !UNITY
-#if !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
-using System.Globalization;
-#endif // !WINDOWS_PHONE && !NETFX_35 && !XAMIOS && !XAMDROID && !UNITY
 #if NETFX_CORE || WINDOWS_PHONE
 using System.Linq.Expressions;
 #endif
@@ -213,6 +212,7 @@ namespace MsgPack.Serialization
 #if XAMIOS || XAMDROID || UNITY
 			return CreateReflectionInternal<T>( context );
 #else
+			ValidateType( typeof( T ) );
 			ISerializerBuilder<T> builder;
 #if NETFX_CORE || WINDOWS_PHONE
 			builder = new ExpressionTreeSerializerBuilder<T>();
@@ -560,6 +560,7 @@ namespace MsgPack.Serialization
 				return serializer;
 			}
 
+			ValidateType( typeof( T ) );
 			var traits = typeof( T ).GetCollectionTraits();
 			switch ( traits.CollectionType )
 			{
@@ -606,6 +607,15 @@ namespace MsgPack.Serialization
 			}
 
 			return concreteType;
+		}
+
+		private static void ValidateType( Type type )
+		{
+			if ( !type.GetIsVisible() )
+			{
+				throw new SerializationException(
+					String.Format( CultureInfo.CurrentCulture, "Non-public type '{0}' cannot be serialized.", type ) );
+			}
 		}
 
 		// For stable behavior, use singleton concrete deserializer and private context.

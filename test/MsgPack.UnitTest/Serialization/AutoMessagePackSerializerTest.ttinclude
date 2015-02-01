@@ -2031,6 +2031,45 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		// Related to issue #62 -- internal types handling is not consistent at first.
+
+		[Test]
+		public void TestNonPublicType_Plain_Failed()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<NonPublic>( GetSerializationContext() ) );
+		}
+
+		[Test]
+		public void TestNonPublicType_MessagePackMember_Failed()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<NonPublicWithMessagePackMember>( GetSerializationContext() ) );
+		}
+
+		[Test]
+		public void TestNonPublicType_DataContract_Failed()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<NonPublicWithDataContract>( GetSerializationContext() ) );
+		}
+
+#pragma warning disable 649
+		internal class NonPublic
+		{
+			public int Value;
+		}
+
+		internal class NonPublicWithMessagePackMember
+		{
+			[MessagePackMember( 0 )]
+			public int Value;
+		}
+
+		[DataContract]
+		internal class NonPublicWithDataContract
+		{
+			[DataMember]
+			public int Value;
+		}
+#pragma warning restore 649
 
 		// issue #63
 		[Test]

@@ -542,5 +542,14 @@ namespace MsgPack.Serialization
 				throw new NotSupportedException( source.GetType() + " is not supported." );
 			}
 		}
+
+		public static bool GetIsVisible( this Type source )
+		{
+#if !NETFX_CORE
+			return source.IsVisible;
+#else
+			return source.GetTypeInfo().IsVisible;
+#endif
+		}
 	}
 }

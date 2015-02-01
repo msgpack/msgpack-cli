@@ -223,6 +223,14 @@ Relase 0.5.9 - 2015/2/01
 
 Release 0.6.0 Alpha1 -
 
+  BREAKING CHANGES
+  * Non-public types such as internal/Assembly types are not supported even if WinRT or Reflection serializer because it was just bug and non-public types should not be serialized.
+    Note that .NET default serializers and pre-generated serializers for Xamarin are not affected because they had failed to generate serializers for non-public types.
+
+  BUG FIXES
+  * Non-public types causes `TypeLoadException` in .NET and pre-generated assembly, causes compilation error in pre-generated sources, results undefined behavior on other platforms.
+    Non-public types are now rejected with `SerializationException`. This fix leads (probably small) breaking changes.
+
   NEW FEATURE
   * `MessagePackIgnoreAttribute` to exclude properties. Issue #55
   * Deserializer now uses 'best match' constructor when all members are read-only. Issue #52.
