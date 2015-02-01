@@ -635,6 +635,7 @@
       <Link>UnsafeNativeMethods.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\Reflection\ReflectionHelpers.cs" />
     <Compile Include="WinRTCompatibility.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -39,7 +39,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	public abstract class CodeDomBasedNilImplicationTest
+	[TestFixture]
+	public class CodeDomBasedNilImplicationTest
 	{
 		private SerializationContext CreateSerializationContext()
 		{
@@ -75,6 +76,10 @@ namespace MsgPack.Serialization
 
 			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
+			if ( this.GetType().Assembly != typeof( NilImplicationTestTargetForValueTypeMemberDefault ).Assembly )
+			{
+				SerializerDebugging.AddRuntimeAssembly( typeof( NilImplicationTestTargetForValueTypeMemberDefault ).Assembly.Location );
+			}
 		}
 
 		[TearDown]

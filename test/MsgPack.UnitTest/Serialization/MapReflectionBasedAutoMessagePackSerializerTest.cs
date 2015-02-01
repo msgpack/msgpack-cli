@@ -55,6 +55,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
+	[TestFixture]
 	[Timeout( 60000 )]
 	public class MapReflectionBasedReflectionMessagePackSerializerTest
 	{
@@ -232,6 +233,7 @@ namespace MsgPack.Serialization
 		{
 			var target = new ComplexType() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
+			target.Points.Add( 123 );
 			TestCoreWithVerify( target, context );
 		}
 
@@ -1457,12 +1459,14 @@ namespace MsgPack.Serialization
 		private const string PublicFieldPlain = "PublicFieldPlain";
 		private const string PublicReadOnlyFieldPlain = "PublicReadOnlyFieldPlain";
 		private const string NonPublicFieldPlain = "NonPublicFieldPlain";
+#if !NETFX_CORE && !SILVERLIGHT
 		private const string NonSerializedPublicField = "NonSerializedPublicField";
 		private const string NonSerializedPublicReadOnlyField = "NonSerializedPublicReadOnlyField";
 		private const string NonSerializedNonPublicField = "NonSerializedNonPublicField";
 		private const string NonSerializedPublicFieldPlain = "NonSerializedPublicFieldPlain";
 		private const string NonSerializedPublicReadOnlyFieldPlain = "NonSerializedPublicReadOnlyFieldPlain";
 		private const string NonSerializedNonPublicFieldPlain = "NonSerializedNonPublicFieldPlain";
+#endif // !NETFX_CORE && !SILVERLIGHT
 		// ReSharper restore UnusedMember.Local
 
 		[Test]
@@ -1478,7 +1482,11 @@ namespace MsgPack.Serialization
 		{
 			var target = new AnnotatedClass();
 			target.CollectionReadOnlyProperty.Add( 10 );
+#if !NETFX_CORE && !SILVERLIGHT
 			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+#else
+			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty );
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		[Test]
@@ -1487,7 +1495,11 @@ namespace MsgPack.Serialization
 			// includes issue33
 			var target = new DataMamberClass();
 			target.CollectionReadOnlyProperty.Add( 10 );
+#if !NETFX_CORE && !SILVERLIGHT
 			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+#else
+			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty );
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		private void TestNonPublicWritableMemberCore<T>( T original, params string[] expectedMemberNames )
@@ -1504,6 +1516,8 @@ namespace MsgPack.Serialization
 					Func<T, Object> getter = null;
 #if !NETFX_CORE && !SILVERLIGHT
 					var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#elif NETFX_CORE
+					var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
 #else
 					var property = typeof( T ).GetProperty( memberName );
 #endif
@@ -1515,6 +1529,8 @@ namespace MsgPack.Serialization
 					{
 #if !NETFX_CORE && !SILVERLIGHT
 						var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#elif NETFX_CORE
+						var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
 #else
 						var field = typeof( T ).GetField( memberName );
 #endif
@@ -2086,6 +2102,687 @@ namespace MsgPack.Serialization
 				return this._personSerializer.UnpackPeople( unpacker );
 			}
 		}
+
+
+		// issue #63
+		[Test]
+		public void TestManyMembers()
+		{
+			var serializer = this.CreateTarget<WithManyMembers>( GetSerializationContext() );
+			var target = new WithManyMembers();
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+
+#pragma warning disable 659
+		public class WithManyMembers
+		{
+			private readonly int[] _backingField = Enumerable.Range( 0, SByte.MaxValue + 2 ).ToArray();
+
+			public int Member0
+			{
+				get { return this._backingField[ 0 ]; }
+				set { this._backingField[ 0 ] = value; }
+			}
+			public int Member1
+			{
+				get { return this._backingField[ 1 ]; }
+				set { this._backingField[ 1 ] = value; }
+			}
+			public int Member2
+			{
+				get { return this._backingField[ 2 ]; }
+				set { this._backingField[ 2 ] = value; }
+			}
+			public int Member3
+			{
+				get { return this._backingField[ 3 ]; }
+				set { this._backingField[ 3 ] = value; }
+			}
+			public int Member4
+			{
+				get { return this._backingField[ 4 ]; }
+				set { this._backingField[ 4 ] = value; }
+			}
+			public int Member5
+			{
+				get { return this._backingField[ 5 ]; }
+				set { this._backingField[ 5 ] = value; }
+			}
+			public int Member6
+			{
+				get { return this._backingField[ 6 ]; }
+				set { this._backingField[ 6 ] = value; }
+			}
+			public int Member7
+			{
+				get { return this._backingField[ 7 ]; }
+				set { this._backingField[ 7 ] = value; }
+			}
+			public int Member8
+			{
+				get { return this._backingField[ 8 ]; }
+				set { this._backingField[ 8 ] = value; }
+			}
+			public int Member9
+			{
+				get { return this._backingField[ 9 ]; }
+				set { this._backingField[ 9 ] = value; }
+			}
+			public int Member10
+			{
+				get { return this._backingField[ 10 ]; }
+				set { this._backingField[ 10 ] = value; }
+			}
+			public int Member11
+			{
+				get { return this._backingField[ 11 ]; }
+				set { this._backingField[ 11 ] = value; }
+			}
+			public int Member12
+			{
+				get { return this._backingField[ 12 ]; }
+				set { this._backingField[ 12 ] = value; }
+			}
+			public int Member13
+			{
+				get { return this._backingField[ 13 ]; }
+				set { this._backingField[ 13 ] = value; }
+			}
+			public int Member14
+			{
+				get { return this._backingField[ 14 ]; }
+				set { this._backingField[ 14 ] = value; }
+			}
+			public int Member15
+			{
+				get { return this._backingField[ 15 ]; }
+				set { this._backingField[ 15 ] = value; }
+			}
+			public int Member16
+			{
+				get { return this._backingField[ 16 ]; }
+				set { this._backingField[ 16 ] = value; }
+			}
+			public int Member17
+			{
+				get { return this._backingField[ 17 ]; }
+				set { this._backingField[ 17 ] = value; }
+			}
+			public int Member18
+			{
+				get { return this._backingField[ 18 ]; }
+				set { this._backingField[ 18 ] = value; }
+			}
+			public int Member19
+			{
+				get { return this._backingField[ 19 ]; }
+				set { this._backingField[ 19 ] = value; }
+			}
+			public int Member20
+			{
+				get { return this._backingField[ 20 ]; }
+				set { this._backingField[ 20 ] = value; }
+			}
+			public int Member21
+			{
+				get { return this._backingField[ 21 ]; }
+				set { this._backingField[ 21 ] = value; }
+			}
+			public int Member22
+			{
+				get { return this._backingField[ 22 ]; }
+				set { this._backingField[ 22 ] = value; }
+			}
+			public int Member23
+			{
+				get { return this._backingField[ 23 ]; }
+				set { this._backingField[ 23 ] = value; }
+			}
+			public int Member24
+			{
+				get { return this._backingField[ 24 ]; }
+				set { this._backingField[ 24 ] = value; }
+			}
+			public int Member25
+			{
+				get { return this._backingField[ 25 ]; }
+				set { this._backingField[ 25 ] = value; }
+			}
+			public int Member26
+			{
+				get { return this._backingField[ 26 ]; }
+				set { this._backingField[ 26 ] = value; }
+			}
+			public int Member27
+			{
+				get { return this._backingField[ 27 ]; }
+				set { this._backingField[ 27 ] = value; }
+			}
+			public int Member28
+			{
+				get { return this._backingField[ 28 ]; }
+				set { this._backingField[ 28 ] = value; }
+			}
+			public int Member29
+			{
+				get { return this._backingField[ 29 ]; }
+				set { this._backingField[ 29 ] = value; }
+			}
+			public int Member30
+			{
+				get { return this._backingField[ 30 ]; }
+				set { this._backingField[ 30 ] = value; }
+			}
+			public int Member31
+			{
+				get { return this._backingField[ 31 ]; }
+				set { this._backingField[ 31 ] = value; }
+			}
+			public int Member32
+			{
+				get { return this._backingField[ 32 ]; }
+				set { this._backingField[ 32 ] = value; }
+			}
+			public int Member33
+			{
+				get { return this._backingField[ 33 ]; }
+				set { this._backingField[ 33 ] = value; }
+			}
+			public int Member34
+			{
+				get { return this._backingField[ 34 ]; }
+				set { this._backingField[ 34 ] = value; }
+			}
+			public int Member35
+			{
+				get { return this._backingField[ 35 ]; }
+				set { this._backingField[ 35 ] = value; }
+			}
+			public int Member36
+			{
+				get { return this._backingField[ 36 ]; }
+				set { this._backingField[ 36 ] = value; }
+			}
+			public int Member37
+			{
+				get { return this._backingField[ 37 ]; }
+				set { this._backingField[ 37 ] = value; }
+			}
+			public int Member38
+			{
+				get { return this._backingField[ 38 ]; }
+				set { this._backingField[ 38 ] = value; }
+			}
+			public int Member39
+			{
+				get { return this._backingField[ 39 ]; }
+				set { this._backingField[ 39 ] = value; }
+			}
+			public int Member40
+			{
+				get { return this._backingField[ 40 ]; }
+				set { this._backingField[ 40 ] = value; }
+			}
+			public int Member41
+			{
+				get { return this._backingField[ 41 ]; }
+				set { this._backingField[ 41 ] = value; }
+			}
+			public int Member42
+			{
+				get { return this._backingField[ 42 ]; }
+				set { this._backingField[ 42 ] = value; }
+			}
+			public int Member43
+			{
+				get { return this._backingField[ 43 ]; }
+				set { this._backingField[ 43 ] = value; }
+			}
+			public int Member44
+			{
+				get { return this._backingField[ 44 ]; }
+				set { this._backingField[ 44 ] = value; }
+			}
+			public int Member45
+			{
+				get { return this._backingField[ 45 ]; }
+				set { this._backingField[ 45 ] = value; }
+			}
+			public int Member46
+			{
+				get { return this._backingField[ 46 ]; }
+				set { this._backingField[ 46 ] = value; }
+			}
+			public int Member47
+			{
+				get { return this._backingField[ 47 ]; }
+				set { this._backingField[ 47 ] = value; }
+			}
+			public int Member48
+			{
+				get { return this._backingField[ 48 ]; }
+				set { this._backingField[ 48 ] = value; }
+			}
+			public int Member49
+			{
+				get { return this._backingField[ 49 ]; }
+				set { this._backingField[ 49 ] = value; }
+			}
+			public int Member50
+			{
+				get { return this._backingField[ 50 ]; }
+				set { this._backingField[ 50 ] = value; }
+			}
+			public int Member51
+			{
+				get { return this._backingField[ 51 ]; }
+				set { this._backingField[ 51 ] = value; }
+			}
+			public int Member52
+			{
+				get { return this._backingField[ 52 ]; }
+				set { this._backingField[ 52 ] = value; }
+			}
+			public int Member53
+			{
+				get { return this._backingField[ 53 ]; }
+				set { this._backingField[ 53 ] = value; }
+			}
+			public int Member54
+			{
+				get { return this._backingField[ 54 ]; }
+				set { this._backingField[ 54 ] = value; }
+			}
+			public int Member55
+			{
+				get { return this._backingField[ 55 ]; }
+				set { this._backingField[ 55 ] = value; }
+			}
+			public int Member56
+			{
+				get { return this._backingField[ 56 ]; }
+				set { this._backingField[ 56 ] = value; }
+			}
+			public int Member57
+			{
+				get { return this._backingField[ 57 ]; }
+				set { this._backingField[ 57 ] = value; }
+			}
+			public int Member58
+			{
+				get { return this._backingField[ 58 ]; }
+				set { this._backingField[ 58 ] = value; }
+			}
+			public int Member59
+			{
+				get { return this._backingField[ 59 ]; }
+				set { this._backingField[ 59 ] = value; }
+			}
+			public int Member60
+			{
+				get { return this._backingField[ 60 ]; }
+				set { this._backingField[ 60 ] = value; }
+			}
+			public int Member61
+			{
+				get { return this._backingField[ 61 ]; }
+				set { this._backingField[ 61 ] = value; }
+			}
+			public int Member62
+			{
+				get { return this._backingField[ 62 ]; }
+				set { this._backingField[ 62 ] = value; }
+			}
+			public int Member63
+			{
+				get { return this._backingField[ 63 ]; }
+				set { this._backingField[ 63 ] = value; }
+			}
+			public int Member64
+			{
+				get { return this._backingField[ 64 ]; }
+				set { this._backingField[ 64 ] = value; }
+			}
+			public int Member65
+			{
+				get { return this._backingField[ 65 ]; }
+				set { this._backingField[ 65 ] = value; }
+			}
+			public int Member66
+			{
+				get { return this._backingField[ 66 ]; }
+				set { this._backingField[ 66 ] = value; }
+			}
+			public int Member67
+			{
+				get { return this._backingField[ 67 ]; }
+				set { this._backingField[ 67 ] = value; }
+			}
+			public int Member68
+			{
+				get { return this._backingField[ 68 ]; }
+				set { this._backingField[ 68 ] = value; }
+			}
+			public int Member69
+			{
+				get { return this._backingField[ 69 ]; }
+				set { this._backingField[ 69 ] = value; }
+			}
+			public int Member70
+			{
+				get { return this._backingField[ 70 ]; }
+				set { this._backingField[ 70 ] = value; }
+			}
+			public int Member71
+			{
+				get { return this._backingField[ 71 ]; }
+				set { this._backingField[ 71 ] = value; }
+			}
+			public int Member72
+			{
+				get { return this._backingField[ 72 ]; }
+				set { this._backingField[ 72 ] = value; }
+			}
+			public int Member73
+			{
+				get { return this._backingField[ 73 ]; }
+				set { this._backingField[ 73 ] = value; }
+			}
+			public int Member74
+			{
+				get { return this._backingField[ 74 ]; }
+				set { this._backingField[ 74 ] = value; }
+			}
+			public int Member75
+			{
+				get { return this._backingField[ 75 ]; }
+				set { this._backingField[ 75 ] = value; }
+			}
+			public int Member76
+			{
+				get { return this._backingField[ 76 ]; }
+				set { this._backingField[ 76 ] = value; }
+			}
+			public int Member77
+			{
+				get { return this._backingField[ 77 ]; }
+				set { this._backingField[ 77 ] = value; }
+			}
+			public int Member78
+			{
+				get { return this._backingField[ 78 ]; }
+				set { this._backingField[ 78 ] = value; }
+			}
+			public int Member79
+			{
+				get { return this._backingField[ 79 ]; }
+				set { this._backingField[ 79 ] = value; }
+			}
+			public int Member80
+			{
+				get { return this._backingField[ 80 ]; }
+				set { this._backingField[ 80 ] = value; }
+			}
+			public int Member81
+			{
+				get { return this._backingField[ 81 ]; }
+				set { this._backingField[ 81 ] = value; }
+			}
+			public int Member82
+			{
+				get { return this._backingField[ 82 ]; }
+				set { this._backingField[ 82 ] = value; }
+			}
+			public int Member83
+			{
+				get { return this._backingField[ 83 ]; }
+				set { this._backingField[ 83 ] = value; }
+			}
+			public int Member84
+			{
+				get { return this._backingField[ 84 ]; }
+				set { this._backingField[ 84 ] = value; }
+			}
+			public int Member85
+			{
+				get { return this._backingField[ 85 ]; }
+				set { this._backingField[ 85 ] = value; }
+			}
+			public int Member86
+			{
+				get { return this._backingField[ 86 ]; }
+				set { this._backingField[ 86 ] = value; }
+			}
+			public int Member87
+			{
+				get { return this._backingField[ 87 ]; }
+				set { this._backingField[ 87 ] = value; }
+			}
+			public int Member88
+			{
+				get { return this._backingField[ 88 ]; }
+				set { this._backingField[ 88 ] = value; }
+			}
+			public int Member89
+			{
+				get { return this._backingField[ 89 ]; }
+				set { this._backingField[ 89 ] = value; }
+			}
+			public int Member90
+			{
+				get { return this._backingField[ 90 ]; }
+				set { this._backingField[ 90 ] = value; }
+			}
+			public int Member91
+			{
+				get { return this._backingField[ 91 ]; }
+				set { this._backingField[ 91 ] = value; }
+			}
+			public int Member92
+			{
+				get { return this._backingField[ 92 ]; }
+				set { this._backingField[ 92 ] = value; }
+			}
+			public int Member93
+			{
+				get { return this._backingField[ 93 ]; }
+				set { this._backingField[ 93 ] = value; }
+			}
+			public int Member94
+			{
+				get { return this._backingField[ 94 ]; }
+				set { this._backingField[ 94 ] = value; }
+			}
+			public int Member95
+			{
+				get { return this._backingField[ 95 ]; }
+				set { this._backingField[ 95 ] = value; }
+			}
+			public int Member96
+			{
+				get { return this._backingField[ 96 ]; }
+				set { this._backingField[ 96 ] = value; }
+			}
+			public int Member97
+			{
+				get { return this._backingField[ 97 ]; }
+				set { this._backingField[ 97 ] = value; }
+			}
+			public int Member98
+			{
+				get { return this._backingField[ 98 ]; }
+				set { this._backingField[ 98 ] = value; }
+			}
+			public int Member99
+			{
+				get { return this._backingField[ 99 ]; }
+				set { this._backingField[ 99 ] = value; }
+			}
+			public int Member100
+			{
+				get { return this._backingField[ 100 ]; }
+				set { this._backingField[ 100 ] = value; }
+			}
+			public int Member101
+			{
+				get { return this._backingField[ 101 ]; }
+				set { this._backingField[ 101 ] = value; }
+			}
+			public int Member102
+			{
+				get { return this._backingField[ 102 ]; }
+				set { this._backingField[ 102 ] = value; }
+			}
+			public int Member103
+			{
+				get { return this._backingField[ 103 ]; }
+				set { this._backingField[ 103 ] = value; }
+			}
+			public int Member104
+			{
+				get { return this._backingField[ 104 ]; }
+				set { this._backingField[ 104 ] = value; }
+			}
+			public int Member105
+			{
+				get { return this._backingField[ 105 ]; }
+				set { this._backingField[ 105 ] = value; }
+			}
+			public int Member106
+			{
+				get { return this._backingField[ 106 ]; }
+				set { this._backingField[ 106 ] = value; }
+			}
+			public int Member107
+			{
+				get { return this._backingField[ 107 ]; }
+				set { this._backingField[ 107 ] = value; }
+			}
+			public int Member108
+			{
+				get { return this._backingField[ 108 ]; }
+				set { this._backingField[ 108 ] = value; }
+			}
+			public int Member109
+			{
+				get { return this._backingField[ 109 ]; }
+				set { this._backingField[ 109 ] = value; }
+			}
+			public int Member110
+			{
+				get { return this._backingField[ 110 ]; }
+				set { this._backingField[ 110 ] = value; }
+			}
+			public int Member111
+			{
+				get { return this._backingField[ 111 ]; }
+				set { this._backingField[ 111 ] = value; }
+			}
+			public int Member112
+			{
+				get { return this._backingField[ 112 ]; }
+				set { this._backingField[ 112 ] = value; }
+			}
+			public int Member113
+			{
+				get { return this._backingField[ 113 ]; }
+				set { this._backingField[ 113 ] = value; }
+			}
+			public int Member114
+			{
+				get { return this._backingField[ 114 ]; }
+				set { this._backingField[ 114 ] = value; }
+			}
+			public int Member115
+			{
+				get { return this._backingField[ 115 ]; }
+				set { this._backingField[ 115 ] = value; }
+			}
+			public int Member116
+			{
+				get { return this._backingField[ 116 ]; }
+				set { this._backingField[ 116 ] = value; }
+			}
+			public int Member117
+			{
+				get { return this._backingField[ 117 ]; }
+				set { this._backingField[ 117 ] = value; }
+			}
+			public int Member118
+			{
+				get { return this._backingField[ 118 ]; }
+				set { this._backingField[ 118 ] = value; }
+			}
+			public int Member119
+			{
+				get { return this._backingField[ 119 ]; }
+				set { this._backingField[ 119 ] = value; }
+			}
+			public int Member120
+			{
+				get { return this._backingField[ 120 ]; }
+				set { this._backingField[ 120 ] = value; }
+			}
+			public int Member121
+			{
+				get { return this._backingField[ 121 ]; }
+				set { this._backingField[ 121 ] = value; }
+			}
+			public int Member122
+			{
+				get { return this._backingField[ 122 ]; }
+				set { this._backingField[ 122 ] = value; }
+			}
+			public int Member123
+			{
+				get { return this._backingField[ 123 ]; }
+				set { this._backingField[ 123 ] = value; }
+			}
+			public int Member124
+			{
+				get { return this._backingField[ 124 ]; }
+				set { this._backingField[ 124 ] = value; }
+			}
+			public int Member125
+			{
+				get { return this._backingField[ 125 ]; }
+				set { this._backingField[ 125 ] = value; }
+			}
+			public int Member126
+			{
+				get { return this._backingField[ 126 ]; }
+				set { this._backingField[ 126 ] = value; }
+			}
+			public int Member127
+			{
+				get { return this._backingField[ 127 ]; }
+				set { this._backingField[ 127 ] = value; }
+			}
+			public int Member128
+			{
+				get { return this._backingField[ 128 ]; }
+				set { this._backingField[ 128 ] = value; }
+			}
+
+			public override bool Equals( object obj )
+			{
+				var other = obj as WithManyMembers;
+				if ( other == null )
+				{
+					return false;
+				}
+
+				return this._backingField == other._backingField || this._backingField.SequenceEqual( other._backingField );
+			}
+		}
+#pragma warning restore 659
+
 		[Test]
 		public void TestNullField()
 		{

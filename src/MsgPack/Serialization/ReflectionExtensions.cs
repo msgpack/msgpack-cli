@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -483,6 +483,28 @@ namespace MsgPack.Serialization
 			}
 		}
 #endif
+
+		public static bool GetHasPublicGetter( this MemberInfo source )
+		{
+			PropertyInfo asProperty;
+			FieldInfo asField;
+			if ( ( asProperty = source as PropertyInfo ) != null )
+			{
+#if !NETFX_CORE
+				return asProperty.GetGetMethod() != null;
+#else
+				return ( asProperty.GetMethod != null && asProperty.GetMethod.IsPublic );
+#endif
+			}
+			else if ( ( asField = source as FieldInfo ) != null )
+			{
+				return asField.IsPublic;
+			}
+			else
+			{
+				throw new NotSupportedException( source.GetType() + " is not supported." );
+			}
+		}
 
 		public static bool GetIsPublic( this MemberInfo source )
 		{

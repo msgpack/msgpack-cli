@@ -78,6 +78,7 @@
     <Exclude Path="Serialization\Metadata\_DictionaryEntry.cs" />
     <Exclude Path="Serialization\Metadata\_IDisposable.cs" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
+    <Preserve Path="Serialization\Reflection\ReflectionHelpers.cs" />
     <Exclude Path="Serialization\IdentifierUtility.cs" />
     <Exclude Path="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
@@ -120,6 +121,7 @@
   <Project Name="MsgPack.Silverlight.WindowsPhone" Base="MsgPack.WinRT.Portable">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Serialization\Metadata\_DictionaryEntry.cs" />
+    <Exclude Path="Serialization\Reflection\ReflectionHelpers.cs" />
     <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="WinRTCompatibility.cs" />
   </Project>

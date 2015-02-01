@@ -65,7 +65,8 @@ using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {
-	public abstract class <#= emitterFlavor #>NilImplicationTest
+	[TestFixture]
+	public class <#= emitterFlavor #>NilImplicationTest
 	{
 		private SerializationContext CreateSerializationContext()
 		{
@@ -131,6 +132,10 @@ namespace MsgPack.Serialization
 
 			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
+			if ( this.GetType().Assembly != typeof( NilImplicationTestTargetForValueTypeMemberDefault ).Assembly )
+			{
+				SerializerDebugging.AddRuntimeAssembly( typeof( NilImplicationTestTargetForValueTypeMemberDefault ).Assembly.Location );
+			}
 		}
 
 		[TearDown]

@@ -525,7 +525,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			FieldInfo asField;
 			if ( ( asField = member as FieldInfo ) != null )
 			{
-				return this.EmitGetField( context, instance, asField, !asField.GetIsPublic() );
+				return this.EmitGetField( context, instance, asField, !asField.GetHasPublicGetter() );
 			}
 			else
 			{
@@ -533,7 +533,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 				Contract.Assert( asProperty != null, member.GetType().FullName );
 #endif
-				return this.EmitGetProperty( context, instance, asProperty, !asProperty.GetIsPublic() );
+				return this.EmitGetProperty( context, instance, asProperty, !asProperty.GetHasPublicGetter() );
 			}
 		}
 
@@ -626,7 +626,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					return this.EmitSetField( context, instance, asField, value, false );
 				}
 
-				getCollection = this.EmitGetField( context, instance, asField, !asField.GetIsPublic() );
+				getCollection = this.EmitGetField( context, instance, asField, !asField.GetHasPublicGetter() );
 				traits = asField.FieldType.GetCollectionTraits();
 			}
 			else
@@ -641,7 +641,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					return this.EmitSetProprety( context, instance, asProperty, value, false );
 				}
 
-				getCollection = this.EmitGetProperty( context, instance, asProperty, !asProperty.GetIsPublic() );
+				getCollection = this.EmitGetProperty( context, instance, asProperty, !asProperty.GetHasPublicGetter() );
 				traits = asProperty.PropertyType.GetCollectionTraits();
 			}
 

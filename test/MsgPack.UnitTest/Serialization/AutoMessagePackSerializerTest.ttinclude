@@ -87,6 +87,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
+	[TestFixture]
 	[Timeout( 60000 )]
 	public class <#= testClassName #>
 	{
@@ -302,6 +303,7 @@ namespace MsgPack.Serialization
 		{
 			var target = new ComplexType() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
 			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
+			target.Points.Add( 123 );
 			TestCoreWithVerify( target, context );
 		}
 
@@ -1488,12 +1490,14 @@ namespace MsgPack.Serialization
 		private const string PublicFieldPlain = "PublicFieldPlain";
 		private const string PublicReadOnlyFieldPlain = "PublicReadOnlyFieldPlain";
 		private const string NonPublicFieldPlain = "NonPublicFieldPlain";
+#if !NETFX_CORE && !SILVERLIGHT
 		private const string NonSerializedPublicField = "NonSerializedPublicField";
 		private const string NonSerializedPublicReadOnlyField = "NonSerializedPublicReadOnlyField";
 		private const string NonSerializedNonPublicField = "NonSerializedNonPublicField";
 		private const string NonSerializedPublicFieldPlain = "NonSerializedPublicFieldPlain";
 		private const string NonSerializedPublicReadOnlyFieldPlain = "NonSerializedPublicReadOnlyFieldPlain";
 		private const string NonSerializedNonPublicFieldPlain = "NonSerializedNonPublicFieldPlain";
+#endif // !NETFX_CORE && !SILVERLIGHT
 		// ReSharper restore UnusedMember.Local
 
 		[Test]
@@ -1509,7 +1513,11 @@ namespace MsgPack.Serialization
 		{
 			var target = new AnnotatedClass();
 			target.CollectionReadOnlyProperty.Add( 10 );
+#if !NETFX_CORE && !SILVERLIGHT
 			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+#else
+			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty );
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		[Test]
@@ -1518,7 +1526,11 @@ namespace MsgPack.Serialization
 			// includes issue33
 			var target = new DataMamberClass();
 			target.CollectionReadOnlyProperty.Add( 10 );
+#if !NETFX_CORE && !SILVERLIGHT
 			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, NonSerializedPublicField, NonSerializedNonPublicField, CollectionReadOnlyProperty );
+#else
+			TestNonPublicWritableMemberCore( target, PublicProperty, NonPublicProperty, PublicField, NonPublicField, CollectionReadOnlyProperty );
+#endif // !NETFX_CORE && !SILVERLIGHT
 		}
 
 		private void TestNonPublicWritableMemberCore<T>( T original, params string[] expectedMemberNames )
@@ -1535,6 +1547,8 @@ namespace MsgPack.Serialization
 					Func<T, Object> getter = null;
 #if !NETFX_CORE && !SILVERLIGHT
 					var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#elif NETFX_CORE
+					var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
 #else
 					var property = typeof( T ).GetProperty( memberName );
 #endif
@@ -1546,6 +1560,8 @@ namespace MsgPack.Serialization
 					{
 #if !NETFX_CORE && !SILVERLIGHT
 						var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#elif NETFX_CORE
+						var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
 #else
 						var field = typeof( T ).GetField( memberName );
 #endif
@@ -2014,6 +2030,55 @@ namespace MsgPack.Serialization
 				return this._personSerializer.UnpackPeople( unpacker );
 			}
 		}
+
+
+		// issue #63
+		[Test]
+		public void TestManyMembers()
+		{
+			var serializer = this.CreateTarget<WithManyMembers>( GetSerializationContext() );
+			var target = new WithManyMembers();
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+
+#pragma warning disable 659
+		public class WithManyMembers
+		{
+			private readonly int[] _backingField = Enumerable.Range( 0, SByte.MaxValue + 2 ).ToArray();
+
+<#+
+	for ( var i = 0; i <= SByte.MaxValue + 1; i++ )
+	{
+#>
+			public int Member<#= i #>
+			{
+				get { return this._backingField[ <#= i #> ]; }
+				set { this._backingField[ <#= i #> ] = value; }
+			}
+<#+
+
+	}
+#>
+
+			public override bool Equals( object obj )
+			{
+				var other = obj as WithManyMembers;
+				if ( other == null )
+				{
+					return false;
+				}
+
+				return this._backingField == other._backingField || this._backingField.SequenceEqual( other._backingField );
+			}
+		}
+#pragma warning restore 659
+
 <#+
 }	
 #>

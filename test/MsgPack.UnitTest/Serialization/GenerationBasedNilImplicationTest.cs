@@ -28,7 +28,8 @@ using NUnit.Framework;
 
 namespace MsgPack.Serialization
 {
-	public abstract class GenerationBasedNilImplicationTest
+	[TestFixture]
+	public class GenerationBasedNilImplicationTest
 	{
 		private SerializationContext CreateSerializationContext()
 		{
