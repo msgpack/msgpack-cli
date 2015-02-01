@@ -213,3 +213,8 @@ Release 0.5.8 - 2015/1/18
   BUG FIXES
   * Fix Unpacker fails to unpack data when the stream returns data one by one. Issue #59
   * Fix Unpacker cannot read empty bytes from System.Net API. Issue #60
+
+Relase 0.5.9 - 2015/2/01
+
+  BUG FIXES
+  * Fix NullReferenceException is thrown for annotated non-public members serialization/deserialization in WinRT.

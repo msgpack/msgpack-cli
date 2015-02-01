@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,8 +24,13 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+#if !NETFX_CORE
 using System.Reflection.Emit;
+#endif // !NETFX_CORE
 using MsgPack.Serialization.AbstractSerializers;
+#if NETFX_CORE
+using MsgPack.Serialization.Reflection;
+#endif // NETFX_CORE
 
 namespace MsgPack.Serialization.ExpressionSerializers
 {
@@ -74,7 +79,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return;
 			}
 
-			context.SetDelegate( method, EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
 
 		}
 
@@ -85,7 +90,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return;
 			}
 
-			context.SetDelegate( method, EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
+			context.SetDelegate( method, this.EmitMethodEpilogue( context, ExpressionTreeContext.CreateDelegateType<TObject>( method ), method, construct ) );
 		}
 
 #if NETFX_CORE || SILVERLIGHT
@@ -234,11 +239,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return Expression.Call( Metadata._MethodBase.GetMethodFromHandle, Expression.Constant( method.MethodHandle ) );
 #else
 				// WinRT expression tree cannot handle Type constants, and MethodHandle property is not exposed.
-				// Overloading is not supported.
-				// typeof( T ).GetRuntimeMethod( method.Name, null );
+				// typeof( T ).GetRuntimeMethod( method.Name, ...{types}... );
 				return
 					Expression.Call(
-						typeof( RuntimeReflectionExtensions ).GetRuntimeMethod( "GetRuntimeMethod", new []{typeof(Type),typeof(string),typeof(Type[])} ),
+						ReflectionHelpers.GetRuntimeMethodMethod,
 						this.EmitTypeOfExpression( context, method.DeclaringType ).Expression,
 						Expression.Constant( method.Name ),
 						Expression.NewArrayInit(
@@ -264,11 +268,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				return Expression.Call( Metadata._FieldInfo.GetFieldFromHandle, Expression.Constant( field.FieldHandle ) );
 #else
 				// WinRT expression tree cannot handle Type constants, and MethodHandle property is not exposed.
-				// Overloading is not supported.
-				// typeof( T ).GetRuntimeField( field.Name, null );
+				// typeof( T ).GetRuntimeField( field.Name );
 				return
 					Expression.Call(
-						typeof( RuntimeReflectionExtensions ).GetRuntimeMethod( "GetRuntimeField", new[] { typeof( Type ), typeof( string ), typeof( Type[] ) } ),
+						ReflectionHelpers.GetRuntimeFieldMethod,
 						this.EmitTypeOfExpression( context, field.DeclaringType ).Expression,
 						Expression.Constant( field.Name )
 					);
