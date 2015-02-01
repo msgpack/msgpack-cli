@@ -219,3 +219,4 @@ Relase 0.5.9 - 2015/2/01
   BUG FIXES
   * Fix NullReferenceException is thrown for annotated non-public members serialization/deserialization in WinRT.
   * Fix collection typed property which has non-public setter are not handled correctly. Issue #62.
+  * Fix ArgumentOutOfRangeException occurs when serializing members count is greater than 127. Issue #63.

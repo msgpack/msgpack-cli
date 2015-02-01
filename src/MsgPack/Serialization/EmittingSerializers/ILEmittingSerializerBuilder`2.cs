@@ -172,7 +172,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				}
 				default:
 				{
-					if ( 0 <= constant && constant <= 255 )
+					if ( SByte.MinValue <= constant && constant <= SByte.MaxValue )
 					{
 						return ILConstruct.Literal( typeof( int ), constant, il => il.EmitLdc_I4_S( unchecked( ( byte )constant ) ) );
 					}

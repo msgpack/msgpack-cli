@@ -1526,6 +1526,55 @@ namespace MsgPack.Serialization
 				return this._personSerializer.UnpackPeople( unpacker );
 			}
 		}
+
+
+		// issue #63
+		[Test]
+		public void TestManyMembers()
+		{
+			var serializer = this.CreateTarget<WithManyMembers>( GetSerializationContext() );
+			var target = new WithManyMembers();
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+				Assert.That( result, Is.EqualTo( target ) );
+			}
+		}
+
+#pragma warning disable 659
+		public class WithManyMembers
+		{
+			private readonly int[] _backingField = Enumerable.Range( 0, SByte.MaxValue + 2 ).ToArray();
+
+<#+
+	for ( var i = 0; i <= SByte.MaxValue + 1; i++ )
+	{
+#>
+			public int Member<#= i #>
+			{
+				get { return this._backingField[ <#= i #> ]; }
+				set { this._backingField[ <#= i #> ] = value; }
+			}
+<#+
+
+	}
+#>
+
+			public override bool Equals( object obj )
+			{
+				var other = obj as WithManyMembers;
+				if ( other == null )
+				{
+					return false;
+				}
+
+				return this._backingField == other._backingField || this._backingField.SequenceEqual( other._backingField );
+			}
+		}
+#pragma warning restore 659
+
 <#+
 }	
 #>
