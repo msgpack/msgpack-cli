@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -188,10 +188,10 @@ namespace MsgPack.Serialization
 					);
 			}
 #if SILVERLIGHT || NETFX_CORE
-			return members.Where( member => member.GetIsPublic() ).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
+			return members.Where( member => member.GetHasPublicGetter() ).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 #else
 			return
-				members.Where( item => item.GetIsPublic() && !Attribute.IsDefined( item, typeof( NonSerializedAttribute ) ) )
+				members.Where( item => item.GetHasPublicGetter() && !Attribute.IsDefined( item, typeof( NonSerializedAttribute ) ) )
 				.Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 #endif
 		}

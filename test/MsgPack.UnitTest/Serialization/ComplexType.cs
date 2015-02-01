@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -42,12 +42,26 @@ namespace MsgPack.Serialization
 		[MessagePackMember( 1 )]
 		public byte[] Data { get; set; }
 
-		private readonly Dictionary<DateTime, string> _history = new Dictionary<DateTime, string>();
+		private readonly Dictionary<DateTime, string> _history;
 
 		[MessagePackMember( 3 )]
 		public Dictionary<DateTime, string> History
 		{
 			get { return this._history; }
+		}
+
+		// Issue #62
+		[MessagePackMember( 4 )]
+		public List<int> Points
+		{
+			get;
+			private set;
+		}
+
+		public ComplexType()
+		{
+			this._history = new Dictionary<DateTime, string>();
+			this.Points = new List<int>();
 		}
 
 		public void Verify( Stream stream )
@@ -67,6 +81,8 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
 				NUnit.Framework.Assert.That( map[ "History" ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
+				NUnit.Framework.Assert.That( map.ContainsKey( "Points" ) );
+				NUnit.Framework.Assert.That( map[ "Points" ].AsList().Count, Is.EqualTo( this.Points.Count ) );
 			}
 			else
 			{
@@ -76,6 +92,7 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( MessagePackConvert.ToDateTime( array[ 2 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
 				NUnit.Framework.Assert.That( array[ 1 ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( array[ 3 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
+				NUnit.Framework.Assert.That( array[ 4 ].AsList().Count, Is.EqualTo( this.Points.Count ) );
 			}
 		}
 	}

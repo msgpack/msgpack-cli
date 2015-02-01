@@ -203,28 +203,26 @@ namespace MsgPack
 
 		public static MethodInfo GetGetMethod( this PropertyInfo source )
 		{
-			return source.GetMethod;
+			return GetGetMethod( source, false );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "containsNonPublic", Justification = "For API compabitility" )]
 		public static MethodInfo GetGetMethod( this PropertyInfo source, bool containsNonPublic )
 		{
-			Contract.Assert( containsNonPublic ); // false is not supported now.
-
-			return source.GetMethod;
+			var getter = source.GetMethod;
+			return ( containsNonPublic || getter.IsPublic ) ? getter : null;
 		}
 
 		public static MethodInfo GetSetMethod( this PropertyInfo source )
 		{
-			return source.SetMethod;
+			return GetSetMethod( source, false );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "containsNonPublic", Justification = "For API compabitility" )]
 		public static MethodInfo GetSetMethod( this PropertyInfo source, bool containsNonPublic )
 		{
-			Contract.Assert( containsNonPublic ); // false is not supported now.
-
-			return source.SetMethod;
+			var setter = source.SetMethod;
+			return ( containsNonPublic || setter.IsPublic ) ? setter : null;
 		}
 
 		public static IEnumerable<Type> FindInterfaces( this Type source, Func<Type, object, bool> filter, object filterCriteria )
