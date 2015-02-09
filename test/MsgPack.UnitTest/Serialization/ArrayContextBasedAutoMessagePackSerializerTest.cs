@@ -1159,12 +1159,10 @@ namespace MsgPack.Serialization
 				foreach ( var memberName in expectedMemberNames )
 				{
 					Func<T, Object> getter = null;
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE
 					var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
-#elif NETFX_CORE
-					var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
 #else
-					var property = typeof( T ).GetProperty( memberName );
+					var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
 #endif
 					if ( property != null )
 					{
@@ -1172,12 +1170,10 @@ namespace MsgPack.Serialization
 					}
 					else
 					{
-#if !NETFX_CORE && !SILVERLIGHT
+#if !NETFX_CORE
 						var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
-#elif NETFX_CORE
-						var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
 #else
-						var field = typeof( T ).GetField( memberName );
+						var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
 #endif
 						if ( field == null )
 						{
@@ -1416,6 +1412,7 @@ namespace MsgPack.Serialization
 				return this._personSerializer.UnpackPeople( unpacker );
 			}
 		}
+
 
 		// issue #63
 		[Test]
