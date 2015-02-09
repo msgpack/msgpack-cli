@@ -263,7 +263,7 @@ namespace MsgPack
 				return false;
 			}
 
-#if !UNITY && !WINDOWS_PHONE
+#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 			if ( _isFastEqualsDisabled == 0 )
 			{
 				try
@@ -279,7 +279,7 @@ namespace MsgPack
 					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
 				}
 			}
-#endif // if !UNITY && !WINDOWS_PHONE
+#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 
 			return SlowEquals( left._encoded, right._encoded );
 		}
@@ -297,7 +297,7 @@ namespace MsgPack
 			return true;
 		}
 
-#if !UNITY && !WINDOWS_PHONE
+#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 #if SILVERLIGHT
 		private static int _isFastEqualsDisabled =
 			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
@@ -333,7 +333,7 @@ namespace MsgPack
 
 			return result == 0;
 		}
-#endif // if !UNITY && !WINDOWS_PHONE
+#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 
 #if !SILVERLIGHT && !NETFX_CORE
 		[Serializable]

@@ -86,6 +86,7 @@
     <Exclude Path="Serialization\SerializerGenerator.cs" />
     <Exclude Path="Serialization\Reflection\TracingILGenerator.*" />
     <Exclude Path="Serialization\Tracer.cs" />
+    <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="Validation.cs" />
   </Project>
   <Project Name="MsgPack.Silverlight.5" Base="MsgPack">
@@ -122,7 +123,6 @@
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Serialization\Metadata\_DictionaryEntry.cs" />
     <Exclude Path="Serialization\Reflection\ReflectionHelpers.cs" />
-    <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="WinRTCompatibility.cs" />
   </Project>
 </ProjectSync>
