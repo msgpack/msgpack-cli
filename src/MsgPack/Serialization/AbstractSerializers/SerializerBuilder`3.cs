@@ -161,7 +161,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					{
 						this.BuildEnumSerializer( context );
 					}
-#if !WINDOWS_PHONE && !NETFX_35
+#if !NETFX_35
 					else if ( ( typeof( TObject ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
 						  typeof( TObject ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
 						&& typeof( TObject ).GetIsPublic() && typeof( TObject ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
