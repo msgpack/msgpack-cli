@@ -136,7 +136,7 @@ namespace MsgPack
 			Assert.AreEqual( String.Empty, target.ToString() );
 		}
 
-#if !UNITY && !WINDOWS_PHONE
+#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 		[Test]
 		public void TestEqualsFullTrust()
 		{
@@ -154,7 +154,7 @@ namespace MsgPack
 			Console.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
 		}
 
-#endif // !UNITY && !WINDOWS_PHONE
+#endif // !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 
 #if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY
 		private static StrongName GetStrongName( Type type )

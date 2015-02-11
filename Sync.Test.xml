@@ -171,4 +171,17 @@
     <Preserve File="*Manifest.xml" />
     <Preserve Path="LocalizedStrings.cs" />
   </Project>
+
+  <Project Name="MsgPack.UnitTest.WinRT.WindowsPhone" Base="MsgPack.UnitTest.WinRT">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Preserve File="*.pfx" />
+    <Preserve File="*.png" />
+    <Preserve File="*.xaml" />
+    <Preserve File="*.xaml.cs" />
+    <Preserve File="*.Designer.cs" />
+    <Preserve File="*.appxmanifest" />
+  </Project>
 </ProjectSync>
