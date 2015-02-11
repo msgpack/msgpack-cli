@@ -220,3 +220,11 @@ Relase 0.5.9 - 2015/2/01
   * Fix NullReferenceException is thrown for annotated non-public members serialization/deserialization in WinRT.
   * Fix collection typed property which has non-public setter are not handled correctly. Issue #62.
   * Fix ArgumentOutOfRangeException occurs when serializing members count is greater than 127. Issue #63.
+
+Release 0.5.10 - 2015/2/10
+
+  CHANGES
+  * WinRT and Windows Phone (not Silverlight) builds now do not have AllowPartiallyTrustedCallersAttribute because it causes MethodAccessException on Windows Phone. This should not be breaking change effectively because apps in app container themselves should be SecurityCritical. Issue #64.
+
+  BUG FIXES
+  * Avoid memcmp usage for Windows Phone App Certification. Issue #65.
