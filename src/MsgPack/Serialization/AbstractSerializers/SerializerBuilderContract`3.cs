@@ -219,7 +219,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif
 			Contract.Requires( constant != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( long ) );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == type );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct MakeDefaultLiteral( TContext context, Type type )
+		{
+			Contract.Requires( context != null );
+#if !NETFX_CORE
+			Contract.Requires( type.IsValueType );
+#endif
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == type );
 			return default( TConstruct );
 		}
 

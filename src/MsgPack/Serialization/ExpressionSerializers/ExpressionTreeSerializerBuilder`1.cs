@@ -206,6 +206,11 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Constant( constant, type );
 		}
 
+		protected override ExpressionConstruct MakeDefaultLiteral( ExpressionTreeContext context, Type type )
+		{
+			return Expression.Default( type );
+		}
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitThisReferenceExpression( ExpressionTreeContext context )
 		{

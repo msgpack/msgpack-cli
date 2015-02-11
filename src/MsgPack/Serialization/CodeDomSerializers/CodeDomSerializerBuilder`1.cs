@@ -230,6 +230,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return CodeDomConstruct.Expression( type, new CodePrimitiveExpression( constant ) );
 		}
 
+		protected override CodeDomConstruct MakeDefaultLiteral( CodeDomContext context, Type type )
+		{
+			return CodeDomConstruct.Expression( type, new CodeDefaultValueExpression( new CodeTypeReference( type ) ) );
+		}
+
 		protected override CodeDomConstruct MakeStringLiteral( CodeDomContext context, string constant )
 		{
 			return CodeDomConstruct.Expression( typeof( string ), new CodePrimitiveExpression( constant ) );

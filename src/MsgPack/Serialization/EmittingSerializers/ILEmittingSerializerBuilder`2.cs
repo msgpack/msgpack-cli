@@ -309,6 +309,22 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
+		protected override ILConstruct MakeDefaultLiteral( TContext context, Type type )
+		{
+			return
+				ILConstruct.Literal(
+					type,
+					"default(" + type + ")",
+					il =>
+					{
+						var temp = il.DeclareLocal( type );
+						il.EmitAnyLdloca( temp );
+						il.EmitInitobj( type );
+						il.EmitAnyLdloc( temp );
+					}
+				);
+		}
+
 		protected override ILConstruct EmitThisReferenceExpression( TContext context )
 		{
 			return ILConstruct.Literal( context.GetSerializerType( typeof( TObject ) ), "(this)", il => il.EmitLdarg_0() );

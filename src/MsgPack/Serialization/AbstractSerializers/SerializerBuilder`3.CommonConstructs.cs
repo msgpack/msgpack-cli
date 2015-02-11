@@ -161,6 +161,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 					);
 				}
 			}
+			else if ( literalType.GetIsValueType() )
+			{
+				return this.MakeDefaultLiteral( context, literalType );
+			}
 			else
 			{
 				return this.MakeNullLiteral( context, literalType );
@@ -305,6 +309,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated construct.</returns>
 		/// <exception cref="ArgumentException"><paramref name="type"/> is not enum.</exception>
 		protected abstract TConstruct MakeEnumLiteral( TContext context, Type type, object constant ); // boxing is better than complex unboxing issue
+
+		/// <summary>
+		///		Emits the constant default(T) value of value type.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="type">The type of the valueType.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct MakeDefaultLiteral( TContext context, Type type );
 
 		/// <summary>
 		///		Emits the loading this reference expression.
