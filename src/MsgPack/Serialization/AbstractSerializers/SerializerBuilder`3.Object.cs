@@ -603,7 +603,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					constructorArgumentsIndex.Add( correspondingMemberName, argument );
 				}
 
-				yield return this.EmitStoreVariableStatement( context, argument, this.MakeLiteral( context, argument, constructorParameters[ i ].ParameterType, constructorParameters[ i ].DefaultValue ) );
+				yield return this.EmitStoreVariableStatement( context, argument, this.MakeDefaultParameterValueLiteral( context, argument, constructorParameters[ i ].ParameterType, constructorParameters[ i ].DefaultValue, constructorParameters[ i ].GetHasDefaultValue() ) );
 			}
 		}
 

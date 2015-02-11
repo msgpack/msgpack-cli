@@ -63,89 +63,80 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="construct">The construct which represent method statements in order. Null entry should be ignored.</param>
 		protected abstract void EmitMethodEpilogue( TContext context, EnumSerializerMethod enumSerializerMethod, TConstruct construct );
 
-
-		private TConstruct MakeLiteral( TContext context, TConstruct targetVariable, Type literalType, object literal )
+		private TConstruct MakeDefaultParameterValueLiteral( TContext context, TConstruct targetVariable, Type literalType, object literal, bool hasDefault )
 		{
-			var isDefault =
-#if !NETFX_CORE
-				( literal is DBNull );
-#else
-				false;
-			System.Diagnostics.Debug.Assert( literal == null || literalType == literal.GetType(), literalType + "!=" + ( literal == null ? "null" : literal.GetType().FullName ) );
-#endif
-
 			// Supports only C# literals
 			if ( literalType == typeof( byte ) )
 			{
-				return this.MakeByteLiteral( context, isDefault ? default( byte ) : ( byte )literal );
+				return this.MakeByteLiteral( context, !hasDefault ? default( byte ) : ( byte )literal );
 			}
 
 			if ( literalType == typeof( sbyte ) )
 			{
-				return this.MakeSByteLiteral( context, isDefault ? default( sbyte ) : ( sbyte )literal );
+				return this.MakeSByteLiteral( context, !hasDefault ? default( sbyte ) : ( sbyte )literal );
 			}
 
 			if ( literalType == typeof( short ) )
 			{
-				return this.MakeInt16Literal( context, isDefault ? default( short ) : ( short )literal );
+				return this.MakeInt16Literal( context, !hasDefault ? default( short ) : ( short )literal );
 			}
 
 			if ( literalType == typeof( ushort ) )
 			{
-				return this.MakeUInt16Literal( context, isDefault ? default( ushort ) : ( ushort )literal );
+				return this.MakeUInt16Literal( context, !hasDefault ? default( ushort ) : ( ushort )literal );
 			}
 
 			if ( literalType == typeof( int ) )
 			{
-				return this.MakeInt32Literal( context, isDefault ? default( int ) : ( int )literal );
+				return this.MakeInt32Literal( context, !hasDefault ? default( int ) : ( int )literal );
 			}
 
 			if ( literalType == typeof( uint ) )
 			{
-				return this.MakeUInt32Literal( context, isDefault ? default( uint ) : ( uint )literal );
+				return this.MakeUInt32Literal( context, !hasDefault ? default( uint ) : ( uint )literal );
 			}
 
 			if ( literalType == typeof( long ) )
 			{
-				return this.MakeInt64Literal( context, isDefault ? default( long ) : ( long )literal );
+				return this.MakeInt64Literal( context, !hasDefault ? default( long ) : ( long )literal );
 			}
 
 			if ( literalType == typeof( ulong ) )
 			{
-				return this.MakeUInt64Literal( context, isDefault ? default( ulong ) : ( ulong )literal );
+				return this.MakeUInt64Literal( context, !hasDefault ? default( ulong ) : ( ulong )literal );
 			}
 
 			if ( literalType == typeof( float ) )
 			{
-				return this.MakeReal32Literal( context, isDefault ? default( float ) : ( float )literal );
+				return this.MakeReal32Literal( context, !hasDefault ? default( float ) : ( float )literal );
 			}
 
 			if ( literalType == typeof( double ) )
 			{
-				return this.MakeReal64Literal( context, isDefault ? default( double ) : ( double )literal );
+				return this.MakeReal64Literal( context, !hasDefault ? default( double ) : ( double )literal );
 			}
 
 			if ( literalType == typeof( decimal ) )
 			{
-				return this.MakeDecimalLiteral( context, targetVariable, isDefault ? default( decimal ) : ( decimal )literal );
+				return this.MakeDecimalLiteral( context, targetVariable, !hasDefault ? default( decimal ) : ( decimal )literal );
 			}
 
 			if ( literalType == typeof( bool ) )
 			{
-				return this.MakeBooleanLiteral( context, isDefault ? default( bool ) : ( bool )literal );
+				return this.MakeBooleanLiteral( context, hasDefault && ( bool )literal );
 			}
 
 			if ( literalType == typeof( char ) )
 			{
-				return this.MakeCharLiteral( context, isDefault ? default( char ) : ( char )literal );
+				return this.MakeCharLiteral( context, !hasDefault ? default( char ) : ( char )literal );
 			}
 
 			if ( literalType.GetIsEnum() )
 			{
-				return this.MakeEnumLiteral( context, literalType, isDefault ? Enum.ToObject( literalType, 0 ) : literal );
+				return this.MakeEnumLiteral( context, literalType, !hasDefault ? Enum.ToObject( literalType, 0 ) : literal );
 			}
 
-			if ( literal != null && !isDefault )
+			if ( literal != null && hasDefault )
 			{
 				if ( literalType == typeof( string ) )
 				{
