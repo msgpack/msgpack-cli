@@ -193,7 +193,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeNullLiteral( TContext context, Type contextType );
 
 		/// <summary>
-		///		Emits the constant <see cref="Byte"/> value reference.
+		///		Emits the constant <see cref="Byte"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -201,7 +201,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeByteLiteral( TContext context, byte constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="SByte"/> value reference.
+		///		Emits the constant <see cref="SByte"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -209,7 +209,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeSByteLiteral( TContext context, sbyte constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="Int16"/> value reference.
+		///		Emits the constant <see cref="Int16"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -217,7 +217,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeInt16Literal( TContext context, short constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="UInt16"/> value reference.
+		///		Emits the constant <see cref="UInt16"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -225,7 +225,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeUInt16Literal( TContext context, ushort constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="Int32"/> value reference.
+		///		Emits the constant <see cref="Int32"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -233,7 +233,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeInt32Literal( TContext context, int constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="UInt32"/> value reference.
+		///		Emits the constant <see cref="UInt32"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -241,7 +241,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeUInt32Literal( TContext context, uint constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="Int64"/> value reference.
+		///		Emits the constant <see cref="Int64"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -249,7 +249,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeInt64Literal( TContext context, long constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="UInt64"/> value reference.
+		///		Emits the constant <see cref="UInt64"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -257,7 +257,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeUInt64Literal( TContext context, ulong constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="Single"/> value reference.
+		///		Emits the constant <see cref="Single"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -265,7 +265,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeReal32Literal( TContext context, float constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="Double"/> value reference.
+		///		Emits the constant <see cref="Double"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -273,7 +273,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeReal64Literal( TContext context, double constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="Boolean"/> value reference.
+		///		Emits the constant <see cref="Boolean"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -281,7 +281,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeBooleanLiteral( TContext context, bool constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="Char"/> value reference.
+		///		Emits the constant <see cref="Char"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -289,7 +289,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeCharLiteral( TContext context, char constant );
 
 		/// <summary>
-		///		Emits the constant <see cref="String"/> value reference.
+		///		Emits the constant <see cref="String"/> value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
 		/// <param name="constant">The constant value.</param>
@@ -297,10 +297,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract TConstruct MakeStringLiteral( TContext context, string constant );
 
 		/// <summary>
-		///		Emits the constant enum value reference.
+		///		Emits the constant enum value.
 		/// </summary>
 		/// <param name="context">The generation context.</param>
-		/// <param name="type">The type the enum.</param>
+		/// <param name="type">The type of the enum.</param>
 		/// <param name="constant">The constant value.</param>
 		/// <returns>The generated construct.</returns>
 		/// <exception cref="ArgumentException"><paramref name="type"/> is not enum.</exception>
