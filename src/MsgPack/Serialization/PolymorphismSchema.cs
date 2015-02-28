@@ -28,7 +28,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 #endif // !NETFX_35 && !NETFX_40 && !SILVERLIGHT && !UNITY
 using System.ComponentModel;
-using System.Diagnostics;
+#if !UNITY
+using System.Diagnostics.Contracts;
+#endif // !UNITY
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -86,7 +88,6 @@ namespace MsgPack.Serialization
 
 		internal bool UseDefault { get { return this.CodeTypeMapping == null; } }
 		internal bool UseTypeEmbedding { get { return this.CodeTypeMapping != null && this.CodeTypeMapping.Count == 0; } }
-
 
 		/// <summary>
 		///		Gets the schema for collection items of the serialization target collection.
@@ -149,10 +150,18 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 		)
 		{
-#if DEBUG
-			Debug.Assert( !type.GetIsValueType(), "!type.GetIsValueType()" );
-			Debug.Assert( memberMayBeNull != null, "memberMayBeNull.HasValue" );
-#endif // DEBUG
+			if ( type.GetIsValueType() )
+			{
+				// Value types will never be polymorphic.
+				return null;
+			}
+
+			if ( memberMayBeNull == null )
+			{
+				// Using default for collection/tuple items.
+				return null;
+			}
+
 #if !UNITY
 			var member = memberMayBeNull.Value;
 #else
