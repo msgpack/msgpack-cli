@@ -147,7 +147,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var traits = typeof( TObject ).GetCollectionTraits();
 			switch ( traits.CollectionType )
 			{
-#warning TODO: Use collection serializers
 				case CollectionKind.Array:
 				{
 					this.BuildArraySerializer( context, traits, itemSchemaList.FirstOrDefault() );
