@@ -49,6 +49,26 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.TraceWriteLine( "// ->Eval: {0}", this );
 		}
 
+		public override void LoadValue( TracingILGenerator il, bool shouldBeAddress )
+		{
+			if ( this._statements.Length == 0 )
+			{
+				base.LoadValue( il, shouldBeAddress );
+				return;
+			}
+
+			il.TraceWriteLine( "// Eval(Load)->: {0}", this );
+
+			for ( var i = 0; i < this._statements.Length - 1; i++ )
+			{
+				this._statements[ i ].Evaluate( il );
+			}
+
+			this._statements.Last().LoadValue( il, shouldBeAddress );
+
+			il.TraceWriteLine( "// ->Eval(Load): {0}", this );
+		}
+
 		public override string ToString()
 		{
 			return String.Format( CultureInfo.InvariantCulture, "Sequence[{0}]", this._statements.Length );
