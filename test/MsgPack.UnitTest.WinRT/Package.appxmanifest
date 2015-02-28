@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="164A8EB3-4366-4F75-9AEC-5D975A42822A" Publisher="CN=Yusuke" Version="1.0.0.0" />
+  <Identity Name="164A8EB3-4366-4F75-9AEC-5D975A42822A" Publisher="CN=MsgPackTesting" Version="1.0.0.0" />
   <Properties>
     <DisplayName>MsgPack.UnitTest.WinRT</DisplayName>
     <PublisherDisplayName>Yusuke</PublisherDisplayName>
@@ -17,6 +17,7 @@
   <Applications>
     <Application Id="vstest.executionengine.App" Executable="vstest.executionengine.appcontainer.exe" EntryPoint="vstest.executionengine.App">
       <VisualElements DisplayName="NoUIEntryPoints" Logo="Images\UnitTestLogo.png" SmallLogo="Images\UnitTestSmallLogo.png" Description="vstest.executionengine.App" ForegroundText="light" BackgroundColor="#0084FF">
+        <DefaultTile ShowName="noLogos" />
         <SplashScreen Image="Images\UnitTestSplashScreen.png" />
       </VisualElements>
     </Application>
