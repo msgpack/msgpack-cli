@@ -482,7 +482,7 @@ namespace MsgPack.Serialization.Reflection
 		///	</param>
 		public void EmitAnyStloc( int localIndex )
 		{
-			Contract.Assert( 0 <= localIndex && localIndex <= UInt16.MaxValue );
+			Contract.Assert( 0 <= localIndex && localIndex <= UInt16.MaxValue, "0 <= " + localIndex + " <= UInt16.MaxValue" );
 
 			switch ( localIndex )
 			{

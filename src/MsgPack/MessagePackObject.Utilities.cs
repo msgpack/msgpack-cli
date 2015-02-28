@@ -331,7 +331,9 @@ namespace MsgPack
 				}
 			}
 
-			Debug.Assert( false, String.Format( "Unknown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
+#if DEBUG && !UNITY
+			Contract.Assert( false, String.Format( "Unknown handle type this:'{0}'(value: '{1}'), other:'{2}'(value: '{3}')", this._handleOrTypeCode.GetType(), this._handleOrTypeCode, other._handleOrTypeCode.GetType(), other._handleOrTypeCode ) );
+#endif // DEBUG && !UNITY
 			return this._handleOrTypeCode.Equals( other._handleOrTypeCode );
 		}
 

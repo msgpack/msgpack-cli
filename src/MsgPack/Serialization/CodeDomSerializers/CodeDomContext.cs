@@ -23,6 +23,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -94,7 +95,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			string fieldName;
 			if ( !this._cachedFieldInfos.TryGetValue( key, out fieldName ) )
 			{
-				Debug.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
+				Contract.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
 
 				fieldName = "_field" + field.DeclaringType.Name + "_" + field.Name + this._cachedFieldInfos.Count.ToString( CultureInfo.InvariantCulture );
 				this._cachedFieldInfos.Add( key, fieldName );
@@ -114,7 +115,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			string fieldName;
 			if ( !this._cachedMethodBases.TryGetValue( key, out fieldName ) )
 			{
-				Debug.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
+				Contract.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
 
 				fieldName = "_methodBase" + method.DeclaringType.Name + "_" + method.Name + this._cachedMethodBases.Count.ToString( CultureInfo.InvariantCulture );
 				this._cachedMethodBases.Add( key, fieldName );
@@ -232,7 +233,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #endif // !NETFX_35
 		public IEnumerable<string> Generate()
 		{
-			Debug.Assert( this._declaringTypes != null, "_declaringTypes != null" );
+			Contract.Assert( this._declaringTypes != null, "_declaringTypes != null" );
 
 			using ( var provider = CodeDomProvider.CreateProvider( this._configuration.Language ) )
 			{

@@ -206,7 +206,9 @@ namespace MsgPack.Serialization
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
 #if !XAMIOS && !XAMDROID && !UNITY
+			Contract.Requires( itemSchemaList != null );
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+			Contract.Assert( itemSchemaList != null );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 #if XAMIOS || XAMDROID || UNITY
 			return CreateReflectionInternal<T>( context, itemSchemaList );

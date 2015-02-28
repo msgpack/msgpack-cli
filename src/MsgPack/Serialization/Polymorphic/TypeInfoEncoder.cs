@@ -18,9 +18,15 @@
 // 
 // #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+#if !UNITY
+using System.Diagnostics.Contracts;
+#endif // !UNITY
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -44,7 +50,9 @@ namespace MsgPack.Serialization.Polymorphic
 #endif // !SILVERLIGHT
 
 			// Omit namespace prefix when it equals to declaring assembly simple name.
-			Debug.Assert( type.Namespace != null, "type.Namespace != null" );
+#if DEBUG && !UNITY
+			Contract.Assert( type.Namespace != null, "type.Namespace != null" );
+#endif // DEBUG && !UNITY
 
 			var compressedTypeName =
 				type.Namespace.StartsWith( assemblyName.Name )

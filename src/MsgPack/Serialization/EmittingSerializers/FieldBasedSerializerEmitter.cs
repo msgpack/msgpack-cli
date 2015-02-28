@@ -361,7 +361,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			FieldBuilder result;
 			if ( !this._fieldInfos.TryGetValue( key, out result ) )
 			{
-				Debug.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
+				Contract.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
 				result = this._typeBuilder.DefineField( "_field" + field.DeclaringType.Name + "_" + field.Name + this._fieldInfos.Count, typeof( FieldInfo ), FieldAttributes.Private | FieldAttributes.InitOnly );
 				this._fieldInfos.Add( key, result );
 			}
@@ -386,7 +386,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			FieldBuilder result;
 			if ( !this._methodBases.TryGetValue( key, out result ) )
 			{
-				Debug.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
+				Contract.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
 				result = this._typeBuilder.DefineField( "_function" + method.DeclaringType.Name + "_" + method.Name + this._methodBases.Count, typeof( FieldInfo ), FieldAttributes.Private | FieldAttributes.InitOnly );
 				this._methodBases.Add( key, result );
 			}
