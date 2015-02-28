@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -53,7 +53,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		public static MessagePackSerializer<T> CreateArraySerializer<T>(
 			SerializationContext context,
 			Type targetType,
-			CollectionTraits traits )
+			CollectionTraits traits,
+			PolymorphismSchema itemsSchema
+		)
 		{
 			switch ( traits.DetailedCollectionType )
 			{
@@ -69,9 +71,10 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							Activator.CreateInstance(
 								typeof( ListSerializer<> ).MakeGenericType( traits.ElementType ),
 								context,
-								targetType
-								) as IMessagePackSerializer
-							);
+								targetType,
+								itemsSchema
+							) as IMessagePackSerializer
+						);
 				}
 #if !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericSet:
@@ -82,9 +85,10 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							Activator.CreateInstance(
 								typeof( SetSerializer<> ).MakeGenericType( traits.ElementType ),
 								context,
-								targetType
-								) as IMessagePackSerializer
-							);
+								targetType,
+								itemsSchema
+							) as IMessagePackSerializer
+						);
 				}
 #endif // !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericCollection:
@@ -95,9 +99,10 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							Activator.CreateInstance(
 								typeof( CollectionSerializer<> ).MakeGenericType( traits.ElementType ),
 								context,
-								targetType
-								) as IMessagePackSerializer
-							);
+								targetType,
+								itemsSchema
+							) as IMessagePackSerializer
+						);
 				}
 				case CollectionDetailedKind.GenericEnumerable:
 				{
@@ -107,25 +112,26 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							Activator.CreateInstance(
 								typeof( EnumerableSerializer<> ).MakeGenericType( traits.ElementType ),
 								context,
-								targetType
-								) as IMessagePackSerializer
-							);
+								targetType,
+								itemsSchema
+							) as IMessagePackSerializer
+						);
 				}
 				case CollectionDetailedKind.NonGenericList:
 				{
 					return
 						new ReflectionCollectionSerializer<T>(
 							context,
-							new NonGenericListSerializer( context, targetType )
-							);
+							new NonGenericListSerializer( context, targetType, itemsSchema )
+						);
 				}
 				case CollectionDetailedKind.NonGenericCollection:
 				{
 					return
 						new ReflectionCollectionSerializer<T>(
 							context,
-							new NonGenericCollectionSerializer( context, targetType )
-							);
+							new NonGenericCollectionSerializer( context, targetType, itemsSchema )
+						);
 				}
 				default:
 				{
@@ -135,8 +141,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					return
 						new ReflectionCollectionSerializer<T>(
 							context,
-							new NonGenericEnumerableSerializer( context, targetType )
-							);
+							new NonGenericEnumerableSerializer( context, targetType, itemsSchema )
+						);
 				}
 			}
 		}
@@ -144,7 +150,10 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		public static MessagePackSerializer<T> CreateMapSerializer<T>(
 			SerializationContext context,
 			Type targetType,
-			CollectionTraits traits )
+			CollectionTraits traits,
+			PolymorphismSchema keysSchema,
+			PolymorphismSchema valuesSchema
+		)
 		{
 			if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary )
 			{
@@ -154,9 +163,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						Activator.CreateInstance(
 							typeof( DictionarySerializer<,> ).MakeGenericType( traits.ElementType.GetGenericArguments() ),
 							context,
-							targetType
-							) as IMessagePackSerializer
-						);
+							targetType,
+							keysSchema,
+							valuesSchema
+						) as IMessagePackSerializer
+					);
 			}
 			else
 			{
@@ -166,8 +177,13 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				return
 					new ReflectionCollectionSerializer<T>(
 						context,
-						new NonGenericDictionarySerializer( context, targetType )
-						);
+						new NonGenericDictionarySerializer(
+							context, 
+							targetType, 
+							keysSchema,
+							valuesSchema
+						)
+					);
 			}
 		}
 
@@ -220,8 +236,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				var memberType = member.Member.GetMemberValueType();
 				if ( !memberType.GetIsEnum() )
 				{
-					serializers[ i ] = context.GetSerializer( memberType );
-
+					serializers[ i ] = context.GetSerializer( memberType, PolymorphismSchema.Create( context, memberType, member ) );
 				}
 				else
 				{

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -33,12 +34,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">
 		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
 		/// </param>
+		/// <param name="itemSchemaList">The list for tuple items schema or single element list contains collection item schema.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="NotSupportedException">
 		///		This class does not support code generation.
 		/// </exception>
-		void BuildSerializerCode( ISerializerCodeGenerationContext context );
+		void BuildSerializerCode( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList );
 	}
 }

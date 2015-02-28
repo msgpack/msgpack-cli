@@ -122,7 +122,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 							entries[ i ].Contract.NilImplication,
 							entries[ i ].Member.ToString(),
 							this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member ),
-							entries[ i ]
+							entries[ i ],
+							null
 						)
 					)
 					{
@@ -153,9 +154,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 						NilImplication.Null,
 						"MemberName",
 						this.MakeStringLiteral( context, entries[ i ].Contract.Name ),
-						entries[ i ]
-						)
+						entries[ i ],
+						null
 					)
+				)
 				{
 					yield return packKey;
 				}
@@ -168,7 +170,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						entries[ i ].Contract.NilImplication,
 						entries[ i ].Member.ToString(),
 						this.EmitGetMemberValueExpression( context, context.PackToTarget, entries[ i ].Member ),
-						entries[ i ]
+						entries[ i ],
+						null
 					)
 				)
 				{
@@ -424,6 +427,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							itemsCount,
 							unpacked,
 							target.Members[ i ],
+							null,
 							storeValueStatementEmitter
 						);
 				}
@@ -532,6 +536,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								null,
 								null,
 								null,
+								null,
 								unpackedKey =>
 									this.EmitStoreVariableStatement( context, key, unpackedKey )
 							);
@@ -556,6 +561,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 											null,
 											null,
 											entry,
+											null,
 											unpackedValue => storeValueStatementEmitter( unpackedValue, entry )
 										)
 									),

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -608,7 +608,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitGetSerializerExpression( CodeDomContext context, Type targetType, SerializingMember? memberInfo )
+		protected override CodeDomConstruct EmitGetSerializerExpression( CodeDomContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
 			return
 				CodeDomConstruct.Expression(
@@ -619,7 +619,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							targetType,
 							memberInfo == null
 							? EnumMemberSerializationMethod.Default
-							: memberInfo.Value.GetEnumMemberSerializationMethod()
+							: memberInfo.Value.GetEnumMemberSerializationMethod(),
+							itemsSchema  ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
 						)
 					)
 				);
@@ -883,7 +884,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return CodeDomConstruct.Expression( underlyingType, new CodeCastExpression( underlyingType, enumValue.AsExpression() ) );
 		}
 
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
 			var asCodeDomContext = context as CodeDomContext;
 			if ( asCodeDomContext == null )
@@ -896,13 +897,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			asCodeDomContext.Reset( typeof( TObject ) );
 
-			this.BuildSerializer( asCodeDomContext );
-			Finish( asCodeDomContext, typeof( TObject ).GetIsEnum() );
+			this.BuildSerializer( asCodeDomContext, itemSchemaList );
+			this.Finish( asCodeDomContext, typeof( TObject ).GetIsEnum() );
 		}
 
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateSerializerConstructor( CodeDomContext codeGenerationContext )
 		{
-			Finish( codeGenerationContext, false );
+			this.Finish( codeGenerationContext, false );
 			var targetType = PrepareSerializerConstructorCreation( codeGenerationContext );
 
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
@@ -915,7 +916,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override Func<SerializationContext, MessagePackSerializer<TObject>> CreateEnumSerializerConstructor( CodeDomContext codeGenerationContext )
 		{
-			Finish( codeGenerationContext, true );
+			this.Finish( codeGenerationContext, true );
 			var targetType = PrepareSerializerConstructorCreation( codeGenerationContext );
 
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
@@ -1038,7 +1039,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "CodeDOM" )]
-		private static void Finish( CodeDomContext context, bool isEnum )
+		private void Finish( CodeDomContext context, bool isEnum )
 		{
 			// fields
 			foreach ( var dependentSerializer in context.GetDependentSerializers() )
@@ -1101,26 +1102,12 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					);
 				}
 
+				int schemaNumber = -1;
 				foreach ( var dependentSerializer in context.GetDependentSerializers() )
 				{
 					var targetType = Type.GetTypeFromHandle( dependentSerializer.Key.TypeHandle );
 
-					if ( !targetType.GetIsEnum() )
-					{
-						ctor.Statements.Add(
-							new CodeAssignStatement(
-								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
-								new CodeMethodInvokeExpression(
-									new CodeMethodReferenceExpression(
-										contextArgument,
-										"GetSerializer",
-										new CodeTypeReference( targetType )
-									)
-								)
-							)
-						);
-					}
-					else
+					if ( targetType.GetIsEnum() )
 					{
 						ctor.Statements.Add(
 							new CodeAssignStatement(
@@ -1141,6 +1128,44 @@ namespace MsgPack.Serialization.CodeDomSerializers
 											dependentSerializer.Key.EnumSerializationMethod.ToString()
 										)
 									)
+								)
+							)
+						);
+					}
+					else
+					{
+
+						CodeExpression schemaExpression;
+						if ( dependentSerializer.Key.PolymorphismSchema == null )
+						{
+							schemaExpression = new CodePrimitiveExpression( null );
+						}
+						else
+						{
+							schemaNumber++;
+							var variableName = "schema" + schemaNumber;
+							var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), variableName );
+							ctor.Statements.AddRange(
+								this.EmitConstructPolymorphismSchema(
+									context,
+									schema,
+									dependentSerializer.Key.PolymorphismSchema
+								).SelectMany( st => st.AsStatements() ).ToArray()
+							);
+
+							schemaExpression = new CodeVariableReferenceExpression( variableName );
+						}
+
+						ctor.Statements.Add(
+							new CodeAssignStatement(
+								new CodeFieldReferenceExpression( new CodeThisReferenceExpression(), dependentSerializer.Value ),
+								new CodeMethodInvokeExpression(
+									new CodeMethodReferenceExpression(
+										contextArgument,
+										"GetSerializer",
+										new CodeTypeReference( targetType )
+									),
+									schemaExpression
 								)
 							)
 						);

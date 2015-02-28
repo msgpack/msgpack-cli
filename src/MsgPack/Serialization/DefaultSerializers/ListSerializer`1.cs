@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// <typeparam name="T">The type of the item of collection.</typeparam>
 	internal sealed class ListSerializer<T> : EnumerableSerializerBase<IList<T>, T>
 	{
-		public ListSerializer( SerializationContext ownerContext, Type targetType )
-			: base( ownerContext, targetType ) { }
+		public ListSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
+			: base( ownerContext, targetType, itemsSchema ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]

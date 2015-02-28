@@ -113,6 +113,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+		/// <param name="polymorphismSchema">The schema for polymorphism support.</param>
 		/// <returns>
 		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
 		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
@@ -121,7 +122,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </returns>
 		public abstract Action<TracingILGenerator, int> RegisterSerializer(
 			Type targetType,
-			EnumMemberSerializationMethod enumMemberSerializationMethod
+			EnumMemberSerializationMethod enumMemberSerializationMethod,
+			PolymorphismSchema polymorphismSchema
 		);
 
 		/// <summary>
@@ -182,7 +184,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return null;
 		}
 
-		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod )
+		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod, PolymorphismSchema polymorphismSchema )
 		{
 			Contract.Requires( targetType != null );
 			Contract.Requires( Enum.IsDefined( typeof( EnumMemberSerializationMethod ), enumMemberSerializationMethod ) );

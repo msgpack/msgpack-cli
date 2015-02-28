@@ -41,7 +41,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
 			Contract.Requires( context != null );
 		}
@@ -507,7 +507,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitGetSerializerExpression( TContext context, Type targetType, SerializingMember? memberInfo )
+		protected override TConstruct EmitGetSerializerExpression( TContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( targetType != null );

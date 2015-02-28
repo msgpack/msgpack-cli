@@ -25,17 +25,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 {
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
-		private void BuildArraySerializer( TContext context, CollectionTraits traits )
+		private void BuildArraySerializer( TContext context, CollectionTraits traits, PolymorphismSchema itemsSchema )
 		{
-			this.BuildCollectionPackTo( context, traits );
-			this.BuildCollectionUnpackFrom( context, traits );
+			this.BuildCollectionPackTo( context, traits, itemsSchema );
+			this.BuildCollectionUnpackFrom( context, traits, itemsSchema );
 			if ( traits.AddMethod != null )
 			{
-				this.BuildCollectionUnpackTo( context, traits );
+				this.BuildCollectionUnpackTo( context, traits, itemsSchema );
 			}
 		}
 
-		private void BuildCollectionPackTo( TContext context, CollectionTraits traits )
+		private void BuildCollectionPackTo( TContext context, CollectionTraits traits, PolymorphismSchema itemsSchema )
 		{
 #if DEBUG
 			Contract.Assert( !typeof( TObject ).IsArray );
@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					construct =
 						this.EmitInvokeMethodExpression(
 							context,
-							this.EmitGetSerializerExpression( context, arrayType, null ),
+							this.EmitGetSerializerExpression( context, arrayType, null, itemsSchema ),
 							typeof( MessagePackSerializer<> ).MakeGenericType( arrayType ).GetMethod( "PackTo" ),
 							context.Packer,
 							this.EmitInvokeEnumerableToArrayExpression( context, context.PackToTarget, traits.ElementType )
@@ -76,7 +76,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 									this.EmitSequentialStatements(
 										context,
 										typeof( void ),
-										this.EmitPackItemStatements( context, context.Packer, traits.ElementType, NilImplication.Null, null, item, null )
+										this.EmitPackItemStatements( context, context.Packer, traits.ElementType, NilImplication.Null, null, item, null, itemsSchema )
 									)
 							)
 						);
@@ -99,7 +99,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return this.EmitInvokeMethodExpression( context, null, Metadata._Enumerable.ToArray1Method.MakeGenericMethod( elementType ), enumerable );
 		}
 
-		private void BuildCollectionUnpackFrom( TContext context, CollectionTraits traits )
+		private void BuildCollectionUnpackFrom( TContext context, CollectionTraits traits, PolymorphismSchema itemsSchema )
 		{
 			this.EmitMethodPrologue( context, SerializerMethod.UnpackFromCore );
 
@@ -161,7 +161,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 									: new[] { collectionCapacity }
 								)
 							),
-							this.EmitUnpackToSpecifiedCollection( context, instanceType.GetCollectionTraits(), context.Unpacker, collection )
+							this.EmitUnpackToSpecifiedCollection( context, instanceType.GetCollectionTraits(), context.Unpacker, collection, itemsSchema )
 						) : this.EmitUnpackCollectionWithUnpackToExpression(
 							context,
 							ctor,
@@ -181,7 +181,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private void BuildCollectionUnpackTo( TContext context, CollectionTraits traits )
+		private void BuildCollectionUnpackTo( TContext context, CollectionTraits traits, PolymorphismSchema itemsSchema )
 		{
 			/*
 				int count = GetItemsCount( unpacker );
@@ -195,7 +195,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct construct = null;
 			try
 			{
-				construct = this.EmitUnpackToSpecifiedCollection( context, traits, context.Unpacker, context.UnpackToTarget );
+				construct = this.EmitUnpackToSpecifiedCollection( context, traits, context.Unpacker, context.UnpackToTarget, itemsSchema );
 			}
 			finally
 			{
@@ -207,7 +207,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TContext context,
 			CollectionTraits traitsOfTheCollection,
 			TConstruct unpacker,
-			TConstruct collection
+			TConstruct collection,
+			PolymorphismSchema itemsSchema
 		)
 		{
 			var count =
@@ -230,12 +231,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitForLoop(
 						context,
 						count,
-						flc => this.EmitUnpackToCollectionLoopBody( context, flc, traitsOfTheCollection, unpacker, collection )
+						flc => this.EmitUnpackToCollectionLoopBody( context, flc, traitsOfTheCollection, unpacker, collection, itemsSchema )
 					)
 				);
 		}
 
-		private TConstruct EmitUnpackToCollectionLoopBody( TContext context, ForLoopContext forLoopContext, CollectionTraits traitsOfTheCollection, TConstruct unpacker, TConstruct collection )
+		private TConstruct EmitUnpackToCollectionLoopBody( TContext context, ForLoopContext forLoopContext, CollectionTraits traitsOfTheCollection, TConstruct unpacker, TConstruct collection, PolymorphismSchema itemsSchema )
 		{
 			/*
 			    if ( !unpacker.Read() )
@@ -270,6 +271,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					null,
 					null,
 					null,
+					itemsSchema,
 					unpackedItem =>
 						this.EmitAppendCollectionItem(
 							context,

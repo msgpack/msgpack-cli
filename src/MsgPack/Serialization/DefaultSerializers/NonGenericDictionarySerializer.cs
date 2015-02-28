@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -31,10 +31,16 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class NonGenericDictionarySerializer : MessagePackSerializer<IDictionary>
 	{
 		private readonly IMessagePackSerializer _collectionDeserializer;
+		private readonly IMessagePackSerializer _keySerializer;
+		private readonly IMessagePackSerializer _valueSerializer;
 		private readonly ConstructorInfo _collectionConstructorWithoutCapacity;
 		private readonly ConstructorInfo _collectionConstructorWithCapacity;
 
-		public NonGenericDictionarySerializer( SerializationContext ownerContext, Type targetType )
+		public NonGenericDictionarySerializer(
+			SerializationContext ownerContext,
+			Type targetType,
+			PolymorphismSchema keysSchema,
+			PolymorphismSchema valuesSchema )
 			: base( ownerContext )
 		{
 			if ( ownerContext.EmitterFlavor == EmitterFlavor.ReflectionBased )
@@ -54,31 +60,90 @@ namespace MsgPack.Serialization.DefaultSerializers
 			{
 				this._collectionDeserializer = ownerContext.GetSerializer( targetType );
 			}
+
+			if ( keysSchema != null )
+			{
+				this._keySerializer = ownerContext.GetSerializer( typeof( object ), keysSchema );
+			}
+
+			if ( valuesSchema != null )
+			{
+				this._valueSerializer = ownerContext.GetSerializer( typeof( object ), valuesSchema );
+			}
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
+			MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
+			MessageId = "1", Justification = "By design" )]
 		protected internal override void PackToCore( Packer packer, IDictionary objectTree )
 		{
 			packer.PackMapHeader( objectTree.Count );
-			foreach ( DictionaryEntry item in objectTree )
+			if ( this._keySerializer == null )
 			{
-				if ( !( item.Key is MessagePackObject ) )
+				if ( this._valueSerializer == null )
 				{
-					throw new SerializationException("Non generic dictionary may contain only MessagePackObject typed key.");
+					foreach ( DictionaryEntry item in objectTree )
+					{
+						if ( !( item.Key is MessagePackObject ) )
+						{
+							throw new SerializationException( "Non generic dictionary may contain only MessagePackObject typed key." );
+						}
+
+						( item.Key as IPackable ).PackToMessage( packer, null );
+
+						if ( !( item.Value is MessagePackObject ) )
+						{
+							throw new SerializationException( "Non generic dictionary may contain only MessagePackObject typed value." );
+						}
+
+						( item.Value as IPackable ).PackToMessage( packer, null );
+					}
 				}
-
-				( item.Key as IPackable ).PackToMessage( packer, null );
-
-				if ( !( item.Value is MessagePackObject ) )
+				else
 				{
-					throw new SerializationException("Non generic dictionary may contain only MessagePackObject typed value.");
-				}
+					foreach ( DictionaryEntry item in objectTree )
+					{
+						if ( !( item.Key is MessagePackObject ) )
+						{
+							throw new SerializationException( "Non generic dictionary may contain only MessagePackObject typed key." );
+						}
 
-				( item.Value as IPackable ).PackToMessage( packer, null );			}
+						( item.Key as IPackable ).PackToMessage( packer, null );
+
+						this._valueSerializer.PackTo( packer, item.Value );
+					}
+				}
+			}
+			else
+			{
+				if ( this._valueSerializer == null )
+				{
+					foreach ( DictionaryEntry item in objectTree )
+					{
+						this._keySerializer.PackTo( packer, item.Key );
+
+						if ( !( item.Value is MessagePackObject ) )
+						{
+							throw new SerializationException( "Non generic dictionary may contain only MessagePackObject typed value." );
+						}
+
+						( item.Value as IPackable ).PackToMessage( packer, null );
+					}
+				}
+				else
+				{
+					foreach ( DictionaryEntry item in objectTree )
+					{
+						this._keySerializer.PackTo( packer, item.Key );
+						this._valueSerializer.PackTo( packer, item.Value );
+					}
+				}
+			}
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
+			MessageId = "0", Justification = "By design" )]
 		protected internal override IDictionary UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -97,11 +162,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 				( this._collectionConstructorWithoutCapacity != null
 					? this._collectionConstructorWithoutCapacity.Invoke( null )
 					: this._collectionConstructorWithCapacity.Invoke( new object[] { itemsCount } ) ) as IDictionary;
-			UnpackToCore( unpacker, collection, itemsCount );
+			this.UnpackToCore( unpacker, collection, itemsCount );
 			return collection;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
+			MessageId = "0", Justification = "By design" )]
 		protected internal override void UnpackToCore( Unpacker unpacker, IDictionary collection )
 		{
 			if ( this._collectionDeserializer != null )
@@ -116,34 +182,86 @@ namespace MsgPack.Serialization.DefaultSerializers
 					throw SerializationExceptions.NewIsNotArrayHeader();
 				}
 
-				UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
+				this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
 			}
 		}
 
-		private static void UnpackToCore( Unpacker unpacker, IDictionary collection, int itemsCount )
+		private void UnpackToCore( Unpacker unpacker, IDictionary collection, int itemsCount )
 		{
-			for ( int i = 0; i < itemsCount; i++ )
+			if ( this._keySerializer == null )
 			{
-				MessagePackObject key;
-				try
+				if ( this._valueSerializer == null )
 				{
-					key = unpacker.ReadItemData();
-				}
-				catch ( InvalidMessagePackStreamException )
-				{
-					throw SerializationExceptions.NewMissingItem( i );
-				}
+					for ( int i = 0; i < itemsCount; i++ )
+					{
+						MessagePackObject key;
+						try
+						{
+							key = unpacker.ReadItemData();
+						}
+						catch ( InvalidMessagePackStreamException )
+						{
+							throw SerializationExceptions.NewMissingItem( i );
+						}
 
-				MessagePackObject value;
-				try
-				{
-					value = unpacker.ReadItemData();
+						MessagePackObject value;
+						try
+						{
+							value = unpacker.ReadItemData();
+						}
+						catch ( InvalidMessagePackStreamException )
+						{
+							throw SerializationExceptions.NewMissingItem( i );
+						}
+						collection.Add( key, value );
+					}
 				}
-				catch ( InvalidMessagePackStreamException )
+				else
 				{
-					throw SerializationExceptions.NewMissingItem( i );
+					for ( int i = 0; i < itemsCount; i++ )
+					{
+						MessagePackObject key;
+						try
+						{
+							key = unpacker.ReadItemData();
+						}
+						catch ( InvalidMessagePackStreamException )
+						{
+							throw SerializationExceptions.NewMissingItem( i );
+						}
+
+						collection.Add( key, this._valueSerializer.UnpackFrom( unpacker ) );
+					}
+
 				}
-				collection.Add( key, value );
+			}
+			else
+			{
+				if ( this._valueSerializer == null )
+				{
+					for ( int i = 0; i < itemsCount; i++ )
+					{
+						var key = this._keySerializer.UnpackFrom( unpacker );
+
+						MessagePackObject value;
+						try
+						{
+							value = unpacker.ReadItemData();
+						}
+						catch ( InvalidMessagePackStreamException )
+						{
+							throw SerializationExceptions.NewMissingItem( i );
+						}
+						collection.Add( key, value );
+					}
+				}
+				else
+				{
+					for ( int i = 0; i < itemsCount; i++ )
+					{
+						collection.Add( this._keySerializer.UnpackFrom( unpacker ), this._valueSerializer.UnpackFrom( unpacker ) );
+					}
+				}
 			}
 		}
 	}

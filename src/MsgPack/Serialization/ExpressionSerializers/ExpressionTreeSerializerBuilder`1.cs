@@ -458,15 +458,22 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override ExpressionConstruct EmitGetSerializerExpression( ExpressionTreeContext context, Type targetType, SerializingMember? memberInfo )
+		protected override ExpressionConstruct EmitGetSerializerExpression( ExpressionTreeContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
-			return
-				memberInfo == null || !targetType.GetIsEnum()
-					? Expression.Call(
+			if ( memberInfo == null )
+			{
+				return
+					this.EmitInvokeMethodExpression(
+						context,
 						context.Context,
 						Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
-					)
-					: this.EmitInvokeMethodExpression(
+					);
+
+			}
+			else if ( targetType.GetIsEnum() )
+			{
+				return
+					this.EmitInvokeMethodExpression(
 						context,
 						context.Context,
 						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
@@ -483,10 +490,35 @@ namespace MsgPack.Serialization.ExpressionSerializers
 									context,
 									typeof( EnumMemberSerializationMethod ),
 									memberInfo.Value.GetEnumMemberSerializationMethod()
+									)
 								)
 							)
+						);
+			}
+			else
+			{
+				var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), "__schema" );
+				return
+					this.EmitSequentialStatements(
+						context,
+						typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
+						this.EmitConstructPolymorphismSchema(
+							context,
+							schema,
+							itemsSchema == null ? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo ) : itemsSchema.ItemSchema
+						).Concat(
+							new[]
+							{
+								this.EmitInvokeMethodExpression(
+									context,
+									context.Context,
+									Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+									schema
+								)
+							}
 						)
 					);
+			}
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]

@@ -24,6 +24,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+
+using MsgPack.Serialization.Polymorphic;
 
 namespace MsgPack.Serialization
 {
@@ -159,7 +162,10 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-				return this._repository.Register( targetType, serializer, /*allowOverwrite:*/ false );
+#if DEBUG
+				Debug.Assert( serializer is IMessagePackSerializer, serializer + " is IMessagePackSerializer" );
+#endif // DEBUG
+				return this._repository.Register( targetType, new PolymorphicSerializerProvider( targetType, serializer as IMessagePackSerializer ),  /*allowOverwrite:*/ false );
 			}
 		}
 

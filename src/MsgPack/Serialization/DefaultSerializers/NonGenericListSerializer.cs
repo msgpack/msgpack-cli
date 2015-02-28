@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// </summary>
 	internal sealed class NonGenericListSerializer : NonGenericEnumerableSerializerBase<IList>
 	{
-		public NonGenericListSerializer( SerializationContext ownerContext, Type targetType )
-			: base( ownerContext, targetType ) { }
+		public NonGenericListSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
+			: base( ownerContext, targetType, itemsSchema ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
@@ -39,7 +39,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected override void AddItem( IList collection, MessagePackObject item )
+		protected override void AddItem( IList collection, object item )
 		{
 			collection.Add( item );
 		}

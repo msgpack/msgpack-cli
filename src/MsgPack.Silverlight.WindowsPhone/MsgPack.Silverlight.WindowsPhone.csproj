@@ -268,6 +268,9 @@
     <Compile Include="..\MsgPack\Serialization\AutoMessagePackSerializer`1.cs">
       <Link>Serialization\AutoMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\BoxedEnumMemberSerializationMethod.cs">
+      <Link>Serialization\BoxedEnumMemberSerializationMethod.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CallbackEnumMessagePackSerializer.cs">
       <Link>Serialization\CallbackEnumMessagePackSerializer.cs</Link>
     </Compile>
@@ -487,8 +490,14 @@
     <Compile Include="..\MsgPack\Serialization\MessagePackIgnoreAttribute.cs">
       <Link>Serialization\MessagePackIgnoreAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackKnownTypeAttribute.cs">
+      <Link>Serialization\MessagePackKnownTypeAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackMemberAttribute.cs">
       <Link>Serialization\MessagePackMemberAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackRuntimeTypeAttribute.cs">
+      <Link>Serialization\MessagePackRuntimeTypeAttribute.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.cs">
       <Link>Serialization\MessagePackSerializer.cs</Link>
@@ -562,6 +571,30 @@
     <Compile Include="..\MsgPack\Serialization\NilImplicationHandler`4.cs">
       <Link>Serialization\NilImplicationHandler`4.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorhicHelperAttribute.cs">
+      <Link>Serialization\Polymorphic\IPolymorhicHelperAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs">
+      <Link>Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\PolymorphicSerializerProvider.cs">
+      <Link>Serialization\Polymorphic\PolymorphicSerializerProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeEmbedingPolymorhicMessagePackSerializer`1.cs">
+      <Link>Serialization\Polymorphic\TypeEmbedingPolymorhicMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeInfoEncoder.cs">
+      <Link>Serialization\Polymorphic\TypeInfoEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeInfoEncoding.cs">
+      <Link>Serialization\Polymorphic\TypeInfoEncoding.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.cs">
+      <Link>Serialization\PolymorphismSchema.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\PolymorphismTarget.cs">
+      <Link>Serialization\PolymorphismTarget.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
       <Link>Serialization\ReflectionExtensions.cs</Link>
     </Compile>
@@ -601,6 +634,9 @@
     <Compile Include="..\MsgPack\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationContext.TypeEmbedding.cs">
+      <Link>Serialization\SerializationContext.TypeEmbedding.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationExceptions.cs">
       <Link>Serialization\SerializationExceptions.cs</Link>
     </Compile>
@@ -627,6 +663,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
       <Link>Serialization\SerializingMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\TypeEmbeddingSettings.cs">
+      <Link>Serialization\TypeEmbeddingSettings.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs">
       <Link>Serialization\TypeKeyRepository.cs</Link>

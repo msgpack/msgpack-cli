@@ -424,5 +424,13 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported for '{0}' because it does not have accesible Add(T) method.", type ), inner );
 		}
+
+		internal static Exception NewValueTypeCannotBePolymorphic( Type type )
+		{
+			return
+				new SerializationException(
+					String.Format( CultureInfo.CurrentCulture, "Value type '{0}' cannot be polymorphic.", type ) 
+				);
+		}
 	}
 }

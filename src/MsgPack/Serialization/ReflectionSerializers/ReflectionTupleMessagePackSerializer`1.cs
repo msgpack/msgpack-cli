@@ -44,11 +44,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly IList<Func<T, Object>> _getters;
 		private readonly IList<IMessagePackSingleObjectSerializer> _itemSerializers;
 
-		public ReflectionTupleMessagePackSerializer( SerializationContext ownerContext )
+		public ReflectionTupleMessagePackSerializer( SerializationContext ownerContext, IList<PolymorphismSchema> itemSchemas )
 			: base( ownerContext )
 		{
 			var itemTypes = TupleItems.GetTupleItemTypes( typeof( T ) );
-			this._itemSerializers = itemTypes.Select( itemType => ownerContext.GetSerializer( itemType ) ).ToArray();
+			this._itemSerializers = itemTypes.Select( ( itemType, i ) => ownerContext.GetSerializer( itemType, itemSchemas[ i ] ) ).ToArray();
 			this._tupleTypes = TupleItems.CreateTupleTypeList( itemTypes );
 			this._tupleConstructors = this._tupleTypes.Select( tupleType => tupleType.GetConstructors().Single() ).ToArray();
 			this._getters = GetGetters( itemTypes, this._tupleTypes ).ToArray();

@@ -104,7 +104,6 @@ namespace MsgPack
 		}
 #endif // DEBUG
 
-#if !NETFX_35
 		public static Assembly GetAssembly( this Type source )
 		{
 #if NETFX_CORE
@@ -113,7 +112,6 @@ namespace MsgPack
 			return source.Assembly;
 #endif
 		}
-#endif // NETFX_35
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Wrong detection" )]
 		public static bool GetIsPublic( this Type source )
@@ -286,6 +284,15 @@ namespace MsgPack
 		}
 #endif // !SILVERLIGHT
 #endif // NETFX_CORE
+
+		public static string GetCultureName( this AssemblyName source )
+		{
+#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+			return source.CultureInfo.Name;
+#else
+			return source.CultureName;
+#endif
+		}
 
 #if NETFX_35 || UNITY
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this MemberInfo source )

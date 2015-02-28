@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,12 +23,10 @@
 #endif
 
 using System;
+using System.Collections.Generic;
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
-#if SILVERLIGHT || NETFX_35
-using System.Collections.Generic;
-#endif // SILVERLIGHT || NETFX_35
 #if !UNITY
 using System.Diagnostics.Contracts;
 #endif // !UNITY
@@ -47,11 +45,14 @@ namespace MsgPack.Serialization
 	///		<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		Represents serialization context information for internal serialization logic.
 	/// </summary>
-	public sealed class SerializationContext
+	public sealed partial class SerializationContext
 	{
 #if UNITY
 		private static readonly object DefaultContextSyncRoot = new object();
 #endif // UNITY
+
+		private static readonly IList<PolymorphismSchema> NoItemPolymorphismSchema = new PolymorphismSchema[ 0 ];
+
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
 		private static SerializationContext _default = new SerializationContext( default( SerializerRepository ) );
 
@@ -386,7 +387,7 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>()
 		{
-			return GetSerializer<T>( null );
+			return this.GetSerializer<T>( null );
 		}
 
 		/// <summary>
@@ -435,8 +436,8 @@ namespace MsgPack.Serialization
 					{
 #endif // !XAMIOS && !XAMDROID && !UNITY
 						serializer =
-							this.GetSerializerWithoutGeneration( typeof( T ) ) as MessagePackSerializer<T> 
-							?? MessagePackSerializer.CreateReflectionInternal<T>( this );
+							this.GetSerializerWithoutGeneration( typeof( T ) ) as MessagePackSerializer<T>
+							?? MessagePackSerializer.CreateReflectionInternal<T>( this, providerParameter as IList<PolymorphismSchema> ?? NoItemPolymorphismSchema );
 #if !XAMIOS && !XAMDROID && !UNITY
 					}
 					else
@@ -493,7 +494,7 @@ namespace MsgPack.Serialization
 								if ( lockTaken )
 								{
 									// This thread creating new type serializer.
-									serializer = MessagePackSerializer.CreateInternal<T>( this );
+									serializer = MessagePackSerializer.CreateInternal<T>( this, providerParameter as IList<PolymorphismSchema> ?? NoItemPolymorphismSchema );
 								}
 								else
 								{

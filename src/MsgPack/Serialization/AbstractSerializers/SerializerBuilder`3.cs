@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
@@ -53,12 +54,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information.</param>
+		/// <param name="itemSchemaList">The list for tuple items schema or single element list contains collection item schema.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context )
+		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
 			var genericSerializer = GenericSerializer.Create<TObject>( context );
 			if ( genericSerializer != null )
@@ -92,7 +94,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				this.BuildSerializer( codeGenerationContext );
+				this.BuildSerializer( codeGenerationContext, itemSchemaList );
 				Func<SerializationContext, MessagePackSerializer<TObject>> constructor =
 					this.CreateSerializerConstructor( codeGenerationContext );
 
@@ -131,11 +133,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information. This value will not be <c>null</c>.</param>
+		/// <param name="itemSchemaList">The list for tuple items schema or single element list contains collection item schema.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		protected void BuildSerializer( TContext context )
+		protected void BuildSerializer( TContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
 #if DEBUG
 			Contract.Assert( !typeof( TObject ).IsArray );
@@ -144,14 +147,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var traits = typeof( TObject ).GetCollectionTraits();
 			switch ( traits.CollectionType )
 			{
+#warning TODO: Use collection serializers
 				case CollectionKind.Array:
 				{
-					this.BuildArraySerializer( context, traits );
+					this.BuildArraySerializer( context, traits, itemSchemaList.FirstOrDefault() );
 					break;
 				}
 				case CollectionKind.Map:
 				{
-					this.BuildMapSerializer( context, traits );
+					this.BuildMapSerializer( context, traits, itemSchemaList.FirstOrDefault(), itemSchemaList.Skip( 1 ).FirstOrDefault() );
 					break;
 				}
 				case CollectionKind.NotCollection:
@@ -165,7 +169,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						  typeof( TObject ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
 						&& typeof( TObject ).GetIsPublic() && typeof( TObject ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
 					{
-						this.BuildTupleSerializer( context );
+						this.BuildTupleSerializer( context, itemSchemaList );
 					}
 #endif
 					else
@@ -209,6 +213,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">
 		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
 		/// </param>
+		/// <param name="itemSchemaList">The list for tuple items schema or single element list contains collection item schema.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
 		/// </exception>
@@ -218,7 +223,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <remarks>
 		///		This method will not do anything when <see cref="ISerializerCodeGenerationContext.BuiltInSerializerExists"/> returns <c>true</c> for <typeparamref name="TObject"/>.
 		/// </remarks>
-		public void BuildSerializerCode( ISerializerCodeGenerationContext context )
+		public void BuildSerializerCode( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
 			if ( context == null )
 			{
@@ -231,7 +236,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				return;
 			}
 
-			this.BuildSerializerCodeCore( context );
+			this.BuildSerializerCodeCore( context, itemSchemaList );
 		}
 
 		/// <summary>
@@ -241,10 +246,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
 		///		This value will not be <c>null</c>.
 		/// </param>
+		/// <param name="itemSchemaList">The list for tuple items schema or single element list contains collection item schema.</param>
 		/// <exception cref="NotSupportedException">
 		///		This class does not support code generation.
 		/// </exception>
-		protected virtual void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
+		protected virtual void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
 			throw new NotSupportedException();
 		}

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -38,10 +38,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly ConstructorInfo _collectionConstructorWithoutCapacity;
 		private readonly ConstructorInfo _collectionConstructorWithCapacity;
 
-		protected EnumerableSerializerBase( SerializationContext ownerContext, Type targetType )
+		protected EnumerableSerializerBase( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
 			: base( ownerContext )
 		{
-			this._itemSerializer = ownerContext.GetSerializer<TItem>();
+			this._itemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema );
 			if ( ownerContext.EmitterFlavor == EmitterFlavor.ReflectionBased )
 			{
 				// First use abstract type instead of surrogate concrete type.

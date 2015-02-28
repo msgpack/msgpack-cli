@@ -26,14 +26,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 {
 	partial class SerializerBuilder<TContext, TConstruct, TObject>
 	{
-		private void BuildMapSerializer( TContext context, CollectionTraits traits )
+		private void BuildMapSerializer( TContext context, CollectionTraits traits, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		{
-			this.BuildMapPackTo( context, traits );
+			this.BuildMapPackTo( context, traits, keysSchema, valuesSchema );
 			this.BuildMapUnpackFrom( context );
-			this.BuildMapUnpackTo( context, traits );
+			this.BuildMapUnpackTo( context, traits, keysSchema, valuesSchema );
 		}
 
-		private void BuildMapPackTo( TContext context, CollectionTraits traits )
+		private void BuildMapPackTo( TContext context, CollectionTraits traits, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		{
 			/*
 			 * 	int count = ((ICollection<KeyValuePair<string, DateTime>>)dictionary).Count;
@@ -64,7 +64,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 									context,
 									traits,
 									context.Packer,
-									keyValuePair
+									keyValuePair,
+									keysSchema,
+									valuesSchema
 								)
 						)
 					);
@@ -81,7 +83,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitInvokeVoidMethod( context, context.Packer, Metadata._Packer.PackMapHeader, collectionCount );
 		}
 
-		private TConstruct EmitPackKeyValuePair( TContext context, CollectionTraits traits, TConstruct packer, TConstruct keyValuePair )
+		private TConstruct EmitPackKeyValuePair( TContext context, CollectionTraits traits, TConstruct packer, TConstruct keyValuePair, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		{
 			/*
 			 *	this._serializer0.PackTo(packer, current.Key);
@@ -102,7 +104,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 						NilImplication.Null,
 						null,
 						this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Key" ) ),
-						null
+						null,
+						keysSchema
 					).Concat(
 						this.EmitPackItemStatements(
 							context,
@@ -111,7 +114,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 							NilImplication.Null,
 							null,
 							this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Value" ) ),
-							null
+							null,
+							valuesSchema
 						)
 					)
 				);
@@ -180,7 +184,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private void BuildMapUnpackTo( TContext context, CollectionTraits traits )
+		private void BuildMapUnpackTo( TContext context, CollectionTraits traits, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		{
 			/*
 				int count = GetItemsCount( unpacker );
@@ -214,7 +218,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitForLoop(
 							context,
 							itemsCount,
-							flc => this.EmitUnpackToMapLoopBody( context, flc, traits, context.Unpacker )
+							flc => this.EmitUnpackToMapLoopBody( context, flc, traits, context.Unpacker, keysSchema, valuesSchema )
 						)
 					);
 			}
@@ -224,7 +228,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 
-		private TConstruct EmitUnpackToMapLoopBody( TContext context, ForLoopContext forLoopContext, CollectionTraits traits, TConstruct unpacker )
+		private TConstruct EmitUnpackToMapLoopBody( TContext context, ForLoopContext forLoopContext, CollectionTraits traits, TConstruct unpacker, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		{
 			/*
 					if ( !unpacker.Read() )
@@ -289,6 +293,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null,
 						null,
 						null,
+						keysSchema,
 						unpackedKey =>
 							this.EmitStoreVariableStatement(
 								context,
@@ -306,6 +311,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null,
 						null,
 						null,
+						valuesSchema,
 						unpackedValue =>
 							this.EmitStoreVariableStatement(
 								context,

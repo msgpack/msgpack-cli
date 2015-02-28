@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -148,13 +148,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
+		/// <param name="polymorphismSchema">The schema for polymorphism support.</param>
 		/// <returns>
 		///		<see cref=" Action{T1,T2}" /> to emit serializer retrieval instructions.
 		///		The 1st argument should be <see cref="TracingILGenerator" /> to emit instructions.
 		///		The 2nd argument should be argument index of the serializer holder.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod )
+		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod, PolymorphismSchema polymorphismSchema )
 		{
 			// This return value should not be used.
 			return ( g, i ) => { throw new NotImplementedException(); };

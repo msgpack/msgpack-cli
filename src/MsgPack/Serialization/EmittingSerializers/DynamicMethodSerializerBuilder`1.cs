@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Linq;
 
 namespace MsgPack.Serialization.EmittingSerializers
 {
@@ -67,23 +68,29 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitGetSerializerExpression( DynamicMethodEmittingContext context, Type targetType, SerializingMember? memberInfo )
+		protected override ILConstruct EmitGetSerializerExpression( DynamicMethodEmittingContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
-			return
-				memberInfo == null || !targetType.GetIsEnum()
-					? this.EmitInvokeMethodExpression(
+			if ( memberInfo == null )
+			{
+				return
+					this.EmitInvokeMethodExpression(
 						context,
 						context.Context,
 						Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
-					)
-					: this.EmitInvokeMethodExpression(
+					);
+
+			}
+			else if ( targetType.GetIsEnum() )
+			{
+				return
+					this.EmitInvokeMethodExpression(
 						context,
 						context.Context,
 						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
-						this.EmitBoxExpression( 
+						this.EmitBoxExpression(
 							context,
 							typeof( EnumSerializationMethod ),
-							this.EmitInvokeMethodExpression( 
+							this.EmitInvokeMethodExpression(
 								context,
 								null,
 								Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod,
@@ -93,10 +100,35 @@ namespace MsgPack.Serialization.EmittingSerializers
 									context,
 									typeof( EnumMemberSerializationMethod ),
 									memberInfo.Value.GetEnumMemberSerializationMethod()
+									)
 								)
 							)
+						);
+			}
+			else
+			{
+				var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), "__schema" );
+				return
+					this.EmitSequentialStatements(
+						context,
+						typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
+						this.EmitConstructPolymorphismSchema(
+							context,
+							schema,
+							itemsSchema == null ? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo ) : itemsSchema.ItemSchema
+						).Concat(
+							new []
+							{
+								this.EmitInvokeMethodExpression(
+									context,
+									context.Context,
+									Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+									schema
+								)
+							}
 						)
 					);
+			}
 		}
 	}
 }

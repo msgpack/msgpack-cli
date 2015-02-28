@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -37,10 +37,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </summary>
 		public readonly EnumMemberSerializationMethod EnumSerializationMethod;
 
-		public SerializerFieldKey( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod )
+		/// <summary>
+		///		<see cref="PolymorphismSchema"/> for specific member. <c>null</c> for non-polymorphic member.
+		/// </summary>
+		public readonly PolymorphismSchema PolymorphismSchema;
+
+		public SerializerFieldKey( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod, PolymorphismSchema polymorphismSchema )
 		{
 			this.TypeHandle = targetType.TypeHandle;
 			this.EnumSerializationMethod = enumMemberSerializationMethod;
+			this.PolymorphismSchema = polymorphismSchema;
 		}
 
 		public bool Equals( SerializerFieldKey other )
@@ -48,7 +54,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			// ReSharper disable once ImpureMethodCallOnReadonlyValueField
 			return
 				this.TypeHandle.Equals( other.TypeHandle )
-				&& this.EnumSerializationMethod == other.EnumSerializationMethod;
+				&& this.EnumSerializationMethod == other.EnumSerializationMethod
+				&& PolymorphismSchema.Equivalents( this.PolymorphismSchema, other.PolymorphismSchema );
 		}
 
 		public override bool Equals( object obj )
@@ -63,7 +70,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		public override int GetHashCode()
 		{
-			return this.TypeHandle.GetHashCode() ^ this.EnumSerializationMethod.GetHashCode();
+			return this.TypeHandle.GetHashCode() ^ this.EnumSerializationMethod.GetHashCode() ^
+					( this.PolymorphismSchema == null ? 0 : this.PolymorphismSchema.GetHashCode() );
 		}
 	}
 }

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -33,11 +33,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 		where T : IEnumerable
 	{
 		private readonly IMessagePackSerializer _collectionDeserializer;
+		private readonly IMessagePackSerializer _itemSerializer;
 		private readonly MethodInfo _addItem;
 		private readonly ConstructorInfo _collectionConstructorWithoutCapacity;
 		private readonly ConstructorInfo _collectionConstructorWithCapacity;
 
-		protected NonGenericEnumerableSerializerBase( SerializationContext ownerContext, Type targetType )
+		protected NonGenericEnumerableSerializerBase( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
 			: base( ownerContext )
 		{
 			if ( ownerContext.EmitterFlavor == EmitterFlavor.ReflectionBased )
@@ -71,21 +72,39 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
-				this._collectionDeserializer = ownerContext.GetSerializer( targetType );
+				this._collectionDeserializer = ownerContext.GetSerializer( targetType, itemsSchema );
+			}
+
+			if ( itemsSchema != null )
+			{
+				this._itemSerializer = ownerContext.GetSerializer( typeof( object ), itemsSchema );
 			}
 		}
 
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
 			this.PackArrayHeader( packer, objectTree );
-			foreach ( var item in objectTree )
-			{
-				if ( !( item is MessagePackObject ) )
-				{
-					throw new SerializationException( "Non generic collection may contain only MessagePackObject type." );
-				}
 
-				( item as IPackable ).PackToMessage( packer, null );
+			if ( this._itemSerializer == null )
+			{
+				foreach ( var item in objectTree )
+				{
+					if ( !( item is MessagePackObject ) )
+					{
+						throw new SerializationException(
+							"Non generic collection may contain only MessagePackObject type when non-polymorphic." 
+						);
+					}
+
+					( item as IPackable ).PackToMessage( packer, null );
+				}
+			}
+			else
+			{
+				foreach ( var item in objectTree )
+				{
+					this._itemSerializer.PackTo( packer, item );
+				}
 			}
 		}
 
@@ -140,23 +159,33 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected void UnpackToCore( Unpacker unpacker, T collection, int itemsCount )
 		{
-			for ( int i = 0; i < itemsCount; i++ )
+			if ( this._itemSerializer == null )
 			{
-				MessagePackObject item;
-				try
+				for ( int i = 0; i < itemsCount; i++ )
 				{
-					item = unpacker.ReadItemData();
-				}
-				catch ( InvalidMessagePackStreamException )
-				{
-					throw SerializationExceptions.NewMissingItem( i );
-				}
+					MessagePackObject item;
+					try
+					{
+						item = unpacker.ReadItemData();
+					}
+					catch ( InvalidMessagePackStreamException )
+					{
+						throw SerializationExceptions.NewMissingItem( i );
+					}
 
-				this.AddItem( collection, item );
+					this.AddItem( collection, item );
+				}
+			}
+			else
+			{
+				for ( int i = 0; i < itemsCount; i++ )
+				{
+					this.AddItem( collection, this._itemSerializer.UnpackFrom( unpacker ) );
+				}
 			}
 		}
 
-		protected virtual void AddItem( T collection, MessagePackObject item )
+		protected virtual void AddItem( T collection, object item )
 		{
 			if ( this._addItem == null )
 			{
@@ -165,7 +194,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			try
 			{
-				this._addItem.Invoke( collection, new object[] { item } );
+				this._addItem.Invoke( collection, new [] { item } );
 			}
 			catch ( TargetInvocationException )
 			{

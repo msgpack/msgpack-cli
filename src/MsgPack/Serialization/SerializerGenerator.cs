@@ -343,7 +343,7 @@ namespace MsgPack.Serialization
 				foreach ( var targetType in targetTypes.Distinct() )
 				{
 					var generator = generatorFactory( targetType );
-					generator.BuildSerializerCode( generationContext );
+					generator.BuildSerializerCode( generationContext, null );
 				}
 
 				Directory.CreateDirectory( configuration.OutputDirectory );

@@ -164,13 +164,21 @@
     <Compile Include="Serialization\AbstractSerializers\ISerializerBuilder.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
     <Compile Include="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Compile Include="Serialization\BoxedEnumMemberSerializationMethod.cs" />
     <Compile Include="Serialization\CollectionDetailedKind.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
+    <Compile Include="Serialization\MessagePackKnownTypeAttribute.cs" />
+    <Compile Include="Serialization\Polymorphic\IPolymorhicHelperAttribute.cs" />
+    <Compile Include="Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\MessagePackDeserializationConstructorAttribute.cs" />
     <Compile Include="Serialization\MessagePackIgnoreAttribute.cs" />
+    <Compile Include="Serialization\MessagePackRuntimeTypeAttribute.cs" />
     <Compile Include="Serialization\Metadata\_Decimal.cs" />
     <Compile Include="Serialization\NilImplicationHandler`4.cs" />
+    <Compile Include="Serialization\Polymorphic\PolymorphicSerializerProvider.cs" />
+    <Compile Include="Serialization\PolymorphismSchema.cs" />
+    <Compile Include="Serialization\PolymorphismTarget.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs" />
@@ -178,6 +186,7 @@
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerParameter.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\SerializationContext.TypeEmbedding.cs" />
     <Compile Include="Serialization\SerializationTarget.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`3.Enum.cs">
       <SubType>Code</SubType>
@@ -370,6 +379,10 @@
     <Compile Include="Serialization\DefaultSerializers\System_Runtime_InteropServices_ComTypes_FILETIMEMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs" />
     <Compile Include="Serialization\Tracer.cs" />
+    <Compile Include="Serialization\TypeEmbeddingSettings.cs" />
+    <Compile Include="Serialization\Polymorphic\TypeInfoEncoding.cs" />
+    <Compile Include="Serialization\Polymorphic\TypeEmbedingPolymorhicMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\Polymorphic\TypeInfoEncoder.cs" />
     <Compile Include="Serialization\TypeKeyRepository.cs" />
     <Compile Include="Serialization\MessagePackSerializer.cs" />
     <Compile Include="Serialization\UnpackHelpers.cs" />

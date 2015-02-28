@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -32,10 +33,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information.</param>
+		/// <param name="itemSchemaList">The list for tuple items schema or single element list contains collection item schema.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context );
+		MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, IList<PolymorphismSchema> itemSchemaList );
 	}
 }

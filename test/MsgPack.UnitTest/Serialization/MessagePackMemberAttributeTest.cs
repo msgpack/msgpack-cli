@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ namespace MsgPack.Serialization
 				target.ShouldSerialized3 = 333;
 				target.ShouldNotSerialized1 = 444;
 				target.ShouldNotSerialized2 = 555;
-				var serializer = MessagePackSerializer.CreateInternal<MessagePackMemberAndDataMemberMixedTarget>( context );
+				var serializer = MessagePackSerializer.CreateInternal<MessagePackMemberAndDataMemberMixedTarget>( context, new PolymorphismSchema[ 0 ] );
 				serializer.Pack( buffer, target );
 
 				buffer.Position = 0;
@@ -102,7 +102,7 @@ namespace MsgPack.Serialization
 			{
 				var target = new DataContractAndNonSerializedMixedTarget();
 				target.ShouldSerialized = 111;
-				var serializer = MessagePackSerializer.CreateInternal<DataContractAndNonSerializedMixedTarget>( context );
+				var serializer = MessagePackSerializer.CreateInternal<DataContractAndNonSerializedMixedTarget>( context, new PolymorphismSchema[ 0 ] );
 				serializer.Pack( buffer, target );
 
 				buffer.Position = 0;

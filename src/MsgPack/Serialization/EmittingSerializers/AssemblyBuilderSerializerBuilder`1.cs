@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using MsgPack.Serialization.AbstractSerializers;
@@ -37,14 +38,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public AssemblyBuilderSerializerBuilder() { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType, SerializingMember? memberInfo )
+		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
 			var instructions = 
 				context.Emitter.RegisterSerializer( 
 					targetType, 
 					memberInfo == null
 					? EnumMemberSerializationMethod.Default 
-					: memberInfo.Value.GetEnumMemberSerializationMethod()
+					: memberInfo.Value.GetEnumMemberSerializationMethod(),
+					itemsSchema == null ? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo ) : itemsSchema.ItemSchema
 				);
 
 			return
@@ -105,7 +107,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 #if !SILVERLIGHT
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
 			var asAssemblyBuilderCodeGenerationContext = context as AssemblyBuilderCodeGenerationContext;
 			if ( asAssemblyBuilderCodeGenerationContext == null )
@@ -121,7 +123,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					typeof( TObject )
 				);
 
-			this.BuildSerializer( emittingContext );
+			this.BuildSerializer( emittingContext, itemSchemaList );
 			// Finish type creation, and discard returned ctor.
 			emittingContext.Emitter.CreateConstructor<TObject>();
 		}
