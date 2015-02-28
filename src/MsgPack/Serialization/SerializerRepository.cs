@@ -24,7 +24,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+#if !UNITY
+using System.Diagnostics.Contracts;
+#endif // !UNITY
 
 using MsgPack.Serialization.Polymorphic;
 
@@ -160,13 +162,15 @@ namespace MsgPack.Serialization
 			{
 				return this._repository.Register( targetType, new EnumMessagePackSerializerProvider( targetType, asEnumSerializer ), /*allowOverwrite:*/ false );
 			}
-			else
+
+			var asVanillaSerializer = serializer as IMessagePackSerializer;
+			if ( asVanillaSerializer != null )
 			{
-#if DEBUG
-				Debug.Assert( serializer is IMessagePackSerializer, serializer + " is IMessagePackSerializer" );
-#endif // DEBUG
-				return this._repository.Register( targetType, new PolymorphicSerializerProvider( targetType, serializer as IMessagePackSerializer ),  /*allowOverwrite:*/ false );
+				return this._repository.Register( targetType, new PolymorphicSerializerProvider( targetType, asVanillaSerializer ),  /*allowOverwrite:*/ false );
 			}
+
+			// other provider
+			return this._repository.Register( targetType, serializer, /*allowOverwrite*/ false );
 		}
 
 		/// <summary>
