@@ -112,6 +112,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			finally
 			{
 				context.IL.FlushTrace();
+				SerializerDebugging.FlushTraceData();
 			}
 		}
 
