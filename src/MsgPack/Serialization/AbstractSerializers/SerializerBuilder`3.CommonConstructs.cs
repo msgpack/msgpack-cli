@@ -1694,10 +1694,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			PolymorphismSchema schema
 		)
 		{
-			if ( schema == null )
-			{
-				throw new ArgumentNullException( "schema" );
-			}
 			/*
 			 * __itemsTypeMap = new Dictionary<byte, Type>();
 			 * __itemsTypeMap.Add( b, t );
@@ -1709,7 +1705,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
 			 */
 
-			if ( schema.UseDefault )
+			if ( schema == null || schema.UseDefault )
 			{
 				yield return this.MakeNullLiteral( context, typeof( PolymorphismSchema ) );
 				yield break;
