@@ -61,7 +61,7 @@ namespace MsgPack.Serialization
 					new LazyMessagePackSerializerProvider(
 						knownType,
 						serializerType != null
-							? new Func<SerializationContext, IMessagePackSerializer>( new SerializerActivator( serializerType ).Activate )
+							? new Func<SerializationContext, IMessagePackSerializer>( new SerializerActivator( serializerType, knownType ).Activate )
 							: ( _ =>
 							{
 								throw new Exception(
@@ -140,24 +140,36 @@ namespace MsgPack.Serialization
 
 		private sealed class SerializerActivator
 		{
-			private static readonly Type[] SerializerConstructorParameterTypes = { typeof( SerializationContext ) };
+			private static readonly Type[] SerializerConstructorParameterTypes1 = { typeof( SerializationContext ) };
+			private static readonly Type[] SerializerConstructorParameterTypes3 = { typeof( SerializationContext ), typeof( Type ), typeof( PolymorphismSchema ) };
 			private readonly Type _targetType;
-			private readonly ConstructorInfo _constructor;
+			private readonly Type _serializationTargetType;
+			private readonly ConstructorInfo _constructor1;
+			private readonly ConstructorInfo _constructor3;
 
-			public SerializerActivator( Type targeType )
+			public SerializerActivator( Type targeType, Type serializationTargetType )
 			{
 				this._targetType = targeType;
-				this._constructor = targeType.GetConstructor( SerializerConstructorParameterTypes );
+				this._serializationTargetType = serializationTargetType;
+				this._constructor1 = targeType.GetConstructor( SerializerConstructorParameterTypes1 );
+				this._constructor3 = targeType.GetConstructor( SerializerConstructorParameterTypes3 );
 			}
 
 			public IMessagePackSerializer Activate( SerializationContext context )
 			{
-				if ( this._constructor == null )
+				if ( this._constructor1 == null && this._constructor3 == null )
 				{
 					throw new Exception( "A cosntructor of type '" + this._targetType.FullName + "' is not found." );
 				}
 
-				return ( IMessagePackSerializer )this._constructor.Invoke( new object[] { context } );
+				if ( this._constructor1 != null )
+				{
+					return ( IMessagePackSerializer ) this._constructor1.Invoke( new object[] { context } );
+				}
+				else
+				{
+					return ( IMessagePackSerializer )this._constructor3.Invoke( new object[] { context, this._serializationTargetType, null } );
+				}
 			}
 		}
 	}
