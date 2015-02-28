@@ -502,10 +502,13 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					this.EmitSequentialStatements(
 						context,
 						typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
-						this.EmitConstructPolymorphismSchema(
-							context,
-							schema,
-							itemsSchema == null ? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo ) : itemsSchema.ItemSchema
+						new [] { schema }
+						.Concat( 
+							this.EmitConstructPolymorphismSchema(
+								context,
+								schema,
+								itemsSchema == null ? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo ) : itemsSchema.ItemSchema
+							)
 						).Concat(
 							new[]
 							{

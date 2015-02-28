@@ -1707,7 +1707,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			if ( schema == null || schema.UseDefault )
 			{
-				yield return this.MakeNullLiteral( context, typeof( PolymorphismSchema ) );
+				yield return
+					this.EmitStoreVariableStatement(
+						context,
+						storage,
+						this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+					);
 				yield break;
 			}
 
