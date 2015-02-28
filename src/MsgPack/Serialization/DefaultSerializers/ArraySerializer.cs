@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -31,12 +31,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 {
 	internal static partial class ArraySerializer
 	{
-		public static MessagePackSerializer<T> Create<T>( SerializationContext context )
+		public static MessagePackSerializer<T> Create<T>( SerializationContext context, PolymorphismSchema itemsSchema )
 		{
-			return Create( context, typeof( T ) ) as MessagePackSerializer<T>;
+			return Create( context, typeof( T ), itemsSchema ) as MessagePackSerializer<T>;
 		}
 
-		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType ) {
+		public static IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema itemsSchema ) 
+		{
 #if DEBUG && !UNITY
 			Contract.Assert( targetType.IsArray );
 #endif // DEBUG && !UNITY
@@ -44,7 +45,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 				( GetPrimitiveArraySerializer( context, targetType )
 				?? Activator.CreateInstance(
 					typeof( ArraySerializer<> ).MakeGenericType( targetType.GetElementType() ),
-					context
+					context,
+					itemsSchema
 				) )
 				as IMessagePackSingleObjectSerializer;
 		}

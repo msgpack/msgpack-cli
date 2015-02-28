@@ -32,10 +32,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
-		public System_Collections_Generic_List_1MessagePackSerializer( SerializationContext ownerContext )
+		public System_Collections_Generic_List_1MessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema itemsSchema )
 			: base( ownerContext )
 		{
-			this._itemSerializer = ownerContext.GetSerializer<T>();
+			this._itemSerializer = ownerContext.GetSerializer<T>( itemsSchema );
 		}
 
 		protected internal override void PackToCore( Packer packer, List<T> objectTree )

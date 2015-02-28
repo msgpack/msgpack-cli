@@ -61,7 +61,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			{
 				case CollectionDetailedKind.Array:
 				{
-					return ArraySerializer.Create<T>( context );
+					return ArraySerializer.Create<T>( context, itemsSchema );
 				}
 				case CollectionDetailedKind.GenericList:
 				{

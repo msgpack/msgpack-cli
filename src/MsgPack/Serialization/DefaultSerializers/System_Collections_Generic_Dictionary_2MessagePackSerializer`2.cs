@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -34,11 +34,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<TKey> _keySerializer;
 		private readonly MessagePackSerializer<TValue> _valueSerializer;
 
-		public System_Collections_Generic_Dictionary_2MessagePackSerializer( SerializationContext ownerContext )
+		public System_Collections_Generic_Dictionary_2MessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 			: base( ownerContext )
 		{
-			this._keySerializer = ownerContext.GetSerializer<TKey>();
-			this._valueSerializer = ownerContext.GetSerializer<TValue>();
+			this._keySerializer = ownerContext.GetSerializer<TKey>( keysSchema );
+			this._valueSerializer = ownerContext.GetSerializer<TValue>( valuesSchema );
 		}
 
 		protected internal override void PackToCore( Packer packer, Dictionary<TKey, TValue> objectTree )

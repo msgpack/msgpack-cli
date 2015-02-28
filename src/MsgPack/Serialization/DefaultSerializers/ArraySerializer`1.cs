@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
-		public ArraySerializer( SerializationContext ownerContext )
+		public ArraySerializer( SerializationContext ownerContext, PolymorphismSchema itemsSchema )
 			: base( ownerContext )
 		{
-			this._itemSerializer = ownerContext.GetSerializer<T>();
+			this._itemSerializer = ownerContext.GetSerializer<T>( itemsSchema );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]

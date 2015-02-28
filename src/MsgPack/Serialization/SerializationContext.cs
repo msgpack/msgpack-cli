@@ -425,10 +425,11 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // !UNITY
 
+			var itemsSchemaList = providerParameter as IList<PolymorphismSchema> ?? NoItemPolymorphismSchema;
 			MessagePackSerializer<T> serializer = null;
 			while ( serializer == null )
 			{
-				serializer = this._serializers.Get<T>( this, providerParameter ) ?? GenericSerializer.Create<T>( this );
+				serializer = this._serializers.Get<T>( this, providerParameter ) ?? GenericSerializer.Create<T>( this, itemsSchemaList );
 				if ( serializer == null )
 				{
 #if !XAMIOS && !XAMDROID && !UNITY
@@ -436,8 +437,8 @@ namespace MsgPack.Serialization
 					{
 #endif // !XAMIOS && !XAMDROID && !UNITY
 						serializer =
-							this.GetSerializerWithoutGeneration( typeof( T ) ) as MessagePackSerializer<T>
-							?? MessagePackSerializer.CreateReflectionInternal<T>( this, providerParameter as IList<PolymorphismSchema> ?? NoItemPolymorphismSchema );
+							this.GetSerializerWithoutGeneration( typeof( T ), itemsSchemaList ) as MessagePackSerializer<T>
+							?? MessagePackSerializer.CreateReflectionInternal<T>( this, itemsSchemaList );
 #if !XAMIOS && !XAMDROID && !UNITY
 					}
 					else
@@ -548,7 +549,7 @@ namespace MsgPack.Serialization
 		}
 
 
-		private IMessagePackSingleObjectSerializer GetSerializerWithoutGeneration( Type targetType )
+		private IMessagePackSingleObjectSerializer GetSerializerWithoutGeneration( Type targetType, IList<PolymorphismSchema> itemsSchemaList )
 		{
 			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
 			{
@@ -556,7 +557,7 @@ namespace MsgPack.Serialization
 				if ( concreteCollectionType != null )
 				{
 					var serializer =
-						GenericSerializer.CreateCollectionInterfaceSerializer( this, targetType, concreteCollectionType );
+						GenericSerializer.CreateCollectionInterfaceSerializer( this, targetType, concreteCollectionType, itemsSchemaList );
 
 					if ( serializer != null )
 					{

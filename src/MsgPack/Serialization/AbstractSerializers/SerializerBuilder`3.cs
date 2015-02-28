@@ -62,7 +62,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, IList<PolymorphismSchema> itemSchemaList )
 		{
-			var genericSerializer = GenericSerializer.Create<TObject>( context );
+			var genericSerializer = GenericSerializer.Create<TObject>( context, itemSchemaList );
 			if ( genericSerializer != null )
 			{
 				return genericSerializer;
