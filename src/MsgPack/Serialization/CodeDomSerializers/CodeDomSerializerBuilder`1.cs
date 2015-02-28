@@ -620,7 +620,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							memberInfo == null
 							? EnumMemberSerializationMethod.Default
 							: memberInfo.Value.GetEnumMemberSerializationMethod(),
-							itemsSchema  ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
+							itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
 						)
 					)
 				);
