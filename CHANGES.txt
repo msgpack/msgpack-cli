@@ -228,3 +228,8 @@ Release 0.5.10 - 2015/2/10
 
   BUG FIXES
   * Avoid memcmp usage for Windows Phone App Certification. Issue #65.
+
+Release 0.5.11 - 2015/3/1
+
+  NEW FEATURE
+  * `MessagePackIgnoreAttribute` to exclude properties. Issue #55.
