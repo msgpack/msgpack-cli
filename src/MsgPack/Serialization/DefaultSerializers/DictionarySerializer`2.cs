@@ -124,7 +124,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					throw SerializationExceptions.NewMissingItem( i );
 				}
-	
+
 				TKey key;
 				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )
 				{
@@ -142,7 +142,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					throw SerializationExceptions.NewMissingItem( i );
 				}
-	
+
 
 				TValue value;
 				if ( !unpacker.IsArrayHeader && !unpacker.IsMapHeader )

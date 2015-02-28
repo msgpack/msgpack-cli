@@ -30,6 +30,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security;
+
 using MsgPack.Serialization.AbstractSerializers;
 
 namespace MsgPack.Serialization.CodeDomSerializers

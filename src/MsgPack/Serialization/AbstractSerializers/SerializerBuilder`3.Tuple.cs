@@ -24,6 +24,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.AbstractSerializers

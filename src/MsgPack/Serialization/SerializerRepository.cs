@@ -85,7 +85,7 @@ namespace MsgPack.Serialization
 		/// </returns>
 		public MessagePackSerializer<T> Get<T>( SerializationContext context )
 		{
-			return Get<T>( context, null );
+			return this.Get<T>( context, null );
 		}
 
 		/// <summary>

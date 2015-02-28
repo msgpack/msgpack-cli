@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 
-
 namespace MsgPack.Serialization.AbstractSerializers
 {
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Contract class" )]

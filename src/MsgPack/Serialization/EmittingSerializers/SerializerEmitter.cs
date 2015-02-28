@@ -187,7 +187,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			Contract.Requires( targetType != null );
 			Contract.Requires( Enum.IsDefined( typeof( EnumMemberSerializationMethod ), enumMemberSerializationMethod ) );
 			Contract.Ensures( Contract.Result<Action<TracingILGenerator, int>>() != null );
-			throw new NotImplementedException();
+			return null;
 		}
 	}
 }

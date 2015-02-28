@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 #endif // !NETFX_CORE
 using MsgPack.Serialization.AbstractSerializers;
+
 #if NETFX_CORE
 using MsgPack.Serialization.Reflection;
 #endif // NETFX_CORE

@@ -20,10 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -314,13 +314,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Regisgter using <see cref="MessagePackSerializer{T}"/> target type to the current emitting session.
+		///		Regisgter using <see cref="MessagePackSerializer{T}" /> target type to the current emitting session.
 		/// </summary>
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
 		/// <returns>
-		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
-		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
+		///		<see cref=" Action{T1,T2}" /> to emit serializer retrieval instructions.
+		///		The 1st argument should be <see cref="TracingILGenerator" /> to emit instructions.
 		///		The 2nd argument should be argument index of the serializer holder.
 		///		This value will not be <c>null</c>.
 		/// </returns>
@@ -360,6 +360,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			FieldBuilder result;
 			if ( !this._fieldInfos.TryGetValue( key, out result ) )
 			{
+				Debug.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
 				result = this._typeBuilder.DefineField( "_field" + field.DeclaringType.Name + "_" + field.Name + this._fieldInfos.Count, typeof( FieldInfo ), FieldAttributes.Private | FieldAttributes.InitOnly );
 				this._fieldInfos.Add( key, result );
 			}
@@ -384,6 +385,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			FieldBuilder result;
 			if ( !this._methodBases.TryGetValue( key, out result ) )
 			{
+				Debug.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
 				result = this._typeBuilder.DefineField( "_function" + method.DeclaringType.Name + "_" + method.Name + this._methodBases.Count, typeof( FieldInfo ), FieldAttributes.Private | FieldAttributes.InitOnly );
 				this._methodBases.Add( key, result );
 			}

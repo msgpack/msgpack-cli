@@ -21,7 +21,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Reflection;
 
 using MsgPack.Serialization.DefaultSerializers;
 
@@ -337,11 +336,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		internal struct SerializerBuilderOnPackingParameter : INilImplicationHandlerParameter
 		{
 			public readonly SerializerBuilder<TContext, TConstruct, TObject> Builder;
-			
+
 			public readonly TContext Context;
-			
+
 			public readonly TConstruct Item;
-			
+
 			private readonly Type _itemType;
 
 			public Type ItemType
@@ -372,9 +371,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 			public readonly SerializerBuilder<TContext, TConstruct, TObject> Builder;
 
 			public readonly TContext Context;
-			
+
 			private readonly Type _itemType;
-			
+
 			public Type ItemType
 			{
 				get { return this._itemType; }

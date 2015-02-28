@@ -94,6 +94,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			string fieldName;
 			if ( !this._cachedFieldInfos.TryGetValue( key, out fieldName ) )
 			{
+				Debug.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
+
 				fieldName = "_field" + field.DeclaringType.Name + "_" + field.Name + this._cachedFieldInfos.Count.ToString( CultureInfo.InvariantCulture );
 				this._cachedFieldInfos.Add( key, fieldName );
 			}
@@ -112,6 +114,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			string fieldName;
 			if ( !this._cachedMethodBases.TryGetValue( key, out fieldName ) )
 			{
+				Debug.Assert( method.DeclaringType != null, "method.DeclaringType != null" );
+
 				fieldName = "_methodBase" + method.DeclaringType.Name + "_" + method.Name + this._cachedMethodBases.Count.ToString( CultureInfo.InvariantCulture );
 				this._cachedMethodBases.Add( key, fieldName );
 			}
@@ -228,6 +232,8 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #endif // !NETFX_35
 		public IEnumerable<string> Generate()
 		{
+			Debug.Assert( this._declaringTypes != null, "_declaringTypes != null" );
+
 			using ( var provider = CodeDomProvider.CreateProvider( this._configuration.Language ) )
 			{
 				var options =
@@ -246,9 +252,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						);
 				Directory.CreateDirectory( directory );
 
-				var result = new List<string>( _declaringTypes.Count );
+				var result = new List<string>( this._declaringTypes.Count );
 
-				foreach ( var declaringType in _declaringTypes )
+				foreach ( var declaringType in this._declaringTypes )
 				{
 					var typeFileName = declaringType.Value.Name;
 					if ( declaringType.Value.TypeParameters.Count > 0 )

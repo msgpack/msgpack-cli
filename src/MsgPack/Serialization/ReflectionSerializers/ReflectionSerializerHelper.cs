@@ -232,8 +232,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 								context,
 								memberType,
 								member.GetEnumMemberSerializationMethod()
-								)
-							);
+							)
+						);
 				}
 			}
 		}

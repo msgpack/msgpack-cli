@@ -156,7 +156,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						String.Format(
 							CultureInfo.CurrentCulture,
 							"Literal for reference type '{0}' is not supported except null reference.",
-							literalType 
+							literalType
 						)
 					);
 				}
@@ -930,17 +930,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					null,
 					Metadata._String.Format_P,
-					new[]
-					{
-						this.EmitGetPropretyExpression( context, null, Metadata._CultureInfo.InvariantCulture ),
-						this.MakeStringLiteral( context, format ),
-						this.EmitCreateNewArrayExpression(
-							context,
-							typeof( object ),
-							arguments.Length,
-							arguments.Select( a => a.ContextType.GetIsValueType() ? this.EmitBoxExpression( context, a.ContextType, a ) : a )
-						)
-					}
+					this.EmitGetPropretyExpression( context, null, Metadata._CultureInfo.InvariantCulture ),
+					this.MakeStringLiteral( context, format ),
+					this.EmitCreateNewArrayExpression(
+						context,
+						typeof( object ),
+						arguments.Length,
+						arguments.Select( a => a.ContextType.GetIsValueType() ? this.EmitBoxExpression( context, a.ContextType, a ) : a )
+					)
 				);
 		}
 
