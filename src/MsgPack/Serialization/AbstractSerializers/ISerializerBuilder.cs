@@ -33,11 +33,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information.</param>
-		/// <param name="itemSchemaList">The list for tuple items schema or single element list contains collection item schema.</param>
+		/// <param name="itemSchema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, IList<PolymorphismSchema> itemSchemaList );
+		MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, PolymorphismSchema itemSchema );
 	}
 }

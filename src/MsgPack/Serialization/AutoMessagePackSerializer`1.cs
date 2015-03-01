@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 		private readonly MessagePackSerializer<T> _underlying;
 
 		public AutoMessagePackSerializer(
-			SerializationContext context, ISerializerBuilder<T> builder, IList<PolymorphismSchema> itemSchemaList )
+			SerializationContext context, ISerializerBuilder<T> builder, PolymorphismSchema itemSchema )
 			: base( context )
 		{
 			var serializer = context.Serializers.Get<T>( context );
@@ -52,7 +52,7 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-			serializer = builder.BuildSerializerInstance( context, itemSchemaList );
+			serializer = builder.BuildSerializerInstance( context, itemSchema );
 			Contract.Assert( serializer != null );
 			this._underlying = serializer;
 		}

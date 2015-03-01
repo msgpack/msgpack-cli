@@ -117,7 +117,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							this.EmitConstructPolymorphismSchema(
 								context,
 								schema,
-								itemsSchema == null ? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo ) : itemsSchema.ItemSchema
+								itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
 							)
 						).Concat(
 							new []

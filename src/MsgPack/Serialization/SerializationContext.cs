@@ -51,8 +51,6 @@ namespace MsgPack.Serialization
 		private static readonly object DefaultContextSyncRoot = new object();
 #endif // UNITY
 
-		private static readonly IList<PolymorphismSchema> NoItemPolymorphismSchema = new PolymorphismSchema[ 0 ];
-
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
 		private static SerializationContext _default = new SerializationContext( default( SerializerRepository ) );
 
@@ -425,11 +423,11 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // !UNITY
 
-			var itemsSchemaList = providerParameter as IList<PolymorphismSchema> ?? NoItemPolymorphismSchema;
+			var itemSchema = providerParameter as PolymorphismSchema ?? PolymorphismSchema.Default;
 			MessagePackSerializer<T> serializer = null;
 			while ( serializer == null )
 			{
-				serializer = this._serializers.Get<T>( this, providerParameter ) ?? GenericSerializer.Create<T>( this, itemsSchemaList );
+				serializer = this._serializers.Get<T>( this, providerParameter ) ?? GenericSerializer.Create<T>( this, itemSchema );
 				if ( serializer == null )
 				{
 #if !XAMIOS && !XAMDROID && !UNITY
@@ -437,8 +435,8 @@ namespace MsgPack.Serialization
 					{
 #endif // !XAMIOS && !XAMDROID && !UNITY
 						serializer =
-							this.GetSerializerWithoutGeneration( typeof( T ), itemsSchemaList ) as MessagePackSerializer<T>
-							?? MessagePackSerializer.CreateReflectionInternal<T>( this, itemsSchemaList );
+							this.GetSerializerWithoutGeneration( typeof( T ), itemSchema ) as MessagePackSerializer<T>
+							?? MessagePackSerializer.CreateReflectionInternal<T>( this, itemSchema );
 #if !XAMIOS && !XAMDROID && !UNITY
 					}
 					else
@@ -495,7 +493,7 @@ namespace MsgPack.Serialization
 								if ( lockTaken )
 								{
 									// This thread creating new type serializer.
-									serializer = MessagePackSerializer.CreateInternal<T>( this, providerParameter as IList<PolymorphismSchema> ?? NoItemPolymorphismSchema );
+									serializer = MessagePackSerializer.CreateInternal<T>( this, itemSchema );
 								}
 								else
 								{
@@ -549,7 +547,7 @@ namespace MsgPack.Serialization
 		}
 
 
-		private IMessagePackSingleObjectSerializer GetSerializerWithoutGeneration( Type targetType, IList<PolymorphismSchema> itemsSchemaList )
+		private IMessagePackSingleObjectSerializer GetSerializerWithoutGeneration( Type targetType, PolymorphismSchema itemSchema )
 		{
 			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
 			{
@@ -557,7 +555,7 @@ namespace MsgPack.Serialization
 				if ( concreteCollectionType != null )
 				{
 					var serializer =
-						GenericSerializer.CreateCollectionInterfaceSerializer( this, targetType, concreteCollectionType, itemsSchemaList );
+						GenericSerializer.CreateCollectionInterfaceSerializer( this, targetType, concreteCollectionType, itemSchema );
 
 					if ( serializer != null )
 					{

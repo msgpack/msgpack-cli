@@ -41,7 +41,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema )
 		{
 			Contract.Requires( context != null );
 		}
@@ -391,6 +391,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
+		protected override TConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( elementType != null );
+			Contract.Requires( length >= 0 );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == elementType.MakeArrayType() );
+			return default( TConstruct );
+		}
+
 		protected override TConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length, IEnumerable<TConstruct> initialElements )
 		{
 			Contract.Requires( context != null );
@@ -399,6 +409,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Contract.Requires( initialElements != null );
 			Contract.Ensures( Contract.Result<TConstruct>() != null );
 			Contract.Ensures( Contract.Result<TConstruct>().ContextType == elementType.MakeArrayType() );
+			return default( TConstruct );
+		}
+
+		protected override TConstruct EmitSetArrayElementStatement( TContext context, TConstruct array, TConstruct index, TConstruct value )
+		{
+			Contract.Requires( context != null );
+			Contract.Requires( array != null );
+			Contract.Requires( array.ContextType.IsArray );
+			Contract.Requires( index != null );
+			Contract.Requires( index.ContextType == typeof( int ) );
+			Contract.Requires( value != null );
+			Contract.Requires( array.ContextType.GetElementType().IsAssignableFrom( value.ContextType ) );
+			Contract.Ensures( Contract.Result<TConstruct>() != null );
+			Contract.Ensures( Contract.Result<TConstruct>().ContextType == array.ContextType );
 			return default( TConstruct );
 		}
 

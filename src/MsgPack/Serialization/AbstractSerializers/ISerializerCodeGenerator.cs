@@ -34,13 +34,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="context">
 		///		The <see cref="ISerializerCodeGenerationContext"/> which holds configuration and stores generated code constructs.
 		/// </param>
-		/// <param name="itemSchemaList">The list for tuple items schema or single element list contains collection item schema.</param>
+		/// <param name="itemSchema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
 		/// <exception cref="ArgumentNullException">
 		///		<paramref name="context"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="NotSupportedException">
 		///		This class does not support code generation.
 		/// </exception>
-		void BuildSerializerCode( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList );
+		void BuildSerializerCode( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema );
 	}
 }

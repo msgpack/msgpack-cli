@@ -46,7 +46,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					memberInfo == null
 					? EnumMemberSerializationMethod.Default 
 					: memberInfo.Value.GetEnumMemberSerializationMethod(),
-					itemsSchema == null ? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo ) : itemsSchema.ItemSchema
+					itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
 				);
 
 			return
@@ -107,7 +107,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 #if !SILVERLIGHT
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema )
 		{
 			var asAssemblyBuilderCodeGenerationContext = context as AssemblyBuilderCodeGenerationContext;
 			if ( asAssemblyBuilderCodeGenerationContext == null )
@@ -123,7 +123,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					typeof( TObject )
 				);
 
-			this.BuildSerializer( emittingContext, itemSchemaList );
+			this.BuildSerializer( emittingContext, itemSchema );
 			// Finish type creation, and discard returned ctor.
 			emittingContext.Emitter.CreateConstructor<TObject>();
 		}

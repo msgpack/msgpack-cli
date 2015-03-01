@@ -742,13 +742,39 @@ namespace MsgPack.Serialization.Reflection
 		/// </param>
 		public void EmitAnyStelem( Type elementType, Action<TracingILGenerator> arrayLoadingEmitter, long index, Action<TracingILGenerator> elementLoadingEmitter )
 		{
-			Contract.Assert( elementType != null );
 			Contract.Assert( 0 <= index );
+			this.EmitAnyStelem( elementType, arrayLoadingEmitter, il => il.EmitLiteralInteger( index ), elementLoadingEmitter );
+		}
+
+		/// <summary>
+		///		Emit array element storing instructions.
+		///		Post condition is evaluation stack will no be modified as previous state.
+		/// </summary>
+		/// <param name="elementType"><see cref="Type"/> of array element. This can be generaic parameter.</param>
+		/// <param name="arrayLoadingEmitter">
+		///		Delegate to emittion of array loading instruction. 
+		///		1st argument is this instance.
+		///		Post condition is that exactly one target array will be added on the top of stack and its element type is <paramref name="elementType"/>.
+		///	</param>
+		/// <param name="indexEmitter">
+		///		Delegate to emittion of array index. 
+		///		1st argument is this instance.
+		///		Post condition is that int4 or int8 type value will be added on the top of stack and its element type is <paramref name="elementType"/>.
+		/// </param>
+		/// <param name="elementLoadingEmitter">
+		///		Delegate to emittion of storing element loading instruction. 
+		///		1st argument is this instance.
+		///		Post condition is that exactly one storing element will be added on the top of stack and its type is <paramref name="elementType"/> compatible.
+		/// </param>
+		public void EmitAnyStelem( Type elementType, Action<TracingILGenerator> arrayLoadingEmitter, Action<TracingILGenerator> indexEmitter, Action<TracingILGenerator> elementLoadingEmitter )
+		{
+			Contract.Assert( elementType != null );
+			Contract.Assert( indexEmitter != null );
 			Contract.Assert( arrayLoadingEmitter != null );
 			Contract.Assert( elementLoadingEmitter != null );
 
 			arrayLoadingEmitter( this );
-			this.EmitLiteralInteger( index );
+			indexEmitter( this );
 			elementLoadingEmitter( this );
 
 			if ( elementType.IsGenericParameter )

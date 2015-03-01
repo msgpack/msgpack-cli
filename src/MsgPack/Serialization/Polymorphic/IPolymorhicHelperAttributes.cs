@@ -30,4 +30,28 @@ namespace MsgPack.Serialization.Polymorphic
 		PolymorphismTarget Target { get; }
 		byte GetBindingCode( SerializationContext context );
 	}
+
+	/// <summary>
+	///		Common interfaces among *Known*TypeAttrbutes.
+	/// </summary>
+	internal interface IPolymorphicKnownTypeAttribute : IPolymorhicHelperAttribute
+	{
+		Type BindingType { get; }
+	}
+
+	/// <summary>
+	///		Common(marker) interfaces among *Runtime*TypeAttrbutes.
+	/// </summary>
+	internal interface IPolymorphicRuntimeTypeAttribute : IPolymorhicHelperAttribute
+	{
+		// nothing
+	}
+
+	/// <summary>
+	///		Common interfaces among *TupleItemTypeAttributes.
+	/// </summary>
+	internal interface IPolymorphicTupleItemTypeAttribute : IPolymorhicHelperAttribute
+	{
+		int ItemNumber { get; }
+	}
 }

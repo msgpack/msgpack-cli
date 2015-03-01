@@ -203,15 +203,15 @@ namespace MsgPack.Serialization
 			return context.GetSerializer<T>( providerParameter );
 		}
 
-		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, IList<PolymorphismSchema> itemSchemaList )
+		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, PolymorphismSchema itemSchema )
 		{
 #if !XAMIOS && !XAMDROID && !UNITY
-			Contract.Requires( itemSchemaList != null );
+			Contract.Requires( itemSchema != null );
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-			Contract.Assert( itemSchemaList != null );
+			Contract.Assert( itemSchema != null );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 #if XAMIOS || XAMDROID || UNITY
-			return CreateReflectionInternal<T>( context, itemSchemaList );
+			return CreateReflectionInternal<T>( context, itemSchema );
 #else
 			ValidateType( typeof( T ) );
 			ISerializerBuilder<T> builder;
@@ -224,7 +224,7 @@ namespace MsgPack.Serialization
 			{
 				case EmitterFlavor.ReflectionBased:
 				{
-					return CreateReflectionInternal<T>( context, itemSchemaList );
+					return CreateReflectionInternal<T>( context, itemSchema );
 				}
 #if !WINDOWS_PHONE && !NETFX_35
 				case EmitterFlavor.ExpressionBased:
@@ -263,7 +263,7 @@ namespace MsgPack.Serialization
 			}
 #endif // NETFX_CORE else
 
-			return new AutoMessagePackSerializer<T>( context, builder, itemSchemaList );
+			return new AutoMessagePackSerializer<T>( context, builder, itemSchema );
 #endif // XAMIOS || XAMDROID || UNITY else
 		}
 
@@ -550,7 +550,7 @@ namespace MsgPack.Serialization
 		}
 #endif // XAMIOS || XAMDROID || UNITY
 
-		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, IList<PolymorphismSchema> itemSchemaList )
+		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, PolymorphismSchema itemsSchema )
 		{
 			var serializer = context.Serializers.Get<T>( context );
 
@@ -567,11 +567,11 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, itemSchemaList.FirstOrDefault() );
+					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, itemsSchema.ItemSchema );
 				}
 				case CollectionKind.Map:
 				{
-					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, itemSchemaList.FirstOrDefault(), itemSchemaList.Skip( 1 ).FirstOrDefault() );
+					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, itemsSchema.KeySchema, itemsSchema.ItemSchema );
 				}
 				default:
 				{
@@ -580,15 +580,12 @@ namespace MsgPack.Serialization
 						return ReflectionSerializerHelper.CreateReflectionEnumMessagePackSerializer<T>( context );
 					}
 #if !WINDOWS_PHONE && !NETFX_35 && !UNITY
-					if ( ( typeof( T ).GetAssembly().Equals( typeof( object ).GetAssembly() ) ||
-								typeof( T ).GetAssembly().Equals( typeof( Enumerable ).GetAssembly() ) )
-							  && typeof( T ).GetIsPublic() &&
-							  typeof( T ).Name.StartsWith( "Tuple`", StringComparison.Ordinal ) )
+					if ( TupleItems.IsTuple( typeof( T ) ) )
 					{
 						return
 							new ReflectionTupleMessagePackSerializer<T>(
 								context,
-								itemSchemaList.Select( item => item.ItemSchema ).ToArray()
+								itemsSchema.ChildSchemaList
 							);
 					}
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY

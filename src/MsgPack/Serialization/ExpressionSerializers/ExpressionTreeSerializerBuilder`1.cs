@@ -451,10 +451,26 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		}
 
 		protected override ExpressionConstruct EmitCreateNewArrayExpression(
+			ExpressionTreeContext context, Type elementType, int length
+		)
+		{
+			return Expression.NewArrayBounds( elementType, Expression.Constant( length ) );
+		}
+
+		protected override ExpressionConstruct EmitCreateNewArrayExpression(
 			ExpressionTreeContext context, Type elementType, int length, IEnumerable<ExpressionConstruct> initialElements
 		)
 		{
 			return Expression.NewArrayInit( elementType, initialElements.Select( c => c.Expression ) );
+		}
+
+		protected override ExpressionConstruct EmitSetArrayElementStatement( ExpressionTreeContext context, ExpressionConstruct array, ExpressionConstruct index, ExpressionConstruct value )
+		{
+			return
+				Expression.Assign(
+					Expression.ArrayIndex( array, index ),
+					value
+				);
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
@@ -507,7 +523,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							this.EmitConstructPolymorphismSchema(
 								context,
 								schema,
-								itemsSchema == null ? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo ) : itemsSchema.ItemSchema
+								itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
 							)
 						).Concat(
 							new[]

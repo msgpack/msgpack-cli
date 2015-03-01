@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -104,6 +104,16 @@ namespace MsgPack
 				GetTupleItemTypes( trest.GenericTypeArguments, result );
 #endif
 			}
+		}
+
+		public static bool IsTuple( Type type )
+		{
+			var assembly = type.GetAssembly();
+			return
+				( assembly.Equals( typeof( object ).GetAssembly() ) ||
+				assembly.Equals( typeof( Enumerable ).GetAssembly() ) )
+				&& type.GetIsPublic() &&
+				type.Name.StartsWith( "Tuple`", StringComparison.Ordinal );
 		}
 	}
 }

@@ -168,16 +168,27 @@
     <Compile Include="Serialization\CollectionDetailedKind.cs" />
     <Compile Include="Serialization\INilImplicationHandlerOnUnpackedParameter.cs" />
     <Compile Include="Serialization\INilImplicationHandlerParameter.cs" />
-    <Compile Include="Serialization\MessagePackKnownTypeAttribute.cs" />
-    <Compile Include="Serialization\Polymorphic\IPolymorhicHelperAttribute.cs" />
+    <Compile Include="Serialization\MessagePackRuntimeTypeAttributes.cs">
+      <DependentUpon>MessagePackRuntimeTypeAttributes.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Serialization\MessagePackKnownTypeAttributes.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessagePackKnownTypeAttributes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\Polymorphic\IPolymorhicHelperAttributes.cs" />
     <Compile Include="Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\MessagePackDeserializationConstructorAttribute.cs" />
     <Compile Include="Serialization\MessagePackIgnoreAttribute.cs" />
-    <Compile Include="Serialization\MessagePackRuntimeTypeAttribute.cs" />
     <Compile Include="Serialization\Metadata\_Decimal.cs" />
     <Compile Include="Serialization\NilImplicationHandler`4.cs" />
     <Compile Include="Serialization\Polymorphic\PolymorphicSerializerProvider.cs" />
     <Compile Include="Serialization\PolymorphismSchema.cs" />
+    <Compile Include="Serialization\PolymorphismSchema.Constructors.cs" />
+    <Compile Include="Serialization\PolymorphismSchema.Internals.cs" />
+    <Compile Include="Serialization\PolymorphismSchemaChildrenType.cs" />
     <Compile Include="Serialization\PolymorphismTarget.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs" />
@@ -457,6 +468,14 @@
     <None Include="Serialization\FromExpression.ToMethod.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FromExpression.ToMethod.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\MessagePackRuntimeTypeAttributes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackRuntimeTypeAttributes.cs</LastGenOutput>
+    </None>
+    <None Include="Serialization\MessagePackKnownTypeAttributes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackKnownTypeAttributes.cs</LastGenOutput>
     </None>
     <None Include="Serialization\Metadata\_UnpackHelpers.direct.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

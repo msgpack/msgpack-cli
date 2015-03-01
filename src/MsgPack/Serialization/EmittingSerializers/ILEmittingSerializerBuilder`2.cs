@@ -608,6 +608,39 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
+		protected override ILConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length )
+		{
+			var array =
+				ILConstruct.Variable(
+					elementType.MakeArrayType(),
+					"array"
+				);
+
+			return
+				ILConstruct.Composite(
+					ILConstruct.Sequence(
+						array.ContextType,
+						new[]
+						{
+							array,
+							ILConstruct.Instruction( 
+								"NewArray",
+								array.ContextType,
+								false,
+								il =>
+								{
+									il.EmitNewarr( elementType, length );
+									array.StoreValue( il );
+								}
+							)
+						}
+					),
+					array
+				);
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitCreateNewArrayExpression( TContext context, Type elementType, int length, IEnumerable<ILConstruct> initialElements )
 		{
 			var array =
@@ -645,6 +678,34 @@ namespace MsgPack.Serialization.EmittingSerializers
 						}
 					),
 					array
+				);
+		}
+
+		protected override ILConstruct EmitSetArrayElementStatement( TContext context, ILConstruct array, ILConstruct index, ILConstruct value )
+		{
+			return
+				ILConstruct.Instruction(
+					"SetArrayElement",
+					array.ContextType,
+					false,
+					il =>
+					{
+						il.EmitAnyStelem( 
+							value.ContextType,
+							il0 =>
+							{
+								array.LoadValue( il0, false );
+							},
+							il0 =>
+							{
+								index.LoadValue( il0, false );
+							},
+							il0 =>
+							{
+								value.LoadValue( il0, true );
+							}
+						);
+					}
 				);
 		}
 

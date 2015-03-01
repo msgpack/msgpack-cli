@@ -368,14 +368,14 @@
     <Compile Include="..\MsgPack\Serialization\MessagePackIgnoreAttribute.cs">
       <Link>Serialization\MessagePackIgnoreAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\MessagePackKnownTypeAttribute.cs">
-      <Link>Serialization\MessagePackKnownTypeAttribute.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\MessagePackKnownTypeAttributes.cs">
+      <Link>Serialization\MessagePackKnownTypeAttributes.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackMemberAttribute.cs">
       <Link>Serialization\MessagePackMemberAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\MessagePackRuntimeTypeAttribute.cs">
-      <Link>Serialization\MessagePackRuntimeTypeAttribute.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\MessagePackRuntimeTypeAttributes.cs">
+      <Link>Serialization\MessagePackRuntimeTypeAttributes.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.cs">
       <Link>Serialization\MessagePackSerializer.cs</Link>
@@ -395,8 +395,8 @@
     <Compile Include="..\MsgPack\Serialization\NilImplicationHandler`4.cs">
       <Link>Serialization\NilImplicationHandler`4.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorhicHelperAttribute.cs">
-      <Link>Serialization\Polymorphic\IPolymorhicHelperAttribute.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorhicHelperAttributes.cs">
+      <Link>Serialization\Polymorphic\IPolymorhicHelperAttributes.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs">
       <Link>Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs</Link>
@@ -413,8 +413,17 @@
     <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeInfoEncoding.cs">
       <Link>Serialization\Polymorphic\TypeInfoEncoding.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.Constructors.cs">
+      <Link>Serialization\PolymorphismSchema.Constructors.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.cs">
       <Link>Serialization\PolymorphismSchema.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.Internals.cs">
+      <Link>Serialization\PolymorphismSchema.Internals.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchemaChildrenType.cs">
+      <Link>Serialization\PolymorphismSchemaChildrenType.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\PolymorphismTarget.cs">
       <Link>Serialization\PolymorphismTarget.cs</Link>

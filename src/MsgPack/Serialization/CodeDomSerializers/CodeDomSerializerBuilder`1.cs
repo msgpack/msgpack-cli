@@ -587,6 +587,18 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
+		protected override CodeDomConstruct EmitCreateNewArrayExpression( CodeDomContext context, Type elementType, int length )
+		{
+			return
+				CodeDomConstruct.Expression(
+					elementType.MakeArrayType(),
+					new CodeArrayCreateExpression(
+						elementType,
+						new CodePrimitiveExpression( length )
+					)
+				);
+		}
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
 		protected override CodeDomConstruct EmitCreateNewArrayExpression( CodeDomContext context, Type elementType, int length, IEnumerable<CodeDomConstruct> initialElements )
 		{
@@ -604,6 +616,17 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					{
 						Size = length
 					}
+				);
+		}
+
+		protected override CodeDomConstruct EmitSetArrayElementStatement( CodeDomContext context, CodeDomConstruct array, CodeDomConstruct index, CodeDomConstruct value )
+		{
+			return
+				CodeDomConstruct.Statement(
+					new CodeAssignStatement(
+						new CodeArrayIndexerExpression( array.AsExpression(), index.AsExpression() ), 
+						value.AsExpression()
+					)
 				);
 		}
 
@@ -884,7 +907,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return CodeDomConstruct.Expression( underlyingType, new CodeCastExpression( underlyingType, enumValue.AsExpression() ) );
 		}
 
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, IList<PolymorphismSchema> itemSchemaList )
+		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, PolymorphismSchema itemSchema )
 		{
 			var asCodeDomContext = context as CodeDomContext;
 			if ( asCodeDomContext == null )
@@ -897,7 +920,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			asCodeDomContext.Reset( typeof( TObject ) );
 
-			this.BuildSerializer( asCodeDomContext, itemSchemaList );
+			this.BuildSerializer( asCodeDomContext, itemSchema );
 			this.Finish( asCodeDomContext, typeof( TObject ).GetIsEnum() );
 		}
 
