@@ -45,7 +45,7 @@ namespace MsgPack.Serialization
 #endif
 #if !XAMIOS && !UNITY_IPHONE
 			context.EmitterFlavor = flavor;
-			return MessagePackSerializer.CreateInternal<T>( context, new PolymorphismSchema[ 0 ] );
+			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 #else
 			return context.GetSerializer<T>();
 #endif // !XAMIOS && !UNITY_IPHONE

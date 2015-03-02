@@ -52,7 +52,7 @@ namespace MsgPack.Serialization
 		private MessagePackSerializer<T> CreateTarget<T>()
 		{
 			var context = new SerializationContext() { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ContextBased };
-			return new AutoMessagePackSerializer<T>( context, new DynamicMethodSerializerBuilder<T>(), new PolymorphismSchema[ 0 ] );
+			return new AutoMessagePackSerializer<T>( context, new DynamicMethodSerializerBuilder<T>(), PolymorphismSchema.Default );
 		}
 		
 		private bool CanDump

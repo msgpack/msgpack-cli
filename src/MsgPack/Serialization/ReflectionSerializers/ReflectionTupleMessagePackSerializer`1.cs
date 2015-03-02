@@ -48,7 +48,10 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			: base( ownerContext )
 		{
 			var itemTypes = TupleItems.GetTupleItemTypes( typeof( T ) );
-			this._itemSerializers = itemTypes.Select( ( itemType, i ) => ownerContext.GetSerializer( itemType, itemSchemas[ i ] ) ).ToArray();
+			this._itemSerializers =
+				itemTypes.Select(
+					( itemType, i ) => ownerContext.GetSerializer( itemType, itemSchemas.Count == 0 ? null : itemSchemas[ i ] ) 
+				).ToArray();
 			this._tupleTypes = TupleItems.CreateTupleTypeList( itemTypes );
 			this._tupleConstructors = this._tupleTypes.Select( tupleType => tupleType.GetConstructors().Single() ).ToArray();
 			this._getters = GetGetters( itemTypes, this._tupleTypes ).ToArray();

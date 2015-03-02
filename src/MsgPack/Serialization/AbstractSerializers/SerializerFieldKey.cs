@@ -121,7 +121,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				else
 				{
-					packer.Pack( value.TargetType.TypeHandle.Value.ToInt64() );
+					packer.Pack( value.TargetType.AssemblyQualifiedName );
 				}
 				packer.Pack( ( int )value.ChildrenType );
 
@@ -129,7 +129,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				foreach ( var mapping in value.CodeTypeMapping )
 				{
 					packer.Pack( mapping.Key );
-					packer.Pack( mapping.Value.TypeHandle.Value.ToInt64() );
+					packer.Pack( mapping.Value.AssemblyQualifiedName );
 				}
 
 				packer.PackArrayHeader( value.ChildSchemaList.Count );

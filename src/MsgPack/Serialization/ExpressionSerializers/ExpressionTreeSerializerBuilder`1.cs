@@ -468,7 +468,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 			return
 				Expression.Assign(
-					Expression.ArrayIndex( array, index ),
+					Expression.ArrayAccess( array, index ),
 					value
 				);
 		}

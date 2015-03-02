@@ -165,7 +165,7 @@ namespace MsgPack.Serialization
 #endif
 					}, 
 					generator,
-					new PolymorphismSchema[ 0 ]
+					PolymorphismSchema.Default
 				);
 			using ( var memoryStream = new MemoryStream() )
 			{

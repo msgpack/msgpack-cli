@@ -97,7 +97,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-			return CreateInternal<T>( context, null );
+			return CreateInternal<T>( context, PolymorphismSchema.Default );
 		}
 
 		/// <summary>

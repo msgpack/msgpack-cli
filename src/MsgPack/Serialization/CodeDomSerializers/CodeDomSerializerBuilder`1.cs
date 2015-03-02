@@ -1168,6 +1168,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							schemaNumber++;
 							var variableName = "schema" + schemaNumber;
 							var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), variableName );
+							ctor.Statements.AddRange( schema.AsStatements().ToArray() );
 							ctor.Statements.AddRange(
 								this.EmitConstructPolymorphismSchema(
 									context,

@@ -104,7 +104,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context.Packer,
 						context.PackToTarget,
 						propertyInvocationChain,
-						itemSchemaList[ i ]
+						itemSchemaList.Count == 0 ? null : itemSchemaList[ i ]
 					)
 				)
 				{
@@ -220,7 +220,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						null,
 						null,
 						null,
-						itemSchemaList[ i ],
+						itemSchemaList.Count == 0 ? null : itemSchemaList[ i ],
 						unpackedItem =>
 							this.EmitStoreVariableStatement(
 								context,

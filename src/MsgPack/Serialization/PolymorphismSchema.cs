@@ -31,7 +31,7 @@ namespace MsgPack.Serialization
 {
 	/// <summary>
 	///		<para>
-	///			This class is used by MessagePack for CLI serializers. Do not use this type from your application code.
+	///			<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
 	///		</para>
 	///		<para>
 	///			A provider parameter to support polymorphism.
@@ -49,6 +49,14 @@ namespace MsgPack.Serialization
 		internal Type TargetType { get; private set; }
 
 		/// <summary>
+		///		Gets the type of the polymorphism.
+		/// </summary>
+		/// <value>
+		///		The type of the polymorphism.
+		/// </value>
+		internal PolymorphismType PolymorphismType { get; private set; }
+
+		/// <summary>
 		///		Gets the code type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.
 		/// </summary>
 		/// <value>
@@ -56,8 +64,8 @@ namespace MsgPack.Serialization
 		/// </value>
 		internal IDictionary<byte, Type> CodeTypeMapping { get; private set; }
 
-		internal bool UseDefault { get { return this.TargetType == null; } }
-		internal bool UseTypeEmbedding { get { return this.CodeTypeMapping != null && this.CodeTypeMapping.Count == 0; } }
+		internal bool UseDefault { get { return this.PolymorphismType == PolymorphismType.None; } }
+		internal bool UseTypeEmbedding { get { return this.PolymorphismType == PolymorphismType.RuntimeType; } }
 
 		internal PolymorphismSchemaChildrenType ChildrenType { get; private set; }
 

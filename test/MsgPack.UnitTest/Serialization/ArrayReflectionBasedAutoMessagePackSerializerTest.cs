@@ -61,7 +61,7 @@ namespace MsgPack.Serialization
 	{
 		private SerializationContext GetSerializationContext()
 		{
-			return new SerializationContext { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ReflectionBased };
+			return new SerializationContext( PackerCompatibilityOptions.None ) { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ReflectionBased };
 		}
 
 		private SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
@@ -84,7 +84,7 @@ namespace MsgPack.Serialization
 		public void SetUp()
 		{
 			SerializerDebugging.DeletePastTemporaries();
-			//SerializerDebugging.TraceEnabled = true;
+			SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
 			if ( SerializerDebugging.TraceEnabled )
 			{

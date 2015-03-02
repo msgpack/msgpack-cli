@@ -49,7 +49,7 @@ namespace MsgPack.Serialization
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
 		{
-			return MessagePackSerializer.CreateInternal<T>( context, new PolymorphismSchema[ 0 ] );
+			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 		}
 #if !NETFX_CORE && !WINDOWS_PHONE && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
 

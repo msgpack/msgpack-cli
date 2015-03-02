@@ -24,7 +24,6 @@ namespace MsgPack.Serialization.Polymorphic
 {
 	internal sealed class PolymorphicSerializerProvider : MessagePackSerializerProvider
 	{
-		public static readonly object SkipProviderConstruction = new object();
 		private readonly IMessagePackSerializer _valueSerializer;
 		private readonly Type _targetType;
 
@@ -37,28 +36,19 @@ namespace MsgPack.Serialization.Polymorphic
 		public override object Get( SerializationContext context, object providerParameter )
 		{
 			var schema = providerParameter as PolymorphismSchema;
-			if ( schema == null )
+			if ( schema == null || schema.UseDefault )
 			{
 				return this._valueSerializer;
 			}
 
-			if ( schema.UseDefault )
-			{
-				return
-					context.GetSerializer(
-						this._targetType,
-						schema.ItemSchema ?? SkipProviderConstruction
-					);
-			}
-			else if ( schema.UseTypeEmbedding )
+			if ( schema.UseTypeEmbedding )
 			{
 				return
 					CreateSerializer(
 						typeof( TypeEmbedingPolymorhicMessagePackSerializer<> ),
 						this._targetType,
 						context,
-						this._valueSerializer,
-						schema.ItemSchema
+						schema
 					);
 			}
 			else
@@ -68,7 +58,6 @@ namespace MsgPack.Serialization.Polymorphic
 						typeof( KnownTypePolymorhicMessagePackSerializer<> ),
 						this._targetType,
 						context,
-						this._valueSerializer,
 						schema.CodeTypeMapping
 					);
 			}

@@ -40,46 +40,85 @@ namespace MsgPack.Serialization
 		internal static readonly PolymorphismSchema Default = new PolymorphismSchema();
 
 		/// <summary>
-		///		.ctor(Type) for leaf objects with type embedding.
+		///		ForPolymorphicObject( Type targetType )
 		/// </summary>
-		internal static readonly ConstructorInfo ConstructorForTypeEmbeddingLeaf =
-			typeof( PolymorphismSchema ).GetConstructor( new[] { typeof( Type ) } );
+		internal static readonly MethodInfo ForPolymorphicObjectTypeEmbeddingMethod =
+			FromExpression.ToMethod( ( Type targetType ) => ForPolymorphicObject( targetType ) );
 
 		/// <summary>
-		///		.ctor(Type, IDictionary{byte, Type}) for leaf objects with type mapping.
+		///		ForPolymorphicObject( Type targetType, IDictionary{byte, Type} codeTypeMapping )
 		/// </summary>
-		internal static readonly ConstructorInfo ConstructorForKnownTypeMappingLeaf =
-			typeof( PolymorphismSchema ).GetConstructor( new[] { typeof( Type ), typeof( IDictionary<byte, Type> ) } );
+		internal static readonly MethodInfo ForPolymorphicObjectCodeTypeMappingMethod =
+			FromExpression.ToMethod(
+				( Type targetType, IDictionary<byte, Type> codeTypeMapping ) => ForPolymorphicObject( targetType, codeTypeMapping ) 
+			);
 
 		/// <summary>
-		///		.ctor(Type, PolymorphismSchema) for collections with type embedding.
+		///		ForContextSpecifiedCollection( Type targetType, PolymorphismSchema itemsSchema )
 		/// </summary>
-		internal static readonly ConstructorInfo ConstructorForTypeEmbeddingCollection =
-			typeof( PolymorphismSchema ).GetConstructor( new[] { typeof( Type ), typeof( PolymorphismSchema ) } );
+		internal static readonly MethodInfo ForContextSpecifiedCollectionMethod =
+			FromExpression.ToMethod(
+				( Type targetType, PolymorphismSchema itemsSchema ) => ForContextSpecifiedCollection( targetType, itemsSchema )
+			);
 
 		/// <summary>
-		///		.ctor(Type, IDictionary{byte, Type}, PolymorphismSchema) for collections with type mapping.
+		///		ForPolymorphicCollection( Type targetType, PolymorphismSchema itemsSchema )
 		/// </summary>
-		internal static readonly ConstructorInfo ConstructorForKnownTypeMappingCollection =
-			typeof( PolymorphismSchema ).GetConstructor( new[] { typeof( Type ), typeof( IDictionary<byte, Type> ), typeof( PolymorphismSchema ) } );
+		internal static readonly MethodInfo ForPolymorphicCollectionTypeEmbeddingMethod =
+			FromExpression.ToMethod(
+				( Type targetType, PolymorphismSchema itemsSchema ) => ForPolymorphicCollection( targetType, itemsSchema ) 
+			);
 
 		/// <summary>
-		///		.ctor(Type, PolymorphismSchema, PolymorphismSchema) for dictionaries with type embedding.
+		///		ForPolymorphicCollection( Type targetType, IDictionary{byte, Type} codeTypeMapping, PolymorphismSchema itemsSchema )
 		/// </summary>
-		internal static readonly ConstructorInfo ConstructorForTypeEmbeddingDictionary =
-			typeof( PolymorphismSchema ).GetConstructor( new[] { typeof( Type ), typeof( PolymorphismSchema ), typeof( PolymorphismSchema ) } );
+		internal static readonly MethodInfo ForPolymorphicCollectionCodeTypeMappingMethod =
+			FromExpression.ToMethod(
+				( Type targetType, IDictionary<byte, Type> codeTypeMapping, PolymorphismSchema itemsSchema ) =>
+					ForPolymorphicCollection( targetType, codeTypeMapping, itemsSchema ) 
+			);
 
 		/// <summary>
-		///		.ctor(Type, IDictionary{byte, Type}, PolymorphismSchema, PolymorphismSchema) for dictionaries with type mapping.
+		///		ForContextSpecifiedDictionary( Type targetType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		/// </summary>
-		internal static readonly ConstructorInfo ConstructorForKnownTypeMappingDictionary =
-			typeof( PolymorphismSchema ).GetConstructor( new[] { typeof( Type ), typeof( IDictionary<byte, Type> ), typeof( PolymorphismSchema ), typeof( PolymorphismSchema ) } );
+		internal static readonly MethodInfo ForContextSpecifiedDictionaryMethod =
+			FromExpression.ToMethod(
+				( Type targetType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema ) =>
+					ForContextSpecifiedDictionary( targetType, keysSchema, valuesSchema )
+			);
 
 		/// <summary>
-		///		.ctor(Type, PolymorphismSchema[]) for tuple.
+		///		ForPolymorphicDictionary( Type targetType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		/// </summary>
-		internal static readonly ConstructorInfo ConstructorForTuple =
-			typeof( PolymorphismSchema ).GetConstructor( new[] { typeof( Type ), typeof( PolymorphismSchema[] ) } );
+		internal static readonly MethodInfo ForPolymorphicDictionaryTypeEmbeddingMethod =
+			FromExpression.ToMethod(
+				( Type targetType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema ) =>
+					ForPolymorphicDictionary( targetType, keysSchema, valuesSchema )
+			);
+
+		/// <summary>
+		///		ForPolymorphicDictionary( Type targetType, IDictionary{byte, Type} codeTypeMapping, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
+		/// </summary>
+		internal static readonly MethodInfo ForPolymorphicDictionaryCodeTypeMappingMethod =
+			FromExpression.ToMethod(
+				( Type targetType,
+					IDictionary<byte, Type> codeTypeMapping,
+					PolymorphismSchema keysSchema,
+					PolymorphismSchema valuesSchema
+				) =>
+					ForPolymorphicDictionary( targetType, codeTypeMapping, keysSchema, valuesSchema ) 
+			);
+
+
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+		/// <summary>
+		///		ForPolymorphicTuple( Type targetType, PolymorphismSchema[] itemSchemaList )
+		/// </summary>
+		internal static readonly MethodInfo ForPolymorphicTupleMethod =
+			FromExpression.ToMethod(
+				( Type targetType, PolymorphismSchema[] itemSchemaList ) => ForPolymorphicTuple( targetType, itemSchemaList )
+			);
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 
 		internal static readonly ConstructorInfo CodeTypeMapConstructor =
 			typeof( Dictionary<,> ).MakeGenericType( typeof( byte ), typeof( Type ) )
@@ -125,31 +164,49 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
+					if ( !table.Member.Exists && !table.CollectionItem.Exists )
+					{
+						return Default;
+					}
+
 					return
 						new PolymorphismSchema(
 							member.Member.GetMemberValueType(),
+							table.Member.PolymorphismType,
 							table.Member.CodeTypeMapping,
 							PolymorphismSchemaChildrenType.CollectionItems,
 							new PolymorphismSchema(
 								traits.ElementType,
-								table.CollectionItem.CodeTypeMapping
+								table.CollectionItem.PolymorphismType,
+								table.CollectionItem.CodeTypeMapping,
+								PolymorphismSchemaChildrenType.None
 							)
 						);
 				}
 				case CollectionKind.Map:
 				{
+					if ( !table.Member.Exists && !table.DictionaryKey.Exists && !table.CollectionItem.Exists )
+					{
+						return Default;
+					}
+
 					return 
 						new PolymorphismSchema(
 							member.Member.GetMemberValueType(),
+							table.Member.PolymorphismType,
 							table.Member.CodeTypeMapping,
 							PolymorphismSchemaChildrenType.DictionaryKeyValues,
 							new PolymorphismSchema(
 								traits.ElementType.GetGenericArguments()[ 0 ],
-								table.DictionaryKey.CodeTypeMapping
+								table.DictionaryKey.PolymorphismType,
+								table.DictionaryKey.CodeTypeMapping,
+								PolymorphismSchemaChildrenType.None
 							),
 							new PolymorphismSchema(
 								traits.ElementType.GetGenericArguments()[ 1 ],
-								table.CollectionItem.CodeTypeMapping
+								table.CollectionItem.PolymorphismType,
+								table.CollectionItem.CodeTypeMapping,
+								PolymorphismSchemaChildrenType.None
 							)
 						);
 				}
@@ -158,18 +215,26 @@ namespace MsgPack.Serialization
 #if !WINDOWS_PHONE && !NETFX_35 && !UNITY
 					if ( TupleItems.IsTuple( member.Member.GetMemberValueType() ) )
 					{
+						if ( table.TupleItems.Count == 0 )
+						{
+							return Default;
+						}
+
 						var tupleItemTypes = TupleItems.GetTupleItemTypes( member.Member.GetMemberValueType() );
 						return
 							new PolymorphismSchema(
 								member.Member.GetMemberValueType(),
-								table.Member.CodeTypeMapping,
+								PolymorphismType.None,
+								EmptyMap,
 								PolymorphismSchemaChildrenType.TupleItems,
 								table.TupleItems
 								.Zip(tupleItemTypes, (e,t) => new { Entry = e, ItemType = t })
 								.Select( e =>
 									new PolymorphismSchema(
 										e.ItemType,
-										e.Entry.CodeTypeMapping
+										PolymorphismType.None, 
+										e.Entry.CodeTypeMapping,
+										PolymorphismSchemaChildrenType.None
 									)
 								).ToArray()
 							);
@@ -177,10 +242,17 @@ namespace MsgPack.Serialization
 					else
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 					{
+						if ( !table.Member.Exists )
+						{
+							return Default;
+						}
+
 						return
 							new PolymorphismSchema(
 								member.Member.GetMemberValueType(),
-								table.Member.CodeTypeMapping
+								table.Member.PolymorphismType,
+								table.Member.CodeTypeMapping,
+								PolymorphismSchemaChildrenType.None
 							);
 					}
 				}
@@ -221,11 +293,28 @@ namespace MsgPack.Serialization
 
 		private sealed class TypeTableEntry
 		{
+			private static readonly TypeTableEntry[] EmptyEntries = new TypeTableEntry[ 0 ];
+
 			private readonly Dictionary<byte, Type> _knownTypeMapping = new Dictionary<byte, Type>();
 
 			public IDictionary<byte, Type> CodeTypeMapping { get { return this._knownTypeMapping; } }
 
 			private bool _useTypeEmbedding;
+
+			public PolymorphismType PolymorphismType
+			{
+				get
+				{
+					return
+						this._useTypeEmbedding
+							? PolymorphismType.RuntimeType
+							: this._knownTypeMapping.Count > 0
+								? PolymorphismType.KnownTypes
+								: PolymorphismType.None;
+				}
+			}
+
+			public bool Exists { get { return this._useTypeEmbedding || this._knownTypeMapping.Count > 0; } }
 
 			private TypeTableEntry() { }
 
@@ -234,7 +323,7 @@ namespace MsgPack.Serialization
 				var result = new TypeTableEntry();
 				foreach (
 					var attribute in
-						member.GetCustomAttributes<Attribute>()
+						member.GetCustomAttributes( false )
 							.OfType<IPolymorhicHelperAttribute>()
 							.Where( a => a.Target == targetType )
 				)
@@ -247,11 +336,16 @@ namespace MsgPack.Serialization
 
 			public static TypeTableEntry[] CreateTupleItems( SerializationContext context, MemberInfo member )
 			{
+				if ( !TupleItems.IsTuple( member.GetMemberValueType() ) )
+				{
+					return EmptyEntries;
+				}
+
 				var tupleItems = TupleItems.GetTupleItemTypes( member.GetMemberValueType() );
 				var result = Enumerable.Repeat( default( object ), tupleItems.Count ).Select( _ => new TypeTableEntry() ).ToArray();
 				foreach (
 					var attribute in
-						member.GetCustomAttributes<Attribute>()
+						member.GetCustomAttributes( false )
 							.OfType<IPolymorphicTupleItemTypeAttribute>()
 							.OrderBy( a => a.ItemNumber )
 				)
@@ -417,6 +511,5 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-
 	}
 }

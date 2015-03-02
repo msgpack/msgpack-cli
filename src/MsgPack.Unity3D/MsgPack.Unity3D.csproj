@@ -432,6 +432,9 @@
     <Compile Include="..\MsgPack\Serialization\PolymorphismTarget.cs">
       <Link>Serialization\PolymorphismTarget.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\PolymorphismType.cs">
+      <Link>Serialization\PolymorphismType.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
       <Link>Serialization\ReflectionExtensions.cs</Link>
     </Compile>

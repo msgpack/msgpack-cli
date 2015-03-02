@@ -429,8 +429,13 @@ namespace MsgPack.Serialization
 		{
 			return
 				new SerializationException(
-					String.Format( CultureInfo.CurrentCulture, "Value type '{0}' cannot be polymorphic.", type ) 
+					String.Format( CultureInfo.CurrentCulture, "Value type '{0}' cannot be polymorphic.", type )
 				);
+		}
+
+		internal static Exception NewUnknownTypeEmbedding()
+		{
+			return new SerializationException( "Cannot deserialize with type-embedding based serializer. Root object must be 3 element array." );
 		}
 	}
 }

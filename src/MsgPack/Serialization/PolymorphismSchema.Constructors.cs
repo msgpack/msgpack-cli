@@ -16,11 +16,13 @@
 //     limitations under the License.
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
-#if !NETFX_35 && !NETFX_40 && !SILVERLIGHT && !UNITY
 using System.Collections.ObjectModel;
-#endif // !NETFX_35 && !NETFX_40 && !SILVERLIGHT && !UNITY
 using System.ComponentModel;
 using System.Linq;
 
@@ -35,6 +37,7 @@ namespace MsgPack.Serialization
 		private PolymorphismSchema()
 		{
 			this.TargetType = null;
+			this.PolymorphismType = PolymorphismType.None;
 			this.CodeTypeMapping = new ReadOnlyDictionary<byte, Type>( EmptyMap );
 			this.ChildrenType = PolymorphismSchemaChildrenType.None;
 			this._children = new ReadOnlyCollection<PolymorphismSchema>( EmptyChildren );
@@ -43,12 +46,14 @@ namespace MsgPack.Serialization
 		// Aggregate
 		private PolymorphismSchema(
 			Type targetType,
+			PolymorphismType polymorphismType,
 			PolymorphismSchemaChildrenType childrenType,
 			params PolymorphismSchema[] childItemSchemaList )
-			: this( targetType, new ReadOnlyDictionary<byte, Type>( EmptyMap ), childrenType, childItemSchemaList ) { }
+			: this( targetType, polymorphismType, new ReadOnlyDictionary<byte, Type>( EmptyMap ), childrenType, childItemSchemaList ) { }
 
 		private PolymorphismSchema(
 			Type targetType,
+			PolymorphismType polymorphismType,
 			IDictionary<byte, Type> codeTypeMapping,
 			PolymorphismSchemaChildrenType childrenType,
 			params PolymorphismSchema[] childItemSchemaList )
@@ -59,6 +64,7 @@ namespace MsgPack.Serialization
 			}
 
 			this.TargetType = targetType;
+			this.PolymorphismType = polymorphismType;
 			this.CodeTypeMapping = codeTypeMapping;
 			this.ChildrenType = childrenType;
 			this._children =
@@ -70,86 +76,202 @@ namespace MsgPack.Serialization
 		// Plane
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="PolymorphismSchema"/> class for type embedding.
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses type embedding based polymorphism.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses type embedding based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public PolymorphismSchema( Type targetType )
-			: this( targetType, PolymorphismSchemaChildrenType.None ) { }
+		public static PolymorphismSchema ForPolymorphicObject( Type targetType )
+		{
+			return new PolymorphismSchema( targetType, PolymorphismType.RuntimeType, PolymorphismSchemaChildrenType.None );
+		}
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="PolymorphismSchema"/> class for known type mapping.
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses ext-type code mapping based polymorphism.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
-		/// <param name="codeTypeMapping">The code type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.</param>
+		/// <param name="codeTypeMapping">The code-type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses ext-type code mapping based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public PolymorphismSchema( Type targetType, IDictionary<byte, Type> codeTypeMapping )
-			: this( targetType, codeTypeMapping, PolymorphismSchemaChildrenType.None ) { }
+		public static PolymorphismSchema ForPolymorphicObject( Type targetType, IDictionary<byte, Type> codeTypeMapping )
+		{
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.KnownTypes,
+					codeTypeMapping,
+					PolymorphismSchemaChildrenType.None
+				);
+		}
 
 		// Collection items
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="PolymorphismSchema"/> class for type embedding.
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses declared type or context specified concrete type.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
 		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses declared type or context specified concrete type.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public PolymorphismSchema( Type targetType, PolymorphismSchema itemSchema )
-			: this( targetType, PolymorphismSchemaChildrenType.CollectionItems, itemSchema ) { }
+		public static PolymorphismSchema ForContextSpecifiedCollection( Type targetType, PolymorphismSchema itemSchema )
+		{
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.None,
+					PolymorphismSchemaChildrenType.CollectionItems,
+					itemSchema
+				);
+		}
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="PolymorphismSchema"/> class for known type mapping.
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses type embedding based polymorphism.
+		/// </summary>
+		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses type embedding based polymorphism.</returns>
+		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static PolymorphismSchema ForPolymorphicCollection( Type targetType, PolymorphismSchema itemSchema )
+		{
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.RuntimeType,
+					PolymorphismSchemaChildrenType.CollectionItems,
+					itemSchema
+				);
+		}
+
+		/// <summary>
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses ext-type code mapping based polymorphism.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
 		/// <param name="codeTypeMapping">The code type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.</param>
 		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses ext-type code mapping based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public PolymorphismSchema( Type targetType, IDictionary<byte, Type> codeTypeMapping, PolymorphismSchema itemSchema )
-			: this( targetType, codeTypeMapping, PolymorphismSchemaChildrenType.CollectionItems, itemSchema ) { }
+		public static PolymorphismSchema ForPolymorphicCollection(
+			Type targetType,
+			IDictionary<byte, Type> codeTypeMapping,
+			PolymorphismSchema itemSchema 
+		)
+		{
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.KnownTypes,
+					codeTypeMapping,
+					PolymorphismSchemaChildrenType.CollectionItems,
+					itemSchema
+				);
+		}
 
 		// Dictionary key/values
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="PolymorphismSchema"/> class for type embedding.
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses declared type or context specified concrete type.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
 		/// <param name="keySchema">The schema for dictionary keys of the serialization target dictionary.</param>
 		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses declared type or context specified concrete type.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public PolymorphismSchema( Type targetType, PolymorphismSchema keySchema, PolymorphismSchema valueSchema )
-			: this( targetType, PolymorphismSchemaChildrenType.DictionaryKeyValues, keySchema, valueSchema ) { }
+		public static PolymorphismSchema ForContextSpecifiedDictionary(
+			Type targetType,
+			PolymorphismSchema keySchema,
+			PolymorphismSchema valueSchema )
+		{
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.None,
+					PolymorphismSchemaChildrenType.DictionaryKeyValues,
+					keySchema,
+					valueSchema
+				);
+		}
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="PolymorphismSchema"/> class for known type mapping.
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses type embedding based polymorphism.
+		/// </summary>
+		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="keySchema">The schema for dictionary keys of the serialization target dictionary.</param>
+		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses type embedding based polymorphism.</returns>
+		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
+		[EditorBrowsable( EditorBrowsableState.Never )]
+		public static PolymorphismSchema ForPolymorphicDictionary(
+			Type targetType,
+			PolymorphismSchema keySchema,
+			PolymorphismSchema valueSchema
+		)
+		{
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.RuntimeType,
+					PolymorphismSchemaChildrenType.DictionaryKeyValues,
+					keySchema,
+					valueSchema
+				);
+		}
+
+		/// <summary>
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses ext-type code mapping based polymorphism.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
 		/// <param name="codeTypeMapping">The code type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.</param>
 		/// <param name="keySchema">The schema for dictionary keys of the serialization target dictionary.</param>
 		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses ext-type code mapping based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public PolymorphismSchema( Type targetType, IDictionary<byte, Type> codeTypeMapping, PolymorphismSchema keySchema, PolymorphismSchema valueSchema )
-			: this( targetType, codeTypeMapping, PolymorphismSchemaChildrenType.DictionaryKeyValues, keySchema, valueSchema ) { }
+		public static PolymorphismSchema ForPolymorphicDictionary(
+			Type targetType,
+			IDictionary<byte, Type> codeTypeMapping,
+			PolymorphismSchema keySchema,
+			PolymorphismSchema valueSchema 
+		)
+		{
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.KnownTypes,
+					codeTypeMapping,
+					PolymorphismSchemaChildrenType.DictionaryKeyValues,
+					keySchema,
+					valueSchema
+				);
+		}
 
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
 		// Tuple items
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="PolymorphismSchema"/> class for type embedding.
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for <see cref="Tuple"/> object.
 		/// </summary>
 		/// <param name="targetType">The type of the serialization target.</param>
 		/// <param name="itemSchemaList">The schema for collection items of the serialization target tuple. <c>null</c> or empty indicates all items do not have any polymorphism.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for <see cref="Tuple"/> object.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
 		/// <exception cref="System.ArgumentException">A count of <paramref name="itemSchemaList"/> does not match for an arity of the tuple type specified as <paramref name="targetType"/>.</exception>
 		[EditorBrowsable( EditorBrowsableState.Never )]
-		public PolymorphismSchema( Type targetType, PolymorphismSchema[] itemSchemaList )
-			: this( targetType, PolymorphismSchemaChildrenType.TupleItems, itemSchemaList )
+		public static PolymorphismSchema ForPolymorphicTuple( Type targetType, PolymorphismSchema[] itemSchemaList )
 		{
 			VerifyArity( targetType, itemSchemaList );
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.None,
+					PolymorphismSchemaChildrenType.TupleItems,
+					itemSchemaList
+				);
 		}
 
 		private static void VerifyArity( Type tupleType, ICollection<PolymorphismSchema> itemSchemaList )
@@ -165,5 +287,6 @@ namespace MsgPack.Serialization
 				throw new ArgumentException( "An arity of itemSchemaList does not match for an arity of the tuple.", "itemSchemaList" );
 			}
 		}
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 	}
 }

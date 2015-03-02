@@ -92,7 +92,7 @@ namespace MsgPack.Serialization
 	if ( !forIos )
 	{
 #>
-			return MessagePackSerializer.CreateInternal<T>( context, new PolymorphismSchema[ 0 ] );
+			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 <#+
 	}
 	else

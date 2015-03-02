@@ -47,7 +47,7 @@ namespace MsgPack.Serialization
 				target.ShouldSerialized3 = 333;
 				target.ShouldNotSerialized1 = 444;
 				target.ShouldNotSerialized2 = 555;
-				var serializer = MessagePackSerializer.CreateInternal<MessagePackMemberAndDataMemberMixedTarget>( context, new PolymorphismSchema[ 0 ] );
+				var serializer = MessagePackSerializer.CreateInternal<MessagePackMemberAndDataMemberMixedTarget>( context, PolymorphismSchema.Default );
 				serializer.Pack( buffer, target );
 
 				buffer.Position = 0;
@@ -102,7 +102,7 @@ namespace MsgPack.Serialization
 			{
 				var target = new DataContractAndNonSerializedMixedTarget();
 				target.ShouldSerialized = 111;
-				var serializer = MessagePackSerializer.CreateInternal<DataContractAndNonSerializedMixedTarget>( context, new PolymorphismSchema[ 0 ] );
+				var serializer = MessagePackSerializer.CreateInternal<DataContractAndNonSerializedMixedTarget>( context, PolymorphismSchema.Default );
 				serializer.Pack( buffer, target );
 
 				buffer.Position = 0;

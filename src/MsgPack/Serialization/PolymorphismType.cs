@@ -21,30 +21,23 @@ using System;
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Represents children items type of <see cref="PolymorphismSchema"/>
+	///		Defines a type of the polymorphism.
 	/// </summary>
-	internal enum PolymorphismSchemaChildrenType
+	internal enum PolymorphismType
 	{
 		/// <summary>
-		///		Leaf, that is no children schema.
+		///		No polymorphism.
 		/// </summary>
 		None = 0,
 
 		/// <summary>
-		///		Collection items, so children count is 1.
+		///		Knwon ext-type code based polymorphism.
 		/// </summary>
-		CollectionItems,
+		KnownTypes,
 
 		/// <summary>
-		///		Dictionary keys and values, so children count is 2, index 0 is for keys, 1 is for values.
+		///		Non-interoperable type info embedding based polymorphism.
 		/// </summary>
-		DictionaryKeyValues,
-
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
-		/// <summary>
-		///		Tuple items, so chidren count is equal to tuple's arity.
-		/// </summary>
-		TupleItems
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+		RuntimeType
 	}
 }

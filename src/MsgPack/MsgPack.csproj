@@ -190,6 +190,7 @@
     <Compile Include="Serialization\PolymorphismSchema.Internals.cs" />
     <Compile Include="Serialization\PolymorphismSchemaChildrenType.cs" />
     <Compile Include="Serialization\PolymorphismTarget.cs" />
+    <Compile Include="Serialization\PolymorphismType.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs" />

@@ -40,10 +40,11 @@ namespace MsgPack.Serialization.Polymorphic
 	/// <typeparam name="T">The base type of the polymorhic member.</typeparam>
 	internal sealed class KnownTypePolymorhicMessagePackSerializer<T> : MessagePackSerializer<T>
 	{
+		private readonly PolymorphismSchema _schema;
 		private readonly IDictionary<byte, RuntimeTypeHandle> _typeHandleMap;
 		private readonly IDictionary<RuntimeTypeHandle, byte> _typeCodeMap;
 
-		public KnownTypePolymorhicMessagePackSerializer( SerializationContext ownerContext, IDictionary<byte, Type> typeMap )
+		public KnownTypePolymorhicMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
 			: base( ownerContext )
 		{
 #if DEBUG && !UNITY
@@ -55,8 +56,9 @@ namespace MsgPack.Serialization.Polymorphic
 				throw SerializationExceptions.NewValueTypeCannotBePolymorphic( typeof( T ) );
 			}
 
-			this._typeHandleMap = BuildTypeCodeTypeHandleMap( typeMap );
-			this._typeCodeMap = BuildTypeHandleTypeCodeMap( typeMap );
+			this._schema = schema;
+			this._typeHandleMap = BuildTypeCodeTypeHandleMap( schema.CodeTypeMapping );
+			this._typeCodeMap = BuildTypeHandleTypeCodeMap( schema.CodeTypeMapping );
 		}
 
 		private static IDictionary<byte, RuntimeTypeHandle> BuildTypeCodeTypeHandleMap( IDictionary<byte, Type> typeMap )
@@ -100,13 +102,13 @@ namespace MsgPack.Serialization.Polymorphic
 				using ( var valuePacker = Packer.Create( buffer ) )
 				{
 					// Use concrete type serializer.
-					MessagePackSerializer.Get( objectTree.GetType(), this.OwnerContext ).PackTo( valuePacker, objectTree );
+					this.OwnerContext.GetSerializer( objectTree.GetType(), this._schema ).PackTo( valuePacker, objectTree );
 				}
 
 				packer.PackExtendedTypeValue(
 					this._typeCodeMap[ objectTree.GetType().TypeHandle ],
 					buffer.ToArray()
-					);
+				);
 			}
 		}
 
@@ -119,7 +121,7 @@ namespace MsgPack.Serialization.Polymorphic
 			{
 				throw new SerializationException(
 					String.Format( CultureInfo.CurrentCulture, "Unknown extension type {0}.", ext.TypeCode )
-					);
+				);
 			}
 
 			using ( var buffer = new MemoryStream( ext.Body ) )
@@ -128,10 +130,10 @@ namespace MsgPack.Serialization.Polymorphic
 				{
 					// Use concrete type serializer.
 					return
-						( T )MessagePackSerializer.Get(
+						( T )this.OwnerContext.GetSerializer(
 							Type.GetTypeFromHandle( typeHandle ),
-							this.OwnerContext
-							).UnpackFrom( valueUnpacker );
+							this._schema
+						).UnpackFrom( valueUnpacker );
 				}
 			}
 		}

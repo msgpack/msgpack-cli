@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -1715,7 +1719,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			PolymorphismSchema schema
 		)
 		{
-			if ( schema == null || schema.UseDefault )
+			if ( schema == null )
 			{
 				yield return
 					this.EmitStoreVariableStatement(
@@ -1726,6 +1730,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				yield break;
 			}
 
+#warning TODO: Local variable uniqueness
 			switch ( schema.ChildrenType )
 			{
 				case PolymorphismSchemaChildrenType.CollectionItems:
@@ -1740,39 +1745,74 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 * :
 					 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
 					 */
-					var itemsSchema = this.DeclareLocal( context, schema.ItemSchema.TargetType, "itemsSchema" );
-					foreach ( var instruction in this.EmitConstructLeafPolymorphismSchema( context, itemsSchema, schema.ItemSchema, "itemsSchema" ) )
+					var itemsSchema =
+						schema.ItemSchema.UseDefault
+							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+							: this.DeclareLocal( context, typeof( PolymorphismSchema ), "itemsSchema" );
+					if ( !schema.ItemSchema.UseDefault )
 					{
-						yield return instruction;
+						yield return itemsSchema;
+
+						foreach (
+							var instruction in
+								this.EmitConstructLeafPolymorphismSchema( context, itemsSchema, schema.ItemSchema, "itemsSchema" )
+						)
+						{
+							yield return instruction;
+						}
 					}
 
-					if ( schema.UseTypeEmbedding )
+					if ( schema.UseDefault )
 					{
 						yield return
-							this.EmitCreateNewObjectExpression(
+							this.EmitStoreVariableStatement(
 								context,
 								storage,
-								PolymorphismSchema.ConstructorForTypeEmbeddingCollection,
-								this.EmitTypeOfExpression( context, schema.TargetType ),
-								itemsSchema
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForContextSpecifiedCollectionMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									itemsSchema
+								)
+							);
+					}
+					else if ( schema.UseTypeEmbedding )
+					{
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForPolymorphicCollectionTypeEmbeddingMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									itemsSchema
+								)
 							);
 					}
 					else
 					{
 						var typeMap = this.DeclareLocal( context, typeof( Dictionary<byte, Type> ), "typeMap" );
+						yield return typeMap;
 						foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, schema, typeMap ) )
 						{
 							yield return instruction;
 						}
 
 						yield return
-							this.EmitCreateNewObjectExpression(
+							this.EmitStoreVariableStatement(
 								context,
 								storage,
-								PolymorphismSchema.ConstructorForKnownTypeMappingCollection,
-								this.EmitTypeOfExpression( context, schema.TargetType ),
-								typeMap,
-								itemsSchema
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForPolymorphicCollectionCodeTypeMappingMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									typeMap,
+									itemsSchema
+								)
 							);
 					}
 					break;
@@ -1793,53 +1833,109 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 * :
 					 * storage = new PolymorphismSchema( __type, __map, __keysSchema, __valuesSchema );
 					 */
-					var keysSchema = this.DeclareLocal( context, schema.ItemSchema.TargetType, "keysSchema" );
-					foreach ( var instruction in this.EmitConstructLeafPolymorphismSchema( context, keysSchema, schema.KeySchema, "keysSchema" ) )
+					var keysSchema =
+						schema.KeySchema.UseDefault
+							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+							: this.DeclareLocal( context, typeof( PolymorphismSchema ), "keysSchema" );
+					if ( !schema.KeySchema.UseDefault )
 					{
-						yield return instruction;
+						yield return keysSchema;
+						foreach (
+							var instruction in
+								this.EmitConstructLeafPolymorphismSchema( context, keysSchema, schema.KeySchema, "keysSchema" )
+						)
+						{
+							yield return instruction;
+						}
 					}
 
-					var valuesSchema = this.DeclareLocal( context, schema.ItemSchema.TargetType, "valuesSchema" );
-					foreach ( var instruction in this.EmitConstructLeafPolymorphismSchema( context, valuesSchema, schema.ItemSchema, "valuesSchema" ) )
+					var valuesSchema =
+						schema.ItemSchema.UseDefault
+							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+							: this.DeclareLocal( context, typeof( PolymorphismSchema ), "valuesSchema" );
+					if ( !schema.ItemSchema.UseDefault )
 					{
-						yield return instruction;
+						yield return valuesSchema;
+						foreach (
+							var instruction in
+								this.EmitConstructLeafPolymorphismSchema( context, valuesSchema, schema.ItemSchema, "valuesSchema" )
+						)
+						{
+							yield return instruction;
+						}
 					}
 
-					if ( schema.UseTypeEmbedding )
+					if ( schema.UseDefault )
 					{
 						yield return
-							this.EmitCreateNewObjectExpression(
+							this.EmitStoreVariableStatement(
 								context,
 								storage,
-								PolymorphismSchema.ConstructorForTypeEmbeddingDictionary,
-								this.EmitTypeOfExpression( context, schema.TargetType ),
-								keysSchema,
-								valuesSchema
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForContextSpecifiedDictionaryMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									keysSchema,
+									valuesSchema
+								)
+							);
+					}
+					else if ( schema.UseTypeEmbedding )
+					{
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForPolymorphicDictionaryTypeEmbeddingMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									keysSchema,
+									valuesSchema
+								)
 							);
 					}
 					else
 					{
 						var typeMap = this.DeclareLocal( context, typeof( Dictionary<byte, Type> ), "typeMap" );
+						yield return typeMap;
 						foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, schema, typeMap ) )
 						{
 							yield return instruction;
 						}
 
 						yield return
-							this.EmitCreateNewObjectExpression(
+							this.EmitStoreVariableStatement(
 								context,
 								storage,
-								PolymorphismSchema.ConstructorForKnownTypeMappingDictionary,
-								this.EmitTypeOfExpression( context, schema.TargetType ),
-								typeMap,
-								keysSchema,
-								valuesSchema
+								this.EmitInvokeMethodExpression(
+									context,
+									null,
+									PolymorphismSchema.ForPolymorphicDictionaryCodeTypeMappingMethod,
+									this.EmitTypeOfExpression( context, schema.TargetType ),
+									typeMap,
+									keysSchema,
+									valuesSchema
+								)
 							);
 					}
 					break;
 				}
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
 				case PolymorphismSchemaChildrenType.TupleItems:
 				{
+					if ( schema.ChildSchemaList.Count == 0 )
+					{
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								storage,
+								this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+							);
+					}
+
 					/*
 					 * tupleItemsSchema = new PolymorphismSchema[__arity__];
 					 * for(var i = 0; i < __arity__; i++ )
@@ -1856,98 +1952,51 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
 					 */
 					var tupleItems = TupleItems.GetTupleItemTypes( schema.TargetType );
-					var arity = this.MakeInt32Literal( context, tupleItems.Count );
-					var tupleItemsSchema = this.DeclareLocal( context, schema.ItemSchema.TargetType, "tupleItemsSchema" );
+					var tupleItemsSchema = this.DeclareLocal( context, typeof( PolymorphismSchema[] ), "tupleItemsSchema" );
+					yield return tupleItemsSchema;
 
-					yield return this.EmitCreateNewArrayExpression( context, typeof( PolymorphismSchema ), tupleItems.Count );
-					yield return this.EmitStoreVariableStatement( context, tupleItemsSchema );
 					yield return
-						this.EmitForLoop(
+						this.EmitStoreVariableStatement(
 							context,
-							arity,
-							loop =>
-							{
-								var itemsSchema = this.DeclareLocal( context, schema.ItemSchema.TargetType, "itemSchema" );
-								return
-									this.EmitSequentialStatements(
-										context,
-										typeof( void ),
-										this.EmitConstructLeafPolymorphismSchema( context, itemsSchema, schema.ItemSchema, "itemsSchema" )
-										.Concat( new[] { this.EmitSetArrayElementStatement( context, tupleItemsSchema, loop.Counter, itemsSchema ) } )
-									);
-							}
+							tupleItemsSchema,
+							this.EmitCreateNewArrayExpression( context, typeof( PolymorphismSchema ), tupleItems.Count ) 
 						);
-
-					if ( schema.UseTypeEmbedding )
+					for ( var i = 0; i < tupleItems.Count; i++ )
 					{
-						yield return
-							this.EmitCreateNewObjectExpression(
-								context,
-								storage,
-								PolymorphismSchema.ConstructorForTypeEmbeddingCollection,
-								this.EmitTypeOfExpression( context, schema.TargetType ),
-								tupleItemsSchema
-							);
-					}
-					else
-					{
-						var typeMap = this.DeclareLocal( context, typeof( Dictionary<byte, Type> ), "typeMap" );
-						foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, schema, typeMap ) )
+						var variableName = "itemSchema" + i.ToString( CultureInfo.InvariantCulture );
+						var itemSchema = this.DeclareLocal( context, typeof( PolymorphismSchema ), variableName );
+						yield return itemSchema;
+						foreach ( var statement in this.EmitConstructLeafPolymorphismSchema( context, itemSchema, schema.ChildSchemaList[ i ], variableName ) )
 						{
-							yield return instruction;
+							yield return statement;
 						}
 
-						yield return
-							this.EmitCreateNewObjectExpression(
-								context,
-								storage,
-								PolymorphismSchema.ConstructorForKnownTypeMappingCollection,
-								this.EmitTypeOfExpression( context, schema.TargetType ),
-								typeMap,
-								tupleItemsSchema
-							);
+						yield return this.EmitSetArrayElementStatement( context, tupleItemsSchema, this.MakeInt32Literal( context, i ), itemSchema );
 					}
+
+					yield return
+						this.EmitStoreVariableStatement(
+							context,
+							storage,
+							this.EmitInvokeMethodExpression(
+								context,
+								null,
+								PolymorphismSchema.ForPolymorphicTupleMethod,
+								this.EmitTypeOfExpression( context, schema.TargetType ),
+								tupleItemsSchema
+							)
+						);
 					break;
 				}
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 				default:
 				{
-					/*
-					 * __itemsTypeMap = new Dictionary<byte, Type>();
-					 * __itemsTypeMap.Add( b, t );
-					 * :
-					 * __itemsSchema = new PolymorphismSchema( __itemType, __itemsTypeMap, null ); // OR null
-					 * __map = new Dictionary<byte, Type>();
-					 * __map.Add( b, t );
-					 * :
-					 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
-					 */
-					if ( schema.UseTypeEmbedding )
+					foreach ( var instruction in
+						this.EmitConstructLeafPolymorphismSchema( context, storage, schema, String.Empty ) )
 					{
-						yield return
-							this.EmitCreateNewObjectExpression(
-								context,
-								storage,
-								PolymorphismSchema.ConstructorForTypeEmbeddingLeaf,
-								this.EmitTypeOfExpression( context, schema.TargetType )
-							);
+						yield return instruction;
 					}
-					else
-					{
-						var typeMap = this.DeclareLocal( context, typeof( Dictionary<byte, Type> ), "typeMap" );
-						foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, schema, typeMap ) )
-						{
-							yield return instruction;
-						}
 
-						yield return
-							this.EmitCreateNewObjectExpression(
-								context,
-								storage,
-								PolymorphismSchema.ConstructorForKnownTypeMappingLeaf,
-								this.EmitTypeOfExpression( context, schema.TargetType ),
-								typeMap
-							);
-					}
 					break;
 				}
 			}
@@ -1955,6 +2004,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private IEnumerable<TConstruct> EmitConstructLeafPolymorphismSchema( TContext context, TConstruct storage, PolymorphismSchema currentSchema, string prefix )
 		{
+			/*
+			 * __itemsTypeMap = new Dictionary<byte, Type>();
+			 * __itemsTypeMap.Add( b, t );
+			 * :
+			 * __itemsSchema = new PolymorphismSchema( __itemType, __itemsTypeMap, null ); // OR null
+			 * __map = new Dictionary<byte, Type>();
+			 * __map.Add( b, t );
+			 * :
+			 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
+			 */
 			if ( currentSchema.UseDefault )
 			{
 				yield return
@@ -1967,28 +2026,37 @@ namespace MsgPack.Serialization.AbstractSerializers
 			else if ( currentSchema.UseTypeEmbedding )
 			{
 				yield return
-					this.EmitCreateNewObjectExpression(
+					this.EmitStoreVariableStatement(
 						context,
 						storage,
-						PolymorphismSchema.ConstructorForTypeEmbeddingLeaf,
-						this.EmitTypeOfExpression( context, currentSchema.TargetType )
+						this.EmitInvokeMethodExpression(
+							context,
+							null,
+							PolymorphismSchema.ForPolymorphicObjectTypeEmbeddingMethod,
+							this.EmitTypeOfExpression( context, currentSchema.TargetType )
+						)
 					);
 			}
 			else
 			{
-				var typeMap = this.DeclareLocal( context, typeof( Dictionary<byte, Type> ), prefix + "TypeMap" );
+				var typeMap = this.DeclareLocal( context, typeof( Dictionary<byte, Type> ), String.IsNullOrEmpty( prefix ) ? "typeMap" : ( prefix + "TypeMap" ) );
+				yield return typeMap;
 				foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, currentSchema, typeMap ) )
 				{
 					yield return instruction;
 				}
 
 				yield return
-					this.EmitCreateNewObjectExpression(
+					this.EmitStoreVariableStatement(
 						context,
 						storage,
-						PolymorphismSchema.ConstructorForKnownTypeMappingLeaf,
-						this.EmitTypeOfExpression( context, currentSchema.TargetType ),
-						typeMap
+						this.EmitInvokeMethodExpression(
+							context,
+							null,
+							PolymorphismSchema.ForPolymorphicObjectCodeTypeMappingMethod,
+							this.EmitTypeOfExpression( context, currentSchema.TargetType ),
+							typeMap
+						)
 					);
 			}
 		}
