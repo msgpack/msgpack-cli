@@ -570,7 +570,6 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldc_I8, value );
 		}
 
-#if DEBUG
 		///	<summary>
 		///		Emit 'ldc.r4' instruction with specified arguments.
 		///	</summary>
@@ -607,6 +606,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Ldc_R8, value );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'dup' instruction with specified arguments.
 		///	</summary>
@@ -3496,6 +3496,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Endfilter );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'initobj' instruction with specified arguments.
@@ -3515,6 +3516,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.Emit( OpCodes.Initobj, type );
 		}
 
+#if DEBUG
 		///	<summary>
 		///		Emit 'cpblk' instruction with specified arguments.
 		///	</summary>

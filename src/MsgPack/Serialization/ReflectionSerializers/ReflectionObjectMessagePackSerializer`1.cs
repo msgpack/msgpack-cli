@@ -264,7 +264,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 			if ( this._constructorParameters != null )
 			{
-#if !UNITY
+#if DEBUG && !UNITY
 				Contract.Assert( objectGraph is object[] );
 #endif // !UNITY
 
