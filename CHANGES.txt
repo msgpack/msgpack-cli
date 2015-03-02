@@ -229,10 +229,15 @@ Release 0.5.10 - 2015/2/10
   BUG FIXES
   * Avoid memcmp usage for Windows Phone App Certification. Issue #65.
 
-Release 0.6.0 Alpha1 -
+Release 0.5.11 - 2015/3/1
+
+  NEW FEATURE
+  * `MessagePackIgnoreAttribute` to exclude properties. Issue #55 
+
+Release 0.6.0 Alpha1 - 2015/3/2
 
   BREAKING CHANGES
-  * Non-public types such as internal/Assembly types are not supported even if WinRT or Reflection serializer because it was just bug and non-public types should not be serialized.
+  * Non-public types such as internal/Assembly types are not supported even if WinRT or Reflection serializer had worked for them because it had been just bug and non-public types should not be serialized.
     Note that .NET default serializers and pre-generated serializers for Xamarin are not affected because they had failed to generate serializers for non-public types.
 
   BUG FIXES
@@ -240,6 +245,10 @@ Release 0.6.0 Alpha1 -
     Non-public types are now rejected with `SerializationException`. This fix leads (probably small) breaking changes.
 
   NEW FEATURE
-  * `MessagePackIgnoreAttribute` to exclude properties. Issue #55
   * Deserializer now uses 'best match' constructor when all members are read-only. Issue #52.
   * `MessagePackSerializer.UnpackMessagePackObject` API. This is convinient shortcut to deserialize stream as `MessagePackObject` tree.
+
+Release 0.6.0 Alpha2 -
+
+  NEW FEATURE
+  * Add Type Embedding. Issue #47.
