@@ -61,7 +61,7 @@ namespace MsgPack.Serialization
 	{
 		private SerializationContext GetSerializationContext()
 		{
-			return new SerializationContext( PackerCompatibilityOptions.None ) { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ReflectionBased };
+			return new SerializationContext { SerializationMethod = SerializationMethod.Array, EmitterFlavor = EmitterFlavor.ReflectionBased };
 		}
 
 		private SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
