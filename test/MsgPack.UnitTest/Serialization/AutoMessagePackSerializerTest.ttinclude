@@ -1,4 +1,5 @@
-﻿<#+ 
+﻿<#@include file="AutoMessagePackSerializerTest.Polymorphism.ttinclude" #>
+<#+ 
 void Geneate( string serializationMethod, string emitterFlavor, string builderTypeName, bool canDump )
 {
 	GenerateCore( serializationMethod, emitterFlavor, builderTypeName, canDump, false );
@@ -81,6 +82,7 @@ using NUnit.Framework;
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
 using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using CategoryAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestCategoryAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
@@ -2166,5 +2168,6 @@ namespace MsgPack.Serialization
 #pragma warning restore 659
 
 <#+
-}	
+	GeneratePolymorphismTestParts();
+}
 #>

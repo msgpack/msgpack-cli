@@ -1239,6 +1239,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayGenerationBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
+    <None Include="Serialization\AutoMessagePackSerializerTest.Polymorphism.ttinclude" />
     <None Include="Serialization\AutoMessagePackSerializerTest.ttinclude" />
     <None Include="Serialization\AutoMessagePackSerializerTest.Types.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
