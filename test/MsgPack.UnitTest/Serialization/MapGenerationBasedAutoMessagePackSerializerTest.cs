@@ -715,6 +715,16 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		public class HasPrivateSetterPropertyWithConstructor
+		{
+			public string Property { get; private set; }
+
+			public HasPrivateSetterPropertyWithConstructor( string property )
+			{
+				this.Property = property;
+			}
+		}
+
 		public class OnlyCollection
 		{
 			public readonly List<int> Collection = new List<int>();

@@ -872,6 +872,25 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		public void TestHasPrivateSetterPropertyWithConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackArrayHeader( 2 );
+					packer.Pack( "ABC" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				Assert.That( result.Property, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
 		public void TestOnlyCollection_Success()
 		{
 			var serializer = this.CreateTarget<OnlyCollection>( GetSerializationContext() );
@@ -1685,6 +1704,16 @@ namespace MsgPack.Serialization
 			public HasGetOnlyPropertyWithConstructor( string property )
 			{
 				this._property = property;
+			}
+		}
+
+		public class HasPrivateSetterPropertyWithConstructor
+		{
+			public string Property { get; private set; }
+
+			public HasPrivateSetterPropertyWithConstructor( string property )
+			{
+				this.Property = property;
 			}
 		}
 
