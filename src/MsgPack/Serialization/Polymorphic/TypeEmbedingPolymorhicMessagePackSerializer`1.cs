@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.Polymorphic
 				throw SerializationExceptions.NewValueTypeCannotBePolymorphic( typeof( T ) );
 			}
 
-			this._schema = schema;
+			this._schema = schema.FilterSelf();
 		}
 
 		protected internal override void PackToCore( Packer packer, T objectTree )

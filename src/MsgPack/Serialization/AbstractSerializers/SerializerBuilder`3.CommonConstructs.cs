@@ -1730,7 +1730,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 				yield break;
 			}
 
-#warning TODO: Local variable uniqueness
 			switch ( schema.ChildrenType )
 			{
 				case PolymorphismSchemaChildrenType.CollectionItems:
@@ -1745,17 +1744,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 * :
 					 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
 					 */
+					var itemsSchemaVariableName = context.GetUniqueVariableName( "itemsSchema" );
 					var itemsSchema =
 						schema.ItemSchema.UseDefault
 							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
-							: this.DeclareLocal( context, typeof( PolymorphismSchema ), "itemsSchema" );
+							: this.DeclareLocal( context, typeof( PolymorphismSchema ), itemsSchemaVariableName );
 					if ( !schema.ItemSchema.UseDefault )
 					{
 						yield return itemsSchema;
 
 						foreach (
 							var instruction in
-								this.EmitConstructLeafPolymorphismSchema( context, itemsSchema, schema.ItemSchema, "itemsSchema" )
+								this.EmitConstructLeafPolymorphismSchema( context, itemsSchema, schema.ItemSchema, itemsSchemaVariableName )
 						)
 						{
 							yield return instruction;
@@ -1794,8 +1794,25 @@ namespace MsgPack.Serialization.AbstractSerializers
 					}
 					else
 					{
-						var typeMap = this.DeclareLocal( context, typeof( Dictionary<byte, Type> ), "typeMap" );
-						yield return typeMap;
+						var typeMap =
+							this.DeclareLocal(
+								context,
+								typeof( Dictionary<byte, Type> ),
+								context.GetUniqueVariableName( "typeMap" )
+							);
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								typeMap,
+								this.EmitCreateNewObjectExpression(
+									context,
+									typeMap,
+									PolymorphismSchema.CodeTypeMapConstructor,
+									this.MakeInt32Literal( context, schema.CodeTypeMapping.Count )
+								)
+							);
+
+
 						foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, schema, typeMap ) )
 						{
 							yield return instruction;
@@ -1833,32 +1850,34 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 * :
 					 * storage = new PolymorphismSchema( __type, __map, __keysSchema, __valuesSchema );
 					 */
+					var keysSchemaVariableName = context.GetUniqueVariableName( "keysSchema" );
 					var keysSchema =
 						schema.KeySchema.UseDefault
 							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
-							: this.DeclareLocal( context, typeof( PolymorphismSchema ), "keysSchema" );
+							: this.DeclareLocal( context, typeof( PolymorphismSchema ), keysSchemaVariableName );
 					if ( !schema.KeySchema.UseDefault )
 					{
 						yield return keysSchema;
 						foreach (
 							var instruction in
-								this.EmitConstructLeafPolymorphismSchema( context, keysSchema, schema.KeySchema, "keysSchema" )
+								this.EmitConstructLeafPolymorphismSchema( context, keysSchema, schema.KeySchema, keysSchemaVariableName )
 						)
 						{
 							yield return instruction;
 						}
 					}
 
+					var valuesSchemaVariableName = context.GetUniqueVariableName( "valuesSchema" );
 					var valuesSchema =
 						schema.ItemSchema.UseDefault
 							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
-							: this.DeclareLocal( context, typeof( PolymorphismSchema ), "valuesSchema" );
+							: this.DeclareLocal( context, typeof( PolymorphismSchema ), valuesSchemaVariableName );
 					if ( !schema.ItemSchema.UseDefault )
 					{
 						yield return valuesSchema;
 						foreach (
 							var instruction in
-								this.EmitConstructLeafPolymorphismSchema( context, valuesSchema, schema.ItemSchema, "valuesSchema" )
+								this.EmitConstructLeafPolymorphismSchema( context, valuesSchema, schema.ItemSchema, valuesSchemaVariableName )
 						)
 						{
 							yield return instruction;
@@ -1899,8 +1918,25 @@ namespace MsgPack.Serialization.AbstractSerializers
 					}
 					else
 					{
-						var typeMap = this.DeclareLocal( context, typeof( Dictionary<byte, Type> ), "typeMap" );
-						yield return typeMap;
+						var typeMap =
+							this.DeclareLocal(
+								context,
+								typeof( Dictionary<byte, Type> ),
+								context.GetUniqueVariableName( "typeMap" )
+							);
+
+						yield return
+							this.EmitStoreVariableStatement(
+								context,
+								typeMap,
+								this.EmitCreateNewObjectExpression(
+									context,
+									typeMap,
+									PolymorphismSchema.CodeTypeMapConstructor,
+									this.MakeInt32Literal( context, schema.CodeTypeMapping.Count )
+								)
+							);
+
 						foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, schema, typeMap ) )
 						{
 							yield return instruction;
@@ -1952,18 +1988,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 * storage = new PolymorphismSchema( __type, __map, __itemsSchema );
 					 */
 					var tupleItems = TupleItems.GetTupleItemTypes( schema.TargetType );
-					var tupleItemsSchema = this.DeclareLocal( context, typeof( PolymorphismSchema[] ), "tupleItemsSchema" );
-					yield return tupleItemsSchema;
+					var tupleItemsSchema =
+						this.DeclareLocal(
+							context,
+							typeof( PolymorphismSchema[] ),
+							context.GetUniqueVariableName( "tupleItemsSchema" ) 
+						);
 
+					yield return tupleItemsSchema;
+	
 					yield return
 						this.EmitStoreVariableStatement(
 							context,
 							tupleItemsSchema,
-							this.EmitCreateNewArrayExpression( context, typeof( PolymorphismSchema ), tupleItems.Count ) 
+							this.EmitCreateNewArrayExpression( context, typeof( PolymorphismSchema ), tupleItems.Count )
 						);
 					for ( var i = 0; i < tupleItems.Count; i++ )
 					{
-						var variableName = "itemSchema" + i.ToString( CultureInfo.InvariantCulture );
+						var variableName = context.GetUniqueVariableName( "tupleItemSchema" );
 						var itemSchema = this.DeclareLocal( context, typeof( PolymorphismSchema ), variableName );
 						yield return itemSchema;
 						foreach ( var statement in this.EmitConstructLeafPolymorphismSchema( context, itemSchema, schema.ChildSchemaList[ i ], variableName ) )
@@ -2039,8 +2081,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				var typeMap = this.DeclareLocal( context, typeof( Dictionary<byte, Type> ), String.IsNullOrEmpty( prefix ) ? "typeMap" : ( prefix + "TypeMap" ) );
+				var typeMap =
+					this.DeclareLocal(
+						context,
+						typeof( Dictionary<byte, Type> ),
+						context.GetUniqueVariableName( String.IsNullOrEmpty( prefix ) ? "typeMap" : ( prefix + "TypeMap" ) )
+					);
+
 				yield return typeMap;
+
 				foreach ( var instruction in this.EmitConstructTypeCodeMappingForPolymorphismSchema( context, currentSchema, typeMap ) )
 				{
 					yield return instruction;
@@ -2067,12 +2116,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TConstruct typeMap )
 		{
 			yield return
-				this.EmitCreateNewObjectExpression(
+				this.EmitStoreVariableStatement(
 					context,
 					typeMap,
-					PolymorphismSchema.CodeTypeMapConstructor,
-					this.MakeInt32Literal( context, currentSchema.CodeTypeMapping.Count )
-					);
+					this.EmitCreateNewObjectExpression(
+						context,
+						typeMap,
+						PolymorphismSchema.CodeTypeMapConstructor,
+						this.MakeInt32Literal( context, currentSchema.CodeTypeMapping.Count )
+					)
+				);
 
 			foreach ( var entry in currentSchema.CodeTypeMapping )
 			{
@@ -2083,7 +2136,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						PolymorphismSchema.AddToCodeTypeMapMethod,
 						this.MakeByteLiteral( context, entry.Key ),
 						this.EmitTypeOfExpression( context, entry.Value )
-						);
+					);
 			}
 		}
 

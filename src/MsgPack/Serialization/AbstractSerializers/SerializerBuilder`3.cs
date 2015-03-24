@@ -19,9 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 
 using MsgPack.Serialization.DefaultSerializers;
 

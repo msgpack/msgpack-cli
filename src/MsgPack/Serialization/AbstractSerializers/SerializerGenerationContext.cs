@@ -124,5 +124,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </summary>
 		/// <param name="targetType">Type of the serialization target.</param>
 		protected abstract void ResetCore( Type targetType );
+
+		/// <summary>
+		///		Gets a unique name of a local variable.
+		/// </summary>
+		/// <param name="prefix">The prefix of the variable.</param>
+		/// <returns>A unique name of a local variable.</returns>
+		public virtual string GetUniqueVariableName( string prefix )
+		{
+			// Many implementations do not need local variable name, so this method is not needed to do anything.
+			return prefix;
+		}
 	}
 }

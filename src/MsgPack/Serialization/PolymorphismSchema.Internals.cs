@@ -122,7 +122,7 @@ namespace MsgPack.Serialization
 
 		internal static readonly ConstructorInfo CodeTypeMapConstructor =
 			typeof( Dictionary<,> ).MakeGenericType( typeof( byte ), typeof( Type ) )
-				.GetConstructor( ReflectionAbstractions.EmptyTypes );
+				.GetConstructor( new [] { typeof( int ) } );
 
 		internal static readonly MethodInfo AddToCodeTypeMapMethod =
 			typeof( Dictionary<,> ).MakeGenericType( typeof( byte ), typeof( Type ) )

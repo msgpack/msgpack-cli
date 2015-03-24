@@ -58,7 +58,7 @@ namespace MsgPack.Serialization.Polymorphic
 						typeof( KnownTypePolymorhicMessagePackSerializer<> ),
 						this._targetType,
 						context,
-						schema.CodeTypeMapping
+						schema
 					);
 			}
 		}

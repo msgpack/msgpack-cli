@@ -38,7 +38,7 @@ namespace MsgPack.Serialization
 		{
 			this.TargetType = null;
 			this.PolymorphismType = PolymorphismType.None;
-			this.CodeTypeMapping = new ReadOnlyDictionary<byte, Type>( EmptyMap );
+			this._codeTypeMapping = new ReadOnlyDictionary<byte, Type>( EmptyMap );
 			this.ChildrenType = PolymorphismSchemaChildrenType.None;
 			this._children = new ReadOnlyCollection<PolymorphismSchema>( EmptyChildren );
 		}
@@ -49,7 +49,15 @@ namespace MsgPack.Serialization
 			PolymorphismType polymorphismType,
 			PolymorphismSchemaChildrenType childrenType,
 			params PolymorphismSchema[] childItemSchemaList )
-			: this( targetType, polymorphismType, new ReadOnlyDictionary<byte, Type>( EmptyMap ), childrenType, childItemSchemaList ) { }
+			: this(
+				targetType,
+				polymorphismType,
+				new ReadOnlyDictionary<byte, Type>( EmptyMap ),
+				childrenType,
+				new ReadOnlyCollection<PolymorphismSchema>(
+					( childItemSchemaList ?? EmptyChildren ).Select( x => x ?? Default ).ToArray()
+				) 
+			) {}
 
 		private PolymorphismSchema(
 			Type targetType,
@@ -57,6 +65,22 @@ namespace MsgPack.Serialization
 			IDictionary<byte, Type> codeTypeMapping,
 			PolymorphismSchemaChildrenType childrenType,
 			params PolymorphismSchema[] childItemSchemaList )
+			: this(
+				targetType,
+				polymorphismType,
+				new ReadOnlyDictionary<byte, Type>( codeTypeMapping ),
+				childrenType,
+				new ReadOnlyCollection<PolymorphismSchema>(
+					( childItemSchemaList ?? EmptyChildren ).Select( x => x ?? Default ).ToArray()
+				)
+			) {}
+
+		private PolymorphismSchema(
+			Type targetType,
+			PolymorphismType polymorphismType,
+			ReadOnlyDictionary<byte, Type> codeTypeMapping,
+			PolymorphismSchemaChildrenType childrenType,
+			ReadOnlyCollection<PolymorphismSchema> childItemSchemaList )
 		{
 			if ( targetType == null )
 			{
@@ -65,12 +89,9 @@ namespace MsgPack.Serialization
 
 			this.TargetType = targetType;
 			this.PolymorphismType = polymorphismType;
-			this.CodeTypeMapping = codeTypeMapping;
+			this._codeTypeMapping = codeTypeMapping;
 			this.ChildrenType = childrenType;
-			this._children =
-				new ReadOnlyCollection<PolymorphismSchema>(
-					( childItemSchemaList ?? EmptyChildren ).Select( x => x ?? Default ).ToArray() 
-				);
+			this._children = childItemSchemaList;
 		}
 
 		// Plane
@@ -288,5 +309,15 @@ namespace MsgPack.Serialization
 			}
 		}
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+
+		internal PolymorphismSchema FilterSelf()
+		{
+			if ( this == Default )
+			{
+				return this;
+			}
+
+			return new PolymorphismSchema( this.TargetType, PolymorphismType.None, this._codeTypeMapping, this.ChildrenType, this._children );
+		}
 	}
 }

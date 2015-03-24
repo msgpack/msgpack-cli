@@ -154,7 +154,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		/// </summary>
 		/// <param name="prefix">The prefix of the variable.</param>
 		/// <returns>A unique name of a local variable.</returns>
-		public string GetUniqueVariableName( string prefix )
+		public override string GetUniqueVariableName( string prefix )
 		{
 			int counter;
 			if ( !this._uniqueVariableSuffixes.TryGetValue( prefix, out counter ) )

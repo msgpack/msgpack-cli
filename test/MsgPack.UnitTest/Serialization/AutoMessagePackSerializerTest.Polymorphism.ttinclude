@@ -168,7 +168,8 @@ private void GeneratePolymorphismTestParts()
 
 		foreach( var member in collectionTypes )
 		{
-			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyCollectionProperty, TypeKind.PrivateSetterCollectionProperty, TypeKind.ReadOnlyCollectionField, TypeKind.GetOnlyPropertyAndConstructor, TypeKind.PrivateSetterPropertyAndConstructor, TypeKind.ReadOnlyFieldAndConstructor } )
+			// Note: combination of deserialization constructor and collection get/read only member is not valid.
+			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyCollectionProperty, TypeKind.PrivateSetterCollectionProperty, TypeKind.ReadOnlyCollectionField } )
 			{
 				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Collection_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false );
 				GeneratePolymorphicTestMethods( typeName, kind, member, "Success" );
@@ -327,6 +328,7 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumera
 		var backingField = GetMemberNameGenerator( TypeKind.Property )( member.Name );
 
 #>
+
 			private <#= asObject ? "object" : member.Type #> <#=  backingField #>;
 
 			public <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( TypeKind.Field )( member.Name ) #>
@@ -347,36 +349,26 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumera
 
 private void GenerateConstructor( string typeName, TypeKind kind, bool asObject, params Member[] members )
 {
-	if ( ( kind & TypeKind.ConstructorMask ) == TypeKind.HasConstructor )
-	{
 #>
-
-			public <#= typeName #>( <#=  String.Join( ", ", members.Select( member => ( asObject ? "object" : member.Type ) + " " + member.Name ) ) #> ) 
+			<#= ( kind & TypeKind.ConstructorMask ) == TypeKind.HasConstructor ? "public" : "private" #> <#= typeName #>( <#=  String.Join( ", ", members.Select( member => ( asObject ? "object" : member.Type ) + " " + member.Name ) ) #> ) 
 			{
 <#+
-		foreach ( var member in members )
-		{
+	foreach ( var member in members )
+	{
 #>
 				this.<#=  GetMemberNameGenerator( kind )( member.Name ) #> = <#= member.Name #>;
 <#+
-		}
-#>
-			}
-<#+
 	}
-	else
+#>
+			}<#+
+	if ( ( kind & TypeKind.ConstructorMask ) == 0 )
 	{
 #>
-			public <#= typeName #>() 
+			public <#= typeName #>() { }
+
+			public static <#= typeName #> Initialize()
 			{
-<#+
-		foreach ( var member in members )
-		{
-#>
-				this.<#=  GetMemberNameGenerator( kind )( member.Name ) #> = <#= member.InitialValue #>;
-<#+
-		}
-#>
+				return new <#= typeName #>( <#= String.Join( ", ", members.Select( m => m.InitialValue ) ) #> );
 			}
 <#+
 	}
@@ -392,7 +384,20 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 		public void Test<#= targetType + String.Join( "_", labelComponents ) #>()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new <#= targetType #>(<#= ( kind & TypeKind.ConstructorMask ) == TypeKind.HasConstructor ? " " + member.InitialValue + " ": String.Empty #>);
+<#+
+	if ( ( kind & TypeKind.ConstructorMask ) == TypeKind.HasConstructor )
+	{
+#>
+			var target = new <#= targetType #>( <#= member.InitialValue #> );
+<#+
+	}
+	else
+	{
+#>
+			var target = <#= targetType #>.Initialize();
+<#+
+	}
+#>
 			var serializer = context.GetSerializer<#= "<" + targetType + ">" #>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -452,10 +457,12 @@ private void GeneratePolymorphicTestsForMixed()
 <#+
 		}
 #>
+
 			public <#= member.Type #> <#= member.Name #> { get; set; }
 <#+
 	}
 #>
+
 			public <#= typeName #>() { }
 		}
 

@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
@@ -56,20 +57,22 @@ namespace MsgPack.Serialization
 		/// </value>
 		internal PolymorphismType PolymorphismType { get; private set; }
 
+		private readonly ReadOnlyDictionary<byte, Type> _codeTypeMapping;
+
 		/// <summary>
 		///		Gets the code type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.
 		/// </summary>
 		/// <value>
 		///		The code type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.
 		/// </value>
-		internal IDictionary<byte, Type> CodeTypeMapping { get; private set; }
+		internal IDictionary<byte, Type> CodeTypeMapping { get { return this._codeTypeMapping; } }
 
 		internal bool UseDefault { get { return this.PolymorphismType == PolymorphismType.None; } }
 		internal bool UseTypeEmbedding { get { return this.PolymorphismType == PolymorphismType.RuntimeType; } }
 
 		internal PolymorphismSchemaChildrenType ChildrenType { get; private set; }
 
-		private readonly IList<PolymorphismSchema> _children;
+		private readonly ReadOnlyCollection<PolymorphismSchema> _children;
 
 		/// <summary>
 		///		Gets the schema for child items of the serialization target collection/tuple.
