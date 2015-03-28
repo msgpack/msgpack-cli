@@ -563,7 +563,7 @@ namespace MsgPack.Serialization
 #if DEBUG && !UNITY
 			else
 			{
-				Contract.Assert( !typeof( T ).GetIsEnum(), typeof( T ) + " is enum but generated serializer is not ICustomizableEnumSerializer" );
+				Contract.Assert( !typeof( T ).GetIsEnum(), typeof( T ) + " is enum but generated serializer is not ICustomizableEnumSerializer : " + serializer.GetType() );
 			}
 #endif // DEBUG && !UNITY
 

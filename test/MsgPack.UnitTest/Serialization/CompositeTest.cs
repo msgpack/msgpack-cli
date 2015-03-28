@@ -153,7 +153,7 @@ namespace MsgPack.Serialization
 			root.Files = new FileItem[ 0 ];
 
 			var serializer = 
-				new AutoMessagePackSerializer<DirectoryItem>( 
+				generator.BuildSerializerInstance(
 					new SerializationContext
 					{
 						EmitterFlavor = emittingFlavor, 
@@ -164,7 +164,6 @@ namespace MsgPack.Serialization
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump
 #endif
 					}, 
-					generator,
 					PolymorphismSchema.Default
 				);
 			using ( var memoryStream = new MemoryStream() )

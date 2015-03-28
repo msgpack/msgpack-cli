@@ -277,7 +277,7 @@ namespace MsgPack.Serialization
 			}
 #endif // NETFX_CORE else
 
-			return new AutoMessagePackSerializer<T>( context, builder, schema );
+			return builder.BuildSerializerInstance( context, schema );
 #endif // XAMIOS || XAMDROID || UNITY else
 		}
 

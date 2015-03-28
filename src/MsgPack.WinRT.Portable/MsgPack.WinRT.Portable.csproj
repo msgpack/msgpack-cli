@@ -208,9 +208,6 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\SerializerMethod.cs">
       <Link>Serialization\AbstractSerializers\SerializerMethod.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\AutoMessagePackSerializer`1.cs">
-      <Link>Serialization\AutoMessagePackSerializer`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\BoxedEnumMemberSerializationMethod.cs">
       <Link>Serialization\BoxedEnumMemberSerializationMethod.cs</Link>
     </Compile>

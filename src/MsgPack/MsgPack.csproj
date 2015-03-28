@@ -332,7 +332,6 @@
     <Compile Include="Serialization\Metadata\_Unpacker.cs" />
     <Compile Include="Serialization\Metadata\_Packer.cs" />
     <Compile Include="Serialization\IdentifierUtility.cs" />
-    <Compile Include="Serialization\AutoMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectionTraits.cs" />
     <Compile Include="Serialization\CollectionKind.cs" />
     <Compile Include="Serialization\DataMemberContract.cs" />
