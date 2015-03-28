@@ -128,9 +128,8 @@
     <None Include="..\..\src\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
-    <None Include="..\MsgPack.UnitTest.BclExtensions\packages.config">
-      <Link>packages.config</Link>
-    </None>
+    <None Include="MsgPack.UnitTest.BclExtensions.WinRT_TemporaryKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\UnitTestLogo.png">
