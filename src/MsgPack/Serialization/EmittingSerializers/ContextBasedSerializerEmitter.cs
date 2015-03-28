@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -144,18 +145,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Regisgter using <see cref="MessagePackSerializer{T}" /> target type to the current emitting session.
+		///		Regisgters <see cref="MessagePackSerializer{T}"/> of target type usage to the current emitting session.
 		/// </summary>
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
 		/// <param name="polymorphismSchema">The schema for polymorphism support.</param>
+		/// <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
 		/// <returns>
-		///		<see cref=" Action{T1,T2}" /> to emit serializer retrieval instructions.
-		///		The 1st argument should be <see cref="TracingILGenerator" /> to emit instructions.
-		///		The 2nd argument should be argument index of the serializer holder.
+		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
+		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
+		///		The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod, PolymorphismSchema polymorphismSchema )
+		public override Action<TracingILGenerator, int> RegisterSerializer(
+			Type targetType,
+			EnumMemberSerializationMethod enumMemberSerializationMethod,
+			PolymorphismSchema polymorphismSchema,
+			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider
+		)
 		{
 			// This return value should not be used.
 			return ( g, i ) => { throw new NotImplementedException(); };

@@ -40,13 +40,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
-			var instructions = 
-				context.Emitter.RegisterSerializer( 
-					targetType, 
+			var realSchema = itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo );
+			var instructions =
+				context.Emitter.RegisterSerializer(
+					targetType,
 					memberInfo == null
-					? EnumMemberSerializationMethod.Default 
-					: memberInfo.Value.GetEnumMemberSerializationMethod(),
-					itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
+						? EnumMemberSerializationMethod.Default
+						: memberInfo.Value.GetEnumMemberSerializationMethod(),
+					realSchema,
+					() => this.EmitConstructPolymorphismSchema( context, realSchema ) 
 				);
 
 			return
@@ -59,6 +61,23 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		private IEnumerable<ILConstruct> EmitConstructPolymorphismSchema(
+			AssemblyBuilderEmittingContext context,
+			PolymorphismSchema currentSchema 
+		)
+		{
+			var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), "schema" );
+			
+			yield return schema;
+			
+			foreach ( var construct in this.EmitConstructPolymorphismSchema( context, schema, currentSchema ) )
+			{
+				yield return construct;
+			}
+
+			yield return this.EmitLoadVariableExpression( context, schema );
+		}
+		
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitFieldOfExpression( AssemblyBuilderEmittingContext context, FieldInfo field )
 		{

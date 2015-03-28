@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -40,7 +39,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 	{
 		private static readonly Type[] _constructorParameterTypes = { typeof( SerializationContext ) };
 
-		private readonly Dictionary<SerializerFieldKey, FieldBuilder> _serializers;
+		private readonly Dictionary<SerializerFieldKey, SerializerFieldInfo> _serializers;
 		private readonly Dictionary<RuntimeFieldHandle, FieldBuilder> _fieldInfos;
 		private readonly Dictionary<RuntimeMethodHandle, FieldBuilder> _methodBases;
 		private readonly ConstructorBuilder _defaultConstructorBuilder;
@@ -65,7 +64,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			string typeName =
 #if !NETFX_35
- String.Join(
+			String.Join(
 					Type.Delimiter.ToString( CultureInfo.InvariantCulture ),
 					typeof( SerializerEmitter ).Namespace,
 					"Generated",
@@ -117,7 +116,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif
 			this._typeBuilder.DefineMethodOverride( this._packMethodBuilder, baseType.GetMethod( this._packMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
 			this._typeBuilder.DefineMethodOverride( this._unpackFromMethodBuilder, baseType.GetMethod( this._unpackFromMethodBuilder.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic ) );
-			this._serializers = new Dictionary<SerializerFieldKey, FieldBuilder>();
+			this._serializers = new Dictionary<SerializerFieldKey, SerializerFieldInfo>();
 			this._fieldInfos = new Dictionary<RuntimeFieldHandle, FieldBuilder>();
 			this._methodBases = new Dictionary<RuntimeMethodHandle, FieldBuilder>();
 			this._isDebuggable = isDebuggable;
@@ -253,29 +252,32 @@ namespace MsgPack.Serialization.EmittingSerializers
 					foreach ( var entry in this._serializers )
 					{
 						var targetType = Type.GetTypeFromHandle( entry.Key.TypeHandle );
-						MethodInfo getMethod;
-						if ( !targetType.GetIsEnum() )
-						{
-							getMethod = Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType );
-						}
-						else
-						{
-							getMethod = Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType );
-						}
+						MethodInfo getMethod = Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType );
+
 						il.EmitLdarg_0();
 						il.EmitLdarg_1();
 						if ( targetType.GetIsEnum() )
 						{
 							il.EmitLdarg_1();
 							il.EmitTypeOf( targetType );
-							il.EmitAnyLdc_I4( ( int )entry.Key.EnumSerializationMethod );
+							il.EmitAnyLdc_I4( ( int ) entry.Key.EnumSerializationMethod );
 							il.EmitCall( Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod );
 							il.EmitBox( typeof( EnumSerializationMethod ) );
 						}
+						else
+						{
+							if ( entry.Key.PolymorphismSchema == null )
+							{
+								il.EmitLdnull();
+							}
+							else
+							{
+								entry.Value.SchemaProvider( il );
+							}
+						}
 
 						il.EmitCallvirt( getMethod );
-						il.EmitStfld( entry.Value );
-
+						il.EmitStfld( entry.Value.Field );
 					}
 
 					foreach ( var entry in this._fieldInfos )
@@ -314,18 +316,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		/// <summary>
-		///		Regisgter using <see cref="MessagePackSerializer{T}" /> target type to the current emitting session.
+		///		Regisgters <see cref="MessagePackSerializer{T}"/> of target type usage to the current emitting session.
 		/// </summary>
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
 		/// <param name="polymorphismSchema">The schema for polymorphism support.</param>
+		/// <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
 		/// <returns>
-		///		<see cref=" Action{T1,T2}" /> to emit serializer retrieval instructions.
-		///		The 1st argument should be <see cref="TracingILGenerator" /> to emit instructions.
-		///		The 2nd argument should be argument index of the serializer holder.
+		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
+		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
+		///		The 2nd argument should be argument index of the serializer holder, normally 0 (this pointer).
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod, PolymorphismSchema polymorphismSchema )
+		public override Action<TracingILGenerator, int> RegisterSerializer(
+			Type targetType,
+			EnumMemberSerializationMethod enumMemberSerializationMethod,
+			PolymorphismSchema polymorphismSchema,
+			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider 
+		)
 		{
 			if ( this._typeBuilder.IsCreated() )
 			{
@@ -334,10 +342,24 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 			var key = new SerializerFieldKey( targetType, enumMemberSerializationMethod, polymorphismSchema );
 
-			FieldBuilder result;
+			SerializerFieldInfo result;
 			if ( !this._serializers.TryGetValue( key, out result ) )
 			{
-				result = this._typeBuilder.DefineField( "_serializer" + this._serializers.Count, typeof( MessagePackSerializer<> ).MakeGenericType( targetType ), FieldAttributes.Private | FieldAttributes.InitOnly );
+				result =
+					new SerializerFieldInfo(
+						this._typeBuilder.DefineField(
+							"_serializer" + this._serializers.Count,
+							typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
+							FieldAttributes.Private | FieldAttributes.InitOnly ),
+						il =>
+						{
+							foreach ( var construct in schemaRegenerationCodeProvider() )
+							{
+								construct.Evaluate( il );
+							}
+						}
+					);
+
 				this._serializers.Add( key, result );
 			}
 
@@ -345,7 +367,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				( il, thisIndex ) =>
 				{
 					il.EmitAnyLdarg( thisIndex );
-					il.EmitLdfld( result );
+					il.EmitLdfld( result.Field );
 				};
 		}
 
@@ -397,6 +419,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il.EmitAnyLdarg( thisIndex );
 					il.EmitLdfld( result );
 				};
+		}
+
+		private struct SerializerFieldInfo
+		{
+			public readonly FieldBuilder Field;
+			public readonly Action<TracingILGenerator> SchemaProvider;
+
+			public SerializerFieldInfo( FieldBuilder field, Action<TracingILGenerator> schemaProvider )
+			{
+				this.Field = field;
+				this.SchemaProvider = schemaProvider;
+			}
 		}
 	}
 }

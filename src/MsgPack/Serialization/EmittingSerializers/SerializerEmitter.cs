@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 
@@ -114,6 +115,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <param name="targetType">The type of the member to be serialized/deserialized.</param>
 		/// <param name="enumMemberSerializationMethod">The enum serialization method of the member to be serialized/deserialized.</param>
 		/// <param name="polymorphismSchema">The schema for polymorphism support.</param>
+		/// <param name="schemaRegenerationCodeProvider">The delegate to provide constructs to emit schema regeneration codes.</param>
 		/// <returns>
 		///		<see cref=" Action{T1,T2}"/> to emit serializer retrieval instructions.
 		///		The 1st argument should be <see cref="TracingILGenerator"/> to emit instructions.
@@ -123,7 +125,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public abstract Action<TracingILGenerator, int> RegisterSerializer(
 			Type targetType,
 			EnumMemberSerializationMethod enumMemberSerializationMethod,
-			PolymorphismSchema polymorphismSchema
+			PolymorphismSchema polymorphismSchema,
+			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider
 		);
 
 		/// <summary>
@@ -184,7 +187,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return null;
 		}
 
-		public override Action<TracingILGenerator, int> RegisterSerializer( Type targetType, EnumMemberSerializationMethod enumMemberSerializationMethod, PolymorphismSchema polymorphismSchema )
+		public override Action<TracingILGenerator, int> RegisterSerializer(
+			Type targetType,
+			EnumMemberSerializationMethod enumMemberSerializationMethod,
+			PolymorphismSchema polymorphismSchema,
+			Func<IEnumerable<ILConstruct>> schemaRegenerationCodeProvider 
+		)
 		{
 			Contract.Requires( targetType != null );
 			Contract.Requires( Enum.IsDefined( typeof( EnumMemberSerializationMethod ), enumMemberSerializationMethod ) );
