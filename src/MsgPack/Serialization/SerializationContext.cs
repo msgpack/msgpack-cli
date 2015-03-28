@@ -423,7 +423,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // !UNITY
 
-			var itemSchema = providerParameter as PolymorphismSchema ?? PolymorphismSchema.Default;
+			var schema = providerParameter as PolymorphismSchema ?? PolymorphismSchema.Default;
 			MessagePackSerializer<T> serializer = null;
 			while ( serializer == null )
 			{
@@ -435,8 +435,8 @@ namespace MsgPack.Serialization
 					{
 #endif // !XAMIOS && !XAMDROID && !UNITY
 						serializer =
-							this.GetSerializerWithoutGeneration( typeof( T ), itemSchema ) as MessagePackSerializer<T>
-							?? MessagePackSerializer.CreateReflectionInternal<T>( this, itemSchema );
+							this.GetSerializerWithoutGeneration( typeof( T ), schema ) as MessagePackSerializer<T>
+							?? MessagePackSerializer.CreateReflectionInternal<T>( this, schema );
 #if !XAMIOS && !XAMDROID && !UNITY
 					}
 					else
@@ -493,7 +493,7 @@ namespace MsgPack.Serialization
 								if ( lockTaken )
 								{
 									// This thread creating new type serializer.
-									serializer = MessagePackSerializer.CreateInternal<T>( this, itemSchema );
+									serializer = MessagePackSerializer.CreateInternal<T>( this, schema );
 								}
 								else
 								{
@@ -547,7 +547,7 @@ namespace MsgPack.Serialization
 		}
 
 
-		private IMessagePackSingleObjectSerializer GetSerializerWithoutGeneration( Type targetType, PolymorphismSchema itemSchema )
+		private IMessagePackSingleObjectSerializer GetSerializerWithoutGeneration( Type targetType, PolymorphismSchema schema )
 		{
 			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
 			{
@@ -555,7 +555,7 @@ namespace MsgPack.Serialization
 				if ( concreteCollectionType != null )
 				{
 					var serializer =
-						GenericSerializer.CreateCollectionInterfaceSerializer( this, targetType, concreteCollectionType, itemSchema );
+						GenericSerializer.CreateCollectionInterfaceSerializer( this, targetType, concreteCollectionType, schema );
 
 					if ( serializer != null )
 					{
