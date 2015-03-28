@@ -975,14 +975,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					codeProvider.CompileAssemblyFromDom(
 						new CompilerParameters( SerializerDebugging.CodeDomSerializerDependentAssemblies.ToArray() )
 #if PERFORMANCE_TEST
-					{
-						IncludeDebugInformation = false,
-						CompilerOptions = "/optimize+"
-					}
+						{
+							IncludeDebugInformation = false,
+							CompilerOptions = "/optimize+"
+						}
 #endif
 						,
 						cu
-						);
+					);
 				var errors = cr.Errors.OfType<CompilerError>().Where( e => !e.IsWarning ).ToArray();
 				if ( errors.Length > 0 )
 				{
