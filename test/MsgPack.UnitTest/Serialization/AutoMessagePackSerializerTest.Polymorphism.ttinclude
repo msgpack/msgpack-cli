@@ -1,4 +1,9 @@
-﻿<#+
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#+
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -119,12 +124,12 @@ private void GeneratePolymorphismTestParts()
 	var dictionaryTypes =
 		new []
 		{
-			Member.Of( "DictionaryStaticKeyAndStaticItem",			"IDictionary<string, string>",	PolymorphismTargets.None,							@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }" ),
-			Member.Of( "DictionaryPolymorphicKeyAndStaticItem",		"IDictionary<string, string>",	PolymorphismTargets.Key,							@"new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = ""file"", Size = 1L }, ""A"" }, { new DirectoryEntry = { Name = ""dir"", ChildCount = 1 }, ""B"" } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "DictionaryStaticKeyAndPolymorphicItem",		"IDictionary<string, string>",	PolymorphismTargets.Item,							@"new Dictionary<string, FileSystemEntry>{ { ""A"", new FileEntry { Name = ""file"", Size = 1L } }, { ""B"", new DirectoryEntry = { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "DictionaryPolymorphicKeyAndItem",			"IDictionary<string, string>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "DictionaryPolymorphicItself",				"IDictionary<string, string>",	PolymorphismTargets.Member,							@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }", "Dictionary<string, string>", "SortedDictionary<string, string>" ),
-			Member.Of( "DictionaryPolymorphicKeyAndItemAndItself",	"IDictionary<string, string>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryStaticKeyAndStaticItem",			"IDictionary<string, string>",						PolymorphismTargets.None,							@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }" ),
+			Member.Of( "DictionaryPolymorphicKeyAndStaticItem",		"IDictionary<FileSystemEntry, string>",				PolymorphismTargets.Key,							@"new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = ""file"", Size = 1L }, ""A"" }, { new DirectoryEntry { Name = ""dir"", ChildCount = 1 }, ""B"" } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryStaticKeyAndPolymorphicItem",		"IDictionary<string, FileSystemEntry>",				PolymorphismTargets.Item,							@"new Dictionary<string, FileSystemEntry>{ { ""A"", new FileEntry { Name = ""file"", Size = 1L } }, { ""B"", new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryPolymorphicKeyAndItem",			"IDictionary<FileSystemEntry, FileSystemEntry>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryPolymorphicItself",				"IDictionary<string, string>",						PolymorphismTargets.Member,							@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }", "Dictionary<string, string>", "SortedDictionary<string, string>" ),
+			Member.Of( "DictionaryPolymorphicKeyAndItemAndItself",	"IDictionary<FileSystemEntry, FileSystemEntry>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
 		};
 	var tupleMembers =
 		new []
@@ -155,6 +160,11 @@ private void GeneratePolymorphismTestParts()
 <#+
 	foreach ( var attributeType in attributeTypes )
 	{
+#>
+		#region ---- <#= attributeType.Name #> ----
+
+		#region ------ <#= attributeType.Name #>.NormalTypes ------
+<#+
 		foreach ( var member in normalTypes )
 		{
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyPropertyAndConstructor, TypeKind.PrivateSetterPropertyAndConstructor, TypeKind.ReadOnlyFieldAndConstructor } )
@@ -165,7 +175,11 @@ private void GeneratePolymorphismTestParts()
 				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, "Success" );
 			}
 		}
+#>
+		#endregion ------ <#= attributeType.Name #>.NormalTypes ------
 
+		#region ------ <#= attributeType.Name #>.CollectionTypes ------
+<#+
 		foreach( var member in collectionTypes )
 		{
 			// Note: combination of deserialization constructor and collection get/read only member is not valid.
@@ -177,14 +191,31 @@ private void GeneratePolymorphismTestParts()
 				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, "Success" );
 			}
 		}
+#>
+		#endregion ------ <#= attributeType.Name #>.CollectionTypes ------
 
+		#region ------ <#= attributeType.Name #>.DictionaryTypes ------
+<#+
+		foreach( var member in dictionaryTypes )
+		{
+			// Note: combination of deserialization constructor and collection get/read only member is not valid.
+			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyCollectionProperty, TypeKind.PrivateSetterCollectionProperty, TypeKind.ReadOnlyCollectionField } )
+			{
+				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Dictionary_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false );
+				GeneratePolymorphicTestMethods( typeName, kind, member, "Success" );
+				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, false );
+				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, "Success" );
+			}
+		}
+#>
+		#endregion ------ <#= attributeType.Name #>.DictionaryTypes ------
+
+		#region ------ <#= attributeType.Name #>.TupleTypes ------
+<#+
 		foreach ( var member in tupleMembers )
 		{
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyPropertyAndConstructor, TypeKind.PrivateSetterPropertyAndConstructor, TypeKind.ReadOnlyFieldAndConstructor } )
 			{
-#>
-// L185
-<#+
 				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Tuple_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false );
 				GeneratePolymorphicTestMethods( typeName, kind, member, "Success" );
 				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, false );
@@ -192,6 +223,11 @@ private void GeneratePolymorphismTestParts()
 			}
 
 		}
+#>
+		#endregion ------ <#= attributeType.Name #>.TupleTypes ------
+
+		#endregion ---- <#= attributeType.Name #> ----
+<#+
 	}
 
 	// Mixed Patterns
@@ -310,15 +346,10 @@ private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member
 // Types (private)
 private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumerable<string>> attributeFactory, bool asObject )
 {
-	foreach ( var attribute in attributeFactory( member ) )
-	{
-#>
-			<#= attribute #>
-<#+
-	}
 
 	if ( ( kind & TypeKind.PropertyOrFieldMask ) == TypeKind.Field )
 	{
+		GenerateAttributes( member, attributeFactory );
 #>
 			public <#= ( kind & TypeKind.FieldKindMask ) == TypeKind.IsReadOnly ? "readonly" : String.Empty #> <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( kind )( member.Name ) #>;
 <#+
@@ -328,9 +359,11 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumera
 		var backingField = GetMemberNameGenerator( TypeKind.Property )( member.Name );
 
 #>
-
 			private <#= asObject ? "object" : member.Type #> <#=  backingField #>;
 
+<#+
+		GenerateAttributes( member, attributeFactory );
+#>
 			public <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( TypeKind.Field )( member.Name ) #>
 			{
 				get { return this.<#= backingField #>; }
@@ -347,9 +380,20 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumera
 	}
 }
 
+private void GenerateAttributes( Member member, Func<Member, IEnumerable<string>> attributeFactory )
+{
+	foreach ( var attribute in attributeFactory( member ) )
+	{
+#>
+			<#= attribute #>
+<#+
+	}
+}
+
 private void GenerateConstructor( string typeName, TypeKind kind, bool asObject, params Member[] members )
 {
 #>
+
 			<#= ( kind & TypeKind.ConstructorMask ) == TypeKind.HasConstructor ? "public" : "private" #> <#= typeName #>( <#=  String.Join( ", ", members.Select( member => ( asObject ? "object" : member.Type ) + " " + member.Name ) ) #> ) 
 			{
 <#+
@@ -360,10 +404,12 @@ private void GenerateConstructor( string typeName, TypeKind kind, bool asObject,
 <#+
 	}
 #>
-			}<#+
+			}
+<#+
 	if ( ( kind & TypeKind.ConstructorMask ) == 0 )
 	{
 #>
+
 			public <#= typeName #>() { }
 
 			public static <#= typeName #> Initialize()
@@ -443,7 +489,7 @@ private void GeneratePolymorphicTestsForMixed()
 			new { Name = "Tuple",	Type = "Tuple<string, FileSystemEntry, FileSystemEntry, object>", Attributes = new [] { "[MessagePackKnownTupleItemType( 2, 1, typeof( FileEntry ) )]", "[MessagePackKnownTupleItemType( 2, 2, typeof( DirectoryEntry ) )]", "[MessagePackRuntimeTupleItemType( 3 )]","[MessagePackRuntimeTupleItemType( 4 )]" } },
 		};
 
-	var typeName = "PolymorphicMemberTypeMixed";
+	const string typeName = "PolymorphicMemberTypeMixed";
 #>
 		public class <#= typeName #>
 		{
@@ -687,12 +733,13 @@ private void GenerateAbstractTypeTestMethod( string typeName, string initializer
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new <#= typeName #> { Value = <#= initializer #> };
-			var serializer = context.GetSerializer<#= "<" + typeName + ">" #>();
 
 <#+
 	if ( success )
 	{
 #>
+			var serializer = context.GetSerializer<#= "<" + typeName + ">" #>();
+
 			using ( var buffer = new MemoryStream() )
 			{
 				serializer.Pack( buffer, target );
