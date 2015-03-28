@@ -26,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.Serialization;
 
 using MsgPack.Serialization.ReflectionSerializers;
