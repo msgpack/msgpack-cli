@@ -66,37 +66,26 @@ namespace MsgPack.Serialization.AbstractSerializers
 				return genericSerializer;
 			}
 
+			Func<SerializationContext, MessagePackSerializer<TObject>> constructor;
 			var codeGenerationContext = this.CreateCodeGenerationContextForSerializerCreation( context );
 			if ( typeof( TObject ).GetIsEnum() )
 			{
 				this.BuildEnumSerializer( codeGenerationContext );
-				Func<SerializationContext, MessagePackSerializer<TObject>> constructor =
-					this.CreateEnumSerializerConstructor( codeGenerationContext );
-
-				if ( constructor != null )
-				{
-					var serializer = constructor( context );
-#if DEBUG
-					Contract.Assert( serializer != null );
-#endif
-					return serializer;
-				}
+				constructor = this.CreateEnumSerializerConstructor( codeGenerationContext );
 			}
 			else
 			{
 				this.BuildSerializer( codeGenerationContext, itemSchema );
-				Func<SerializationContext, MessagePackSerializer<TObject>> constructor =
-					this.CreateSerializerConstructor( codeGenerationContext );
+				constructor = this.CreateSerializerConstructor( codeGenerationContext );
+			}
 
-				if ( constructor != null )
-				{
-					var serializer = constructor( context );
-#if DEBUG
-					Contract.Assert( serializer != null );
-#endif
-
-					return serializer;
-				}
+			if ( constructor != null )
+			{
+				var serializer = constructor( context );
+#if DEBUG && !UNITY
+				Contract.Assert( serializer != null );
+#endif // DEBUG && !UNITY
+				return serializer;
 			}
 
 			throw SerializationExceptions.NewTypeCannotSerialize( typeof( TObject ) );
@@ -116,12 +105,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information. This value will not be <c>null</c>.</param>
-		/// <param name="itemSchema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
+		/// <param name="schema">The schema which contains schema for current object and its descendant collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		protected void BuildSerializer( TContext context, PolymorphismSchema itemSchema )
+		protected void BuildSerializer( TContext context, PolymorphismSchema schema )
 		{
 #if DEBUG
 			Contract.Assert( !typeof( TObject ).IsArray );
@@ -132,12 +121,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				case CollectionKind.Array:
 				{
-					this.BuildArraySerializer( context, traits, itemSchema.ItemSchema );
+					this.BuildArraySerializer( context, traits, schema.ItemSchema );
 					break;
 				}
 				case CollectionKind.Map:
 				{
-					this.BuildMapSerializer( context, traits, itemSchema.KeySchema, itemSchema.ItemSchema );
+					this.BuildMapSerializer( context, traits, schema.KeySchema, schema.ItemSchema );
 					break;
 				}
 				case CollectionKind.NotCollection:
@@ -149,11 +138,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if !NETFX_35
 					else if ( TupleItems.IsTuple( typeof( TObject ) ) )
 					{
-						this.BuildTupleSerializer( context, itemSchema.ChildSchemaList );
+						this.BuildTupleSerializer( context, schema.ChildSchemaList );
 					}
 #endif
 					else
 					{
+#if DEBUG && !UNITY
+						Contract.Assert( schema.UseDefault );
+#endif // DEBUG
 						this.BuildObjectSerializer( context );
 					}
 					break;
