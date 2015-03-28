@@ -79,14 +79,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 					Contract.Assert( serializer != null );
 #endif
-					if ( !context.Serializers.Register( serializer ) )
-					{
-						serializer = context.Serializers.Get<TObject>( context );
-#if DEBUG
-						Contract.Assert( serializer != null );
-#endif
-					}
-
 					return serializer;
 				}
 			}
@@ -102,13 +94,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 					Contract.Assert( serializer != null );
 #endif
-					if ( !context.Serializers.Register( serializer ) )
-					{
-						serializer = context.Serializers.Get<TObject>( context );
-#if DEBUG
-						Contract.Assert( serializer != null );
-#endif
-					}
 
 					return serializer;
 				}
