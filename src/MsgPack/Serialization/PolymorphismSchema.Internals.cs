@@ -221,7 +221,7 @@ namespace MsgPack.Serialization
 			SerializationContext context,
 			Type type,
 #if !UNITY
- SerializingMember? memberMayBeNull
+			SerializingMember? memberMayBeNull
 #else
 			SerializingMember memberMayBeNull
 #endif // !UNITY
@@ -230,13 +230,13 @@ namespace MsgPack.Serialization
 			if ( type.GetIsValueType() )
 			{
 				// Value types will never be polymorphic.
-				return null;
+				return Default;
 			}
 
 			if ( memberMayBeNull == null )
 			{
 				// Using default for collection/tuple items.
-				return null;
+				return Default;
 			}
 
 #if !UNITY

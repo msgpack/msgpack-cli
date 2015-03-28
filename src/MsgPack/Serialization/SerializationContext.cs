@@ -424,7 +424,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // !UNITY
 
-			var schema = providerParameter as PolymorphismSchema ?? PolymorphismSchema.Default;
+			var schema = providerParameter as PolymorphismSchema;
 			MessagePackSerializer<T> serializer = null;
 			while ( serializer == null )
 			{
@@ -432,7 +432,7 @@ namespace MsgPack.Serialization
 
 				if ( serializer == null )
 				{
-					if ( !schema.UseDefault )
+					if ( schema != null && !schema.UseDefault )
 					{
 						var provider = new PolymorphicSerializerProvider( typeof( T ) );
 						this._serializers.Register( typeof( T ), provider );
@@ -581,7 +581,7 @@ namespace MsgPack.Serialization
 		{
 			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
 			{
-				if ( !schema.UseDefault )
+				if ( schema != null && !schema.UseDefault )
 				{
 					var provider = new PolymorphicSerializerProvider( targetType );
 					this.Serializers.Register( targetType, provider );

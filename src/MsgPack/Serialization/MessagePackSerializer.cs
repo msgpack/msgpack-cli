@@ -23,7 +23,6 @@
 #endif
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -31,6 +30,8 @@ using System.Runtime.Serialization;
 using MsgPack.Serialization.ReflectionSerializers;
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
+#else // !SILVERLIGHT && !NETFX_35 && !UNITY
+using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 #if !UNITY
 using System.Diagnostics.Contracts;
@@ -98,7 +99,7 @@ namespace MsgPack.Serialization
 
 			// Old Create behavior was effectively Get() because the Builder internally register genreated serializer and returned existent one if it had been already registered. 
 			// It was just aweful resource consumption.
-			return Get<T>( context, PolymorphismSchema.Default );
+			return Get<T>( context, null );
 		}
 
 		/// <summary>
@@ -206,26 +207,28 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, PolymorphismSchema schema )
 		{
+
+#if !XAMIOS && !XAMDROID && !UNITY
+			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
+#endif // !XAMIOS && !XAMDROID && !UNITY
+
 #if DEBUG
 			SerializerDebugging.TraceEvent(
 				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
 				typeof( T ),
 				context.GetHashCode(),
-				schema.DebugString
+				schema == null ? "null" : schema.DebugString
 			);
 
 #if !UNITY
-			Contract.Assert( schema.UseDefault || schema.ChildrenType != PolymorphismSchemaChildrenType.None );
+			Contract.Assert(
+				schema == null || schema.UseDefault || schema.ChildrenType != PolymorphismSchemaChildrenType.None,
+				"Not empty itself : " + ( schema ?? PolymorphismSchema.Default ).DebugString
+			);
 #endif // !UNITY
 #endif // DEBUG
-
-#if !XAMIOS && !XAMDROID && !UNITY
-			Contract.Requires( schema != null );
-			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
-			Contract.Assert( schema != null );
-#endif // !XAMIOS && !XAMDROID && !UNITY
 #if XAMIOS || XAMDROID || UNITY
-			return CreateReflectionInternal<T>( context, itemSchema );
+			return CreateReflectionInternal<T>( context, schema );
 #else
 			ValidateType( typeof( T ) );
 			ISerializerBuilder<T> builder;
@@ -567,7 +570,10 @@ namespace MsgPack.Serialization
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, PolymorphismSchema schema )
 		{
 #if DEBUG && !UNITY
-			Contract.Assert( schema.UseDefault || schema.ChildrenType != PolymorphismSchemaChildrenType.None );
+			Contract.Assert(
+				schema == null || schema.UseDefault || schema.ChildrenType != PolymorphismSchemaChildrenType.None,
+				"Not empty itself : " + ( schema ?? PolymorphismSchema.Default ).DebugString
+			);
 #endif // DEBUG && !UNITY
 			var serializer = context.Serializers.Get<T>( context );
 
@@ -584,11 +590,12 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, schema.ItemSchema );
+					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
 				}
 				case CollectionKind.Map:
 				{
-					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, schema.KeySchema, schema.ItemSchema );
+					var itemSchema = ( schema ?? PolymorphismSchema.Default );
+					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, itemSchema.KeySchema, itemSchema.ItemSchema );
 				}
 				default:
 				{
@@ -602,14 +609,17 @@ namespace MsgPack.Serialization
 						return
 							new ReflectionTupleMessagePackSerializer<T>(
 								context,
-								schema.ChildSchemaList
+								( schema ?? PolymorphismSchema.Default ).ChildSchemaList
 							);
 					}
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 
-#if DEBUG
-					Contract.Assert( schema.UseDefault );
-#endif // DEBUG
+#if DEBUG && !UNITY
+					Contract.Assert(
+						schema == null || schema.UseDefault,
+						"Not empty itself : " + ( schema ?? PolymorphismSchema.Default ).DebugString
+					);
+#endif // DEBUG && !UNITY
 					return new ReflectionObjectMessagePackSerializer<T>( context );
 				}
 			}

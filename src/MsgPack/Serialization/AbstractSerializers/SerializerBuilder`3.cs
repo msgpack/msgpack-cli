@@ -52,15 +52,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information.</param>
-		/// <param name="itemSchema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
+		/// <param name="schema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value may be <c>null</c>.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, PolymorphismSchema itemSchema )
+		public MessagePackSerializer<TObject> BuildSerializerInstance( SerializationContext context, PolymorphismSchema schema )
 		{
-			var genericSerializer = GenericSerializer.Create<TObject>( context, itemSchema );
+			var genericSerializer = GenericSerializer.Create<TObject>( context, schema );
 			if ( genericSerializer != null )
 			{
 				return genericSerializer;
@@ -75,7 +75,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 			else
 			{
-				this.BuildSerializer( codeGenerationContext, itemSchema );
+				this.BuildSerializer( codeGenerationContext, schema );
 				constructor = this.CreateSerializerConstructor( codeGenerationContext );
 			}
 
@@ -105,7 +105,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Builds the serializer and returns its new instance.
 		/// </summary>
 		/// <param name="context">The context information. This value will not be <c>null</c>.</param>
-		/// <param name="schema">The schema which contains schema for current object and its descendant collection items, dictionary keys, or tuple items. This value must not be <c>null</c>.</param>
+		/// <param name="schema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value may be <c>null</c>.</param>
 		/// <returns>
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
@@ -121,12 +121,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				case CollectionKind.Array:
 				{
-					this.BuildArraySerializer( context, traits, schema.ItemSchema );
+					this.BuildArraySerializer( context, traits, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
 					break;
 				}
 				case CollectionKind.Map:
 				{
-					this.BuildMapSerializer( context, traits, schema.KeySchema, schema.ItemSchema );
+					var itemSchema = ( schema ?? PolymorphismSchema.Default );
+					this.BuildMapSerializer( context, traits, itemSchema.KeySchema, itemSchema.ItemSchema );
 					break;
 				}
 				case CollectionKind.NotCollection:
@@ -138,13 +139,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if !NETFX_35
 					else if ( TupleItems.IsTuple( typeof( TObject ) ) )
 					{
-						this.BuildTupleSerializer( context, schema.ChildSchemaList );
+						this.BuildTupleSerializer( context, ( schema ?? PolymorphismSchema.Default ).ChildSchemaList );
 					}
 #endif
 					else
 					{
 #if DEBUG && !UNITY
-						Contract.Assert( schema.UseDefault );
+						Contract.Assert( schema == null || schema.UseDefault );
 #endif // DEBUG
 						this.BuildObjectSerializer( context );
 					}
