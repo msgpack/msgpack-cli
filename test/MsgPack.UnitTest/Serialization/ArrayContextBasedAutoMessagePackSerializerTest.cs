@@ -1,5 +1,6 @@
 ﻿
 
+
  
 #region -- License Terms --
 //
@@ -2846,6 +2847,9 @@ namespace MsgPack.Serialization
 #pragma warning restore 659
 
 		#region -- Polymorphism --
+		#region ---- KnownType ----
+
+		#region ------ KnownType.NormalTypes ------
 
 		public class PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty
 		{
@@ -2855,9 +2859,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Reference; }
 			}
-			public PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty( Version Reference ) 
 			{
-				this._Reference = new Version( 1, 2, 3, 4 );
+				this._Reference = Reference;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty( new Version( 1, 2, 3, 4 ) );
 			}
 		}
 
@@ -2866,7 +2878,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -2890,9 +2902,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Reference; }
 			}
-			public PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject( object Reference ) 
 			{
-				this._Reference = new Version( 1, 2, 3, 4 );
+				this._Reference = Reference;
+			}
+
+			public PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject( new Version( 1, 2, 3, 4 ) );
 			}
 		}
 
@@ -2901,7 +2921,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -2920,9 +2940,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField
 		{
 			public  Version Reference;
-			public PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField( Version Reference ) 
 			{
-				this.Reference = new Version( 1, 2, 3, 4 );
+				this.Reference = Reference;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField( new Version( 1, 2, 3, 4 ) );
 			}
 		}
 
@@ -2931,7 +2959,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -2950,9 +2978,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject
 		{
 			public  object Reference;
-			public PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject( object Reference ) 
 			{
-				this.Reference = new Version( 1, 2, 3, 4 );
+				this.Reference = Reference;
+			}
+
+			public PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject( new Version( 1, 2, 3, 4 ) );
 			}
 		}
 
@@ -2961,7 +2997,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3193,9 +3229,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Value; }
 			}
-			public PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty( DateTime Value ) 
 			{
-				this._Value = new DateTime( 1982, 1, 29, 15, 46, 12 );
+				this._Value = Value;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty( new DateTime( 1982, 1, 29, 15, 46, 12 ) );
 			}
 		}
 
@@ -3204,7 +3248,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_ValueReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3228,9 +3272,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Value; }
 			}
-			public PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject( object Value ) 
 			{
-				this._Value = new DateTime( 1982, 1, 29, 15, 46, 12 );
+				this._Value = Value;
+			}
+
+			public PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject( new DateTime( 1982, 1, 29, 15, 46, 12 ) );
 			}
 		}
 
@@ -3239,7 +3291,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3258,9 +3310,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField
 		{
 			public  DateTime Value;
-			public PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField( DateTime Value ) 
 			{
-				this.Value = new DateTime( 1982, 1, 29, 15, 46, 12 );
+				this.Value = Value;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField( new DateTime( 1982, 1, 29, 15, 46, 12 ) );
 			}
 		}
 
@@ -3269,7 +3329,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_ValueReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3288,9 +3348,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject
 		{
 			public  object Value;
-			public PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject( object Value ) 
 			{
-				this.Value = new DateTime( 1982, 1, 29, 15, 46, 12 );
+				this.Value = Value;
+			}
+
+			public PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject( new DateTime( 1982, 1, 29, 15, 46, 12 ) );
 			}
 		}
 
@@ -3299,7 +3367,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3531,9 +3599,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Primitive; }
 			}
-			public PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty( int Primitive ) 
 			{
-				this._Primitive = 123;
+				this._Primitive = Primitive;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty( 123 );
 			}
 		}
 
@@ -3542,7 +3618,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3566,9 +3642,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Primitive; }
 			}
-			public PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject( object Primitive ) 
 			{
-				this._Primitive = 123;
+				this._Primitive = Primitive;
+			}
+
+			public PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject( 123 );
 			}
 		}
 
@@ -3577,7 +3661,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3596,9 +3680,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField
 		{
 			public  int Primitive;
-			public PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField( int Primitive ) 
 			{
-				this.Primitive = 123;
+				this.Primitive = Primitive;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField( 123 );
 			}
 		}
 
@@ -3607,7 +3699,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3626,9 +3718,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject
 		{
 			public  object Primitive;
-			public PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject( object Primitive ) 
 			{
-				this.Primitive = 123;
+				this.Primitive = Primitive;
+			}
+
+			public PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject( 123 );
 			}
 		}
 
@@ -3637,7 +3737,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3869,9 +3969,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._String; }
 			}
-			public PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty( string String ) 
 			{
-				this._String = "ABC";
+				this._String = String;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty( "ABC" );
 			}
 		}
 
@@ -3880,7 +3988,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_StringReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3904,9 +4012,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._String; }
 			}
-			public PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject( object String ) 
 			{
-				this._String = "ABC";
+				this._String = String;
+			}
+
+			public PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject( "ABC" );
 			}
 		}
 
@@ -3915,7 +4031,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_StringReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3934,9 +4050,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Normal_StringReadWriteField
 		{
 			public  string String;
-			public PolymorphicMemberTypeKnownType_Normal_StringReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Normal_StringReadWriteField( string String ) 
 			{
-				this.String = "ABC";
+				this.String = String;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_StringReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_StringReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_StringReadWriteField( "ABC" );
 			}
 		}
 
@@ -3945,7 +4069,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_StringReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_StringReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Normal_StringReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -3964,9 +4088,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject
 		{
 			public  object String;
-			public PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject( object String ) 
 			{
-				this.String = "ABC";
+				this.String = String;
+			}
+
+			public PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject( "ABC" );
 			}
 		}
 
@@ -3975,7 +4107,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_StringReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4201,17 +4333,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			private FileSystemEntry _Polymorphic;
 
+			[MessagePackKnownType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty( FileSystemEntry Polymorphic ) 
 			{
-				this._Polymorphic = new FileEntry { Name = "file", Size = 1 };
+				this._Polymorphic = Polymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
 
@@ -4220,7 +4360,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4238,17 +4378,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			private object _Polymorphic;
 
+			[MessagePackKnownType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject( object Polymorphic ) 
 			{
-				this._Polymorphic = new FileEntry { Name = "file", Size = 1 };
+				this._Polymorphic = Polymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
 
@@ -4257,7 +4405,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4278,9 +4426,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			public  FileSystemEntry Polymorphic;
-			public PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField( FileSystemEntry Polymorphic ) 
 			{
-				this.Polymorphic = new FileEntry { Name = "file", Size = 1 };
+				this.Polymorphic = Polymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
 
@@ -4289,7 +4445,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4310,9 +4466,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			public  object Polymorphic;
-			public PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject( object Polymorphic ) 
 			{
-				this.Polymorphic = new FileEntry { Name = "file", Size = 1 };
+				this.Polymorphic = Polymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
 
@@ -4321,7 +4485,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4339,10 +4503,10 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			private FileSystemEntry _Polymorphic;
 
+			[MessagePackKnownType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -4377,10 +4541,10 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			private object _Polymorphic;
 
+			[MessagePackKnownType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -4415,10 +4579,10 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			private FileSystemEntry _Polymorphic;
 
+			[MessagePackKnownType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -4454,10 +4618,10 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			private object _Polymorphic;
 
+			[MessagePackKnownType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownType( 1, typeof( DirectoryEntry ) )]
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -4556,6 +4720,9 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+		#endregion ------ KnownType.NormalTypes ------
+
+		#region ------ KnownType.CollectionTypes ------
 
 		public class PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty
 		{
@@ -4565,9 +4732,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._ListStaticItem; }
 			}
-			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4576,7 +4751,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4600,9 +4775,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._ListStaticItem; }
 			}
-			public PolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObject( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4611,7 +4794,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4630,9 +4813,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteField
 		{
 			public  IList<string> ListStaticItem;
-			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteField( IList<string> ListStaticItem ) 
 			{
-				this.ListStaticItem = new List<string>{ "A", "B" };
+				this.ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteField( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4641,7 +4832,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4660,9 +4851,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObject
 		{
 			public  IList<string> ListStaticItem;
-			public PolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObject( IList<string> ListStaticItem ) 
 			{
-				this.ListStaticItem = new List<string>{ "A", "B" };
+				this.ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4671,7 +4870,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListStaticItemReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4695,9 +4894,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._ListStaticItem; }
 			}
-			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyCollectionProperty() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyCollectionProperty( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyCollectionProperty( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4706,7 +4913,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyCollectionProperty();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4730,9 +4937,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._ListStaticItem; }
 			}
-			public PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyCollectionPropertyAsObject( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyCollectionPropertyAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4741,7 +4956,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListStaticItemGetOnlyCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4766,9 +4981,17 @@ namespace MsgPack.Serialization
 				get { return this._ListStaticItem; }
 				private  set { this._ListStaticItem = value; }
 			}
-			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionProperty() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionProperty( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionProperty( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4777,7 +5000,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionProperty();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4802,9 +5025,17 @@ namespace MsgPack.Serialization
 				get { return this._ListStaticItem; }
 				private  set { this._ListStaticItem = value; }
 			}
-			public PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObject( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4813,7 +5044,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4832,9 +5063,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly
 		{
 			public readonly IList<string> ListStaticItem;
-			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly( IList<string> ListStaticItem ) 
 			{
-				this.ListStaticItem = new List<string>{ "A", "B" };
+				this.ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4843,7 +5082,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnlySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4862,9 +5101,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject
 		{
 			public readonly IList<string> ListStaticItem;
-			public PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject( IList<string> ListStaticItem ) 
 			{
-				this.ListStaticItem = new List<string>{ "A", "B" };
+				this.ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -4873,216 +5120,8 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyPropertyAndConstructor
-		{
-			private IList<string> _ListStaticItem;
-
-			public IList<string> ListStaticItem
-			{
-				get { return this._ListStaticItem; }
-			}
-
-			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyPropertyAndConstructor( IList<string> ListStaticItem ) 
-			{
-				this._ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyPropertyAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyPropertyAndConstructor( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListStaticItemGetOnlyPropertyAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyPropertyAndConstructorAsObject
-		{
-			private IList<string> _ListStaticItem;
-
-			public IList<string> ListStaticItem
-			{
-				get { return this._ListStaticItem; }
-			}
-
-			public PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyPropertyAndConstructorAsObject( IList<string> ListStaticItem ) 
-			{
-				this._ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_ListStaticItemGetOnlyPropertyAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyPropertyAndConstructorAsObject( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListStaticItemGetOnlyPropertyAndConstructorAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterPropertyAndConstructor
-		{
-			private IList<string> _ListStaticItem;
-
-			public IList<string> ListStaticItem
-			{
-				get { return this._ListStaticItem; }
-				private  set { this._ListStaticItem = value; }
-			}
-
-			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterPropertyAndConstructor( IList<string> ListStaticItem ) 
-			{
-				this._ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterPropertyAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterPropertyAndConstructor( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterPropertyAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterPropertyAndConstructorAsObject
-		{
-			private IList<string> _ListStaticItem;
-
-			public IList<string> ListStaticItem
-			{
-				get { return this._ListStaticItem; }
-				private  set { this._ListStaticItem = value; }
-			}
-
-			public PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterPropertyAndConstructorAsObject( IList<string> ListStaticItem ) 
-			{
-				this._ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterPropertyAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterPropertyAndConstructorAsObject( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterPropertyAndConstructorAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyFieldAndConstructor
-		{
-			public readonly IList<string> ListStaticItem;
-
-			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyFieldAndConstructor( IList<string> ListStaticItem ) 
-			{
-				this.ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyFieldAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyFieldAndConstructor( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyFieldAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_ListStaticItemReadOnlyFieldAndConstructorAsObject
-		{
-			public readonly IList<string> ListStaticItem;
-
-			public PolymorphicMemberTypeKnownType_ListStaticItemReadOnlyFieldAndConstructorAsObject( IList<string> ListStaticItem ) 
-			{
-				this.ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_ListStaticItemReadOnlyFieldAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListStaticItemReadOnlyFieldAndConstructorAsObject( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListStaticItemReadOnlyFieldAndConstructorAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -5099,17 +5138,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 			}
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5118,7 +5165,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5136,17 +5183,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 			}
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5155,7 +5210,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5176,9 +5231,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public  IList<FileSystemEntry> ListPolymorphicItem;
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteField( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this.ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this.ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteField( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5187,7 +5250,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5208,9 +5271,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public  IList<FileSystemEntry> ListPolymorphicItem;
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWriteFieldAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this.ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this.ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWriteFieldAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5219,7 +5290,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItemReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5237,17 +5308,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionProperty
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 			}
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionProperty() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionProperty( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5256,7 +5335,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionProperty();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5274,17 +5353,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 			}
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5293,7 +5380,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5311,18 +5398,26 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 				private  set { this._ListPolymorphicItem = value; }
 			}
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5331,7 +5426,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5349,18 +5444,26 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject
 		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 				private  set { this._ListPolymorphicItem = value; }
 			}
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5369,7 +5472,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5390,9 +5493,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IList<FileSystemEntry> ListPolymorphicItem;
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this.ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this.ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5401,7 +5512,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnlySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5422,9 +5533,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IList<FileSystemEntry> ListPolymorphicItem;
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this.ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this.ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -5433,228 +5552,8 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructor
-		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
-			private IList<FileSystemEntry> _ListPolymorphicItem;
-
-			public IList<FileSystemEntry> ListPolymorphicItem
-			{
-				get { return this._ListPolymorphicItem; }
-			}
-
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructor( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this._ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructor( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObject
-		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
-			private IList<FileSystemEntry> _ListPolymorphicItem;
-
-			public IList<FileSystemEntry> ListPolymorphicItem
-			{
-				get { return this._ListPolymorphicItem; }
-			}
-
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this._ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructor
-		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
-			private IList<FileSystemEntry> _ListPolymorphicItem;
-
-			public IList<FileSystemEntry> ListPolymorphicItem
-			{
-				get { return this._ListPolymorphicItem; }
-				private  set { this._ListPolymorphicItem = value; }
-			}
-
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructor( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this._ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructor( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObject
-		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
-			private IList<FileSystemEntry> _ListPolymorphicItem;
-
-			public IList<FileSystemEntry> ListPolymorphicItem
-			{
-				get { return this._ListPolymorphicItem; }
-				private  set { this._ListPolymorphicItem = value; }
-			}
-
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this._ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructor
-		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
-			public readonly IList<FileSystemEntry> ListPolymorphicItem;
-
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructor( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this.ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructor( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObject
-		{
-			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
-			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
-			public readonly IList<FileSystemEntry> ListPolymorphicItem;
-
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this.ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -5671,17 +5570,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
+			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 			}
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -5690,7 +5597,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5708,17 +5615,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
+			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 			}
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -5727,7 +5642,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5748,9 +5663,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
 			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public  IList<string> ListPolymorphicItself;
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteField( IList<string> ListPolymorphicItself ) 
 			{
-				this.ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this.ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteField( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -5759,7 +5682,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5780,9 +5703,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
 			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public  IList<string> ListPolymorphicItself;
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWriteFieldAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this.ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this.ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWriteFieldAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -5791,7 +5722,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5809,17 +5740,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
+			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 			}
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -5828,7 +5767,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5846,17 +5785,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
+			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 			}
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -5865,7 +5812,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5883,18 +5830,26 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
+			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 				private  set { this._ListPolymorphicItself = value; }
 			}
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -5903,7 +5858,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5921,18 +5876,26 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
+			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 				private  set { this._ListPolymorphicItself = value; }
 			}
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -5941,7 +5904,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5962,9 +5925,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
 			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public readonly IList<string> ListPolymorphicItself;
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly() 
+
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly( IList<string> ListPolymorphicItself ) 
 			{
-				this.ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this.ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly() { }
+
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -5973,7 +5944,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnlySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly();
+			var target = PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -5994,9 +5965,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
 			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public readonly IList<string> ListPolymorphicItself;
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this.ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this.ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -6005,7 +5984,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject();
+			var target = PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6020,31 +5999,39 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
 			}
 		}
+		#endregion ------ KnownType.CollectionTypes ------
 
-		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructor
+		#region ------ KnownType.DictionaryTypes ------
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
-			private IList<string> _ListPolymorphicItself;
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
 
-			public IList<string> ListPolymorphicItself
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
-				get { return this._ListPolymorphicItself; }
+				get { return this._DictionaryStaticKeyAndStaticItem; }
 			}
 
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructor( IList<string> ListPolymorphicItself ) 
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
-				this._ListPolymorphicItself = ListPolymorphicItself;
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructorSuccess()
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructor( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructor>();
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -6054,35 +6041,40 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObject
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
-			private IList<string> _ListPolymorphicItself;
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
 
-			public IList<string> ListPolymorphicItself
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
-				get { return this._ListPolymorphicItself; }
+				get { return this._DictionaryStaticKeyAndStaticItem; }
 			}
 
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObject( IList<string> ListPolymorphicItself ) 
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
-				this._ListPolymorphicItself = ListPolymorphicItself;
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObjectSuccess()
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObject( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObject>();
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -6092,36 +6084,35 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructor
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
-			private IList<string> _ListPolymorphicItself;
+			public  IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
 
-			public IList<string> ListPolymorphicItself
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
-				get { return this._ListPolymorphicItself; }
-				private  set { this._ListPolymorphicItself = value; }
+				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructor( IList<string> ListPolymorphicItself ) 
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField Initialize()
 			{
-				this._ListPolymorphicItself = ListPolymorphicItself;
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructorSuccess()
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructor( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructor>();
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -6131,36 +6122,35 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObject
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
-			private IList<string> _ListPolymorphicItself;
+			public  IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
 
-			public IList<string> ListPolymorphicItself
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
-				get { return this._ListPolymorphicItself; }
-				private  set { this._ListPolymorphicItself = value; }
+				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObject( IList<string> ListPolymorphicItself ) 
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject Initialize()
 			{
-				this._ListPolymorphicItself = ListPolymorphicItself;
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObjectSuccess()
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObject( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObject>();
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -6170,30 +6160,40 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructor
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
-			public readonly IList<string> ListPolymorphicItself;
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
 
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructor( IList<string> ListPolymorphicItself ) 
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
-				this.ListPolymorphicItself = ListPolymorphicItself;
+				get { return this._DictionaryStaticKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructorSuccess()
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructor( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructor>();
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -6203,30 +6203,40 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObject
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject
 		{
-			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
-			[MessagePackKnownType( 1, typeof( List<string> ) )]
-			public readonly IList<string> ListPolymorphicItself;
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
 
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObject( IList<string> ListPolymorphicItself ) 
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
-				this.ListPolymorphicItself = ListPolymorphicItself;
+				get { return this._DictionaryStaticKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObjectSuccess()
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObject( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObject>();
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -6236,11 +6246,2377 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
-// L185
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty
+		{
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
+
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
+			{
+				get { return this._DictionaryStaticKeyAndStaticItem; }
+				private  set { this._DictionaryStaticKeyAndStaticItem = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
+
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
+			{
+				get { return this._DictionaryStaticKeyAndStaticItem; }
+				private  set { this._DictionaryStaticKeyAndStaticItem = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly
+		{
+			public readonly IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject
+		{
+			public readonly IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
+
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public  IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public  IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+				private  set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+				private  set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public readonly IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			public readonly IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField
+		{
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public  IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject
+		{
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public  IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
+
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+				private  set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+				private  set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly
+		{
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public readonly IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject
+		{
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public readonly IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
+
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public  IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public  IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+				private  set { this._DictionaryPolymorphicKeyAndItem = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+				private  set { this._DictionaryPolymorphicKeyAndItem = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWritePropertyAsObject
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWritePropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWritePropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteField
+		{
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public  IDictionary<string, string> DictionaryPolymorphicItself;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteField( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWriteFieldAsObject
+		{
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public  IDictionary<string, string> DictionaryPolymorphicItself;
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWriteFieldAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWriteFieldAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+				private  set { this._DictionaryPolymorphicItself = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+				private  set { this._DictionaryPolymorphicItself = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly
+		{
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public readonly IDictionary<string, string> DictionaryPolymorphicItself;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject
+		{
+			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
+			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
+			public readonly IDictionary<string, string> DictionaryPolymorphicItself;
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public  IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public  IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+				private  set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+				private  set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
+			}
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
+
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly() { }
+
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject
+		{
+			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
+			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
+			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
+			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
+
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+		#endregion ------ KnownType.DictionaryTypes ------
+
+		#region ------ KnownType.TupleTypes ------
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty
 		{
@@ -6250,9 +8626,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple1Static; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty( Tuple<string> Tuple1Static ) 
 			{
-				this._Tuple1Static = Tuple.Create( "1" );
+				this._Tuple1Static = Tuple1Static;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty( Tuple.Create( "1" ) );
 			}
 		}
 
@@ -6261,7 +8645,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6285,9 +8669,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple1Static; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObject( Tuple<string> Tuple1Static ) 
 			{
-				this._Tuple1Static = Tuple.Create( "1" );
+				this._Tuple1Static = Tuple1Static;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObject( Tuple.Create( "1" ) );
 			}
 		}
 
@@ -6296,7 +8688,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6311,14 +8703,21 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField
 		{
 			public  Tuple<string> Tuple1Static;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField( Tuple<string> Tuple1Static ) 
 			{
-				this.Tuple1Static = Tuple.Create( "1" );
+				this.Tuple1Static = Tuple1Static;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField( Tuple.Create( "1" ) );
 			}
 		}
 
@@ -6327,7 +8726,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6346,9 +8745,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObject
 		{
 			public  Tuple<string> Tuple1Static;
-			public PolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObject( Tuple<string> Tuple1Static ) 
 			{
-				this.Tuple1Static = Tuple.Create( "1" );
+				this.Tuple1Static = Tuple1Static;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObject( Tuple.Create( "1" ) );
 			}
 		}
 
@@ -6357,7 +8764,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple1StaticReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6372,7 +8779,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor
 		{
@@ -6445,7 +8851,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor
 		{
@@ -6520,7 +8925,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor
 		{
@@ -6583,20 +8987,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
-				this._Tuple1Polymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry );
+				this._Tuple1Polymorphic = Tuple1Polymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			}
 		}
 
@@ -6605,7 +9016,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6623,16 +9034,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
-				this._Tuple1Polymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry );
+				this._Tuple1Polymorphic = Tuple1Polymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			}
 		}
 
@@ -6641,7 +9060,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6656,15 +9075,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			public  Tuple<FileSystemEntry> Tuple1Polymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
-				this.Tuple1Polymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry );
+				this.Tuple1Polymorphic = Tuple1Polymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			}
 		}
 
@@ -6673,7 +9099,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6693,9 +9119,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			public  Tuple<FileSystemEntry> Tuple1Polymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWriteFieldAsObject( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
-				this.Tuple1Polymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry );
+				this.Tuple1Polymorphic = Tuple1Polymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWriteFieldAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			}
 		}
 
@@ -6704,7 +9138,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6719,13 +9153,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -6760,9 +9193,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple1PolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -6794,13 +9227,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -6836,9 +9268,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple1PolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry> ) )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -6871,7 +9303,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor
 		{
@@ -6936,7 +9367,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty
 		{
@@ -6946,9 +9376,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple7AllStatic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
-				this._Tuple7AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7" );
+				this._Tuple7AllStatic = Tuple7AllStatic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			}
 		}
 
@@ -6957,7 +9395,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -6981,9 +9419,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple7AllStatic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
-				this._Tuple7AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7" );
+				this._Tuple7AllStatic = Tuple7AllStatic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			}
 		}
 
@@ -6992,7 +9438,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7007,14 +9453,21 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField
 		{
 			public  Tuple<string, string, string, string, string, string, string> Tuple7AllStatic;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
-				this.Tuple7AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7" );
+				this.Tuple7AllStatic = Tuple7AllStatic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			}
 		}
 
@@ -7023,7 +9476,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7042,9 +9495,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObject
 		{
 			public  Tuple<string, string, string, string, string, string, string> Tuple7AllStatic;
-			public PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObject( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
-				this.Tuple7AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7" );
+				this.Tuple7AllStatic = Tuple7AllStatic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			}
 		}
 
@@ -7053,7 +9514,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7068,7 +9529,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor
 		{
@@ -7141,7 +9601,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor
 		{
@@ -7216,7 +9675,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor
 		{
@@ -7279,20 +9737,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
-				this._Tuple7FirstPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7");
+				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			}
 		}
 
@@ -7301,7 +9766,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7319,16 +9784,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
-				this._Tuple7FirstPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7");
+				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			}
 		}
 
@@ -7337,7 +9810,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7352,15 +9825,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			public  Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
-				this.Tuple7FirstPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7");
+				this.Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			}
 		}
 
@@ -7369,7 +9849,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7389,9 +9869,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			public  Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWriteFieldAsObject( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
-				this.Tuple7FirstPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7");
+				this.Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWriteFieldAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			}
 		}
 
@@ -7400,7 +9888,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7415,13 +9903,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -7456,9 +9943,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -7490,13 +9977,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -7532,9 +10018,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, string, string, string, string, string, string> ) )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -7567,7 +10053,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -7632,20 +10117,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty
 		{
-			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
-				this._Tuple7LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -7654,7 +10146,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7672,16 +10164,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
-				this._Tuple7LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -7690,7 +10190,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7705,15 +10205,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			public  Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
-				this.Tuple7LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this.Tuple7LastPolymorphic = Tuple7LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -7722,7 +10229,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7742,9 +10249,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			public  Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWriteFieldAsObject( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
-				this.Tuple7LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this.Tuple7LastPolymorphic = Tuple7LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -7753,7 +10268,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -7768,13 +10283,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -7809,9 +10323,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -7843,13 +10357,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -7885,9 +10398,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<string, string, string, string, string, string, FileSystemEntry> ) )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -7920,7 +10433,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -7985,20 +10497,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty
 		{
-			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
-				this._Tuple7IntermediatePolymorphic = Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7");
+				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			}
 		}
 
@@ -8007,7 +10526,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8025,16 +10544,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
-				this._Tuple7IntermediatePolymorphic = Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7");
+				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			}
 		}
 
@@ -8043,7 +10570,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8058,15 +10585,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			public  Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteField( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
-				this.Tuple7IntermediatePolymorphic = Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7");
+				this.Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteField( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			}
 		}
 
@@ -8075,7 +10609,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8095,9 +10629,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			public  Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
-				this.Tuple7IntermediatePolymorphic = Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7");
+				this.Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			}
 		}
 
@@ -8106,7 +10648,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8121,13 +10663,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
@@ -8162,9 +10703,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
@@ -8196,13 +10737,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
@@ -8238,9 +10778,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackKnownTupleItemType( 4, 0, typeof( Tuple<string, string, string, FileSystemEntry, string, string, string> ) )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
@@ -8273,7 +10813,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructor
 		{
@@ -8338,10 +10877,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
@@ -8349,15 +10889,21 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 5, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
-				this._Tuple7AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -8366,7 +10912,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8384,6 +10930,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
@@ -8391,15 +10939,21 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 5, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
-				this._Tuple7AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -8408,7 +10962,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8423,7 +10977,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField
 		{
@@ -8435,9 +10988,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
-				this.Tuple7AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this.Tuple7AllPolymorphic = Tuple7AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -8446,7 +11007,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8472,9 +11033,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWriteFieldAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
-				this.Tuple7AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this.Tuple7AllPolymorphic = Tuple7AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWriteFieldAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -8483,7 +11052,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8498,10 +11067,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
@@ -8509,8 +11079,6 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 5, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -8545,6 +11113,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
@@ -8552,8 +11122,6 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 5, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -8585,10 +11153,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
@@ -8596,8 +11165,6 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 5, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -8633,6 +11200,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
@@ -8640,8 +11209,6 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 5, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -8674,7 +11241,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -8751,7 +11317,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty
 		{
@@ -8761,9 +11326,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple8AllStatic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
-				this._Tuple8AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" );
+				this._Tuple8AllStatic = Tuple8AllStatic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			}
 		}
 
@@ -8772,7 +11345,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8796,9 +11369,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple8AllStatic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
-				this._Tuple8AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" );
+				this._Tuple8AllStatic = Tuple8AllStatic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			}
 		}
 
@@ -8807,7 +11388,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8822,14 +11403,21 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField
 		{
 			public  Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
-				this.Tuple8AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" );
+				this.Tuple8AllStatic = Tuple8AllStatic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			}
 		}
 
@@ -8838,7 +11426,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8857,9 +11445,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObject
 		{
 			public  Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic;
-			public PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObject( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
-				this.Tuple8AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" );
+				this.Tuple8AllStatic = Tuple8AllStatic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			}
 		}
 
@@ -8868,7 +11464,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8883,7 +11479,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor
 		{
@@ -8956,7 +11551,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor
 		{
@@ -9031,7 +11625,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor
 		{
@@ -9094,20 +11687,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty
 		{
-			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
-				this._Tuple8LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry );
+				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -9116,7 +11716,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9134,16 +11734,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
-				this._Tuple8LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry );
+				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -9152,7 +11760,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9167,15 +11775,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField
 		{
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			public  Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
-				this.Tuple8LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry );
+				this.Tuple8LastPolymorphic = Tuple8LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -9184,7 +11799,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9204,9 +11819,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			public  Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWriteFieldAsObject( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
-				this.Tuple8LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry );
+				this.Tuple8LastPolymorphic = Tuple8LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -9215,7 +11838,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9230,13 +11853,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -9271,9 +11893,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -9305,13 +11927,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -9347,9 +11968,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> ) )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -9382,7 +12003,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -9447,10 +12067,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
@@ -9459,15 +12080,21 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
-				this._Tuple8AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry );
+				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -9476,7 +12103,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9494,6 +12121,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
@@ -9502,15 +12131,21 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
 			}
-			public PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
-				this._Tuple8AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry );
+				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -9519,7 +12154,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9534,7 +12169,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField
 		{
@@ -9547,9 +12181,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
-				this.Tuple8AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry );
+				this.Tuple8AllPolymorphic = Tuple8AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -9558,7 +12200,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9585,9 +12227,17 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic;
-			public PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWriteFieldAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
-				this.Tuple8AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry );
+				this.Tuple8AllPolymorphic = Tuple8AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWriteFieldAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -9596,7 +12246,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9611,10 +12261,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
@@ -9623,8 +12274,6 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -9659,6 +12308,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
@@ -9667,8 +12318,6 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -9700,10 +12349,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
@@ -9712,8 +12362,6 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -9749,6 +12397,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackKnownTupleItemType( 1, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 2, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 3, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
@@ -9757,8 +12407,6 @@ namespace MsgPack.Serialization
 			[MessagePackKnownTupleItemType( 6, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 7, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
 			[MessagePackKnownTupleItemType( 8, 0, typeof( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> ) )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -9791,7 +12439,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -9870,6 +12517,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
+		#endregion ------ KnownType.TupleTypes ------
+
+		#endregion ---- KnownType ----
+		#region ---- RuntimeType ----
+
+		#region ------ RuntimeType.NormalTypes ------
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty
 		{
@@ -9879,9 +12532,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Reference; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty( Version Reference ) 
 			{
-				this._Reference = new Version( 1, 2, 3, 4 );
+				this._Reference = Reference;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty( new Version( 1, 2, 3, 4 ) );
 			}
 		}
 
@@ -9890,7 +12551,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9914,9 +12575,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Reference; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject( object Reference ) 
 			{
-				this._Reference = new Version( 1, 2, 3, 4 );
+				this._Reference = Reference;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject( new Version( 1, 2, 3, 4 ) );
 			}
 		}
 
@@ -9925,7 +12594,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9944,9 +12613,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField
 		{
 			public  Version Reference;
-			public PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField( Version Reference ) 
 			{
-				this.Reference = new Version( 1, 2, 3, 4 );
+				this.Reference = Reference;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField( new Version( 1, 2, 3, 4 ) );
 			}
 		}
 
@@ -9955,7 +12632,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -9974,9 +12651,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject
 		{
 			public  object Reference;
-			public PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject( object Reference ) 
 			{
-				this.Reference = new Version( 1, 2, 3, 4 );
+				this.Reference = Reference;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject( new Version( 1, 2, 3, 4 ) );
 			}
 		}
 
@@ -9985,7 +12670,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10217,9 +12902,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Value; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty( DateTime Value ) 
 			{
-				this._Value = new DateTime( 1982, 1, 29, 15, 46, 12 );
+				this._Value = Value;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty( new DateTime( 1982, 1, 29, 15, 46, 12 ) );
 			}
 		}
 
@@ -10228,7 +12921,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10252,9 +12945,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Value; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject( object Value ) 
 			{
-				this._Value = new DateTime( 1982, 1, 29, 15, 46, 12 );
+				this._Value = Value;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject( new DateTime( 1982, 1, 29, 15, 46, 12 ) );
 			}
 		}
 
@@ -10263,7 +12964,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10282,9 +12983,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField
 		{
 			public  DateTime Value;
-			public PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField( DateTime Value ) 
 			{
-				this.Value = new DateTime( 1982, 1, 29, 15, 46, 12 );
+				this.Value = Value;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField( new DateTime( 1982, 1, 29, 15, 46, 12 ) );
 			}
 		}
 
@@ -10293,7 +13002,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10312,9 +13021,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject
 		{
 			public  object Value;
-			public PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject( object Value ) 
 			{
-				this.Value = new DateTime( 1982, 1, 29, 15, 46, 12 );
+				this.Value = Value;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject( new DateTime( 1982, 1, 29, 15, 46, 12 ) );
 			}
 		}
 
@@ -10323,7 +13040,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10555,9 +13272,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Primitive; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty( int Primitive ) 
 			{
-				this._Primitive = 123;
+				this._Primitive = Primitive;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty( 123 );
 			}
 		}
 
@@ -10566,7 +13291,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10590,9 +13315,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Primitive; }
 			}
-			public PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject( object Primitive ) 
 			{
-				this._Primitive = 123;
+				this._Primitive = Primitive;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject( 123 );
 			}
 		}
 
@@ -10601,7 +13334,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10620,9 +13353,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField
 		{
 			public  int Primitive;
-			public PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField( int Primitive ) 
 			{
-				this.Primitive = 123;
+				this.Primitive = Primitive;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField( 123 );
 			}
 		}
 
@@ -10631,7 +13372,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10650,9 +13391,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject
 		{
 			public  object Primitive;
-			public PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject( object Primitive ) 
 			{
-				this.Primitive = 123;
+				this.Primitive = Primitive;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject( 123 );
 			}
 		}
 
@@ -10661,7 +13410,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10893,9 +13642,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._String; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty( string String ) 
 			{
-				this._String = "ABC";
+				this._String = String;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty( "ABC" );
 			}
 		}
 
@@ -10904,7 +13661,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10928,9 +13685,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._String; }
 			}
-			public PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject( object String ) 
 			{
-				this._String = "ABC";
+				this._String = String;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject( "ABC" );
 			}
 		}
 
@@ -10939,7 +13704,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10958,9 +13723,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField
 		{
 			public  string String;
-			public PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField( string String ) 
 			{
-				this.String = "ABC";
+				this.String = String;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField( "ABC" );
 			}
 		}
 
@@ -10969,7 +13742,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10988,9 +13761,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject
 		{
 			public  object String;
-			public PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject( object String ) 
 			{
-				this.String = "ABC";
+				this.String = String;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject( "ABC" );
 			}
 		}
 
@@ -10999,7 +13780,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11225,16 +14006,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty
 		{
-			[MessagePackRuntimeType]
 			private FileSystemEntry _Polymorphic;
 
+			[MessagePackRuntimeType]
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty( FileSystemEntry Polymorphic ) 
 			{
-				this._Polymorphic = new FileEntry { Name = "file", Size = 1 };
+				this._Polymorphic = Polymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
 
@@ -11243,7 +14032,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11261,16 +14050,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackRuntimeType]
 			private object _Polymorphic;
 
+			[MessagePackRuntimeType]
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject( object Polymorphic ) 
 			{
-				this._Polymorphic = new FileEntry { Name = "file", Size = 1 };
+				this._Polymorphic = Polymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
 
@@ -11279,7 +14076,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11299,9 +14096,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeType]
 			public  FileSystemEntry Polymorphic;
-			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField( FileSystemEntry Polymorphic ) 
 			{
-				this.Polymorphic = new FileEntry { Name = "file", Size = 1 };
+				this.Polymorphic = Polymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
 
@@ -11310,7 +14115,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11330,9 +14135,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeType]
 			public  object Polymorphic;
-			public PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject( object Polymorphic ) 
 			{
-				this.Polymorphic = new FileEntry { Name = "file", Size = 1 };
+				this.Polymorphic = Polymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject( new FileEntry { Name = "file", Size = 1 } );
 			}
 		}
 
@@ -11341,7 +14154,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11359,9 +14172,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackRuntimeType]
 			private FileSystemEntry _Polymorphic;
 
+			[MessagePackRuntimeType]
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -11396,9 +14209,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeType]
 			private object _Polymorphic;
 
+			[MessagePackRuntimeType]
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -11433,9 +14246,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackRuntimeType]
 			private FileSystemEntry _Polymorphic;
 
+			[MessagePackRuntimeType]
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -11471,9 +14284,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeType]
 			private object _Polymorphic;
 
+			[MessagePackRuntimeType]
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
@@ -11570,6 +14383,9 @@ namespace MsgPack.Serialization
 				Assert.That( result.Polymorphic, Is.InstanceOf( target.Polymorphic.GetType() ) );
 			}
 		}
+		#endregion ------ RuntimeType.NormalTypes ------
+
+		#region ------ RuntimeType.CollectionTypes ------
 
 		public class PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty
 		{
@@ -11579,9 +14395,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._ListStaticItem; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11590,7 +14414,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11614,9 +14438,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._ListStaticItem; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObject( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11625,7 +14457,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11644,9 +14476,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteField
 		{
 			public  IList<string> ListStaticItem;
-			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteField( IList<string> ListStaticItem ) 
 			{
-				this.ListStaticItem = new List<string>{ "A", "B" };
+				this.ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteField( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11655,7 +14495,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11674,9 +14514,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObject
 		{
 			public  IList<string> ListStaticItem;
-			public PolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObject( IList<string> ListStaticItem ) 
 			{
-				this.ListStaticItem = new List<string>{ "A", "B" };
+				this.ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11685,7 +14533,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListStaticItemReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11709,9 +14557,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._ListStaticItem; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyCollectionProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyCollectionProperty( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyCollectionProperty( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11720,7 +14576,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyCollectionProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11744,9 +14600,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._ListStaticItem; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyCollectionPropertyAsObject( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyCollectionPropertyAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11755,7 +14619,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11780,9 +14644,17 @@ namespace MsgPack.Serialization
 				get { return this._ListStaticItem; }
 				private  set { this._ListStaticItem = value; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionProperty( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionProperty( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11791,7 +14663,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11816,9 +14688,17 @@ namespace MsgPack.Serialization
 				get { return this._ListStaticItem; }
 				private  set { this._ListStaticItem = value; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObject( IList<string> ListStaticItem ) 
 			{
-				this._ListStaticItem = new List<string>{ "A", "B" };
+				this._ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11827,7 +14707,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11846,9 +14726,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly
 		{
 			public readonly IList<string> ListStaticItem;
-			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly( IList<string> ListStaticItem ) 
 			{
-				this.ListStaticItem = new List<string>{ "A", "B" };
+				this.ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11857,7 +14745,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnlySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11876,9 +14764,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject
 		{
 			public readonly IList<string> ListStaticItem;
-			public PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject( IList<string> ListStaticItem ) 
 			{
-				this.ListStaticItem = new List<string>{ "A", "B" };
+				this.ListStaticItem = ListStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -11887,216 +14783,8 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyPropertyAndConstructor
-		{
-			private IList<string> _ListStaticItem;
-
-			public IList<string> ListStaticItem
-			{
-				get { return this._ListStaticItem; }
-			}
-
-			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyPropertyAndConstructor( IList<string> ListStaticItem ) 
-			{
-				this._ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyPropertyAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyPropertyAndConstructor( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemGetOnlyPropertyAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyPropertyAndConstructorAsObject
-		{
-			private IList<string> _ListStaticItem;
-
-			public IList<string> ListStaticItem
-			{
-				get { return this._ListStaticItem; }
-			}
-
-			public PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyPropertyAndConstructorAsObject( IList<string> ListStaticItem ) 
-			{
-				this._ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyPropertyAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyPropertyAndConstructorAsObject( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListStaticItemGetOnlyPropertyAndConstructorAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterPropertyAndConstructor
-		{
-			private IList<string> _ListStaticItem;
-
-			public IList<string> ListStaticItem
-			{
-				get { return this._ListStaticItem; }
-				private  set { this._ListStaticItem = value; }
-			}
-
-			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterPropertyAndConstructor( IList<string> ListStaticItem ) 
-			{
-				this._ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterPropertyAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterPropertyAndConstructor( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterPropertyAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterPropertyAndConstructorAsObject
-		{
-			private IList<string> _ListStaticItem;
-
-			public IList<string> ListStaticItem
-			{
-				get { return this._ListStaticItem; }
-				private  set { this._ListStaticItem = value; }
-			}
-
-			public PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterPropertyAndConstructorAsObject( IList<string> ListStaticItem ) 
-			{
-				this._ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterPropertyAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterPropertyAndConstructorAsObject( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterPropertyAndConstructorAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyFieldAndConstructor
-		{
-			public readonly IList<string> ListStaticItem;
-
-			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyFieldAndConstructor( IList<string> ListStaticItem ) 
-			{
-				this.ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyFieldAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyFieldAndConstructor( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyFieldAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListStaticItem, Is.EqualTo( target.ListStaticItem ) );
-				Assert.That( result.ListStaticItem, Is.InstanceOf( target.ListStaticItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyFieldAndConstructorAsObject
-		{
-			public readonly IList<string> ListStaticItem;
-
-			public PolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyFieldAndConstructorAsObject( IList<string> ListStaticItem ) 
-			{
-				this.ListStaticItem = ListStaticItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyFieldAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyFieldAndConstructorAsObject( new List<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyFieldAndConstructorAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -12113,16 +14801,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty
 		{
-			[MessagePackRuntimeCollectionItemType]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackRuntimeCollectionItemType]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12131,7 +14827,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12149,16 +14845,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject
 		{
-			[MessagePackRuntimeCollectionItemType]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackRuntimeCollectionItemType]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12167,7 +14871,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12187,9 +14891,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeCollectionItemType]
 			public  IList<FileSystemEntry> ListPolymorphicItem;
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteField( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this.ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this.ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteField( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12198,7 +14910,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12218,9 +14930,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeCollectionItemType]
 			public  IList<FileSystemEntry> ListPolymorphicItem;
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWriteFieldAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this.ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this.ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWriteFieldAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12229,7 +14949,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12247,16 +14967,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionProperty
 		{
-			[MessagePackRuntimeCollectionItemType]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackRuntimeCollectionItemType]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionProperty( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12265,7 +14993,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12283,16 +15011,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject
 		{
-			[MessagePackRuntimeCollectionItemType]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackRuntimeCollectionItemType]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12301,7 +15037,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12319,17 +15055,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty
 		{
-			[MessagePackRuntimeCollectionItemType]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackRuntimeCollectionItemType]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 				private  set { this._ListPolymorphicItem = value; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12338,7 +15082,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12356,17 +15100,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject
 		{
-			[MessagePackRuntimeCollectionItemType]
 			private IList<FileSystemEntry> _ListPolymorphicItem;
 
+			[MessagePackRuntimeCollectionItemType]
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
 				private  set { this._ListPolymorphicItem = value; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this._ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this._ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12375,7 +15127,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12395,9 +15147,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeCollectionItemType]
 			public readonly IList<FileSystemEntry> ListPolymorphicItem;
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this.ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this.ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12406,7 +15166,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnlySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12426,9 +15186,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeCollectionItemType]
 			public readonly IList<FileSystemEntry> ListPolymorphicItem;
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
-				this.ListPolymorphicItem = new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } };
+				this.ListPolymorphicItem = ListPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -12437,222 +15205,8 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructor
-		{
-			[MessagePackRuntimeCollectionItemType]
-			private IList<FileSystemEntry> _ListPolymorphicItem;
-
-			public IList<FileSystemEntry> ListPolymorphicItem
-			{
-				get { return this._ListPolymorphicItem; }
-			}
-
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructor( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this._ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructor( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemGetOnlyPropertyAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObject
-		{
-			[MessagePackRuntimeCollectionItemType]
-			private IList<FileSystemEntry> _ListPolymorphicItem;
-
-			public IList<FileSystemEntry> ListPolymorphicItem
-			{
-				get { return this._ListPolymorphicItem; }
-			}
-
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this._ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItemGetOnlyPropertyAndConstructorAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructor
-		{
-			[MessagePackRuntimeCollectionItemType]
-			private IList<FileSystemEntry> _ListPolymorphicItem;
-
-			public IList<FileSystemEntry> ListPolymorphicItem
-			{
-				get { return this._ListPolymorphicItem; }
-				private  set { this._ListPolymorphicItem = value; }
-			}
-
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructor( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this._ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructor( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterPropertyAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObject
-		{
-			[MessagePackRuntimeCollectionItemType]
-			private IList<FileSystemEntry> _ListPolymorphicItem;
-
-			public IList<FileSystemEntry> ListPolymorphicItem
-			{
-				get { return this._ListPolymorphicItem; }
-				private  set { this._ListPolymorphicItem = value; }
-			}
-
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this._ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterPropertyAndConstructorAsObject>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructor
-		{
-			[MessagePackRuntimeCollectionItemType]
-			public readonly IList<FileSystemEntry> ListPolymorphicItem;
-
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructor( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this.ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructorSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructor( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyFieldAndConstructor>();
-				
-			using ( var buffer = new MemoryStream() )
-			{
-				serializer.Pack( buffer, target );
-				buffer.Position = 0;
-				var result = serializer.Unpack( buffer );
-
-				Assert.That( result, Is.Not.Null );
-				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItem, Is.EqualTo( target.ListPolymorphicItem ) );
-				Assert.That( result.ListPolymorphicItem, Is.InstanceOf( target.ListPolymorphicItem.GetType() ) );
-			}
-		}
-
-		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObject
-		{
-			[MessagePackRuntimeCollectionItemType]
-			public readonly IList<FileSystemEntry> ListPolymorphicItem;
-
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
-			{
-				this.ListPolymorphicItem = ListPolymorphicItem;
-			}
-		}
-
-		[Test]
-		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObjectSuccess()
-		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyFieldAndConstructorAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -12669,16 +15223,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty
 		{
-			[MessagePackRuntimeType]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackRuntimeType]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12687,7 +15249,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12705,16 +15267,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject
 		{
-			[MessagePackRuntimeType]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackRuntimeType]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12723,7 +15293,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12743,9 +15313,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeType]
 			public  IList<string> ListPolymorphicItself;
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteField( IList<string> ListPolymorphicItself ) 
 			{
-				this.ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this.ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteField( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12754,7 +15332,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12774,9 +15352,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeType]
 			public  IList<string> ListPolymorphicItself;
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWriteFieldAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this.ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this.ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWriteFieldAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12785,7 +15371,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12803,16 +15389,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty
 		{
-			[MessagePackRuntimeType]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackRuntimeType]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12821,7 +15415,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12839,16 +15433,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject
 		{
-			[MessagePackRuntimeType]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackRuntimeType]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12857,7 +15459,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12875,17 +15477,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty
 		{
-			[MessagePackRuntimeType]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackRuntimeType]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 				private  set { this._ListPolymorphicItself = value; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12894,7 +15504,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12912,17 +15522,25 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject
 		{
-			[MessagePackRuntimeType]
 			private IList<string> _ListPolymorphicItself;
 
+			[MessagePackRuntimeType]
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
 				private  set { this._ListPolymorphicItself = value; }
 			}
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this._ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this._ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12931,7 +15549,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12951,9 +15569,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeType]
 			public readonly IList<string> ListPolymorphicItself;
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly() 
+
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly( IList<string> ListPolymorphicItself ) 
 			{
-				this.ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this.ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12962,7 +15588,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnlySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly();
+			var target = PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -12982,9 +15608,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeType]
 			public readonly IList<string> ListPolymorphicItself;
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject( IList<string> ListPolymorphicItself ) 
 			{
-				this.ListPolymorphicItself = new Collection<string>{ "A", "B" };
+				this.ListPolymorphicItself = ListPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 
@@ -12993,7 +15627,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13008,30 +15642,39 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
 			}
 		}
+		#endregion ------ RuntimeType.CollectionTypes ------
 
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructor
+		#region ------ RuntimeType.DictionaryTypes ------
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty
 		{
-			[MessagePackRuntimeType]
-			private IList<string> _ListPolymorphicItself;
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
 
-			public IList<string> ListPolymorphicItself
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
-				get { return this._ListPolymorphicItself; }
+				get { return this._DictionaryStaticKeyAndStaticItem; }
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructor( IList<string> ListPolymorphicItself ) 
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
-				this._ListPolymorphicItself = ListPolymorphicItself;
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructorSuccess()
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructor( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfGetOnlyPropertyAndConstructor>();
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -13041,34 +15684,40 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObject
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject
 		{
-			[MessagePackRuntimeType]
-			private IList<string> _ListPolymorphicItself;
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
 
-			public IList<string> ListPolymorphicItself
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
-				get { return this._ListPolymorphicItself; }
+				get { return this._DictionaryStaticKeyAndStaticItem; }
 			}
 
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObject( IList<string> ListPolymorphicItself ) 
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
-				this._ListPolymorphicItself = ListPolymorphicItself;
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObjectSuccess()
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObject( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfGetOnlyPropertyAndConstructorAsObject>();
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -13078,35 +15727,35 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructor
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField
 		{
-			[MessagePackRuntimeType]
-			private IList<string> _ListPolymorphicItself;
+			public  IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
 
-			public IList<string> ListPolymorphicItself
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
-				get { return this._ListPolymorphicItself; }
-				private  set { this._ListPolymorphicItself = value; }
+				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructor( IList<string> ListPolymorphicItself ) 
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField Initialize()
 			{
-				this._ListPolymorphicItself = ListPolymorphicItself;
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructorSuccess()
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructor( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterPropertyAndConstructor>();
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -13116,35 +15765,35 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObject
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject
 		{
-			[MessagePackRuntimeType]
-			private IList<string> _ListPolymorphicItself;
+			public  IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
 
-			public IList<string> ListPolymorphicItself
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
-				get { return this._ListPolymorphicItself; }
-				private  set { this._ListPolymorphicItself = value; }
+				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObject( IList<string> ListPolymorphicItself ) 
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject Initialize()
 			{
-				this._ListPolymorphicItself = ListPolymorphicItself;
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObjectSuccess()
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObject( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterPropertyAndConstructorAsObject>();
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -13154,29 +15803,40 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructor
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty
 		{
-			[MessagePackRuntimeType]
-			public readonly IList<string> ListPolymorphicItself;
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
 
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructor( IList<string> ListPolymorphicItself ) 
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
-				this.ListPolymorphicItself = ListPolymorphicItself;
+				get { return this._DictionaryStaticKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructorSuccess()
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructor( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyFieldAndConstructor>();
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemGetOnlyCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -13186,29 +15846,40 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObject
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject
 		{
-			[MessagePackRuntimeType]
-			public readonly IList<string> ListPolymorphicItself;
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
 
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObject( IList<string> ListPolymorphicItself ) 
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
-				this.ListPolymorphicItself = ListPolymorphicItself;
+				get { return this._DictionaryStaticKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
-		public void TestPolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObjectSuccess()
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObject( new Collection<string>{ "A", "B" } );
-			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyFieldAndConstructorAsObject>();
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemGetOnlyCollectionPropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
 			{
@@ -13218,11 +15889,2307 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				Assert.That( result.ListPolymorphicItself, Is.EqualTo( target.ListPolymorphicItself ) );
-				Assert.That( result.ListPolymorphicItself, Is.InstanceOf( target.ListPolymorphicItself.GetType() ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
 			}
 		}
-// L185
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty
+		{
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
+
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
+			{
+				get { return this._DictionaryStaticKeyAndStaticItem; }
+				private  set { this._DictionaryStaticKeyAndStaticItem = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<string, string> _DictionaryStaticKeyAndStaticItem;
+
+			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
+			{
+				get { return this._DictionaryStaticKeyAndStaticItem; }
+				private  set { this._DictionaryStaticKeyAndStaticItem = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this._DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly
+		{
+			public readonly IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject
+		{
+			public readonly IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			{
+				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.EqualTo( target.DictionaryStaticKeyAndStaticItem ) );
+				Assert.That( result.DictionaryStaticKeyAndStaticItem, Is.InstanceOf( target.DictionaryStaticKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField
+		{
+			[MessagePackRuntimeDictionaryKeyType]
+			public  IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject
+		{
+			[MessagePackRuntimeDictionaryKeyType]
+			public  IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+				private  set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, string> _DictionaryPolymorphicKeyAndStaticItem;
+
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+				private  set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly
+		{
+			[MessagePackRuntimeDictionaryKeyType]
+			public readonly IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject
+		{
+			[MessagePackRuntimeDictionaryKeyType]
+			public readonly IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndStaticItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndStaticItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndStaticItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField
+		{
+			[MessagePackRuntimeCollectionItemType]
+			public  IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject
+		{
+			[MessagePackRuntimeCollectionItemType]
+			public  IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+				private  set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<string, FileSystemEntry> _DictionaryStaticKeyAndPolymorphicItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
+			{
+				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+				private  set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this._DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly
+		{
+			[MessagePackRuntimeCollectionItemType]
+			public readonly IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject
+		{
+			[MessagePackRuntimeCollectionItemType]
+			public readonly IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			{
+				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.EqualTo( target.DictionaryStaticKeyAndPolymorphicItem ) );
+				Assert.That( result.DictionaryStaticKeyAndPolymorphicItem, Is.InstanceOf( target.DictionaryStaticKeyAndPolymorphicItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField
+		{
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public  IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject
+		{
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public  IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+				private  set { this._DictionaryPolymorphicKeyAndItem = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItem;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
+			{
+				get { return this._DictionaryPolymorphicKeyAndItem; }
+				private  set { this._DictionaryPolymorphicKeyAndItem = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this._DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly
+		{
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject
+		{
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			{
+				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.EqualTo( target.DictionaryPolymorphicKeyAndItem ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItem, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItem.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackRuntimeType]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWritePropertyAsObject
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackRuntimeType]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWritePropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWritePropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteField
+		{
+			[MessagePackRuntimeType]
+			public  IDictionary<string, string> DictionaryPolymorphicItself;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteField( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWriteFieldAsObject
+		{
+			[MessagePackRuntimeType]
+			public  IDictionary<string, string> DictionaryPolymorphicItself;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWriteFieldAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWriteFieldAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackRuntimeType]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackRuntimeType]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackRuntimeType]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+				private  set { this._DictionaryPolymorphicItself = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<string, string> _DictionaryPolymorphicItself;
+
+			[MessagePackRuntimeType]
+			public IDictionary<string, string> DictionaryPolymorphicItself
+			{
+				get { return this._DictionaryPolymorphicItself; }
+				private  set { this._DictionaryPolymorphicItself = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this._DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly
+		{
+			[MessagePackRuntimeType]
+			public readonly IDictionary<string, string> DictionaryPolymorphicItself;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject
+		{
+			[MessagePackRuntimeType]
+			public readonly IDictionary<string, string> DictionaryPolymorphicItself;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			{
+				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.EqualTo( target.DictionaryPolymorphicItself ) );
+				Assert.That( result.DictionaryPolymorphicItself, Is.InstanceOf( target.DictionaryPolymorphicItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField
+		{
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public  IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteField>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject
+		{
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public  IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWriteFieldAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfGetOnlyCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+				private  set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject
+		{
+			private IDictionary<FileSystemEntry, FileSystemEntry> _DictionaryPolymorphicKeyAndItemAndItself;
+
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
+			{
+				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+				private  set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
+			}
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this._DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly
+		{
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
+
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlySuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject
+		{
+			[MessagePackRuntimeCollectionItemType]
+			[MessagePackRuntimeDictionaryKeyType]
+			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
+
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			{
+				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObjectSuccess()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject.Initialize();
+			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject>();
+				
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var result = serializer.Unpack( buffer );
+
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result, Is.Not.SameAs( target ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.EqualTo( target.DictionaryPolymorphicKeyAndItemAndItself ) );
+				Assert.That( result.DictionaryPolymorphicKeyAndItemAndItself, Is.InstanceOf( target.DictionaryPolymorphicKeyAndItemAndItself.GetType() ) );
+			}
+		}
+		#endregion ------ RuntimeType.DictionaryTypes ------
+
+		#region ------ RuntimeType.TupleTypes ------
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty
 		{
@@ -13232,9 +18199,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple1Static; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty( Tuple<string> Tuple1Static ) 
 			{
-				this._Tuple1Static = Tuple.Create( "1" );
+				this._Tuple1Static = Tuple1Static;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty( Tuple.Create( "1" ) );
 			}
 		}
 
@@ -13243,7 +18218,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13267,9 +18242,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple1Static; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObject( Tuple<string> Tuple1Static ) 
 			{
-				this._Tuple1Static = Tuple.Create( "1" );
+				this._Tuple1Static = Tuple1Static;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObject( Tuple.Create( "1" ) );
 			}
 		}
 
@@ -13278,7 +18261,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13293,14 +18276,21 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField
 		{
 			public  Tuple<string> Tuple1Static;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField( Tuple<string> Tuple1Static ) 
 			{
-				this.Tuple1Static = Tuple.Create( "1" );
+				this.Tuple1Static = Tuple1Static;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField( Tuple.Create( "1" ) );
 			}
 		}
 
@@ -13309,7 +18299,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13328,9 +18318,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObject
 		{
 			public  Tuple<string> Tuple1Static;
-			public PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObject( Tuple<string> Tuple1Static ) 
 			{
-				this.Tuple1Static = Tuple.Create( "1" );
+				this.Tuple1Static = Tuple1Static;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObject( Tuple.Create( "1" ) );
 			}
 		}
 
@@ -13339,7 +18337,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13354,7 +18352,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor
 		{
@@ -13427,7 +18424,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor
 		{
@@ -13502,7 +18498,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor
 		{
@@ -13565,20 +18560,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Static, Is.InstanceOf( target.Tuple1Static.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
-				this._Tuple1Polymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry );
+				this._Tuple1Polymorphic = Tuple1Polymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			}
 		}
 
@@ -13587,7 +18589,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13605,16 +18607,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
-				this._Tuple1Polymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry );
+				this._Tuple1Polymorphic = Tuple1Polymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			}
 		}
 
@@ -13623,7 +18633,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13638,15 +18648,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
 			public  Tuple<FileSystemEntry> Tuple1Polymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
-				this.Tuple1Polymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry );
+				this.Tuple1Polymorphic = Tuple1Polymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			}
 		}
 
@@ -13655,7 +18672,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13675,9 +18692,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
 			public  Tuple<FileSystemEntry> Tuple1Polymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWriteFieldAsObject( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
-				this.Tuple1Polymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry );
+				this.Tuple1Polymorphic = Tuple1Polymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWriteFieldAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			}
 		}
 
@@ -13686,7 +18711,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13701,13 +18726,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -13742,9 +18766,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -13776,13 +18800,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -13818,9 +18841,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry> _Tuple1Polymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
@@ -13853,7 +18876,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor
 		{
@@ -13918,7 +18940,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple1Polymorphic, Is.InstanceOf( target.Tuple1Polymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty
 		{
@@ -13928,9 +18949,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple7AllStatic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
-				this._Tuple7AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7" );
+				this._Tuple7AllStatic = Tuple7AllStatic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			}
 		}
 
@@ -13939,7 +18968,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13963,9 +18992,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple7AllStatic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
-				this._Tuple7AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7" );
+				this._Tuple7AllStatic = Tuple7AllStatic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			}
 		}
 
@@ -13974,7 +19011,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -13989,14 +19026,21 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField
 		{
 			public  Tuple<string, string, string, string, string, string, string> Tuple7AllStatic;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
-				this.Tuple7AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7" );
+				this.Tuple7AllStatic = Tuple7AllStatic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			}
 		}
 
@@ -14005,7 +19049,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14024,9 +19068,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObject
 		{
 			public  Tuple<string, string, string, string, string, string, string> Tuple7AllStatic;
-			public PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObject( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
-				this.Tuple7AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7" );
+				this.Tuple7AllStatic = Tuple7AllStatic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			}
 		}
 
@@ -14035,7 +19087,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14050,7 +19102,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor
 		{
@@ -14123,7 +19174,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor
 		{
@@ -14198,7 +19248,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor
 		{
@@ -14261,20 +19310,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllStatic, Is.InstanceOf( target.Tuple7AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
-				this._Tuple7FirstPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7");
+				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			}
 		}
 
@@ -14283,7 +19339,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14301,16 +19357,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
-				this._Tuple7FirstPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7");
+				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			}
 		}
 
@@ -14319,7 +19383,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14334,15 +19398,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
 			public  Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
-				this.Tuple7FirstPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7");
+				this.Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			}
 		}
 
@@ -14351,7 +19422,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14371,9 +19442,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeTupleItemType( 1 )]
 			public  Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWriteFieldAsObject( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
-				this.Tuple7FirstPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7");
+				this.Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWriteFieldAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			}
 		}
 
@@ -14382,7 +19461,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14397,13 +19476,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -14438,9 +19516,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -14472,13 +19550,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -14514,9 +19591,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 1 )]
 			private Tuple<FileSystemEntry, string, string, string, string, string, string> _Tuple7FirstPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 1 )]
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
@@ -14549,7 +19626,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -14614,20 +19690,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7FirstPolymorphic, Is.InstanceOf( target.Tuple7FirstPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty
 		{
-			[MessagePackRuntimeTupleItemType( 7 )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 7 )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
-				this._Tuple7LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -14636,7 +19719,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14654,16 +19737,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 7 )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 7 )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
-				this._Tuple7LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -14672,7 +19763,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14687,15 +19778,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 7 )]
 			public  Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
-				this.Tuple7LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this.Tuple7LastPolymorphic = Tuple7LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -14704,7 +19802,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14724,9 +19822,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeTupleItemType( 7 )]
 			public  Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWriteFieldAsObject( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
-				this.Tuple7LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this.Tuple7LastPolymorphic = Tuple7LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -14735,7 +19841,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -14750,13 +19856,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 7 )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 7 )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -14791,9 +19896,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 7 )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 7 )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -14825,13 +19930,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 7 )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 7 )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -14867,9 +19971,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 7 )]
 			private Tuple<string, string, string, string, string, string, FileSystemEntry> _Tuple7LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 7 )]
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
@@ -14902,7 +20006,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -14967,20 +20070,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7LastPolymorphic, Is.InstanceOf( target.Tuple7LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty
 		{
-			[MessagePackRuntimeTupleItemType( 4 )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
-				this._Tuple7IntermediatePolymorphic = Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7");
+				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			}
 		}
 
@@ -14989,7 +20099,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15007,16 +20117,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 4 )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
-				this._Tuple7IntermediatePolymorphic = Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7");
+				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			}
 		}
 
@@ -15025,7 +20143,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15040,15 +20158,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 4 )]
 			public  Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteField( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
-				this.Tuple7IntermediatePolymorphic = Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7");
+				this.Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteField( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			}
 		}
 
@@ -15057,7 +20182,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15077,9 +20202,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeTupleItemType( 4 )]
 			public  Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
-				this.Tuple7IntermediatePolymorphic = Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7");
+				this.Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			}
 		}
 
@@ -15088,7 +20221,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15103,13 +20236,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 4 )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
@@ -15144,9 +20276,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 4 )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
@@ -15178,13 +20310,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 4 )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
@@ -15220,9 +20351,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 4 )]
 			private Tuple<string, string, string, FileSystemEntry, string, string, string> _Tuple7IntermediatePolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 4 )]
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
@@ -15255,7 +20386,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructor
 		{
@@ -15320,10 +20450,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7IntermediatePolymorphic, Is.InstanceOf( target.Tuple7IntermediatePolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -15331,15 +20462,21 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 5 )]
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
-				this._Tuple7AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -15348,7 +20485,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15366,6 +20503,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -15373,15 +20512,21 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 5 )]
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
-				this._Tuple7AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -15390,7 +20535,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15405,7 +20550,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField
 		{
@@ -15417,9 +20561,17 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
-				this.Tuple7AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this.Tuple7AllPolymorphic = Tuple7AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -15428,7 +20580,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15454,9 +20606,17 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWriteFieldAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
-				this.Tuple7AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry );
+				this.Tuple7AllPolymorphic = Tuple7AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWriteFieldAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			}
 		}
 
@@ -15465,7 +20625,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15480,10 +20640,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -15491,8 +20652,6 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 5 )]
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -15527,6 +20686,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -15534,8 +20695,6 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 5 )]
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -15567,10 +20726,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -15578,8 +20738,6 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 5 )]
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -15615,6 +20773,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -15622,8 +20782,6 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 5 )]
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> _Tuple7AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
@@ -15656,7 +20814,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -15733,7 +20890,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple7AllPolymorphic, Is.InstanceOf( target.Tuple7AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty
 		{
@@ -15743,9 +20899,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple8AllStatic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
-				this._Tuple8AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" );
+				this._Tuple8AllStatic = Tuple8AllStatic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			}
 		}
 
@@ -15754,7 +20918,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15778,9 +20942,17 @@ namespace MsgPack.Serialization
 			{
 				get { return this._Tuple8AllStatic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
-				this._Tuple8AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" );
+				this._Tuple8AllStatic = Tuple8AllStatic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			}
 		}
 
@@ -15789,7 +20961,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15804,14 +20976,21 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField
 		{
 			public  Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
-				this.Tuple8AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" );
+				this.Tuple8AllStatic = Tuple8AllStatic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			}
 		}
 
@@ -15820,7 +20999,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15839,9 +21018,17 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObject
 		{
 			public  Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic;
-			public PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObject( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
-				this.Tuple8AllStatic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" );
+				this.Tuple8AllStatic = Tuple8AllStatic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			}
 		}
 
@@ -15850,7 +21037,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15865,7 +21052,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor
 		{
@@ -15938,7 +21124,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor
 		{
@@ -16013,7 +21198,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor
 		{
@@ -16076,20 +21260,27 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllStatic, Is.InstanceOf( target.Tuple8AllStatic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty
 		{
-			[MessagePackRuntimeTupleItemType( 8 )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 8 )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
-				this._Tuple8LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry );
+				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -16098,7 +21289,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -16116,16 +21307,24 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 8 )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 8 )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
-				this._Tuple8LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry );
+				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -16134,7 +21333,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -16149,15 +21348,22 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField
 		{
 			[MessagePackRuntimeTupleItemType( 8 )]
 			public  Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
-				this.Tuple8LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry );
+				this.Tuple8LastPolymorphic = Tuple8LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -16166,7 +21372,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -16186,9 +21392,17 @@ namespace MsgPack.Serialization
 		{
 			[MessagePackRuntimeTupleItemType( 8 )]
 			public  Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWriteFieldAsObject( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
-				this.Tuple8LastPolymorphic = Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry );
+				this.Tuple8LastPolymorphic = Tuple8LastPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWriteFieldAsObject( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -16197,7 +21411,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -16212,13 +21426,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 8 )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 8 )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -16253,9 +21466,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 8 )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 8 )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -16287,13 +21500,12 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor
 		{
-			[MessagePackRuntimeTupleItemType( 8 )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 8 )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -16329,9 +21541,9 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
-			[MessagePackRuntimeTupleItemType( 8 )]
 			private Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> _Tuple8LastPolymorphic;
 
+			[MessagePackRuntimeTupleItemType( 8 )]
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
@@ -16364,7 +21576,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -16429,10 +21640,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8LastPolymorphic, Is.InstanceOf( target.Tuple8LastPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -16441,15 +21653,21 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
 			[MessagePackRuntimeTupleItemType( 8 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
-				this._Tuple8AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry );
+				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -16458,7 +21676,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWritePropertySuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -16476,6 +21694,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -16484,15 +21704,21 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
 			[MessagePackRuntimeTupleItemType( 8 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
 			}
-			public PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
-				this._Tuple8AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry );
+				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -16501,7 +21727,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -16516,7 +21742,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField
 		{
@@ -16529,9 +21754,17 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 7 )]
 			[MessagePackRuntimeTupleItemType( 8 )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
-				this.Tuple8AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry );
+				this.Tuple8AllPolymorphic = Tuple8AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -16540,7 +21773,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteFieldSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -16567,9 +21800,17 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 7 )]
 			[MessagePackRuntimeTupleItemType( 8 )]
 			public  Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic;
-			public PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWriteFieldAsObject() 
+
+			private PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWriteFieldAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
-				this.Tuple8AllPolymorphic = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry );
+				this.Tuple8AllPolymorphic = Tuple8AllPolymorphic;
+			}
+
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWriteFieldAsObject() { }
+
+			public static PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWriteFieldAsObject Initialize()
+			{
+				return new PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWriteFieldAsObject( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			}
 		}
 
@@ -16578,7 +21819,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWriteFieldAsObjectSuccess()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWriteFieldAsObject();
+			var target = PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWriteFieldAsObject>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -16593,10 +21834,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -16605,8 +21847,6 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
 			[MessagePackRuntimeTupleItemType( 8 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -16641,6 +21881,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -16649,8 +21891,6 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
 			[MessagePackRuntimeTupleItemType( 8 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -16682,10 +21922,11 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -16694,8 +21935,6 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
 			[MessagePackRuntimeTupleItemType( 8 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -16731,6 +21970,8 @@ namespace MsgPack.Serialization
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorAsObject
 		{
+			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
+
 			[MessagePackRuntimeTupleItemType( 1 )]
 			[MessagePackRuntimeTupleItemType( 2 )]
 			[MessagePackRuntimeTupleItemType( 3 )]
@@ -16739,8 +21980,6 @@ namespace MsgPack.Serialization
 			[MessagePackRuntimeTupleItemType( 6 )]
 			[MessagePackRuntimeTupleItemType( 7 )]
 			[MessagePackRuntimeTupleItemType( 8 )]
-			private Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> _Tuple8AllPolymorphic;
-
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
@@ -16773,7 +22012,6 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
-// L185
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor
 		{
@@ -16852,41 +22090,58 @@ namespace MsgPack.Serialization
 				Assert.That( result.Tuple8AllPolymorphic, Is.InstanceOf( target.Tuple8AllPolymorphic.GetType() ) );
 			}
 		}
+		#endregion ------ RuntimeType.TupleTypes ------
+
+		#endregion ---- RuntimeType ----
 		public class PolymorphicMemberTypeMixed
 		{
+
 			public string NormalVanilla { get; set; }
 			[MessagePackRuntimeType]
+
 			public FileSystemEntry NormalRuntime { get; set; }
 			[MessagePackKnownType( 1, typeof( FileEntry ) )]
 			[MessagePackKnownType( 2, typeof( DirectoryEntry ) )]
+
 			public FileSystemEntry NormalKnown { get; set; }
 			[MessagePackRuntimeType]
+
 			public Object ObjectRuntime { get; set; }
+
 			public IList<string> ListVanilla { get; set; }
 			[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]
+
 			public IList<FileSystemEntry> ListKnownItem { get; set; }
 			[MessagePackKnownType( 1, typeof( Collection<FileSystemEntry> ) )]
 			[MessagePackKnownType( 2, typeof( List<FileSystemEntry> ) )]
 			[MessagePackRuntimeCollectionItemType]
+
 			public IList<FileSystemEntry> ListKnwonContainerRuntimeItem { get; set; }
 			[MessagePackRuntimeCollectionItemType]
+
 			public IList<object> ListObjectRuntimeItem { get; set; }
+
 			public IDictionary<string, string> DictionaryVanilla { get; set; }
 			[MessagePackKnownCollectionItemType( 1, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 2, typeof( DirectoryEntry ) )]
+
 			public IDictionary<string, FileSystemEntry> DictionaryKnownValue { get; set; }
 			[MessagePackKnownType( 1, typeof( SortedDictionary<string, FileSystemEntry> ) )]
 			[MessagePackKnownType( 2, typeof( Dictionary<string, FileSystemEntry> ) )]
 			[MessagePackRuntimeCollectionItemType]
+
 			public IDictionary<string, FileSystemEntry> DictionaryKnownContainerRuntimeValue { get; set; }
 			[MessagePackRuntimeCollectionItemType]
+
 			public IDictionary<string, object> DictionaryObjectRuntimeValue { get; set; }
 			[MessagePackKnownTupleItemType( 2, 1, typeof( FileEntry ) )]
 			[MessagePackKnownTupleItemType( 2, 2, typeof( DirectoryEntry ) )]
 			[MessagePackRuntimeTupleItemType( 3 )]
 			[MessagePackRuntimeTupleItemType( 4 )]
+
 			public Tuple<string, FileSystemEntry, FileSystemEntry, object> Tuple { get; set; }
+
 			public PolymorphicMemberTypeMixed() { }
 		}
 
@@ -16948,7 +22203,6 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassMemberNoAttribute { Value = new FileEntry { Name = "file", Size = 1 } };
-			var serializer = context.GetSerializer<AbstractClassMemberNoAttribute>();
 
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<AbstractClassMemberNoAttribute>() );
 		}
@@ -16967,6 +22221,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassMemberKnownType { Value = new FileEntry { Name = "file", Size = 1 } };
+
 			var serializer = context.GetSerializer<AbstractClassMemberKnownType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -16996,6 +22251,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassMemberRuntimeType { Value = new FileEntry { Name = "file", Size = 1 } };
+
 			var serializer = context.GetSerializer<AbstractClassMemberRuntimeType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17024,7 +22280,6 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassCollectionItemNoAttribute { Value = new Collection<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
-			var serializer = context.GetSerializer<AbstractClassCollectionItemNoAttribute>();
 
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<AbstractClassCollectionItemNoAttribute>() );
 		}
@@ -17043,6 +22298,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassCollectionItemKnownType { Value = new Collection<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
 			var serializer = context.GetSerializer<AbstractClassCollectionItemKnownType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17073,6 +22329,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassCollectionItemRuntimeType { Value = new Collection<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
 			var serializer = context.GetSerializer<AbstractClassCollectionItemRuntimeType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17102,7 +22359,6 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassDictionaryKeyNoAttribute { Value = new SortedDictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
-			var serializer = context.GetSerializer<AbstractClassDictionaryKeyNoAttribute>();
 
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<AbstractClassDictionaryKeyNoAttribute>() );
 		}
@@ -17121,6 +22377,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassDictionaryKeyKnownType { Value = new SortedDictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
 			var serializer = context.GetSerializer<AbstractClassDictionaryKeyKnownType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17151,6 +22408,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassDictionaryKeyRuntimeType { Value = new SortedDictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
 			var serializer = context.GetSerializer<AbstractClassDictionaryKeyRuntimeType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17180,7 +22438,6 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceMemberNoAttribute { Value = new FileEntry { Name = "file", Size = 1 } };
-			var serializer = context.GetSerializer<InterfaceMemberNoAttribute>();
 
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<InterfaceMemberNoAttribute>() );
 		}
@@ -17199,6 +22456,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceMemberKnownType { Value = new FileEntry { Name = "file", Size = 1 } };
+
 			var serializer = context.GetSerializer<InterfaceMemberKnownType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17228,6 +22486,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceMemberRuntimeType { Value = new FileEntry { Name = "file", Size = 1 } };
+
 			var serializer = context.GetSerializer<InterfaceMemberRuntimeType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17256,7 +22515,6 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceCollectionItemNoAttribute { Value = new Collection<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
-			var serializer = context.GetSerializer<InterfaceCollectionItemNoAttribute>();
 
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<InterfaceCollectionItemNoAttribute>() );
 		}
@@ -17275,6 +22533,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceCollectionItemKnownType { Value = new Collection<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
 			var serializer = context.GetSerializer<InterfaceCollectionItemKnownType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17305,6 +22564,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceCollectionItemRuntimeType { Value = new Collection<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+
 			var serializer = context.GetSerializer<InterfaceCollectionItemRuntimeType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17334,7 +22594,6 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceDictionaryKeyNoAttribute { Value = new SortedDictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
-			var serializer = context.GetSerializer<InterfaceDictionaryKeyNoAttribute>();
 
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<InterfaceDictionaryKeyNoAttribute>() );
 		}
@@ -17353,6 +22612,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceDictionaryKeyKnownType { Value = new SortedDictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
 			var serializer = context.GetSerializer<InterfaceDictionaryKeyKnownType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17383,6 +22643,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceDictionaryKeyRuntimeType { Value = new SortedDictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+
 			var serializer = context.GetSerializer<InterfaceDictionaryKeyRuntimeType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17420,6 +22681,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassCollectionNoAttribute { Value = new EchoKeyedCollection<string> { "ABC" } };
+
 			var serializer = context.GetSerializer<AbstractClassCollectionNoAttribute>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17450,6 +22712,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassCollectionKnownType { Value = new EchoKeyedCollection<string> { "ABC" } };
+
 			var serializer = context.GetSerializer<AbstractClassCollectionKnownType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17480,6 +22743,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassCollectionRuntimeType { Value = new EchoKeyedCollection<string> { "ABC" } };
+
 			var serializer = context.GetSerializer<AbstractClassCollectionRuntimeType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17509,6 +22773,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceCollectionNoAttribute { Value = new EchoKeyedCollection<string> { "ABC" } };
+
 			var serializer = context.GetSerializer<InterfaceCollectionNoAttribute>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17539,6 +22804,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceCollectionKnownType { Value = new EchoKeyedCollection<string> { "ABC" } };
+
 			var serializer = context.GetSerializer<InterfaceCollectionKnownType>();
 
 			using ( var buffer = new MemoryStream() )
@@ -17569,6 +22835,7 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceCollectionRuntimeType { Value = new EchoKeyedCollection<string> { "ABC" } };
+
 			var serializer = context.GetSerializer<InterfaceCollectionRuntimeType>();
 
 			using ( var buffer = new MemoryStream() )
