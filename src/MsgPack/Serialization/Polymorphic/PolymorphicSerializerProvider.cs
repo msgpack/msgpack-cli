@@ -19,26 +19,26 @@
 // #endregion -- License Terms --
 
 using System;
+using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.Polymorphic
 {
 	internal sealed class PolymorphicSerializerProvider : MessagePackSerializerProvider
 	{
-		private readonly IMessagePackSerializer _valueSerializer;
 		private readonly Type _targetType;
 
-		public PolymorphicSerializerProvider( Type  targetType, IMessagePackSerializer valueSerializer )
+		public PolymorphicSerializerProvider( Type  targetType )
 		{
 			this._targetType = targetType;
-			this._valueSerializer = valueSerializer;
 		}
 
 		public override object Get( SerializationContext context, object providerParameter )
 		{
 			var schema = providerParameter as PolymorphismSchema;
+
 			if ( schema == null || schema.UseDefault )
 			{
-				return this._valueSerializer;
+				throw new SerializationException( "Failed to get PolymorphismSchema." );
 			}
 
 			if ( schema.UseTypeEmbedding )

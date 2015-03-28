@@ -157,19 +157,6 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "serializer" );
 			}
 
-			var asEnumSerializer = serializer as ICustomizableEnumSerializer;
-			if ( asEnumSerializer != null )
-			{
-				return this._repository.Register( targetType, new EnumMessagePackSerializerProvider( targetType, asEnumSerializer ), /*allowOverwrite:*/ false );
-			}
-
-			var asVanillaSerializer = serializer as IMessagePackSerializer;
-			if ( asVanillaSerializer != null )
-			{
-				return this._repository.Register( targetType, new PolymorphicSerializerProvider( targetType, asVanillaSerializer ),  /*allowOverwrite:*/ false );
-			}
-
-			// other provider
 			return this._repository.Register( targetType, serializer, /*allowOverwrite*/ false );
 		}
 

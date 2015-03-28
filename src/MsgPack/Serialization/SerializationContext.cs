@@ -38,6 +38,7 @@ using System.Reflection;
 using System.Threading;
 
 using MsgPack.Serialization.DefaultSerializers;
+using MsgPack.Serialization.Polymorphic;
 
 namespace MsgPack.Serialization
 {
@@ -427,7 +428,20 @@ namespace MsgPack.Serialization
 			MessagePackSerializer<T> serializer = null;
 			while ( serializer == null )
 			{
-				serializer = this._serializers.Get<T>( this, providerParameter ) ?? GenericSerializer.Create<T>( this, itemSchema );
+				serializer = this._serializers.Get<T>( this, providerParameter );
+
+				if ( serializer == null )
+				{
+					if ( !schema.UseDefault )
+					{
+						var provider = new PolymorphicSerializerProvider( typeof( T ) );
+						this._serializers.Register( typeof( T ), provider );
+						return this._serializers.Get<T>( this, schema );
+					}
+
+					serializer = GenericSerializer.Create<T>( this, schema );
+				}
+
 				if ( serializer == null )
 				{
 #if !XAMIOS && !XAMDROID && !UNITY
@@ -537,7 +551,23 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			if ( !this._serializers.Register( serializer ) || providerParameter != null )
+			object registration = serializer;
+			var asEnumSerializer = serializer as ICustomizableEnumSerializer;
+			if ( asEnumSerializer != null )
+			{
+#if DEBUG && !UNITY
+				Contract.Assert( typeof( T ).GetIsEnum(), typeof( T ) + " is not enum but generated serializer is ICustomizableEnumSerializer" );
+#endif // DEBUG && !UNITY
+				registration = new EnumMessagePackSerializerProvider( typeof( T ), asEnumSerializer );
+			}
+#if DEBUG && !UNITY
+			else
+			{
+				Contract.Assert( !typeof( T ).GetIsEnum(), typeof( T ) + " is enum but generated serializer is not ICustomizableEnumSerializer" );
+			}
+#endif // DEBUG && !UNITY
+
+			if ( !this._serializers.Register( typeof( T ), registration ) || providerParameter != null )
 			{
 				// Re-get to avoid duplicated registration and handle provider parameter.
 				serializer = this._serializers.Get<T>( this, providerParameter );
@@ -551,6 +581,17 @@ namespace MsgPack.Serialization
 		{
 			if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
 			{
+				if ( !schema.UseDefault )
+				{
+					var provider = new PolymorphicSerializerProvider( targetType );
+					this.Serializers.Register( targetType, provider );
+					var serializer = provider.Get( this, schema ) as IMessagePackSingleObjectSerializer;
+#if DEBUG && !UNITY
+					Contract.Assert( serializer != null, provider.Get( this, schema ) + " <- " + targetType + ":" + schema.DebugString );
+#endif // DEBUG && !UNITY
+					return serializer;
+				}
+
 				var concreteCollectionType = this._defaultCollectionTypes.GetConcreteType( targetType );
 				if ( concreteCollectionType != null )
 				{
