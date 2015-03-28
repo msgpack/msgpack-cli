@@ -453,7 +453,7 @@ namespace MsgPack.Serialization
 								Monitor.Enter( newLock );
 								try
 								{
-									lock( this._typeLock )
+									lock ( this._typeLock )
 									{
 										lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
 										if ( lockTaken )
@@ -516,7 +516,7 @@ namespace MsgPack.Serialization
 							if ( lockTaken )
 							{
 #if SILVERLIGHT || NETFX_35
-								lock( this._typeLock )
+								lock ( this._typeLock )
 								{
 									this._typeLock.Remove( typeof( T ) );
 								}
@@ -657,17 +657,17 @@ namespace MsgPack.Serialization
 			{
 				Func<SerializationContext, object, IMessagePackSingleObjectSerializer> func;
 #if SILVERLIGHT || NETFX_35
-				lock ( this._cache)
+				lock ( this._cache )
 				{
 #endif
-				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
-				{
+					if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
+					{
 #if !NETFX_CORE
-					func =
-						Delegate.CreateDelegate(
-							typeof( Func<SerializationContext, object, IMessagePackSingleObjectSerializer> ),
-							typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
-						) as Func<SerializationContext, object, IMessagePackSingleObjectSerializer>;
+						func =
+							Delegate.CreateDelegate(
+								typeof( Func<SerializationContext, object, IMessagePackSingleObjectSerializer> ),
+								typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
+							) as Func<SerializationContext, object, IMessagePackSingleObjectSerializer>;
 #else
 					var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 					var providerParameterParameter = Expression.Parameter( typeof( Object ), "providerParameter" );
@@ -684,10 +684,10 @@ namespace MsgPack.Serialization
 						).Compile();
 #endif // if !NETFX_CORE
 #if DEBUG
-					Contract.Assert( func != null );
+						Contract.Assert( func != null );
 #endif // if DEBUG
-					this._cache[ targetType.TypeHandle ] = func;
-				}
+						this._cache[ targetType.TypeHandle ] = func;
+					}
 #if SILVERLIGHT || NETFX_35
 				}
 #endif
