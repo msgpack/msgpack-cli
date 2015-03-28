@@ -207,6 +207,19 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, PolymorphismSchema schema )
 		{
+#if DEBUG
+			SerializerDebugging.TraceEvent(
+				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
+				typeof( T ),
+				context.GetHashCode(),
+				schema.DebugString
+			);
+
+#if !UNITY
+			Contract.Assert( schema.UseDefault || schema.ChildrenType != PolymorphismSchemaChildrenType.None );
+#endif // !UNITY
+#endif // DEBUG
+
 #if !XAMIOS && !XAMDROID && !UNITY
 			Contract.Requires( schema != null );
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
@@ -554,6 +567,9 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, PolymorphismSchema schema )
 		{
+#if DEBUG && !UNITY
+			Contract.Assert( schema.UseDefault || schema.ChildrenType != PolymorphismSchemaChildrenType.None );
+#endif // DEBUG && !UNITY
 			var serializer = context.Serializers.Get<T>( context );
 
 			if ( serializer != null )
@@ -592,6 +608,9 @@ namespace MsgPack.Serialization
 					}
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 
+#if DEBUG
+					Contract.Assert( schema.UseDefault );
+#endif // DEBUG
 					return new ReflectionObjectMessagePackSerializer<T>( context );
 				}
 			}

@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MsgPack.Serialization
@@ -39,6 +40,7 @@ namespace MsgPack.Serialization
 	///		</para>
 	/// </summary>
 	[EditorBrowsable( EditorBrowsableState.Never )]
+	[DebuggerDisplay("{DebugString}")]
 	public sealed partial class PolymorphismSchema
 	{
 		/// <summary>

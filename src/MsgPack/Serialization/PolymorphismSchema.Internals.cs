@@ -27,6 +27,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Text;
 
 using MsgPack.Serialization.Polymorphic;
 
@@ -128,6 +129,93 @@ namespace MsgPack.Serialization
 			typeof( Dictionary<,> ).MakeGenericType( typeof( byte ), typeof( Type ) )
 				.GetMethod( "Add", new[] { typeof( byte ), typeof( Type ) } );
 
+
+		internal string DebugString
+		{
+			get
+			{
+				var buffer = new StringBuilder();
+				this.ToDebugString( buffer );
+				return buffer.ToString();
+			}
+		}
+
+		private void ToDebugString( StringBuilder buffer )
+		{
+			buffer.Append( "{TargetType:" ).Append( this.TargetType ).Append( ", SchemaType:" ).Append( this.PolymorphismType );
+			switch ( this.ChildrenType )
+			{
+				case PolymorphismSchemaChildrenType.CollectionItems:
+				{
+					buffer.Append( ", CollectionItemsSchema:" );
+					if ( this.ItemSchema == null )
+					{
+						buffer.Append( "null" );
+					}
+					else
+					{
+						this.ItemSchema.ToDebugString( buffer );
+					}
+
+					break;
+				}
+				case PolymorphismSchemaChildrenType.DictionaryKeyValues:
+				{
+					buffer.Append( ", DictinoaryKeysSchema:" );
+					if ( this.KeySchema == null )
+					{
+						buffer.Append( "null" );
+					}
+					else
+					{
+						this.KeySchema.ToDebugString( buffer );
+					}
+
+					buffer.Append( ", DictinoaryValuesSchema:" );
+					if ( this.ItemSchema == null )
+					{
+						buffer.Append( "null" );
+					}
+					else
+					{
+						this.ItemSchema.ToDebugString( buffer );
+					}
+
+					break;
+				}
+#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+				case PolymorphismSchemaChildrenType.TupleItems:
+				{
+					buffer.Append( ", TupleItemsSchema:[" );
+					var isFirst = true;
+					foreach ( var child in this._children )
+					{
+						if ( isFirst )
+						{
+							isFirst = false;
+						}
+						else
+						{
+							buffer.Append( ", " );
+						}
+
+						if ( child == null )
+						{
+							buffer.Append( "null" );
+						}
+						else
+						{
+							child.ToDebugString( buffer );
+						}
+					}
+
+					break;
+				}
+#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+			}
+
+			buffer.Append( '}' );
+		}
 
 		internal static PolymorphismSchema Create(
 			SerializationContext context,
