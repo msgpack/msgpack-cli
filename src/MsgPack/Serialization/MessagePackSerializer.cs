@@ -97,7 +97,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-			return CreateInternal<T>( context, PolymorphismSchema.Default );
+			// Old Create behavior was effectively Get() because the Builder internally register genreated serializer and returned existent one if it had been already registered. 
+			// It was just aweful resource consumption.
+			return Get<T>( context, PolymorphismSchema.Default );
 		}
 
 		/// <summary>
