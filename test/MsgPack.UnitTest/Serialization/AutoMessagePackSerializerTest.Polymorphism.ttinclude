@@ -108,28 +108,28 @@ private void GeneratePolymorphismTestParts()
 	var normalTypes =
 		new []
 		{
-			Member.Of( "Reference",		"Version" ,			PolymorphismTargets.None,	@"new Version( 1, 2, 3, 4 )" ),
-			Member.Of( "Value",			"DateTime",			PolymorphismTargets.None,	@"new DateTime( 1982, 1, 29, 15, 46, 12 )" ),
-			Member.Of( "Primitive",		"int",				PolymorphismTargets.None,	@"123" ),
-			Member.Of( "String",		"string",			PolymorphismTargets.None,	@"""ABC""" ),
-			Member.Of( "Polymorphic",	"FileSystemEntry",	PolymorphismTargets.Member,	@"new FileEntry { Name = ""file"", Size = 1 }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "Reference",		"Version" ,			PolymorphismTargets.None,	@"null",				@"new Version( 1, 2, 3, 4 )" ),
+			Member.Of( "Value",			"DateTime",			PolymorphismTargets.None,	@"default( DateTime )", @"new DateTime( 1982, 1, 29, 15, 46, 12 )" ),
+			Member.Of( "Primitive",		"int",				PolymorphismTargets.None,	@"default( int )",		@"123" ),
+			Member.Of( "String",		"string",			PolymorphismTargets.None,	@"null",				@"""ABC""" ),
+			Member.Of( "Polymorphic",	"FileSystemEntry",	PolymorphismTargets.Member,	@"null",				@"new FileEntry { Name = ""file"", Size = 1 }", "FileEntry", "DirectoryEntry" ),
 		};
 	var collectionTypes =
 		new []
 		{
-			Member.Of( "ListStaticItem",			"IList<string>",			PolymorphismTargets.None,	@"new List<string>{ ""A"", ""B"" }" ),
-			Member.Of( "ListPolymorphicItem",		"IList<FileSystemEntry>",	PolymorphismTargets.Item,	@"new List<FileSystemEntry>{ new FileEntry { Name = ""file"", Size = 1L }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "ListPolymorphicItself",		"IList<string>",			PolymorphismTargets.Member,	@"new Collection<string>{ ""A"", ""B"" }", "Collection<string>", "List<string>" ),
+			Member.Of( "ListStaticItem",			"IList<string>",			PolymorphismTargets.None,	@"new List<string>()",			@"new List<string>{ ""A"", ""B"" }" ),
+			Member.Of( "ListPolymorphicItem",		"IList<FileSystemEntry>",	PolymorphismTargets.Item,	@"new List<FileSystemEntry>()",	@"new List<FileSystemEntry>{ new FileEntry { Name = ""file"", Size = 1L }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "ListPolymorphicItself",		"IList<string>",			PolymorphismTargets.Member,	@"new Collection<string>()",	@"new Collection<string>{ ""A"", ""B"" }", "Collection<string>", "List<string>" ),
 		};
 	var dictionaryTypes =
 		new []
 		{
-			Member.Of( "DictionaryStaticKeyAndStaticItem",			"IDictionary<string, string>",						PolymorphismTargets.None,							@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }" ),
-			Member.Of( "DictionaryPolymorphicKeyAndStaticItem",		"IDictionary<FileSystemEntry, string>",				PolymorphismTargets.Key,							@"new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = ""file"", Size = 1L }, ""A"" }, { new DirectoryEntry { Name = ""dir"", ChildCount = 1 }, ""B"" } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "DictionaryStaticKeyAndPolymorphicItem",		"IDictionary<string, FileSystemEntry>",				PolymorphismTargets.Item,							@"new Dictionary<string, FileSystemEntry>{ { ""A"", new FileEntry { Name = ""file"", Size = 1L } }, { ""B"", new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "DictionaryPolymorphicKeyAndItem",			"IDictionary<FileSystemEntry, FileSystemEntry>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "DictionaryPolymorphicItself",				"IDictionary<string, string>",						PolymorphismTargets.Member,							@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }", "Dictionary<string, string>", "SortedDictionary<string, string>" ),
-			Member.Of( "DictionaryPolymorphicKeyAndItemAndItself",	"IDictionary<FileSystemEntry, FileSystemEntry>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryStaticKeyAndStaticItem",			"IDictionary<string, string>",						PolymorphismTargets.None,							@"new Dictionary<string, string>()",					@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }" ),
+			Member.Of( "DictionaryPolymorphicKeyAndStaticItem",		"IDictionary<FileSystemEntry, string>",				PolymorphismTargets.Key,							@"new Dictionary<FileSystemEntry, string>()",			@"new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = ""file"", Size = 1L }, ""A"" }, { new DirectoryEntry { Name = ""dir"", ChildCount = 1 }, ""B"" } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryStaticKeyAndPolymorphicItem",		"IDictionary<string, FileSystemEntry>",				PolymorphismTargets.Item,							@"new Dictionary<string, FileSystemEntry>()",			@"new Dictionary<string, FileSystemEntry>{ { ""A"", new FileEntry { Name = ""file"", Size = 1L } }, { ""B"", new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryPolymorphicKeyAndItem",			"IDictionary<FileSystemEntry, FileSystemEntry>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>()",	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryPolymorphicItself",				"IDictionary<string, string>",						PolymorphismTargets.Member,							@"new Dictionary<string, string>()",					@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }", "Dictionary<string, string>", "SortedDictionary<string, string>" ),
+			Member.Of( "DictionaryPolymorphicKeyAndItemAndItself",	"IDictionary<FileSystemEntry, FileSystemEntry>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>()",	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
 		};
 	var tupleMembers =
 		new []
@@ -410,7 +410,17 @@ private void GenerateConstructor( string typeName, TypeKind kind, bool asObject,
 	{
 #>
 
-			public <#= typeName #>() { }
+			public <#= typeName #>()
+			{
+<#+
+	foreach ( var member in members )
+	{
+#>
+				this.<#=  GetMemberNameGenerator( kind )( member.Name ) #> = <#= member.EmptyValue #>;
+<#+
+	}
+#>
+			}
 
 			public static <#= typeName #> Initialize()
 			{
@@ -839,26 +849,28 @@ private struct Member
 	public readonly PolymorphismTargets Targets;
 	public readonly string[] ActualTypes;
 	public readonly string InitialValue;
+	public readonly string EmptyValue;
 	public readonly int[] PolymorphicTupleItemNumbers;
 
-	public Member( string name, string type, PolymorphismTargets targets, string[] actualTypes, string initialValue, int[] polymorphicTupleItemNumbers )
+	public Member( string name, string type, PolymorphismTargets targets, string[] actualTypes, string emptyValue, string initialValue, int[] polymorphicTupleItemNumbers )
 	{
 		this.Name = name;
 		this.Type = type;
 		this.Targets = targets;
 		this.ActualTypes = actualTypes;
 		this.InitialValue = initialValue;
+		this.EmptyValue = emptyValue;
 		this.PolymorphicTupleItemNumbers = polymorphicTupleItemNumbers;
 	}
 
-	public static Member Of( string name, string type, PolymorphismTargets targets, string initialValue, params string[] actualTypes )
+	public static Member Of( string name, string type, PolymorphismTargets targets, string emptyValue, string initialValue, params string[] actualTypes )
 	{
-		return new Member( name, type, targets, actualTypes, initialValue, new int[ 0 ] );
+		return new Member( name, type, targets, actualTypes, emptyValue, initialValue, new int[ 0 ] );
 	}
 
 	public static Member Of( string name, string type, string initialValue, params int[] polymorphicTupleItemNumbers )
 	{
-		return new Member( name, type, PolymorphismTargets.TupleItem, new [] { type }, initialValue, polymorphicTupleItemNumbers );
+		return new Member( name, type, PolymorphismTargets.TupleItem, new [] { type }, "null", initialValue, polymorphicTupleItemNumbers );
 	}
 }
 
