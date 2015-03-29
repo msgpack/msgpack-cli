@@ -715,7 +715,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitGetPropretyExpression( TContext context, ILConstruct instance, PropertyInfo property )
+		protected override ILConstruct EmitGetPropertyExpression( TContext context, ILConstruct instance, PropertyInfo property )
 		{
 			return ILConstruct.Invoke( instance, property.GetGetMethod( true ), ILConstruct.NoArguments );
 		}
@@ -726,7 +726,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override ILConstruct EmitSetProprety( TContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
+		protected override ILConstruct EmitSetProperty( TContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
 		{
 #if DEBUG
 			// ReSharper disable PossibleNullReferenceException

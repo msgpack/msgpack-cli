@@ -132,7 +132,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					NilImplication.Null,
 					null,
 					propertyInvocationChain.Aggregate(
-						tuple, ( propertySource, property ) => this.EmitGetPropretyExpression( context, propertySource, property )
+						tuple, ( propertySource, property ) => this.EmitGetPropertyExpression( context, propertySource, property )
 					),
 					null,
 					itemsSchema
@@ -263,7 +263,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					this.EmitNotEqualsExpression(
 						context,
-						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.ItemsCount ),
+						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.ItemsCount ),
 						this.MakeInt64Literal( context, cardinarity )
 					),
 					this.EmitThrowExpression(

@@ -548,7 +548,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( !withReflection )
 			{
-				return this.EmitGetPropretyExpression( context, instance, property );
+				return this.EmitGetPropertyExpression( context, instance, property );
 			}
 
 			/*
@@ -575,7 +575,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="instance">The instance which stores instance member value.</param>
 		/// <param name="property">The property to be accessed.</param>
 		/// <returns>The generated construct.</returns>
-		protected abstract TConstruct EmitGetPropretyExpression( TContext context, TConstruct instance, PropertyInfo property );
+		protected abstract TConstruct EmitGetPropertyExpression( TContext context, TConstruct instance, PropertyInfo property );
 
 		private TConstruct EmitGetField( TContext context, TConstruct instance, FieldInfo field, bool withReflection )
 		{
@@ -645,7 +645,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				var setter = asProperty.GetSetMethod( true );
 				if ( setter != null && setter.GetIsPublic() )
 				{
-					return this.EmitSetProprety( context, instance, asProperty, value, false );
+					return this.EmitSetProperty( context, instance, asProperty, value, false );
 				}
 
 				getCollection = this.EmitGetProperty( context, instance, asProperty, !asProperty.GetHasPublicGetter() );
@@ -796,7 +796,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitMethodOfExpression( TContext context, MethodBase method );
 
-		private TConstruct EmitSetProprety(
+		private TConstruct EmitSetProperty(
 			TContext context,
 			TConstruct instance,
 			PropertyInfo property,
@@ -806,7 +806,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			if ( !withReflection )
 			{
-				return this.EmitSetProprety( context, instance, property, value );
+				return this.EmitSetProperty( context, instance, property, value );
 			}
 
 			/*
@@ -840,7 +840,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="property">The property to be accessed.</param>
 		/// <param name="value">The value to be stored.</param>
 		/// <returns>The generated construct.</returns>
-		protected abstract TConstruct EmitSetProprety( TContext context, TConstruct instance, PropertyInfo property, TConstruct value );
+		protected abstract TConstruct EmitSetProperty( TContext context, TConstruct instance, PropertyInfo property, TConstruct value );
 
 		/// <summary>
 		///		Emits the 'fieldof' expression.
@@ -968,7 +968,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					null,
 					Metadata._String.Format_P,
-					this.EmitGetPropretyExpression( context, null, Metadata._CultureInfo.InvariantCulture ),
+					this.EmitGetPropertyExpression( context, null, Metadata._CultureInfo.InvariantCulture ),
 					this.MakeStringLiteral( context, format ),
 					this.EmitCreateNewArrayExpression(
 						context,
@@ -1021,7 +1021,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated code construct.</returns>
 		private TConstruct EmitGetCollectionCountExpression( TContext context, TConstruct collection, CollectionTraits traits )
 		{
-			return this.EmitGetPropretyExpression( context, collection, traits.CountProperty );
+			return this.EmitGetPropertyExpression( context, collection, traits.CountProperty );
 		}
 
 		/// <summary>
@@ -1322,11 +1322,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				{
 					this.EmitNotExpression(
 						context,
-						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
+						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
 					),
 					this.EmitNotExpression(
 						context,
-						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
+						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
 					)
 				};
 
@@ -1366,7 +1366,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitStoreVariableStatement(
 							context,
 							nullable,
-							this.EmitGetPropretyExpression(
+							this.EmitGetPropertyExpression(
 									context,
 									unpacker,
 									Metadata._Unpacker.LastReadData
@@ -1403,7 +1403,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			var unpackedItem =
 				( Nullable.GetUnderlyingType( nullable.ContextType ) != null
 				  && Nullable.GetUnderlyingType( itemType ) == null )
-					? this.EmitGetPropretyExpression( context, nullable, nullable.ContextType.GetProperty( "Value" ) )
+					? this.EmitGetPropertyExpression( context, nullable, nullable.ContextType.GetProperty( "Value" ) )
 					: nullable;
 			var store =
 				storeValueStatementEmitter( unpackedItem );
@@ -1446,11 +1446,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitConditionalExpression(
 					context,
 					( !isNativelyNullable || Nullable.GetUnderlyingType( itemType ) != null )
-						? this.EmitGetPropretyExpression( context, nullable, nullableType.GetProperty( "HasValue" ) )
+						? this.EmitGetPropertyExpression( context, nullable, nullableType.GetProperty( "HasValue" ) )
 						: itemType == typeof( MessagePackObject )
 						? this.EmitNotExpression(
 							context,
-							this.EmitGetPropretyExpression( context, nullable, Metadata._MessagePackObject.IsNil )
+							this.EmitGetPropertyExpression( context, nullable, Metadata._MessagePackObject.IsNil )
 						) : this.EmitNotEqualsExpression( context, nullable, this.MakeNullLiteral( context, itemType ) ),
 					store,
 					expressionWhenNil

@@ -296,7 +296,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return
 				this.EmitConditionalExpression(
 					context,
-					this.EmitGetPropretyExpression( context, context.Unpacker, Metadata._Unpacker.IsArrayHeader ),
+					this.EmitGetPropertyExpression( context, context.Unpacker, Metadata._Unpacker.IsArrayHeader ),
 					this.EmitObjectUnpackFromArray( context, result, target ),
 					this.EmitObjectUnpackFromMap( context, result, target )
 				);

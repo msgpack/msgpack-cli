@@ -438,7 +438,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitGetPropretyExpression( TContext context, TConstruct instance, PropertyInfo property )
+		protected override TConstruct EmitGetPropertyExpression( TContext context, TConstruct instance, PropertyInfo property )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( property != null );
@@ -461,7 +461,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitSetProprety( TContext context, TConstruct instance, PropertyInfo property, TConstruct value )
+		protected override TConstruct EmitSetProperty( TContext context, TConstruct instance, PropertyInfo property, TConstruct value )
 		{
 			Contract.Requires( context != null );
 			Contract.Requires( property != null );

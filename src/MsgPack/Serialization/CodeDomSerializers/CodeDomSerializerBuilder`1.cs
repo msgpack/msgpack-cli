@@ -454,7 +454,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitGetPropretyExpression( CodeDomContext context, CodeDomConstruct instance, PropertyInfo property )
+		protected override CodeDomConstruct EmitGetPropertyExpression( CodeDomContext context, CodeDomConstruct instance, PropertyInfo property )
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );
@@ -493,7 +493,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
-		protected override CodeDomConstruct EmitSetProprety( CodeDomContext context, CodeDomConstruct instance, PropertyInfo property, CodeDomConstruct value )
+		protected override CodeDomConstruct EmitSetProperty( CodeDomContext context, CodeDomConstruct instance, PropertyInfo property, CodeDomConstruct value )
 		{
 #if DEBUG
 			Contract.Assert( instance == null || instance.IsExpression );

@@ -385,7 +385,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					: Expression.Call( instance, method, arguments.Select( c => c.Expression ) );
 		}
 
-		protected override ExpressionConstruct EmitGetPropretyExpression(
+		protected override ExpressionConstruct EmitGetPropertyExpression(
 			ExpressionTreeContext context, ExpressionConstruct instance, PropertyInfo property
 		)
 		{
@@ -397,7 +397,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return Expression.Field( instance, field );
 		}
 
-		protected override ExpressionConstruct EmitSetProprety(
+		protected override ExpressionConstruct EmitSetProperty(
 			ExpressionTreeContext context, ExpressionConstruct instance, PropertyInfo property, ExpressionConstruct value
 		)
 		{

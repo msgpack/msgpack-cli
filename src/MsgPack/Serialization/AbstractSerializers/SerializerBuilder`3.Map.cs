@@ -103,7 +103,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						keyType,
 						NilImplication.Null,
 						null,
-						this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Key" ) ),
+						this.EmitGetPropertyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Key" ) ),
 						null,
 						keysSchema
 					).Concat(
@@ -113,7 +113,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							valueType,
 							NilImplication.Null,
 							null,
-							this.EmitGetPropretyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Value" ) ),
+							this.EmitGetPropertyExpression( context, keyValuePair, traits.ElementType.GetProperty( "Value" ) ),
 							null,
 							valuesSchema
 						)
@@ -340,7 +340,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					this.EmitNotExpression(
 						context,
-						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
+						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsMapHeader )
 					),
 					this.EmitThrowExpression(
 						context,

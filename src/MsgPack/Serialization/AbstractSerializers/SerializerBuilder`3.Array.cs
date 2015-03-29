@@ -290,7 +290,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					this.EmitNotExpression(
 						context,
-						this.EmitGetPropretyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
+						this.EmitGetPropertyExpression( context, unpacker, Metadata._Unpacker.IsArrayHeader )
 					),
 					this.EmitThrowExpression(
 						context,

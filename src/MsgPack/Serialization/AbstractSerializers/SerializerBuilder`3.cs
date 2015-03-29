@@ -234,7 +234,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			protected override TConstruct OnPackingMessagePackObject(
 				SerializerBuilderOnPackingParameter parameter )
 			{
-				return parameter.Builder.EmitGetPropretyExpression(
+				return parameter.Builder.EmitGetPropertyExpression(
 					parameter.Context,
 					parameter.Item,
 					Metadata._MessagePackObject.IsNil );
@@ -257,7 +257,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				return
 					parameter.Builder.EmitNotExpression(
 						parameter.Context,
-						parameter.Builder.EmitGetPropretyExpression(
+						parameter.Builder.EmitGetPropertyExpression(
 							parameter.Context,
 							parameter.Item,
 							parameter.ItemType.GetProperty( "HasValue" ) )
