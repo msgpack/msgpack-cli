@@ -701,7 +701,7 @@ private void GenerateErrorPatterns()
 	}
 }
 
-private string GenerateAbstractTypeTestClass( string typeName, string attribute, string declarationType )
+private void GenerateAbstractTypeTestClass( string typeName, string attribute, string declarationType )
 {
 #>
 
@@ -720,7 +720,6 @@ private string GenerateAbstractTypeTestClass( string typeName, string attribute,
 			public <#= typeName #>() { }
 		}
 <#+
-	return typeName;
 }
 
 private void GenerateAbstractTypeTestMethod( string typeName, string initializer, bool isCollection, bool success )
