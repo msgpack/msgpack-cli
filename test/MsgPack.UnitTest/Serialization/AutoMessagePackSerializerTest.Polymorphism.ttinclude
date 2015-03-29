@@ -1,5 +1,4 @@
-﻿<#@ assembly name="System.Core" #>
-<#@ import namespace="System" #>
+﻿<#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
@@ -27,6 +26,23 @@
 // Entry Point
 private void GeneratePolymorphismTestParts()
 {
+	this.GeneratePolymorphismTestPartsCore( false, true );
+}
+
+private void GeneratePolymorphismTestTypes()
+{
+	this.GeneratePolymorphismTestPartsCore( true, false );
+}
+
+private IEnumerable<string> GetPolymprohicTestTypeNames()
+{
+	return this.GeneratePolymorphismTestPartsCore( false, false );
+}
+
+private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateTypes, bool generateMethods )
+{
+	ICollection<string> generatedTypeNames = new HashSet<string>();
+
 	Func<Member, IEnumerable<string>> knownAttributeFactory =
 		( Member member ) => 
 		{
@@ -169,10 +185,12 @@ private void GeneratePolymorphismTestParts()
 		{
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyPropertyAndConstructor, TypeKind.PrivateSetterPropertyAndConstructor, TypeKind.ReadOnlyFieldAndConstructor } )
 			{
-				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Normal_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false );
-				GeneratePolymorphicTestMethods( typeName, kind, member, "Success" );
-				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, true );
-				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, "Success" );
+				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Normal_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false, generateTypes );
+				generatedTypeNames.Add( typeName );
+				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, "Success" );
+				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, true, generateTypes );
+				generatedTypeNames.Add( typeNameAsObject );
+				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, generateMethods, "Success" );
 			}
 		}
 #>
@@ -185,10 +203,12 @@ private void GeneratePolymorphismTestParts()
 			// Note: combination of deserialization constructor and collection get/read only member is not valid.
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyCollectionProperty, TypeKind.PrivateSetterCollectionProperty, TypeKind.ReadOnlyCollectionField } )
 			{
-				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Collection_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false );
-				GeneratePolymorphicTestMethods( typeName, kind, member, "Success" );
-				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, false );
-				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, "Success" );
+				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Collection_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false, generateTypes );
+				generatedTypeNames.Add( typeName );
+				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, "Success" );
+				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, false, generateTypes );
+				generatedTypeNames.Add( typeNameAsObject );
+				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, generateMethods, "Success" );
 			}
 		}
 #>
@@ -201,10 +221,12 @@ private void GeneratePolymorphismTestParts()
 			// Note: combination of deserialization constructor and collection get/read only member is not valid.
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyCollectionProperty, TypeKind.PrivateSetterCollectionProperty, TypeKind.ReadOnlyCollectionField } )
 			{
-				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Dictionary_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false );
-				GeneratePolymorphicTestMethods( typeName, kind, member, "Success" );
-				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, false );
-				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, "Success" );
+				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Dictionary_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false, generateTypes );
+				generatedTypeNames.Add( typeName );
+				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, "Success" );
+				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, false, generateTypes );
+				generatedTypeNames.Add( typeNameAsObject );
+				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, generateMethods, "Success" );
 			}
 		}
 #>
@@ -216,10 +238,12 @@ private void GeneratePolymorphismTestParts()
 		{
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyPropertyAndConstructor, TypeKind.PrivateSetterPropertyAndConstructor, TypeKind.ReadOnlyFieldAndConstructor } )
 			{
-				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Tuple_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false );
-				GeneratePolymorphicTestMethods( typeName, kind, member, "Success" );
-				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, false );
-				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, "Success" );
+				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Tuple_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false, generateTypes );
+				generatedTypeNames.Add( typeName );
+				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, "Success" );
+				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, false, generateTypes );
+				generatedTypeNames.Add( typeNameAsObject );
+				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, generateMethods, "Success" );
 			}
 
 		}
@@ -231,11 +255,20 @@ private void GeneratePolymorphismTestParts()
 	}
 
 	// Mixed Patterns
-	GeneratePolymorphicTestsForMixed();
+	GeneratePolymorphicTestsForMixed( generateTypes, generateMethods, generatedTypeNames );
 
 	// Error Patterns
-	GenerateErrorPatterns();
+	GenerateErrorPatterns( generateTypes, generateMethods, generatedTypeNames );
+
+	if ( generateTypes )
+	{
+		// Add static generated types
+		generatedTypeNames.Add( "IFileSystemEntry" );
+		generatedTypeNames.Add( "AbstractFileSystemEntry" );
+		generatedTypeNames.Add( "FileEntry" );
+		generatedTypeNames.Add( "DirectoryEntry" );
 #>
+
 		public interface IFileSystemEntry { }
 
 		public abstract class AbstractFileSystemEntry : IFileSystemEntry { }
@@ -317,29 +350,37 @@ private void GeneratePolymorphismTestParts()
 				return "Directory(Name=" + this.Name + ", ChildCount=" + this.ChildCount + ")";
 			}
 		}
+<#+
+	}
+#>
 
 		#endregion -- Polymorphism --
-
 <#+
+	return generatedTypeNames;
 }
 
 // Types
-private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member member, Func<Member, IEnumerable<string>> attributeFactory, bool asObject )
+private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member member, Func<Member, IEnumerable<string>> attributeFactory, bool asObject, bool generateTypes )
 {
 	var typeName = "PolymorphicMemberType" + suffix;
+
+	if ( generateTypes )
+	{
 #>
 
 		public class <#= typeName #>
 		{
 <#+
-	GenerateMember( kind, member, attributeFactory, asObject );
+		GenerateMember( kind, member, attributeFactory, asObject );
 #>
 
 <#+
-	GenerateConstructor( typeName, kind, asObject, member );
+		GenerateConstructor( typeName, kind, asObject, member );
 #>
 		}
 <#+
+	}
+
 	return typeName;
 }
 
@@ -431,8 +472,12 @@ private void GenerateConstructor( string typeName, TypeKind kind, bool asObject,
 }
 
 // Methods
-private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, Member member,  params string[] labelComponents )
+private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, Member member, bool generateMethods, params string[] labelComponents )
 {
+	if ( !generateMethods )
+	{
+		return;
+	}
 #>
 
 		[Test]
@@ -472,7 +517,7 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 }
 
 // Mixed Pattern
-private void GeneratePolymorphicTestsForMixed()
+private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generateMethods, ICollection<string> generatedTypeNames )
 {
 	/*
 		Tests only popular cases:
@@ -500,27 +545,37 @@ private void GeneratePolymorphicTestsForMixed()
 		};
 
 	const string typeName = "PolymorphicMemberTypeMixed";
+
+	// Add static generated types
+	generatedTypeNames.Add( typeName );
+	if ( generateTypes )
+	{
 #>
 		public class <#= typeName #>
 		{
 <#+
-	foreach ( var member in members )
-	{
-		foreach ( var attribute in member.Attributes )
+		foreach ( var member in members )
 		{
+			foreach ( var attribute in member.Attributes )
+			{
 #>
 			<#= attribute #>
 <#+
-		}
+			}
 #>
-
 			public <#= member.Type #> <#= member.Name #> { get; set; }
 <#+
-	}
+		}
 #>
 
 			public <#= typeName #>() { }
 		}
+<#+
+	}
+
+	if ( generateMethods )
+	{
+		#>
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -539,21 +594,22 @@ private void GeneratePolymorphicTestsForMixed()
 					Assert.That( result, Is.Not.Null );
 					Assert.That( result, Is.Not.SameAs( target ) );
 <#+
-	foreach ( var member in members )
-	{
+		foreach ( var member in members )
+		{
 #>
 					Assert.That( result.<#= member.Name #>, Is.EqualTo( target.<#= member.Name #> ), "<#= member.Name #>" );
 					Assert.That( result.<#= member.Name #>, Is.InstanceOf( target.<#= member.Name #>.GetType() ), "<#= member.Name #>" );
 <#+
-	}
+		}
 #>
 				}
 		}
 <#+
+	}
 }
 
 // Error Pattern
-private void GenerateErrorPatterns()
+private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, ICollection<string> generatedTypeNames )
 {
 	var abstractTypes =
 		new []
@@ -586,11 +642,23 @@ private void GenerateErrorPatterns()
 			)
 			{
 				var typeName = declarationType.Name + pattern.Name + attribute.Name;
-				GenerateAbstractTypeTestClass( typeName, attribute.Attribute, pattern.TypeFormat == null ? declarationType.Type : String.Format( CultureInfo.InvariantCulture, pattern.TypeFormat, declarationType.Type ) );
-				GenerateAbstractTypeTestMethod( typeName, pattern.TypeFormat == null ? pattern.InitializerFormat : String.Format( CultureInfo.InvariantCulture, pattern.InitializerFormat, declarationType.Type ), pattern.TypeFormat != null, attribute.Attribute != null );
+				generatedTypeNames.Add( typeName );
+				if ( generateTypes )
+				{
+					GenerateAbstractTypeTestClass( typeName, attribute.Attribute, pattern.TypeFormat == null ? declarationType.Type : String.Format( CultureInfo.InvariantCulture, pattern.TypeFormat, declarationType.Type ) );
+				}
+
+				if ( generateMethods )
+				{
+					GenerateAbstractTypeTestMethod( typeName, pattern.TypeFormat == null ? pattern.InitializerFormat : String.Format( CultureInfo.InvariantCulture, pattern.InitializerFormat, declarationType.Type ), pattern.TypeFormat != null, attribute.Attribute != null );
+				}
 			}
 		}
 	}
+
+	generatedTypeNames.Add( "EchoKeyedCollection<>" );
+	if ( generateTypes )
+	{
 #>
 
 	public class EchoKeyedCollection<T> : KeyedCollection<T, T>
@@ -601,6 +669,8 @@ private void GenerateErrorPatterns()
 		}
 	}
 <#+
+	}
+
 	foreach ( var declarationType in 
 		new []
 		{ 
@@ -619,8 +689,15 @@ private void GenerateErrorPatterns()
 		)
 		{
 			var typeName = declarationType.Name + "Collection" + attribute.Name;
-			GenerateAbstractTypeTestClass( typeName, attribute.Attribute, declarationType.Type );
-			GenerateAbstractTypeTestMethod( typeName, "new EchoKeyedCollection<string> { \"ABC\" }", true, true );
+			if ( generateTypes )
+			{
+				GenerateAbstractTypeTestClass( typeName, attribute.Attribute, declarationType.Type );
+			}
+
+			if ( generateMethods )
+			{
+				GenerateAbstractTypeTestMethod( typeName, "new EchoKeyedCollection<string> { \"ABC\" }", true, true );
+			}
 		}
 	}
 
@@ -628,6 +705,9 @@ private void GenerateErrorPatterns()
 		Cartesian of
 		{Abstract Class | Interface } x {Knwon Attributes | Runtime Attribute } for Tuple Items
 	 */
+	generatedTypeNames.Add( "TupleAbstractType" );
+	if ( generateTypes )
+	{
 #>
 
 		public class TupleAbstractType
@@ -640,7 +720,12 @@ private void GenerateErrorPatterns()
 
 			public TupleAbstractType() { }
 		}
+<#+
+	}
 
+	if ( generateMethods )
+	{
+#>
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestTupleAbstractType_Success()
@@ -662,6 +747,7 @@ private void GenerateErrorPatterns()
 			}
 		}
 <#+
+	}
 
 	/*
 		Cartesian of
@@ -676,13 +762,46 @@ private void GenerateErrorPatterns()
 		}
 	)
 	{
-		var typeNameMember = GenerateAttributeErrorTestClass( testCase.Name + "Member", testCase.Known, testCase.Runtime, "FileSystemEntry", "FileEntry", String.Empty );
-		GenerateAttributeErrorTestMethod( testCase.Name + "Member", typeNameMember );
-		var typeNameCollectionItems = GenerateAttributeErrorTestClass( testCase.Name + "CollectionItem", testCase.Known, testCase.Runtime, "IList<FileSystemEntry>", "FileEntry", "CollectionItem" );
-		GenerateAttributeErrorTestMethod( testCase.Name + "CollectionItem", typeNameCollectionItems );
-		var typeNameDictionaryKeys = GenerateAttributeErrorTestClass( testCase.Name + "DictionaryKey", testCase.Known, testCase.Runtime, "IDictionary<FileSystemEntry, string>", "FileEntry", "DictionaryKey" );
-		GenerateAttributeErrorTestMethod( testCase.Name + "DictionaryKey", typeNameDictionaryKeys );
+		var typeNameMember = testCase.Name + "Member";
+		generatedTypeNames.Add( typeNameMember );
+		if ( generateTypes )
+		{
+			GenerateAttributeErrorTestClass( typeNameMember, testCase.Known, testCase.Runtime, "FileSystemEntry", "FileEntry", String.Empty );
+		}
+
+		if ( generateMethods )
+		{
+			GenerateAttributeErrorTestMethod( testCase.Name + "Member", typeNameMember );
+		}
+
+		var typeNameCollectionItems = testCase.Name + "CollectionItem";
+		generatedTypeNames.Add( typeNameCollectionItems );
+		if ( generateTypes )
+		{
+			GenerateAttributeErrorTestClass( typeNameCollectionItems, testCase.Known, testCase.Runtime, "IList<FileSystemEntry>", "FileEntry", "CollectionItem" );
+		}
+
+		if ( generateMethods )
+		{
+			GenerateAttributeErrorTestMethod( testCase.Name + "CollectionItem", typeNameCollectionItems );
+		}
+
+		var typeNameDictionaryKeys = testCase.Name + "DictionaryKey";
+		generatedTypeNames.Add( typeNameDictionaryKeys );
+		if ( generateTypes )
+		{
+			 GenerateAttributeErrorTestClass( typeNameDictionaryKeys, testCase.Known, testCase.Runtime, "IDictionary<FileSystemEntry, string>", "FileEntry", "DictionaryKey" );
+		}
+
+		if ( generateMethods )
+		{
+			GenerateAttributeErrorTestMethod( testCase.Name + "DictionaryKey", typeNameDictionaryKeys );
+		}
+		
 		var tupleItemClassName = testCase.Name + "TupleItem";
+		generatedTypeNames.Add( tupleItemClassName );
+		if ( generateTypes )
+		{
 #>
 
 		public class <#= tupleItemClassName #>
@@ -707,7 +826,12 @@ private void GenerateErrorPatterns()
 			public <#= tupleItemClassName #>() { }
 		}
 <#+
-		GenerateAttributeErrorTestMethod( testCase.Name + "TupleItem", tupleItemClassName );
+		}
+
+		if ( generateMethods )
+		{
+			GenerateAttributeErrorTestMethod( testCase.Name + "TupleItem", tupleItemClassName );
+		}
 	}
 }
 
@@ -788,7 +912,7 @@ private void GenerateAbstractTypeTestMethod( string typeName, string initializer
 <#+
 }
 
-private string GenerateAttributeErrorTestClass( string typeName, int knownAttributeCount, int runtimeAttributeCount, string memberType, string knownType, string attributeQualifier )
+private void GenerateAttributeErrorTestClass( string typeName, int knownAttributeCount, int runtimeAttributeCount, string memberType, string knownType, string attributeQualifier )
 {
 #>
 
@@ -814,7 +938,6 @@ private string GenerateAttributeErrorTestClass( string typeName, int knownAttrib
 			public <#= typeName #>() { }
 		}
 <#+
-	return typeName;
 }
 
 private void GenerateAttributeErrorTestMethod(  string testCaseName, string typeName )

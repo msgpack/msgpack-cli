@@ -1,5 +1,6 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
+<#@ include file="AutoMessagePackSerializerTest.Polymorphism.ttinclude" #>
 <#@ assembly name="System.Core.dll" #>
 <#@ assembly name="System.Numerics.dll" #>
 <#@ import namespace="System" #>
@@ -826,6 +827,10 @@ foreach( Tuple<Object, string, string, bool> __item in __fields )
 	{
 		public IEnumerable<int> Numbers { get; set; }
 	}
+
+<#
+GeneratePolymorphismTestTypes();
+#>
 }
 <#+
 private static string ToTypeName( Type type )

@@ -1,5 +1,6 @@
 ﻿<#@ template hostSpecific="false"#>
 <#@ output extension=".cs" #>
+<#@ include file="AutoMessagePackSerializerTest.Polymorphism.ttinclude" #>
 <#@ Assembly Name="System.Core" #>
 <#@ Assembly Name="System.Numerics" #>
 <#@ import namespace="System" #>
@@ -141,6 +142,14 @@ namespace MsgPack.Serialization
 			result.Add( typeof( PlainClass ) );
 			result.Add( typeof( AnnotatedClass ) );
 			result.Add( typeof( DataMamberClass ) );
+<#
+	foreach ( var targetType in GetPolymprohicTestTypeNames() )
+	{
+#>
+			result.Add( typeof( <#= targetType #> ) ); 
+<#
+	}
+#>
 			return result;
 		}
 	}
