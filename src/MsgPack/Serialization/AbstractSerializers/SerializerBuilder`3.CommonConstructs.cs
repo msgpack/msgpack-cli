@@ -665,18 +665,23 @@ namespace MsgPack.Serialization.AbstractSerializers
 					 *	}
 					 */
 					return
-						this.EmitForEachLoop(
+						this.EmitSequentialStatements(
 							context,
-							traits,
-							value,
-							current =>
-								this.EmitAppendCollectionItem(
-									context,
-									member,
-									traits,
-									getCollection,
-									current
-								)
+							typeof( void ),
+							this.EmitSetCollectionMemberIfNullAndSettable( context, instance, value, member.GetMemberValueType(), asField, asProperty ),
+							this.EmitForEachLoop(
+								context,
+								traits,
+								value,
+								current =>
+									this.EmitAppendCollectionItem(
+										context,
+										member,
+										traits,
+										getCollection,
+										current
+									)
+							)
 						);
 				}
 				case CollectionKind.Map:
@@ -690,20 +695,24 @@ namespace MsgPack.Serialization.AbstractSerializers
 					Type keyType, valueType;
 					GetDictionaryKeyValueType( traits.ElementType, out keyType, out valueType );
 					return
-						this.EmitForEachLoop(
+						this.EmitSequentialStatements(
 							context,
-							traits,
-							value,
-						// ReSharper disable ImplicitlyCapturedClosure
-							current =>
-								this.EmitAppendDictionaryItem(
-									context,
-									traits,
-									getCollection,
-									keyType,
-									this.EmitGetPropretyExpression(
+							typeof( void ),
+							this.EmitSetCollectionMemberIfNullAndSettable( context, instance, value, member.GetMemberValueType(), asField, asProperty ),
+							this.EmitForEachLoop(
+								context,
+								traits,
+								value,
+								// ReSharper disable ImplicitlyCapturedClosure
+								current =>
+									this.EmitAppendDictionaryItem(
 										context,
-										current,
+										traits,
+										getCollection,
+										keyType,
+										this.EmitGetPropertyExpression(
+											context,
+											current,
 #if !NETFX_CORE
  traits.ElementType == typeof( DictionaryEntry )
 										? Metadata._DictionaryEntry.Key
@@ -729,29 +738,53 @@ namespace MsgPack.Serialization.AbstractSerializers
 						// ReSharper restore ImplicitlyCapturedClosure
 						);
 				}
-				default:
-				{
-					// Try use reflection
-					if ( asField != null )
-					{
-						return this.EmitSetField( context, instance, asField, value, true );
-					}
-
-					if ( asProperty.GetSetMethod( true ) != null )
-					{
-						return this.EmitSetProprety( context, instance, asProperty, value, true );
-					}
-
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"Member '{0}' is read only and its elementType ('{1}') is not an appendable collection",
-							member.Name,
-							member.GetMemberValueType()
-						)
-					);
-				}
 			}
+
+			// Try use reflection
+			if ( asField != null )
+			{
+				return this.EmitSetField( context, instance, asField, value, true );
+			}
+
+			if ( asProperty.GetSetMethod( true ) != null )
+			{
+				return this.EmitSetProperty( context, instance, asProperty, value, true );
+			}
+
+			throw new SerializationException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"Member '{0}' is read only and its elementType ('{1}') is not an appendable collection",
+					member.Name,
+					member.GetMemberValueType()
+				)
+			);
+		}
+
+		private TConstruct EmitSetCollectionMemberIfNullAndSettable( TContext context, TConstruct instance, TConstruct collection, Type collectionType, FieldInfo asField, PropertyInfo asProperty )
+		{
+			/*
+			 *	if ( instance.MEMBER == null )
+			 *  {
+			 *		instance.MEMBER = collection:
+			 *  }
+			 */
+
+			return
+				this.EmitConditionalExpression(
+					context,
+					this.EmitEqualsExpression(
+						context,
+						asField != null
+						? this.EmitGetFieldExpression( context, instance, asField )
+						: this.EmitGetPropertyExpression( context, instance, asProperty ),
+						this.MakeNullLiteral( context, collectionType )
+					),
+					asField != null
+					? this.EmitSetField( context, instance, asField, collection, !asField.GetHasPublicGetter() )
+					: this.EmitSetProperty( context, instance, asProperty, collection, !asProperty.GetHasPublicGetter() ),
+					null // else
+				);
 		}
 
 		/// <summary>
