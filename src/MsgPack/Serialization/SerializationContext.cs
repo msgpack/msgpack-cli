@@ -438,113 +438,116 @@ namespace MsgPack.Serialization
 						this._serializers.Register( typeof( T ), provider );
 						return this._serializers.Get<T>( this, schema );
 					}
-
-					serializer = GenericSerializer.Create<T>( this, schema );
 				}
 
 				if ( serializer == null )
 				{
-#if !XAMIOS && !XAMDROID && !UNITY
-					if ( this.IsRuntimeGenerationDisabled )
+					object aquiredLock = null;
+					bool lockTaken = false;
+					try
 					{
-#endif // !XAMIOS && !XAMDROID && !UNITY
-						serializer =
-							this.GetSerializerWithoutGeneration( typeof( T ), schema ) as MessagePackSerializer<T>
-							?? MessagePackSerializer.CreateReflectionInternal<T>( this, schema );
-#if !XAMIOS && !XAMDROID && !UNITY
-					}
-					else
-					{
-						object aquiredLock = null;
-						bool lockTaken = false;
-						try
+						try { }
+						finally
 						{
-							try { }
+							var newLock = new object();
+#if SILVERLIGHT || NETFX_35
+							Monitor.Enter( newLock );
+							try
+							{
+								lock ( this._typeLock )
+								{
+									lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
+									if ( lockTaken )
+									{
+										aquiredLock = newLock;
+										this._typeLock.Add( typeof( T ), newLock );
+									}
+								}
+#else
+							bool newLockTaken = false;
+							try
+							{
+								Monitor.Enter( newLock, ref newLockTaken );
+								aquiredLock = this._typeLock.GetOrAdd( typeof( T ), _ => newLock );
+								lockTaken = newLock == aquiredLock;
+#endif // if  SILVERLIGHT || NETFX_35
+							}
 							finally
 							{
-								var newLock = new object();
 #if SILVERLIGHT || NETFX_35
-								Monitor.Enter( newLock );
-								try
-								{
-									lock ( this._typeLock )
-									{
-										lockTaken = !this._typeLock.TryGetValue( typeof( T ), out aquiredLock );
-										if ( lockTaken )
-										{
-											aquiredLock = newLock;
-											this._typeLock.Add( typeof( T ), newLock );
-										}
-									}
+								if ( !lockTaken )
 #else
-								bool newLockTaken = false;
-								try
-								{
-									Monitor.Enter( newLock, ref newLockTaken );
-									aquiredLock = this._typeLock.GetOrAdd( typeof( T ), _ => newLock );
-									lockTaken = newLock == aquiredLock;
-#endif // if  SILVERLIGHT || NETFX_35
-								}
-								finally
-								{
-#if SILVERLIGHT || NETFX_35
-									if ( !lockTaken )
-#else
-									if ( !lockTaken && newLockTaken )
+								if ( !lockTaken && newLockTaken )
 #endif // if SILVERLIGHT || NETFX_35
-									{
-										// Release the lock which failed to become 'primary' lock.
-										Monitor.Exit( newLock );
-									}
+								{
+									// Release the lock which failed to become 'primary' lock.
+									Monitor.Exit( newLock );
 								}
 							}
+						}
 
-							if ( Monitor.TryEnter( aquiredLock ) )
+						if ( Monitor.TryEnter( aquiredLock ) )
+						{
+							// Decrement monitor counter.
+							Monitor.Exit( aquiredLock );
+
+							if ( lockTaken )
 							{
-								// Decrement monitor counter.
-								Monitor.Exit( aquiredLock );
+								serializer = GenericSerializer.Create<T>( this, schema );
 
-								if ( lockTaken )
+								if ( serializer == null )
 								{
-									// This thread creating new type serializer.
-									serializer = MessagePackSerializer.CreateInternal<T>( this, schema );
-								}
-								else
-								{
-									// This thread owns existing lock -- thus, constructing self-composite type.
-
-									// Prevent release owned lock.
-									aquiredLock = null;
-									return new LazyDelegatingMessagePackSerializer<T>( this, providerParameter );
+#if !XAMIOS && !XAMDROID && !UNITY
+									if ( this.IsRuntimeGenerationDisabled )
+									{
+#endif // !XAMIOS && !XAMDROID && !UNITY
+										serializer =
+											this.GetSerializerWithoutGeneration( typeof( T ), schema ) as MessagePackSerializer<T>
+											?? MessagePackSerializer.CreateReflectionInternal<T>( this, schema );
+#if !XAMIOS && !XAMDROID && !UNITY
+									}
+									else
+									{
+										// This thread creating new type serializer.
+										serializer = MessagePackSerializer.CreateInternal<T>( this, schema );
+									}
 								}
 							}
 							else
 							{
-								// Wait creation by other thread.
-								// Acquire as 'waiting' lock.
-								Monitor.Enter( aquiredLock );
+								// This thread owns existing lock -- thus, constructing self-composite type.
+
+								// Prevent release owned lock.
+								aquiredLock = null;
+								return new LazyDelegatingMessagePackSerializer<T>( this, providerParameter );
 							}
 						}
-						finally
+						else
 						{
-							if ( lockTaken )
-							{
+							// Wait creation by other thread.
+							// Acquire as 'waiting' lock.
+							Monitor.Enter( aquiredLock );
+						}
+					}
+					finally
+					{
+						if ( lockTaken )
+						{
 #if SILVERLIGHT || NETFX_35
-								lock ( this._typeLock )
-								{
-									this._typeLock.Remove( typeof( T ) );
-								}
-#else
-								object dummy;
-								this._typeLock.TryRemove( typeof( T ), out dummy );
-#endif // if SILVERLIGHT || NETFX_35
-							}
-
-							if ( aquiredLock != null )
+							lock ( this._typeLock )
 							{
-								// Release primary lock or waiting lock.
-								Monitor.Exit( aquiredLock );
+								this._typeLock.Remove( typeof( T ) );
 							}
+#else
+							object dummy;
+							this._typeLock.TryRemove( typeof( T ), out dummy );
+#endif // if SILVERLIGHT || NETFX_35
+						}
+
+						if ( aquiredLock != null )
+						{
+							// Release primary lock or waiting lock.
+							Monitor.Exit( aquiredLock );
 						}
 					}
 #endif // !XAMIOS && !XAMDROID && !UNITY
