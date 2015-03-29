@@ -126,15 +126,12 @@ namespace MsgPack.Serialization.Polymorphic
 
 			using ( var buffer = new MemoryStream( ext.Body ) )
 			{
-				using ( var valueUnpacker = Unpacker.Create( buffer ) )
-				{
-					// Use concrete type serializer.
-					return
-						( T )this.OwnerContext.GetSerializer(
-							Type.GetTypeFromHandle( typeHandle ),
-							this._schema
-						).UnpackFrom( valueUnpacker );
-				}
+				// Use concrete type serializer.
+				return
+					( T )this.OwnerContext.GetSerializer(
+						Type.GetTypeFromHandle( typeHandle ),
+						this._schema
+					).Unpack( buffer );
 			}
 		}
 	}
