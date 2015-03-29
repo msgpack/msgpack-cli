@@ -714,28 +714,29 @@ namespace MsgPack.Serialization.AbstractSerializers
 											context,
 											current,
 #if !NETFX_CORE
- traits.ElementType == typeof( DictionaryEntry )
-										? Metadata._DictionaryEntry.Key
-										: traits.ElementType.GetProperty( "Key" )
+											traits.ElementType == typeof( DictionaryEntry )
+												? Metadata._DictionaryEntry.Key
+												: traits.ElementType.GetProperty( "Key" )
 #else
-										traits.ElementType.GetProperty( "Key" )
+											traits.ElementType.GetProperty( "Key" )
 #endif // !NETFX_CORE
- ),
-									valueType,
-									this.EmitGetPropretyExpression(
-										context,
-										current,
+										),
+										valueType,
+										this.EmitGetPropertyExpression(
+											context,
+											current,
 #if !NETFX_CORE
- traits.ElementType == typeof( DictionaryEntry )
-										? Metadata._DictionaryEntry.Value
-										: traits.ElementType.GetProperty( "Value" )
+											traits.ElementType == typeof( DictionaryEntry )
+												? Metadata._DictionaryEntry.Value
+												: traits.ElementType.GetProperty( "Value" )
 #else
-										traits.ElementType.GetProperty( "Value" )
+											traits.ElementType.GetProperty( "Value" )
 #endif // !NETFX_CORE
- ),
-									false
-								)
-						// ReSharper restore ImplicitlyCapturedClosure
+											),
+										false
+									)
+							)
+							// ReSharper restore ImplicitlyCapturedClosure
 						);
 				}
 			}
