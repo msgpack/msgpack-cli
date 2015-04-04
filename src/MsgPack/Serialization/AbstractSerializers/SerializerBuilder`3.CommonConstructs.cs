@@ -1834,6 +1834,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 								typeof( Dictionary<byte, Type> ),
 								context.GetUniqueVariableName( "typeMap" )
 							);
+
+						yield return typeMap;
 						yield return
 							this.EmitStoreVariableStatement(
 								context,
@@ -1959,6 +1961,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context.GetUniqueVariableName( "typeMap" )
 							);
 
+						yield return typeMap;
 						yield return
 							this.EmitStoreVariableStatement(
 								context,
