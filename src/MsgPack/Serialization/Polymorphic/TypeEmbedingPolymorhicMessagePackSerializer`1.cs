@@ -50,7 +50,7 @@ namespace MsgPack.Serialization.Polymorphic
 				this.OwnerContext.TypeEmbeddingSettings.TypeEmbeddingIdentifier,
 				TypeInfoEncodingBytes.RawCompressed
 			);
-			packer.PackObject( TypeInfoEncoder.Encode( objectTree.GetType() ) );
+			TypeInfoEncoder.Encode( packer, objectTree.GetType() );
 
 			// Use concrete type serializer.
 			this.OwnerContext.GetSerializer( objectTree.GetType(), this._schema ).PackTo( packer, objectTree );
@@ -89,7 +89,7 @@ namespace MsgPack.Serialization.Polymorphic
 					throw SerializationExceptions.NewUnexpectedEndOfStream();
 				}
 
-				var objectType = TypeInfoEncoder.Decode( subTreeUnpacker.LastReadData );
+				var objectType = TypeInfoEncoder.Decode( subTreeUnpacker );
 
 				if ( !subTreeUnpacker.Read() )
 				{

@@ -23,7 +23,6 @@
 #endif
 
 using System;
-using System.Collections.Generic;
 #if !UNITY
 using System.Diagnostics.Contracts;
 #endif // !UNITY
@@ -40,7 +39,7 @@ namespace MsgPack.Serialization.Polymorphic
 	{
 		private const string Elipsis = ".";
 
-		public static MessagePackObject[] Encode( Type type )
+		public static void Encode( Packer packer, Type type )
 		{
 			var assemblyName =
 #if !SILVERLIGHT
@@ -63,35 +62,56 @@ namespace MsgPack.Serialization.Polymorphic
 			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Minor ), 0, version, 4, 4 );
 			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Build ), 0, version, 8, 4 );
 			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Revision ), 0, version, 12, 4 );
-			return
-				new MessagePackObject[]
-				{
-					compressedTypeName,
-					assemblyName.Name,
-					version,
-					assemblyName.GetCultureName(),
-					assemblyName.GetPublicKeyToken()
-				};
+
+			packer.PackArrayHeader( 5 )
+				.Pack( compressedTypeName )
+				.Pack( assemblyName.Name )
+				.Pack( version )
+				.Pack( assemblyName.GetCultureName() )
+				.Pack( assemblyName.GetPublicKeyToken() );
 		}
 
-		public static Type Decode( MessagePackObject typeInfo )
+		public static Type Decode( Unpacker unpacker )
 		{
-			if ( typeInfo.IsNil || !typeInfo.IsArray )
+			if ( !unpacker.IsArrayHeader )
 			{
 				throw new SerializationException( "Type info must be non-nil array." );
 			}
 
-			IList<MessagePackObject> typeInfoComponents = typeInfo.AsList();
-			if ( typeInfoComponents.Count != 5 )
+			if ( unpacker.ItemsCount != 5 )
 			{
 				throw new SerializationException( "Components count of type info is not valid." );
 			}
 
-			var compressedTypeName = DecodeTypeInfoComponent( typeInfoComponents[ 0 ], component => component.AsString(), "Failed to decode type name component." );
-			var assemblySimpleName = DecodeTypeInfoComponent( typeInfoComponents[ 1 ], component => component.AsString(), "Failed to decode assembly name component." );
-			var version = DecodeTypeInfoComponent( typeInfoComponents[ 2 ], component => component.AsBinary(), "Failed to decode version component." );
-			var culture = DecodeTypeInfoComponent( typeInfoComponents[ 3 ], component => component.AsString(), "Failed to decode culture component." );
-			var publicKeyToken = DecodeTypeInfoComponent( typeInfoComponents[ 4 ], component => component.AsBinary(), "Failed to decode type name component." );
+			string compressedTypeName;
+			if ( !unpacker.ReadString( out compressedTypeName ) )
+			{
+				throw new SerializationException( "Failed to decode type name component." );
+			}
+
+			string assemblySimpleName;
+			if ( !unpacker.ReadString( out assemblySimpleName ) )
+			{
+				throw new SerializationException( "Failed to decode assembly name component." );
+			}
+
+			byte[] version;
+			if ( !unpacker.ReadBinary( out version ) )
+			{
+				throw new SerializationException( "Failed to decode version component." );
+			}
+
+			string culture;
+			if ( !unpacker.ReadString( out culture ) )
+			{
+				throw new SerializationException( "Failed to decode culture component." );
+			}
+
+			byte[] publicKeyToken;
+			if ( !unpacker.ReadBinary( out publicKeyToken ) )
+			{
+				throw new SerializationException( "Failed to decode public key token component." );
+			}
 
 #if !NETFX_CORE
 			var assemblyName =
@@ -148,18 +168,6 @@ namespace MsgPack.Serialization.Polymorphic
 					, throwOnError: true
 #endif // !NETFX_CORE
 				);
-		}
-
-		private static T DecodeTypeInfoComponent<T>( MessagePackObject component, Func<MessagePackObject, T> getter, string message )
-		{
-			try
-			{
-				return getter( component );
-			}
-			catch ( MessageTypeException ex )
-			{
-				throw new SerializationException( message, ex );
-			}
 		}
 	}
 }
