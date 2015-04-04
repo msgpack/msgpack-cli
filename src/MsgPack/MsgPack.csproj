@@ -184,7 +184,7 @@
     <Compile Include="Serialization\MessagePackIgnoreAttribute.cs" />
     <Compile Include="Serialization\Metadata\_Decimal.cs" />
     <Compile Include="Serialization\NilImplicationHandler`4.cs" />
-    <Compile Include="Serialization\Polymorphic\PolymorphicSerializerProvider.cs" />
+    <Compile Include="Serialization\Polymorphic\PolymorphicSerializerProvider`1.cs" />
     <Compile Include="Serialization\PolymorphismSchema.cs" />
     <Compile Include="Serialization\PolymorphismSchema.Constructors.cs" />
     <Compile Include="Serialization\PolymorphismSchema.Internals.cs" />

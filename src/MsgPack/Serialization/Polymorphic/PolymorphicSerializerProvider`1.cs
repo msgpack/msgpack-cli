@@ -19,17 +19,21 @@
 // #endregion -- License Terms --
 
 using System;
-using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.Polymorphic
 {
-	internal sealed class PolymorphicSerializerProvider : MessagePackSerializerProvider
+	/// <summary>
+	///		Provides polymorphism for serializers.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	internal sealed class PolymorphicSerializerProvider<T> : MessagePackSerializerProvider
 	{
-		private readonly Type _targetType;
+		// This may be null for abstract typed collection which does not have corresponding concrete type.
+		private readonly MessagePackSerializer<T> _defaultSerializer;
 
-		public PolymorphicSerializerProvider( Type  targetType )
+		public PolymorphicSerializerProvider( MessagePackSerializer<T> defaultSerializer )
 		{
-			this._targetType = targetType;
+			this._defaultSerializer = defaultSerializer;
 		}
 
 		public override object Get( SerializationContext context, object providerParameter )
@@ -38,34 +42,23 @@ namespace MsgPack.Serialization.Polymorphic
 
 			if ( schema == null || schema.UseDefault )
 			{
-				throw new SerializationException( "Failed to get PolymorphismSchema." );
+				if ( this._defaultSerializer == null )
+				{
+					throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( T ) );
+				}
+
+				// Fallback.
+				return this._defaultSerializer;
 			}
 
 			if ( schema.UseTypeEmbedding )
 			{
-				return
-					CreateSerializer(
-						typeof( TypeEmbedingPolymorhicMessagePackSerializer<> ),
-						this._targetType,
-						context,
-						schema
-					);
+				return new TypeEmbedingPolymorhicMessagePackSerializer<T>( context, schema );
 			}
 			else
 			{
-				return
-					CreateSerializer(
-						typeof( KnownTypePolymorhicMessagePackSerializer<> ),
-						this._targetType,
-						context,
-						schema
-					);
+				return new KnownTypePolymorhicMessagePackSerializer<T>( context, schema );
 			}
-		}
-
-		private static object CreateSerializer( Type serializerType, Type targetType, params object[] arguments )
-		{
-			return Activator.CreateInstance( serializerType.MakeGenericType( targetType ), arguments );
 		}
 	}
 }

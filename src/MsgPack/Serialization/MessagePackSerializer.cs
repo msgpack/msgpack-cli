@@ -220,17 +220,32 @@ namespace MsgPack.Serialization
 				schema == null ? "null" : schema.DebugString
 			);
 
-#if !UNITY
-			Contract.Assert(
-				schema == null || schema.UseDefault || schema.ChildrenType != PolymorphismSchemaChildrenType.None,
-				"Not empty itself : " + ( schema ?? PolymorphismSchema.Default ).DebugString
-			);
-#endif // !UNITY
 #endif // DEBUG
 #if XAMIOS || XAMDROID || UNITY
 			return CreateReflectionInternal<T>( context, schema );
 #else
-			ValidateType( typeof( T ) );
+			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
+			{
+				Type realType = null;
+				// Abstract collection types will be handled correctly.
+				if ( typeof( T ).GetCollectionTraits().CollectionType != CollectionKind.NotCollection )
+				{
+					realType = context.DefaultCollectionTypes.GetConcreteType( typeof( T ) );
+				}
+
+				if ( realType == null )
+				{
+					// return null for polymoirphic provider.
+					return null;
+				}
+
+				ValidateType( realType );
+			}
+			else
+			{
+				ValidateType( typeof( T ) );
+			}
+
 			ISerializerBuilder<T> builder;
 #if NETFX_CORE || WINDOWS_PHONE
 			builder = new ExpressionTreeSerializerBuilder<T>();
@@ -280,7 +295,7 @@ namespace MsgPack.Serialization
 			}
 #endif // NETFX_CORE else
 
-			return builder.BuildSerializerInstance( context, schema );
+			return builder.BuildSerializerInstance( context, schema == null ? null : schema.FilterSelf() );
 #endif // XAMIOS || XAMDROID || UNITY else
 		}
 
@@ -569,12 +584,13 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, PolymorphismSchema schema )
 		{
-#if DEBUG && !UNITY
-			Contract.Assert(
-				schema == null || schema.UseDefault || schema.ChildrenType != PolymorphismSchemaChildrenType.None,
-				"Not empty itself : " + ( schema ?? PolymorphismSchema.Default ).DebugString
-			);
-#endif // DEBUG && !UNITY
+			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
+			{
+				// return null for polymoirphic provider.
+				return null;
+			}
+
+#warning TOOD: maybe unnecessary
 			var serializer = context.Serializers.Get<T>( context );
 
 			if ( serializer != null )
@@ -614,12 +630,6 @@ namespace MsgPack.Serialization
 					}
 #endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
 
-#if DEBUG && !UNITY
-					Contract.Assert(
-						schema == null || schema.UseDefault,
-						"Not empty itself : " + ( schema ?? PolymorphismSchema.Default ).DebugString
-					);
-#endif // DEBUG && !UNITY
 					return new ReflectionObjectMessagePackSerializer<T>( context );
 				}
 			}
