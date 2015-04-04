@@ -97,6 +97,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MapCodeDomBasedEnumSerializationTest.tt</DependentUpon>
     </Compile>
+    <Compile Include="_SetUpFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
