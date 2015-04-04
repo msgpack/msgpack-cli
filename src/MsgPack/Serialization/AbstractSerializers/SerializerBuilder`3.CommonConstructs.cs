@@ -672,19 +672,21 @@ namespace MsgPack.Serialization.AbstractSerializers
 							member.GetMemberValueType(), 
 							asField, 
 							asProperty,
-							this.EmitForEachLoop(
-								context,
-								traits,
-								value,
-								current =>
-									this.EmitAppendCollectionItem(
-										context,
-										member,
-										traits,
-										getCollection,
-										current
-									)
-							)
+							traits.AddMethod == null 
+								? null
+								: this.EmitForEachLoop(
+									context,
+									traits,
+									value,
+									current =>
+										this.EmitAppendCollectionItem(
+											context,
+											member,
+											traits,
+											getCollection,
+											current
+										)
+								)
 						);
 				}
 				case CollectionKind.Map:
@@ -705,44 +707,46 @@ namespace MsgPack.Serialization.AbstractSerializers
 							member.GetMemberValueType(),
 							asField, 
 							asProperty,
-							this.EmitForEachLoop(
-								context,
-								traits,
-								value,
-								// ReSharper disable ImplicitlyCapturedClosure
-								current =>
-									this.EmitAppendDictionaryItem(
-										context,
-										traits,
-										getCollection,
-										keyType,
-										this.EmitGetPropertyExpression(
+							traits.AddMethod == null
+								? null
+								: this.EmitForEachLoop(
+									context,
+									traits,
+									value,
+									// ReSharper disable ImplicitlyCapturedClosure
+									current =>
+										this.EmitAppendDictionaryItem(
 											context,
-											current,
+											traits,
+											getCollection,
+											keyType,
+											this.EmitGetPropertyExpression(
+												context,
+												current,
 #if !NETFX_CORE
-											traits.ElementType == typeof( DictionaryEntry )
-												? Metadata._DictionaryEntry.Key
-												: traits.ElementType.GetProperty( "Key" )
+												traits.ElementType == typeof( DictionaryEntry )
+													? Metadata._DictionaryEntry.Key
+													: traits.ElementType.GetProperty( "Key" )
 #else
-											traits.ElementType.GetProperty( "Key" )
-#endif // !NETFX_CORE
-										),
-										valueType,
-										this.EmitGetPropertyExpression(
-											context,
-											current,
-#if !NETFX_CORE
-											traits.ElementType == typeof( DictionaryEntry )
-												? Metadata._DictionaryEntry.Value
-												: traits.ElementType.GetProperty( "Value" )
-#else
-											traits.ElementType.GetProperty( "Value" )
+												traits.ElementType.GetProperty( "Key" )
 #endif // !NETFX_CORE
 											),
-										false
-									)
-								// ReSharper restore ImplicitlyCapturedClosure
-							)
+											valueType,
+											this.EmitGetPropertyExpression(
+												context,
+												current,
+#if !NETFX_CORE
+												traits.ElementType == typeof( DictionaryEntry )
+													? Metadata._DictionaryEntry.Value
+													: traits.ElementType.GetProperty( "Value" )
+#else
+												traits.ElementType.GetProperty( "Value" )
+#endif // !NETFX_CORE
+												),
+											false
+										)
+									// ReSharper restore ImplicitlyCapturedClosure
+								)
 						);
 				}
 			}
@@ -775,20 +779,37 @@ namespace MsgPack.Serialization.AbstractSerializers
 			Type collectionType, 
 			FieldInfo asField, 
 			PropertyInfo asProperty,
-			TConstruct storeCollectionItems
+			TConstruct storeCollectionItems // null for not appendable like String
 		)
 		{
-			if ( ( asField != null && asField.IsInitOnly ) || ( asProperty != null && asProperty.GetSetMethod( true ) == null ) )
+			if ( storeCollectionItems != null && ( asField != null && asField.IsInitOnly ) || ( asProperty != null && asProperty.GetSetMethod( true ) == null ) )
 			{
 				return storeCollectionItems;
 			}
 
 			/*
+			 * #if APPENDABLE
 			 *	if ( instance.MEMBER == null )
 			 *  {
 			 *		instance.MEMBER = collection:
 			 *  }
+			 *  else
+			 *  {
+			 *		(APPANED)
+			 *  }
+			 * #else
+			 *  instance.MEMBER = collection:
 			 */
+
+			var invokeSetter =
+				asField != null
+					? this.EmitSetField( context, instance, asField, collection, !asField.GetHasPublicSetter() )
+					: this.EmitSetProperty( context, instance, asProperty, collection, !asProperty.GetHasPublicSetter() );
+
+			if ( storeCollectionItems == null )
+			{
+				return invokeSetter;
+			}
 
 			return
 				this.EmitSequentialStatements( 
@@ -803,9 +824,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								: this.EmitGetPropertyExpression( context, instance, asProperty ),
 							this.MakeNullLiteral( context, collectionType )
 						),
-						asField != null
-							? this.EmitSetField( context, instance, asField, collection, !asField.GetHasPublicSetter() )
-							: this.EmitSetProperty( context, instance, asProperty, collection, !asProperty.GetHasPublicSetter() ),
+						invokeSetter, // then
 						storeCollectionItems // else
 					)
 				);
