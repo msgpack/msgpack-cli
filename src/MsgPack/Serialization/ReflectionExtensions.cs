@@ -506,6 +506,28 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		public static bool GetHasPublicSetter( this MemberInfo source )
+		{
+			PropertyInfo asProperty;
+			FieldInfo asField;
+			if ( ( asProperty = source as PropertyInfo ) != null )
+			{
+#if !NETFX_CORE
+				return asProperty.GetSetMethod() != null;
+#else
+				return ( asProperty.SetMethod != null && asProperty.SetMethod.IsPublic );
+#endif
+			}
+			else if ( ( asField = source as FieldInfo ) != null )
+			{
+				return asField.IsPublic && !asField.IsInitOnly && !asField.IsLiteral;
+			}
+			else
+			{
+				throw new NotSupportedException( source.GetType() + " is not supported." );
+			}
+		}
+
 		public static bool GetIsPublic( this MemberInfo source )
 		{
 			PropertyInfo asProperty;
