@@ -12970,6 +12970,19 @@ namespace MsgPack.Serialization
 		{
 				var context = NewSerializationContext( PackerCompatibilityOptions.None );
 				var target = new PolymorphicMemberTypeMixed();
+				target.NormalVanilla = "ABC";
+				target.NormalRuntime = new FileEntry { Name = "File", Size = 1 };
+				target.NormalKnown = new FileEntry { Name = "File", Size = 2 };
+				target.ObjectRuntime = new FileEntry { Name = "File", Size = 3 };
+				target.ListVanilla = new List<string> { "ABC" };
+				target.ListKnownItem = new List<FileSystemEntry> { new FileEntry { Name = "File", Size = 1 } };
+				target.ListKnwonContainerRuntimeItem = new List<FileSystemEntry> { new FileEntry { Name = "File", Size = 2 } };
+				target.ListObjectRuntimeItem = new List<object> { new FileEntry { Name = "File", Size = 3 } };
+				target.DictionaryVanilla = new Dictionary<string, string> { { "Key", "ABC" } };
+				target.DictionaryKnownValue = new Dictionary<string, FileSystemEntry> { { "Key", new FileEntry { Name = "File", Size = 1 } } };
+				target.DictionaryKnownContainerRuntimeValue = new Dictionary<string, FileSystemEntry> { { "Key", new FileEntry { Name = "File", Size = 2 } } };
+				target.DictionaryObjectRuntimeValue = new Dictionary<string, object> { { "Key", new FileEntry { Name = "File", Size = 3 } } };
+				target.Tuple = Tuple.Create<string, FileSystemEntry, FileSystemEntry, object>( "ABC", new FileEntry { Name = "File", Size = 1 }, new FileEntry { Name = "File", Size = 3 }, new FileEntry { Name = "File", Size = 3 } );
 				var serializer = context.GetSerializer<PolymorphicMemberTypeMixed>();
 				
 				using ( var buffer = new MemoryStream() )
@@ -13011,12 +13024,44 @@ namespace MsgPack.Serialization
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphicMemberTypeMixed_Null_Success()
+		{
+				var context = NewSerializationContext( PackerCompatibilityOptions.None );
+				var target = new PolymorphicMemberTypeMixed();
+				var serializer = context.GetSerializer<PolymorphicMemberTypeMixed>();
+				
+				using ( var buffer = new MemoryStream() )
+				{
+					serializer.Pack( buffer, target );
+					buffer.Position = 0;
+					var result = serializer.Unpack( buffer );
+
+					Assert.That( result, Is.Not.Null );
+					Assert.That( result, Is.Not.SameAs( target ) );
+					Assert.That( result.NormalVanilla, Is.Null );
+					Assert.That( result.NormalRuntime, Is.Null );
+					Assert.That( result.NormalKnown, Is.Null );
+					Assert.That( result.ObjectRuntime, Is.Null );
+					Assert.That( result.ListVanilla, Is.Null );
+					Assert.That( result.ListKnownItem, Is.Null );
+					Assert.That( result.ListKnwonContainerRuntimeItem, Is.Null );
+					Assert.That( result.ListObjectRuntimeItem, Is.Null );
+					Assert.That( result.DictionaryVanilla, Is.Null );
+					Assert.That( result.DictionaryKnownValue, Is.Null );
+					Assert.That( result.DictionaryKnownContainerRuntimeValue, Is.Null );
+					Assert.That( result.DictionaryObjectRuntimeValue, Is.Null );
+					Assert.That( result.Tuple, Is.Null );
+				}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassMemberNoAttribute_Fail()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new AbstractClassMemberNoAttribute { Value = new FileEntry { Name = "file", Size = 1 } };
 
-			Assert.Throws<SerializationException>( ()=> context.GetSerializer<AbstractClassMemberNoAttribute>() );
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<AbstractClassMemberNoAttribute>() );
 		}
 
 		[Test]
@@ -13068,9 +13113,9 @@ namespace MsgPack.Serialization
 		public void TestAbstractClassCollectionItemNoAttribute_Fail()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new AbstractClassCollectionItemNoAttribute { Value = new Collection<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+			var target = new AbstractClassCollectionItemNoAttribute { Value = new List<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
-			Assert.Throws<SerializationException>( ()=> context.GetSerializer<AbstractClassCollectionItemNoAttribute>() );
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<AbstractClassCollectionItemNoAttribute>() );
 		}
 
 		[Test]
@@ -13078,7 +13123,7 @@ namespace MsgPack.Serialization
 		public void TestAbstractClassCollectionItemKnownType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new AbstractClassCollectionItemKnownType { Value = new Collection<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+			var target = new AbstractClassCollectionItemKnownType { Value = new List<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			var serializer = context.GetSerializer<AbstractClassCollectionItemKnownType>();
 
@@ -13101,7 +13146,7 @@ namespace MsgPack.Serialization
 		public void TestAbstractClassCollectionItemRuntimeType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new AbstractClassCollectionItemRuntimeType { Value = new Collection<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+			var target = new AbstractClassCollectionItemRuntimeType { Value = new List<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			var serializer = context.GetSerializer<AbstractClassCollectionItemRuntimeType>();
 
@@ -13124,9 +13169,9 @@ namespace MsgPack.Serialization
 		public void TestAbstractClassDictionaryKeyNoAttribute_Fail()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new AbstractClassDictionaryKeyNoAttribute { Value = new SortedDictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+			var target = new AbstractClassDictionaryKeyNoAttribute { Value = new Dictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
-			Assert.Throws<SerializationException>( ()=> context.GetSerializer<AbstractClassDictionaryKeyNoAttribute>() );
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<AbstractClassDictionaryKeyNoAttribute>() );
 		}
 
 		[Test]
@@ -13134,7 +13179,7 @@ namespace MsgPack.Serialization
 		public void TestAbstractClassDictionaryKeyKnownType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new AbstractClassDictionaryKeyKnownType { Value = new SortedDictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+			var target = new AbstractClassDictionaryKeyKnownType { Value = new Dictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			var serializer = context.GetSerializer<AbstractClassDictionaryKeyKnownType>();
 
@@ -13157,7 +13202,7 @@ namespace MsgPack.Serialization
 		public void TestAbstractClassDictionaryKeyRuntimeType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new AbstractClassDictionaryKeyRuntimeType { Value = new SortedDictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+			var target = new AbstractClassDictionaryKeyRuntimeType { Value = new Dictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			var serializer = context.GetSerializer<AbstractClassDictionaryKeyRuntimeType>();
 
@@ -13182,7 +13227,7 @@ namespace MsgPack.Serialization
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = new InterfaceMemberNoAttribute { Value = new FileEntry { Name = "file", Size = 1 } };
 
-			Assert.Throws<SerializationException>( ()=> context.GetSerializer<InterfaceMemberNoAttribute>() );
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<InterfaceMemberNoAttribute>() );
 		}
 
 		[Test]
@@ -13234,9 +13279,9 @@ namespace MsgPack.Serialization
 		public void TestInterfaceCollectionItemNoAttribute_Fail()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new InterfaceCollectionItemNoAttribute { Value = new Collection<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+			var target = new InterfaceCollectionItemNoAttribute { Value = new List<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
-			Assert.Throws<SerializationException>( ()=> context.GetSerializer<InterfaceCollectionItemNoAttribute>() );
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<InterfaceCollectionItemNoAttribute>() );
 		}
 
 		[Test]
@@ -13244,7 +13289,7 @@ namespace MsgPack.Serialization
 		public void TestInterfaceCollectionItemKnownType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new InterfaceCollectionItemKnownType { Value = new Collection<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+			var target = new InterfaceCollectionItemKnownType { Value = new List<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			var serializer = context.GetSerializer<InterfaceCollectionItemKnownType>();
 
@@ -13267,7 +13312,7 @@ namespace MsgPack.Serialization
 		public void TestInterfaceCollectionItemRuntimeType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new InterfaceCollectionItemRuntimeType { Value = new Collection<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
+			var target = new InterfaceCollectionItemRuntimeType { Value = new List<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			var serializer = context.GetSerializer<InterfaceCollectionItemRuntimeType>();
 
@@ -13290,9 +13335,9 @@ namespace MsgPack.Serialization
 		public void TestInterfaceDictionaryKeyNoAttribute_Fail()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new InterfaceDictionaryKeyNoAttribute { Value = new SortedDictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+			var target = new InterfaceDictionaryKeyNoAttribute { Value = new Dictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
-			Assert.Throws<SerializationException>( ()=> context.GetSerializer<InterfaceDictionaryKeyNoAttribute>() );
+			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<InterfaceDictionaryKeyNoAttribute>() );
 		}
 
 		[Test]
@@ -13300,7 +13345,7 @@ namespace MsgPack.Serialization
 		public void TestInterfaceDictionaryKeyKnownType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new InterfaceDictionaryKeyKnownType { Value = new SortedDictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+			var target = new InterfaceDictionaryKeyKnownType { Value = new Dictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			var serializer = context.GetSerializer<InterfaceDictionaryKeyKnownType>();
 
@@ -13323,7 +13368,7 @@ namespace MsgPack.Serialization
 		public void TestInterfaceDictionaryKeyRuntimeType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new InterfaceDictionaryKeyRuntimeType { Value = new SortedDictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
+			var target = new InterfaceDictionaryKeyRuntimeType { Value = new Dictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			var serializer = context.GetSerializer<InterfaceDictionaryKeyRuntimeType>();
 
