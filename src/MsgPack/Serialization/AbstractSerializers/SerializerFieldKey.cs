@@ -99,7 +99,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			private static byte[] Pack( PolymorphismSchema value )
 			{
 				using ( var buffer = new MemoryStream() )
-				using ( var packer = Packer.Create( buffer ) )
+				using ( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
 				{
 					Pack( packer, value );
 					return buffer.ToArray();

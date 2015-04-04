@@ -99,7 +99,7 @@ namespace MsgPack.Serialization.Polymorphic
 		{
 			using ( var buffer = new MemoryStream() )
 			{
-				using ( var valuePacker = Packer.Create( buffer ) )
+				using ( var valuePacker = Packer.Create( buffer, this.PackerCompatibilityOptions ) )
 				{
 					// Use concrete type serializer.
 					this.OwnerContext.GetSerializer( objectTree.GetType(), this._schema ).PackTo( valuePacker, objectTree );
