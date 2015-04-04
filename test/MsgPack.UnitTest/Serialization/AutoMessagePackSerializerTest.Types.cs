@@ -1232,6 +1232,7 @@ namespace MsgPack.Serialization
 			public Version Reference
 			{
 				get { return this._Reference; }
+				 set { this._Reference = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty( Version Reference ) 
@@ -1257,6 +1258,7 @@ namespace MsgPack.Serialization
 			public object Reference
 			{
 				get { return this._Reference; }
+				 set { this._Reference = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject( object Reference ) 
@@ -1328,6 +1330,7 @@ namespace MsgPack.Serialization
 			{
 				this._Reference = Reference;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject
@@ -1343,6 +1346,7 @@ namespace MsgPack.Serialization
 			{
 				this._Reference = Reference;
 			}
+			public PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor
@@ -1352,13 +1356,14 @@ namespace MsgPack.Serialization
 			public Version Reference
 			{
 				get { return this._Reference; }
-				private  set { this._Reference = value; }
+				private set { this._Reference = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor( Version Reference ) 
 			{
 				this._Reference = Reference;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject
@@ -1368,13 +1373,14 @@ namespace MsgPack.Serialization
 			public object Reference
 			{
 				get { return this._Reference; }
-				private  set { this._Reference = value; }
+				private set { this._Reference = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject( object Reference ) 
 			{
 				this._Reference = Reference;
 			}
+			public PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor
@@ -1385,6 +1391,7 @@ namespace MsgPack.Serialization
 			{
 				this.Reference = Reference;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject
@@ -1395,6 +1402,7 @@ namespace MsgPack.Serialization
 			{
 				this.Reference = Reference;
 			}
+			public PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty
@@ -1404,6 +1412,7 @@ namespace MsgPack.Serialization
 			public DateTime Value
 			{
 				get { return this._Value; }
+				 set { this._Value = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty( DateTime Value ) 
@@ -1429,6 +1438,7 @@ namespace MsgPack.Serialization
 			public object Value
 			{
 				get { return this._Value; }
+				 set { this._Value = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject( object Value ) 
@@ -1500,6 +1510,7 @@ namespace MsgPack.Serialization
 			{
 				this._Value = Value;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject
@@ -1515,6 +1526,7 @@ namespace MsgPack.Serialization
 			{
 				this._Value = Value;
 			}
+			public PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor
@@ -1524,13 +1536,14 @@ namespace MsgPack.Serialization
 			public DateTime Value
 			{
 				get { return this._Value; }
-				private  set { this._Value = value; }
+				private set { this._Value = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor( DateTime Value ) 
 			{
 				this._Value = Value;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject
@@ -1540,13 +1553,14 @@ namespace MsgPack.Serialization
 			public object Value
 			{
 				get { return this._Value; }
-				private  set { this._Value = value; }
+				private set { this._Value = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject( object Value ) 
 			{
 				this._Value = Value;
 			}
+			public PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor
@@ -1557,6 +1571,7 @@ namespace MsgPack.Serialization
 			{
 				this.Value = Value;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject
@@ -1567,6 +1582,7 @@ namespace MsgPack.Serialization
 			{
 				this.Value = Value;
 			}
+			public PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty
@@ -1576,6 +1592,7 @@ namespace MsgPack.Serialization
 			public int Primitive
 			{
 				get { return this._Primitive; }
+				 set { this._Primitive = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty( int Primitive ) 
@@ -1601,6 +1618,7 @@ namespace MsgPack.Serialization
 			public object Primitive
 			{
 				get { return this._Primitive; }
+				 set { this._Primitive = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject( object Primitive ) 
@@ -1672,6 +1690,7 @@ namespace MsgPack.Serialization
 			{
 				this._Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject
@@ -1687,6 +1706,7 @@ namespace MsgPack.Serialization
 			{
 				this._Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor
@@ -1696,13 +1716,14 @@ namespace MsgPack.Serialization
 			public int Primitive
 			{
 				get { return this._Primitive; }
-				private  set { this._Primitive = value; }
+				private set { this._Primitive = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor( int Primitive ) 
 			{
 				this._Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject
@@ -1712,13 +1733,14 @@ namespace MsgPack.Serialization
 			public object Primitive
 			{
 				get { return this._Primitive; }
-				private  set { this._Primitive = value; }
+				private set { this._Primitive = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject( object Primitive ) 
 			{
 				this._Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor
@@ -1729,6 +1751,7 @@ namespace MsgPack.Serialization
 			{
 				this.Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject
@@ -1739,6 +1762,7 @@ namespace MsgPack.Serialization
 			{
 				this.Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty
@@ -1748,6 +1772,7 @@ namespace MsgPack.Serialization
 			public string String
 			{
 				get { return this._String; }
+				 set { this._String = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty( string String ) 
@@ -1773,6 +1798,7 @@ namespace MsgPack.Serialization
 			public object String
 			{
 				get { return this._String; }
+				 set { this._String = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject( object String ) 
@@ -1844,6 +1870,7 @@ namespace MsgPack.Serialization
 			{
 				this._String = String;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject
@@ -1859,6 +1886,7 @@ namespace MsgPack.Serialization
 			{
 				this._String = String;
 			}
+			public PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor
@@ -1868,13 +1896,14 @@ namespace MsgPack.Serialization
 			public string String
 			{
 				get { return this._String; }
-				private  set { this._String = value; }
+				private set { this._String = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor( string String ) 
 			{
 				this._String = String;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject
@@ -1884,13 +1913,14 @@ namespace MsgPack.Serialization
 			public object String
 			{
 				get { return this._String; }
-				private  set { this._String = value; }
+				private set { this._String = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject( object String ) 
 			{
 				this._String = String;
 			}
+			public PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor
@@ -1901,6 +1931,7 @@ namespace MsgPack.Serialization
 			{
 				this.String = String;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject
@@ -1911,6 +1942,7 @@ namespace MsgPack.Serialization
 			{
 				this.String = String;
 			}
+			public PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty
@@ -1922,6 +1954,7 @@ namespace MsgPack.Serialization
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
+				 set { this._Polymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty( FileSystemEntry Polymorphic ) 
@@ -1949,6 +1982,7 @@ namespace MsgPack.Serialization
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
+				 set { this._Polymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject( object Polymorphic ) 
@@ -2026,6 +2060,7 @@ namespace MsgPack.Serialization
 			{
 				this._Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -2043,6 +2078,7 @@ namespace MsgPack.Serialization
 			{
 				this._Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor
@@ -2054,13 +2090,14 @@ namespace MsgPack.Serialization
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
-				private  set { this._Polymorphic = value; }
+				private set { this._Polymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor( FileSystemEntry Polymorphic ) 
 			{
 				this._Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -2072,13 +2109,14 @@ namespace MsgPack.Serialization
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
-				private  set { this._Polymorphic = value; }
+				private set { this._Polymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject( object Polymorphic ) 
 			{
 				this._Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor
@@ -2091,6 +2129,7 @@ namespace MsgPack.Serialization
 			{
 				this.Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject
@@ -2103,6 +2142,7 @@ namespace MsgPack.Serialization
 			{
 				this.Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 		#endregion ------ KnownType.NormalTypes ------
 
@@ -2115,6 +2155,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListStaticItem
 			{
 				get { return this._ListStaticItem; }
+				 set { this._ListStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadWriteProperty( IList<string> ListStaticItem ) 
@@ -2140,6 +2181,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListStaticItem
 			{
 				get { return this._ListStaticItem; }
+				 set { this._ListStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_ListStaticItemReadWritePropertyAsObject( IList<string> ListStaticItem ) 
@@ -2255,7 +2297,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListStaticItem
 			{
 				get { return this._ListStaticItem; }
-				private  set { this._ListStaticItem = value; }
+				private set { this._ListStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Collection_ListStaticItemPrivateSetterCollectionProperty( IList<string> ListStaticItem ) 
@@ -2281,7 +2323,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListStaticItem
 			{
 				get { return this._ListStaticItem; }
-				private  set { this._ListStaticItem = value; }
+				private set { this._ListStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_ListStaticItemPrivateSetterCollectionPropertyAsObject( IList<string> ListStaticItem ) 
@@ -2300,43 +2342,43 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly
+		public class PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyCollectionField
 		{
 			public readonly IList<string> ListStaticItem;
 
-			private PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly( IList<string> ListStaticItem ) 
+			private PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyCollectionField( IList<string> ListStaticItem ) 
 			{
 				this.ListStaticItem = ListStaticItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly()
+			public PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyCollectionField()
 			{
 				this.ListStaticItem = new List<string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Collection_ListStaticItemIsReadOnly( new List<string>{ "A", "B" } );
+				return new PolymorphicMemberTypeKnownType_Collection_ListStaticItemReadOnlyCollectionField( new List<string>{ "A", "B" } );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeKnownType_ListStaticItemReadOnlyCollectionFieldAsObject
 		{
 			public readonly IList<string> ListStaticItem;
 
-			private PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject( IList<string> ListStaticItem ) 
+			private PolymorphicMemberTypeKnownType_ListStaticItemReadOnlyCollectionFieldAsObject( IList<string> ListStaticItem ) 
 			{
 				this.ListStaticItem = ListStaticItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeKnownType_ListStaticItemReadOnlyCollectionFieldAsObject()
 			{
 				this.ListStaticItem = new List<string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeKnownType_ListStaticItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_ListStaticItemIsReadOnlyAsObject( new List<string>{ "A", "B" } );
+				return new PolymorphicMemberTypeKnownType_ListStaticItemReadOnlyCollectionFieldAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -2349,6 +2391,7 @@ namespace MsgPack.Serialization
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
+				 set { this._ListPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadWriteProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -2376,6 +2419,7 @@ namespace MsgPack.Serialization
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
+				 set { this._ListPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_ListPolymorphicItemReadWritePropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -2501,7 +2545,7 @@ namespace MsgPack.Serialization
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
-				private  set { this._ListPolymorphicItem = value; }
+				private set { this._ListPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -2529,7 +2573,7 @@ namespace MsgPack.Serialization
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
-				private  set { this._ListPolymorphicItem = value; }
+				private set { this._ListPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -2548,47 +2592,47 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly
+		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyCollectionField
 		{
 			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IList<FileSystemEntry> ListPolymorphicItem;
 
-			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly( IList<FileSystemEntry> ListPolymorphicItem ) 
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyCollectionField( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
 				this.ListPolymorphicItem = ListPolymorphicItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly()
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyCollectionField()
 			{
 				this.ListPolymorphicItem = new List<FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemIsReadOnly( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItemReadOnlyCollectionField( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IList<FileSystemEntry> ListPolymorphicItem;
 
-			private PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyCollectionFieldAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
 				this.ListPolymorphicItem = ListPolymorphicItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyCollectionFieldAsObject()
 			{
 				this.ListPolymorphicItem = new List<FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_ListPolymorphicItemIsReadOnlyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItemReadOnlyCollectionFieldAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -2601,6 +2645,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
+				 set { this._ListPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadWriteProperty( IList<string> ListPolymorphicItself ) 
@@ -2628,6 +2673,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
+				 set { this._ListPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadWritePropertyAsObject( IList<string> ListPolymorphicItself ) 
@@ -2753,7 +2799,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
-				private  set { this._ListPolymorphicItself = value; }
+				private set { this._ListPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty( IList<string> ListPolymorphicItself ) 
@@ -2781,7 +2827,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
-				private  set { this._ListPolymorphicItself = value; }
+				private set { this._ListPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject( IList<string> ListPolymorphicItself ) 
@@ -2800,47 +2846,47 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly
+		public class PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyCollectionField
 		{
 			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
 			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public readonly IList<string> ListPolymorphicItself;
 
-			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly( IList<string> ListPolymorphicItself ) 
+			private PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyCollectionField( IList<string> ListPolymorphicItself ) 
 			{
 				this.ListPolymorphicItself = ListPolymorphicItself;
 			}
 
-			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly()
+			public PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyCollectionField()
 			{
 				this.ListPolymorphicItself = new Collection<string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly Initialize()
+			public static PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfIsReadOnly( new Collection<string>{ "A", "B" } );
+				return new PolymorphicMemberTypeKnownType_Collection_ListPolymorphicItselfReadOnlyCollectionField( new Collection<string>{ "A", "B" } );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject
+		public class PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackKnownType( 0, typeof( Collection<string> ) )]
 			[MessagePackKnownType( 1, typeof( List<string> ) )]
 			public readonly IList<string> ListPolymorphicItself;
 
-			private PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject( IList<string> ListPolymorphicItself ) 
+			private PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject( IList<string> ListPolymorphicItself ) 
 			{
 				this.ListPolymorphicItself = ListPolymorphicItself;
 			}
 
-			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject()
+			public PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject()
 			{
 				this.ListPolymorphicItself = new Collection<string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_ListPolymorphicItselfIsReadOnlyAsObject( new Collection<string>{ "A", "B" } );
+				return new PolymorphicMemberTypeKnownType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 		#endregion ------ KnownType.CollectionTypes ------
@@ -2854,6 +2900,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
 				get { return this._DictionaryStaticKeyAndStaticItem; }
+				 set { this._DictionaryStaticKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
@@ -2879,6 +2926,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
 				get { return this._DictionaryStaticKeyAndStaticItem; }
+				 set { this._DictionaryStaticKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
@@ -2994,7 +3042,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
 				get { return this._DictionaryStaticKeyAndStaticItem; }
-				private  set { this._DictionaryStaticKeyAndStaticItem = value; }
+				private set { this._DictionaryStaticKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
@@ -3020,7 +3068,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
 				get { return this._DictionaryStaticKeyAndStaticItem; }
-				private  set { this._DictionaryStaticKeyAndStaticItem = value; }
+				private set { this._DictionaryStaticKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
@@ -3039,43 +3087,43 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField
 		{
 			public readonly IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
 
-			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
 				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly()
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField()
 			{
 				this.DictionaryStaticKeyAndStaticItem = new Dictionary<string, string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject
 		{
 			public readonly IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
 
-			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
 				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryStaticKeyAndStaticItem = new Dictionary<string, string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
@@ -3088,6 +3136,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+				 set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
@@ -3115,6 +3164,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+				 set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
@@ -3240,7 +3290,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
-				private  set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
+				private set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
@@ -3268,7 +3318,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
-				private  set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
+				private set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
@@ -3287,47 +3337,47 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField
 		{
 			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
 			public readonly IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
 
-			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
 			{
 				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly()
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField()
 			{
 				this.DictionaryPolymorphicKeyAndStaticItem = new Dictionary<FileSystemEntry, string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
 			public readonly IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
 
-			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
 			{
 				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryPolymorphicKeyAndStaticItem = new Dictionary<FileSystemEntry, string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
 
@@ -3340,6 +3390,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+				 set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
@@ -3367,6 +3418,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+				 set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
@@ -3492,7 +3544,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
-				private  set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
+				private set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
@@ -3520,7 +3572,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
-				private  set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
+				private set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
@@ -3539,47 +3591,47 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField
 		{
 			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
 
-			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
 			{
 				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly()
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField()
 			{
 				this.DictionaryStaticKeyAndPolymorphicItem = new Dictionary<string, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackKnownCollectionItemType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
 
-			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			private PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
 			{
 				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryStaticKeyAndPolymorphicItem = new Dictionary<string, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeKnownType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
@@ -3594,6 +3646,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndItem; }
+				 set { this._DictionaryPolymorphicKeyAndItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
@@ -3623,6 +3676,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndItem; }
+				 set { this._DictionaryPolymorphicKeyAndItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
@@ -3758,7 +3812,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndItem; }
-				private  set { this._DictionaryPolymorphicKeyAndItem = value; }
+				private set { this._DictionaryPolymorphicKeyAndItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
@@ -3788,7 +3842,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndItem; }
-				private  set { this._DictionaryPolymorphicKeyAndItem = value; }
+				private set { this._DictionaryPolymorphicKeyAndItem = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
@@ -3807,7 +3861,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField
 		{
 			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
@@ -3815,23 +3869,23 @@ namespace MsgPack.Serialization
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
 
-			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
 			{
 				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly()
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField()
 			{
 				this.DictionaryPolymorphicKeyAndItem = new Dictionary<FileSystemEntry, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
@@ -3839,19 +3893,19 @@ namespace MsgPack.Serialization
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
 
-			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
 			{
 				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
 			}
 
-			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryPolymorphicKeyAndItem = new Dictionary<FileSystemEntry, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
@@ -3864,6 +3918,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryPolymorphicItself
 			{
 				get { return this._DictionaryPolymorphicItself; }
+				 set { this._DictionaryPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
@@ -3891,6 +3946,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryPolymorphicItself
 			{
 				get { return this._DictionaryPolymorphicItself; }
+				 set { this._DictionaryPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadWritePropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
@@ -4016,7 +4072,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryPolymorphicItself
 			{
 				get { return this._DictionaryPolymorphicItself; }
-				private  set { this._DictionaryPolymorphicItself = value; }
+				private set { this._DictionaryPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
@@ -4044,7 +4100,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryPolymorphicItself
 			{
 				get { return this._DictionaryPolymorphicItself; }
-				private  set { this._DictionaryPolymorphicItself = value; }
+				private set { this._DictionaryPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
@@ -4063,47 +4119,47 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField
 		{
 			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
 			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
 			public readonly IDictionary<string, string> DictionaryPolymorphicItself;
 
-			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField( IDictionary<string, string> DictionaryPolymorphicItself ) 
 			{
 				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
 			}
 
-			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly()
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField()
 			{
 				this.DictionaryPolymorphicItself = new Dictionary<string, string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly Initialize()
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfIsReadOnly( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackKnownType( 0, typeof( Dictionary<string, string> ) )]
 			[MessagePackKnownType( 1, typeof( SortedDictionary<string, string> ) )]
 			public readonly IDictionary<string, string> DictionaryPolymorphicItself;
 
-			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
 			{
 				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
 			}
 
-			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject()
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryPolymorphicItself = new Dictionary<string, string>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfIsReadOnlyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
@@ -4118,6 +4174,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
 			{
 				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+				 set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
@@ -4147,6 +4204,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
 			{
 				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+				 set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
@@ -4282,7 +4340,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
 			{
 				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
-				private  set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
+				private set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
@@ -4312,7 +4370,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
 			{
 				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
-				private  set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
+				private set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
@@ -4331,7 +4389,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly
+		public class PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField
 		{
 			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
@@ -4339,23 +4397,23 @@ namespace MsgPack.Serialization
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
 
-			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			private PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
 			{
 				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
 			}
 
-			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly()
+			public PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField()
 			{
 				this.DictionaryPolymorphicKeyAndItemAndItself = new Dictionary<FileSystemEntry, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly Initialize()
+			public static PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeKnownType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject
+		public class PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackKnownDictionaryKeyType( 0, typeof( FileEntry ) )]
 			[MessagePackKnownDictionaryKeyType( 1, typeof( DirectoryEntry ) )]
@@ -4363,19 +4421,19 @@ namespace MsgPack.Serialization
 			[MessagePackKnownCollectionItemType( 1, typeof( DirectoryEntry ) )]
 			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
 
-			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			private PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
 			{
 				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
 			}
 
-			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject()
+			public PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryPolymorphicKeyAndItemAndItself = new Dictionary<FileSystemEntry, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeKnownType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 		#endregion ------ KnownType.DictionaryTypes ------
@@ -4389,6 +4447,7 @@ namespace MsgPack.Serialization
 			public Tuple<string> Tuple1Static
 			{
 				get { return this._Tuple1Static; }
+				 set { this._Tuple1Static = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty( Tuple<string> Tuple1Static ) 
@@ -4414,6 +4473,7 @@ namespace MsgPack.Serialization
 			public Tuple<string> Tuple1Static
 			{
 				get { return this._Tuple1Static; }
+				 set { this._Tuple1Static = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple1StaticReadWritePropertyAsObject( Tuple<string> Tuple1Static ) 
@@ -4485,6 +4545,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple1StaticGetOnlyPropertyAndConstructorAsObject
@@ -4500,6 +4561,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple1StaticGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor
@@ -4509,13 +4571,14 @@ namespace MsgPack.Serialization
 			public Tuple<string> Tuple1Static
 			{
 				get { return this._Tuple1Static; }
-				private  set { this._Tuple1Static = value; }
+				private set { this._Tuple1Static = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor( Tuple<string> Tuple1Static ) 
 			{
 				this._Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple1StaticPrivateSetterPropertyAndConstructorAsObject
@@ -4525,13 +4588,14 @@ namespace MsgPack.Serialization
 			public Tuple<string> Tuple1Static
 			{
 				get { return this._Tuple1Static; }
-				private  set { this._Tuple1Static = value; }
+				private set { this._Tuple1Static = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple1StaticPrivateSetterPropertyAndConstructorAsObject( Tuple<string> Tuple1Static ) 
 			{
 				this._Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple1StaticPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor
@@ -4542,6 +4606,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple1StaticReadOnlyFieldAndConstructorAsObject
@@ -4552,6 +4617,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple1StaticReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty
@@ -4562,6 +4628,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
+				 set { this._Tuple1Polymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
@@ -4588,6 +4655,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
+				 set { this._Tuple1Polymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
@@ -4662,6 +4730,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple1PolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -4678,6 +4747,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple1PolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor
@@ -4688,13 +4758,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
-				private  set { this._Tuple1Polymorphic = value; }
+				private set { this._Tuple1Polymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
 				this._Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple1PolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -4705,13 +4776,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
-				private  set { this._Tuple1Polymorphic = value; }
+				private set { this._Tuple1Polymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple1PolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
 				this._Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple1PolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor
@@ -4723,6 +4795,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadOnlyFieldAndConstructorAsObject
@@ -4734,6 +4807,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple1PolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty
@@ -4743,6 +4817,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string> Tuple7AllStatic
 			{
 				get { return this._Tuple7AllStatic; }
+				 set { this._Tuple7AllStatic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
@@ -4768,6 +4843,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string> Tuple7AllStatic
 			{
 				get { return this._Tuple7AllStatic; }
+				 set { this._Tuple7AllStatic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple7AllStaticReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
@@ -4839,6 +4915,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7AllStaticGetOnlyPropertyAndConstructorAsObject
@@ -4854,6 +4931,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7AllStaticGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor
@@ -4863,13 +4941,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string> Tuple7AllStatic
 			{
 				get { return this._Tuple7AllStatic; }
-				private  set { this._Tuple7AllStatic = value; }
+				private set { this._Tuple7AllStatic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
 				this._Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7AllStaticPrivateSetterPropertyAndConstructorAsObject
@@ -4879,13 +4958,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string> Tuple7AllStatic
 			{
 				get { return this._Tuple7AllStatic; }
-				private  set { this._Tuple7AllStatic = value; }
+				private set { this._Tuple7AllStatic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple7AllStaticPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
 				this._Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7AllStaticPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor
@@ -4896,6 +4976,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7AllStaticReadOnlyFieldAndConstructorAsObject
@@ -4906,6 +4987,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7AllStaticReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty
@@ -4916,6 +4998,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
+				 set { this._Tuple7FirstPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
@@ -4942,6 +5025,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
+				 set { this._Tuple7FirstPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
@@ -5016,6 +5100,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -5032,6 +5117,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor
@@ -5042,13 +5128,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
-				private  set { this._Tuple7FirstPolymorphic = value; }
+				private set { this._Tuple7FirstPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
 				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -5059,13 +5146,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
-				private  set { this._Tuple7FirstPolymorphic = value; }
+				private set { this._Tuple7FirstPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
 				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor
@@ -5077,6 +5165,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -5088,6 +5177,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty
@@ -5098,6 +5188,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
+				 set { this._Tuple7LastPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
@@ -5124,6 +5215,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
+				 set { this._Tuple7LastPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
@@ -5198,6 +5290,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -5214,6 +5307,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor
@@ -5224,13 +5318,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
-				private  set { this._Tuple7LastPolymorphic = value; }
+				private set { this._Tuple7LastPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
 				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -5241,13 +5336,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
-				private  set { this._Tuple7LastPolymorphic = value; }
+				private set { this._Tuple7LastPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
 				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor
@@ -5259,6 +5355,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -5270,6 +5367,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7LastPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty
@@ -5280,6 +5378,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
+				 set { this._Tuple7IntermediatePolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
@@ -5306,6 +5405,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
+				 set { this._Tuple7IntermediatePolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
@@ -5380,6 +5480,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -5396,6 +5497,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructor
@@ -5406,13 +5508,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
-				private  set { this._Tuple7IntermediatePolymorphic = value; }
+				private set { this._Tuple7IntermediatePolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructor( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
 				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -5423,13 +5526,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
-				private  set { this._Tuple7IntermediatePolymorphic = value; }
+				private set { this._Tuple7IntermediatePolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
 				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructor
@@ -5441,6 +5545,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructorAsObject
@@ -5452,6 +5557,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty
@@ -5468,6 +5574,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
+				 set { this._Tuple7AllPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
@@ -5500,6 +5607,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
+				 set { this._Tuple7AllPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
@@ -5592,6 +5700,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -5614,6 +5723,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor
@@ -5630,13 +5740,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
-				private  set { this._Tuple7AllPolymorphic = value; }
+				private set { this._Tuple7AllPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
 				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -5653,13 +5764,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
-				private  set { this._Tuple7AllPolymorphic = value; }
+				private set { this._Tuple7AllPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
 				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor
@@ -5677,6 +5789,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -5694,6 +5807,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple7AllPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty
@@ -5703,6 +5817,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic
 			{
 				get { return this._Tuple8AllStatic; }
+				 set { this._Tuple8AllStatic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
@@ -5728,6 +5843,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic
 			{
 				get { return this._Tuple8AllStatic; }
+				 set { this._Tuple8AllStatic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple8AllStaticReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
@@ -5799,6 +5915,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple8AllStaticGetOnlyPropertyAndConstructorAsObject
@@ -5814,6 +5931,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple8AllStaticGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor
@@ -5823,13 +5941,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic
 			{
 				get { return this._Tuple8AllStatic; }
-				private  set { this._Tuple8AllStatic = value; }
+				private set { this._Tuple8AllStatic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
 				this._Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple8AllStaticPrivateSetterPropertyAndConstructorAsObject
@@ -5839,13 +5958,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic
 			{
 				get { return this._Tuple8AllStatic; }
-				private  set { this._Tuple8AllStatic = value; }
+				private set { this._Tuple8AllStatic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple8AllStaticPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
 				this._Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple8AllStaticPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor
@@ -5856,6 +5976,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple8AllStaticReadOnlyFieldAndConstructorAsObject
@@ -5866,6 +5987,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple8AllStaticReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty
@@ -5876,6 +5998,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
+				 set { this._Tuple8LastPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
@@ -5902,6 +6025,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
+				 set { this._Tuple8LastPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
@@ -5976,6 +6100,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -5992,6 +6117,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor
@@ -6002,13 +6128,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
-				private  set { this._Tuple8LastPolymorphic = value; }
+				private set { this._Tuple8LastPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
 				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -6019,13 +6146,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
-				private  set { this._Tuple8LastPolymorphic = value; }
+				private set { this._Tuple8LastPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
 				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor
@@ -6037,6 +6165,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -6048,6 +6177,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple8LastPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty
@@ -6065,6 +6195,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
+				 set { this._Tuple8AllPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
@@ -6098,6 +6229,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
+				 set { this._Tuple8AllPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
@@ -6193,6 +6325,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -6216,6 +6349,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor
@@ -6233,13 +6367,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
-				private  set { this._Tuple8AllPolymorphic = value; }
+				private set { this._Tuple8AllPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
 				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -6257,13 +6392,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
-				private  set { this._Tuple8AllPolymorphic = value; }
+				private set { this._Tuple8AllPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
 				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor
@@ -6282,6 +6418,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -6300,6 +6437,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeKnownType_Tuple8AllPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 		#endregion ------ KnownType.TupleTypes ------
 
@@ -6315,6 +6453,7 @@ namespace MsgPack.Serialization
 			public Version Reference
 			{
 				get { return this._Reference; }
+				 set { this._Reference = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty( Version Reference ) 
@@ -6340,6 +6479,7 @@ namespace MsgPack.Serialization
 			public object Reference
 			{
 				get { return this._Reference; }
+				 set { this._Reference = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject( object Reference ) 
@@ -6411,6 +6551,7 @@ namespace MsgPack.Serialization
 			{
 				this._Reference = Reference;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject
@@ -6426,6 +6567,7 @@ namespace MsgPack.Serialization
 			{
 				this._Reference = Reference;
 			}
+			public PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor
@@ -6435,13 +6577,14 @@ namespace MsgPack.Serialization
 			public Version Reference
 			{
 				get { return this._Reference; }
-				private  set { this._Reference = value; }
+				private set { this._Reference = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor( Version Reference ) 
 			{
 				this._Reference = Reference;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject
@@ -6451,13 +6594,14 @@ namespace MsgPack.Serialization
 			public object Reference
 			{
 				get { return this._Reference; }
-				private  set { this._Reference = value; }
+				private set { this._Reference = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject( object Reference ) 
 			{
 				this._Reference = Reference;
 			}
+			public PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor
@@ -6468,6 +6612,7 @@ namespace MsgPack.Serialization
 			{
 				this.Reference = Reference;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject
@@ -6478,6 +6623,7 @@ namespace MsgPack.Serialization
 			{
 				this.Reference = Reference;
 			}
+			public PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty
@@ -6487,6 +6633,7 @@ namespace MsgPack.Serialization
 			public DateTime Value
 			{
 				get { return this._Value; }
+				 set { this._Value = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty( DateTime Value ) 
@@ -6512,6 +6659,7 @@ namespace MsgPack.Serialization
 			public object Value
 			{
 				get { return this._Value; }
+				 set { this._Value = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject( object Value ) 
@@ -6583,6 +6731,7 @@ namespace MsgPack.Serialization
 			{
 				this._Value = Value;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject
@@ -6598,6 +6747,7 @@ namespace MsgPack.Serialization
 			{
 				this._Value = Value;
 			}
+			public PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor
@@ -6607,13 +6757,14 @@ namespace MsgPack.Serialization
 			public DateTime Value
 			{
 				get { return this._Value; }
-				private  set { this._Value = value; }
+				private set { this._Value = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor( DateTime Value ) 
 			{
 				this._Value = Value;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject
@@ -6623,13 +6774,14 @@ namespace MsgPack.Serialization
 			public object Value
 			{
 				get { return this._Value; }
-				private  set { this._Value = value; }
+				private set { this._Value = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject( object Value ) 
 			{
 				this._Value = Value;
 			}
+			public PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor
@@ -6640,6 +6792,7 @@ namespace MsgPack.Serialization
 			{
 				this.Value = Value;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject
@@ -6650,6 +6803,7 @@ namespace MsgPack.Serialization
 			{
 				this.Value = Value;
 			}
+			public PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty
@@ -6659,6 +6813,7 @@ namespace MsgPack.Serialization
 			public int Primitive
 			{
 				get { return this._Primitive; }
+				 set { this._Primitive = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty( int Primitive ) 
@@ -6684,6 +6839,7 @@ namespace MsgPack.Serialization
 			public object Primitive
 			{
 				get { return this._Primitive; }
+				 set { this._Primitive = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject( object Primitive ) 
@@ -6755,6 +6911,7 @@ namespace MsgPack.Serialization
 			{
 				this._Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject
@@ -6770,6 +6927,7 @@ namespace MsgPack.Serialization
 			{
 				this._Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor
@@ -6779,13 +6937,14 @@ namespace MsgPack.Serialization
 			public int Primitive
 			{
 				get { return this._Primitive; }
-				private  set { this._Primitive = value; }
+				private set { this._Primitive = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor( int Primitive ) 
 			{
 				this._Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject
@@ -6795,13 +6954,14 @@ namespace MsgPack.Serialization
 			public object Primitive
 			{
 				get { return this._Primitive; }
-				private  set { this._Primitive = value; }
+				private set { this._Primitive = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject( object Primitive ) 
 			{
 				this._Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor
@@ -6812,6 +6972,7 @@ namespace MsgPack.Serialization
 			{
 				this.Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject
@@ -6822,6 +6983,7 @@ namespace MsgPack.Serialization
 			{
 				this.Primitive = Primitive;
 			}
+			public PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty
@@ -6831,6 +6993,7 @@ namespace MsgPack.Serialization
 			public string String
 			{
 				get { return this._String; }
+				 set { this._String = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty( string String ) 
@@ -6856,6 +7019,7 @@ namespace MsgPack.Serialization
 			public object String
 			{
 				get { return this._String; }
+				 set { this._String = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject( object String ) 
@@ -6927,6 +7091,7 @@ namespace MsgPack.Serialization
 			{
 				this._String = String;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject
@@ -6942,6 +7107,7 @@ namespace MsgPack.Serialization
 			{
 				this._String = String;
 			}
+			public PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor
@@ -6951,13 +7117,14 @@ namespace MsgPack.Serialization
 			public string String
 			{
 				get { return this._String; }
-				private  set { this._String = value; }
+				private set { this._String = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor( string String ) 
 			{
 				this._String = String;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject
@@ -6967,13 +7134,14 @@ namespace MsgPack.Serialization
 			public object String
 			{
 				get { return this._String; }
-				private  set { this._String = value; }
+				private set { this._String = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject( object String ) 
 			{
 				this._String = String;
 			}
+			public PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor
@@ -6984,6 +7152,7 @@ namespace MsgPack.Serialization
 			{
 				this.String = String;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject
@@ -6994,6 +7163,7 @@ namespace MsgPack.Serialization
 			{
 				this.String = String;
 			}
+			public PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty
@@ -7004,6 +7174,7 @@ namespace MsgPack.Serialization
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
+				 set { this._Polymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty( FileSystemEntry Polymorphic ) 
@@ -7030,6 +7201,7 @@ namespace MsgPack.Serialization
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
+				 set { this._Polymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject( object Polymorphic ) 
@@ -7104,6 +7276,7 @@ namespace MsgPack.Serialization
 			{
 				this._Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -7120,6 +7293,7 @@ namespace MsgPack.Serialization
 			{
 				this._Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor
@@ -7130,13 +7304,14 @@ namespace MsgPack.Serialization
 			public FileSystemEntry Polymorphic
 			{
 				get { return this._Polymorphic; }
-				private  set { this._Polymorphic = value; }
+				private set { this._Polymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor( FileSystemEntry Polymorphic ) 
 			{
 				this._Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -7147,13 +7322,14 @@ namespace MsgPack.Serialization
 			public object Polymorphic
 			{
 				get { return this._Polymorphic; }
-				private  set { this._Polymorphic = value; }
+				private set { this._Polymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject( object Polymorphic ) 
 			{
 				this._Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor
@@ -7165,6 +7341,7 @@ namespace MsgPack.Serialization
 			{
 				this.Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject
@@ -7176,6 +7353,7 @@ namespace MsgPack.Serialization
 			{
 				this.Polymorphic = Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 		#endregion ------ RuntimeType.NormalTypes ------
 
@@ -7188,6 +7366,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListStaticItem
 			{
 				get { return this._ListStaticItem; }
+				 set { this._ListStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadWriteProperty( IList<string> ListStaticItem ) 
@@ -7213,6 +7392,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListStaticItem
 			{
 				get { return this._ListStaticItem; }
+				 set { this._ListStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_ListStaticItemReadWritePropertyAsObject( IList<string> ListStaticItem ) 
@@ -7328,7 +7508,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListStaticItem
 			{
 				get { return this._ListStaticItem; }
-				private  set { this._ListStaticItem = value; }
+				private set { this._ListStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemPrivateSetterCollectionProperty( IList<string> ListStaticItem ) 
@@ -7354,7 +7534,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListStaticItem
 			{
 				get { return this._ListStaticItem; }
-				private  set { this._ListStaticItem = value; }
+				private set { this._ListStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_ListStaticItemPrivateSetterCollectionPropertyAsObject( IList<string> ListStaticItem ) 
@@ -7373,43 +7553,43 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly
+		public class PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyCollectionField
 		{
 			public readonly IList<string> ListStaticItem;
 
-			private PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly( IList<string> ListStaticItem ) 
+			private PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyCollectionField( IList<string> ListStaticItem ) 
 			{
 				this.ListStaticItem = ListStaticItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly()
+			public PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyCollectionField()
 			{
 				this.ListStaticItem = new List<string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemIsReadOnly( new List<string>{ "A", "B" } );
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListStaticItemReadOnlyCollectionField( new List<string>{ "A", "B" } );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyCollectionFieldAsObject
 		{
 			public readonly IList<string> ListStaticItem;
 
-			private PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject( IList<string> ListStaticItem ) 
+			private PolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyCollectionFieldAsObject( IList<string> ListStaticItem ) 
 			{
 				this.ListStaticItem = ListStaticItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyCollectionFieldAsObject()
 			{
 				this.ListStaticItem = new List<string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_ListStaticItemIsReadOnlyAsObject( new List<string>{ "A", "B" } );
+				return new PolymorphicMemberTypeRuntimeType_ListStaticItemReadOnlyCollectionFieldAsObject( new List<string>{ "A", "B" } );
 			}
 		}
 
@@ -7421,6 +7601,7 @@ namespace MsgPack.Serialization
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
+				 set { this._ListPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadWriteProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -7447,6 +7628,7 @@ namespace MsgPack.Serialization
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
+				 set { this._ListPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadWritePropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -7567,7 +7749,7 @@ namespace MsgPack.Serialization
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
-				private  set { this._ListPolymorphicItem = value; }
+				private set { this._ListPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemPrivateSetterCollectionProperty( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -7594,7 +7776,7 @@ namespace MsgPack.Serialization
 			public IList<FileSystemEntry> ListPolymorphicItem
 			{
 				get { return this._ListPolymorphicItem; }
-				private  set { this._ListPolymorphicItem = value; }
+				private set { this._ListPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItemPrivateSetterCollectionPropertyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
@@ -7613,45 +7795,45 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly
+		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
 			public readonly IList<FileSystemEntry> ListPolymorphicItem;
 
-			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly( IList<FileSystemEntry> ListPolymorphicItem ) 
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyCollectionField( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
 				this.ListPolymorphicItem = ListPolymorphicItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly()
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyCollectionField()
 			{
 				this.ListPolymorphicItem = new List<FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemIsReadOnly( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItemReadOnlyCollectionField( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackRuntimeCollectionItemType]
 			public readonly IList<FileSystemEntry> ListPolymorphicItem;
 
-			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyCollectionFieldAsObject( IList<FileSystemEntry> ListPolymorphicItem ) 
 			{
 				this.ListPolymorphicItem = ListPolymorphicItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyCollectionFieldAsObject()
 			{
 				this.ListPolymorphicItem = new List<FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemIsReadOnlyAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItemReadOnlyCollectionFieldAsObject( new List<FileSystemEntry>{ new FileEntry { Name = "file", Size = 1L }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } );
 			}
 		}
 
@@ -7663,6 +7845,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
+				 set { this._ListPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadWriteProperty( IList<string> ListPolymorphicItself ) 
@@ -7689,6 +7872,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
+				 set { this._ListPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadWritePropertyAsObject( IList<string> ListPolymorphicItself ) 
@@ -7809,7 +7993,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
-				private  set { this._ListPolymorphicItself = value; }
+				private set { this._ListPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfPrivateSetterCollectionProperty( IList<string> ListPolymorphicItself ) 
@@ -7836,7 +8020,7 @@ namespace MsgPack.Serialization
 			public IList<string> ListPolymorphicItself
 			{
 				get { return this._ListPolymorphicItself; }
-				private  set { this._ListPolymorphicItself = value; }
+				private set { this._ListPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfPrivateSetterCollectionPropertyAsObject( IList<string> ListPolymorphicItself ) 
@@ -7855,45 +8039,45 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly
+		public class PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyCollectionField
 		{
 			[MessagePackRuntimeType]
 			public readonly IList<string> ListPolymorphicItself;
 
-			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly( IList<string> ListPolymorphicItself ) 
+			private PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyCollectionField( IList<string> ListPolymorphicItself ) 
 			{
 				this.ListPolymorphicItself = ListPolymorphicItself;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly()
+			public PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyCollectionField()
 			{
 				this.ListPolymorphicItself = new Collection<string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly Initialize()
+			public static PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfIsReadOnly( new Collection<string>{ "A", "B" } );
+				return new PolymorphicMemberTypeRuntimeType_Collection_ListPolymorphicItselfReadOnlyCollectionField( new Collection<string>{ "A", "B" } );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject
+		public class PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackRuntimeType]
 			public readonly IList<string> ListPolymorphicItself;
 
-			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject( IList<string> ListPolymorphicItself ) 
+			private PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject( IList<string> ListPolymorphicItself ) 
 			{
 				this.ListPolymorphicItself = ListPolymorphicItself;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject()
+			public PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject()
 			{
 				this.ListPolymorphicItself = new Collection<string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfIsReadOnlyAsObject( new Collection<string>{ "A", "B" } );
+				return new PolymorphicMemberTypeRuntimeType_ListPolymorphicItselfReadOnlyCollectionFieldAsObject( new Collection<string>{ "A", "B" } );
 			}
 		}
 		#endregion ------ RuntimeType.CollectionTypes ------
@@ -7907,6 +8091,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
 				get { return this._DictionaryStaticKeyAndStaticItem; }
+				 set { this._DictionaryStaticKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadWriteProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
@@ -7932,6 +8117,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
 				get { return this._DictionaryStaticKeyAndStaticItem; }
+				 set { this._DictionaryStaticKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadWritePropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
@@ -8047,7 +8233,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
 				get { return this._DictionaryStaticKeyAndStaticItem; }
-				private  set { this._DictionaryStaticKeyAndStaticItem = value; }
+				private set { this._DictionaryStaticKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionProperty( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
@@ -8073,7 +8259,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryStaticKeyAndStaticItem
 			{
 				get { return this._DictionaryStaticKeyAndStaticItem; }
-				private  set { this._DictionaryStaticKeyAndStaticItem = value; }
+				private set { this._DictionaryStaticKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
@@ -8092,43 +8278,43 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField
 		{
 			public readonly IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
 
-			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
 				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly()
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField()
 			{
 				this.DictionaryStaticKeyAndStaticItem = new Dictionary<string, string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemIsReadOnly( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndStaticItemReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject
 		{
 			public readonly IDictionary<string, string> DictionaryStaticKeyAndStaticItem;
 
-			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject( IDictionary<string, string> DictionaryStaticKeyAndStaticItem ) 
 			{
 				this.DictionaryStaticKeyAndStaticItem = DictionaryStaticKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryStaticKeyAndStaticItem = new Dictionary<string, string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemIsReadOnlyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndStaticItemReadOnlyCollectionFieldAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
@@ -8140,6 +8326,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+				 set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadWriteProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
@@ -8166,6 +8353,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
+				 set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadWritePropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
@@ -8286,7 +8474,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
-				private  set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
+				private set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
@@ -8313,7 +8501,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndStaticItem; }
-				private  set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
+				private set { this._DictionaryPolymorphicKeyAndStaticItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
@@ -8332,45 +8520,45 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeDictionaryKeyType]
 			public readonly IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
 
-			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
 			{
 				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly()
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField()
 			{
 				this.DictionaryPolymorphicKeyAndStaticItem = new Dictionary<FileSystemEntry, string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemIsReadOnly( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionField( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackRuntimeDictionaryKeyType]
 			public readonly IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem;
 
-			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject( IDictionary<FileSystemEntry, string> DictionaryPolymorphicKeyAndStaticItem ) 
 			{
 				this.DictionaryPolymorphicKeyAndStaticItem = DictionaryPolymorphicKeyAndStaticItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryPolymorphicKeyAndStaticItem = new Dictionary<FileSystemEntry, string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemIsReadOnlyAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndStaticItemReadOnlyCollectionFieldAsObject( new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = "file", Size = 1L }, "A" }, { new DirectoryEntry { Name = "dir", ChildCount = 1 }, "B" } } );
 			}
 		}
 
@@ -8382,6 +8570,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+				 set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadWriteProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
@@ -8408,6 +8597,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
+				 set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadWritePropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
@@ -8528,7 +8718,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
-				private  set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
+				private set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
@@ -8555,7 +8745,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem
 			{
 				get { return this._DictionaryStaticKeyAndPolymorphicItem; }
-				private  set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
+				private set { this._DictionaryStaticKeyAndPolymorphicItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
@@ -8574,45 +8764,45 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
 			public readonly IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
 
-			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
 			{
 				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly()
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField()
 			{
 				this.DictionaryStaticKeyAndPolymorphicItem = new Dictionary<string, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemIsReadOnly( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionField( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackRuntimeCollectionItemType]
 			public readonly IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem;
 
-			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
+			private PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject( IDictionary<string, FileSystemEntry> DictionaryStaticKeyAndPolymorphicItem ) 
 			{
 				this.DictionaryStaticKeyAndPolymorphicItem = DictionaryStaticKeyAndPolymorphicItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryStaticKeyAndPolymorphicItem = new Dictionary<string, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemIsReadOnlyAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeRuntimeType_DictionaryStaticKeyAndPolymorphicItemReadOnlyCollectionFieldAsObject( new Dictionary<string, FileSystemEntry>{ { "A", new FileEntry { Name = "file", Size = 1L } }, { "B", new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
@@ -8625,6 +8815,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndItem; }
+				 set { this._DictionaryPolymorphicKeyAndItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadWriteProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
@@ -8652,6 +8843,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndItem; }
+				 set { this._DictionaryPolymorphicKeyAndItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadWritePropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
@@ -8777,7 +8969,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndItem; }
-				private  set { this._DictionaryPolymorphicKeyAndItem = value; }
+				private set { this._DictionaryPolymorphicKeyAndItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
@@ -8805,7 +8997,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem
 			{
 				get { return this._DictionaryPolymorphicKeyAndItem; }
-				private  set { this._DictionaryPolymorphicKeyAndItem = value; }
+				private set { this._DictionaryPolymorphicKeyAndItem = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
@@ -8824,47 +9016,47 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
 			[MessagePackRuntimeDictionaryKeyType]
 			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
 
-			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
 			{
 				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly()
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField()
 			{
 				this.DictionaryPolymorphicKeyAndItem = new Dictionary<FileSystemEntry, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly Initialize()
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemIsReadOnly( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemReadOnlyCollectionField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackRuntimeCollectionItemType]
 			[MessagePackRuntimeDictionaryKeyType]
 			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem;
 
-			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItem ) 
 			{
 				this.DictionaryPolymorphicKeyAndItem = DictionaryPolymorphicKeyAndItem;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject()
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryPolymorphicKeyAndItem = new Dictionary<FileSystemEntry, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemIsReadOnlyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemReadOnlyCollectionFieldAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
@@ -8876,6 +9068,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryPolymorphicItself
 			{
 				get { return this._DictionaryPolymorphicItself; }
+				 set { this._DictionaryPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadWriteProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
@@ -8902,6 +9095,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryPolymorphicItself
 			{
 				get { return this._DictionaryPolymorphicItself; }
+				 set { this._DictionaryPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadWritePropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
@@ -9022,7 +9216,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryPolymorphicItself
 			{
 				get { return this._DictionaryPolymorphicItself; }
-				private  set { this._DictionaryPolymorphicItself = value; }
+				private set { this._DictionaryPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfPrivateSetterCollectionProperty( IDictionary<string, string> DictionaryPolymorphicItself ) 
@@ -9049,7 +9243,7 @@ namespace MsgPack.Serialization
 			public IDictionary<string, string> DictionaryPolymorphicItself
 			{
 				get { return this._DictionaryPolymorphicItself; }
-				private  set { this._DictionaryPolymorphicItself = value; }
+				private set { this._DictionaryPolymorphicItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfPrivateSetterCollectionPropertyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
@@ -9068,45 +9262,45 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField
 		{
 			[MessagePackRuntimeType]
 			public readonly IDictionary<string, string> DictionaryPolymorphicItself;
 
-			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField( IDictionary<string, string> DictionaryPolymorphicItself ) 
 			{
 				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly()
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField()
 			{
 				this.DictionaryPolymorphicItself = new Dictionary<string, string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly Initialize()
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfIsReadOnly( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicItselfReadOnlyCollectionField( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackRuntimeType]
 			public readonly IDictionary<string, string> DictionaryPolymorphicItself;
 
-			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject( IDictionary<string, string> DictionaryPolymorphicItself ) 
 			{
 				this.DictionaryPolymorphicItself = DictionaryPolymorphicItself;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject()
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryPolymorphicItself = new Dictionary<string, string>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfIsReadOnlyAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicItselfReadOnlyCollectionFieldAsObject( new Dictionary<string, string>{ { "A", "A" }, { "B", "B" } } );
 			}
 		}
 
@@ -9119,6 +9313,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
 			{
 				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+				 set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadWriteProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
@@ -9146,6 +9341,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
 			{
 				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
+				 set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadWritePropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
@@ -9271,7 +9467,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
 			{
 				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
-				private  set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
+				private set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionProperty( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
@@ -9299,7 +9495,7 @@ namespace MsgPack.Serialization
 			public IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself
 			{
 				get { return this._DictionaryPolymorphicKeyAndItemAndItself; }
-				private  set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
+				private set { this._DictionaryPolymorphicKeyAndItemAndItself = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfPrivateSetterCollectionPropertyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
@@ -9318,47 +9514,47 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly
+		public class PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField
 		{
 			[MessagePackRuntimeCollectionItemType]
 			[MessagePackRuntimeDictionaryKeyType]
 			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
 
-			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			private PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
 			{
 				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly()
+			public PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField()
 			{
 				this.DictionaryPolymorphicKeyAndItemAndItself = new Dictionary<FileSystemEntry, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly Initialize()
+			public static PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnly( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeRuntimeType_Dictionary_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionField( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 
-		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject
+		public class PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject
 		{
 			[MessagePackRuntimeCollectionItemType]
 			[MessagePackRuntimeDictionaryKeyType]
 			public readonly IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself;
 
-			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
+			private PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject( IDictionary<FileSystemEntry, FileSystemEntry> DictionaryPolymorphicKeyAndItemAndItself ) 
 			{
 				this.DictionaryPolymorphicKeyAndItemAndItself = DictionaryPolymorphicKeyAndItemAndItself;
 			}
 
-			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject()
+			public PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject()
 			{
 				this.DictionaryPolymorphicKeyAndItemAndItself = new Dictionary<FileSystemEntry, FileSystemEntry>();
 			}
 
-			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject Initialize()
+			public static PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfIsReadOnlyAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
+				return new PolymorphicMemberTypeRuntimeType_DictionaryPolymorphicKeyAndItemAndItselfReadOnlyCollectionFieldAsObject( new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = "A", Size = 1L }, new FileEntry { Name = "file", Size = 1L } }, { new DirectoryEntry { Name = "B", ChildCount = 1 }, new DirectoryEntry { Name = "dir", ChildCount = 1 } } } );
 			}
 		}
 		#endregion ------ RuntimeType.DictionaryTypes ------
@@ -9372,6 +9568,7 @@ namespace MsgPack.Serialization
 			public Tuple<string> Tuple1Static
 			{
 				get { return this._Tuple1Static; }
+				 set { this._Tuple1Static = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty( Tuple<string> Tuple1Static ) 
@@ -9397,6 +9594,7 @@ namespace MsgPack.Serialization
 			public Tuple<string> Tuple1Static
 			{
 				get { return this._Tuple1Static; }
+				 set { this._Tuple1Static = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple1StaticReadWritePropertyAsObject( Tuple<string> Tuple1Static ) 
@@ -9468,6 +9666,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple1StaticGetOnlyPropertyAndConstructorAsObject
@@ -9483,6 +9682,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple1StaticGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor
@@ -9492,13 +9692,14 @@ namespace MsgPack.Serialization
 			public Tuple<string> Tuple1Static
 			{
 				get { return this._Tuple1Static; }
-				private  set { this._Tuple1Static = value; }
+				private set { this._Tuple1Static = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor( Tuple<string> Tuple1Static ) 
 			{
 				this._Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple1StaticPrivateSetterPropertyAndConstructorAsObject
@@ -9508,13 +9709,14 @@ namespace MsgPack.Serialization
 			public Tuple<string> Tuple1Static
 			{
 				get { return this._Tuple1Static; }
-				private  set { this._Tuple1Static = value; }
+				private set { this._Tuple1Static = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple1StaticPrivateSetterPropertyAndConstructorAsObject( Tuple<string> Tuple1Static ) 
 			{
 				this._Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple1StaticPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor
@@ -9525,6 +9727,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple1StaticReadOnlyFieldAndConstructorAsObject
@@ -9535,6 +9738,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple1Static = Tuple1Static;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple1StaticReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty
@@ -9545,6 +9749,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
+				 set { this._Tuple1Polymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
@@ -9571,6 +9776,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
+				 set { this._Tuple1Polymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
@@ -9645,6 +9851,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -9661,6 +9868,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor
@@ -9671,13 +9879,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
-				private  set { this._Tuple1Polymorphic = value; }
+				private set { this._Tuple1Polymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
 				this._Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -9688,13 +9897,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry> Tuple1Polymorphic
 			{
 				get { return this._Tuple1Polymorphic; }
-				private  set { this._Tuple1Polymorphic = value; }
+				private set { this._Tuple1Polymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<FileSystemEntry> Tuple1Polymorphic ) 
 			{
 				this._Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor
@@ -9706,6 +9916,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadOnlyFieldAndConstructorAsObject
@@ -9717,6 +9928,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple1Polymorphic = Tuple1Polymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple1PolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty
@@ -9726,6 +9938,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string> Tuple7AllStatic
 			{
 				get { return this._Tuple7AllStatic; }
+				 set { this._Tuple7AllStatic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
@@ -9751,6 +9964,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string> Tuple7AllStatic
 			{
 				get { return this._Tuple7AllStatic; }
+				 set { this._Tuple7AllStatic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
@@ -9822,6 +10036,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllStaticGetOnlyPropertyAndConstructorAsObject
@@ -9837,6 +10052,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllStaticGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor
@@ -9846,13 +10062,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string> Tuple7AllStatic
 			{
 				get { return this._Tuple7AllStatic; }
-				private  set { this._Tuple7AllStatic = value; }
+				private set { this._Tuple7AllStatic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
 				this._Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllStaticPrivateSetterPropertyAndConstructorAsObject
@@ -9862,13 +10079,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string> Tuple7AllStatic
 			{
 				get { return this._Tuple7AllStatic; }
-				private  set { this._Tuple7AllStatic = value; }
+				private set { this._Tuple7AllStatic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple7AllStaticPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, string, string, string, string> Tuple7AllStatic ) 
 			{
 				this._Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllStaticPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor
@@ -9879,6 +10097,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadOnlyFieldAndConstructorAsObject
@@ -9889,6 +10108,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7AllStatic = Tuple7AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllStaticReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty
@@ -9899,6 +10119,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
+				 set { this._Tuple7FirstPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
@@ -9925,6 +10146,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
+				 set { this._Tuple7FirstPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
@@ -9999,6 +10221,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -10015,6 +10238,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor
@@ -10025,13 +10249,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
-				private  set { this._Tuple7FirstPolymorphic = value; }
+				private set { this._Tuple7FirstPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
 				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -10042,13 +10267,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic
 			{
 				get { return this._Tuple7FirstPolymorphic; }
-				private  set { this._Tuple7FirstPolymorphic = value; }
+				private set { this._Tuple7FirstPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<FileSystemEntry, string, string, string, string, string, string> Tuple7FirstPolymorphic ) 
 			{
 				this._Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor
@@ -10060,6 +10286,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -10071,6 +10298,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7FirstPolymorphic = Tuple7FirstPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty
@@ -10081,6 +10309,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
+				 set { this._Tuple7LastPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
@@ -10107,6 +10336,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
+				 set { this._Tuple7LastPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
@@ -10181,6 +10411,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -10197,6 +10428,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor
@@ -10207,13 +10439,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
-				private  set { this._Tuple7LastPolymorphic = value; }
+				private set { this._Tuple7LastPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
 				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -10224,13 +10457,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic
 			{
 				get { return this._Tuple7LastPolymorphic; }
-				private  set { this._Tuple7LastPolymorphic = value; }
+				private set { this._Tuple7LastPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, string, string, string, FileSystemEntry> Tuple7LastPolymorphic ) 
 			{
 				this._Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor
@@ -10242,6 +10476,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -10253,6 +10488,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7LastPolymorphic = Tuple7LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7LastPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty
@@ -10263,6 +10499,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
+				 set { this._Tuple7IntermediatePolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadWriteProperty( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
@@ -10289,6 +10526,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
+				 set { this._Tuple7IntermediatePolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadWritePropertyAsObject( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
@@ -10363,6 +10601,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -10379,6 +10618,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructor
@@ -10389,13 +10629,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
-				private  set { this._Tuple7IntermediatePolymorphic = value; }
+				private set { this._Tuple7IntermediatePolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructor( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
 				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -10406,13 +10647,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic
 			{
 				get { return this._Tuple7IntermediatePolymorphic; }
-				private  set { this._Tuple7IntermediatePolymorphic = value; }
+				private set { this._Tuple7IntermediatePolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, FileSystemEntry, string, string, string> Tuple7IntermediatePolymorphic ) 
 			{
 				this._Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructor
@@ -10424,6 +10666,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructorAsObject
@@ -10435,6 +10678,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7IntermediatePolymorphic = Tuple7IntermediatePolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7IntermediatePolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty
@@ -10451,6 +10695,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
+				 set { this._Tuple7AllPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
@@ -10483,6 +10728,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
+				 set { this._Tuple7AllPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
@@ -10575,6 +10821,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -10597,6 +10844,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor
@@ -10613,13 +10861,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
-				private  set { this._Tuple7AllPolymorphic = value; }
+				private set { this._Tuple7AllPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
 				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -10636,13 +10885,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic
 			{
 				get { return this._Tuple7AllPolymorphic; }
-				private  set { this._Tuple7AllPolymorphic = value; }
+				private set { this._Tuple7AllPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry> Tuple7AllPolymorphic ) 
 			{
 				this._Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor
@@ -10660,6 +10910,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -10677,6 +10928,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple7AllPolymorphic = Tuple7AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple7AllPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty
@@ -10686,6 +10938,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic
 			{
 				get { return this._Tuple8AllStatic; }
+				 set { this._Tuple8AllStatic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
@@ -10711,6 +10964,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic
 			{
 				get { return this._Tuple8AllStatic; }
+				 set { this._Tuple8AllStatic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
@@ -10782,6 +11036,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllStaticGetOnlyPropertyAndConstructorAsObject
@@ -10797,6 +11052,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllStaticGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor
@@ -10806,13 +11062,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic
 			{
 				get { return this._Tuple8AllStatic; }
-				private  set { this._Tuple8AllStatic = value; }
+				private set { this._Tuple8AllStatic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
 				this._Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllStaticPrivateSetterPropertyAndConstructorAsObject
@@ -10822,13 +11079,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic
 			{
 				get { return this._Tuple8AllStatic; }
-				private  set { this._Tuple8AllStatic = value; }
+				private set { this._Tuple8AllStatic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple8AllStaticPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, string, string, string, string, Tuple<string>> Tuple8AllStatic ) 
 			{
 				this._Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllStaticPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor
@@ -10839,6 +11097,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadOnlyFieldAndConstructorAsObject
@@ -10849,6 +11108,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8AllStatic = Tuple8AllStatic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllStaticReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty
@@ -10859,6 +11119,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
+				 set { this._Tuple8LastPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
@@ -10885,6 +11146,7 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
+				 set { this._Tuple8LastPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadWritePropertyAsObject( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
@@ -10959,6 +11221,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -10975,6 +11238,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor
@@ -10985,13 +11249,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
-				private  set { this._Tuple8LastPolymorphic = value; }
+				private set { this._Tuple8LastPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
 				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -11002,13 +11267,14 @@ namespace MsgPack.Serialization
 			public Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic
 			{
 				get { return this._Tuple8LastPolymorphic; }
-				private  set { this._Tuple8LastPolymorphic = value; }
+				private set { this._Tuple8LastPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>> Tuple8LastPolymorphic ) 
 			{
 				this._Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor
@@ -11020,6 +11286,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -11031,6 +11298,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8LastPolymorphic = Tuple8LastPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple8LastPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty
@@ -11048,6 +11316,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
+				 set { this._Tuple8AllPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
@@ -11081,6 +11350,7 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
+				 set { this._Tuple8AllPolymorphic = value; }
 			}
 
 			private PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadWritePropertyAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
@@ -11176,6 +11446,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorAsObject
@@ -11199,6 +11470,7 @@ namespace MsgPack.Serialization
 			{
 				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor
@@ -11216,13 +11488,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
-				private  set { this._Tuple8AllPolymorphic = value; }
+				private set { this._Tuple8AllPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
 				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorAsObject
@@ -11240,13 +11513,14 @@ namespace MsgPack.Serialization
 			public Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic
 			{
 				get { return this._Tuple8AllPolymorphic; }
-				private  set { this._Tuple8AllPolymorphic = value; }
+				private set { this._Tuple8AllPolymorphic = value; }
 			}
 
 			public PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorAsObject( Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>> Tuple8AllPolymorphic ) 
 			{
 				this._Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorAsObject() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor
@@ -11265,6 +11539,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor() {}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadOnlyFieldAndConstructorAsObject
@@ -11283,6 +11558,7 @@ namespace MsgPack.Serialization
 			{
 				this.Tuple8AllPolymorphic = Tuple8AllPolymorphic;
 			}
+			public PolymorphicMemberTypeRuntimeType_Tuple8AllPolymorphicReadOnlyFieldAndConstructorAsObject() {}
 		}
 		#endregion ------ RuntimeType.TupleTypes ------
 

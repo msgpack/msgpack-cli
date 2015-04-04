@@ -93,7 +93,7 @@ namespace MsgPack.Serialization
 	[Timeout( 60000 )]
 	public class <#= testClassName #>
 	{
-		private SerializationContext GetSerializationContext()
+		private static SerializationContext GetSerializationContext()
 		{
 <#+
 	if ( !forIos )
@@ -111,7 +111,7 @@ namespace MsgPack.Serialization
 #>
 		}
 
-		private SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
+		private static SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
 		{
 <#+
 	if ( !forIos )
@@ -279,7 +279,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexObjectCore( this.GetSerializationContext() );
+				this.TestComplexObjectCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -293,7 +293,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexObjectCore( this.GetSerializationContext() );
+				this.TestComplexObjectCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -315,7 +315,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexTypeWithoutAnyAttribute( this.GetSerializationContext() );
+				this.TestComplexTypeWithoutAnyAttribute( GetSerializationContext() );
 			}
 			finally
 			{
@@ -329,7 +329,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexTypeWithoutAnyAttribute( this.GetSerializationContext() );
+				this.TestComplexTypeWithoutAnyAttribute( GetSerializationContext() );
 			}
 			finally
 			{
@@ -347,7 +347,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestTypeWithMissingMessagePackMemberAttributeMember()
 		{
-			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( this.GetSerializationContext() );
+			this.TestTypeWithMissingMessagePackMemberAttributeMemberCore( GetSerializationContext() );
 		}
 
 		private void TestTypeWithMissingMessagePackMemberAttributeMemberCore( SerializationContext context )
@@ -374,7 +374,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexObjectTypeWithDataContractCore( this.GetSerializationContext() );
+				this.TestComplexObjectTypeWithDataContractCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -388,7 +388,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexObjectTypeWithDataContractCore( this.GetSerializationContext() );
+				this.TestComplexObjectTypeWithDataContractCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -414,7 +414,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexTypeWithDataContractWithOrderCore( this.GetSerializationContext() );
+				this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -428,7 +428,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexTypeWithDataContractWithOrderCore( this.GetSerializationContext() );
+				this.TestComplexTypeWithDataContractWithOrderCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -454,7 +454,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestComplexObjectTypeWithNonSerializedCore( this.GetSerializationContext() );
+				this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -468,7 +468,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestComplexObjectTypeWithNonSerializedCore( this.GetSerializationContext() );
+				this.TestComplexObjectTypeWithNonSerializedCore( GetSerializationContext() );
 			}
 			finally
 			{
@@ -612,7 +612,7 @@ namespace MsgPack.Serialization
 			target.Add( "null", null ); // This value will not be packed.
 			target.Add( "Empty", String.Empty );
 			target.Add( "2", "2" );
-			var serializer = this.CreateTarget<NameValueCollection>( this.GetSerializationContext() );
+			var serializer = this.CreateTarget<NameValueCollection>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, target );
@@ -633,7 +633,7 @@ namespace MsgPack.Serialization
 		{
 			var target = new NameValueCollection();
 			target.Add( null, "null" );
-			var serializer = this.CreateTarget<NameValueCollection>( this.GetSerializationContext() );
+			var serializer = this.CreateTarget<NameValueCollection>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				Assert.Throws<NotSupportedException>( () => serializer.Pack( stream, target ) );
@@ -644,7 +644,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestByteArrayContent()
 		{
-			var serializer = this.CreateTarget<byte[]>( this.GetSerializationContext() );
+			var serializer = this.CreateTarget<byte[]>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[] { 1, 2, 3, 4 } );
@@ -1472,7 +1472,7 @@ namespace MsgPack.Serialization
 		public void TestIssue25_Plain()
 		{
 			var hasEnumerable = new HasEnumerable { Numbers = new[] { 1, 2 } };
-			var target = CreateTarget<HasEnumerable>( this.GetSerializationContext() );
+			var target = CreateTarget<HasEnumerable>( GetSerializationContext() );
 
 			using ( var buffer = new MemoryStream() )
 			{

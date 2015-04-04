@@ -392,7 +392,7 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumera
 	{
 		GenerateAttributes( member, attributeFactory );
 #>
-			public <#= ( kind & TypeKind.FieldKindMask ) == TypeKind.IsReadOnly ? "readonly" : String.Empty #> <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( kind )( member.Name ) #>;
+			public <#= ( kind & TypeKind.IsReadOnly ) == TypeKind.IsReadOnly ? "readonly" : String.Empty #> <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( kind )( member.Name ) #>;
 <#+
 	}
 	else
@@ -409,10 +409,10 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumera
 			{
 				get { return this.<#= backingField #>; }
 <#+
-		if ( ( kind & TypeKind.ProprtyKindMask ) == TypeKind.HasSetter )
+		if ( ( kind & TypeKind.HasSetter ) == TypeKind.HasSetter )
 		{
 #>
-				<#= ( kind & TypeKind.ProprtyKindMask ) == TypeKind.IsPublicSetter ? String.Empty : "private " #> set { this.<#= backingField #> = value; }
+				<#= ( kind & TypeKind.IsPublicSetter ) == TypeKind.IsPublicSetter ? String.Empty : "private" #> set { this.<#= backingField #> = value; }
 <#+
 		}
 #>
@@ -435,7 +435,7 @@ private void GenerateConstructor( string typeName, TypeKind kind, bool asObject,
 {
 #>
 
-			<#= ( kind & TypeKind.ConstructorMask ) == TypeKind.HasConstructor ? "public" : "private" #> <#= typeName #>( <#=  String.Join( ", ", members.Select( member => ( asObject ? "object" : member.Type ) + " " + member.Name ) ) #> ) 
+			<#= ( kind & TypeKind.HasConstructor ) == TypeKind.HasConstructor ? "public" : "private" #> <#= typeName #>( <#=  String.Join( ", ", members.Select( member => ( asObject ? "object" : member.Type ) + " " + member.Name ) ) #> ) 
 			{
 <#+
 	foreach ( var member in members )
@@ -447,7 +447,7 @@ private void GenerateConstructor( string typeName, TypeKind kind, bool asObject,
 #>
 			}
 <#+
-	if ( ( kind & TypeKind.ConstructorMask ) == 0 )
+	if ( ( kind & TypeKind.HasConstructor ) == 0 )
 	{
 #>
 
@@ -469,6 +469,12 @@ private void GenerateConstructor( string typeName, TypeKind kind, bool asObject,
 			}
 <#+
 	}
+	else
+	{
+#>
+			public <#= typeName #>() {}
+<#+
+	}
 }
 
 // Methods
@@ -486,7 +492,7 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 <#+
-	if ( ( kind & TypeKind.ConstructorMask ) == TypeKind.HasConstructor )
+	if ( ( kind & TypeKind.HasConstructor ) == TypeKind.HasConstructor )
 	{
 #>
 			var target = new <#= targetType #>( <#= member.InitialValue #> );
@@ -1036,27 +1042,26 @@ private struct Member
 private enum TypeKind
 {
 	PropertyOrFieldMask = 0xF,
-	Field = 0,
-	Property = 0x1,
+	Field = 0x1,
+	Property = 0x2,
 
-	ProprtyKindMask = 0xF0,
 	HasSetter = 0x10,
 	IsPublicSetter = 0x20,
 
-	FieldKindMask = 0xF00,
 	IsReadOnly = 0x100,
 
-	ConstructorMask = 0xF000,
 	HasConstructor = 0x1000,
 
-	ReadWriteProperty = Property | HasSetter | IsPublicSetter,
-	ReadWriteField= Field,
-	GetOnlyCollectionProperty = Property,
-	PrivateSetterCollectionProperty = Property | HasSetter,
-	ReadOnlyCollectionField = Field | IsReadOnly,
-	GetOnlyPropertyAndConstructor = Property | HasConstructor,
-	PrivateSetterPropertyAndConstructor = Property | HasSetter | HasConstructor,
-	ReadOnlyFieldAndConstructor = Field | IsReadOnly | HasConstructor,
+	NameIndicator = 0x10000000, // For ToString() support
+
+	ReadWriteProperty = Property | HasSetter | IsPublicSetter | NameIndicator,
+	ReadWriteField= Field| NameIndicator,
+	GetOnlyCollectionProperty = Property| NameIndicator,
+	PrivateSetterCollectionProperty = Property | HasSetter| NameIndicator,
+	ReadOnlyCollectionField = Field | IsReadOnly| NameIndicator,
+	GetOnlyPropertyAndConstructor = Property | HasConstructor| NameIndicator,
+	PrivateSetterPropertyAndConstructor = Property | HasSetter | HasConstructor| NameIndicator,
+	ReadOnlyFieldAndConstructor = Field | IsReadOnly | HasConstructor| NameIndicator,
 }
 
 private enum PolymorphismTargets

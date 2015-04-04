@@ -181,13 +181,13 @@ private void GenerateTypesCore( bool forIos )
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>()
 		{
-			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, GetSerializationContext() );
 		}
 		
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>Array()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray(), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( <#= __item.Item3 == "null" ? "default( object )" : __item.Item3 #>, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 <#+
@@ -197,13 +197,13 @@ private void GenerateTypesCore( bool forIos )
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>Null()
 		{
-			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #> ), GetSerializationContext() );
 		}
 		
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>ArrayNull()
 		{
-			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ), this.GetSerializationContext() );
+			this.TestCoreWithAutoVerify( default( <#= __item.Item1 is Type ? ToTypeName( __item.Item1 as Type ) : ToTypeName( __item.Item1 as Tuple<string,string[]> ) #>[] ), GetSerializationContext() );
 		}	
 		
 <#+
@@ -245,7 +245,7 @@ private void GenerateTypesCore( bool forIos )
 			{
 				var target = new ComplexTypeGeneratedEnclosure();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -261,7 +261,7 @@ private void GenerateTypesCore( bool forIos )
 			{
 				var target = new ComplexTypeGeneratedEnclosure();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -275,7 +275,7 @@ private void GenerateTypesCore( bool forIos )
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -289,7 +289,7 @@ private void GenerateTypesCore( bool forIos )
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGeneratedEnclosure().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -308,7 +308,7 @@ private void GenerateTypesCore( bool forIos )
 			{
 				var target = new ComplexTypeGenerated();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -324,7 +324,7 @@ private void GenerateTypesCore( bool forIos )
 			{
 				var target = new ComplexTypeGenerated();
 				target.Initialize();
-				this.TestCoreWithVerifiable( target, this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( target, GetSerializationContext() );
 			}
 			finally
 			{
@@ -338,7 +338,7 @@ private void GenerateTypesCore( bool forIos )
 			SerializerDebugging.AvoidsGenericSerializer = false;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
@@ -352,7 +352,7 @@ private void GenerateTypesCore( bool forIos )
 			SerializerDebugging.AvoidsGenericSerializer = true;
 			try 
 			{
-				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), this.GetSerializationContext() );
+				this.TestCoreWithVerifiable( Enumerable.Repeat( 0, 2 ).Select( _ => new ComplexTypeGenerated().Initialize() ).ToArray(), GetSerializationContext() );
 			}
 			finally
 			{
