@@ -23,9 +23,10 @@
 #endif
 
 using System;
-using System.Collections.Generic;
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
+#else // !SILVERLIGHT && !NETFX_35 && !UNITY
+using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
 #if !UNITY
 using System.Diagnostics.Contracts;
@@ -53,7 +54,7 @@ namespace MsgPack.Serialization
 #endif // UNITY
 
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
-		private static SerializationContext _default = new SerializationContext( default( SerializerRepository ) );
+		private static SerializationContext _default = new SerializationContext( PackerCompatibilityOptions.Classic );
 
 		/// <summary>
 		///		Gets or sets the default instance.
@@ -331,17 +332,13 @@ namespace MsgPack.Serialization
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.Default"/>.
 		/// </summary>
 		public SerializationContext()
-			: this( new SerializerRepository( SerializerRepository.Default ), PackerCompatibilityOptions.Classic ) { }
+			: this( PackerCompatibilityOptions.Classic ) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="SerializationContext"/> class with copy of <see cref="SerializerRepository.GetDefault(PackerCompatibilityOptions)"/> for specified <see cref="PackerCompatibilityOptions"/>.
 		/// </summary>
 		/// <param name="packerCompatibilityOptions"><see cref="PackerCompatibilityOptions"/> which will be used on built-in serializers.</param>
 		public SerializationContext( PackerCompatibilityOptions packerCompatibilityOptions )
-			: this( new SerializerRepository( SerializerRepository.GetDefault( packerCompatibilityOptions ) ), packerCompatibilityOptions ) { }
-
-		internal SerializationContext(
-			SerializerRepository serializers, PackerCompatibilityOptions packerCompatibilityOptions )
 		{
 			this._compatibilityOptions =
 				new SerializationCompatibilityOptions
@@ -349,7 +346,9 @@ namespace MsgPack.Serialization
 					PackerCompatibilityOptions =
 						packerCompatibilityOptions
 				};
-			this._serializers = serializers;
+
+			this._serializers = new SerializerRepository( SerializerRepository.GetDefault( this ) );
+
 #if !XAMIOS && !XAMDROID && !UNITY
 #if SILVERLIGHT || NETFX_35
 			this._typeLock = new Dictionary<Type, object>();
@@ -358,13 +357,6 @@ namespace MsgPack.Serialization
 #endif // SILVERLIGHT || NETFX_35
 #endif // !XAMIOS && !XAMDROID && !UNITY
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
-		}
-
-		// For default init.
-		private SerializationContext( SerializerRepository allwaysNull )
-			: this( allwaysNull, PackerCompatibilityOptions.Classic ) // TODO: configurable
-		{
-			this._serializers = new SerializerRepository( SerializerRepository.GetDefault( this ) );
 		}
 
 		internal bool ContainsSerializer( Type rootType )

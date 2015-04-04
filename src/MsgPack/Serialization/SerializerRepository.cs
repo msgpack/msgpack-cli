@@ -24,11 +24,6 @@
 
 using System;
 using System.Collections.Generic;
-#if !UNITY
-using System.Diagnostics.Contracts;
-#endif // !UNITY
-
-using MsgPack.Serialization.Polymorphic;
 
 namespace MsgPack.Serialization
 {
@@ -67,7 +62,6 @@ namespace MsgPack.Serialization
 		private SerializerRepository( Dictionary<RuntimeTypeHandle, object> table )
 		{
 			this._repository = new SerializerTypeKeyRepository( table );
-			this._repository.Freeze();
 		}
 
 		/// <summary>
@@ -204,8 +198,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="packerCompatibilityOptions"/> is invalid.</exception>
 		public static SerializerRepository GetDefault( PackerCompatibilityOptions packerCompatibilityOptions )
 		{
-			var newContext = new SerializationContext( SerializationContext.Default.Serializers, packerCompatibilityOptions );
-			return GetDefault( newContext );
+			return GetDefault( SerializationContext.Default );
 		}
 
 		/// <summary>
@@ -230,7 +223,7 @@ namespace MsgPack.Serialization
 
 		internal bool Contains( Type rootType )
 		{
-			return this._repository.Coontains( rootType );
+			return this._repository.Contains( rootType );
 		}
 	}
 }
