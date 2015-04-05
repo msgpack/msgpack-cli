@@ -97,7 +97,7 @@ namespace MsgPack.Serialization.Polymorphic
 				}
 
 				// Use concrete type serializer.
-				return (T)this.OwnerContext.GetSerializer( objectType, this._schema ).UnpackFrom( unpacker );
+				return ( T )this.OwnerContext.GetSerializer( objectType, this._schema ).UnpackFrom( subTreeUnpacker );
 			}
 		}
 	}
