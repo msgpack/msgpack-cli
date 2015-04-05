@@ -320,7 +320,7 @@ namespace MsgPack.Serialization
 								.Select( e =>
 									new PolymorphismSchema(
 										e.ItemType,
-										PolymorphismType.None, 
+										e.Entry.PolymorphismType, 
 										e.Entry.CodeTypeMapping,
 										PolymorphismSchemaChildrenType.None
 									)
