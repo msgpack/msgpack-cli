@@ -125,7 +125,7 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 		new []
 		{
 			Member.Of( "Reference",		"Version" ,			PolymorphismTargets.None,	@"null",				@"new Version( 1, 2, 3, 4 )" ),
-			Member.Of( "Value",			"DateTime",			PolymorphismTargets.None,	@"default( DateTime )", @"new DateTime( 1982, 1, 29, 15, 46, 12 )" ),
+			Member.Of( "Value",			"DateTime",			PolymorphismTargets.None,	@"default( DateTime )", @"new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc )" ),
 			Member.Of( "Primitive",		"int",				PolymorphismTargets.None,	@"default( int )",		@"123" ),
 			Member.Of( "String",		"string",			PolymorphismTargets.None,	@"null",				@"""ABC""" ),
 			Member.Of( "Polymorphic",	"FileSystemEntry",	PolymorphismTargets.Member,	@"null",				@"new FileEntry { Name = ""file"", Size = 1 }", "FileEntry", "DirectoryEntry" ),
