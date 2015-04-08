@@ -53,8 +53,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema4 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> tupleItemSchema4TypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             tupleItemSchema4TypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            tupleItemSchema4TypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
             tupleItemSchema4TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
+            tupleItemSchema4TypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
             tupleItemSchema4 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), tupleItemSchema4TypeMap0);
             tupleItemsSchema0[4] = tupleItemSchema4;
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema5 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -67,8 +67,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema6 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> tupleItemSchema6TypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             tupleItemSchema6TypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            tupleItemSchema6TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             tupleItemSchema6TypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
+            tupleItemSchema6TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             tupleItemSchema6 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), tupleItemSchema6TypeMap0);
             tupleItemsSchema0[6] = tupleItemSchema6;
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema7 = default(MsgPack.Serialization.PolymorphismSchema);

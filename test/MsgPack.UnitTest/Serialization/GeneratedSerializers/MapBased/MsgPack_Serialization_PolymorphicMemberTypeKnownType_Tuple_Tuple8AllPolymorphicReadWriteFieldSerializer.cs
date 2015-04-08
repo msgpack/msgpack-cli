@@ -27,8 +27,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> tupleItemSchemaTypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             tupleItemSchemaTypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            tupleItemSchemaTypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
             tupleItemSchemaTypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
+            tupleItemSchemaTypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
             tupleItemSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), tupleItemSchemaTypeMap0);
             tupleItemsSchema0[0] = tupleItemSchema0;
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema1 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -55,8 +55,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema4 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> tupleItemSchema4TypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             tupleItemSchema4TypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            tupleItemSchema4TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             tupleItemSchema4TypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
+            tupleItemSchema4TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             tupleItemSchema4 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), tupleItemSchema4TypeMap0);
             tupleItemsSchema0[4] = tupleItemSchema4;
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema5 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -88,8 +88,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema8 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> tupleItemSchema8TypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             tupleItemSchema8TypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            tupleItemSchema8TypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
             tupleItemSchema8TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
+            tupleItemSchema8TypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
             tupleItemSchema8 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), tupleItemSchema8TypeMap0);
             tupleItemsSchema1[0] = tupleItemSchema8;
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema9 = default(MsgPack.Serialization.PolymorphismSchema);
@@ -116,8 +116,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema12 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> tupleItemSchema12TypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             tupleItemSchema12TypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            tupleItemSchema12TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             tupleItemSchema12TypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
+            tupleItemSchema12TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             tupleItemSchema12 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(MsgPack.Serialization.FileSystemEntry), tupleItemSchema12TypeMap0);
             tupleItemsSchema1[4] = tupleItemSchema12;
             MsgPack.Serialization.PolymorphismSchema tupleItemSchema13 = default(MsgPack.Serialization.PolymorphismSchema);

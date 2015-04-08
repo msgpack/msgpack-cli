@@ -24,8 +24,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.ArrayBased {
             MsgPack.Serialization.PolymorphismSchema schema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> typeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             typeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            typeMap0.Add(0, typeof(System.Collections.ObjectModel.Collection<string>));
             typeMap0.Add(1, typeof(System.Collections.Generic.List<string>));
+            typeMap0.Add(0, typeof(System.Collections.ObjectModel.Collection<string>));
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), typeMap0);
             this._serializer0 = context.GetSerializer<object>(schema0);
             this._methodBasePolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty_set_ListObjectItself0 = typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty).GetMethod("set_ListObjectItself", (System.Reflection.BindingFlags.Instance 

@@ -31,8 +31,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema valuesSchema0 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> valuesSchemaTypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             valuesSchemaTypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            valuesSchemaTypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             valuesSchemaTypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
+            valuesSchemaTypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             valuesSchema0 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), valuesSchemaTypeMap0);
             schema0 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedDictionary(typeof(System.Collections.Generic.IDictionary<object, object>), keysSchema0, valuesSchema0);
             this._serializer0 = context.GetSerializer<string>(schema0);
@@ -46,8 +46,8 @@ namespace MsgPack.Serialization.GeneratedSerializers.MapBased {
             MsgPack.Serialization.PolymorphismSchema valuesSchema1 = default(MsgPack.Serialization.PolymorphismSchema);
             System.Collections.Generic.Dictionary<byte, System.Type> valuesSchema1TypeMap0 = default(System.Collections.Generic.Dictionary<byte, System.Type>);
             valuesSchema1TypeMap0 = new System.Collections.Generic.Dictionary<byte, System.Type>(2);
-            valuesSchema1TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             valuesSchema1TypeMap0.Add(0, typeof(MsgPack.Serialization.FileEntry));
+            valuesSchema1TypeMap0.Add(1, typeof(MsgPack.Serialization.DirectoryEntry));
             valuesSchema1 = MsgPack.Serialization.PolymorphismSchema.ForPolymorphicObject(typeof(object), valuesSchema1TypeMap0);
             schema1 = MsgPack.Serialization.PolymorphismSchema.ForContextSpecifiedDictionary(typeof(System.Collections.Generic.IDictionary<object, object>), keysSchema1, valuesSchema1);
             this._serializer1 = context.GetSerializer<System.Collections.Generic.IDictionary<object, object>>(schema1);
