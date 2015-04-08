@@ -50,7 +50,7 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( MessagePackObjectDictionary ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackObjectDictionaryMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( MessagePackExtendedTypeObject ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.MsgPack_MessagePackExtendedTypeObjectMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( List<MessagePackObject> ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer( ownerContext ) );
-			dictionary.Add( typeof( Object ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_ObjectMessagePackSerializer( ownerContext ) );
+			dictionary.Add( typeof( Object ).TypeHandle, new MsgPack.Serialization.Polymorphic.PolymorphicSerializerProvider<object>( new MsgPack.Serialization.DefaultSerializers.System_ObjectMessagePackSerializer( ownerContext ) ) );
 			dictionary.Add( typeof( String ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_StringMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( StringBuilder ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Text_StringBuilderMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( Char[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_CharArrayMessagePackSerializer( ownerContext ) );
