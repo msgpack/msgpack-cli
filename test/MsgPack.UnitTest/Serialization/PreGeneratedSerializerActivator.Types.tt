@@ -143,7 +143,7 @@ namespace MsgPack.Serialization
 			result.Add( typeof( AnnotatedClass ) );
 			result.Add( typeof( DataMamberClass ) );
 <#
-	foreach ( var targetType in GetPolymprohicTestTypeNames() )
+	foreach ( var targetType in GetSerialiazablePolymprohicTestTypeNames() )
 	{
 #>
 			result.Add( typeof( <#= targetType #> ) ); 
