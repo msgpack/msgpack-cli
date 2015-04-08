@@ -43,32 +43,64 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 {
 	ICollection<string> generatedTypeNames = new HashSet<string>();
 
-	Func<Member, IEnumerable<string>> knownAttributeFactory =
-		( Member member ) => 
+	Func<Member, bool, IEnumerable<string>> knownAttributeFactory =
+		( Member member, bool asObject  ) => 
 		{
 			switch ( member.Targets )
 			{
 				case PolymorphismTargets.Item:
 				{
-					return member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownCollectionItemType( {0}, typeof( {1} ) )]", i, t ) );
+					return
+						( asObject
+							? new[] { "[MessagePackRuntimeType]" }
+							: new string[ 0 ]
+						).Concat(
+							member.ActualTypes.Select(
+								( t, i ) =>
+									String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownCollectionItemType( {0}, typeof( {1} ) )]", i, t ) 
+							)
+						);
 				}
 				case PolymorphismTargets.Key:
 				{
-					return member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownDictionaryKeyType( {0}, typeof( {1} ) )]", i, t ) );
+					return
+						( asObject
+							? new[] { "[MessagePackRuntimeType]" }
+							: new string[ 0 ]
+						).Concat(
+							member.ActualTypes.Select(
+								( t, i ) =>
+									String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownDictionaryKeyType( {0}, typeof( {1} ) )]", i, t ) 
+								)
+						);
 				}
 				case PolymorphismTargets.Key | PolymorphismTargets.Item:
 				{
 					return
-						member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownDictionaryKeyType( {0}, typeof( {1} ) )]", i, t ) )
-						.Concat(
+						( asObject
+							? new[] { "[MessagePackRuntimeType]" }
+							: new string[ 0 ]
+						).Concat(
+							member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownDictionaryKeyType( {0}, typeof( {1} ) )]", i, t ) ) 
+						).Concat(
 							member.ActualTypes.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownCollectionItemType( {0}, typeof( {1} ) )]", i, t ) )
 						);
 				}
 				case PolymorphismTargets.TupleItem:
 				{
-					return member.PolymorphicTupleItemTypes.SelectMany( 
-						kv => kv.Value.Select( ( t, i ) => String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownTupleItemType( {0}, {1}, typeof( {2} ) )]", kv.Key, i, t ) ) 
-					);
+					return
+						( asObject
+							? new[] { "[MessagePackRuntimeType]" }
+							: new string[ 0 ]
+						).Concat(
+							member.PolymorphicTupleItemTypes.SelectMany(
+								kv =>
+									kv.Value.Select(
+										( t, i ) =>
+											String.Format( CultureInfo.InvariantCulture, "[MessagePackKnownTupleItemType( {0}, {1}, typeof( {2} ) )]", kv.Key, i, t )
+									)
+							)
+						);
 				}
 				case PolymorphismTargets.Member:
 				{
@@ -80,31 +112,52 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 				}
 			}
 		};
-	Func<Member, IEnumerable<string>> runtimeAttributeFactory = 
-		( Member member ) => 
+	Func<Member, bool, IEnumerable<string>> runtimeAttributeFactory = 
+		( Member member, bool asObject ) => 
 		{
 			switch ( member.Targets )
 			{
 				case PolymorphismTargets.Item:
 				{
-					return new [] { "[MessagePackRuntimeCollectionItemType]" };
+					return
+						( asObject
+							? new[] { "[MessagePackRuntimeType]" }
+							: new string[ 0 ]
+						).Concat( new[] { "[MessagePackRuntimeCollectionItemType]" } );
 				}
 				case PolymorphismTargets.Key:
 				{
-					return new [] { "[MessagePackRuntimeDictionaryKeyType]" };
+					return
+						( asObject
+							? new[] { "[MessagePackRuntimeType]" }
+							: new string[ 0 ]
+						).Concat( new[] { "[MessagePackRuntimeDictionaryKeyType]" } );
 				}
 				case PolymorphismTargets.Key | PolymorphismTargets.Item:
 				{
 					return
-						new []
-						{
-							"[MessagePackRuntimeCollectionItemType]",
-							"[MessagePackRuntimeDictionaryKeyType]"
-						};
+						( asObject
+							? new[] { "[MessagePackRuntimeType]" }
+							: new string[ 0 ]
+						).Concat(
+							new[]
+							{
+								"[MessagePackRuntimeCollectionItemType]",
+								"[MessagePackRuntimeDictionaryKeyType]"
+							} 
+						);
 				}
 				case PolymorphismTargets.TupleItem:
 				{
-					return member.PolymorphicTupleItemTypes.Select( kv => String.Format( CultureInfo.InvariantCulture, "[MessagePackRuntimeTupleItemType( {0} )]", kv.Key ) );
+					return
+						( asObject
+							? new[] { "[MessagePackRuntimeType]" }
+							: new string[ 0 ]
+						).Concat(
+							member.PolymorphicTupleItemTypes.Select(
+								kv => String.Format( CultureInfo.InvariantCulture, "[MessagePackRuntimeTupleItemType( {0} )]", kv.Key )
+							)
+						);
 				}
 				case PolymorphismTargets.Member:
 				{
@@ -126,57 +179,80 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 	var normalTypes =
 		new []
 		{
-			Member.Of( "Reference",		"Version" ,			PolymorphismTargets.None,	@"null",				@"new Version( 1, 2, 3, 4 )" ),
-			Member.Of( "Value",			"DateTime",			PolymorphismTargets.None,	@"default( DateTime )", @"new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc )" ),
-			Member.Of( "Primitive",		"int",				PolymorphismTargets.None,	@"default( int )",		@"123" ),
-			Member.Of( "String",		"string",			PolymorphismTargets.None,	@"null",				@"""ABC""" ),
-			Member.Of( "Polymorphic",	"FileSystemEntry",	PolymorphismTargets.Member,	@"null",				@"new FileEntry { Name = ""file"", Size = 1 }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "Reference",		"Version" ,			PolymorphismTargets.None,	null, @"null",					@"new Version( 1, 2, 3, 4 )" ),
+			Member.Of( "Value",			"DateTime",			PolymorphismTargets.None,	null, @"default( DateTime )",	@"new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc )" ),
+			Member.Of( "Primitive",		"int",				PolymorphismTargets.None,	null, @"default( int )",		@"123" ),
+			Member.Of( "String",		"string",			PolymorphismTargets.None,	null, @"null",					@"""ABC""" ),
+			Member.Of( "Polymorphic",	"FileSystemEntry",	PolymorphismTargets.Member,	null, @"null",					@"new FileEntry { Name = ""file"", Size = 1 }", "FileEntry", "DirectoryEntry" ),
 		};
 	var collectionTypes =
 		new []
 		{
-			Member.Of( "ListStaticItem",			"IList<string>",			PolymorphismTargets.None,	@"new List<string>()",			@"new List<string>{ ""A"", ""B"" }" ),
-			Member.Of( "ListPolymorphicItem",		"IList<FileSystemEntry>",	PolymorphismTargets.Item,	@"new List<FileSystemEntry>()",	@"new List<FileSystemEntry>{ new FileEntry { Name = ""file"", Size = 1L }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "ListPolymorphicItself",		"IList<string>",			PolymorphismTargets.Member,	@"new Collection<string>()",	@"new Collection<string>{ ""A"", ""B"" }", "Collection<string>", "List<string>" ),
+			Member.Of( "ListStaticItem",		"IList<string>",			PolymorphismTargets.None,	false,	@"new List<string>()",			@"new List<string>{ ""A"", ""B"" }" ),
+			Member.Of( "ListPolymorphicItem",	"IList<FileSystemEntry>",	PolymorphismTargets.Item,	false,	@"new List<FileSystemEntry>()",	@"new List<FileSystemEntry>{ new FileEntry { Name = ""file"", Size = 1L }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "ListObjectItem",		"IList<object>",			PolymorphismTargets.Item,	false,	@"new List<object>()",			@"new List<object>{ new FileEntry { Name = ""file"", Size = 1L }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "ListPolymorphicItself",	"IList<string>",			PolymorphismTargets.Member,	false,	@"new Collection<string>()",	@"new Collection<string>{ ""A"", ""B"" }", "Collection<string>", "List<string>" ),
+			Member.Of( "ListObjectItself",		"object",					PolymorphismTargets.Member,	true,	@"new Collection<string>()",	@"new Collection<string>{ ""A"", ""B"" }", "Collection<string>", "List<string>" ),
 		};
 	var dictionaryTypes =
 		new []
 		{
-			Member.Of( "DictionaryStaticKeyAndStaticItem",			"IDictionary<string, string>",						PolymorphismTargets.None,							@"new Dictionary<string, string>()",					@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }" ),
-			Member.Of( "DictionaryPolymorphicKeyAndStaticItem",		"IDictionary<FileSystemEntry, string>",				PolymorphismTargets.Key,							@"new Dictionary<FileSystemEntry, string>()",			@"new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = ""file"", Size = 1L }, ""A"" }, { new DirectoryEntry { Name = ""dir"", ChildCount = 1 }, ""B"" } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "DictionaryStaticKeyAndPolymorphicItem",		"IDictionary<string, FileSystemEntry>",				PolymorphismTargets.Item,							@"new Dictionary<string, FileSystemEntry>()",			@"new Dictionary<string, FileSystemEntry>{ { ""A"", new FileEntry { Name = ""file"", Size = 1L } }, { ""B"", new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "DictionaryPolymorphicKeyAndItem",			"IDictionary<FileSystemEntry, FileSystemEntry>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>()",	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
-			Member.Of( "DictionaryPolymorphicItself",				"IDictionary<string, string>",						PolymorphismTargets.Member,							@"new Dictionary<string, string>()",					@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }", "Dictionary<string, string>", "SortedDictionary<string, string>" ),
-			Member.Of( "DictionaryPolymorphicKeyAndItemAndItself",	"IDictionary<FileSystemEntry, FileSystemEntry>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	@"new Dictionary<FileSystemEntry, FileSystemEntry>()",	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryStaticKeyAndStaticItem",			"IDictionary<string, string>",						PolymorphismTargets.None,							false,	@"new Dictionary<string, string>()",					@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }" ),
+			Member.Of( "DictionaryPolymorphicKeyAndStaticItem",		"IDictionary<FileSystemEntry, string>",				PolymorphismTargets.Key,							false,	@"new Dictionary<FileSystemEntry, string>()",			@"new Dictionary<FileSystemEntry, string>{ { new FileEntry { Name = ""file"", Size = 1L }, ""A"" }, { new DirectoryEntry { Name = ""dir"", ChildCount = 1 }, ""B"" } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryObjectKeyAndStaticItem",			"IDictionary<object, string>",						PolymorphismTargets.Key,							false,	@"new Dictionary<object, string>()",					@"new Dictionary<object, string>{ { new FileEntry { Name = ""file"", Size = 1L }, ""A"" }, { new DirectoryEntry { Name = ""dir"", ChildCount = 1 }, ""B"" } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryStaticKeyAndPolymorphicItem",		"IDictionary<string, FileSystemEntry>",				PolymorphismTargets.Item,							false,	@"new Dictionary<string, FileSystemEntry>()",			@"new Dictionary<string, FileSystemEntry>{ { ""A"", new FileEntry { Name = ""file"", Size = 1L } }, { ""B"", new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryStaticKeyAndObjectItem",			"IDictionary<string, object>",						PolymorphismTargets.Item,							false,	@"new Dictionary<string, object>()",					@"new Dictionary<string, object>{ { ""A"", new FileEntry { Name = ""file"", Size = 1L } }, { ""B"", new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryPolymorphicKeyAndItem",			"IDictionary<FileSystemEntry, FileSystemEntry>",	PolymorphismTargets.Key | PolymorphismTargets.Item,	false,	@"new Dictionary<FileSystemEntry, FileSystemEntry>()",	@"new Dictionary<FileSystemEntry, FileSystemEntry>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryObjectKeyAndItem",				"IDictionary<object, object>",						PolymorphismTargets.Key | PolymorphismTargets.Item,	false,	@"new Dictionary<object, object>()",					@"new Dictionary<object, object>{ { new FileEntry { Name = ""A"", Size = 1L }, new FileEntry { Name = ""file"", Size = 1L } }, { new DirectoryEntry { Name = ""B"", ChildCount = 1 }, new DirectoryEntry { Name = ""dir"", ChildCount = 1 } } }", "FileEntry", "DirectoryEntry" ),
+			Member.Of( "DictionaryPolymorphicItself",				"IDictionary<string, string>",						PolymorphismTargets.Member,							false,	@"new Dictionary<string, string>()",					@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }", "Dictionary<string, string>", "SortedDictionary<string, string>" ),
+			Member.Of( "DictionaryObjectItself",					"object",											PolymorphismTargets.Member,							true,	@"new Dictionary<string, string>()",					@"new Dictionary<string, string>{ { ""A"", ""A"" }, { ""B"", ""B"" } }", "Dictionary<string, string>", "SortedDictionary<string, string>" ),
 		};
 	var tupleMembers =
 		new []
 		{
 			Member.Of( "Tuple1Static",					"Tuple<string>", 
+														false,
 														@"Tuple.Create( ""1"" )" ),
 			Member.Of( "Tuple1Polymorphic",				"Tuple<FileSystemEntry>",
+														false,
+														@"Tuple.Create( new FileEntry { Name = ""1"", Size = 1 } as FileSystemEntry )",
+														new KeyValuePair<int, string[]>( 1, new []{ "FileEntry", "DirectoryEntry" } ) ),
+			Member.Of( "Tuple1ObjectItem",				"Tuple<object>",
+														false,
+														@"Tuple.Create( new FileEntry { Name = ""1"", Size = 1 } as object )",
+														new KeyValuePair<int, string[]>( 1, new []{ "FileEntry", "DirectoryEntry" } ) ),
+			Member.Of( "Tuple1ObjectItself",			"object",
+														true,
 														@"Tuple.Create( new FileEntry { Name = ""1"", Size = 1 } as FileSystemEntry )",
 														new KeyValuePair<int, string[]>( 1, new []{ "FileEntry", "DirectoryEntry" } ) ),
 			Member.Of( "Tuple7AllStatic",				"Tuple<string, string, string, string, string, string, string>",
+														false,
 														@"Tuple.Create( " + String.Join( ", ", Enumerable.Range( 1, 7 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"""{0}""", i ) ) ) + " )" ),
 			Member.Of( "Tuple7FirstPolymorphic",		"Tuple<FileSystemEntry, string, string, string, string, string, string>",
+														false,
 														@"Tuple.Create( new FileEntry { Name = ""1"", Size = 1 } as FileSystemEntry, " + String.Join( ", ", Enumerable.Range( 2, 6 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"""{0}""", i ) ) ) + ")",
 														new KeyValuePair<int, string[]>( 1, new []{ "FileEntry", "DirectoryEntry" } ) ),
 			Member.Of( "Tuple7LastPolymorphic",			"Tuple<string, string, string, string, string, string, FileSystemEntry>",
+														false,
 														@"Tuple.Create( " + String.Join( ", ", Enumerable.Range( 1, 6 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"""{0}""", i ) ) ) + @", new FileEntry { Name = ""7"", Size = 7 } as FileSystemEntry )",
 														new KeyValuePair<int, string[]>( 7, new []{ "FileEntry", "DirectoryEntry" } ) ),
 			Member.Of( "Tuple7IntermediatePolymorphic",	"Tuple<string, string, string, FileSystemEntry, string, string, string>",
+														false,
 														@"Tuple.Create( " + String.Join( ", ", Enumerable.Range( 1, 3 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"""{0}""", i ) ) ) + @", new FileEntry { Name = ""4"", Size = 4 } as FileSystemEntry, " + String.Join( ", ", Enumerable.Range( 5, 3 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"""{0}""", i ) ) ) + ")",
 														new KeyValuePair<int, string[]>( 4, new []{ "FileEntry", "DirectoryEntry" } ) ),
 			Member.Of( "Tuple7AllPolymorphic",			"Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry>",
+														false,
 														@"Tuple.Create( " + String.Join( ", ", Enumerable.Range( 1, 7 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"new {0}Entry {{ Name = ""{1}"", {2} = {1} }} as FileSystemEntry", i % 2 == 1 ? "File" : "Directory", i, i % 2 == 1 ? "Size" : "ChildCount" ) ) ) + " )",
 														Enumerable.Range( 1, 7 ).Select( i => new KeyValuePair<int, string[]>( i, new []{ "FileEntry", "DirectoryEntry" } ) ).ToArray() ),
 			Member.Of( "Tuple8AllStatic",				"Tuple<string, string, string, string, string, string, string, Tuple<string>>",
+														false,
 														@"Tuple.Create( " + String.Join( ", ", Enumerable.Range( 1, 7 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"""{0}""", i ) ) ) + @", ""8"" )" ),
 			Member.Of( "Tuple8LastPolymorphic",			"Tuple<string, string, string, string, string, string, string, Tuple<FileSystemEntry>>",
+														false,
 														@"Tuple.Create( " + String.Join( ", ", Enumerable.Range( 1, 7 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"""{0}""", i ) ) ) + @", new FileEntry { Name = ""8"", Size = 8 } as FileSystemEntry )",
 														new KeyValuePair<int, string[]>( 8, new []{ "FileEntry", "DirectoryEntry" } ) ),
 			Member.Of( "Tuple8AllPolymorphic",			"Tuple<FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, FileSystemEntry, Tuple<FileSystemEntry>>",
+														false,
 														@"Tuple.Create( " + String.Join( ", ", Enumerable.Range( 1, 7 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"new {0}Entry {{ Name = ""{1}"", {2} = {1} }} as FileSystemEntry", i % 2 == 1 ? "File" : "Directory", i, i % 2 == 1 ? "Size" : "ChildCount" ) ) ) + @", new DirectoryEntry { Name = ""8"", ChildCount = 8 } as FileSystemEntry )",
 														Enumerable.Range( 1, 8 ).Select( i => new KeyValuePair<int, string[]>( i, new []{ "FileEntry", "DirectoryEntry" } ) ).ToArray() ),
 		};
@@ -212,12 +288,9 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 			// Note: combination of deserialization constructor and collection get/read only member is not valid.
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyCollectionProperty, TypeKind.PrivateSetterCollectionProperty, TypeKind.ReadOnlyCollectionField } )
 			{
-				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Collection_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false, generateTypes );
+				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Collection_" + member.Name + kind, kind, member, attributeType.AttributeFactory, member.AsObject.Value, generateTypes );
 				generatedTypeNames.Add( typeName );
-				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, false );
-				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, true, generateTypes );
-				generatedTypeNames.Add( typeNameAsObject );
-				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, generateMethods, true );
+				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, member.AsObject.Value );
 			}
 		}
 #>
@@ -230,12 +303,9 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 			// Note: combination of deserialization constructor and collection get/read only member is not valid.
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyCollectionProperty, TypeKind.PrivateSetterCollectionProperty, TypeKind.ReadOnlyCollectionField } )
 			{
-				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Dictionary_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false, generateTypes );
+				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Dictionary_" + member.Name + kind, kind, member, attributeType.AttributeFactory, member.AsObject.Value, generateTypes );
 				generatedTypeNames.Add( typeName );
-				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, false );
-				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, true, generateTypes );
-				generatedTypeNames.Add( typeNameAsObject );
-				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, generateMethods, true );
+				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, member.AsObject.Value );
 			}
 		}
 #>
@@ -247,12 +317,9 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 		{
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyPropertyAndConstructor, TypeKind.PrivateSetterPropertyAndConstructor, TypeKind.ReadOnlyFieldAndConstructor } )
 			{
-				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Tuple_" + member.Name + kind, kind, member, attributeType.AttributeFactory, false, generateTypes );
+				var typeName = GeneratePolymorphicTestType( attributeType.Name + "_Tuple_" + member.Name + kind, kind, member, attributeType.AttributeFactory, member.AsObject.Value, generateTypes );
 				generatedTypeNames.Add( typeName );
-				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, false );
-				var typeNameAsObject = GeneratePolymorphicTestType( attributeType.Name + "_" + member.Name + kind + "AsObject", kind, member, attributeType.AttributeFactory, true, generateTypes );
-				generatedTypeNames.Add( typeNameAsObject );
-				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, generateMethods, true );
+				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, member.AsObject.Value );
 			}
 
 		}
@@ -369,7 +436,7 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 }
 
 // Types
-private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member member, Func<Member, IEnumerable<string>> attributeFactory, bool asObject, bool generateTypes )
+private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member member, Func<Member, bool, IEnumerable<string>> attributeFactory, bool asObject, bool generateTypes )
 {
 	var typeName = "PolymorphicMemberType" + suffix;
 
@@ -394,12 +461,12 @@ private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member
 }
 
 // Types (private)
-private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumerable<string>> attributeFactory, bool asObject )
+private void GenerateMember( TypeKind kind, Member member, Func<Member, bool, IEnumerable<string>> attributeFactory, bool asObject )
 {
 
 	if ( ( kind & TypeKind.PropertyOrFieldMask ) == TypeKind.Field )
 	{
-		GenerateAttributes( member, attributeFactory );
+		GenerateAttributes( member, attributeFactory, asObject );
 #>
 			public <#= ( kind & TypeKind.IsReadOnly ) == TypeKind.IsReadOnly ? "readonly" : String.Empty #> <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( kind )( member.Name ) #>;
 <#+
@@ -412,7 +479,7 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumera
 			private <#= asObject ? "object" : member.Type #> <#=  backingField #>;
 
 <#+
-		GenerateAttributes( member, attributeFactory );
+		GenerateAttributes( member, attributeFactory, asObject );
 #>
 			public <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( TypeKind.Field )( member.Name ) #>
 			{
@@ -430,9 +497,9 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, IEnumera
 	}
 }
 
-private void GenerateAttributes( Member member, Func<Member, IEnumerable<string>> attributeFactory )
+private void GenerateAttributes( Member member, Func<Member, bool, IEnumerable<string>> attributeFactory, bool asObject )
 {
-	foreach ( var attribute in attributeFactory( member ) )
+	foreach ( var attribute in attributeFactory( member, asObject ) )
 	{
 #>
 			<#= attribute #>
@@ -569,8 +636,19 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 		}
 		else
 		{
+			if ( member.PolymorphicTupleItemTypes.Length > 0 && asObject )
+			{
+#>
+				// Tuple items cannot be polymorphic when the member itself declared as Object.
+<#+
+			}
+			else
+			{
 #>
 				Assert.That( result.<#= member.Name #>, Is.EqualTo( target.<#= member.Name #> ) );
+<#+
+			}
+#>
 				Assert.That( result.<#= member.Name #>, Is.InstanceOf( target.<#= member.Name #>.GetType() ) );
 <#+
 		}
@@ -1092,8 +1170,9 @@ private struct Member
 	public readonly string InitialValue;
 	public readonly string EmptyValue;
 	public readonly KeyValuePair<int, string[]>[] PolymorphicTupleItemTypes;
+	public readonly bool? AsObject;
 
-	public Member( string name, string type, PolymorphismTargets targets, string[] actualTypes, string emptyValue, string initialValue, KeyValuePair<int, string[]>[] polymorphicTupleItemTypes )
+	private Member( string name, string type, PolymorphismTargets targets, bool? asObject, string[] actualTypes, string emptyValue, string initialValue, KeyValuePair<int, string[]>[] polymorphicTupleItemTypes )
 	{
 		this.Name = name;
 		this.Type = type;
@@ -1102,16 +1181,17 @@ private struct Member
 		this.InitialValue = initialValue;
 		this.EmptyValue = emptyValue;
 		this.PolymorphicTupleItemTypes = polymorphicTupleItemTypes;
+		this.AsObject = asObject;
 	}
 
-	public static Member Of( string name, string type, PolymorphismTargets targets, string emptyValue, string initialValue, params string[] actualTypes )
+	public static Member Of( string name, string type, PolymorphismTargets targets, bool? asObject, string emptyValue, string initialValue, params string[] actualTypes )
 	{
-		return new Member( name, type, targets, actualTypes, emptyValue, initialValue, new KeyValuePair<int, string[]>[ 0 ] );
+		return new Member( name, type, targets, asObject, actualTypes, emptyValue, initialValue, new KeyValuePair<int, string[]>[ 0 ] );
 	}
 
-	public static Member Of( string name, string type, string initialValue, params KeyValuePair<int, string[]>[] polymorphicTupleItemTypes )
+	public static Member Of( string name, string type, bool? asObject, string initialValue, params KeyValuePair<int, string[]>[] polymorphicTupleItemTypes )
 	{
-		return new Member( name, type, PolymorphismTargets.TupleItem, null, "null", initialValue, polymorphicTupleItemTypes );
+		return new Member( name, type, PolymorphismTargets.TupleItem, asObject, null, "null", initialValue, polymorphicTupleItemTypes );
 	}
 }
 
