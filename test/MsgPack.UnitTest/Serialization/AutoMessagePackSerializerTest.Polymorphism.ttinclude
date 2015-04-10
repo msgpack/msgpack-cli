@@ -919,11 +919,12 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 	{
 #>
 
-	public class EchoKeyedCollection<T> : KeyedCollection<T, T>
+	public class EchoKeyedCollection<TKey, T> : KeyedCollection<TKey, T>
 	{
-		protected override T GetKeyForItem( T item )
+		protected override TKey GetKeyForItem( T item )
 		{
-			return item;
+			// should be same
+			return ( TKey )( object )item;
 		}
 	}
 <#+
@@ -941,12 +942,13 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 			new [] 
 			{
 				new { Name = "NoAttribute",	Attribute = default( string ) },
-				new { Name = "KnownType",	Attribute = "[MessagePackKnownType( 1, typeof( EchoKeyedCollection<string> ) )]" }, 
+				new { Name = "KnownType",	Attribute = "[MessagePackKnownType( 1, typeof( EchoKeyedCollection<string, string> ) )]" }, 
 				new { Name = "RuntimeType", Attribute = "[MessagePackRuntimeType]" },
 			}
 		)
 		{
 			var typeName = declarationType.Name + "Collection" + attribute.Name;
+			generatedSerializableTypeNames.Add( typeName );
 			if ( generateTypes )
 			{
 				GenerateAbstractTypeTestClass( typeName, attribute.Attribute, declarationType.Type );
@@ -954,7 +956,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 
 			if ( generateMethods )
 			{
-				GenerateAbstractTypeTestMethod( typeName, "new EchoKeyedCollection<string> { \"ABC\" }", declarationType.Type, "EchoKeyedCollection<string>", true, true );
+				GenerateAbstractTypeTestMethod( typeName, "new EchoKeyedCollection<string, string> { \"ABC\" }", declarationType.Type, "EchoKeyedCollection<string, string>", true, true );
 			}
 		}
 	}

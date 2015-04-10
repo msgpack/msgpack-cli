@@ -503,6 +503,12 @@ namespace MsgPack.Serialization
 			result.Add( typeof( InterfaceListItemRuntimeType ) ); 
 			result.Add( typeof( InterfaceDictKeyKnownType ) ); 
 			result.Add( typeof( InterfaceDictKeyRuntimeType ) ); 
+			result.Add( typeof( AbstractClassCollectionNoAttribute ) ); 
+			result.Add( typeof( AbstractClassCollectionKnownType ) ); 
+			result.Add( typeof( AbstractClassCollectionRuntimeType ) ); 
+			result.Add( typeof( InterfaceCollectionNoAttribute ) ); 
+			result.Add( typeof( InterfaceCollectionKnownType ) ); 
+			result.Add( typeof( InterfaceCollectionRuntimeType ) ); 
 			result.Add( typeof( TupleAbstractType ) ); 
 			return result;
 		}

@@ -64,12 +64,24 @@ namespace MsgPack.Serialization
 	{
 		private static SerializationContext GetSerializationContext()
 		{
-			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Map, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
+			var context = PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Map, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
+			// Register serializers for abstract class testing
+			context.Serializers.Register( 
+				typeof( EchoKeyedCollection<string, string> ),
+				new EchoKeyedCollection_2MessagePackSerializer<string, string>( context, null ) 
+			);
+			return context;
 		}
 
 		private static SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
 		{
-			return PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, compatibilityOptions );
+			var context =  PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, compatibilityOptions );
+			// Register serializers for abstract class testing
+			context.Serializers.Register( 
+				typeof( EchoKeyedCollection<string, string> ),
+				new EchoKeyedCollection_2MessagePackSerializer<string, string>( context, null ) 
+			);
+			return context;
 		}
 
 		private MessagePackSerializer<T> CreateTarget<T>( SerializationContext context )
@@ -9737,8 +9749,8 @@ namespace MsgPack.Serialization
 		public void TestAbstractClassCollectionNoAttribute_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string> ) );
-			var target = new AbstractClassCollectionNoAttribute { Value = new EchoKeyedCollection<string> { "ABC" } };
+			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new AbstractClassCollectionNoAttribute { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
 			var serializer = context.GetSerializer<AbstractClassCollectionNoAttribute>();
 
@@ -9761,8 +9773,8 @@ namespace MsgPack.Serialization
 		public void TestAbstractClassCollectionKnownType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string> ) );
-			var target = new AbstractClassCollectionKnownType { Value = new EchoKeyedCollection<string> { "ABC" } };
+			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new AbstractClassCollectionKnownType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
 			var serializer = context.GetSerializer<AbstractClassCollectionKnownType>();
 
@@ -9785,8 +9797,8 @@ namespace MsgPack.Serialization
 		public void TestAbstractClassCollectionRuntimeType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string> ) );
-			var target = new AbstractClassCollectionRuntimeType { Value = new EchoKeyedCollection<string> { "ABC" } };
+			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new AbstractClassCollectionRuntimeType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
 			var serializer = context.GetSerializer<AbstractClassCollectionRuntimeType>();
 
@@ -9809,8 +9821,8 @@ namespace MsgPack.Serialization
 		public void TestInterfaceCollectionNoAttribute_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string> ) );
-			var target = new InterfaceCollectionNoAttribute { Value = new EchoKeyedCollection<string> { "ABC" } };
+			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new InterfaceCollectionNoAttribute { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
 			var serializer = context.GetSerializer<InterfaceCollectionNoAttribute>();
 
@@ -9833,8 +9845,8 @@ namespace MsgPack.Serialization
 		public void TestInterfaceCollectionKnownType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string> ) );
-			var target = new InterfaceCollectionKnownType { Value = new EchoKeyedCollection<string> { "ABC" } };
+			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new InterfaceCollectionKnownType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
 			var serializer = context.GetSerializer<InterfaceCollectionKnownType>();
 
@@ -9857,8 +9869,8 @@ namespace MsgPack.Serialization
 		public void TestInterfaceCollectionRuntimeType_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string> ) );
-			var target = new InterfaceCollectionRuntimeType { Value = new EchoKeyedCollection<string> { "ABC" } };
+			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string, string> ) );
+			var target = new InterfaceCollectionRuntimeType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
 			var serializer = context.GetSerializer<InterfaceCollectionRuntimeType>();
 

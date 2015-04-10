@@ -263,12 +263,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ContextBasedNilImplicationTest.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs" />
     <Compile Include="Serialization\EnumSerializationTest.EnumDefinitions.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EnumSerializationTest.EnumDefinitions.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_ImageSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_AbstractClassCollectionKnownTypeSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_AbstractClassCollectionNoAttributeSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_AbstractClassCollectionRuntimeTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_AbstractClassDictKeyKnownTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_AbstractClassDictKeyRuntimeTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_AbstractClassListItemKnownTypeSerializer.cs" />
@@ -318,6 +322,9 @@
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_EnumUInt64Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_HasEnumerableSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_InnerSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_InterfaceCollectionKnownTypeSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_InterfaceCollectionNoAttributeSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_InterfaceCollectionRuntimeTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_InterfaceDictKeyKnownTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_InterfaceDictKeyRuntimeTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\MsgPack_Serialization_InterfaceListItemKnownTypeSerializer.cs" />
@@ -739,6 +746,9 @@
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\ArrayBased\System_DayOfWeekSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_ImageSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AbstractClassCollectionKnownTypeSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AbstractClassCollectionNoAttributeSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AbstractClassCollectionRuntimeTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AbstractClassDictKeyKnownTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AbstractClassDictKeyRuntimeTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_AbstractClassListItemKnownTypeSerializer.cs" />
@@ -788,6 +798,9 @@
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_EnumUInt64Serializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_HasEnumerableSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_InnerSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_InterfaceCollectionKnownTypeSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_InterfaceCollectionNoAttributeSerializer.cs" />
+    <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_InterfaceCollectionRuntimeTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_InterfaceDictKeyKnownTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_InterfaceDictKeyRuntimeTypeSerializer.cs" />
     <Compile Include="Serialization\GeneratedSerializers\MapBased\MsgPack_Serialization_InterfaceListItemKnownTypeSerializer.cs" />

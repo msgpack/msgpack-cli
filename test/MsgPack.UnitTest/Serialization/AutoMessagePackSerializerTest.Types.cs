@@ -9244,11 +9244,12 @@ namespace MsgPack.Serialization
 			public InterfaceDictKeyRuntimeType() { }
 		}
 
-	public class EchoKeyedCollection<T> : KeyedCollection<T, T>
+	public class EchoKeyedCollection<TKey, T> : KeyedCollection<TKey, T>
 	{
-		protected override T GetKeyForItem( T item )
+		protected override TKey GetKeyForItem( T item )
 		{
-			return item;
+			// should be same
+			return ( TKey )( object )item;
 		}
 	}
 
@@ -9261,7 +9262,7 @@ namespace MsgPack.Serialization
 
 		public class AbstractClassCollectionKnownType
 		{
-			[MessagePackKnownType( 1, typeof( EchoKeyedCollection<string> ) )]
+			[MessagePackKnownType( 1, typeof( EchoKeyedCollection<string, string> ) )]
 			public KeyedCollection<string, string> Value { get; set; }
 
 			public AbstractClassCollectionKnownType() { }
@@ -9284,7 +9285,7 @@ namespace MsgPack.Serialization
 
 		public class InterfaceCollectionKnownType
 		{
-			[MessagePackKnownType( 1, typeof( EchoKeyedCollection<string> ) )]
+			[MessagePackKnownType( 1, typeof( EchoKeyedCollection<string, string> ) )]
 			public IList<string> Value { get; set; }
 
 			public InterfaceCollectionKnownType() { }
