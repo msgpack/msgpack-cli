@@ -95,14 +95,26 @@ namespace MsgPack.Serialization.Polymorphic
 			return result;
 		}
 
+		private IMessagePackSerializer GetActualTypeSerializer( Type actualType )
+		{
+			var result = this.OwnerContext.GetSerializer( actualType, this._schema );
+			if ( result == null )
+			{
+				throw new SerializationException(
+					String.Format( CultureInfo.CurrentCulture, "Cannot get serializer for actual type {0} from context.", actualType )
+				);
+			}
+
+			return result;
+		}
+
 		protected internal override void PackToCore( Packer packer, T objectTree )
 		{
 			using ( var buffer = new MemoryStream() )
 			{
 				using ( var valuePacker = Packer.Create( buffer, this.PackerCompatibilityOptions ) )
 				{
-					// Use concrete type serializer.
-					this.OwnerContext.GetSerializer( objectTree.GetType(), this._schema ).PackTo( valuePacker, objectTree );
+					this.GetActualTypeSerializer( objectTree.GetType() ).PackTo( valuePacker, objectTree );
 				}
 
 				packer.PackExtendedTypeValue(
@@ -126,11 +138,9 @@ namespace MsgPack.Serialization.Polymorphic
 
 			using ( var buffer = new MemoryStream( ext.Body ) )
 			{
-				// Use concrete type serializer.
 				return
-					( T )this.OwnerContext.GetSerializer(
-						Type.GetTypeFromHandle( typeHandle ),
-						this._schema
+					( T )this.GetActualTypeSerializer(
+						Type.GetTypeFromHandle( typeHandle )
 					).Unpack( buffer );
 			}
 		}
