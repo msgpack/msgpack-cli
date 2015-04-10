@@ -138,39 +138,6 @@ namespace MsgPack.Serialization
 			result.Add( typeof( PlainClass ) );
 			result.Add( typeof( AnnotatedClass ) );
 			result.Add( typeof( DataMamberClass ) );
-		#region -- Polymorphism --
-		#region ---- KnownType ----
-
-		#region ------ KnownType.NormalTypes ------
-		#endregion ------ KnownType.NormalTypes ------
-
-		#region ------ KnownType.CollectionTypes ------
-		#endregion ------ KnownType.CollectionTypes ------
-
-		#region ------ KnownType.DictionaryTypes ------
-		#endregion ------ KnownType.DictionaryTypes ------
-
-		#region ------ KnownType.TupleTypes ------
-		#endregion ------ KnownType.TupleTypes ------
-
-		#endregion ---- KnownType ----
-		#region ---- RuntimeType ----
-
-		#region ------ RuntimeType.NormalTypes ------
-		#endregion ------ RuntimeType.NormalTypes ------
-
-		#region ------ RuntimeType.CollectionTypes ------
-		#endregion ------ RuntimeType.CollectionTypes ------
-
-		#region ------ RuntimeType.DictionaryTypes ------
-		#endregion ------ RuntimeType.DictionaryTypes ------
-
-		#region ------ RuntimeType.TupleTypes ------
-		#endregion ------ RuntimeType.TupleTypes ------
-
-		#endregion ---- RuntimeType ----
-
-		#endregion -- Polymorphism --
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject ) ); 
 			result.Add( typeof( PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField ) ); 

@@ -256,16 +256,25 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 													@"Tuple.Create( " + String.Join( ", ", Enumerable.Range( 1, 7 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"new {0}Entry {{ Name = ""{1}"", {2} = {1} }} as FileSystemEntry", i % 2 == 1 ? "File" : "Directory", i, i % 2 == 1 ? "Size" : "ChildCount" ) ) ) + @", new DirectoryEntry { Name = ""8"", ChildCount = 8 } as FileSystemEntry )",
 													Enumerable.Range( 1, 8 ).Select( i => new KeyValuePair<int, string[]>( i, new []{ "FileEntry", "DirectoryEntry" } ) ).ToArray() ),
 		};
+
+	if ( generateTypes || generateMethods )
+	{
 #>
 		#region -- Polymorphism --
 <#+
+	}
+
 	foreach ( var attributeType in attributeTypes )
 	{
+		if ( generateTypes || generateMethods )
+		{
 #>
 		#region ---- <#= attributeType.Name #> ----
 
 		#region ------ <#= attributeType.Name #>.NormalTypes ------
 <#+
+		}
+
 		foreach ( var member in normalTypes )
 		{
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyPropertyAndConstructor, TypeKind.PrivateSetterPropertyAndConstructor, TypeKind.ReadOnlyFieldAndConstructor } )
@@ -284,12 +293,17 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 				GeneratePolymorphicTestMethods( typeNameAsObject, kind, member, generateMethods, true );
 			}
 		}
+
+		if ( generateTypes || generateMethods )
+		{
 #>
 		#endregion ------ <#= attributeType.Name #>.NormalTypes ------
 
 		#region ------ <#= attributeType.Name #>.CollectionTypes ------
 <#+
+		}
 		foreach( var member in collectionTypes )
+
 		{
 			// Note: combination of deserialization constructor and collection get/read only member is not valid.
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyCollectionProperty, TypeKind.PrivateSetterCollectionProperty, TypeKind.ReadOnlyCollectionField } )
@@ -304,11 +318,16 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, member.AsObject.Value );
 			}
 		}
+
+		if ( generateTypes || generateMethods )
+		{
 #>
 		#endregion ------ <#= attributeType.Name #>.CollectionTypes ------
 
 		#region ------ <#= attributeType.Name #>.DictionaryTypes ------
 <#+
+		}
+
 		foreach( var member in dictionaryTypes )
 		{
 			// Note: combination of deserialization constructor and collection get/read only member is not valid.
@@ -324,11 +343,16 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 				GeneratePolymorphicTestMethods( typeName, kind, member, generateMethods, member.AsObject.Value );
 			}
 		}
+
+		if ( generateTypes || generateMethods )
+		{
 #>
 		#endregion ------ <#= attributeType.Name #>.DictionaryTypes ------
 
 		#region ------ <#= attributeType.Name #>.TupleTypes ------
 <#+
+		}
+
 		foreach ( var member in tupleMembers )
 		{
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyPropertyAndConstructor, TypeKind.PrivateSetterPropertyAndConstructor, TypeKind.ReadOnlyFieldAndConstructor } )
@@ -344,11 +368,15 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 			}
 
 		}
+
+		if ( generateTypes || generateMethods )
+		{
 #>
 		#endregion ------ <#= attributeType.Name #>.TupleTypes ------
 
 		#endregion ---- <#= attributeType.Name #> ----
 <#+
+		}
 	}
 
 	// Mixed Patterns
@@ -449,10 +477,15 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 		}
 <#+
 	}
+
+	if ( generateTypes || generateMethods )
+	{
 #>
 
 		#endregion -- Polymorphism --
 <#+
+	}
+
 	return generatedSerializableTypeNames;
 }
 
