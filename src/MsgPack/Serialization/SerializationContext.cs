@@ -426,7 +426,7 @@ namespace MsgPack.Serialization
 				bool lockTaken = false;
 				try
 				{
-					try {}
+					try { }
 					finally
 					{
 						var newLock = new object();
@@ -584,20 +584,15 @@ namespace MsgPack.Serialization
 				var concreteCollectionType = this._defaultCollectionTypes.GetConcreteType( typeof( T ) );
 				if ( concreteCollectionType != null )
 				{
-					IMessagePackSingleObjectSerializer serializer;
-					if ( GenericSerializer.TryCreateCollectionInterfaceSerializer(
-							this,
-							typeof( T ),
-							concreteCollectionType,
-							schema,
-							out serializer 
-						) 
-					)
+					var serializer =
+						GenericSerializer.TryCreateCollectionInterfaceSerializer( this, typeof( T ), concreteCollectionType, schema );
+
+					if ( serializer != null )
 					{
 						var typedSerializer = serializer as MessagePackSerializer<T>;
 
 #if DEBUG && !UNITY
-						Contract.Assert( serializer == null || typedSerializer != null );
+						Contract.Assert( typedSerializer != null );
 #endif // DEBUG && !UNITY
 
 						provider = new PolymorphicSerializerProvider<T>( typedSerializer );
@@ -717,14 +712,14 @@ namespace MsgPack.Serialization
 				lock ( this._cache )
 				{
 #endif
-					if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
-					{
+				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
+				{
 #if !NETFX_CORE
-						func =
-							Delegate.CreateDelegate(
-								typeof( Func<SerializationContext, object, IMessagePackSingleObjectSerializer> ),
-								typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
-							) as Func<SerializationContext, object, IMessagePackSingleObjectSerializer>;
+					func =
+						Delegate.CreateDelegate(
+							typeof( Func<SerializationContext, object, IMessagePackSingleObjectSerializer> ),
+							typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" )
+						) as Func<SerializationContext, object, IMessagePackSingleObjectSerializer>;
 #else
 					var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 					var providerParameterParameter = Expression.Parameter( typeof( Object ), "providerParameter" );
@@ -741,10 +736,10 @@ namespace MsgPack.Serialization
 						).Compile();
 #endif // if !NETFX_CORE
 #if DEBUG && !UNITY
-						Contract.Assert( func != null );
+					Contract.Assert( func != null );
 #endif // if DEBUG && !UNITY
-						this._cache[ targetType.TypeHandle ] = func;
-					}
+					this._cache[ targetType.TypeHandle ] = func;
+				}
 #if SILVERLIGHT || NETFX_35
 				}
 #endif

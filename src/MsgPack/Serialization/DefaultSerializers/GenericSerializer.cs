@@ -28,7 +28,6 @@ using System.Collections.Generic;
 #if !UNITY
 using System.Diagnostics.Contracts;
 #endif // !UNITY
-using System.Globalization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
@@ -190,7 +189,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // NETFX_35 || NETFX_40 || SILVERLIGHT
 		}
 
-		public static IMessagePackSingleObjectSerializer CreateCollectionInterfaceSerializer( SerializationContext context, Type abstractType, Type concreteType, PolymorphismSchema schema )
+		public static IMessagePackSingleObjectSerializer TryCreateCollectionInterfaceSerializer( SerializationContext context, Type abstractType, Type concreteType, PolymorphismSchema schema )
 		{
 			var itemSchema = ( schema ?? PolymorphismSchema.Default );
 			Type serializerType;
@@ -249,9 +248,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
-				throw new NotSupportedException(
-					String.Format( CultureInfo.CurrentCulture, "Abstract type '{0}' is not supported.", abstractType )
-				);
+				return null;
 			}
 
 			return Activator.CreateInstance( serializerType, arguments ) as IMessagePackSingleObjectSerializer;
