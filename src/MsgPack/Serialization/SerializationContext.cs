@@ -578,28 +578,51 @@ namespace MsgPack.Serialization
 
 		private MessagePackSerializer<T> GetSerializerWithoutGeneration<T>( PolymorphismSchema schema )
 		{
+			PolymorphicSerializerProvider<T> provider;
 			if ( typeof( T ).GetIsInterface() || typeof( T ).GetIsAbstract() )
 			{
 				var concreteCollectionType = this._defaultCollectionTypes.GetConcreteType( typeof( T ) );
 				if ( concreteCollectionType != null )
 				{
-					var serializer =
-						GenericSerializer.CreateCollectionInterfaceSerializer( this, typeof( T ), concreteCollectionType, schema );
-					var typedSerializer = serializer as MessagePackSerializer<T>;
+					IMessagePackSingleObjectSerializer serializer;
+					if ( GenericSerializer.TryCreateCollectionInterfaceSerializer(
+							this,
+							typeof( T ),
+							concreteCollectionType,
+							schema,
+							out serializer 
+						) 
+					)
+					{
+						var typedSerializer = serializer as MessagePackSerializer<T>;
 
 #if DEBUG && !UNITY
-					Contract.Assert( serializer == null || typedSerializer != null );
+						Contract.Assert( serializer == null || typedSerializer != null );
 #endif // DEBUG && !UNITY
 
-					var provider = new PolymorphicSerializerProvider<T>( typedSerializer );
-					// Fail when already registered manually.
-					this.Serializers.Register( typeof( T ), provider );
-
-					return provider.Get( this, schema ) as MessagePackSerializer<T>;
+						provider = new PolymorphicSerializerProvider<T>( typedSerializer );
+					}
+					else
+					{
+						provider =
+							new PolymorphicSerializerProvider<T>( this.GetSerializer( concreteCollectionType ) as MessagePackSerializer<T> );
+					}
+				}
+				else
+				{
+					provider = new PolymorphicSerializerProvider<T>( null );
 				}
 			}
+			else
+			{
+				// Go to reflection mode.
+				return null;
+			}
 
-			return null;
+			// Fail when already registered manually.
+			this.Serializers.Register( typeof( T ), provider );
+
+			return provider.Get( this, schema ) as MessagePackSerializer<T>;
 		}
 
 		/// <summary>
