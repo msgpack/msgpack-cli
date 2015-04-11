@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 #endif
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 #if DEBUG && !UNITY
 using System.Diagnostics.Contracts;
@@ -66,13 +67,13 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				this._constructorArgumentIndexes = new Dictionary<int, int>( this._memberIndexes.Count );
 				foreach ( var member in target.Members )
 				{
-					int index = 
+					int index =
 #if SILVERLIGHT && !WINDOWS_PHONE
 						this._constructorParameters.FindIndex( 
 #else
-						Array.FindIndex( this._constructorParameters,
+ Array.FindIndex( this._constructorParameters,
 #endif // SILVERLIGHT && !WINDOWS_PHONE
-							item => item.Name.Equals( member.Contract.Name, StringComparison.OrdinalIgnoreCase ) && item.ParameterType == member.Member.GetMemberValueType()
+ item => item.Name.Equals( member.Contract.Name, StringComparison.OrdinalIgnoreCase ) && item.ParameterType == member.Member.GetMemberValueType()
 						);
 					if ( index >= 0 )
 					{
@@ -143,9 +144,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			object result =
 				this._constructorParameters == null
 					? Activator.CreateInstance( typeof( T ) )
-					: this._constructorParameters.Select( p => 
+					: this._constructorParameters.Select( p =>
 						p.GetHasDefaultValue()
-						? p.DefaultValue 
+						? p.DefaultValue
 						: p.ParameterType.GetIsValueType()
 						? Activator.CreateInstance( p.ParameterType )
 						: null
@@ -249,14 +250,66 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					}
 					else if ( this._getters[ index ] != null ) // null getter supposes undeclared member (should be treated as nil)
 					{
-						var collection = this._getters[ index ]( objectGraph );
-						if ( collection == null )
+						var destination = this._getters[ index ]( objectGraph );
+						if ( destination == null )
 						{
 							throw SerializationExceptions.NewReadOnlyMemberItemsMustNotBeNull( this._contracts[ index ].Name );
 						}
-						using ( Unpacker subtreeUnpacker = unpacker.ReadSubtree() )
+
+						var traits = destination.GetType().GetCollectionTraits();
+						if ( traits.AddMethod == null )
 						{
-							this._serializers[ index ].UnpackTo( subtreeUnpacker, collection );
+							throw SerializationExceptions.NewUnpackToIsNotSupported( destination.GetType(), null );
+						}
+
+						var source = this._serializers[ index ].UnpackFrom( unpacker ) as IEnumerable;
+						if ( source != null )
+						{
+							switch ( traits.DetailedCollectionType )
+							{
+								case CollectionDetailedKind.GenericDictionary:
+								{
+									// item should be KeyValuePair<TKey, TValue>
+									var arguments = new object[ 2 ];
+									var key = default( PropertyInfo );
+									var value = default( PropertyInfo );
+									foreach ( var item in source )
+									{
+										if ( key == null )
+										{
+											key = item.GetType().GetProperty( "Key" );
+											value = item.GetType().GetProperty( "Value" );
+										}
+
+										arguments[ 0 ] = key.GetValue( item, null );
+										arguments[ 1 ] = value.GetValue( item, null );
+										traits.AddMethod.Invoke( destination, arguments );
+									}
+									break;
+								}
+								case CollectionDetailedKind.NonGenericDictionary:
+								{
+									// item should be DictionaryEntry
+									var arguments = new object[ 2 ];
+									foreach ( var item in source )
+									{
+										arguments[ 0 ] = Metadata._DictionaryEntry.Key.GetValue( item, null );
+										arguments[ 1 ] = Metadata._DictionaryEntry.Value.GetValue( item, null );
+										traits.AddMethod.Invoke( destination, arguments );
+									}
+									break;
+								}
+								default:
+								{
+									var arguments = new object[ 1 ];
+									foreach ( var item in source )
+									{
+										arguments[ 0 ] = item;
+										traits.AddMethod.Invoke( destination, arguments );
+									}
+									break;
+								}
+							}
 						}
 					}
 				}
@@ -276,6 +329,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						ReflectionNilImplicationHandler.Instance.OnUnpacked(
 							new ReflectionSerializerNilImplicationHandlerOnUnpackedParameter(
 								this._memberInfos[ index ].GetMemberValueType(),
+								// ReSharper disable once PossibleNullReferenceException
 								value => ( objectGraph as object[] )[ argumentIndex ] = nullable,
 								this._contracts[ index ].Name,
 								this._memberInfos[ index ].DeclaringType
