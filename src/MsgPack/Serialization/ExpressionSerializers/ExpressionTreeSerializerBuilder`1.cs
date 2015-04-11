@@ -508,8 +508,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 					this.EmitSequentialStatements(
 						context,
 						typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
-						new [] { schema }
-						.Concat( 
+						new[] { schema }
+						.Concat(
 							this.EmitConstructPolymorphismSchema(
 								context,
 								schema,
@@ -568,7 +568,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 				);
 		}
 
-		protected override ExpressionConstruct EmitStringSwitchStatement ( ExpressionTreeContext context, ExpressionConstruct target, IDictionary<string, ExpressionConstruct> cases, ExpressionConstruct defaultCase ) {
+		protected override ExpressionConstruct EmitStringSwitchStatement( ExpressionTreeContext context, ExpressionConstruct target, IDictionary<string, ExpressionConstruct> cases, ExpressionConstruct defaultCase )
+		{
 			return
 				Expression.Switch(
 					typeof( void ),
