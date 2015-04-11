@@ -244,11 +244,13 @@ namespace MsgPack.Serialization
 
 #if !XAMIOS && !XAMDROID && !UNITY
 			ISerializerBuilder<T> builder;
+#endif // !XAMIOS && !XAMDROID && !UNITY
 #if NETFX_CORE || WINDOWS_PHONE
 			builder = new ExpressionTreeSerializerBuilder<T>();
 #elif SILVERLIGHT
 			builder = new DynamicMethodSerializerBuilder<T>();
 #else
+#if !XAMIOS && !XAMDROID && !UNITY
 			switch ( context.EmitterFlavor )
 			{
 				case EmitterFlavor.ReflectionBased:
@@ -294,8 +296,9 @@ namespace MsgPack.Serialization
 					break;
 				}
 			}
+#endif // !XAMIOS && !XAMDROID && !UNITY
 #endif // NETFX_CORE else
-
+#if !XAMIOS && !XAMDROID && !UNITY
 			return builder.BuildSerializerInstance( context, schema == null ? null : schema.FilterSelf() );
 #endif // !XAMIOS && !XAMDROID && !UNITY
 		}
