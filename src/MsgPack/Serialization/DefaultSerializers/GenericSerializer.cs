@@ -82,40 +82,38 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		private static IMessagePackSingleObjectSerializer CreateNullableSerializer( SerializationContext context, Type underlyingType, PolymorphismSchema schema )
 		{
-			var factoryType = typeof( NullableInstanceFactory<> ).MakeGenericType( underlyingType );
-			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
-#if DEBUG && !UNITY
-			Contract.Assert( instanceFactory != null );
-#endif // DEBUG && !UNITY
-			return instanceFactory.Create( context, schema ) as IMessagePackSingleObjectSerializer;
+			return
+				( ( IGenericBuiltInSerializerFactory )Activator.CreateInstance(
+					typeof( NullableInstanceFactory<> ).MakeGenericType( underlyingType )
+				) ).Create( context, schema );
 		}
 
 		private static IMessagePackSingleObjectSerializer CreateListSerializer( SerializationContext context, Type itemType, PolymorphismSchema schema )
 		{
-			var factoryType = typeof( ListInstanceFactory<> ).MakeGenericType( itemType );
-			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
 #if DEBUG && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
-			Contract.Assert( instanceFactory != null );
 			if ( SerializerDebugging.AvoidsGenericSerializer )
 			{
 				return null;
 			}
 #endif // DEBUG && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
-			return instanceFactory.Create( context, schema ) as IMessagePackSingleObjectSerializer;
+			return
+				( ( IGenericBuiltInSerializerFactory )Activator.CreateInstance(
+					typeof( ListInstanceFactory<> ).MakeGenericType( itemType )
+				) ).Create( context, schema );
 		}
 
 		private static IMessagePackSingleObjectSerializer CreateDictionarySerializer( SerializationContext context, Type keyType, Type valueType, PolymorphismSchema schema )
 		{
-			var factoryType = typeof( DictionaryInstanceFactory<,> ).MakeGenericType( keyType, valueType );
-			var instanceFactory = Activator.CreateInstance( factoryType ) as IInstanceFactory;
 #if DEBUG && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
-			Contract.Assert( instanceFactory != null );
 			if ( SerializerDebugging.AvoidsGenericSerializer )
 			{
 				return null;
 			}
 #endif // DEBUG && !XAMIOS && !XAMDROID && !UNITY_IPHONE && !UNITY_ANDROID
-			return instanceFactory.Create( context, schema ) as IMessagePackSingleObjectSerializer;
+			return
+				( ( IGenericBuiltInSerializerFactory )Activator.CreateInstance(
+					typeof( DictionaryInstanceFactory<,> ).MakeGenericType( keyType, valueType )
+				) ).Create( context, schema );
 		}
 
 #if SILVERLIGHT || NETFX_35 || NETFX_40
@@ -147,34 +145,30 @@ namespace MsgPack.Serialization.DefaultSerializers
 				case "ImmutableQueue`1":
 				{
 					return
-						Activator.CreateInstance(
-							typeof( ImmutableCollectionSerializer<,> )
-								.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] ),
-							context,
-							itemSchema.ItemSchema
-						) as IMessagePackSingleObjectSerializer;
+						( ( IGenericBuiltInSerializerFactory )
+							Activator.CreateInstance(
+								typeof( ImmutableCollectionSerializerFactory<,> )
+									.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] )
+						) ).Create( context, itemSchema );
 				}
 				case "ImmutableStack`1":
 				{
 					return
-						Activator.CreateInstance(
-							typeof( ImmutableStackSerializer<,> )
-								.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] ),
-							context,
-							itemSchema.ItemSchema
-						) as IMessagePackSingleObjectSerializer;
+						( ( IGenericBuiltInSerializerFactory )
+							Activator.CreateInstance(
+								typeof( ImmutableStackSerializerFactory<,> )
+									.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] )
+						) ).Create( context, itemSchema );
 				}
 				case "ImmutableDictionary`2":
 				case "ImmutableSortedDictionary`2":
 				{
 					return
-						Activator.CreateInstance(
-							typeof( ImmutableDictionarySerializer<,,> )
-								.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ], targetType.GetGenericArguments()[ 1 ] ),
-							context,
-							itemSchema.KeySchema,
-							itemSchema.ItemSchema
-						) as IMessagePackSingleObjectSerializer;
+						( ( IGenericBuiltInSerializerFactory )
+							Activator.CreateInstance(
+								typeof( ImmutableDictionarySerializerFactory<,,> )
+									.MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ], targetType.GetGenericArguments()[ 1 ] )
+						) ).Create( context, itemSchema );
 				}
 				default:
 				{
@@ -192,107 +186,215 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public static IMessagePackSingleObjectSerializer TryCreateCollectionInterfaceSerializer( SerializationContext context, Type abstractType, Type concreteType, PolymorphismSchema schema )
 		{
 			var itemSchema = ( schema ?? PolymorphismSchema.Default );
-			Type serializerType;
-			object[] arguments;
 
 			if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IList<> ) )
 			{
-				serializerType = typeof( ListSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
-				arguments = new object[] { context, concreteType, itemSchema.ItemSchema };
+				return
+					( ( IUniversalGenericSerializerFactory )Activator.CreateInstance(
+						typeof( ListSerializerFactory<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] )
+					) ).Create( context, concreteType, itemSchema );
 			}
 #if !NETFX_35 && !UNITY
 			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( ISet<> ) )
 			{
-				serializerType = typeof( SetSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
-				arguments = new object[] { context, concreteType, itemSchema.ItemSchema };
+				return
+					( ( IUniversalGenericSerializerFactory )Activator.CreateInstance(
+						typeof( SetSerializerFactory<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] )
+					) ).Create( context, concreteType, itemSchema );
 			}
 #endif // !NETFX_35 && !UNITY
 			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( ICollection<> ) )
 			{
-				serializerType = typeof( CollectionSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
-				arguments = new object[] { context, concreteType, itemSchema.ItemSchema };
+				return
+					( ( IUniversalGenericSerializerFactory )Activator.CreateInstance(
+						typeof( CollectionSerializerFactory<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] )
+					) ).Create( context, concreteType, itemSchema );
 			}
 			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IEnumerable<> ) )
 			{
-				serializerType = typeof( EnumerableSerializer<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] );
-				arguments = new object[] { context, concreteType, itemSchema.ItemSchema };
+				return
+					( ( IUniversalGenericSerializerFactory )Activator.CreateInstance(
+						typeof( EnumerableSerializerFactory<> ).MakeGenericType( abstractType.GetGenericArguments()[ 0 ] )
+					) ).Create( context, concreteType, itemSchema );
 			}
 			else if ( abstractType.GetIsGenericType() && abstractType.GetGenericTypeDefinition() == typeof( IDictionary<,> ) )
 			{
-				serializerType =
-					typeof( DictionarySerializer<,> ).MakeGenericType(
-						abstractType.GetGenericArguments()[ 0 ],
-						abstractType.GetGenericArguments()[ 1 ]
-					);
-				arguments = new object[] { context, concreteType, itemSchema.KeySchema, itemSchema.ItemSchema };
+				return
+					( ( IUniversalGenericSerializerFactory )Activator.CreateInstance(
+						typeof( DictionarySerializerFactory<,> ).MakeGenericType(
+							abstractType.GetGenericArguments()[ 0 ],
+							abstractType.GetGenericArguments()[ 1 ]
+						)
+					) ).Create( context, concreteType, itemSchema );
 			}
 			else if ( abstractType == typeof( IList ) )
 			{
-				serializerType = typeof( NonGenericListSerializer );
-				arguments = new object[] { context, concreteType, itemSchema.ItemSchema };
+				return new NonGenericListSerializer( context, concreteType, itemSchema.ItemSchema );
 			}
 			else if ( abstractType == typeof( ICollection ) )
 			{
-				serializerType = typeof( NonGenericCollectionSerializer );
-				arguments = new object[] { context, concreteType, itemSchema.ItemSchema };
+				return new NonGenericCollectionSerializer( context, concreteType, itemSchema.ItemSchema );
 			}
 			else if ( abstractType == typeof( IEnumerable ) )
 			{
-				serializerType = typeof( NonGenericEnumerableSerializer );
-				arguments = new object[] { context, concreteType, itemSchema.ItemSchema };
+				return new NonGenericEnumerableSerializer( context, concreteType, itemSchema.ItemSchema );
 			}
 			else if ( abstractType == typeof( IDictionary ) )
 			{
-				serializerType = typeof( NonGenericDictionarySerializer );
-				arguments = new object[] { context, concreteType, itemSchema.KeySchema, itemSchema.ItemSchema };
+				return new NonGenericDictionarySerializer( context, concreteType, itemSchema.KeySchema, itemSchema.ItemSchema );
 			}
 			else
 			{
 				return null;
 			}
-
-			return Activator.CreateInstance( serializerType, arguments ) as IMessagePackSingleObjectSerializer;
 		}
 
 		/// <summary>
-		///		Defines non-generic factory method.
+		///		Defines non-generic factory method for built-in serializers which require generic type argument.
 		/// </summary>
-		private interface IInstanceFactory
+		private interface IGenericBuiltInSerializerFactory
 		{
-			object Create( SerializationContext context, PolymorphismSchema schema );
+			IMessagePackSingleObjectSerializer Create( SerializationContext context, PolymorphismSchema schema );
 		}
 
-		private sealed class NullableInstanceFactory<T> : IInstanceFactory
+		private sealed class NullableInstanceFactory<T> : IGenericBuiltInSerializerFactory
 			where T : struct
 		{
 			public NullableInstanceFactory() { }
 
-			public object Create( SerializationContext context, PolymorphismSchema schema )
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, PolymorphismSchema schema )
 			{
 				return new NullableMessagePackSerializer<T>( context );
 			}
 		}
 
-		private sealed class ListInstanceFactory<T> : IInstanceFactory
+		private sealed class ListInstanceFactory<T> : IGenericBuiltInSerializerFactory
 		{
 			public ListInstanceFactory() { }
 
-			public object Create( SerializationContext context, PolymorphismSchema schema )
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, PolymorphismSchema schema )
 			{
 				var itemSchema = schema ?? PolymorphismSchema.Default;
 				return new System_Collections_Generic_List_1MessagePackSerializer<T>( context, itemSchema.ItemSchema );
 			}
 		}
 
-		private sealed class DictionaryInstanceFactory<TKey, TValue> : IInstanceFactory
+		private sealed class DictionaryInstanceFactory<TKey, TValue> : IGenericBuiltInSerializerFactory
 		{
 			public DictionaryInstanceFactory() { }
 
-			public object Create( SerializationContext context, PolymorphismSchema schema )
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, PolymorphismSchema schema )
 			{
 				var itemSchema = schema ?? PolymorphismSchema.Default;
 				return new System_Collections_Generic_Dictionary_2MessagePackSerializer<TKey, TValue>( context, itemSchema.KeySchema, itemSchema.ItemSchema );
 			}
 		}
+
+#if !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+
+		private sealed class ImmutableCollectionSerializerFactory<T, TItem> : IGenericBuiltInSerializerFactory
+			where T : IEnumerable<TItem>
+		{
+			public ImmutableCollectionSerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new ImmutableCollectionSerializer<T, TItem>( context, itemSchema.ItemSchema );
+			}
+		}
+
+		private sealed class ImmutableStackSerializerFactory<T, TItem> : IGenericBuiltInSerializerFactory
+			where T : IEnumerable<TItem>
+		{
+			public ImmutableStackSerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new ImmutableStackSerializer<T, TItem>( context, itemSchema.ItemSchema );
+			}
+		}
+
+		private sealed class ImmutableDictionarySerializerFactory<T, TKey, TValue> : IGenericBuiltInSerializerFactory
+			where T : IDictionary<TKey, TValue>
+		{
+			public ImmutableDictionarySerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new ImmutableDictionarySerializer<T, TKey, TValue>( context, itemSchema.KeySchema, itemSchema.ItemSchema );
+			}
+		}
+
+#endif
+
+		/// <summary>
+		///		Defines non-generic factory method for 'universal' serializers which use general collection features and require generic type arguments.
+		/// </summary>
+		private interface IUniversalGenericSerializerFactory
+		{
+			IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema );
+		}
+
+		// ReSharper disable MemberHidesStaticFromOuterClass
+		private sealed class EnumerableSerializerFactory<T> : IUniversalGenericSerializerFactory
+		{
+			public EnumerableSerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new EnumerableSerializer<T>( context, targetType, itemSchema.ItemSchema );
+			}
+		}
+
+		private sealed class CollectionSerializerFactory<T> : IUniversalGenericSerializerFactory
+		{
+			public CollectionSerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new CollectionSerializer<T>( context, targetType, itemSchema.ItemSchema );
+			}
+		}
+
+#if !NETFX_35 && !UNITY
+		private sealed class SetSerializerFactory<T> : IUniversalGenericSerializerFactory
+		{
+			public SetSerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new SetSerializer<T>( context, targetType, itemSchema.ItemSchema );
+			}
+		}
+#endif // !NETFX_35 && !UNITY
+
+		private sealed class ListSerializerFactory<T> : IUniversalGenericSerializerFactory
+		{
+			public ListSerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new ListSerializer<T>( context, targetType, itemSchema.ItemSchema );
+			}
+		}
+
+		private sealed class DictionarySerializerFactory<TKey, TValue> : IUniversalGenericSerializerFactory
+		{
+			public DictionarySerializerFactory() { }
+
+			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new DictionarySerializer<TKey, TValue>( context, targetType, itemSchema.KeySchema, itemSchema.ItemSchema );
+			}
+		}
+		// ReSharper restore MemberHidesStaticFromOuterClass
 	}
 }
