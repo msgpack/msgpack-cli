@@ -148,7 +148,7 @@ namespace MsgPack.Serialization.Polymorphic
 							BitConverter.ToInt32( version, 8 ),
 							BitConverter.ToInt32( version, 12 )
 						),
-						culture,
+						String.IsNullOrEmpty( culture ) ? "neutral" : culture,
 						Binary.ToHexString( publicKeyToken )
 					)
 				);
