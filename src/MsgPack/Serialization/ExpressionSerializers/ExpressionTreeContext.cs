@@ -42,7 +42,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		///		Its type is <see cref="SerializationContext"/>, and it holds dependent serializers.
 		///		This value will not be <c>null</c>.
 		/// </value>
-		public ExpressionConstruct Context
+		public override ExpressionConstruct Context
 		{
 			get { return this._context; }
 		}

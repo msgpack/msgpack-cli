@@ -531,15 +531,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return default( TConstruct );
 		}
 
-		protected override TConstruct EmitGetSerializerExpression( TContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
-		{
-			Contract.Requires( context != null );
-			Contract.Requires( targetType != null );
-			Contract.Ensures( Contract.Result<TConstruct>() != null );
-			Contract.Ensures( Contract.Result<TConstruct>().ContextType == typeof( MessagePackSerializer<> ).MakeGenericType( targetType ) );
-			return default( TConstruct );
-		}
-
 		protected override TConstruct EmitConditionalExpression( TContext context, TConstruct conditionExpression, TConstruct thenExpression, TConstruct elseExpression )
 		{
 			Contract.Requires( context != null );

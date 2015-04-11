@@ -1077,7 +1077,74 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <remarks>
 		///		The serializer reference methodology is implication specific.
 		/// </remarks>
-		protected abstract TConstruct EmitGetSerializerExpression( TContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema );
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		protected virtual TConstruct EmitGetSerializerExpression(
+			TContext context,
+			Type targetType,
+			SerializingMember? memberInfo,
+			PolymorphismSchema itemsSchema
+		)
+		{
+			if ( memberInfo != null && targetType.GetIsEnum() )
+			{
+				return
+					this.EmitInvokeMethodExpression(
+						context,
+						context.Context,
+						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+						this.EmitBoxExpression(
+							context,
+							typeof( EnumSerializationMethod ),
+							this.EmitInvokeMethodExpression(
+								context,
+								null,
+								Metadata._EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethodMethod,
+								context.Context,
+								this.EmitTypeOfExpression( context, targetType ),
+								this.MakeEnumLiteral(
+									context,
+									typeof( EnumMemberSerializationMethod ),
+									memberInfo.Value.GetEnumMemberSerializationMethod()
+									)
+								)
+							)
+						);
+			}
+			else
+			{
+				// Check by try to get serializer now.
+				var schemaForMember = itemsSchema ??
+									( memberInfo != null
+										? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
+										: PolymorphismSchema.Default );
+				context.SerializationContext.GetSerializer( targetType, schemaForMember );
+
+				var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), "__schema" );
+				return
+					this.EmitSequentialStatements(
+						context,
+						typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
+						new[] { schema }
+						.Concat(
+							this.EmitConstructPolymorphismSchema(
+								context,
+								schema,
+								schemaForMember
+							)
+						).Concat(
+							new[]
+							{
+								this.EmitInvokeMethodExpression(
+									context,
+									context.Context,
+									Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
+									schema
+								)
+							}
+						)
+					);
+			}
+		}
 
 		/// <summary>
 		/// Emits the pack item expression.

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,6 +28,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// <typeparam name="TConstruct">The contextType of the code construct for serializer builder.</typeparam>
 	internal abstract class SerializerGenerationContext<TConstruct>
 	{
+		/// <summary>
+		///		Gets the code construct which represents 'context' parameter of generated methods.
+		/// </summary>
+		/// <value>
+		///		The code construct which represents 'context' parameter of generated methods.
+		///		Its type is <see cref="SerializationContext"/>, and it holds dependent serializers.
+		///		This value will not be <c>null</c>.
+		/// </value>
+		public virtual TConstruct Context
+		{
+			get { throw new NotSupportedException(); }
+		}
+
 		/// <summary>
 		///		Gets the serialization context which holds various serialization configuration.
 		/// </summary>
