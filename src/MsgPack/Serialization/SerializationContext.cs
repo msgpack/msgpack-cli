@@ -485,7 +485,7 @@ namespace MsgPack.Serialization
 									// On debugging, or AOT only envs, use reflection based aproach.
 									serializer =
 										this.GetSerializerWithoutGeneration<T>( schema )
-										?? MessagePackSerializer.CreateReflectionInternal<T>( this, schema );
+										?? MessagePackSerializer.CreateReflectionInternal<T>( this, this.EnsureConcreteTypeRegistered( typeof( T ) ), schema );
 #if !XAMIOS && !XAMDROID && !UNITY
 								}
 								else
@@ -575,7 +575,23 @@ namespace MsgPack.Serialization
 			return serializer;
 		}
 
+		private Type EnsureConcreteTypeRegistered( Type mayBeAbstractType )
+		{
+			if ( !mayBeAbstractType.GetIsAbstract() && !mayBeAbstractType.GetIsInterface() )
+			{
+				return mayBeAbstractType;
+			}
 
+			var concreteType = this.DefaultCollectionTypes.GetConcreteType( mayBeAbstractType );
+			if ( concreteType == null )
+			{
+				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( mayBeAbstractType );
+			}
+
+			return concreteType;
+		}
+
+		
 		private MessagePackSerializer<T> GetSerializerWithoutGeneration<T>( PolymorphismSchema schema )
 		{
 			PolymorphicSerializerProvider<T> provider;

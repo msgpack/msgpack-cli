@@ -219,9 +219,6 @@ namespace MsgPack.Serialization
 			);
 
 #endif // DEBUG
-#if XAMIOS || XAMDROID || UNITY
-			return CreateReflectionInternal<T>( context, schema );
-#else
 			Type concreteType = null;
 
 			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
@@ -245,6 +242,7 @@ namespace MsgPack.Serialization
 				ValidateType( typeof( T ) );
 			}
 
+#if !XAMIOS && !XAMDROID && !UNITY
 			ISerializerBuilder<T> builder;
 #if NETFX_CORE || WINDOWS_PHONE
 			builder = new ExpressionTreeSerializerBuilder<T>();
@@ -255,9 +253,11 @@ namespace MsgPack.Serialization
 			{
 				case EmitterFlavor.ReflectionBased:
 				{
-					return 
-						DefaultSerializers.GenericSerializer.TryCreateCollectionInterfaceSerializer( context, typeof(T), concreteType, schema ) as MessagePackSerializer<T>
-						?? CreateReflectionInternal<T>( context, schema );
+#endif // !XAMIOS && !XAMDROID && !UNITY
+					return
+						DefaultSerializers.GenericSerializer.TryCreateCollectionInterfaceSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
+						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
+#if !XAMIOS && !XAMDROID && !UNITY
 				}
 #if !WINDOWS_PHONE && !NETFX_35
 				case EmitterFlavor.ExpressionBased:
@@ -297,7 +297,7 @@ namespace MsgPack.Serialization
 #endif // NETFX_CORE else
 
 			return builder.BuildSerializerInstance( context, schema == null ? null : schema.FilterSelf() );
-#endif // XAMIOS || XAMDROID || UNITY else
+#endif // !XAMIOS && !XAMDROID && !UNITY
 		}
 
 #if !XAMIOS && !XAMDROID && !UNITY
@@ -583,9 +583,9 @@ namespace MsgPack.Serialization
 		}
 #endif // XAMIOS || XAMDROID || UNITY
 
-		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, PolymorphismSchema schema )
+		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{
-			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
+			if ( concreteType.GetIsAbstract() || concreteType.GetIsInterface() )
 			{
 				// return null for polymoirphic provider.
 				return null;
@@ -607,12 +607,12 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
+					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
 				}
 				case CollectionKind.Map:
 				{
 					var itemSchema = ( schema ?? PolymorphismSchema.Default );
-					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, EnsureConcreteTypeRegistered( context, typeof( T ) ), traits, itemSchema.KeySchema, itemSchema.ItemSchema );
+					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, concreteType, traits, itemSchema.KeySchema, itemSchema.ItemSchema );
 				}
 				default:
 				{
@@ -634,22 +634,6 @@ namespace MsgPack.Serialization
 					return new ReflectionObjectMessagePackSerializer<T>( context );
 				}
 			}
-		}
-
-		private static Type EnsureConcreteTypeRegistered( SerializationContext context, Type mayBeAbstractType )
-		{
-			if ( !mayBeAbstractType.GetIsAbstract() && !mayBeAbstractType.GetIsInterface() )
-			{
-				return mayBeAbstractType;
-			}
-
-			var concreteType = context.DefaultCollectionTypes.GetConcreteType( mayBeAbstractType );
-			if ( concreteType == null )
-			{
-				throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( mayBeAbstractType );
-			}
-
-			return concreteType;
 		}
 
 		private static void ValidateType( Type type )
