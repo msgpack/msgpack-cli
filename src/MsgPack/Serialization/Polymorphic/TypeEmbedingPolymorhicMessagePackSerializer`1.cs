@@ -111,5 +111,10 @@ namespace MsgPack.Serialization.Polymorphic
 				return ( T )this.GetActualTypeSerializer( objectType ).UnpackFrom( subTreeUnpacker );
 			}
 		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
+		{
+			this.GetActualTypeSerializer( collection.GetType() ).UnpackTo( unpacker, collection );
+		}
 	}
 }

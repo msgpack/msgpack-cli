@@ -144,5 +144,10 @@ namespace MsgPack.Serialization.Polymorphic
 					).Unpack( buffer );
 			}
 		}
+
+		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
+		{
+			this.GetActualTypeSerializer( collection.GetType() ).UnpackTo( unpacker, collection );
+		}
 	}
 }
