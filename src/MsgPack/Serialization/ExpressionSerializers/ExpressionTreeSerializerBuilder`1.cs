@@ -476,17 +476,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ExpressionConstruct EmitGetSerializerExpression( ExpressionTreeContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
-			if ( memberInfo == null )
-			{
-				return
-					this.EmitInvokeMethodExpression(
-						context,
-						context.Context,
-						Metadata._SerializationContext.GetSerializer1_Method.MakeGenericMethod( targetType )
-					);
-
-			}
-			else if ( targetType.GetIsEnum() )
+			if ( memberInfo != null && targetType.GetIsEnum() )
 			{
 				return
 					this.EmitInvokeMethodExpression(
@@ -523,7 +513,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 							this.EmitConstructPolymorphismSchema(
 								context,
 								schema,
-								itemsSchema ?? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo )
+								itemsSchema ?? ( memberInfo != null ? PolymorphismSchema.Create( context.SerializationContext, targetType, memberInfo ) : PolymorphismSchema.Default )
 							)
 						).Concat(
 							new[]
