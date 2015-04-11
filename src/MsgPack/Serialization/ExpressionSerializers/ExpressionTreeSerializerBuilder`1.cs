@@ -540,7 +540,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		{
 #if DEBUG
 			Contract.Assert(
-				elseExpression == null || ( thenExpression.ContextType == elseExpression.ContextType ),
+				elseExpression == null 
+				|| thenExpression.ContextType == typeof( void ) 
+				|| elseExpression.ContextType == typeof( void )
+				|| thenExpression.ContextType == elseExpression.ContextType,
 				thenExpression.ContextType + " != " + ( elseExpression == null ? "(null)" : elseExpression.ContextType.FullName )
 			);
 #endif
@@ -548,7 +551,7 @@ namespace MsgPack.Serialization.ExpressionSerializers
 			return
 				elseExpression == null
 				? Expression.IfThen( conditionExpression, thenExpression )
-				: thenExpression.ContextType == typeof( void )
+				: ( thenExpression.ContextType == typeof( void ) || elseExpression.ContextType == typeof( void ) )
 				? Expression.IfThenElse( conditionExpression, thenExpression, elseExpression )
 				: Expression.Condition( conditionExpression, thenExpression, elseExpression );
 		}
