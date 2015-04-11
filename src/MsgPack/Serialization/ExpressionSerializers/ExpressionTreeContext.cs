@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -351,11 +351,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <summary>
 		///		Gets the delegate which refers created <c>PackUnderlyingValueTo(Packer,T)</c> instance method for <see cref="ExpressionCallbackEnumMessagePackSerializer{T}"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of deserialization target.</typeparam>
 		/// <returns>
 		///		The delegate which was set for <c>UnpackToCore</c> method.
 		/// </returns>
-		public Delegate GetPackUnderyingValueTo<T>()
+		public Delegate GetPackUnderyingValueTo()
 		{
 			return this._packUnderyingValueTo;
 		}
@@ -363,11 +362,10 @@ namespace MsgPack.Serialization.ExpressionSerializers
 		/// <summary>
 		///		Gets the delegate which refers created <c>UnpackFromUnderlyingValue(MessagePackObject)</c> instance method for <see cref="ExpressionCallbackEnumMessagePackSerializer{T}"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of deserialization target.</typeparam>
 		/// <returns>
 		///		The delegate which was set for <c>UnpackFromCore</c> method.
 		/// </returns>
-		public Delegate GetUnpackFromUnderlyingValue<T>()
+		public Delegate GetUnpackFromUnderlyingValue()
 		{
 			return this._unpackFromUnderlyingValue;
 		}

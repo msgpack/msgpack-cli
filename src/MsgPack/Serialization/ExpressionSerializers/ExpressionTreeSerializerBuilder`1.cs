@@ -688,8 +688,8 @@ namespace MsgPack.Serialization.ExpressionSerializers
 #endif
 
 			// Get at this point to prevent unexpected context change.
-			var packUnderyingValueTo = codeGenerationContext.GetPackUnderyingValueTo<TObject>();
-			var unpackFromUnderlyingValue = codeGenerationContext.GetUnpackFromUnderlyingValue<TObject>();
+			var packUnderyingValueTo = codeGenerationContext.GetPackUnderyingValueTo();
+			var unpackFromUnderlyingValue = codeGenerationContext.GetUnpackFromUnderlyingValue();
 
 			var targetType = typeof( ExpressionCallbackEnumMessagePackSerializer<> ).MakeGenericType( typeof( TObject ) );
 
