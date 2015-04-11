@@ -97,7 +97,9 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "context" );
 			}
 
-			return CreateInternal<T>( context, null );
+			// Old Create behavior was effectively Get() because the Builder internally register genreated serializer and returned existent one if it had been already registered. 
+			// It was just aweful resource consumption.
+			return Get<T>( context, null );
 		}
 
 		/// <summary>
@@ -594,7 +596,6 @@ namespace MsgPack.Serialization
 				return null;
 			}
 
-#warning TOOD: maybe unnecessary
 			var serializer = context.Serializers.Get<T>( context );
 
 			if ( serializer != null )
