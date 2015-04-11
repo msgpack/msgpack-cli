@@ -149,7 +149,7 @@ namespace MsgPack.Serialization.Polymorphic
 							BitConverter.ToInt32( version, 12 )
 						),
 						String.IsNullOrEmpty( culture ) ? "neutral" : culture,
-						Binary.ToHexString( publicKeyToken )
+						( publicKeyToken == null || publicKeyToken.Length == 0 ) ? "null" : Binary.ToHexString( publicKeyToken, false )
 					)
 				);
 #endif // !NETFX_CORE

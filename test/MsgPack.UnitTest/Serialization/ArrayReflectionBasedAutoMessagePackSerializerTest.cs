@@ -59,7 +59,7 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack.Serialization
 {
 	[TestFixture]
-	[Timeout( 60000 )]
+	//[Timeout( 60000 )]
 	public class ArrayReflectionBasedReflectionMessagePackSerializerTest
 	{
 		private static SerializationContext GetSerializationContext()
