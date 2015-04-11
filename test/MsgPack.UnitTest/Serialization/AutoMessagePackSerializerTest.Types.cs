@@ -4227,8 +4227,6 @@ namespace MsgPack.Serialization
 			private object _Tuple1ObjectItself;
 
 			[MessagePackRuntimeType]
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
 			public object Tuple1ObjectItself
 			{
 				get { return this._Tuple1ObjectItself; }
@@ -4247,15 +4245,13 @@ namespace MsgPack.Serialization
 
 			public static PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			}
 		}
 
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField
 		{
 			[MessagePackRuntimeType]
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
 			public  object Tuple1ObjectItself;
 
 			private PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField( object Tuple1ObjectItself ) 
@@ -4270,7 +4266,7 @@ namespace MsgPack.Serialization
 
 			public static PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField Initialize()
 			{
-				return new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+				return new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			}
 		}
 
@@ -4279,8 +4275,6 @@ namespace MsgPack.Serialization
 			private object _Tuple1ObjectItself;
 
 			[MessagePackRuntimeType]
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
 			public object Tuple1ObjectItself
 			{
 				get { return this._Tuple1ObjectItself; }
@@ -4298,8 +4292,6 @@ namespace MsgPack.Serialization
 			private object _Tuple1ObjectItself;
 
 			[MessagePackRuntimeType]
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
 			public object Tuple1ObjectItself
 			{
 				get { return this._Tuple1ObjectItself; }
@@ -4316,8 +4308,6 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeType]
-			[MessagePackKnownTupleItemType( 1, 0, typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 1, 1, typeof( DirectoryEntry ) )]
 			public readonly object Tuple1ObjectItself;
 
 			public PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( object Tuple1ObjectItself ) 
@@ -8155,7 +8145,6 @@ namespace MsgPack.Serialization
 			private object _Tuple1ObjectItself;
 
 			[MessagePackRuntimeType]
-			[MessagePackRuntimeTupleItemType( 1 )]
 			public object Tuple1ObjectItself
 			{
 				get { return this._Tuple1ObjectItself; }
@@ -8174,14 +8163,13 @@ namespace MsgPack.Serialization
 
 			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			}
 		}
 
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField
 		{
 			[MessagePackRuntimeType]
-			[MessagePackRuntimeTupleItemType( 1 )]
 			public  object Tuple1ObjectItself;
 
 			private PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField( object Tuple1ObjectItself ) 
@@ -8196,7 +8184,7 @@ namespace MsgPack.Serialization
 
 			public static PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField Initialize()
 			{
-				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+				return new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			}
 		}
 
@@ -8205,7 +8193,6 @@ namespace MsgPack.Serialization
 			private object _Tuple1ObjectItself;
 
 			[MessagePackRuntimeType]
-			[MessagePackRuntimeTupleItemType( 1 )]
 			public object Tuple1ObjectItself
 			{
 				get { return this._Tuple1ObjectItself; }
@@ -8223,7 +8210,6 @@ namespace MsgPack.Serialization
 			private object _Tuple1ObjectItself;
 
 			[MessagePackRuntimeType]
-			[MessagePackRuntimeTupleItemType( 1 )]
 			public object Tuple1ObjectItself
 			{
 				get { return this._Tuple1ObjectItself; }
@@ -8240,7 +8226,6 @@ namespace MsgPack.Serialization
 		public class PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor
 		{
 			[MessagePackRuntimeType]
-			[MessagePackRuntimeTupleItemType( 1 )]
 			public readonly object Tuple1ObjectItself;
 
 			public PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( object Tuple1ObjectItself ) 
@@ -9386,7 +9371,7 @@ namespace MsgPack.Serialization
 
 		public abstract class AbstractFileSystemEntry : IFileSystemEntry { }
 
-		public class FileSystemEntry : AbstractFileSystemEntry, IComparable<FileSystemEntry>
+		public abstract class FileSystemEntry : AbstractFileSystemEntry, IComparable<FileSystemEntry>
 		{
 			public string Name { get; set; }
 

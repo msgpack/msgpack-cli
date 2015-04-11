@@ -4663,7 +4663,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
@@ -4684,7 +4684,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
@@ -4694,7 +4694,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4705,7 +4705,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
@@ -4715,7 +4715,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4726,7 +4726,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
@@ -4736,7 +4736,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -4747,7 +4747,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
@@ -8390,7 +8390,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
@@ -8411,7 +8411,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
@@ -8421,7 +8421,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8432,7 +8432,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
@@ -8442,7 +8442,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8453,7 +8453,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}
@@ -8463,7 +8463,7 @@ namespace MsgPack.Serialization
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor_Success()
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
-			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
+			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -8474,7 +8474,7 @@ namespace MsgPack.Serialization
 
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result, Is.Not.SameAs( target ) );
-				// Tuple items cannot be polymorphic when the member itself declared as Object.
+				Assert.That( result.Tuple1ObjectItself, Is.EqualTo( target.Tuple1ObjectItself ) );
 				Assert.That( result.Tuple1ObjectItself, Is.InstanceOf( target.Tuple1ObjectItself.GetType() ) );
 			}
 		}

@@ -223,8 +223,8 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 													new KeyValuePair<int, string[]>( 1, new []{ "FileEntry", "DirectoryEntry" } ) ),
 			Member.Of( "Tuple1ObjectItself",		"object",
 													true,
-													@"Tuple.Create( new FileEntry { Name = ""1"", Size = 1 } as FileSystemEntry )",
-													new KeyValuePair<int, string[]>( 1, new []{ "FileEntry", "DirectoryEntry" } ) ),
+													@"Tuple.Create( new FileEntry { Name = ""1"", Size = 1 } as FileEntry )" // Tuple items can be polymorphic only when tuple itself declared as Tuple.
+													), // Tuple items can be polymorphic only when tuple itself declared as Tuple.
 			Member.Of( "Tuple7AllStatic",			"Tuple<string, string, string, string, string, string, string>",
 													false,
 													@"Tuple.Create( " + String.Join( ", ", Enumerable.Range( 1, 7 ).Select( i => String.Format( CultureInfo.InvariantCulture, @"""{0}""", i ) ) ) + " )" ),
@@ -302,8 +302,8 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 		#region ------ <#= attributeType.Name #>.CollectionTypes ------
 <#+
 		}
-		foreach( var member in collectionTypes )
 
+		foreach( var member in collectionTypes )
 		{
 			// Note: combination of deserialization constructor and collection get/read only member is not valid.
 			foreach ( var kind in new [] { TypeKind.ReadWriteProperty, TypeKind.ReadWriteField, TypeKind.GetOnlyCollectionProperty, TypeKind.PrivateSetterCollectionProperty, TypeKind.ReadOnlyCollectionField } )
@@ -398,7 +398,7 @@ private IEnumerable<string> GeneratePolymorphismTestPartsCore( bool generateType
 
 		public abstract class AbstractFileSystemEntry : IFileSystemEntry { }
 
-		public class FileSystemEntry : AbstractFileSystemEntry, IComparable<FileSystemEntry>
+		public abstract class FileSystemEntry : AbstractFileSystemEntry, IComparable<FileSystemEntry>
 		{
 			public string Name { get; set; }
 
