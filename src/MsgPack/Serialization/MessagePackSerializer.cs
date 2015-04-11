@@ -222,22 +222,23 @@ namespace MsgPack.Serialization
 #if XAMIOS || XAMDROID || UNITY
 			return CreateReflectionInternal<T>( context, schema );
 #else
+			Type concreteType = null;
+
 			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
 			{
-				Type realType = null;
 				// Abstract collection types will be handled correctly.
 				if ( typeof( T ).GetCollectionTraits().CollectionType != CollectionKind.NotCollection )
 				{
-					realType = context.DefaultCollectionTypes.GetConcreteType( typeof( T ) );
+					concreteType = context.DefaultCollectionTypes.GetConcreteType( typeof( T ) );
 				}
 
-				if ( realType == null )
+				if ( concreteType == null )
 				{
 					// return null for polymoirphic provider.
 					return null;
 				}
 
-				ValidateType( realType );
+				ValidateType( concreteType );
 			}
 			else
 			{
@@ -254,7 +255,9 @@ namespace MsgPack.Serialization
 			{
 				case EmitterFlavor.ReflectionBased:
 				{
-					return CreateReflectionInternal<T>( context, schema );
+					return 
+						DefaultSerializers.GenericSerializer.TryCreateCollectionInterfaceSerializer( context, typeof(T), concreteType, schema ) as MessagePackSerializer<T>
+						?? CreateReflectionInternal<T>( context, schema );
 				}
 #if !WINDOWS_PHONE && !NETFX_35
 				case EmitterFlavor.ExpressionBased:
