@@ -20,36 +20,24 @@
 
 using System;
 using System.Collections;
-using System.Linq;
-using System.Runtime.Serialization;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
-	///		Non generic enumerable interface serializer.
+	///		Non generic collection interface serializer.
 	/// </summary>
-	internal sealed class NonGenericEnumerableSerializer : NonGenericEnumerableSerializerBase<IEnumerable>
+	/// <typeparam name="TCollection">The type of the collection.</typeparam>
+	internal sealed class NonGenericCollectionSerializer<TCollection> : NonGenericEnumerableSerializerBase<TCollection>
+		where TCollection : ICollection
 	{
-		public NonGenericEnumerableSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
-			: base( ownerContext, targetType, itemsSchema ) { }
+		public NonGenericCollectionSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
+			: base( ownerContext, targetType, itemsSchema ) {}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected override void PackArrayHeader( Packer packer, IEnumerable objectTree )
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
+		protected override void PackArrayHeader( Packer packer, TCollection objectTree )
 		{
-			ICollection asICollection;
-			if ( ( asICollection = objectTree as ICollection ) == null )
-			{
-				try
-				{
-					asICollection = objectTree.Cast<MessagePackObject>().ToArray();
-				}
-				catch ( InvalidCastException ex )
-				{
-					throw new SerializationException( "Non generic collection may contain only MessagePackObject type.", ex );
-				}
-			}
-
-			packer.PackArrayHeader( asICollection.Count );
+			packer.PackArrayHeader( objectTree.Count );
 		}
 	}
 }

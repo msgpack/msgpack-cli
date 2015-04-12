@@ -28,7 +28,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// <summary>
 	///		Dictionary interface serializer.
 	/// </summary>
-	internal sealed class NonGenericDictionarySerializer : MessagePackSerializer<IDictionary>
+	/// <typeparam name="TDictionary">The type of the collection.</typeparam>
+	internal sealed class NonGenericDictionarySerializer<TDictionary> : MessagePackSerializer<TDictionary>
+		where TDictionary : IDictionary
 	{
 		private readonly IMessagePackSerializer _collectionDeserializer;
 		private readonly IMessagePackSerializer _keySerializer;
@@ -76,7 +78,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
 			MessageId = "1", Justification = "By design" )]
-		protected internal override void PackToCore( Packer packer, IDictionary objectTree )
+		protected internal override void PackToCore( Packer packer, TDictionary objectTree )
 		{
 			packer.PackMapHeader( objectTree.Count );
 			if ( this._keySerializer == null )
@@ -144,7 +146,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
 			MessageId = "0", Justification = "By design" )]
-		protected internal override IDictionary UnpackFromCore( Unpacker unpacker )
+		protected internal override TDictionary UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -154,21 +156,21 @@ namespace MsgPack.Serialization.DefaultSerializers
 			if ( this._collectionDeserializer != null )
 			{
 				// Fast path:
-				return this._collectionDeserializer.UnpackFrom( unpacker ) as IDictionary;
+				return ( TDictionary ) this._collectionDeserializer.UnpackFrom( unpacker );
 			}
 
 			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 			var collection =
-				( this._collectionConstructorWithoutCapacity != null
+				( TDictionary ) ( this._collectionConstructorWithoutCapacity != null
 					? this._collectionConstructorWithoutCapacity.Invoke( null )
-					: this._collectionConstructorWithCapacity.Invoke( new object[] { itemsCount } ) ) as IDictionary;
+					: this._collectionConstructorWithCapacity.Invoke( new object[] { itemsCount } ) );
 			this.UnpackToCore( unpacker, collection, itemsCount );
 			return collection;
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods",
 			MessageId = "0", Justification = "By design" )]
-		protected internal override void UnpackToCore( Unpacker unpacker, IDictionary collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, TDictionary collection )
 		{
 			if ( this._collectionDeserializer != null )
 			{
@@ -186,7 +188,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		private void UnpackToCore( Unpacker unpacker, IDictionary collection, int itemsCount )
+		private void UnpackToCore( Unpacker unpacker, TDictionary collection, int itemsCount )
 		{
 			if ( this._keySerializer == null )
 			{

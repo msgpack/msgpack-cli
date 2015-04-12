@@ -24,28 +24,30 @@ using System.Collections.Generic;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
-	///		Collection interface serializer.
+	///		List interface serializer.
 	/// </summary>
-	/// <typeparam name="T">The type of the item of collection.</typeparam>
-	internal sealed class CollectionSerializer<T> : EnumerableSerializerBase<ICollection<T>, T>
+	/// <typeparam name="TList">The type of the collection.</typeparam>
+	/// <typeparam name="TItem">The type of the item of collection.</typeparam>
+	internal sealed class ListSerializer<TList, TItem> : EnumerableSerializerBase<TList, TItem>
+		where TList : IList<TItem>
 	{
-		public CollectionSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
+		public ListSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
 			: base( ownerContext, targetType, itemsSchema ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
-		protected override void PackArrayHeader( Packer packer, ICollection<T> objectTree )
+		protected override void PackArrayHeader( Packer packer, TList objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
 		}
 
-		protected internal override void UnpackToCore( Unpacker unpacker, ICollection<T> collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, TList collection )
 		{
 			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected override void AddItem( ICollection<T> collection, T item )
+		protected override void AddItem( TList collection, TItem item )
 		{
 			collection.Add( item );
 		}

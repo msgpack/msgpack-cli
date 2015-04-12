@@ -23,6 +23,8 @@
 #endif
 
 using System;
+using System.Globalization;
+using System.Runtime.Serialization;
 #if !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Concurrent;
 #else // !SILVERLIGHT && !NETFX_35 && !UNITY
@@ -591,7 +593,7 @@ namespace MsgPack.Serialization
 			return concreteType;
 		}
 
-		
+
 		private MessagePackSerializer<T> GetSerializerWithoutGeneration<T>( PolymorphismSchema schema )
 		{
 			PolymorphicSerializerProvider<T> provider;
@@ -601,22 +603,24 @@ namespace MsgPack.Serialization
 				if ( concreteCollectionType != null )
 				{
 					var serializer =
-						GenericSerializer.TryCreateCollectionInterfaceSerializer( this, typeof( T ), concreteCollectionType, schema );
+						GenericSerializer.TryCreateAbstractCollectionSerializer( this, typeof( T ), concreteCollectionType, schema );
 
 					if ( serializer != null )
 					{
 						var typedSerializer = serializer as MessagePackSerializer<T>;
 
 #if DEBUG && !UNITY
-						Contract.Assert( typedSerializer != null );
+						Contract.Assert(
+							typedSerializer != null,
+							serializer.GetType() + " : " + serializer.GetType().BaseType + " is " + typeof( MessagePackSerializer<T> )
+						);
 #endif // DEBUG && !UNITY
 
 						provider = new PolymorphicSerializerProvider<T>( typedSerializer );
 					}
 					else
 					{
-						provider =
-							new PolymorphicSerializerProvider<T>( this.GetSerializer( concreteCollectionType ) as MessagePackSerializer<T> );
+						provider = new PolymorphicSerializerProvider<T>( null );
 					}
 				}
 				else

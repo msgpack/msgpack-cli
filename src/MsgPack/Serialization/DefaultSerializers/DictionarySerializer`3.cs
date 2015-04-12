@@ -27,9 +27,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// <summary>
 	///		Dictionary interface serializer.
 	/// </summary>
+	/// <typeparam name="TDictionary">The type of the dictionary.</typeparam>
 	/// <typeparam name="TKey">The type of the key of dictionary.</typeparam>
 	/// <typeparam name="TValue">The type of the value of dictionary.</typeparam>
-	internal sealed class DictionarySerializer<TKey, TValue> : MessagePackSerializer<IDictionary<TKey, TValue>>
+	internal sealed class DictionarySerializer<TDictionary, TKey, TValue> : MessagePackSerializer<TDictionary>
+		where TDictionary : IDictionary<TKey, TValue>
 	{
 		private readonly MessagePackSerializer<TKey> _keySerializer;
 		private readonly MessagePackSerializer<TValue> _valueSerializer;
@@ -63,7 +65,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
-		protected internal override void PackToCore( Packer packer, IDictionary<TKey, TValue> objectTree )
+		protected internal override void PackToCore( Packer packer, TDictionary objectTree )
 		{
 			packer.PackMapHeader( objectTree.Count );
 			foreach ( var item in objectTree )
@@ -74,7 +76,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected internal override IDictionary<TKey, TValue> UnpackFromCore( Unpacker unpacker )
+		protected internal override TDictionary UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
 			{
@@ -84,21 +86,21 @@ namespace MsgPack.Serialization.DefaultSerializers
 			if ( this._collectionDeserializer != null )
 			{
 				// Fast path:
-				return this._collectionDeserializer.UnpackFrom( unpacker ) as IDictionary<TKey, TValue>;
+				return ( TDictionary ) this._collectionDeserializer.UnpackFrom( unpacker );
 			}
 
 			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
 			var collection =
-				( this._collectionConstructorWithoutCapacity != null
+				( TDictionary )( this._collectionConstructorWithoutCapacity != null
 					? this._collectionConstructorWithoutCapacity.Invoke( null )
-					: this._collectionConstructorWithCapacity.Invoke( new object[] { itemsCount } ) ) as IDictionary<TKey, TValue>;
+					: this._collectionConstructorWithCapacity.Invoke( new object[] { itemsCount } ) );
 			this.UnpackToCore( unpacker, collection, itemsCount );
 			return collection;
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
-		protected internal override void UnpackToCore( Unpacker unpacker, IDictionary<TKey, TValue> collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, TDictionary collection )
 		{
 			if ( this._collectionDeserializer != null )
 			{
@@ -116,7 +118,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		private void UnpackToCore( Unpacker unpacker, IDictionary<TKey, TValue> collection, int itemsCount )
+		private void UnpackToCore( Unpacker unpacker, TDictionary collection, int itemsCount )
 		{
 			for ( int i = 0; i < itemsCount; i++ )
 			{

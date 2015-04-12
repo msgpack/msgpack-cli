@@ -259,7 +259,7 @@ namespace MsgPack.Serialization
 				{
 #endif // !XAMIOS && !XAMDROID && !UNITY
 					return
-						DefaultSerializers.GenericSerializer.TryCreateCollectionInterfaceSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
+						DefaultSerializers.GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
 						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
 #if !XAMIOS && !XAMDROID && !UNITY
 				}
@@ -611,12 +611,11 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				{
-					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
+					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
 				}
 				case CollectionKind.Map:
 				{
-					var itemSchema = ( schema ?? PolymorphismSchema.Default );
-					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, concreteType, traits, itemSchema.KeySchema, itemSchema.ItemSchema );
+					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
 				}
 				default:
 				{

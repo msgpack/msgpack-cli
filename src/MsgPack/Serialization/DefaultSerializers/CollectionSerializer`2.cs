@@ -24,28 +24,30 @@ using System.Collections.Generic;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
-	///		List interface serializer.
+	///		Collection interface serializer.
 	/// </summary>
-	/// <typeparam name="T">The type of the item of collection.</typeparam>
-	internal sealed class ListSerializer<T> : EnumerableSerializerBase<IList<T>, T>
+	/// <typeparam name="TCollection">The type of the collection.</typeparam>
+	/// <typeparam name="TItem">The type of the item of collection.</typeparam>
+	internal sealed class CollectionSerializer<TCollection, TItem> : EnumerableSerializerBase<TCollection, TItem>
+		where TCollection : ICollection<TItem>
 	{
-		public ListSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
+		public CollectionSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
 			: base( ownerContext, targetType, itemsSchema ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
-		protected override void PackArrayHeader( Packer packer, IList<T> objectTree )
+		protected override void PackArrayHeader( Packer packer, TCollection objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
 		}
 
-		protected internal override void UnpackToCore( Unpacker unpacker, IList<T> collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, TCollection collection )
 		{
 			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected override void AddItem( IList<T> collection, T item )
+		protected override void AddItem( TCollection collection, TItem item )
 		{
 			collection.Add( item );
 		}

@@ -63,87 +63,13 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				{
 					return ArraySerializer.Create<T>( context, itemsSchema );
 				}
-				case CollectionDetailedKind.GenericList:
-				{
-					return
-						new ReflectionCollectionSerializer<T>(
-							context,
-							Activator.CreateInstance(
-								typeof( ListSerializer<> ).MakeGenericType( traits.ElementType ),
-								context,
-								targetType,
-								itemsSchema
-							) as IMessagePackSerializer
-						);
-				}
-#if !NETFX_35 && !UNITY
-				case CollectionDetailedKind.GenericSet:
-				{
-					return
-						new ReflectionCollectionSerializer<T>(
-							context,
-							Activator.CreateInstance(
-								typeof( SetSerializer<> ).MakeGenericType( traits.ElementType ),
-								context,
-								targetType,
-								itemsSchema
-							) as IMessagePackSerializer
-						);
-				}
-#endif // !NETFX_35 && !UNITY
-				case CollectionDetailedKind.GenericCollection:
-				{
-					return
-						new ReflectionCollectionSerializer<T>(
-							context,
-							Activator.CreateInstance(
-								typeof( CollectionSerializer<> ).MakeGenericType( traits.ElementType ),
-								context,
-								targetType,
-								itemsSchema
-							) as IMessagePackSerializer
-						);
-				}
-				case CollectionDetailedKind.GenericEnumerable:
-				{
-					return
-						new ReflectionCollectionSerializer<T>(
-							context,
-							Activator.CreateInstance(
-								typeof( EnumerableSerializer<> ).MakeGenericType( traits.ElementType ),
-								context,
-								targetType,
-								itemsSchema
-							) as IMessagePackSerializer
-						);
-				}
-				case CollectionDetailedKind.NonGenericList:
-				{
-					return
-						new ReflectionCollectionSerializer<T>(
-							context,
-							new NonGenericListSerializer( context, targetType, itemsSchema )
-						);
-				}
-				case CollectionDetailedKind.NonGenericCollection:
-				{
-					return
-						new ReflectionCollectionSerializer<T>(
-							context,
-							new NonGenericCollectionSerializer( context, targetType, itemsSchema )
-						);
-				}
 				default:
 				{
-#if DEBUG && !UNITY
-					Contract.Assert( traits.DetailedCollectionType == CollectionDetailedKind.NonGenericEnumerable );
-#endif // DEBUG && !UNITY
 					return
-						new ReflectionCollectionSerializer<T>(
-							context,
-							new NonGenericEnumerableSerializer( context, targetType, itemsSchema )
-						);
+						( MessagePackSerializer<T> )
+							GenericSerializer.TryCreateAbstractCollectionSerializer( context, targetType, targetType, itemsSchema, traits );
 				}
+
 			}
 		}
 
@@ -151,40 +77,12 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			SerializationContext context,
 			Type targetType,
 			CollectionTraits traits,
-			PolymorphismSchema keysSchema,
-			PolymorphismSchema valuesSchema
+			PolymorphismSchema itemsSchema
 		)
 		{
-			if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary )
-			{
-				return
-					new ReflectionCollectionSerializer<T>(
-						context,
-						Activator.CreateInstance(
-							typeof( DictionarySerializer<,> ).MakeGenericType( traits.ElementType.GetGenericArguments() ),
-							context,
-							targetType,
-							keysSchema,
-							valuesSchema
-						) as IMessagePackSerializer
-					);
-			}
-			else
-			{
-#if DEBUG && !UNITY
-				Contract.Assert( traits.DetailedCollectionType == CollectionDetailedKind.NonGenericDictionary );
-#endif // DEBUG && !UNITY
-				return
-					new ReflectionCollectionSerializer<T>(
-						context,
-						new NonGenericDictionarySerializer(
-							context, 
-							targetType, 
-							keysSchema,
-							valuesSchema
-						)
-					);
-			}
+			return
+			( MessagePackSerializer<T> )
+				GenericSerializer.TryCreateAbstractCollectionSerializer( context, targetType, targetType, itemsSchema, traits );
 		}
 
 		public static void GetMetadata(
@@ -251,6 +149,25 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						);
 				}
 			}
+		}
+
+		private static readonly Type[] ConstructorWithCapacityParameters = { typeof( int ) };
+
+		public static Func<int,T> CreateCollectionInstanceFactory<T>()
+		{
+			var constructorWithCapacity =typeof(T).GetConstructor( ConstructorWithCapacityParameters );
+			if ( constructorWithCapacity != null )
+			{
+				return capacity => ( T ) constructorWithCapacity.Invoke( new object[] { capacity } );
+			}
+
+			var constructorWithoutCapacity= typeof(T).GetConstructor( ReflectionAbstractions.EmptyTypes );
+			if ( constructorWithoutCapacity == null )
+			{
+				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( typeof( T ) );
+			}
+
+			return _ => ( T ) constructorWithoutCapacity.Invoke( null );
 		}
 	}
 }

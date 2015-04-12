@@ -31,26 +31,28 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// <summary>
 	///		Set interface serializer.
 	/// </summary>
-	/// <typeparam name="T">The type of the item of collection.</typeparam>
-	internal sealed class SetSerializer<T> : EnumerableSerializerBase<ISet<T>, T>
+	/// <typeparam name="TSet">The type of the collection.</typeparam>
+	/// <typeparam name="TItem">The type of the item of collection.</typeparam>
+	internal sealed class SetSerializer<TSet, TItem> : EnumerableSerializerBase<TSet, TItem>
+		where TSet : ISet<TItem>
 	{
 		public SetSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
 			: base( ownerContext, targetType, itemsSchema ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
-		protected override void PackArrayHeader( Packer packer, ISet<T> objectTree )
+		protected override void PackArrayHeader( Packer packer, TSet objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
 		}
 
-		protected internal override void UnpackToCore( Unpacker unpacker, ISet<T> collection )
+		protected internal override void UnpackToCore( Unpacker unpacker, TSet collection )
 		{
 			this.UnpackToCore( unpacker, collection, UnpackHelpers.GetItemsCount( unpacker ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		protected override void AddItem( ISet<T> collection, T item )
+		protected override void AddItem( TSet collection, TItem item )
 		{
 			collection.Add( item );
 		}

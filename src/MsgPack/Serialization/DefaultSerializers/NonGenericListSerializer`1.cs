@@ -24,18 +24,26 @@ using System.Collections;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
-	///		Non generic collection interface serializer.
+	///		Non generic list interface serializer.
 	/// </summary>
-	internal sealed class NonGenericCollectionSerializer : NonGenericEnumerableSerializerBase<ICollection>
+	/// <typeparam name="TCollection">The type of the collection.</typeparam>
+	internal sealed class NonGenericListSerializer<TCollection> : NonGenericEnumerableSerializerBase<TCollection>
+		where TCollection : IList
 	{
-		public NonGenericCollectionSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
-			: base( ownerContext, targetType, itemsSchema ) {}
+		public NonGenericListSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
+			: base( ownerContext, targetType, itemsSchema ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
-		protected override void PackArrayHeader( Packer packer, ICollection objectTree )
+		protected override void PackArrayHeader( Packer packer, TCollection objectTree )
 		{
 			packer.PackArrayHeader( objectTree.Count );
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
+		protected override void AddItem( TCollection collection, object item )
+		{
+			collection.Add( item );
 		}
 	}
 }

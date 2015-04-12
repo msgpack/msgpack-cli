@@ -19,29 +19,32 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
-	///		Non generic list interface serializer.
+	///		Enumerable interface serializer.
 	/// </summary>
-	internal sealed class NonGenericListSerializer : NonGenericEnumerableSerializerBase<IList>
+	/// <typeparam name="TCollection">The type of the collection.</typeparam>
+	/// <typeparam name="TItem">The type of the item of collection.</typeparam>
+	internal sealed class EnumerableSerializer<TCollection, TItem> : EnumerableSerializerBase<TCollection, TItem>
+		where TCollection : IEnumerable<TItem>
 	{
-		public NonGenericListSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
+		public EnumerableSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
 			: base( ownerContext, targetType, itemsSchema ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "By design" )]
-		protected override void PackArrayHeader( Packer packer, IList objectTree )
+		protected override void PackArrayHeader( Packer packer, TCollection objectTree )
 		{
-			packer.PackArrayHeader( objectTree.Count );
-		}
+			ICollection<TItem> asICollection;
+			if ( ( asICollection = objectTree as ICollection<TItem> ) == null )
+			{
+				asICollection = objectTree.ToArray();
+			}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "By design" )]
-		protected override void AddItem( IList collection, object item )
-		{
-			collection.Add( item );
+			packer.PackArrayHeader( asICollection.Count );
 		}
 	}
 }
