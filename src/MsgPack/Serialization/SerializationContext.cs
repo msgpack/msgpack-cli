@@ -603,7 +603,7 @@ namespace MsgPack.Serialization
 #if DEBUG && !UNITY
 						Contract.Assert(
 							typedSerializer != null,
-							serializer.GetType() + " : " + serializer.GetType().BaseType + " is " + typeof( MessagePackSerializer<T> )
+							serializer.GetType() + " : " + serializer.GetType().GetBaseType() + " is " + typeof( MessagePackSerializer<T> )
 						);
 #endif // DEBUG && !UNITY
 
