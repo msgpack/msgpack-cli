@@ -41,8 +41,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public NonGenericDictionarySerializer(
 			SerializationContext ownerContext,
 			Type targetType,
-			PolymorphismSchema keysSchema,
-			PolymorphismSchema valuesSchema )
+			PolymorphismSchema itemsSchema )
 			: base( ownerContext )
 		{
 			if ( ownerContext.EmitterFlavor == EmitterFlavor.ReflectionBased )
@@ -60,17 +59,17 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
-				this._collectionDeserializer = ownerContext.GetSerializer( targetType );
+				this._collectionDeserializer = ownerContext.GetSerializer( targetType, itemsSchema );
 			}
 
-			if ( keysSchema != null )
+			if ( itemsSchema.KeySchema != null )
 			{
-				this._keySerializer = ownerContext.GetSerializer( typeof( object ), keysSchema );
+				this._keySerializer = ownerContext.GetSerializer( typeof( object ), itemsSchema.KeySchema );
 			}
 
-			if ( valuesSchema != null )
+			if ( itemsSchema.ItemSchema != null )
 			{
-				this._valueSerializer = ownerContext.GetSerializer( typeof( object ), valuesSchema );
+				this._valueSerializer = ownerContext.GetSerializer( typeof( object ), itemsSchema.ItemSchema );
 			}
 		}
 

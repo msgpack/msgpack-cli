@@ -39,11 +39,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly ConstructorInfo _collectionConstructorWithoutCapacity;
 		private readonly ConstructorInfo _collectionConstructorWithCapacity;
 
-		public DictionarySerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
+		public DictionarySerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
 			: base( ownerContext )
 		{
-			this._keySerializer = ownerContext.GetSerializer<TKey>( keysSchema );
-			this._valueSerializer = ownerContext.GetSerializer<TValue>( valuesSchema );
+			this._keySerializer = ownerContext.GetSerializer<TKey>( schema.KeySchema );
+			this._valueSerializer = ownerContext.GetSerializer<TValue>( schema.ItemSchema );
 			if ( ownerContext.EmitterFlavor == EmitterFlavor.ReflectionBased )
 			{
 				this._collectionConstructorWithCapacity =
@@ -59,7 +59,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
-				this._collectionDeserializer = ownerContext.GetSerializer( targetType );
+				this._collectionDeserializer = ownerContext.GetSerializer( targetType, schema );
 			}
 		}
 

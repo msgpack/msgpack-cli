@@ -41,7 +41,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected EnumerableSerializerBase( SerializationContext ownerContext, Type targetType, PolymorphismSchema itemsSchema )
 			: base( ownerContext )
 		{
-			this._itemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema );
+			this._itemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema.ItemSchema );
 			if ( ownerContext.EmitterFlavor == EmitterFlavor.ReflectionBased )
 			{
 				// First use abstract type instead of surrogate concrete type.
@@ -73,7 +73,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
-				this._collectionDeserializer = ownerContext.GetSerializer( targetType );
+				this._collectionDeserializer = ownerContext.GetSerializer( targetType, itemsSchema );
 			}
 		}
 
