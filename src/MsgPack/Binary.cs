@@ -35,13 +35,18 @@ namespace MsgPack
 
 		public static string ToHexString( byte[] blob )
 		{
+			return ToHexString( blob, true );
+		}
+
+		public static string ToHexString( byte[] blob, bool withPrefix )
+		{
 			if ( blob == null || blob.Length == 0 )
 			{
 				return String.Empty;
 			}
 
-			var buffer = new StringBuilder( blob.Length * 2 + 2 );
-			ToHexStringCore( blob, buffer );
+			var buffer = new StringBuilder( blob.Length * 2 + (withPrefix ? 2 : 0 ) );
+			ToHexStringCore( blob, buffer, withPrefix );
 			return buffer.ToString();
 		}
 
@@ -52,12 +57,16 @@ namespace MsgPack
 				return;
 			}
 
-			ToHexStringCore( blob, buffer );
+			ToHexStringCore( blob, buffer, true );
 		}
 
-		private static void ToHexStringCore( byte[] blob, StringBuilder buffer )
+		private static void ToHexStringCore( byte[] blob, StringBuilder buffer, bool withPrefix )
 		{
-			buffer.Append( "0x" );
+			if ( withPrefix )
+			{
+				buffer.Append( "0x" );
+			}
+
 			foreach ( var b in blob )
 			{
 				buffer.Append( ToHexChar( b >> 4 ) );
