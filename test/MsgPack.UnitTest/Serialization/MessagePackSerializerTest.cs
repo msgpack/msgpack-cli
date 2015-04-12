@@ -30,6 +30,7 @@ using TearDownAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.
 using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
+using IgnoreAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.IgnoreAttribute;
 #endif
 
 namespace MsgPack.Serialization
