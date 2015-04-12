@@ -538,7 +538,7 @@ namespace MsgPack.Serialization
 			}
 
 			// Some types always have to use provider. 
-			object registration = serializer;
+			MessagePackSerializerProvider provider;
 			var asEnumSerializer = serializer as ICustomizableEnumSerializer;
 			if ( asEnumSerializer != null )
 			{
@@ -546,29 +546,20 @@ namespace MsgPack.Serialization
 				Contract.Assert( typeof( T ).GetIsEnum(), typeof( T ) + " is not enum but generated serializer is ICustomizableEnumSerializer" );
 #endif // DEBUG && !UNITY
 
-				registration = new EnumMessagePackSerializerProvider( typeof( T ), asEnumSerializer );
+				provider = new EnumMessagePackSerializerProvider( typeof( T ), asEnumSerializer );
 			}
-			else if ( !typeof( T ).GetIsValueType() )
+			else
 			{
 #if DEBUG && !UNITY
 				Contract.Assert( !typeof( T ).GetIsEnum(), typeof( T ) + " is enum but generated serializer is not ICustomizableEnumSerializer : " + ( serializer == null ? "null" : serializer.GetType().FullName ) );
 #endif // DEBUG && !UNITY
 
 				// Creates provider even if no schema -- the schema might be specified future for the type.
-				var provider = new PolymorphicSerializerProvider<T>( serializer );
-				// Fail when already registered manually.
-				this._serializers.Register( typeof( T ), provider );
-				// Replace serializer with registered provider's one.
-				return this._serializers.Get<T>( this, schema );
+				// It is OK to use polymorphic provider for value type.
+				provider = new PolymorphicSerializerProvider<T>( serializer );
 			}
-#if DEBUG && !UNITY
-			else
-			{
-				Contract.Assert( !typeof( T ).GetIsEnum(), typeof( T ) + " is enum but generated serializer is not ICustomizableEnumSerializer : " + ( serializer == null ? "null" : serializer.GetType().FullName ) );
-			}
-#endif // DEBUG && !UNITY
 
-			if ( !this._serializers.Register( typeof( T ), registration ) || providerParameter != null )
+			if ( !this._serializers.Register( typeof( T ), provider ) || providerParameter != null )
 			{
 				// Re-get to avoid duplicated registration and handle provider parameter.
 				serializer = this._serializers.Get<T>( this, providerParameter );

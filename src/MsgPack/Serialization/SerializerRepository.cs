@@ -25,6 +25,8 @@
 using System;
 using System.Collections.Generic;
 
+using MsgPack.Serialization.Polymorphic;
+
 namespace MsgPack.Serialization
 {
 	/// <summary>
@@ -141,10 +143,10 @@ namespace MsgPack.Serialization
 		/// </exception>
 		public bool Register<T>( MessagePackSerializer<T> serializer )
 		{
-			return this.Register( typeof( T ), serializer );
+			return this.Register( typeof( T ), new PolymorphicSerializerProvider<T>( serializer ) );
 		}
 
-		internal bool Register( Type targetType, object serializer )
+		internal bool Register( Type targetType, MessagePackSerializerProvider serializer )
 		{
 			if ( serializer == null )
 			{

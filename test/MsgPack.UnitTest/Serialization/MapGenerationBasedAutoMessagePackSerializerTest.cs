@@ -67,7 +67,6 @@ namespace MsgPack.Serialization
 			var context = PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Map, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
 			// Register serializers for abstract class testing
 			context.Serializers.Register( 
-				typeof( EchoKeyedCollection<string, string> ),
 				new EchoKeyedCollection_2MessagePackSerializer<string, string>( context, null ) 
 			);
 			return context;
@@ -78,7 +77,6 @@ namespace MsgPack.Serialization
 			var context =  PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, compatibilityOptions );
 			// Register serializers for abstract class testing
 			context.Serializers.Register( 
-				typeof( EchoKeyedCollection<string, string> ),
 				new EchoKeyedCollection_2MessagePackSerializer<string, string>( context, null ) 
 			);
 			return context;
