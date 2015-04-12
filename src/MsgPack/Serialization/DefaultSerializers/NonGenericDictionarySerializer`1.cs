@@ -59,6 +59,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
+				if ( typeof( TDictionary ) == targetType )
+				{
+					throw SerializationExceptions.NewNotSupportedBecauseCannotInstanciateAbstractType( typeof( TDictionary ) );
+				}
+
 				this._collectionDeserializer = ownerContext.GetSerializer( targetType, itemsSchema );
 			}
 
