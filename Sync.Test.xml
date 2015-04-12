@@ -148,6 +148,7 @@
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve File="*.config" />
     <Exclude File="*.ps1" />
+    <Preserve File="*.pfx" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
     <Exclude Path="Serialization\ArrayFieldBasedCustomCollectionSerializersTest.cs" />

@@ -457,6 +457,9 @@
     <Compile Include="..\MsgPack\Serialization\Metadata\_Decimal.cs">
       <Link>Serialization\Metadata\_Decimal.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Metadata\_DictionaryEntry.cs">
+      <Link>Serialization\Metadata\_DictionaryEntry.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Metadata\_Enumerable.cs">
       <Link>Serialization\Metadata\_Enumerable.cs</Link>
     </Compile>
