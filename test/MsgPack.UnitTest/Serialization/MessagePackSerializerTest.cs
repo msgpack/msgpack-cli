@@ -46,6 +46,7 @@ namespace MsgPack.Serialization
 
 #pragma warning disable 618
 		[Test]
+		[Ignore] // Deprecated, it should be alias of Get
 		public void TestCreate1_WithoutContext_NewInstance()
 		{
 			var first = MessagePackSerializer.Create<Image>();
@@ -56,6 +57,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		[Ignore] // Deprecated, it should be alias of Get
 		public void TestCreate1_WithContext_NewInstance()
 		{
 			var context = new SerializationContext();
@@ -73,6 +75,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		[Ignore] // Deprecated, it should be alias of Get
 		public void TestCreate_WithoutContext_NewInstance()
 		{
 			var first = MessagePackSerializer.Create( typeof( Image ) );
@@ -93,6 +96,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
+		[Ignore] // Deprecated, it should be alias of Get
 		public void TestCreate_WithContext_NewInstance()
 		{
 			var context = new SerializationContext();
