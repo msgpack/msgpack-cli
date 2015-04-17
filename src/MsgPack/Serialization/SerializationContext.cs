@@ -559,13 +559,10 @@ namespace MsgPack.Serialization
 				provider = new PolymorphicSerializerProvider<T>( serializer );
 			}
 
-			if ( !this._serializers.Register( typeof( T ), provider ) || providerParameter != null )
-			{
-				// Re-get to avoid duplicated registration and handle provider parameter.
-				serializer = this._serializers.Get<T>( this, providerParameter );
-			}
-
-			return serializer;
+			this._serializers.Register( typeof( T ), provider );
+			// Re-get to avoid duplicated registration and handle provider parameter.
+			// If T is null and schema is not provided or default schema is provided, then exception will be thrown here from the new provider.
+			return this._serializers.Get<T>( this, providerParameter );
 		}
 
 		private Type EnsureConcreteTypeRegistered( Type mayBeAbstractType )
