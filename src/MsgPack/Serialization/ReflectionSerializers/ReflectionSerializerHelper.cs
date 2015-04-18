@@ -45,8 +45,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #else
 			return
 				Activator.CreateInstance( typeof( ReflectionEnumMessagePackSerializer<> ).MakeGenericType( typeof( T ) ), context )
-					as
-					MessagePackSerializer<T>;
+					as MessagePackSerializer<T>;
 #endif
 		}
 
