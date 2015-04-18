@@ -11437,12 +11437,12 @@ namespace MsgPack.Serialization
 #if MSTEST
 					catch( Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException ae )
 					{
-						throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( i.ToString(), ae );
+						throw new Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AssertFailedException( String.Format( "[{0}]:{1}", i, ae.Message ), ae );
 					}
 #else
 					catch( AssertionException ae )
 					{
-						throw new AssertionException( i.ToString(), ae );
+						throw new AssertionException( String.Format( "[{0}]:{1}", i, ae.Message ), ae );
 					}
 #endif
 				}
