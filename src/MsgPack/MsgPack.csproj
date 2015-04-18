@@ -209,7 +209,6 @@
     <Compile Include="Serialization\PolymorphismSchemaChildrenType.cs" />
     <Compile Include="Serialization\PolymorphismTarget.cs" />
     <Compile Include="Serialization\PolymorphismType.cs" />
-    <Compile Include="Serialization\ReflectionSerializers\ReflectionCollectionSerializer.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs" />
@@ -236,15 +235,6 @@
     <Compile Include="Serialization\CodeDomSerializers\StatementCodeDomConstruct.cs" />
     <Compile Include="Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs" />
     <Compile Include="Serialization\DefaultSerializers\ArraySerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializers\EnumerableSerializerBase`2.cs" />
-    <Compile Include="Serialization\DefaultSerializers\NonGenericDictionarySerializer`1.cs" />
-    <Compile Include="Serialization\DefaultSerializers\NonGenericEnumerableSerializerBase`1.cs" />
-    <Compile Include="Serialization\DefaultSerializers\NonGenericEnumerableSerializer`1.cs" />
-    <Compile Include="Serialization\DefaultSerializers\NonGenericListSerializer`1.cs" />
-    <Compile Include="Serialization\DefaultSerializers\NonGenericCollectionSerializer`1.cs" />
-    <Compile Include="Serialization\DefaultSerializers\CollectionSerializer`2.cs" />
-    <Compile Include="Serialization\DefaultSerializers\DictionarySerializer`3.cs" />
-    <Compile Include="Serialization\DefaultSerializers\EnumerableSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\GenericSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
@@ -254,9 +244,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ArraySerializer.Primitives.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\DefaultSerializers\ListSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\MsgPack_MessagePackObjectDictionaryMessagePackSerializer.cs" />
-    <Compile Include="Serialization\DefaultSerializers\SetSerializer`2.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Collections_Generic_Stack_1MessagePackSerializer`1.cs" />
