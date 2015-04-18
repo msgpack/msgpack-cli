@@ -30,7 +30,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		where TDictionary : IDictionary
 	{
 		private readonly ICollectionInstanceFactory _concreteCollectionInstanceFactory;
-		private readonly IPolymorphicDeserializer _polymorPhicSerializer;
+		private readonly IPolymorphicDeserializer _polymorphicDeserializer;
 
 		public AbstractNonGenericDictionaryMessagePackSerializer(
 			SerializationContext ownerContext,
@@ -49,15 +49,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 				out this._concreteCollectionInstanceFactory,
 				out serializer
 			);
-			this._polymorPhicSerializer = serializer as IPolymorphicDeserializer;
+			this._polymorphicDeserializer = serializer as IPolymorphicDeserializer;
 		}
 
 		internal override TDictionary InternalUnpackFromCore( Unpacker unpacker )
 		{
-			if ( this._polymorPhicSerializer != null )
+			if ( this._polymorphicDeserializer != null )
 			{
 				// This boxing is OK because TCollection should be reference type because TCollection is abstract class or interface.
-				return ( TDictionary )this._polymorPhicSerializer.PolymorphicUnpackFrom( unpacker );
+				return ( TDictionary )this._polymorphicDeserializer.PolymorphicUnpackFrom( unpacker );
 			}
 			else
 			{

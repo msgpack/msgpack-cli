@@ -26,7 +26,7 @@ using MsgPack.Serialization.Polymorphic;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
-	internal sealed class AbstractNonGenericEnumerableMessagePackSerializer<TCollection> : NonGenericEnumerableMessagePackSerializerBase<TCollection>
+	internal sealed class AbstractNonGenericEnumerableMessagePackSerializer<TCollection> : NonGenericEnumerableMessagePackSerializer<TCollection>
 		where TCollection : IEnumerable
 	{
 		private readonly ICollectionInstanceFactory _concreteCollectionInstanceFactory;
@@ -48,11 +48,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 				out this._concreteCollectionInstanceFactory,
 				out this._concreteSerializer
 			);
-		}
-
-		protected internal override void PackToCore( Packer packer, TCollection objectTree )
-		{
-			this._concreteSerializer.PackTo( packer, objectTree );
 		}
 
 		protected internal override TCollection UnpackFromCore( Unpacker unpacker )
