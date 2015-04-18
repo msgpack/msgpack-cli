@@ -1,4 +1,4 @@
-// #region -- License Terms --
+#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
@@ -16,7 +16,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 // 
-// #endregion -- License Terms --
+#endregion -- License Terms --
 
 #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY

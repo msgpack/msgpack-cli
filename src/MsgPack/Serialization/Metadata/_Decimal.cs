@@ -1,4 +1,4 @@
-﻿// #region -- License Terms --
+﻿#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
@@ -16,7 +16,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 // 
-// #endregion -- License Terms --
+#endregion -- License Terms --
 
 using System;
 using System.Reflection;

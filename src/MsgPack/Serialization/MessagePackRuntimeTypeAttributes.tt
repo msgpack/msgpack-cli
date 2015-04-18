@@ -4,7 +4,7 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
-// #region -- License Terms --
+#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
@@ -22,7 +22,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 // 
-// #endregion -- License Terms --
+#endregion -- License Terms --
 
 // This code is generated with T4Template from MessagePackRuntimeTypeAttributes.tt
 
