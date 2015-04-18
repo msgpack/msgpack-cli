@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@
 using System;
 using System.Collections.Generic;
 
+using MsgPack.Serialization.CollectionSerializers;
+
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
@@ -28,7 +30,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// </summary>
 	/// <typeparam name="T">The type of items of the <see cref="List{T}"/>.</typeparam>
 	// ReSharper disable once InconsistentNaming
-	internal class System_Collections_Generic_List_1MessagePackSerializer<T> : MessagePackSerializer<List<T>>
+	internal class System_Collections_Generic_List_1MessagePackSerializer<T> : MessagePackSerializer<List<T>>, ICollectionInstanceFactory
 	{
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
@@ -88,6 +90,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 					collection.Add( this._itemSerializer.UnpackFromCore( unpacker ) );
 				}
 			}
+		}
+
+		public object CreateInstance( int initialCapacity )
+		{
+			return new List<T>( initialCapacity );
 		}
 	}
 }

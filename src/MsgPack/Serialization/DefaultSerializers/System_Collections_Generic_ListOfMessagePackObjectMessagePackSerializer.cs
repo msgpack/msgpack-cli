@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -21,10 +21,12 @@
 using System;
 using System.Collections.Generic;
 
+using MsgPack.Serialization.CollectionSerializers;
+
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	// ReSharper disable once InconsistentNaming
-	internal class System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer : MessagePackSerializer<List<MessagePackObject>>
+	internal class System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer : MessagePackSerializer<List<MessagePackObject>>, ICollectionInstanceFactory
 	{
 		public System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext ) { }
@@ -76,6 +78,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 				collection.Add( unpacker.LastReadData );
 			}
+		}
+
+		public object CreateInstance( int initialCapacity )
+		{
+			return new List<MessagePackObject>( initialCapacity );
 		}
 	}
 }

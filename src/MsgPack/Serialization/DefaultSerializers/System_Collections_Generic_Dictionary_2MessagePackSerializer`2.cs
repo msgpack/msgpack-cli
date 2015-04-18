@@ -21,6 +21,8 @@
 using System;
 using System.Collections.Generic;
 
+using MsgPack.Serialization.CollectionSerializers;
+
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
@@ -29,7 +31,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// <typeparam name="TKey">The type of keys of the <see cref="Dictionary{TKey,TValue}"/>.</typeparam>
 	/// <typeparam name="TValue">The type of values of the <see cref="Dictionary{TKey,TValue}"/>.</typeparam>
 	// ReSharper disable once InconsistentNaming
-	internal class System_Collections_Generic_Dictionary_2MessagePackSerializer<TKey, TValue> : MessagePackSerializer<Dictionary<TKey, TValue>>
+	internal class System_Collections_Generic_Dictionary_2MessagePackSerializer<TKey, TValue> : MessagePackSerializer<Dictionary<TKey, TValue>>, ICollectionInstanceFactory
 	{
 		private readonly MessagePackSerializer<TKey> _keySerializer;
 		private readonly MessagePackSerializer<TValue> _valueSerializer;
@@ -110,6 +112,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 					collection.Add( key, this._valueSerializer.UnpackFromCore( unpacker ) );
 				}
 			}
+		}
+
+		public object CreateInstance( int initialCapacity )
+		{
+			return new Dictionary<TKey, TValue>( initialCapacity );
 		}
 	}
 }
