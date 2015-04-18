@@ -38,7 +38,7 @@ namespace MsgPack.Serialization.Polymorphic
 	///		Implements polymorphic serializer which uses closed known types and interoperable ext-type feature.
 	/// </summary>
 	/// <typeparam name="T">The base type of the polymorhic member.</typeparam>
-	internal sealed class KnownTypePolymorhicMessagePackSerializer<T> : MessagePackSerializer<T>
+	internal sealed class KnownTypePolymorhicMessagePackSerializer<T> : MessagePackSerializer<T>, IPolymorphicDeserializer
 	{
 		private readonly PolymorphismSchema _schema;
 		private readonly IDictionary<byte, RuntimeTypeHandle> _typeHandleMap;
@@ -143,6 +143,11 @@ namespace MsgPack.Serialization.Polymorphic
 						Type.GetTypeFromHandle( typeHandle )
 					).Unpack( buffer );
 			}
+		}
+
+		object IPolymorphicDeserializer.PolymorphicUnpackFrom( Unpacker unpacker )
+		{
+			return this.UnpackFromCore( unpacker );
 		}
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
