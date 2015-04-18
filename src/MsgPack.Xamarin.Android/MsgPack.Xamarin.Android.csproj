@@ -391,6 +391,9 @@
     <Compile Include="..\MsgPack\Serialization\NilImplicationHandler`4.cs">
       <Link>Serialization\NilImplicationHandler`4.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorphicDeserializer.cs">
+      <Link>Serialization\Polymorphic\IPolymorphicDeserializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorphicHelperAttributes.cs">
       <Link>Serialization\Polymorphic\IPolymorphicHelperAttributes.cs</Link>
     </Compile>
