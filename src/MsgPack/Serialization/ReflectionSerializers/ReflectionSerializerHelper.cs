@@ -52,7 +52,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #endif
 		}
 
-		public static MessagePackSerializer<T> CreateArraySerializer<T>(
+		public static MessagePackSerializer<T> CreateCollectionSerializer<T>(
 			SerializationContext context,
 			Type targetType,
 			CollectionTraits traits,
@@ -124,18 +124,6 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					return null;
 				}
 			}
-		}
-
-		public static MessagePackSerializer<T> CreateMapSerializer<T>(
-			SerializationContext context,
-			Type targetType,
-			CollectionTraits traits,
-			PolymorphismSchema itemsSchema
-		)
-		{
-			return
-			( MessagePackSerializer<T> )
-				GenericSerializer.TryCreateAbstractCollectionSerializer( context, targetType, targetType, itemsSchema, traits );
 		}
 
 		public static void GetMetadata(

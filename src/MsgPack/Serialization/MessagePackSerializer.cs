@@ -610,12 +610,9 @@ namespace MsgPack.Serialization
 			switch ( traits.CollectionType )
 			{
 				case CollectionKind.Array:
-				{
-					return ReflectionSerializerHelper.CreateArraySerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
-				}
 				case CollectionKind.Map:
 				{
-					return ReflectionSerializerHelper.CreateMapSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
+					return ReflectionSerializerHelper.CreateCollectionSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
 				}
 				default:
 				{
