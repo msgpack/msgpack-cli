@@ -167,6 +167,7 @@
     <Compile Include="Serialization\BoxedEnumMemberSerializationMethod.cs" />
     <Compile Include="Serialization\CollectionDetailedKind.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericDictionaryMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectionSerializers\NonGenericCollectionMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs" />
@@ -209,10 +210,13 @@
     <Compile Include="Serialization\PolymorphismSchemaChildrenType.cs" />
     <Compile Include="Serialization\PolymorphismTarget.cs" />
     <Compile Include="Serialization\PolymorphismType.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumerableMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionCollectionMessagePackSerializer`2.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionDictionaryMessagePackSerializer`3.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionNonGeenricCollectionMessagePackSerializer`1.cs" />
+    <Compile Include="Serialization\ReflectionSerializers\ReflectionNonGeenricEnumerableMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionNonGenericDictionaryMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionNonGenericListMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\ReflectionSerializers\ReflectionSerializerHelper.cs" />

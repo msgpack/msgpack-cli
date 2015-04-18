@@ -19,29 +19,49 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
+using System.Collections;
 
 using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
-	internal sealed class ReflectionCollectionMessagePackSerializer<TCollection, TItem> : CollectionMessagePackSerializer<TCollection, TItem>
-		where TCollection : ICollection<TItem>
+	internal sealed class ReflectionNonGenericCollectionMessagePackSerializer<TCollection> : NonGenericCollectionMessagePackSerializer<TCollection>
+		where TCollection : ICollection
 	{
 		private readonly Func<int, TCollection> _factory;
+		private readonly Action<TCollection, object> _addItem;
 
-		public ReflectionCollectionMessagePackSerializer(
+		public ReflectionNonGenericCollectionMessagePackSerializer(
 			SerializationContext ownerContext,
 			Type targetType,
 			PolymorphismSchema itemsSchema )
 			: base( ownerContext, itemsSchema )
 		{
 			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TCollection>( targetType );
+			this._addItem = ReflectionSerializerHelper.GetAddItem<TCollection, object>( targetType );
+		}
+
+		protected internal override TCollection UnpackFromCore( Unpacker unpacker )
+		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				throw SerializationExceptions.NewIsNotArrayHeader();
+			}
+
+			var itemsCount = UnpackHelpers.GetItemsCount( unpacker );
+			var collection = this.CreateInstance( itemsCount );
+			this.UnpackToCore( unpacker, collection, itemsCount );
+			return collection;
 		}
 
 		protected override TCollection CreateInstance( int initialCapacity )
 		{
 			return this._factory( initialCapacity );
+		}
+
+		protected override void AddItem( TCollection collection, object item )
+		{
+			this._addItem( collection, item );
 		}
 	}
 }

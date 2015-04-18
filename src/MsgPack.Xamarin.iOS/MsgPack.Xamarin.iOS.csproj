@@ -461,11 +461,20 @@
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionDictionaryMessagePackSerializer`3.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionDictionaryMessagePackSerializer`3.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionEnumerableMessagePackSerializer`2.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionEnumerableMessagePackSerializer`2.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionEnumMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionNilImplicationHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionNonGeenricCollectionMessagePackSerializer`1.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionNonGeenricCollectionMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionNonGeenricEnumerableMessagePackSerializer`1.cs">
+      <Link>Serialization\ReflectionSerializers\ReflectionNonGeenricEnumerableMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionNonGenericDictionaryMessagePackSerializer`1.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionNonGenericDictionaryMessagePackSerializer`1.cs</Link>

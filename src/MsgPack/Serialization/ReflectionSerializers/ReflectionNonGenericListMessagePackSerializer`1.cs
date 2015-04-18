@@ -25,9 +25,6 @@ using MsgPack.Serialization.CollectionSerializers;
 
 namespace MsgPack.Serialization.ReflectionSerializers
 {
-	// Note: ReflectionNonGeenricEnumerableMessagePackSerializer and ReflectionNonGeenricCollectionMessagePackSerializer cannot be realized
-	// because they cannot implement UnpackFromCore...
-
 	internal sealed class ReflectionNonGenericListMessagePackSerializer<TList> : NonGenericListMessagePackSerializer<TList>
 		where TList : IList
 	{
