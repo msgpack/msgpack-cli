@@ -31,6 +31,9 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 
+using MsgPack.Serialization.CollectionSerializers;
+using MsgPack.Serialization.Reflection;
+
 namespace MsgPack.Serialization
 {
 	/// <summary>
@@ -436,6 +439,21 @@ namespace MsgPack.Serialization
 		internal static Exception NewUnknownTypeEmbedding()
 		{
 			return new SerializationException( "Cannot deserialize with type-embedding based serializer. Root object must be 3 element array." );
+		}
+
+		internal static Exception NewIncompatibleCollectionSerializer( Type targetType, Type incompatibleType, Type exampleClass )
+		{
+			return 
+				new SerializationException(
+					String.Format( 
+						CultureInfo.CurrentCulture,
+						"Cannot serialize type '{0}' because registered or generated serializer '{1}' does not implement '{2}', which is implemented by '{3}', for example.",
+						targetType.GetFullName(),
+						incompatibleType.GetFullName(),
+						typeof( ICollectionInstanceFactory ),
+						exampleClass.GetFullName()
+					)
+				);
 		}
 	}
 }

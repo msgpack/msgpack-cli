@@ -202,39 +202,25 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		internal static IMessagePackSingleObjectSerializer TryCreateAbstractCollectionSerializer( SerializationContext context, Type abstractType, Type concreteType, PolymorphismSchema schema, CollectionTraits traits )
 		{
-			var itemSchema = ( schema ?? PolymorphismSchema.Default );
-
 			switch ( traits.DetailedCollectionType )
 			{
 				case CollectionDetailedKind.GenericList:
-				{
-					return
-						( ( IVariantSerializerFactory )Activator.CreateInstance(
-							typeof( ListSerializerFactory<,> ).MakeGenericType( abstractType, traits.ElementType )
-						) ).Create( context, concreteType, itemSchema );
-				}
 #if !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericSet:
-				{
-					return
-						( ( IVariantSerializerFactory )Activator.CreateInstance(
-							typeof( SetSerializerFactory<,> ).MakeGenericType( abstractType, traits.ElementType )
-						) ).Create( context, concreteType, itemSchema );
-				}
 #endif // !NETFX_35 && !UNITY
 				case CollectionDetailedKind.GenericCollection:
 				{
 					return
 						( ( IVariantSerializerFactory )Activator.CreateInstance(
 							typeof( CollectionSerializerFactory<,> ).MakeGenericType( abstractType, traits.ElementType )
-						) ).Create( context, concreteType, itemSchema );
+						) ).Create( context, concreteType, schema );
 				}
 				case CollectionDetailedKind.GenericEnumerable:
 				{
 					return
 						( ( IVariantSerializerFactory )Activator.CreateInstance(
 							typeof( EnumerableSerializerFactory<,> ).MakeGenericType( abstractType, traits.ElementType )
-						) ).Create( context, concreteType, itemSchema );
+						) ).Create( context, concreteType, schema );
 				}
 				case CollectionDetailedKind.GenericDictionary:
 				{
@@ -246,35 +232,35 @@ namespace MsgPack.Serialization.DefaultSerializers
 								genericArgumentOfKeyValuePair[ 0 ],
 								genericArgumentOfKeyValuePair[ 1 ]
 							)
-						) ).Create( context, concreteType, itemSchema );
+						) ).Create( context, concreteType, schema );
 				}
 				case CollectionDetailedKind.NonGenericList:
 				{
 					return
 						( ( IVariantSerializerFactory )Activator.CreateInstance(
 							typeof( NonGenericListSerializerFactory<> ).MakeGenericType( abstractType )
-						) ).Create( context, concreteType, itemSchema );
+						) ).Create( context, concreteType, schema );
 				}
 				case CollectionDetailedKind.NonGenericCollection:
 				{
 					return
 						( ( IVariantSerializerFactory )Activator.CreateInstance(
 							typeof( NonGenericCollectionSerializerFactory<> ).MakeGenericType( abstractType )
-						) ).Create( context, concreteType, itemSchema );
+						) ).Create( context, concreteType, schema );
 				}
 				case CollectionDetailedKind.NonGenericEnumerable:
 				{
 					return
 						( ( IVariantSerializerFactory )Activator.CreateInstance(
 							typeof( NonGenericEnumerableSerializerFactory<> ).MakeGenericType( abstractType )
-						) ).Create( context, concreteType, itemSchema );
+						) ).Create( context, concreteType, schema );
 				}
 				case CollectionDetailedKind.NonGenericDictionary:
 				{
 					return
 						( ( IVariantSerializerFactory )Activator.CreateInstance(
 							typeof( NonGenericDictionarySerializerFactory<> ).MakeGenericType( abstractType )
-						) ).Create( context, concreteType, itemSchema );
+						) ).Create( context, concreteType, schema );
 				}
 				default:
 				{
@@ -380,8 +366,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
 			{
-				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new NonGenericEnumerableSerializer<T>( context, targetType, itemSchema );
+				return new AbstractNonGenericEnumerableMessagePackSerializer<T>( context, targetType, schema );
 			}
 		}
 
@@ -392,8 +377,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
 			{
-				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new NonGenericCollectionSerializer<T>( context, targetType, itemSchema );
+				return new AbstractNonGenericCollectionMessagePackSerializer<T>( context, targetType, schema );
 			}
 		}
 
@@ -404,8 +388,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
 			{
-				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new NonGenericListSerializer<T>( context, targetType, itemSchema );
+				return new AbstractNonGenericListMessagePackSerializer<T>( context, targetType, schema );
 			}
 		}
 
@@ -416,8 +399,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
 			{
-				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new NonGenericDictionarySerializer<T>( context, targetType, itemSchema );
+				return new AbstractNonGenericDictionaryMessagePackSerializer<T>( context, targetType, schema );
 			}
 		}
 
@@ -428,8 +410,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
 			{
-				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new EnumerableSerializer<TCollection, TItem>( context, targetType, itemSchema );
+				return new AbstractEnumerableMessagePackSerializer<TCollection, TItem>( context, targetType, schema );
 			}
 		}
 
@@ -440,34 +421,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
 			{
-				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new CollectionSerializer<TCollection, TItem>( context, targetType, itemSchema );
-			}
-		}
-
-#if !NETFX_35 && !UNITY
-		private sealed class SetSerializerFactory<TSet, TItem> : IVariantSerializerFactory
-			where TSet : ISet<TItem>
-		{
-			public SetSerializerFactory() { }
-
-			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
-			{
-				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new SetSerializer<TSet, TItem>( context, targetType, itemSchema );
-			}
-		}
-#endif // !NETFX_35 && !UNITY
-
-		private sealed class ListSerializerFactory<TList, TItem> : IVariantSerializerFactory
-			where TList : IList<TItem>
-		{
-			public ListSerializerFactory() { }
-
-			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
-			{
-				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new ListSerializer<TList, TItem>( context, targetType, itemSchema );
+				return new AbstractCollectionMessagePackSerializer<TCollection, TItem>( context, targetType, schema );
 			}
 		}
 
@@ -478,8 +432,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			public IMessagePackSingleObjectSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema )
 			{
-				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new DictionarySerializer<TDictionary, TKey, TValue>( context, targetType, itemSchema );
+				return new AbstractDictionaryMessagePackSerializer<TDictionary, TKey, TValue>( context, targetType, schema );
 			}
 		}
 		// ReSharper restore MemberHidesStaticFromOuterClass
