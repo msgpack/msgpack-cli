@@ -178,7 +178,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackKnownTypeAttributes.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\Polymorphic\IPolymorhicHelperAttributes.cs" />
+    <Compile Include="Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" />
     <Compile Include="Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs" />
     <Compile Include="Serialization\MessagePackDeserializationConstructorAttribute.cs" />
     <Compile Include="Serialization\MessagePackIgnoreAttribute.cs" />

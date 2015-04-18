@@ -622,8 +622,8 @@
     <Compile Include="..\MsgPack\Serialization\NilImplicationHandler`4.cs">
       <Link>Serialization\NilImplicationHandler`4.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorhicHelperAttributes.cs">
-      <Link>Serialization\Polymorphic\IPolymorhicHelperAttributes.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorphicHelperAttributes.cs">
+      <Link>Serialization\Polymorphic\IPolymorphicHelperAttributes.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs">
       <Link>Serialization\Polymorphic\KnownTypePolymorhicMessagePackSerializer`1.cs</Link>

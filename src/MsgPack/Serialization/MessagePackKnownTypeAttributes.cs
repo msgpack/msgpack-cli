@@ -41,7 +41,7 @@ namespace MsgPack.Serialization
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
 	public sealed class MessagePackKnownTypeAttribute : Attribute, IPolymorphicKnownTypeAttribute
 	{
-		PolymorphismTarget IPolymorhicHelperAttribute.Target
+		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.Member; }
 		}
@@ -73,7 +73,7 @@ namespace MsgPack.Serialization
 			this.BindingType = bindingType;
 		}
 
-		byte IPolymorhicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{
@@ -98,7 +98,7 @@ namespace MsgPack.Serialization
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
 	public sealed class MessagePackKnownCollectionItemTypeAttribute : Attribute, IPolymorphicKnownTypeAttribute
 	{
-		PolymorphismTarget IPolymorhicHelperAttribute.Target
+		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.CollectionItem; }
 		}
@@ -130,7 +130,7 @@ namespace MsgPack.Serialization
 			this.BindingType = bindingType;
 		}
 
-		byte IPolymorhicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{
@@ -155,7 +155,7 @@ namespace MsgPack.Serialization
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
 	public sealed class MessagePackKnownDictionaryKeyTypeAttribute : Attribute, IPolymorphicKnownTypeAttribute
 	{
-		PolymorphismTarget IPolymorhicHelperAttribute.Target
+		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.DictionaryKey; }
 		}
@@ -187,7 +187,7 @@ namespace MsgPack.Serialization
 			this.BindingType = bindingType;
 		}
 
-		byte IPolymorhicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{
@@ -212,7 +212,7 @@ namespace MsgPack.Serialization
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
 	public sealed partial class MessagePackKnownTupleItemTypeAttribute : Attribute, IPolymorphicKnownTypeAttribute
 	{
-		PolymorphismTarget IPolymorhicHelperAttribute.Target
+		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.TupleItem; }
 		}
@@ -234,7 +234,7 @@ namespace MsgPack.Serialization
 		public Type BindingType { get; private set; }
 
 
-		byte IPolymorhicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{

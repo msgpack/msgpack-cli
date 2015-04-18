@@ -412,7 +412,7 @@ namespace MsgPack.Serialization
 				foreach (
 					var attribute in
 						member.GetCustomAttributes( false )
-							.OfType<IPolymorhicHelperAttribute>()
+							.OfType<IPolymorphicHelperAttribute>()
 							.Where( a => a.Target == targetType )
 				)
 				{
@@ -444,7 +444,7 @@ namespace MsgPack.Serialization
 				return result;
 			}
 
-			private void Interpret( SerializationContext context, IPolymorhicHelperAttribute attribute, string memberName, int tupleItemNumber )
+			private void Interpret( SerializationContext context, IPolymorphicHelperAttribute attribute, string memberName, int tupleItemNumber )
 			{
 				var asKnown = attribute as IPolymorphicKnownTypeAttribute;
 				if ( asKnown != null )
@@ -499,7 +499,7 @@ namespace MsgPack.Serialization
 				this._useTypeEmbedding = true;
 			}
 
-			private static string GetCannotSpecifyKnownTypeAndRuntimeTypeErrorMessage( IPolymorhicHelperAttribute attribute, string memberName, int tupleItemNumber )
+			private static string GetCannotSpecifyKnownTypeAndRuntimeTypeErrorMessage( IPolymorphicHelperAttribute attribute, string memberName, int tupleItemNumber )
 			{
 				switch ( attribute.Target )
 				{
@@ -551,7 +551,7 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			private static string GetCannotDuplicateKnownTypeCodeErrorMessage( IPolymorhicHelperAttribute attribute, byte bindingCode, string memberName, int tupleItemNumber )
+			private static string GetCannotDuplicateKnownTypeCodeErrorMessage( IPolymorphicHelperAttribute attribute, byte bindingCode, string memberName, int tupleItemNumber )
 			{
 				switch ( attribute.Target )
 				{

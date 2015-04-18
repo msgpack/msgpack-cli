@@ -1,4 +1,4 @@
-﻿// #region -- License Terms --
+﻿#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
@@ -16,7 +16,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 // 
-// #endregion -- License Terms --
+#endregion -- License Terms --
 
 using System;
 
@@ -25,7 +25,7 @@ namespace MsgPack.Serialization.Polymorphic
 	/// <summary>
 	///		Common interfaces among polymorhic helper attributes.
 	/// </summary>
-	internal interface IPolymorhicHelperAttribute
+	internal interface IPolymorphicHelperAttribute
 	{
 		PolymorphismTarget Target { get; }
 		byte GetBindingCode( SerializationContext context );
@@ -34,7 +34,7 @@ namespace MsgPack.Serialization.Polymorphic
 	/// <summary>
 	///		Common interfaces among *Known*TypeAttrbutes.
 	/// </summary>
-	internal interface IPolymorphicKnownTypeAttribute : IPolymorhicHelperAttribute
+	internal interface IPolymorphicKnownTypeAttribute : IPolymorphicHelperAttribute
 	{
 		Type BindingType { get; }
 	}
@@ -42,7 +42,7 @@ namespace MsgPack.Serialization.Polymorphic
 	/// <summary>
 	///		Common(marker) interfaces among *Runtime*TypeAttrbutes.
 	/// </summary>
-	internal interface IPolymorphicRuntimeTypeAttribute : IPolymorhicHelperAttribute
+	internal interface IPolymorphicRuntimeTypeAttribute : IPolymorphicHelperAttribute
 	{
 		// nothing
 	}
@@ -50,7 +50,7 @@ namespace MsgPack.Serialization.Polymorphic
 	/// <summary>
 	///		Common interfaces among *TupleItemTypeAttributes.
 	/// </summary>
-	internal interface IPolymorphicTupleItemTypeAttribute : IPolymorhicHelperAttribute
+	internal interface IPolymorphicTupleItemTypeAttribute : IPolymorphicHelperAttribute
 	{
 		int ItemNumber { get; }
 	}

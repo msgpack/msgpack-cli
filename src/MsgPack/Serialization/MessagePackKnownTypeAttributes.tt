@@ -114,7 +114,7 @@ foreach( var item in
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
 	public sealed <#= item.OmitConstructor ? "partial " : String.Empty #>class <#= typeName #> : Attribute, IPolymorphicKnownTypeAttribute
 	{
-		PolymorphismTarget IPolymorhicHelperAttribute.Target
+		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.<#= item.Target #>; }
 		}
@@ -153,7 +153,7 @@ foreach( var item in
 	}
 #>
 
-		byte IPolymorhicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
 		{
 			if ( this.BindingCode > 127 )
 			{

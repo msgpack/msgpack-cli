@@ -45,7 +45,7 @@ namespace MsgPack.Serialization
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property )]
 	public sealed class MessagePackRuntimeTypeAttribute : Attribute, IPolymorphicRuntimeTypeAttribute
 	{
-		PolymorphismTarget IPolymorhicHelperAttribute.Target
+		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.Member; }
 		}
@@ -57,7 +57,7 @@ namespace MsgPack.Serialization
 		{
 		}
 
-		byte IPolymorhicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
 		{
 			return context.TypeEmbeddingSettings.TypeEmbeddingIdentifier;
 		}
@@ -82,7 +82,7 @@ namespace MsgPack.Serialization
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property )]
 	public sealed class MessagePackRuntimeCollectionItemTypeAttribute : Attribute, IPolymorphicRuntimeTypeAttribute
 	{
-		PolymorphismTarget IPolymorhicHelperAttribute.Target
+		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.CollectionItem; }
 		}
@@ -94,7 +94,7 @@ namespace MsgPack.Serialization
 		{
 		}
 
-		byte IPolymorhicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
 		{
 			return context.TypeEmbeddingSettings.TypeEmbeddingIdentifier;
 		}
@@ -119,7 +119,7 @@ namespace MsgPack.Serialization
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property )]
 	public sealed class MessagePackRuntimeDictionaryKeyTypeAttribute : Attribute, IPolymorphicRuntimeTypeAttribute
 	{
-		PolymorphismTarget IPolymorhicHelperAttribute.Target
+		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.DictionaryKey; }
 		}
@@ -131,7 +131,7 @@ namespace MsgPack.Serialization
 		{
 		}
 
-		byte IPolymorhicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
 		{
 			return context.TypeEmbeddingSettings.TypeEmbeddingIdentifier;
 		}
@@ -156,13 +156,13 @@ namespace MsgPack.Serialization
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
 	public sealed partial class MessagePackRuntimeTupleItemTypeAttribute : Attribute, IPolymorphicRuntimeTypeAttribute
 	{
-		PolymorphismTarget IPolymorhicHelperAttribute.Target
+		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.TupleItem; }
 		}
 
 
-		byte IPolymorhicHelperAttribute.GetBindingCode( SerializationContext context )
+		byte IPolymorphicHelperAttribute.GetBindingCode( SerializationContext context )
 		{
 			return context.TypeEmbeddingSettings.TypeEmbeddingIdentifier;
 		}
